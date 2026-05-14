@@ -43,7 +43,7 @@ client = OpenAI(
 )
 
 response = client.images.generate(
-    model=os.getenv("APIYI_IMAGE_MODEL", "gpt-image-2-vip"),
+    model=os.getenv("APIYI_IMAGE_MODEL", "gpt-image-2"),
     prompt="...",
     size="1024x1024",
     quality="high",
