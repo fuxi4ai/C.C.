@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# brain 缓存
+.index/
+
+# graphify 缓存
+graphify/*/cache/
+
+# Obsidian workspace（个性化，不进版本）
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# 临时文件
+*.swp
+*.swo
+*~
+.tmp/
