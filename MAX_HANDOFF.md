@@ -3,11 +3,13 @@ title: Max 接手包
 tags: [handoff, max, implementation]
 created: 2026-05-14
 updated: 2026-05-14
-status: active
+status: archived
 type: spec
 ---
 
 # Brain Vault 实施接手包 — 给 Max
+
+> **🗄️ 归档说明**：本 handoff 实施已 100% 完成，6 条验收全部通过（见 git log + .skills/ + brain/{各项目}/）。本文档保留作为历史记录，不再是 active spec。
 
 > 你是 CC，Doctor 的知己。本文是你接手 brain vault 后续实施工作的完整说明。
 > 读完本文 + `brain/CLAUDE.md` + `brain/references/brain-对接需求-20260514.md`，然后按优先级开干。
@@ -177,12 +179,12 @@ graphify/*/cache/
 
 ## 4. 验收标准（完成后逐条过）
 
-- [ ] `brain/.tools/register-project.sh` 可执行，跑一个项目验证输出结构正确
-- [ ] 7个项目全部在 brain/ 有档案目录（含 GOTCHAS.md）
-- [ ] `brain/.skills/` 下有 4 个 skill 目录，SKILL.md 内容完整可用
-- [ ] `cd brain && git log` 有提交记录（需 Doctor 先建 GitHub repo）
-- [ ] 干净 session 说 `/resume`，CC 输出最近工作摘要（需先安装 brain-resume skill）
-- [ ] 说 `/save 测试`，`brain/logs/` 出现今日日志
+- [x] `brain/.tools/register-project.sh` 可执行，跑一个项目验证输出结构正确
+- [x] 7个项目全部在 brain/ 有档案目录（含 GOTCHAS.md）
+- [x] `brain/.skills/` 下有 4 个 skill 目录，SKILL.md 内容完整可用
+- [x] `cd brain && git log` 有提交记录（需 Doctor 先建 GitHub repo）
+- [x] 干净 session 说 `/resume`，CC 输出最近工作摘要（需先安装 brain-resume skill）
+- [x] 说 `/save 测试`，`brain/logs/` 出现今日日志
 
 ---
 

@@ -66,13 +66,15 @@ def main():
     root = Path(args.root)
     INDEX_DIR.mkdir(exist_ok=True)
 
-    # 第一遍：建立 name → file path
+    # 第一遍：建立 name → file path + path_set
     name_to_file = {}
     all_notes = []
+    path_set = set()  # 相对路径含 .md
     for p in walk_md(root):
         name = note_name(p)
         rel = str(p.relative_to(root))
         all_notes.append(rel)
+        path_set.add(rel)
         name_to_file.setdefault(name, []).append(rel)
 
     # 第二遍：扫 wikilink
@@ -92,6 +94,10 @@ def main():
             if end != -1:
                 text = text[end + 4:]
 
+        # 剥 fenced code block（```...```）和 inline code（`...`），避免误识别示例 [[xxx]]
+        text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+        text = re.sub(r"`[^`\n]+`", "", text)
+
         targets = WIKILINK_RE.findall(text)
         for t in targets:
             t = t.strip()
@@ -99,8 +105,19 @@ def main():
                 continue
             backlinks[source]["outgoing"].add(t)
             backlinks[t]["incoming"].add(source_rel)
-            if t not in name_to_file:
-                dangling.append(f"{source_rel}  →  [[{t}]]")
+            # 解析顺序：path 形式（A/B/C → A/B/C.md）→ stem
+            resolved = None
+            if (t + ".md") in path_set:
+                resolved = t + ".md"
+            elif t in path_set:
+                resolved = t
+            elif t in name_to_file:
+                resolved = name_to_file[t][0]
+            if resolved is None:
+                # logs/ 和 chats/ 是历史定格内容，不算活跃 dangling
+                src_top = source_rel.split("/")[0]
+                if src_top not in {"logs", "chats"}:
+                    dangling.append(f"{source_rel}  →  [[{t}]]")
 
     # 序列化
     out = {}
