@@ -1,0 +1,1509 @@
+{
+  "communities": {
+    "0": [
+      "20260425_gs_taiwan_weekly_kickstart",
+      "anritsu_company_anritsu",
+      "asiaindustrialcapexcycle_asiaindustrialcapexcycle",
+      "catl_catl",
+      "cloud_capex_concept_cloud_capex",
+      "company_hon_precision",
+      "company_mpi_corporation",
+      "company_winway",
+      "concept_aws_trainium_forecast",
+      "concept_handler_market_growth_2027",
+      "concept_semi_test_equipment_market",
+      "cowos",
+      "cw_laser_concept_cw_laser",
+      "ess_concept_ess",
+      "euv_concept_euv",
+      "foundry_floorplan_tsmc_update_cowos_vs_emib_coPoS",
+      "foundryrevenue2025_concept_foundryrevenue2025",
+      "gb300_nvl72_concept_gb300_nvl72",
+      "global_memory_tech_weekly_dram5",
+      "global_memory_tech_weekly_micron",
+      "gpu_b200_concept_gpu_b200",
+      "gpu_vr200_concept_gpu_vr200",
+      "hbm",
+      "hbm3e_concept_hbm3e",
+      "hbm4_concept_hbm4",
+      "honhai_company_honhai",
+      "hybridbonding_concept_hybridbonding",
+      "korea_power_grid_concept_korea_power_grid",
+      "marvell_aws_trainium4",
+      "marvell_marvell",
+      "memory_interface_chip_concept_memory_interface_chip",
+      "mlu_series_concept_mlu_series",
+      "naxtra_sodiumion_concept_naxtra_sodiumion",
+      "nvda_feynman_concept_nvda_feynman",
+      "nvl72_concept_nvl72",
+      "nvl72_rack_shipment_concept_nvl72_rack_shipment",
+      "nvlink_fusion",
+      "opt_6_3_2_t\u5149\u6a21\u5757",
+      "product_aws_trainium3",
+      "product_nearlinehdd_product_nearlinehdd",
+      "rubinultra_rubin_ultra",
+      "semimaterial_localization_concept_semimaterial_localization",
+      "singlewave400g_concept_singlewave400g",
+      "soic",
+      "soic_concept_soic",
+      "taiex",
+      "technology_asia_pacific_optical_transceiver_expert_call_EMIB",
+      "tsmc",
+      "tsmc_2nm_concept_tsmc_2nm",
+      "tsmc_a14_concept_tsmc_a14",
+      "tsmc_company_tsmc",
+      "tsmc_n3_concept_tsmc_n3",
+      "zhongji_innolight_concept_zhongji_innolight"
+    ],
+    "1": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_ascend_910c_product",
+      "2026_01_26_pamir_research_2026_global_indium_phosphide_substrate_supply_demand_outlook_axt",
+      "2026_01_26_pamir_research_2026_global_indium_phosphide_substrate_supply_demand_outlook_sumitomo",
+      "2026_04_19_pamir_research_china_thai_building_materials_and_chemical_sun_ying_team_electronic_cloth_expert_no1_pcb_perspective_low_cte_low_dk_conference_call_low_cte_electronic_cloth",
+      "2026_04_27_obsidian_industrial_xinghai_semiconductor",
+      "2026_04_30_\u5e15\u7c73\u5c14\u7814\u7a76_\u8f7d\u677f\u8fce\u6765\u6da8\u4ef7\u6f6e_\u5174\u68ee\u79d1\u6280\u8fd1\u51b5\u8ddf\u8e2a_abf_substrate",
+      "2026_04_30_\u5e15\u7c73\u5c14\u7814\u7a76_\u8f7d\u677f\u8fce\u6765\u6da8\u4ef7\u6f6e_\u5174\u68ee\u79d1\u6280\u8fd1\u51b5\u8ddf\u8e2a_bt_substrate",
+      "2026_04_30_\u5e15\u7c73\u5c14\u7814\u7a76_\u8f7d\u677f\u8fce\u6765\u6da8\u4ef7\u6f6e_\u5174\u68ee\u79d1\u6280\u8fd1\u51b5\u8ddf\u8e2a_hisilicon",
+      "2026_04_30_\u5e15\u7c73\u5c14\u7814\u7a76_\u8f7d\u677f\u8fce\u6765\u6da8\u4ef7\u6f6e_\u5174\u68ee\u79d1\u6280\u8fd1\u51b5\u8ddf\u8e2a_xingsen",
+      "ai_expert_call_67_yofc",
+      "asia_technology_updating_supply_demand_heatmap_for_dram",
+      "closed_loop_concept_closed_loop",
+      "cowos_l",
+      "cw_laser",
+      "dekeli_dekeli",
+      "dualchippackaging_dualchippackaging",
+      "eml_laser",
+      "google_google",
+      "gs_4_goldman_sachs",
+      "huawei",
+      "huawei_ascend_950_document",
+      "innolight_300308_sz_innolight",
+      "innolight_300308_sz_optical_module",
+      "inp_substrate",
+      "leading_packaging_equipment_company_research",
+      "lumentum",
+      "memorypooling_cxl_memorypooling_cxl",
+      "multiple_growth_drivers_coherent",
+      "ocs",
+      "ocs_1_mems",
+      "ocs_google_tpu",
+      "opt_1_innolight",
+      "opt_2_eoptolink",
+      "opt_3_landmark",
+      "optical_interconnect_ocs_update",
+      "pm_ocs_supply_chain_deep_dive_corning",
+      "pm_ocs_supply_chain_deep_dive_sai_microelectronics",
+      "pm_ocs_supply_chain_deep_dive_silex",
+      "product_ascend950pr_product_ascend950pr",
+      "product_cerebracs3_product_cerebracs3",
+      "product_googletpuv7_product_googletpuv7",
+      "smic_south_smic_south",
+      "technology_asia_pacific_optical_transceiver_expert_call_MEMS",
+      "technology_asia_pacific_optical_transceiver_expert_call_OCS",
+      "technology_asia_pacific_optical_transceiver_expert_call_SiPh",
+      "v1_pre_rebuild_concept_abf_substrate_shortage",
+      "v1_pre_rebuild_concept_cowos_14reticle",
+      "v1_pre_rebuild_concept_glasssubstrate"
+    ],
+    "2": [
+      "ai_asic",
+      "ai_supply_chain_addressing_ms_google_tpu",
+      "amazon_aws",
+      "anthropic",
+      "anthropic_tpu_expansion_anthropic_tpu_expansion",
+      "anthropiccomputescalingstrategy_anthropiccomputescalingstrategy",
+      "broadcom",
+      "broadcom_broadcom",
+      "broadcomgooglelta_broadcomgooglelta",
+      "centec_centec",
+      "citi_taiwan_semi_tpu_evolution_aspeed",
+      "citi_taiwan_semi_tpu_evolution_mediatek",
+      "company_mediatek",
+      "concept_ai_asic",
+      "cpo_3_broadcom",
+      "goldman_sachs_mediatek_buy",
+      "google",
+      "gs_1_broadcom",
+      "gs_5_tpu",
+      "investor_presentation_build_for_future_ai_infrastr_aichip",
+      "jpm_apac_technology_intc",
+      "jpm_apac_technology_mtk",
+      "jpm_apac_technology_murata",
+      "jpm_apac_technology_tsmc",
+      "jpm_broadcom_google_lta_anthropic_multi_year_tpu_20",
+      "mediatek",
+      "mediatek_2454_tw_looking_beyond_smartphone_weakness_MediaTek_TPU",
+      "mediatektpuv9designspec_mediatektpuv9designspec",
+      "metric_mediatekaiasicrevenue_fy2627e_gs_metric_mediatekaiasicrevenue_fy2627e_gs",
+      "metric_mediatekeps_fy2628e_metric_mediatekeps_fy2628e",
+      "ms_it_hardware_north_america_monthly_data_tracker_hdd",
+      "ocs_switch_research_tekcore",
+      "ocs\u6280\u672f\u65b9\u6848\u548c\u4f9b\u5e94\u94fe\u89e3\u8bfb_ocs_switch",
+      "product_googleaxioncpu_product_googleaxioncpu",
+      "product_googletpuv8_product_googletpuv8",
+      "product_googletpuv8t_product_googletpuv8t",
+      "product_tpuv8i_product_tpuv8i",
+      "supernode_supernode",
+      "tpu_v7",
+      "ubs_mediatek_key_call_tpu_tam_expanding_20260428_tpu",
+      "ubs_mediatel_key_call_tpu_tam_expanding_20260428_tpu",
+      "xpu_xpu"
+    ],
+    "3": [
+      "2026_04_18_obsidian_industrial_china_csp_byte_dance",
+      "archive_v1_pre_rebuild_lianxun_lianxun",
+      "archive_v1_pre_rebuild_npo_npo",
+      "axt_axt",
+      "bt_substrate_bt_substrate",
+      "byteplus",
+      "chiplet_interconnect",
+      "cpo",
+      "cpo_1_light_matter",
+      "cpo_2_intel_oci",
+      "domesticsubstitutioncarrierfoil_domesticsubstitutioncarrierfoil",
+      "eml_eml",
+      "humanoid_robot",
+      "industry_chain_and_key_companies",
+      "innolight_innolight",
+      "inp_indium_phosphide",
+      "inpcapacityexpansion_inpcapacityexpansion",
+      "inxni",
+      "material_carriercopperfoil_material_carriercopperfoil",
+      "microring_microring_modulator",
+      "mitsui_mitsui",
+      "msap_msap",
+      "msap_slp_pcb",
+      "ocs_4_silicon_p_hotonics",
+      "opt_4_800_g\u5149\u6a21\u5757",
+      "opt_5_1_6_t\u5149\u6a21\u5757",
+      "opt_7_siph",
+      "optical_module_1_6t_single_mode_fiber",
+      "opticalchipagingtest_opticalchipagingtest",
+      "pcb_2_\u6df1\u5357\u7535\u8def",
+      "pcb_3_\u9e4f\u9f0e",
+      "pcb_4_1_6_t\u5149\u6a21\u5757",
+      "pcb_5_3_2t\u5149\u6a21\u5757",
+      "pcb_6_\u8f7d\u4f53\u94dc\u7b94",
+      "scaleupfabric_scaleupfabric",
+      "si_photonics_silicon_photonics",
+      "siphpenetration_siphpenetration",
+      "smee",
+      "tfln_thin_film_lithium_niobate",
+      "tsmc_coupe_tsmc_coupe",
+      "vgf_process_vgf_process",
+      "yunzhe_yunzhe"
+    ],
+    "4": [
+      "20260423_jpm_china_internet_post_4q25_results_sector_rerating_tencent_top_pick_tencent",
+      "20260424_gs_china_ai_models",
+      "cn_gpu_6_nvidia_route",
+      "company_cambricon",
+      "company_iluvatarcorex",
+      "company_metax",
+      "company_minimax",
+      "company_moonshot",
+      "concept_aichipvaluechaindecoupling",
+      "concept_ambigous",
+      "concept_china_ai_plus_infrastructure_policy_2026",
+      "concept_china_computing_shortage_ai_2026",
+      "concept_china_youth_unemployment_ai_risk",
+      "concept_chinaapplesmartphonechaingain2026q1",
+      "concept_deepseek_fundraising_2026",
+      "concept_deepseek_valuation_funding_round_2026",
+      "concept_deepseekfundinground2026",
+      "concept_ndrc_two_important_projects_2026_batch2",
+      "concept_tendragonschinesegpgpu",
+      "concept_white_house_ai_ip_protection_memo_2026",
+      "deepseek",
+      "deepseekv4_aluhua",
+      "deepseekv4_baidu",
+      "gs_deepseek_v4_token_consumption",
+      "product_cambriconmlu580",
+      "product_cambriconmlu590",
+      "product_cambriconmlu690",
+      "product_deepseekv4",
+      "product_iluvartiangai",
+      "s_hengyi_electronics_s_hengyi_electronics",
+      "shengyi_electronics",
+      "shengyi_electronics_growth_re_acceleration",
+      "sktx_order_outlook_shengke_communications",
+      "tencent_tencent"
+    ],
+    "5": [
+      "20260422_jpm_catl_super_tech_day",
+      "20260425_investor_presentation_greater_china_semiconductors_global_ai_gpu_tpu_industry_updates",
+      "20260427_jpm_international_ftm_2_apr_26_eu_oil_gas_paper_packaging_tsmc_india_consumer_staples_china_power_equipment",
+      "ai_server_market",
+      "anritsu_6754_t_aerospace_defense",
+      "anritsu_6754_t_anritsu",
+      "asiam_technology_updating_supply_demand_heatmap_for_semis_components_and_materials_tightness_intensified_ytd_for_ai_servers_ai_servers",
+      "chaojiedian_langchao",
+      "citi_us_semiconductors_and_hardware_weekly_investor_pulse_google_tpus_tsmc_technology_roadmap",
+      "concept_ai_gpu_tpu",
+      "entity_catl",
+      "global_optical_transceivers_2026_2028_forecast",
+      "gs_taiwan_weekly_kickstart_taiwan_semiconductors",
+      "important_industrial_chains_and_representative_companies_china_industrial_chains",
+      "jp_6_tsmc",
+      "jp_8_jpmorgan",
+      "ms_tsmc_ai_strength_tsmc",
+      "optical_transceiver_800g_1_6t",
+      "osic_2026_laser_cw_laser",
+      "silicon_photonics",
+      "taiwan_tech_march_sales_honhai",
+      "taiwan_tech_march_sales_quanta",
+      "tech_snippets_tsmc_soic_besi_Besi",
+      "tech_snippets_tsmc_soic_besi_SoIC",
+      "tsmc_2026_technology_symposium_quick_takes_a13_process",
+      "tsmc_2026_technology_symposium_quick_takes_n2u_process",
+      "v1_pre_rebuild_company_lumentum",
+      "v1_pre_rebuild_concept_dfb_laser",
+      "v1_pre_rebuild_concept_opticalchipagingtest",
+      "v1_pre_rebuild_concept_opticaltransceivermarket",
+      "v1_pre_rebuild_concept_tfln_modulator",
+      "v1_pre_rebuild_concept_wdm"
+    ],
+    "6": [
+      "2026_04_21_obsidian_industrial_bytedance",
+      "ai_server_pcb_ai_server_pcb",
+      "aspeed_aspeed",
+      "aspeed_bmc_chip",
+      "bytedance_chip_procurement_ascend",
+      "bytedance_chip_procurement_hwj",
+      "cclexpert_meeting_notes_shengyi_technology",
+      "china_ai_chip",
+      "china_ai_gpu_tam_china_ai_gpu_tam",
+      "citi_taiwansemi_google",
+      "citi_taiwansemi_guc",
+      "cn_gpu_2_\u4e2d\u82af\u56fd\u9645",
+      "concept_chinaaichiptpsperformanceanalysis",
+      "cspdesignwinchina_cspdesignwinchina",
+      "energy_reality_taiwan_and_korea_koreanengyuan",
+      "energy_reality_taiwan_and_korea_samsungskhynix",
+      "energy_reality_taiwan_and_korea_taiwannengyuan",
+      "fiber_fiber",
+      "jpm_ftm_china_ai_chip_fabless",
+      "jpm_ftm_iluvatar_corex",
+      "kv_cache_kv_cache",
+      "metax_metax",
+      "middleeastenergyconflict_middle_east_energy_conflict",
+      "mlcc_mlcc",
+      "taiwan_power_grid_taiwan_power_grid",
+      "tsmc_n2_tsmc_n2_process",
+      "v1_pre_rebuild_concept_chinesesuppliersenergy",
+      "v1_pre_rebuild_concept_foundrysupplybottleneck",
+      "v1_pre_rebuild_concept_highna_euv",
+      "v1_pre_rebuild_concept_lfp_battery",
+      "v1_pre_rebuild_concept_taiex"
+    ],
+    "7": [
+      "kb_main",
+      "kg_ingest",
+      "kg_ingest_build_node_reference",
+      "kg_ingest_combine_patches",
+      "kg_ingest_extract_from_file",
+      "kg_ingest_find_latest_kg",
+      "kg_ingest_get_processed_files",
+      "kg_ingest_is_moc_file",
+      "kg_ingest_load_index",
+      "kg_ingest_normalize_node_id",
+      "kg_ingest_normalize_patch_ids",
+      "kg_ingest_rationale_1",
+      "kg_ingest_rationale_311",
+      "kg_ingest_rationale_356",
+      "kg_ingest_rationale_377",
+      "kg_ingest_rationale_399",
+      "kg_ingest_read_docx_as_text",
+      "kg_ingest_read_md_as_text",
+      "kg_ingest_read_pdf_as_base64",
+      "kg_ingest_read_xlsx_as_text",
+      "kg_ingest_save_index",
+      "kg_ingest_score_node_for_ref",
+      "kg_ingest_update_index_entry",
+      "raw_obsidian_industrial"
+    ],
+    "8": [
+      "20260503_224546_bcdresin",
+      "20260503_224546_bvperesin",
+      "20260503_224546_defu",
+      "20260503_224546_doosan",
+      "20260503_224546_feilihua",
+      "20260503_224546_gb200cclbom",
+      "20260503_224546_gen2glass",
+      "20260503_224546_hvlp3foil",
+      "20260503_224546_hvlp4foil",
+      "20260503_224546_hvlp5foil",
+      "20260503_224546_m8ccl",
+      "20260503_224546_m8dot5ccl",
+      "20260503_224546_m9ccl",
+      "20260503_224546_m9supplyconstraint",
+      "20260503_224546_rubincclbom",
+      "20260503_224546_rubinswitchboardmaterial",
+      "20260503_224546_taiyo",
+      "20260503_224546_tongguan",
+      "m8_ccl_nvidia_rubin_gpu",
+      "v1_pre_rebuild_concept_gpu_rubin",
+      "v1_pre_rebuild_concept_hlc_pcb",
+      "v1_pre_rebuild_concept_liquidcooling",
+      "v1_pre_rebuild_concept_supernoderack",
+      "v1_pre_rebuild_product_nvidia_vera_cpu"
+    ],
+    "9": [
+      "20260414_gs_broadcom",
+      "20260414_gs_broadcom_avgo_partnership_meta",
+      "2026_04_17_obsidian_industrial_coreweave",
+      "2026_04_22_obsidian_industrial_inp_substrate",
+      "2026_04_22_pamier_inp_substrate_suppliers",
+      "a14process_a14process",
+      "archive_v1_pre_rebuild_copos_copos",
+      "asic_ai_chip",
+      "aws",
+      "cowoscapacity_cowoscapacity",
+      "dianzixingyezhoubao_metabotong",
+      "emib_t_emib_t",
+      "marvell_technology_asic_networking_nvda_partnership",
+      "meta",
+      "microsoft",
+      "n2processramp2026_n2processramp2026",
+      "n3capacityexpansion_n3capacityexpansion",
+      "tsmc_tsmc",
+      "tsmccapexoutlook20262028_tsmccapexoutlook20262028",
+      "tsmcfy26revenuegrowthoutlook_tsmcfy26revenuegrowthoutlook",
+      "tsmcsoiccapacityexpansion2027_tsmcsoiccapacityexpansion2027"
+    ],
+    "10": [
+      "dianzixingyezhoubao_semi",
+      "guangxingpianjiance_guangxingpianjianceshichang",
+      "guangxingpianjiance_huashengchang",
+      "guangxingpianjiance_jialant",
+      "guangxingpianjiance_lianxunyicun",
+      "guangxingpianjiance_riliankeji",
+      "guangxingpianjiance_shanghaifeilai",
+      "guangxingpianjiance_shidekeji",
+      "guowuyuan_bandaotiguangkejiao",
+      "guowuyuan_bandaotihuaxuepin",
+      "guowuyuan_cmp",
+      "guowuyuan_dianziteqi",
+      "guowuyuan_guochanhuacuijin",
+      "guowuyuan_zhongriquezhen",
+      "haiqi_bandaotihaiqi",
+      "haiqi_kaataer",
+      "haiqi_ruiaiqisheng",
+      "heatdissipationsubstrate_heat_dissipation_substrate",
+      "maruwa_guangmokuaitouzijizhugao",
+      "maruwa_heat_dissipation_substrate",
+      "maruwa_maruwa"
+    ],
+    "11": [
+      "concept_ai_wafer_consumption_tam",
+      "concept_cowos_capacity",
+      "concept_global_hbm_demand",
+      "google_tpu_v6e_trillium_google_tpu_v6e_trillium",
+      "mediatek_mediatek",
+      "metric_avgo_c27_tpu_units_avgo_c27_tpu_units",
+      "metric_global_csp_capex",
+      "product_nvidia_b300",
+      "smartphone_ap_smartphone_ap",
+      "smartphone_demand_weakness_smartphone_demand_weakness",
+      "tpu_supply_demand_2026_concept_tpu_supply_demand_2026",
+      "tpu_v8_concept_tpu_v8",
+      "v1_pre_rebuild_company_google",
+      "v1_pre_rebuild_concept_avgo_ai_xpu_revenue",
+      "v1_pre_rebuild_concept_avgo_google_lta",
+      "v1_pre_rebuild_concept_axion_cpu",
+      "v1_pre_rebuild_concept_google_tpu_lta",
+      "v1_pre_rebuild_concept_memory_cost_inflation",
+      "v1_pre_rebuild_concept_tpu_humufish",
+      "v1_pre_rebuild_concept_tpu_v7"
+    ],
+    "12": [
+      "kb_compare_forecast_actual",
+      "kb_detect_trend",
+      "kb_extract_time_series",
+      "kb_format_node",
+      "kb_load_canonical",
+      "kb_period_sort_key",
+      "kb_py",
+      "kb_rationale_101",
+      "kb_rationale_144",
+      "kb_rationale_47",
+      "kb_rationale_75",
+      "kb_score_node",
+      "kb_search",
+      "kb_snapshots_folder",
+      "outputs_folder",
+      "rules_folder"
+    ],
+    "13": [
+      "20260503_122659_alipangusupernode",
+      "20260503_122659_domesticsupernodeperformancegap",
+      "20260503_122659_huaweicloudmatrix384",
+      "20260503_122659_supernodeinferenceperformanceratio",
+      "2026_04_18_obsidian_industrial_huawet",
+      "2026_04_22_obsidian_industrial_hong_he_glass_fabric",
+      "2026_04_22_obsidian_industrial_nittobo_t_glass_fabric",
+      "archive_v1_pre_rebuild_lng_supply_risk_lng_supply_risk",
+      "company_cxmt",
+      "concept_memorysupplydeficit2026",
+      "concept_middleeastenergyrisk",
+      "lisenoke_lisenoke",
+      "material_gen2glass_material_gen2glass",
+      "middleeastenergyrisk_middleeastenergyrisk",
+      "semiconductormateriallocalization_semiconductormateriallocalization"
+    ],
+    "14": [
+      "kg_merge",
+      "kg_merge_load_json",
+      "kg_merge_merge",
+      "kg_merge_merge_data_sources",
+      "kg_merge_merge_edge",
+      "kg_merge_merge_node",
+      "kg_merge_parse_ts",
+      "kg_merge_print_diff",
+      "kg_merge_rationale_1",
+      "kg_merge_rationale_112",
+      "kg_merge_rationale_47",
+      "kg_merge_rationale_59",
+      "kg_merge_save_json",
+      "mapping_canonical"
+    ],
+    "15": [
+      "company_alibaba",
+      "company_baidu",
+      "company_bilibili",
+      "company_ctrip",
+      "company_huaqin",
+      "company_jd",
+      "company_meituan",
+      "company_pinduoduo",
+      "company_tencent",
+      "company_unisys_shennan",
+      "concept_china_internet_sector_re_rating",
+      "concept_chinese_supernode",
+      "jpm_china_internet_post_4q25_tencent_top_pick",
+      "pamir_research_chinese_supernode_0421"
+    ],
+    "16": [
+      "20260420_ms_tsmc_ai_strength_q1_review",
+      "20260427_semiconductors_cy26_data_center_capex_revised_higher",
+      "ai_supply_chain_addressing_ms_hbm",
+      "ai_supply_chain_addressing_ms_lpu",
+      "ai_supply_chain_addressing_ms_rubin_ultra",
+      "bandaotihangyehanchajiaguangpian_samsung",
+      "chinese_semiconductor_industry_monthly_report_march_ai_computing_vera_rubin",
+      "concept_ai_semiconductors",
+      "concept_data_center_capex",
+      "ms_greater_china_semis_focus_on_ai_semis_gpu_asic_cpu_o_asic",
+      "nvidia",
+      "us_semiconductors_and_hardware_weekly_investor_pul_google_cloud",
+      "xyzq_electronics_weekly_samsung_q2_dram_up_xyzq"
+    ],
+    "17": [
+      "changelog_md",
+      "claude_md",
+      "index_md",
+      "kg_rel_classify",
+      "kg_rel_classify_classify",
+      "normalize_types",
+      "readme_md",
+      "todo_md",
+      "yuantu_gotchas_md",
+      "yuantu_index_md",
+      "yuantu_prd_md",
+      "yuantu_project"
+    ],
+    "18": [
+      "wiki_autogen",
+      "wiki_autogen_build_graph",
+      "wiki_autogen_confidence_badge",
+      "wiki_autogen_existing_wiki_ids",
+      "wiki_autogen_load_kg",
+      "wiki_autogen_prop_table",
+      "wiki_autogen_rel_label",
+      "wiki_autogen_rel_section",
+      "wiki_autogen_render_card",
+      "wiki_autogen_slug",
+      "wiki_folder"
+    ],
+    "19": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_xinsen_abf_capacity_2026_metric",
+      "centurycore_centurycore",
+      "cowos_l_abf_substrate",
+      "hlpcpbdemand_hlpcpbdemand",
+      "inspur_inspur",
+      "product_haiguangcpu5000_product_haiguangcpu5000",
+      "product_kunpengcpu920_product_kunpengcpu920",
+      "product_switch256t_product_switch256t",
+      "shennan_circuits_shennan_circuits",
+      "shennan_shennan",
+      "supernodecabinetdemand2026_supernodecabinetdemand2026"
+    ],
+    "20": [
+      "dedup_check",
+      "dedup_check_build_corpus",
+      "dedup_check_check_duplicate",
+      "dedup_check_check_ids",
+      "dedup_check_rationale_22",
+      "dedup_check_rationale_33",
+      "dedup_check_rationale_50",
+      "kb_normalize",
+      "kg_ingest_extract_keywords",
+      "kg_ingest_rationale_326"
+    ],
+    "21": [
+      "arm_holdings",
+      "broadcom_company_broadcom",
+      "electronic_industry_deepseek_v4_storage_devices_computing_demand_edge_ai_hardware_cambricon",
+      "intel_intel",
+      "investor_presentation_china_chips",
+      "investor_presentation_cpu",
+      "ms_2_agentic_ai",
+      "semiconductors_data_center_capex_micron",
+      "tpu_v8t_concept_tpu_v8t",
+      "us_semiconductors_and_hardware_weekly_investor_pul_broadcom"
+    ],
+    "22": [
+      "20260420_dashu_zhonghua_bandaoti_centroid",
+      "asia_pacific_ai_supply_chain_centroid",
+      "china_ai_supernode_centroid",
+      "china_equity_strategy_author",
+      "china_equity_strategy_centroid",
+      "investor_presentation_author",
+      "investor_presentation_centroid",
+      "tsmc_cowos_updates_author",
+      "tsmc_cowos_updates_centroid"
+    ],
+    "23": [
+      "20260503_090426_718institute",
+      "20260503_090426_deuteratedreagents",
+      "20260503_090426_deuteriumgas",
+      "20260503_090426_dilutionrefrigerator",
+      "20260503_090426_heavywaterproductionprocess",
+      "20260503_090426_heavywatersupply",
+      "20260503_090426_helium3",
+      "20260503_090426_jiufeng",
+      "20260503_090426_xinhuju"
+    ],
+    "24": [
+      "20260420_ms_rise_of_the_ai_agent",
+      "abf_substrate_agentic_ai",
+      "amd",
+      "asml",
+      "cpu_agentic_ai",
+      "dram_agentic_ai",
+      "gpu_agentic_ai",
+      "samsung_electronics",
+      "sk_hynix"
+    ],
+    "25": [
+      "tushare_ingest",
+      "tushare_ingest_build_patch",
+      "tushare_ingest_fetch_financials",
+      "tushare_ingest_get_ashare_nodes",
+      "tushare_ingest_load_token",
+      "tushare_ingest_rationale_114",
+      "tushare_ingest_rationale_58",
+      "tushare_ingest_rationale_71"
+    ],
+    "26": [
+      "20260503_122659_alippu",
+      "20260503_122659_atlas950supernode",
+      "20260503_122659_byrenbingb220",
+      "20260503_122659_cambrian",
+      "20260503_122659_domesticaichipnextgen2026q4",
+      "20260503_122659_metax",
+      "20260503_122659_moorethreadss6000",
+      "20260503_122659_tianshutiangai300"
+    ],
+    "27": [
+      "20260420_ms_rise_of_the_ai_agent_global_implications",
+      "aisemitam2030_aisemitam2030",
+      "concept_ai_agent",
+      "datacentercapex2026to2027outlook_datacentercapex2026to2027outlook",
+      "ms_1_morgan_stanley",
+      "ms_2q26_outlook_finding_certainty_in_uncertainty_china_materials",
+      "nvidia_nvidia",
+      "product_nvidiavr200_product_nvidiavr200"
+    ],
+    "28": [
+      "concept_cowos_l_capacity_expansion_hwj",
+      "concept_cowos_l_yield_ramp",
+      "concept_domestic_abf_substrate_supply_gap",
+      "concept_hwj_ascend950_production_acceleration",
+      "product_ascend_950_pr",
+      "product_ascend_960",
+      "product_ascend_970"
+    ],
+    "29": [
+      "cambricon",
+      "cambricon_smic_n2_node",
+      "chaojiedian_ali",
+      "chaojiedian_byte",
+      "chaojiedian_tencent",
+      "cn_gpu_5_\u5b57\u8282\u8df3\u52a8",
+      "semiconductor_april_investment_strategy"
+    ],
+    "30": [
+      "investor_presentation_asic",
+      "investor_presentation_gpu",
+      "investor_presentation_optical",
+      "marvell",
+      "marvell_technology_inc_ai_infrastructure",
+      "marvell_technology_inc_asics",
+      "marvell_technology_inc_nvda"
+    ],
+    "31": [
+      "company_pengding",
+      "company_usi",
+      "concept_cpo",
+      "concept_msap_pcb_slp",
+      "msap_expert_call_20260426",
+      "pamir_research_usi_cpo_outlook_0417"
+    ],
+    "32": [
+      "20260416_multiple_growth_drivers_ahead_in_ai_optical_network_1_6t_3_2t_transceivers_npo_cpo",
+      "20260427_ms_ai_infra_cpu_gpu_asic_optical_china_chips",
+      "concept_ai_infrastructure",
+      "concept_ai_optical_network",
+      "entity_ubs",
+      "ubs_taiwan_tech_march_sales_supply_chain_upside"
+    ],
+    "33": [
+      "20260503_122659_bytedancedayusupernode",
+      "20260503_122659_h3c",
+      "20260503_122659_huaqinsupernoderevenuetarget",
+      "20260503_122659_tencentsupernodeplan2027",
+      "20260503_122659_ztemicroelectronics"
+    ],
+    "34": [
+      "changfei_changfei",
+      "changfei_g657a2_fiber",
+      "observations_in_china_telecom_fiber_optics",
+      "observations_in_china_telecom_heng_tong_optical",
+      "observations_in_china_telecom_yangtze_optical_fiber"
+    ],
+    "35": [
+      "concept_tpu_dual_vendor_forecast",
+      "product_google_tpu_v7_ironwood_2",
+      "product_google_tpu_v8_zebrafish_2",
+      "product_google_tpu_v9_pumafish"
+    ],
+    "36": [
+      "concept_china_ai_chip_self_sufficiency_2030_ms",
+      "concept_china_ten_dragons_ai_gpu",
+      "concept_inference_economics_tco",
+      "metric_cambricon_revenue_cagr_2025_2028"
+    ],
+    "37": [
+      "citi_taiwan_semi_tpu_evolution_guc",
+      "greater_china_semiconductors_chinas_ai_accelerators_ai_accelerators",
+      "greater_china_semiconductors_investor_presentation_ai_gpu_tpu",
+      "investor_presentation_greater_china_semis_ai_gpu_asic_cpu_optical"
+    ],
+    "38": [
+      "electronics_weekly_semi_equipment_market_semi_equipment",
+      "greater_china_semiconductors_investor_presentation_niche_memory",
+      "semiconductor_april_investment_strategy_analog_chips",
+      "semiconductor_april_investment_strategy_computing_chips"
+    ],
+    "39": [
+      "intel",
+      "memorandum_details_why_intel_surge_still_worth_buying_cadence",
+      "memorandum_details_why_intel_surge_still_worth_buying_spacex",
+      "memorandum_details_why_intel_surge_still_worth_buying_tesla"
+    ],
+    "40": [
+      "investor_presentation_greater_china_semis_focus_on_metric_cowoscapacityexpansion2026_2027",
+      "investor_presentation_greater_china_semis_focus_on_product_googletpuv7ironwood",
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_metric_cowoscapacity2026e"
+    ],
+    "41": [
+      "global_sustainability_energy_reality",
+      "global_sustainability_korea",
+      "global_sustainability_taiwan"
+    ],
+    "42": [
+      "concept_china_export_price_inflation_2026",
+      "concept_china_sino_eu_cybersecurity_conflict_2026",
+      "concept_china_strait_hormuz_energy_risk_2026"
+    ],
+    "43": [
+      "gs_april_fomc_2026_federal_reserve",
+      "gs_april_fomc_2026_iran_war",
+      "gs_april_fomc_2026_kevin_warsh"
+    ],
+    "44": [
+      "lithium_niobate_modulator",
+      "osic_2026_tfln",
+      "thin_film_lithium_niobate_tfln"
+    ],
+    "45": [
+      "20260503_090426_bogheliumextraction",
+      "20260503_090426_heliumsupply",
+      "20260503_090426_sinopec_changqing"
+    ],
+    "46": [
+      "ms_it_hardware_1_seagate",
+      "ms_it_hardware_2_western_digital",
+      "ms_it_hardware_3_hdd"
+    ],
+    "47": [
+      "bofa_1_bank_of_america",
+      "bofa_2_lycore",
+      "bofa_3_optical_transceiver"
+    ],
+    "48": [
+      "v1_pre_rebuild_concept_defencecapex",
+      "v1_pre_rebuild_concept_pce_inflation",
+      "v1_pre_rebuild_concept_stagflation"
+    ],
+    "49": [
+      "fedfundsrate_concept_fedfundsrate",
+      "iranwar_concept_iranwar",
+      "oilprice_concept_oilprice"
+    ],
+    "50": [
+      "packaging_equipment_research_centroid",
+      "xingsen_technology_centroid"
+    ],
+    "51": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_bt_substrate_price_hike_concept",
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_xinsen_bt_capacity_2026_metric"
+    ],
+    "52": [
+      "china_an_equity_ai_optimism",
+      "china_an_equity_labor_risks"
+    ],
+    "53": [
+      "20260426_gs_april_fomc",
+      "20260426_gs_fed_leadership_transition"
+    ],
+    "54": [
+      "20260420_ms_ai_agent",
+      "20260420_ms_global_implications"
+    ],
+    "55": [
+      "concept_ai_inference_semi_growth",
+      "concept_china_ai_10_dragons"
+    ],
+    "56": [
+      "concept_dwl_equipment_value_per_capacity",
+      "concept_xinjimo_dwl_market_position"
+    ],
+    "57": [
+      "concept_cambricon_cowos_l_ramp",
+      "concept_domestic_advanced_packaging_tier_ranking"
+    ],
+    "58": [
+      "metric_global_cloud_capex_2026",
+      "metric_global_semi_tam_2030"
+    ],
+    "59": [
+      "concept_bofa_china_barbell_2026_strategy",
+      "concept_wax_wane_indicator_bullish_2026apr"
+    ],
+    "60": [
+      "global_optical_module_market",
+      "latest_questions_from_investors_as_optical_breaks_out_optical_industry"
+    ],
+    "61": [
+      "inpsubstrate_analysis_axlt",
+      "inpsubstrate_analysis_sumitomo"
+    ],
+    "62": [
+      "2026_04_16_obsidian_industrial_oracle",
+      "2026_04_16_obsidian_industrial_sourcel"
+    ],
+    "63": [
+      "2026_04_17_obsidian_industrial_ai21_labs",
+      "2026_04_17_obsidian_industrial_nexus_ai_cloud"
+    ],
+    "64": [
+      "2026_04_26_obsidian_industrial_data_center_operator",
+      "2026_04_26_obsidian_industrial_green_electricity_direct_connection"
+    ],
+    "65": [
+      "osic_2026_laser_eml",
+      "osic_2026_laser_inp"
+    ],
+    "66": [
+      "electronic_industry_deepseek_v4_storage_devices_computing_demand_edge_ai_hardware_foxconn_industrial_internet",
+      "optical_transceiver_and_abf_substrate_potential_upsides_lift_po_to_cny340_buy_shennan_circuits"
+    ],
+    "67": [
+      "20260422_jpm_catl_super_tech_day_sets_new_industry_benchmarks_byd",
+      "20260422_jpm_catl_super_tech_day_sets_new_industry_benchmarks_catl"
+    ],
+    "68": [
+      "morganstanley_cailiao_jingxiangtong",
+      "morganstanley_cailiao_shandonghuangjin"
+    ],
+    "69": [
+      "morganstanley_cailiao_meitanyanjing",
+      "morganstanley_cailiao_tianqili"
+    ],
+    "70": [
+      "bandaotihangyehanchajiaguangpian_guangxunkeji",
+      "bandaotihangyehanchajiaguangpian_yuanjieheji"
+    ],
+    "71": [
+      "tech_snippets_reports_of_tsmc_accelerating_soic_capacity_positive_for_besi_besi",
+      "tech_snippets_reports_of_tsmc_accelerating_soic_capacity_soic"
+    ],
+    "72": [
+      "\u7eaa\u8981\u8be6\u60c5_\u7535\u5b50\u5e03\u4e13\u5bb620260426_ccl_manufacturers",
+      "\u7eaa\u8981\u8be6\u60c5_\u7535\u5b50\u5e03\u4e13\u5bb620260426_t_glass"
+    ],
+    "73": [
+      "2026_04_29_\u5e15\u7c73\u5c14\u7814\u7a76_\u897f\u90e8\u8ba1\u7b97\u673a_cpu\u63a2\u7a76_haiguang",
+      "2026_04_29_\u5e15\u7c73\u5c14\u7814\u7a76_\u897f\u90e8\u8ba1\u7b97\u673a_cpu\u63a2\u7a76_kunpeng"
+    ],
+    "74": [
+      "ys_1_\u82f1\u77fd\u667a\u80fdT_NI_K",
+      "ys_2_\u82f1\u77fd\u667a\u80fd"
+    ],
+    "75": [
+      "ms_it_hardware_4_apple",
+      "ms_it_hardware_5_pc"
+    ],
+    "76": [
+      "v1_pre_rebuild_concept_longcontexteconomics",
+      "v1_pre_rebuild_concept_longcontextwindow"
+    ],
+    "77": [
+      "energytrusteemanagement_energytrusteemanagement",
+      "greenpowerdirectconnection_greenpowerdirectconnection"
+    ],
+    "78": [
+      "nvidiaexportpolicy_nvidiaexportpolicy",
+      "product_nvidiah200_product_nvidiah200"
+    ],
+    "79": [
+      "unifiedbus_\u7075\u886220_all_optical_mesh",
+      "unifiedbus_\u7075\u886220_unifiedbus_lingqu_20"
+    ],
+    "80": [
+      "rubin_nvl72_liquid_cooling_technology",
+      "rubin_nvl72_rubin_nvl72"
+    ],
+    "81": [
+      "bytedance_bytedance",
+      "chinainternetsector_china_internet_sector"
+    ],
+    "82": [
+      "atlas_950_superpod_atlas_950_superpod",
+      "atlas_950_superpod_google_tpu_v7_superpod"
+    ],
+    "83": [
+      "25d_cpo_25d_cpo",
+      "3d_cpo_3d_cpo"
+    ],
+    "84": [
+      "run_daemon_py"
+    ],
+    "85": [
+      "requirements_txt"
+    ],
+    "86": [
+      "investor_presentation_greater_china_semis_focus_on_metric_aiwaferrevenuetam2026"
+    ],
+    "87": [
+      "investor_presentation_greater_china_semis_focus_on_metric_hbmconsumption2026e"
+    ],
+    "88": [
+      "investor_presentation_greater_china_semis_focus_on_metric_trainiumshipmentforecast"
+    ],
+    "89": [
+      "investor_presentation_greater_china_semis_focus_on_concept_semitesteqptmarketgrowth"
+    ],
+    "90": [
+      "investor_presentation_greater_china_semis_focus_on_metric_globalcloudcapex2026"
+    ],
+    "91": [
+      "investor_presentation_greater_china_semis_focus_on_metric_aisemitam2030"
+    ],
+    "92": [
+      "investor_presentation_greater_china_semis_focus_on_concept_aicannibalizenonaisemi"
+    ],
+    "93": [
+      "investor_presentation_greater_china_semis_focus_on_product_googletpuv7esunfish"
+    ],
+    "94": [
+      "investor_presentation_greater_china_semis_focus_on_concept_techinflationpriceelasticity"
+    ],
+    "95": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_metric_globalhbmdemand2026e"
+    ],
+    "96": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_metric_chinaaichiptam2030e"
+    ],
+    "97": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_product_googletpuv8sunfish"
+    ],
+    "98": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_product_googletpuv8tzebrafish"
+    ],
+    "99": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_product_googletpuv9pumafish"
+    ],
+    "100": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_product_googletpuv10humufish"
+    ],
+    "101": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_metric_handlermarketforecast2027e"
+    ],
+    "102": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_concept_chinaaichip10dragons"
+    ],
+    "103": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_concept_techinflationsemimargin"
+    ],
+    "104": [
+      "ms_ai_infra_cpu_gpu_asic_optical_china_chips_20260427_metric_cambriconrevenuecagr2025_2028e"
+    ],
+    "105": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_cowop_yield_race_concept"
+    ],
+    "106": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_xinsen_substrate_gross_margin_metric"
+    ],
+    "107": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_dijing_company"
+    ],
+    "108": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_abf_substrate_upstream_ccl_hike_concept"
+    ],
+    "109": [
+      "20260503_\u5e15\u7c73\u5c14\u7814\u7a76_ascend_950_abf_unit_price_metric"
+    ],
+    "110": [
+      "entity_citi_research"
+    ],
+    "111": [
+      "concept_ai_tech_inflation"
+    ],
+    "112": [
+      "concept_cowos_l_square_substrate_roadmap"
+    ],
+    "113": [
+      "concept_smic_huahong_foundry_cowos_supply"
+    ],
+    "114": [
+      "concept_cowos_capacity_expansion_2027"
+    ],
+    "115": [
+      "concept_ai_computing_wafer_consumption_2026"
+    ],
+    "116": [
+      "concept_china_services_sector_expansion_2030"
+    ],
+    "117": [
+      "concept_china_rrr_cut_market_impact"
+    ],
+    "118": [
+      "concept_china_electricity_consumption_q1_2026"
+    ],
+    "119": [
+      "concept_china_national_team_etf_reduction_1q2026"
+    ],
+    "120": [
+      "concept_china_apple_iphone_shipment_q1_2026"
+    ],
+    "121": [
+      "concept_china_green_energy_security_policy_2026"
+    ],
+    "122": [
+      "concept_china_internet_samr_ad_overhaul_2026"
+    ],
+    "123": [
+      "concept_china_youth_unemployment_rise_mar2026"
+    ],
+    "124": [
+      "concept_china_services_industry_target_2030"
+    ],
+    "125": [
+      "concept_hk_tokenized_fund_trading"
+    ],
+    "126": [
+      "concept_national_team_etf_reduction_1q2026"
+    ],
+    "127": [
+      "metric_bofa_ww_indicator_apr2026"
+    ],
+    "128": [
+      "concept_china_carbon_peak_neutrality_assessment_2026"
+    ],
+    "129": [
+      "concept_china_software_industry_15fyp_target"
+    ],
+    "130": [
+      "supernode_trends_huatech"
+    ],
+    "131": [
+      "supernode_trends_inspur"
+    ],
+    "132": [
+      "gs_deepseek_v4_alibaba_cloud"
+    ],
+    "133": [
+      "global_memory_tech_weekly_nand"
+    ],
+    "134": [
+      "us_semiconductors_and_hardware_weekly_investor_pul_applied_materials"
+    ],
+    "135": [
+      "us_semiconductors_and_hardware_weekly_investor_pul_lam_research"
+    ],
+    "136": [
+      "latest_questions_from_investors_as_optical_breaks__corning"
+    ],
+    "137": [
+      "latest_questions_from_investors_as_optical_breaks__coherent"
+    ],
+    "138": [
+      "latest_questions_from_investors_as_optical_breaks__ciena"
+    ],
+    "139": [
+      "osic_2026_laser_semiconductor_laser"
+    ],
+    "140": [
+      "osic_2026_laser_dfb"
+    ],
+    "141": [
+      "osic_2026_laser_vcsel"
+    ],
+    "142": [
+      "2026_04_19_pamir_research_golden_gem_chemicals_ai_materials_investment_opportunities_m8"
+    ],
+    "143": [
+      "20260420_ms_greater_china_semis_focus_on_ai_related_semis_gpu_asic_cpu_and_optical_chips_ase"
+    ],
+    "144": [
+      "electronic_industry_deepseek_v4_storage_devices_computing_demand_edge_ai_hardware_wus_printed_circuit_board"
+    ],
+    "145": [
+      "chaojiedian_huaqin"
+    ],
+    "146": [
+      "2026_04_26_\u5e15\u7c73\u5c14\u7814\u7a76_msap\u4e13\u5bb6\u4f1a\u8bae_pcb"
+    ],
+    "147": [
+      "2026_04_21_\u5e15\u7c73\u5c14\u7814\u7a76\u4e13\u5bb6\u4f1a\u5317\u7f8egpu\u548c\u6a21\u578b\u66f4\u65b0cerebrastpulif_s\u5927\u5ba2\u6237\u8fdb\u5c55\u7b49_openai"
+    ],
+    "148": [
+      "company_haiguang"
+    ],
+    "149": [
+      "company_biren"
+    ],
+    "150": [
+      "company_moorethreads"
+    ],
+    "151": [
+      "company_kunlunxin"
+    ],
+    "152": [
+      "company_suiyuan"
+    ],
+    "153": [
+      "concept_chinandrctwoimportantprojects2026"
+    ],
+    "154": [
+      "concept_chinawmpsaumdecline2026q1"
+    ],
+    "155": [
+      "concept_bofawaxwaneindicator"
+    ],
+    "156": [
+      "company_popmart"
+    ],
+    "157": [
+      "20260503_224546_m7ccl"
+    ],
+    "158": [
+      "20260503_224546_m10material_techroute"
+    ],
+    "159": [
+      "20260503_224546_eglassthnfabricshortage"
+    ],
+    "160": [
+      "20260503_122659_supernode64cardbom"
+    ],
+    "161": [
+      "20260503_122659_xizhi"
+    ],
+    "162": [
+      "20260503_090426_huategas"
+    ],
+    "163": [
+      "20260503_122659_inspur"
+    ],
+    "164": [
+      "pa_1_tn_ik"
+    ],
+    "165": [
+      "pa_2_labubu"
+    ],
+    "166": [
+      "pa_3_skull_panda"
+    ],
+    "167": [
+      "pa_4_molly"
+    ],
+    "168": [
+      "pa_5_hirono"
+    ],
+    "169": [
+      "pa_6_dimoo"
+    ],
+    "170": [
+      "cpo_4_tsmc_optical"
+    ],
+    "171": [
+      "cpo_5_cpo_system"
+    ],
+    "172": [
+      "cn_gpu_4_\u667a\u8c31ai"
+    ],
+    "173": [
+      "jp_1_eu_oil_gas"
+    ],
+    "174": [
+      "jp_2_shell"
+    ],
+    "175": [
+      "jp_3_total_energies"
+    ],
+    "176": [
+      "jp_4_eni"
+    ],
+    "177": [
+      "jp_5_galp"
+    ],
+    "178": [
+      "jp_7_ip_intl_paper"
+    ],
+    "179": [
+      "ocs_2_lc"
+    ],
+    "180": [
+      "ocs_3_mechanical"
+    ],
+    "181": [
+      "popmart_popmart"
+    ],
+    "182": [
+      "taiwantechpullindemand2026q1_taiwantechpullindemand2026q1"
+    ],
+    "183": [
+      "nearlinehddtightness_nearlinehddtightness"
+    ],
+    "184": [
+      "metric_agenticaidramdemand2030e_metric_agenticaidramdemand2030e"
+    ],
+    "185": [
+      "earningsfloor_concept_earningsfloor"
+    ]
+  },
+  "cohesion": {
+    "0": 0.05,
+    "1": 0.05,
+    "2": 0.07,
+    "3": 0.05,
+    "4": 0.07,
+    "5": 0.07,
+    "6": 0.08,
+    "7": 0.14,
+    "8": 0.09,
+    "9": 0.1,
+    "10": 0.1,
+    "11": 0.12,
+    "12": 0.21,
+    "13": 0.13,
+    "14": 0.19,
+    "15": 0.14,
+    "16": 0.18,
+    "17": 0.17,
+    "18": 0.27,
+    "19": 0.18,
+    "20": 0.29,
+    "21": 0.22,
+    "22": 0.36,
+    "23": 0.22,
+    "24": 0.22,
+    "25": 0.25,
+    "26": 0.25,
+    "27": 0.25,
+    "28": 0.29,
+    "29": 0.29,
+    "30": 0.29,
+    "31": 0.47,
+    "32": 0.33,
+    "33": 0.4,
+    "34": 0.4,
+    "35": 0.5,
+    "36": 0.5,
+    "37": 0.5,
+    "38": 0.5,
+    "39": 0.5,
+    "40": 0.67,
+    "41": 0.67,
+    "42": 0.67,
+    "43": 0.67,
+    "44": 0.67,
+    "45": 0.67,
+    "46": 0.67,
+    "47": 0.67,
+    "48": 0.67,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0,
+    "115": 1.0,
+    "116": 1.0,
+    "117": 1.0,
+    "118": 1.0,
+    "119": 1.0,
+    "120": 1.0,
+    "121": 1.0,
+    "122": 1.0,
+    "123": 1.0,
+    "124": 1.0,
+    "125": 1.0,
+    "126": 1.0,
+    "127": 1.0,
+    "128": 1.0,
+    "129": 1.0,
+    "130": 1.0,
+    "131": 1.0,
+    "132": 1.0,
+    "133": 1.0,
+    "134": 1.0,
+    "135": 1.0,
+    "136": 1.0,
+    "137": 1.0,
+    "138": 1.0,
+    "139": 1.0,
+    "140": 1.0,
+    "141": 1.0,
+    "142": 1.0,
+    "143": 1.0,
+    "144": 1.0,
+    "145": 1.0,
+    "146": 1.0,
+    "147": 1.0,
+    "148": 1.0,
+    "149": 1.0,
+    "150": 1.0,
+    "151": 1.0,
+    "152": 1.0,
+    "153": 1.0,
+    "154": 1.0,
+    "155": 1.0,
+    "156": 1.0,
+    "157": 1.0,
+    "158": 1.0,
+    "159": 1.0,
+    "160": 1.0,
+    "161": 1.0,
+    "162": 1.0,
+    "163": 1.0,
+    "164": 1.0,
+    "165": 1.0,
+    "166": 1.0,
+    "167": 1.0,
+    "168": 1.0,
+    "169": 1.0,
+    "170": 1.0,
+    "171": 1.0,
+    "172": 1.0,
+    "173": 1.0,
+    "174": 1.0,
+    "175": 1.0,
+    "176": 1.0,
+    "177": 1.0,
+    "178": 1.0,
+    "179": 1.0,
+    "180": 1.0,
+    "181": 1.0,
+    "182": 1.0,
+    "183": 1.0,
+    "184": 1.0,
+    "185": 1.0
+  },
+  "gods": [
+    {
+      "id": "kb_main",
+      "label": "main()",
+      "degree": 30
+    },
+    {
+      "id": "jp_6_tsmc",
+      "label": "TSMC",
+      "degree": 24
+    },
+    {
+      "id": "20260420_ms_rise_of_the_ai_agent",
+      "label": "MS-Rise of the AI Agent - Global Implications",
+      "degree": 12
+    },
+    {
+      "id": "concept_aichipvaluechaindecoupling",
+      "label": "\u4e2d\u7f8eAI\u4ef7\u503c\u94fe\u8131\u94a9\u52a0\u901f\uff082026\u5e74\uff09",
+      "degree": 12
+    },
+    {
+      "id": "product_deepseekv4",
+      "label": "DeepSeek V4",
+      "degree": 11
+    },
+    {
+      "id": "opt_5_1_6_t\u5149\u6a21\u5757",
+      "label": "1.6T\u5149\u6a21\u5757",
+      "degree": 11
+    },
+    {
+      "id": "ocs_1_mems",
+      "label": "MEMS OCS \u65b9\u6848",
+      "degree": 11
+    },
+    {
+      "id": "broadcom_broadcom",
+      "label": "\u535a\u901a",
+      "degree": 10
+    },
+    {
+      "id": "emib_t_emib_t",
+      "label": "Intel EMIB-T\u5c01\u88c5\u6280\u672f",
+      "degree": 10
+    },
+    {
+      "id": "kg_ingest_extract_from_file",
+      "label": "extract_from_file()",
+      "degree": 9
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Optical Module",
+      "target": "Optical Transceiver 800G/1.6T",
+      "source_files": [
+        "raw/Industrial Analysis pdfs/Innolight_(300308.SZ)_Optical_module_speed_migration_continues_with_mix_upgrade_driving_GM_expansion;_TP_up_to_Rmb1,187;_Buy.pdf",
+        "raw/Obsidian Industrial/\u5168\u7403_\u5149\u6a21\u5757_\u5c062026-28\u5e74800G\u53ca\u4ee5\u4e0a\u5e02\u573a\u51fa\u8d27\u91cf\u9884\u6d4b\u4e0a\u8c0314%_29%_33%\uff1bAI\u5c06\u63a8\u52a8\u672a\u6765\u589e\u957f_(\u6458\u8981).md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper \u2194 doc); bridges separate communities; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "TSMC",
+      "target": "AI Servers",
+      "source_files": [
+        "raw/Obsidian Industrial/J P _Morgan_International_FTM_2_Apr_26_EU_Oil__Gas.md",
+        "raw/Industrial Analysis pdfs/Asia_Technology_Updating_supply_demand_heatmap_for_semis,_components,_and_materials;_tightness_intensified_YTD_for_AI_servers.pdf"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper \u2194 doc); semantically similar concepts with no structural link; peripheral node `AI Servers` unexpectedly reaches hub `TSMC`"
+    },
+    {
+      "source": "Taiwan Semiconductors",
+      "target": "TSMC",
+      "source_files": [
+        "raw/Industrial Analysis pdfs/20260425-\u9ad8\u76db\uff1a\u53f0\u6e7e\u5468\u5ea6\u524d\u77bb GS-Taiwan Weekly Kickstart.pdf",
+        "raw/Obsidian Industrial/J P _Morgan_International_FTM_2_Apr_26_EU_Oil__Gas.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper \u2194 doc); semantically similar concepts with no structural link; peripheral node `Taiwan Semiconductors` unexpectedly reaches hub `TSMC`"
+    },
+    {
+      "source": "China Industrial Chains",
+      "target": "TSMC",
+      "source_files": [
+        "raw/Industrial Analysis pdfs/\u91cd\u8981\u4ea7\u4e1a\u94fe\u53ca\u4ee3\u8868\u516c\u53f8\u6574\u7406.pdf",
+        "raw/Obsidian Industrial/J P _Morgan_International_FTM_2_Apr_26_EU_Oil__Gas.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper \u2194 doc); semantically similar concepts with no structural link; peripheral node `China Industrial Chains` unexpectedly reaches hub `TSMC`"
+    },
+    {
+      "source": "MEMS Optical Switch",
+      "target": "MEMS OCS \u65b9\u6848",
+      "source_files": [
+        "raw/Industrial Analysis pdfs/Technology_-_Asia_Pacific_Optical_transceiver_expert_call,_20_Apr_430pm_HKT.pdf",
+        "raw/Obsidian Industrial/OSIC 2026-OCS.md"
+      ],
+      "confidence": "AMBIGUOUS",
+      "relation": "semantically_similar_to",
+      "why": "ambiguous connection - not explicitly stated in source; crosses file types (paper \u2194 doc); semantically similar concepts with no structural link"
+    }
+  ],
+  "tokens": {
+    "input": 2140986,
+    "output": 213159
+  }
+}

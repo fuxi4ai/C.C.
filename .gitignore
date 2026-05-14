@@ -16,3 +16,8 @@ graphify/*/cache/
 *.swo
 *~
 .tmp/
+
+# 本地 env / 密钥
+.env
+.env.*
+*.key

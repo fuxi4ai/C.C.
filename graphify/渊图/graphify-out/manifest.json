@@ -1,0 +1,2446 @@
+{
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/dedup_check.py": {
+    "mtime": 1777988980.0084307,
+    "hash": "456c008aa358c989ffd6bf2263b1952a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/run_daemon.py": {
+    "mtime": 1777816758.5384412,
+    "hash": "8f7fa31006e4bc1ad1daf00289cdf38b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/tushare_ingest.py": {
+    "mtime": 1777600566.9365714,
+    "hash": "48ce29b9ed4c7f3d4197f912d079b72a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/kg_merge.py": {
+    "mtime": 1777768407.0024626,
+    "hash": "7b94c1f7f4cd7f6df8aea620f9ac38f2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/kg_rel_classify.py": {
+    "mtime": 1777367341.2748117,
+    "hash": "7c5e6b2315409e7009aafeeef4822a83"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki_autogen.py": {
+    "mtime": 1777913318.345769,
+    "hash": "d68d643c805f4b0cdf835a3448f78474"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/kg_ingest.py": {
+    "mtime": 1777988980.0112884,
+    "hash": "baa7eadd7bc4844143fef44efee10fa3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/kb.py": {
+    "mtime": 1778572493.610113,
+    "hash": "e5e0e6c01240392b62fd8a5ce7f47a86"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/\u6e0a\u56fe_GOTCHAS.md": {
+    "mtime": 1777988980.0136056,
+    "hash": "6a94da9f9f8a8a1ec27cfb0fedc2a90b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/\u6e0a\u56fe_PRD.md": {
+    "mtime": 1777988980.004797,
+    "hash": "b199beea9ac5098431e8bcc2a3507a4d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/\u6e0a\u56fe_\u5de5\u4f5c\u6d41.md": {
+    "mtime": 1777988980.002487,
+    "hash": "6e826425a9484bf592ec7f1be787d3a4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/requirements.txt": {
+    "mtime": 1777369204.121056,
+    "hash": "a8e8eb805dd6d75334983ed7b98f3493"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/CHANGELOG.md": {
+    "mtime": 1777914735.6845298,
+    "hash": "a272e22f6fdcc267260885870352d5e7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/TODO.md": {
+    "mtime": 1777914711.2405553,
+    "hash": "e2f26dfd2c61ac7eead3991257833f50"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/README.md": {
+    "mtime": 1777914678.101143,
+    "hash": "e976a776f4f890ff99dcb94394dc6bea"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/INDEX.md": {
+    "mtime": 1777988979.9962406,
+    "hash": "792fd765771d6133f0050a98344724f0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/\u6e0a\u56fe_\u7d22\u5f15.md": {
+    "mtime": 1777988980.0067565,
+    "hash": "2e86f037960fc69a4f9ab1805a00dc35"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/CLAUDE.md": {
+    "mtime": 1778736646.5806708,
+    "hash": "1d35525dd4e4ecb46f3d4dda24ee411f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.18-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e1c\u65b9\u7535\u5b50-AI \u8d85\u8282\u70b9\u4e13\u5bb6\u7cfb\u5217\u4f1a\u8bae\uff08\u4e00\uff09\u56fd\u4ea7\u8d85\u8282\u70b9\u8fce\u653e\u91cf\u5143\u5e74_20260502_224400.txt": {
+    "mtime": 1777733040.7594523,
+    "hash": "898fd5e0a2b18ad08a9292551aead3f5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.19-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u91d1\u5316\u5de5-AI\u6750\u6599\u5e93\u6295\u8d44\u673a\u4f1a\u63a2\u8ba8_20260502_224920.txt": {
+    "mtime": 1777733360.9518857,
+    "hash": "cceafb5b9b29e4c712ce0d4783965bdb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260504_001818.txt": {
+    "mtime": 1777825098.6386213,
+    "hash": "d43efafe83d277ea551e7bd931e37649"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/TSMC_CoWoS_and_advanced_back-end_updates 3539d8f3520d80fb9a7_20260503_234934.txt": {
+    "mtime": 1777823374.243397,
+    "hash": "0b59f93d7e8414170471eef77518e177"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Greater_China_Semiconductors 3539d8f35_20260503_124927.txt": {
+    "mtime": 1777783767.7320778,
+    "hash": "d22196149e3ffb126cdabd705f2b8dff"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260504_002041.txt": {
+    "mtime": 1777825241.5130823,
+    "hash": "82b8bc3b6934de86066831dce71da4a0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260504_005103.txt": {
+    "mtime": 1777827063.1189516,
+    "hash": "ea1a7d92dac66c06a44fe41c503ad3e4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/TSMC_CoWoS_and_advanced_back-end_updates 3539d8f3520d80fb9a7_20260504_002335.txt": {
+    "mtime": 1777825415.529412,
+    "hash": "0ad8964dc842a24905a1b632afd5db5a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/20260420-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u534a\u5bfc\u4f53\uff1a\u805a\u7126AI\u76f8\u5173\u534a\u5bfc\u4f53\u2014\u2014GPU\u3001ASIC\u3001CPU\u548c\u5149\u82af\u7247 MS- 3539d8f35_20260503_233048.txt": {
+    "mtime": 1777822248.060961,
+    "hash": "6b5ea7083f57b62d855e5b493f8dcbae"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Build_for_future_AI_infrastr 3539d8f35_20260503_234134.txt": {
+    "mtime": 1777822894.1400785,
+    "hash": "486438f1a06806d39c1b734575452b47"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260503_233456.txt": {
+    "mtime": 1777822496.7180202,
+    "hash": "d08d18952d2bc58be99663d481f000e1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.19-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u91d1\u5316\u5de5-AI\u6750\u6599\u5e93\u6295\u8d44\u673a\u4f1a\u63a2\u8ba8_20260503_224546.txt": {
+    "mtime": 1777819546.48334,
+    "hash": "9d260b922d2fddb67a28c2da27d93423"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.18-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e1c\u65b9\u7535\u5b50-AI \u8d85\u8282\u70b9\u4e13\u5bb6\u7cfb\u5217\u4f1a\u8bae\uff08\u4e00\uff09\u56fd\u4ea7\u8d85\u8282\u70b9\u8fce\u653e\u91cf\u5143\u5e74_20260503_122659.txt": {
+    "mtime": 1777782419.4988236,
+    "hash": "30feeceeaf89e8d6d4d2051780d8ba7b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e1c\u5434\u73af\u4fdd\u516c\u7528-\u91cd\u6c34\u6c26\u6c14\u4e13\u5bb6\u4ea4\u6d41_20260503_090426.txt": {
+    "mtime": 1777770266.938255,
+    "hash": "2306e5662a7f179c7a56c0263ad7763c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260503_225330.txt": {
+    "mtime": 1777820010.67546,
+    "hash": "a7ca83681a8d5821503e4dff78bd62e4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260503_124321.txt": {
+    "mtime": 1777783401.8148935,
+    "hash": "39e95e2bb41eb432ce02ec4b373a05cd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Greater_China_Semiconductors 3539d8f35_20260503_102943.txt": {
+    "mtime": 1777775383.7436416,
+    "hash": "1eaa26b502943c8455825ee75f41da3e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/MS_AI_Infra_CPU_GPU_ASIC_Optical_China_chips_20260 3539d8f35_20260503_105235.txt": {
+    "mtime": 1777776755.0413976,
+    "hash": "b7ece3408e0127856a65e296962e67c6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/TSMC_CoWoS_and_advanced_back-end_updates 3539d8f3520d80fb9a7_20260504_004119.txt": {
+    "mtime": 1777826479.533122,
+    "hash": "e0f315bfc41a9a4118b4ffc5d333473a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Build_for_future_AI_infrastr 3539d8f35_20260503_102702.txt": {
+    "mtime": 1777775222.7168741,
+    "hash": "453f0ff0d674eadb6e4e81ccd2bd0bc4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Greater_China_Semis_Focus_on 3539d8f35_20260503_230204.txt": {
+    "mtime": 1777820524.6200876,
+    "hash": "849f9e1f9716ead402deac4c5796ab4d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/MS_AI_Infra_CPU_GPU_ASIC_Optical_China_chips_20260 3539d8f35_20260503_125509.txt": {
+    "mtime": 1777784109.9805222,
+    "hash": "4e5225fb25043d4c64584e0587cbaaed"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.30-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u8f7d\u677f\u8fce\u6765\u6da8\u4ef7\u6f6e\uff0c\u5174\u68ee\u79d1\u6280\u8fd1\u51b5\u8ddf\u8e2a_20260503_123529.txt": {
+    "mtime": 1777782929.0024939,
+    "hash": "34c6811e0fd8325b3f62a4b5e98343e8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.19-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u91d1\u5316\u5de5-AI\u6750\u6599\u5e93\u6295\u8d44\u673a\u4f1a\u63a2\u8ba8_20260503_123001.txt": {
+    "mtime": 1777782601.9416308,
+    "hash": "5114b9adff80f7b0bd9636aded26981c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/TSMC_CoWoS_and_advanced_back-end_updates 3539d8f3520d80fb9a7_20260503_111811.txt": {
+    "mtime": 1777778291.944283,
+    "hash": "f6181fe22a22f89b1aee5b5c294c2f41"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/\u7eaa\u8981\u8be6\u60c5-\u4e3a\u4f55\u82f1\u7279\u5c14\u66b4\u6da8\u540e\u4ecd\u503c\u5f97\u4e70\u5165 3539d8f3520d80cba5c3dc50e169439b_20260503_115752.txt": {
+    "mtime": 1777780672.4158728,
+    "hash": "c4c621e5fb4debdfb9dc2ad3e50dac6e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/TSMC_CoWoS_and_advanced_back-end_updates 3539d8f3520d80fb9a7_20260504_001319.txt": {
+    "mtime": 1777824799.1286516,
+    "hash": "f2ac882bc49865678cf1800bc731f33f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.19-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u91d1\u5316\u5de5-AI\u6750\u6599\u5e93\u6295\u8d44\u673a\u4f1a\u63a2\u8ba8_20260503_084054.txt": {
+    "mtime": 1777768854.1092527,
+    "hash": "a37b451e22d3bb74f08ced6a35640e5d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.19-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u91d1\u5316\u5de5-AI\u6750\u6599\u5e93\u6295\u8d44\u673a\u4f1a\u63a2\u8ba8\uff08\u4e0a\uff09_20260503_232509.txt": {
+    "mtime": 1777821909.7191978,
+    "hash": "9acb0b3e2b66ffc42b4380cd58c4a6a3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/TSMC_CoWoS_and_advanced_back-end_updates 3539d8f3520d80fb9a7_20260503_125803.txt": {
+    "mtime": 1777784283.4559689,
+    "hash": "0d2de58b70439a19f0a39d2259e957e9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Taiwan_Tech_March_sales_Supply_chain_upside_driven 3539d8f35_20260503_112354.txt": {
+    "mtime": 1777778634.6967406,
+    "hash": "be0df884ea2ce8dbb97d043f2bc77432"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/20260420-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u534a\u5bfc\u4f53\uff1a\u805a\u7126AI\u76f8\u5173\u534a\u5bfc\u4f53\u2014\u2014GPU\u3001ASIC\u3001CPU\u548c\u5149\u82af\u7247 MS- 3539d8f35_20260503_094023.txt": {
+    "mtime": 1777772423.6243825,
+    "hash": "8b98a132cec22edef62c782c41ad742c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Build_for_future_AI_infrastr 3539d8f35_20260503_234002.txt": {
+    "mtime": 1777822802.0281565,
+    "hash": "e39a44d1665f4d25b35f981e1c9b106c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.30-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u8f7d\u677f\u8fce\u6765\u6da8\u4ef7\u6f6e\uff0c\u5174\u68ee\u79d1\u6280\u8fd1\u51b5\u8ddf\u8e2a_20260503_092303.txt": {
+    "mtime": 1777771383.7151048,
+    "hash": "f837c73ea9e1e16324d0001abea06809"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/20260420-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u534a\u5bfc\u4f53\uff1a\u805a\u7126AI\u76f8\u5173\u534a\u5bfc\u4f53\u2014\u2014GPU\u3001ASIC\u3001CPU\u548c\u5149\u82af\u7247 MS- 3539d8f35_20260503_225121.txt": {
+    "mtime": 1777819881.4300332,
+    "hash": "300f850b0cad9dd356a9322fca69440d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/TSMC_CoWoS_and_advanced_back-end_updates 3539d8f3520d80fb9a7_20260503_230731.txt": {
+    "mtime": 1777820851.8316424,
+    "hash": "214b53ea6f253449c75bfcba0fc1bf21"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/\u5934\u90e8\u5c01\u88c5\u8bbe\u5907\u5382\u5546\u8fd1\u671f\u4e1a\u52a1\u8c03\u7814 3539d8f3520d8031b07fe13a2f44b23a_20260503_130356.txt": {
+    "mtime": 1777784636.0570557,
+    "hash": "3bfdf1502dbe9ed90203212587b112f0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260503_100229.txt": {
+    "mtime": 1777773749.7898831,
+    "hash": "d01109c60fbf865243df78d97068d340"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Asia-Pacific_Technology_AI_Supply_Chain_Addressing 3539d8f35_20260503_095330.txt": {
+    "mtime": 1777773210.237543,
+    "hash": "f767fcd51828f2224e0650dc764d5b08"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Build_for_future_AI_infrastr 3539d8f35_20260503_225631.txt": {
+    "mtime": 1777820191.8615515,
+    "hash": "52901f694beb26dbcd1f215c957f13bb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/20260420-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u534a\u5bfc\u4f53\uff1a\u805a\u7126AI\u76f8\u5173\u534a\u5bfc\u4f53\u2014\u2014GPU\u3001ASIC\u3001CPU\u548c\u5149\u82af\u7247 MS- 3539d8f35_20260503_123822.txt": {
+    "mtime": 1777783102.3387203,
+    "hash": "f2116586438c4e06dc497836b0605c97"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/2026.04.18-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e1c\u65b9\u7535\u5b50-AI \u8d85\u8282\u70b9\u4e13\u5bb6\u7cfb\u5217\u4f1a\u8bae\uff08\u4e00\uff09\u56fd\u4ea7\u8d85\u8282\u70b9\u8fce\u653e\u91cf\u5143\u5e74_20260503_083738.txt": {
+    "mtime": 1777768658.5792859,
+    "hash": "d082b9a377ec6de700dcbb61fe27f939"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Greater_China_Semis_Focus_on 3539d8f35_20260503_125221.txt": {
+    "mtime": 1777783941.1569638,
+    "hash": "cd46fc1b7d829a371e38a23b87362b98"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/\u5934\u90e8\u5c01\u88c5\u8bbe\u5907\u5382\u5546\u8fd1\u671f\u4e1a\u52a1\u8c03\u7814 3539d8f3520d8031b07fe13a2f44b23a_20260503_114732.txt": {
+    "mtime": 1777780052.65101,
+    "hash": "9a961e4b50b469484a731d627ab9c214"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Build_for_future_AI_infrastr 3539d8f35_20260503_124625.txt": {
+    "mtime": 1777783585.189249,
+    "hash": "f92f09abaae923150653e4b4a0868802"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260504_000507.txt": {
+    "mtime": 1777824307.9009666,
+    "hash": "0389240b1b074c1504433a4995afdb22"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr 3539d8f35_20260504_003554.txt": {
+    "mtime": 1777826154.9249227,
+    "hash": "11a855b611e01d6e39d8ae0f91988963"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/mapping/failed/Investor_Presentation_Greater_China_Semis_Focus_on 3539d8f35_20260503_103227.txt": {
+    "mtime": 1777775547.428633,
+    "hash": "84a27100b7196685375e7494b30f9643"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/copos.md": {
+    "mtime": 1777784754.0599115,
+    "hash": "ffc140e18831ea7f03c847fe26489e12"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/mlccsupplytightness.md": {
+    "mtime": 1777784754.063343,
+    "hash": "572edca3ccf28590e4a12c6a277514e4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_nvidiafeynman.md": {
+    "mtime": 1777784754.063564,
+    "hash": "1d4428f09d4e4746143dbf0e60c703b8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/siphocs.md": {
+    "mtime": 1777828562.0617652,
+    "hash": "31978c5f4a3313076bdefd02f53d115c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/lianxun.md": {
+    "mtime": 1777784754.0681865,
+    "hash": "7a247f6a05a3902da9fd28497f3b02ac"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_bytedanceselfdesignchip.md": {
+    "mtime": 1777784754.0625842,
+    "hash": "f29fa02b99ba990fe1fcf8c4e425222b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_3dot2topticalmodule.md": {
+    "mtime": 1777784754.0571187,
+    "hash": "44cefc175d95cc7540553dc392553ee6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/ocsdeploymentbarrier.md": {
+    "mtime": 1777828562.0611596,
+    "hash": "aafb701a21fd95110ba11b735ed0f196"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/sumitomo_inp.md": {
+    "mtime": 1777828562.0614347,
+    "hash": "4529fc22b441132d67851ea4cd667cb4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/xinsen.md": {
+    "mtime": 1777784754.0656173,
+    "hash": "9a6ccbeb127c378dae51bc45750ee671"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/liquidcrystalocs.md": {
+    "mtime": 1777828562.061685,
+    "hash": "31fdb35c4f729feef0696941645f726c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/n3process.md": {
+    "mtime": 1777784754.06095,
+    "hash": "50e3bafba9078a0266b5d36d8ca24a42"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/lnmodulator.md": {
+    "mtime": 1777784754.0583582,
+    "hash": "9d8087a46d859a767fbd9d6f2657d979"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/popmartoverseasexpansion.md": {
+    "mtime": 1777828562.0612574,
+    "hash": "1f4d786941aa5a36b9be0e47b319e3c4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/changfei.md": {
+    "mtime": 1777784754.0645754,
+    "hash": "334068cd71eb06383121ac650dfb3c08"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_tpuv8.md": {
+    "mtime": 1777784754.0584753,
+    "hash": "0e866fbed97426cb6bcf3c9de05f32af"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/bytedance.md": {
+    "mtime": 1777784754.0578966,
+    "hash": "3d492501c19c722af7966b03e0ae25a7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/maruwa.md": {
+    "mtime": 1777784754.0638626,
+    "hash": "8c066cba075b4636d2a7a7d8c3c6a7ce"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/cpoadoption.md": {
+    "mtime": 1777784754.0618913,
+    "hash": "57ce83076dcfe8c6f0c63a96c3c6a219"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/shengyielectronics.md": {
+    "mtime": 1777784754.0642197,
+    "hash": "40dc340e0468ec3bc6adaa95bb556782"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/mediatek.md": {
+    "mtime": 1777784754.055533,
+    "hash": "8140bc7323b2dcea862eeb96c8809a34"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/xpufranchisedurability.md": {
+    "mtime": 1777784754.061816,
+    "hash": "1b29123767b89deda95dde422d54231f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/switchtrayscaleup.md": {
+    "mtime": 1777784754.0645068,
+    "hash": "1cce5b339478d803f98b5af7dd8cfa47"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_lpu.md": {
+    "mtime": 1777784754.0623658,
+    "hash": "d9e25dd28397f93abd4471ece5bfb3e1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/tencent.md": {
+    "mtime": 1777784754.0560384,
+    "hash": "35e498bee4ae09cfd8f52ba377d969dc"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_midplane.md": {
+    "mtime": 1777784754.0600522,
+    "hash": "51806e997197f7255ab0e1f0f8f76022"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/marvell.md": {
+    "mtime": 1777784754.0578213,
+    "hash": "43b2000e8ec3cd168667a4fd66957cda"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/mediatektpuv8ttrainingramp.md": {
+    "mtime": 1777784754.06798,
+    "hash": "9977092758c3c6feed844dc9efafbc46"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/huaqin.md": {
+    "mtime": 1777784754.0650806,
+    "hash": "db63f0cd06c05ce26c0225d16594578b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/memorysupplydeficit2026.md": {
+    "mtime": 1777784754.0588467,
+    "hash": "42e8a6955032df5df6992ecce2e5becf"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/tongmei.md": {
+    "mtime": 1777828562.061517,
+    "hash": "e123112c25f7b009f714df43fd87371b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/inp_supplydemandgap.md": {
+    "mtime": 1777784754.0628018,
+    "hash": "48febb7ee854f0566fec4700d1706084"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_switch512t.md": {
+    "mtime": 1777784754.056703,
+    "hash": "c2f0c9e3e864f81ddba6182efbc63000"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/scaleoutfabric.md": {
+    "mtime": 1777784754.0586705,
+    "hash": "3fdc2f7abb6972bdf96636c8cb89942a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/anthropic.md": {
+    "mtime": 1777784754.060187,
+    "hash": "7770a4fe72c9ff737e811191a71974c7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/iluvatarcorex.md": {
+    "mtime": 1777784754.0568628,
+    "hash": "0a196a86bd9dfd2cb0c9eea4472b513a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/tsmcreticlesizelimit.md": {
+    "mtime": 1777784754.067209,
+    "hash": "0a3ab5e7116fbfb9bef859c1dc4ba4a1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/siliconphotonics_cw.md": {
+    "mtime": 1777784754.062881,
+    "hash": "035ae6b84d5e972999962a11975553ad"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/emib.md": {
+    "mtime": 1777784754.0651464,
+    "hash": "f6ce8d1c52c797e2e3f8c07c1e63d243"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/cpo.md": {
+    "mtime": 1777784754.0612674,
+    "hash": "d93f4d647ea4d4bcdea9c197418c3b0e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/iranwareconomicimpact.md": {
+    "mtime": 1777784754.0611246,
+    "hash": "606de076e83f231c38b2d9bb3707966d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/3dcpoarchitecture.md": {
+    "mtime": 1777784754.0621195,
+    "hash": "e99b1eaf047d98f5df589c712d002732"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/bmcchip.md": {
+    "mtime": 1777784754.066297,
+    "hash": "22ac5499f58926524b903da1e65978ec"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/pengding.md": {
+    "mtime": 1777784754.065554,
+    "hash": "fb5a2351feb1645b40b107632b2c7189"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/fabpoweravailabilityrisk.md": {
+    "mtime": 1777784754.0615098,
+    "hash": "90702c1146bc968958b83d270c6f3498"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/haiguang.md": {
+    "mtime": 1777784754.0627294,
+    "hash": "c6c9e1fefee2c27dbad1e5638e6a4a92"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/asicserveropticaldemand.md": {
+    "mtime": 1777784754.0614324,
+    "hash": "ff274dfc823b966ae903addf5aa02e27"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/lngsupplychainriskai.md": {
+    "mtime": 1777784754.0669353,
+    "hash": "cc31094929db2b6f41d148b936fcd595"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/opticalmodulemixupgrade.md": {
+    "mtime": 1777784754.0617485,
+    "hash": "d20e51a1ede5ebbe405305a06da92cae"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/m8m9advancedmaterial.md": {
+    "mtime": 1777784754.0677648,
+    "hash": "ecab8db348558be25612820b9d398707"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_googletpuv9_pumafish.md": {
+    "mtime": 1777784754.067075,
+    "hash": "2f17dc1baf6818df6fc239124b54a6f0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_hwj690.md": {
+    "mtime": 1777784754.0592182,
+    "hash": "ba99ec1f07e7f5ac56f093a268e90267"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/abfsubstratesupplytightness.md": {
+    "mtime": 1777784754.0666962,
+    "hash": "92f6d12e65520c6b1ce6d2f819dd9f7d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_nvidiagb300.md": {
+    "mtime": 1777784754.0572608,
+    "hash": "f776011a76792dbfd22fe4db4d351d1d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_slpboard.md": {
+    "mtime": 1777784754.059536,
+    "hash": "9bcb8ff1a768918db579ae100d0341e5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_deepseekv4.md": {
+    "mtime": 1777784754.0557625,
+    "hash": "c0c5982a09bbd12fe8446e675e6438aa"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/cambricon.md": {
+    "mtime": 1777784754.0607326,
+    "hash": "3f8a4855cff5223811ec733d51ec9b8b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_googletpuv10_humufish.md": {
+    "mtime": 1777784754.067006,
+    "hash": "7c31c3ac4d59ce6971e4b1433050c9a3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_rubinplatform.md": {
+    "mtime": 1777784754.0584168,
+    "hash": "e3c1bb7e8739f4f4c7b2539acdb84a1c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/emlvscwlasersplit.md": {
+    "mtime": 1777828562.0615995,
+    "hash": "f317d58f9a758fe18b5e1fc75e751be7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/coherent.md": {
+    "mtime": 1777784754.059304,
+    "hash": "51c14a72d6ff1ad2a99c72aa85bfbdd1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/samsung.md": {
+    "mtime": 1777784754.063191,
+    "hash": "069de12a9c1021b031b4889771f56f35"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/insilicamedicine.md": {
+    "mtime": 1777828562.0619226,
+    "hash": "08198cc9ad4e89d7c0f29c5aa64ee4e6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_abfsubstrate.md": {
+    "mtime": 1777784754.066491,
+    "hash": "b33ce012c16a5f6e40e19a5d69ca3de7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/inpexportcontrol.md": {
+    "mtime": 1777828562.061059,
+    "hash": "5301c4b37a15b25c454d9fad4e1581ab"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_fr4ccl.md": {
+    "mtime": 1777784754.064798,
+    "hash": "e54b76e8dfbbd2b7dff18efd8a367d5c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_slpinnerboard.md": {
+    "mtime": 1777784754.059392,
+    "hash": "f7dd1a1e9ef025f61fd992e692292847"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/reasoningagenticaicomputedemand.md": {
+    "mtime": 1777784754.064292,
+    "hash": "ae08a4fdabcae8cb8e6d953f7ea6f756"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/meta.md": {
+    "mtime": 1777784754.0587585,
+    "hash": "28f84d9e34637e3bdc3a3ddf6a99e766"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/inpsupplyshortage.md": {
+    "mtime": 1777784754.065419,
+    "hash": "cb3f2836a23721d3b21169af5f9bd2e1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/siliconphotonics.md": {
+    "mtime": 1777784754.0606666,
+    "hash": "95b02fb1f8e63ad225ea2d958071a5be"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_supernodecluster.md": {
+    "mtime": 1777784754.0605078,
+    "hash": "d7a854915e0bf5bb974d479e4f8df503"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/heavywatersupplydisruption2026.md": {
+    "mtime": 1777784754.0683389,
+    "hash": "8dc2bc903818f936bc23de3fc0a10a8c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/process_msap.md": {
+    "mtime": 1777784754.055454,
+    "hash": "7b95d921eb161507ce717957ff865d9e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/agenticai.md": {
+    "mtime": 1777784754.055379,
+    "hash": "251fc0c00e7d7b66d0ddd65359f6533b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/chinaaiselfsufficiency2030.md": {
+    "mtime": 1777784754.067142,
+    "hash": "542b80b9bc2077098f16f45870899e02"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_ascend910_950.md": {
+    "mtime": 1777784754.058598,
+    "hash": "7f31859553a3f0408b0a77667ab18452"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/hwj.md": {
+    "mtime": 1777784754.0579758,
+    "hash": "2c9f01a4ef4a79260f3b97bb37eb7afd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/energytrusteemanagement.md": {
+    "mtime": 1777784754.065682,
+    "hash": "26e9559f9a794410a2a77513223f6582"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/googletpudualvendorstrategy.md": {
+    "mtime": 1777784754.0680463,
+    "hash": "b124ebb29babe1571e16b2f3c61a8966"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/centec.md": {
+    "mtime": 1777784754.064863,
+    "hash": "b10298e30b6a01f0fdcaaf972c1fb011"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/supernode.md": {
+    "mtime": 1777784754.055605,
+    "hash": "0d2f17579f1b79f5995512028bda05c1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_tpuv8i.md": {
+    "mtime": 1777784754.0598404,
+    "hash": "d35db51650f0910fb5a6daa8ce39c106"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/menafertilizersupplydisruption.md": {
+    "mtime": 1777784754.0637043,
+    "hash": "e01e798c8d442ed52caa04b4d678e910"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/yunzhe.md": {
+    "mtime": 1777784754.0654895,
+    "hash": "97d377453f46ff13b8dcbbfd7da36ab2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/alibaba.md": {
+    "mtime": 1777784754.0605989,
+    "hash": "2724de600f3d5b25cfab29d6ee19c386"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/inpcapacityexpansion.md": {
+    "mtime": 1777784754.067495,
+    "hash": "4f55d59e793bc3694d6a600ad7a7ea21"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/memorypooling_cxl.md": {
+    "mtime": 1777784754.0608664,
+    "hash": "d47c9f2af6600df13673802974ecf521"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/agenticaicpubottleneck.md": {
+    "mtime": 1777784754.0663626,
+    "hash": "30bb689fe7023175be8b3ff7ccf94632"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/vgf_process.md": {
+    "mtime": 1777784754.0657442,
+    "hash": "d1cd166c26bee77d6d1445fac367b98a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/tsmcsoiccapacityexpansion2027.md": {
+    "mtime": 1777784754.0678964,
+    "hash": "28cf0cd6f2d1b4e1b2ba373fa6b168ff"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/n3capacityexpansion.md": {
+    "mtime": 1777784754.0615811,
+    "hash": "a5da915f4070e78abb8f8cf325d35e22"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/n2processramp2026.md": {
+    "mtime": 1777784754.0643644,
+    "hash": "fee32db3d2e4b8a5e37711563a5d69a5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/semiconductormateriallocalization.md": {
+    "mtime": 1777784754.062288,
+    "hash": "46683ae2d8fbf5607bec94030178bc54"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_deepseekv4pro.md": {
+    "mtime": 1777784754.0634978,
+    "hash": "7d107af62d4304a582cfbdcf0ece6639"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/ocs_mems.md": {
+    "mtime": 1777784754.0596082,
+    "hash": "8a64ec3eafc4fbba472600adda2f0a9c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/mediatektpuv9designspec.md": {
+    "mtime": 1777784754.0644338,
+    "hash": "8acd53b55eab2a70e7144f9a65408991"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_nvidiavr200.md": {
+    "mtime": 1777784754.0630476,
+    "hash": "578ab78ecfdab78bbbe060b54d8f37a3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/localizedsupplychainaichip.md": {
+    "mtime": 1777784754.067278,
+    "hash": "db3d545628b5d6e143217f16266982cb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/soicpackaging.md": {
+    "mtime": 1777784754.0641444,
+    "hash": "e5555edf8e7a5dd8db94378b5baa03b4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/nvidiaexportpolicy.md": {
+    "mtime": 1777784754.0652156,
+    "hash": "70fb020f791f21db8c2d796996b6c934"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_cerebracs3.md": {
+    "mtime": 1777784754.0625117,
+    "hash": "73f9b3dcf3a497555ce8ca1615e8bfa8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/popmart.md": {
+    "mtime": 1777828562.0609212,
+    "hash": "ef3ebdfc292403662d4c8efbe31a2341"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/chinesaimodelcompetition.md": {
+    "mtime": 1777784754.0632687,
+    "hash": "749229ae7a7d12a0dbad44d881ce1fd9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_awstrainium4.md": {
+    "mtime": 1777784754.0675592,
+    "hash": "75d293dfdf739c18930a2b781c150412"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/soic.md": {
+    "mtime": 1777784754.05758,
+    "hash": "604a9920192969ceaae6e8e0a35ca86a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/abfsubstrate.md": {
+    "mtime": 1777784754.0607984,
+    "hash": "46766d40e30bd953006edcd74ccd5d7f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_kunpengcpu920.md": {
+    "mtime": 1777784754.0659673,
+    "hash": "e66d88dd0bddc35ba53b8e425a8f89ce"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/mitsui.md": {
+    "mtime": 1777784754.059127,
+    "hash": "c2bc06cc7f12efaf699dba01ddd1ef6d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/a14process.md": {
+    "mtime": 1777784754.0596762,
+    "hash": "8d8a8ddfcb491ef4519f0b8a42aa6f9e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/metric_mediatekeps_fy2628e.md": {
+    "mtime": 1777784754.0676298,
+    "hash": "c1e1e43b2dcc622c4b3f2d3f441d7145"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/chinaindigenousaichipdemand.md": {
+    "mtime": 1777784754.0589166,
+    "hash": "af431fc3d085fc1de560ee7b08cf0f13"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/supernodecabinetdemand2026.md": {
+    "mtime": 1777784754.0682712,
+    "hash": "b312ad97bf822d828a35f7278f644002"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/shennan.md": {
+    "mtime": 1777784754.0594654,
+    "hash": "a143b0ca77ee380304d3d9b5ea915f44"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/opticalcomponentshortage2026.md": {
+    "mtime": 1777784754.0620391,
+    "hash": "df80d693f1076437ee5fd67a755da191"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/scaleupfabric.md": {
+    "mtime": 1777784754.0660348,
+    "hash": "a0c2af0fcc866e91a084a8cc768dff6b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/tsmc.md": {
+    "mtime": 1777784754.054939,
+    "hash": "7119f327e269019275cf51bcf7d85afd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/smic_south.md": {
+    "mtime": 1777784754.0603406,
+    "hash": "93730a9a73332e0469fd3f983a5fa1ea"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/tsmcfy26revenuegrowthoutlook.md": {
+    "mtime": 1777784754.0637727,
+    "hash": "e14231328b41d8de98bb99e34d35827f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/advancedfoundrysupplybottleneck.md": {
+    "mtime": 1777784754.0597637,
+    "hash": "dfed34102a314456c0adec727eefa8af"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/essgrowthdemand.md": {
+    "mtime": 1777784754.06297,
+    "hash": "c52aa3af3ccdcbf61e8a94891acfe914"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_1dot6topticalmodule.md": {
+    "mtime": 1777784754.055203,
+    "hash": "4011b9c7a864bcae7fb22c8b2da5173b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/asiaindustrialcapexcycle.md": {
+    "mtime": 1777784754.0666244,
+    "hash": "4b4c3f4d72aa8fe2a3cc820de0b6b67d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/catl.md": {
+    "mtime": 1777784754.0610452,
+    "hash": "21739e10a368c9805fafd2a76846d507"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_googletpuv8i.md": {
+    "mtime": 1777784754.0576584,
+    "hash": "02819127727dd23fc8dd4584d58dd616"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/middleeastenergyrisk.md": {
+    "mtime": 1777784754.057199,
+    "hash": "ec930697d70aa70b66dec520d46185fd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/domesticsubstitutioncarrierfoil.md": {
+    "mtime": 1777784754.0585377,
+    "hash": "abf3ac773cf7af79d9f4c35b948312be"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/innolight.md": {
+    "mtime": 1777784754.0559022,
+    "hash": "e822a175b831564746aeecde569a89fa"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/cowoscapacity.md": {
+    "mtime": 1777784754.0561314,
+    "hash": "5989729fe7cffc939d0289b246ff738e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/lisenoke.md": {
+    "mtime": 1777784754.05678,
+    "hash": "88f0021b3c250da72718db8bb0750299"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/3dot2tpcbtechevolution.md": {
+    "mtime": 1777784754.068114,
+    "hash": "d3ac69d72a28bef5dbcf0e02b8b581a7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_googletpuv8.md": {
+    "mtime": 1777784754.066111,
+    "hash": "304803549c3b3f5f8a29c9c83aad1e3a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/mediateksmartphoneweakness2026.md": {
+    "mtime": 1777784754.0676978,
+    "hash": "9c48bd24d1117654f50396cb735d56cb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/cowosl.md": {
+    "mtime": 1777784754.0558379,
+    "hash": "8437404f285e1509af1f94e97526cf70"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/agenticaiorchestration.md": {
+    "mtime": 1777784754.0665565,
+    "hash": "80d88c4c694d14543663e4fc34af955a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/ocsarchitecture.md": {
+    "mtime": 1777784754.056644,
+    "hash": "5f62c8729073747a23c2e8c6fcad7fa6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/nvlinkfusionalliance.md": {
+    "mtime": 1777784754.0619655,
+    "hash": "0c96f090422016b88ceb95bd19b44b27"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_g657a2fiber.md": {
+    "mtime": 1777784754.0599878,
+    "hash": "1c01188af3329c358874edd3be40600b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/greenpowerdirectconnection.md": {
+    "mtime": 1777784754.0580513,
+    "hash": "828b792e120c5d984b79a85486492f43"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/nvidia.md": {
+    "mtime": 1777784754.0562544,
+    "hash": "958970e2fe2d53096a34f6cab3bcf645"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/broadcom.md": {
+    "mtime": 1777784754.0551054,
+    "hash": "1c83ea9982b36f3d308c719b589fdfa6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_googletpuv8t.md": {
+    "mtime": 1777784754.0589745,
+    "hash": "84017a5b8b1d3a5ff2fa17219b44726d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_ascend950pr.md": {
+    "mtime": 1777784754.065278,
+    "hash": "e0b18e5078ca0d35198674c63c8e0efa"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/material_carriercopperfoil.md": {
+    "mtime": 1777784754.055686,
+    "hash": "73c41144c42eb7b0546a87331f4ff03f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_googleaxioncpu.md": {
+    "mtime": 1777784754.0611942,
+    "hash": "10a9a4c63c4603557041434503b5464f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/intel.md": {
+    "mtime": 1777784754.0574007,
+    "hash": "4319bc81b0d4753d39319b0759b77e34"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/dekeli.md": {
+    "mtime": 1777828562.0618443,
+    "hash": "f571198088e54668de2763bd3f6db895"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_nvidiah200.md": {
+    "mtime": 1777784754.0653496,
+    "hash": "8afc5fa865bd814cb05233508f5a758d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/broadcomgooglelta.md": {
+    "mtime": 1777784754.058204,
+    "hash": "5ca37f26d26f982244c2ad375c1af257"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/anthropiccomputescalingstrategy.md": {
+    "mtime": 1777784754.0674295,
+    "hash": "0162edf1bea731d9e99ee13a187dc2d1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/google.md": {
+    "mtime": 1777784754.0565825,
+    "hash": "0af0236b01a5f5c1a82cf39d989b5810"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_googletpuv7.md": {
+    "mtime": 1777784754.0631166,
+    "hash": "d8b228f63c7637c26e4066ba0f2fbbc8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/axt.md": {
+    "mtime": 1777828562.0613492,
+    "hash": "35057c00ef7256d40af5aff55f8f7c09"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/taiwantechpullindemand2026q1.md": {
+    "mtime": 1777784754.0684128,
+    "hash": "2752bd2c02e6956827eab4f6f091d81b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/aisemitam2030.md": {
+    "mtime": 1777784754.063635,
+    "hash": "9df07f76741ebc7ba2127f9e0d377f6f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/emllaser.md": {
+    "mtime": 1777784754.0613453,
+    "hash": "b65427a3d6e724f16d48e11ed540909e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/metric_mediatekaiasicrevenue_fy2627e_gs.md": {
+    "mtime": 1777784754.0646572,
+    "hash": "56ce9272770a8d86d75562a9a90deb51"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/heliumsupplydisruption2026.md": {
+    "mtime": 1777784754.0647306,
+    "hash": "108b0e4a4ae29ef6c48ec0d1f09bda95"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_switch256t.md": {
+    "mtime": 1777784754.0604265,
+    "hash": "a9c53597fce89561124cb5c5ff21dcfe"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/nearlinehddtightness.md": {
+    "mtime": 1777784754.0640767,
+    "hash": "b570152bfd0f94555a90ad2db49f6085"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_highspeedccl.md": {
+    "mtime": 1777784754.0577385,
+    "hash": "e185bfb8c67917cb9433efd63209ddde"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/emib_t.md": {
+    "mtime": 1777784754.057475,
+    "hash": "21555790cb7f9bc6b81d898a086079fb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_800gopticalmodule.md": {
+    "mtime": 1777784754.0563393,
+    "hash": "e79549deed9c181995f3303d7f11ac36"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/material_gen2glass.md": {
+    "mtime": 1777784754.0601206,
+    "hash": "d915610855c1b7bfea2229624d78179f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/cspdesignwinchina.md": {
+    "mtime": 1777784754.0634124,
+    "hash": "7277b5fc467c810281cec5da1dd98216"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_haiguangcpu5000.md": {
+    "mtime": 1777784754.0659015,
+    "hash": "f80b1997bb0df21876fff6f1973381ad"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/inspur.md": {
+    "mtime": 1777784754.0624363,
+    "hash": "b9b1f126d9957c11816935f059a3be99"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/lumentum.md": {
+    "mtime": 1777784754.0564055,
+    "hash": "2ed9cc9b6b7bb0d83d06f20bf93941f2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/dualchippackaging.md": {
+    "mtime": 1777784754.060269,
+    "hash": "43d4cf1f0407589b533e60d8f77f0c6d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/datacentercapex2026to2027outlook.md": {
+    "mtime": 1777784754.0621943,
+    "hash": "096ed45cf00507f89925133ef6f4fd13"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/chinaaichipfablesstier2.md": {
+    "mtime": 1777784754.0581431,
+    "hash": "14b66dfac1ec554b08011b0a66377c70"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/siphpenetration.md": {
+    "mtime": 1777784754.0582652,
+    "hash": "5c033b744ba23a7253db797f19b059df"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/broadcomanthropicstrategiccollaboration.md": {
+    "mtime": 1777784754.0667672,
+    "hash": "06a6163eb465cd558c4b7372acdc7d29"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/metric_globalopticaltam2026e.md": {
+    "mtime": 1777784754.0559726,
+    "hash": "8e0325d35b2e47f3a1797172c31465c9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/metax.md": {
+    "mtime": 1777784754.0569422,
+    "hash": "fc5d64e153891f68e3a5f25fcc16c790"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/opticalchipagingtest.md": {
+    "mtime": 1777784754.0590334,
+    "hash": "7b01f31f051803a5a6a75b41fca13e3b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/hlcpcbdemand.md": {
+    "mtime": 1777784754.0678272,
+    "hash": "08c5a03de6c9e5cd342d8f1473b3abb3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/metric_agenticaidramdemand2030e.md": {
+    "mtime": 1777784754.0664282,
+    "hash": "ae833ac56ab0a157c7b6af70a4326b7a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/product_broadcomxpu.md": {
+    "mtime": 1777784754.0564847,
+    "hash": "78bbe5befca02ed714da053fd7c5d838"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/tsmccapexoutlook20262028.md": {
+    "mtime": 1777784754.061679,
+    "hash": "98d78845120d7f9511bb804e5cce3c05"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/material_inp_substrate.md": {
+    "mtime": 1777784754.0552938,
+    "hash": "8a97e43b7de93ef8001f348204fd1bde"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/centurycore.md": {
+    "mtime": 1777784754.0626576,
+    "hash": "97b536076065ab80d7cb85459dad4833"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/copos.md": {
+    "mtime": 1777537803.1571934,
+    "hash": "d49ddd92ade8b5e3dbf29cd79b07feb3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/abf_substrate.md": {
+    "mtime": 1777537803.15666,
+    "hash": "2aade222b6fa713ec08cd8eacd882b75"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/lianxun.md": {
+    "mtime": 1777564047.1491864,
+    "hash": "b6ff38d6b6b46d11d8bc7d8d989c6dda"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/deepseek.md": {
+    "mtime": 1777537803.157638,
+    "hash": "69f5f903400d28e0025efbc6eb578ca4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/lng_supply_risk.md": {
+    "mtime": 1777564047.1400237,
+    "hash": "fc8d639f99a822c7da5f377f3305bb38"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ascend910c.md": {
+    "mtime": 1777564047.1052856,
+    "hash": "66648b24551b5b4ea66b4dc0fda1e161"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/npo.md": {
+    "mtime": 1777564047.1453063,
+    "hash": "533be6e4548fb2852424e58323b0f74b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/product_deepseek_v4_pro.md": {
+    "mtime": 1777564047.1075675,
+    "hash": "8b6d60ad5a409cff0a49be2e4900cb84"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/unifiedbus_\u7075\u88622.md": {
+    "mtime": 1777355328.5025918,
+    "hash": "b40b229df05c4a61fed110f5daa65e1a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/aspeed.md": {
+    "mtime": 1777564047.1312594,
+    "hash": "d8ec9b6c7e74e85c4d829899b5deb7dc"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/rubin_nvl72.md": {
+    "mtime": 1777564047.1288407,
+    "hash": "83c763f2d5ec9e5dd3b75c19815e4d2e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/bt_substrate.md": {
+    "mtime": 1777564047.1187003,
+    "hash": "ac67ca484f60158d42b7333b3d60fc3c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/heterogeneousai_infra.md": {
+    "mtime": 1777564047.1234696,
+    "hash": "e9293c160b3f162a970110f0fa6860ca"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/changfei.md": {
+    "mtime": 1777564047.1507318,
+    "hash": "632404f2afe83db6c4efd90639c02b71"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/chinainternetsector.md": {
+    "mtime": 1777564047.133266,
+    "hash": "e0155e5d84a74d9fd073cd777d58be12"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/bytedance.md": {
+    "mtime": 1777564047.1327474,
+    "hash": "05a44a89efc622909c637f06df8a0e9b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/maruwa.md": {
+    "mtime": 1777564047.1085854,
+    "hash": "ec4fad756392b3c84504e225e7ce9a5f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/si_photonics.md": {
+    "mtime": 1777537803.160133,
+    "hash": "e6cdf54263eec0204b321bc0b211a524"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tsmc_3nm_capacity.md": {
+    "mtime": 1777564047.1414645,
+    "hash": "69320e918416c05b12ece99449d129c2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/atlas_950_superpod.md": {
+    "mtime": 1777355311.970588,
+    "hash": "fc9389621494be74ee6598016b813c40"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/shengyielectronics.md": {
+    "mtime": 1777537803.1600037,
+    "hash": "7ce814dcfbacd06aafd9b7221e11dc14"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/mediatek.md": {
+    "mtime": 1777537803.1590302,
+    "hash": "dc0cff3f854168733c8a8b3d88ded00a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ai_inference_semi.md": {
+    "mtime": 1777564047.0981395,
+    "hash": "7843722af5ac0de2e15745b9b7cfaa0d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/china_ai_gpu_tam.md": {
+    "mtime": 1777564047.0998871,
+    "hash": "5f49833bf74e4c775275caa499f517d7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/lc_ocs.md": {
+    "mtime": 1777564047.103824,
+    "hash": "2aa10c8c93b2d93735df219aa85e152c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/heatdissipationsubstrate.md": {
+    "mtime": 1777564047.142876,
+    "hash": "087e0914a63c1cef026729b45279203f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tencent.md": {
+    "mtime": 1777537803.1603875,
+    "hash": "8330598d1b25f99a08aab966fbd8bbf7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/middleeastenergyconflict.md": {
+    "mtime": 1777537803.1593356,
+    "hash": "afeaf5255fbf8afb1355abe641969b2f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ocs.md": {
+    "mtime": 1777537803.1596131,
+    "hash": "e9b6ac978fdf7e19f14b814ece49ab85"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/msap.md": {
+    "mtime": 1777537803.1594763,
+    "hash": "e7ac17d63783b48fb095f40f3e7f02d7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/marvell.md": {
+    "mtime": 1777564047.1007645,
+    "hash": "abc5f340b0ba4015a9dc28ae0c6a67cb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/25d_cpo.md": {
+    "mtime": 1777564047.110538,
+    "hash": "d67c667f5fd549e2c00898daced425db"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/microring.md": {
+    "mtime": 1777564047.1109993,
+    "hash": "c84fc7e11f03c840ff56742772adf310"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/custom_ai_asic.md": {
+    "mtime": 1777537803.1575022,
+    "hash": "8df3a1d16f494107681ac03d6ee934b0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/smartphone_ap.md": {
+    "mtime": 1777564047.144826,
+    "hash": "99f1493fc6fc2555d5184a019d2649ac"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/anthropic.md": {
+    "mtime": 1777564047.098976,
+    "hash": "29485a1759f1d26d3ce766d96760d0ee"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/m8_ccl.md": {
+    "mtime": 1777564047.1497035,
+    "hash": "d7325dd4dc0b4f1a03c34b3b2308df4e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ai_asic_revenue_ramp.md": {
+    "mtime": 1777564047.144314,
+    "hash": "6f83dcd042fe219e2b2f980a7c458c3a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/taiwan_power_grid.md": {
+    "mtime": 1777564047.1080835,
+    "hash": "f669d8c529864cc4a739bba3a3092fb6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/iluvatarcorex.md": {
+    "mtime": 1777537803.158756,
+    "hash": "fada34d58ce95d2a9c6bc86cd1479db3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cowos_l.md": {
+    "mtime": 1777564047.1022394,
+    "hash": "71a2aeb21481fb37434cff16bfa5b836"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/xpu.md": {
+    "mtime": 1777564047.1438332,
+    "hash": "033379e091e040f4900e0b754dfce54d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cpo.md": {
+    "mtime": 1777537803.157331,
+    "hash": "37cb1877a10722c057717edee9854a95"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/google_tpu_v7_ironwood.md": {
+    "mtime": 1777537803.1583076,
+    "hash": "4c12bb16ff8bc74b50542a80e5f8cdeb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/smartphone_demand_weakness.md": {
+    "mtime": 1777564047.1239927,
+    "hash": "7eca968a45d3c8ff71e06b273046693d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/mlcc.md": {
+    "mtime": 1777537803.1594055,
+    "hash": "ad388605d94a579bdf1bb424ff99b11a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/kv_cache.md": {
+    "mtime": 1777564047.1302874,
+    "hash": "02f4f67e7a5592e1bcb748ad28d6a151"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/g657a2_fiber.md": {
+    "mtime": 1777564047.1027188,
+    "hash": "d70a2d50ee4e25d3b6edea410da2431b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/siliconocs.md": {
+    "mtime": 1777564047.1135483,
+    "hash": "46869b8574b016182bf6c6c24f29611e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tfln.md": {
+    "mtime": 1777537803.1604521,
+    "hash": "5ab437bd667964b6f3e4d48555b31a62"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cambricon.md": {
+    "mtime": 1777537803.1570487,
+    "hash": "14197fa9c4065d29223d71189e8c4cfa"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tsmc_coupe.md": {
+    "mtime": 1777564047.1002984,
+    "hash": "899698a316e12e0f633e492188b2a016"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ai_server_pcb.md": {
+    "mtime": 1777564047.1192355,
+    "hash": "67760848952f5d7c9dd9a09a2fa3302c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tsmc_n2.md": {
+    "mtime": 1777564047.1090763,
+    "hash": "f1024544d5214203620308ca1fa0580d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/google_tpu_supply_demand_2026.md": {
+    "mtime": 1777355350.0667176,
+    "hash": "81c4fc3a737ebf067d9dbd016e70b539"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/optical_module_1_6t.md": {
+    "mtime": 1777537803.1596816,
+    "hash": "5a427c034fc33190ddf44e388b0d4add"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/smic_n2_node.md": {
+    "mtime": 1777564047.1409943,
+    "hash": "2295307e11d5d4083c210b30e8fa05dc"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/shennan_circuits.md": {
+    "mtime": 1777537803.1600676,
+    "hash": "f1e39feacb0d6b43887fcd463b628ba9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/eml.md": {
+    "mtime": 1777537803.1577826,
+    "hash": "3bcfd8f2cef8f229f372b02e192ccaf7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/google_tpu_v6e_trillium.md": {
+    "mtime": 1777355364.7739716,
+    "hash": "cf5fe559261602bd85ed397ca4a64b3a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/anthropic_tpu_expansion.md": {
+    "mtime": 1777564047.1477768,
+    "hash": "7f81030516ca2f0f00979ffd0da510e0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/optical_module_800g.md": {
+    "mtime": 1777537803.1598127,
+    "hash": "fd38a1719287fe9edd26088c5211d707"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/rubinultra.md": {
+    "mtime": 1777537803.1599395,
+    "hash": "80209fa371bf983ab6b52c575a94f8eb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ai_datacenter.md": {
+    "mtime": 1777537803.1568253,
+    "hash": "96fdb0b4a5fbb91eab606125ea5640a7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/fiber.md": {
+    "mtime": 1777564047.1278768,
+    "hash": "99fa75b9b9b35310d118d8cec92daaff"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/metric_avgo_c27_tpu_units.md": {
+    "mtime": 1777564047.1482465,
+    "hash": "8283e558c28aca3032303d8b56467e81"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/3d_cpo.md": {
+    "mtime": 1777537803.156561,
+    "hash": "21e36af5eedb3c52da874f09f3dd2d03"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/inp.md": {
+    "mtime": 1777564047.1100652,
+    "hash": "8b6c0c7b3178b38beaeb448c3594a78c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cw_laser.md": {
+    "mtime": 1777537803.157571,
+    "hash": "8511d5a6b6392b86f8992cd054f55362"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/agenticai.md": {
+    "mtime": 1777537803.156741,
+    "hash": "3143f895e28b82a8f914b101f159cd1d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/zhongji_innolight.md": {
+    "mtime": 1777537803.161176,
+    "hash": "96ec100218febdd2d676168d225e6b8c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_supply_demand_2026.md": {
+    "mtime": 1777564047.1383207,
+    "hash": "c460747297c11d202a5d7747eedc9239"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/trainium3.md": {
+    "mtime": 1777564047.0976088,
+    "hash": "eae9e0639c3a70bf625365a5aa4ad390"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/honprecision.md": {
+    "mtime": 1777564047.141937,
+    "hash": "2ecfea426a6db6ea7a640263ed7e7f70"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/nvl72_rack_shipment.md": {
+    "mtime": 1777564047.146783,
+    "hash": "e38c8ae022d537ffc30d40b821a948a4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/optical_module_3_2t.md": {
+    "mtime": 1777537803.1597476,
+    "hash": "9d2f97819f9ecea8a349b0288bbd96b9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tsmc_a14.md": {
+    "mtime": 1777537803.161114,
+    "hash": "0004f1fc15f62484a6c67ca56abe6ed7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/hbm3e.md": {
+    "mtime": 1777564047.1120243,
+    "hash": "9ce9abffe1f7b10ae54646d59df5be86"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/hbm4.md": {
+    "mtime": 1777537803.1585674,
+    "hash": "b9afa52d68daa1657bb5792b70056534"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/intel_intc.md": {
+    "mtime": 1777537803.158893,
+    "hash": "6a6274284993252d36be8f3e269b6dea"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/oilprice.md": {
+    "mtime": 1777564047.117063,
+    "hash": "3342f2c5a2d26b372f9b1d2ddd90d1ca"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/gb300_nvl72.md": {
+    "mtime": 1777537803.1578505,
+    "hash": "52941ae555f46cac133cacd36fc3f936"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/chinaindigenousaichip.md": {
+    "mtime": 1777564047.1064951,
+    "hash": "6e4481b5ef44ed970c10ca40f7378c05"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/product_nvlink_fusion.md": {
+    "mtime": 1777564047.1012516,
+    "hash": "5cb23684b951095542774093ea7e3792"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/nvda_feynman.md": {
+    "mtime": 1777564047.1457822,
+    "hash": "5a0467326e0bfbc55ca39748400d725a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cowos.md": {
+    "mtime": 1777537803.1572645,
+    "hash": "06c1e4c15bcfd0f2d9511995de32773c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tsmc_n3.md": {
+    "mtime": 1777564047.1095743,
+    "hash": "6147596d0a1ee7a0cc81d3255530c2e8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/product_nearlinehdd.md": {
+    "mtime": 1777564047.1377199,
+    "hash": "3efcf27142059bc52a53f6e0c6336b38"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/closed_loop.md": {
+    "mtime": 1777564047.1268888,
+    "hash": "37ff6cfedcf3c367123a999e0a5eb6a4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tsmc_2nm.md": {
+    "mtime": 1777537803.1610515,
+    "hash": "ad63ac549994cec21595934254c6c290"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ess.md": {
+    "mtime": 1777564047.0970306,
+    "hash": "f5f47d620b2bb9e32351aea0a6330af4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/euv.md": {
+    "mtime": 1777564047.1125205,
+    "hash": "362297d46ce86a1e59f83e8ec5ad0437"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/soic.md": {
+    "mtime": 1777537803.1602004,
+    "hash": "4489315cfb564fd862e1f65318bfae27"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/earningsfloor.md": {
+    "mtime": 1777564047.1155396,
+    "hash": "bbbcf2ff8782e790162722f4ef2abfba"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/nvl72.md": {
+    "mtime": 1777537803.1595461,
+    "hash": "fe0751c07cbf4317f3a8f8d832d397b8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/intel_emib.md": {
+    "mtime": 1777537803.1588268,
+    "hash": "dded98036d40f8273d9868e7ee96f818"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/deepseek_v4.md": {
+    "mtime": 1777537803.1577127,
+    "hash": "fee9fb410efe6d9a444da9b8842659f6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/huawei_ascend_950.md": {
+    "mtime": 1777355296.4445245,
+    "hash": "74c7364de93cfdd471572735caa137d5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tsmc.md": {
+    "mtime": 1777537803.160966,
+    "hash": "da9ddbaddbe5bda7225736e833d226d9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/anritsu.md": {
+    "mtime": 1777537803.1569042,
+    "hash": "882380f4d61bce00d724080aa41ed84b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_v8.md": {
+    "mtime": 1777564047.1059332,
+    "hash": "fb819f680ab29aee2d476ff41c92a896"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_v8t.md": {
+    "mtime": 1777537803.1606433,
+    "hash": "f1356661d8de54cc40f23c7d05bfd2c7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cpu_orchestration.md": {
+    "mtime": 1777564047.1298156,
+    "hash": "76711b7e5cfef82278d4b8fb03d04039"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cloud_capex.md": {
+    "mtime": 1777537803.1571183,
+    "hash": "a6cccf92ae1792caa9dd3c3042861e1b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/supernode_scaleup.md": {
+    "mtime": 1777537803.160261,
+    "hash": "0ffd75a2893f0d32449837559d5d8777"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/fedfundsrate.md": {
+    "mtime": 1777564047.1366823,
+    "hash": "8d5a066456fc935202ed6247c44f17ae"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/google_tpu_v8_zebrafish.md": {
+    "mtime": 1777355281.26249,
+    "hash": "cbe801ebf779dd371a7fcec978f97260"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/agentic_ai.md": {
+    "mtime": 1777564047.098563,
+    "hash": "5958943da73e1be7ca9eaeb92e039ee0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/gpu_b200.md": {
+    "mtime": 1777537803.1583722,
+    "hash": "06a72cb9fc9e98b65ab69cb9cf5de777"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/mlu_series.md": {
+    "mtime": 1777564047.1212404,
+    "hash": "0b32bca23a87055a9e80d15408067ffd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/singlewave400g.md": {
+    "mtime": 1777564047.1512203,
+    "hash": "7c123f4de1bdeebb8df4a86d55f97b26"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/foundryrevenue2025.md": {
+    "mtime": 1777564047.1254518,
+    "hash": "013ffbafde0020c3845c3b7fecce54e0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/korea_power_grid.md": {
+    "mtime": 1777564047.1405125,
+    "hash": "4585bcb10e99bffb40425f95fdc72622"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_v8i.md": {
+    "mtime": 1777537803.1605806,
+    "hash": "fd0e71b8c9b4351d6ff6fb7d3cde7e2d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/naxtra_sodiumion.md": {
+    "mtime": 1777564047.1322274,
+    "hash": "ba176657b3a9da6243774ba93696bb5c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/trainium4.md": {
+    "mtime": 1777564047.1218996,
+    "hash": "e3684bfa7f089da7fc6a0215a2067a61"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/honhai.md": {
+    "mtime": 1777564047.1358643,
+    "hash": "9ae60489573209e965f6064bce1bbfe7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/intel_emib_t.md": {
+    "mtime": 1777564047.1389096,
+    "hash": "2b8f9edfe8aff39446b67ddb0192de14"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/smic.md": {
+    "mtime": 1777564047.120441,
+    "hash": "d5b0935310cf9a82a78e1aca15421f52"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/semimaterial_localization.md": {
+    "mtime": 1777564047.1017401,
+    "hash": "bcff33f3bd48643a67a73acab0e5789a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/nvidia.md": {
+    "mtime": 1777564047.12293,
+    "hash": "51365c3cd59fae3c09b03ac6267b7234"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/iranwar.md": {
+    "mtime": 1777564047.116534,
+    "hash": "a6dd1deaaaab9f9e564d9fcfdadd8a3c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/broadcom.md": {
+    "mtime": 1777537803.1569793,
+    "hash": "efaabdddfff591eebd8c296a07d9e5df"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/mems_ocs.md": {
+    "mtime": 1777537803.1591935,
+    "hash": "54d16448e9211cd8bd43130ec53e4d47"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/hbm.md": {
+    "mtime": 1777537803.1585038,
+    "hash": "bbbbaf125fc103fb142e6aa4e6ac9b86"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/memory_interface_chip.md": {
+    "mtime": 1777564047.1317322,
+    "hash": "34214c41cce022437aca2513b441fca3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/hybridbonding.md": {
+    "mtime": 1777564047.1115398,
+    "hash": "2e120fc036815ddaa17bb9ab2c197b66"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/m9_ccl.md": {
+    "mtime": 1777564047.1502483,
+    "hash": "548fa3c2e093a5c0e73786787a8947a8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/gpu_vr200.md": {
+    "mtime": 1777564047.129327,
+    "hash": "bf50b6dc444a8ef18f7814b4d0391956"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/product_nvidia_vera_cpu.md": {
+    "mtime": 1777564047.1307592,
+    "hash": "35536494c906956896493f37f65bc6a5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/dfb_laser.md": {
+    "mtime": 1777564047.0964441,
+    "hash": "1921bc872b25cfe566fe1274637ac471"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/google.md": {
+    "mtime": 1777537803.15792,
+    "hash": "f886464f15353ead01e75688631f9c58"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_zebrafish.md": {
+    "mtime": 1777537803.1607718,
+    "hash": "9315047d9798d25daad7bfc8bb0c86f3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/highna_euv.md": {
+    "mtime": 1777564047.1283627,
+    "hash": "850068574f15edd84c7c6c4c7650ed02"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/google_tpu_lta.md": {
+    "mtime": 1777537803.1579847,
+    "hash": "32aa6ea6f11928e96d988669fc35b7b3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/defencecapex.md": {
+    "mtime": 1777564047.1342983,
+    "hash": "32b41ae444f0b951610ed65674c02f69"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/foundrysupplybottleneck.md": {
+    "mtime": 1777564047.1070514,
+    "hash": "c74ad0245830f3273e108eaf00743c34"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/memory_cost_inflation.md": {
+    "mtime": 1777537803.1591241,
+    "hash": "3cc3d00971c3616dd431198b132a16a1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/axion_cpu.md": {
+    "mtime": 1777564047.1424277,
+    "hash": "6e9d074158bc6358c20f0841c4fa502b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/longcontextwindow.md": {
+    "mtime": 1777564047.1347544,
+    "hash": "eba021b182f0a8404d4530e3ff0cfd52"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/pce_inflation.md": {
+    "mtime": 1777564047.1177156,
+    "hash": "88016003bbe790eb82af0124f7a7c17e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_ironwood.md": {
+    "mtime": 1777564047.1145039,
+    "hash": "6e35ac0026e2ee10aa6f314cb7a4deba"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/emib_t.md": {
+    "mtime": 1777564047.0994518,
+    "hash": "65dcfc64f161f15edca19a420cc5c36e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/wdm.md": {
+    "mtime": 1777564047.1273704,
+    "hash": "9ef7c3611255cb112d556c9e3ec5bb86"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/stagflation.md": {
+    "mtime": 1777564047.114021,
+    "hash": "ef564c231691984728c8c4e0d36f4e38"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/cowos_14reticle.md": {
+    "mtime": 1777564047.124955,
+    "hash": "8f3cb4abf887a059569da069791d70e5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/longcontexteconomics.md": {
+    "mtime": 1777564047.1395202,
+    "hash": "838301ca5132673f1ec02b6c87fb48a8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/hlc_pcb.md": {
+    "mtime": 1777564047.124463,
+    "hash": "49cdd1cf3cdd9b5d6ce2658563093857"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/abf_substrate_shortage.md": {
+    "mtime": 1777564047.1487167,
+    "hash": "9619fe35451e7a5a9e8eb208e12dad80"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/lumentum.md": {
+    "mtime": 1777564047.1224453,
+    "hash": "4dfb81b0b5a2023b78d3f4304f7714e3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_humufish.md": {
+    "mtime": 1777564047.1182106,
+    "hash": "268e0ee9ad67f1d0276f6c94714d6c4f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/ascend950.md": {
+    "mtime": 1777564047.1353815,
+    "hash": "31c7877c12661c7fe0fefd63a6610de5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_v9_mediatek.md": {
+    "mtime": 1777537803.1607049,
+    "hash": "338a034f7452c7842c63b5750eb68bac"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/opticaltransceivermarket.md": {
+    "mtime": 1777564047.143378,
+    "hash": "7518874f30cdc922edf7a4327e9e115e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tpu_v7.md": {
+    "mtime": 1777537803.1605136,
+    "hash": "05148ba5b2e8d6566d8658c51e910a2f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/avgo_ai_xpu_revenue.md": {
+    "mtime": 1777564047.1472855,
+    "hash": "a33822156256d17dfbd5fc2be3a9550a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/glasssubstrate.md": {
+    "mtime": 1777564047.113053,
+    "hash": "bba87cda82cf2280f3b29393983647d7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/supernoderack.md": {
+    "mtime": 1777537803.1603246,
+    "hash": "3c6c03a0de04f1402574d548e0e0cbcf"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/chinesesuppliersenergy.md": {
+    "mtime": 1777564047.1338105,
+    "hash": "e0fd3628eb70ec90ff105945c07886bf"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/gpu_rubin.md": {
+    "mtime": 1777537803.1584396,
+    "hash": "5b2bef2ca95c4a6a4662266d7ef85d9c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/metax.md": {
+    "mtime": 1777537803.1592627,
+    "hash": "4fd4e5743ce12e3678619771ed55fc3f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/opticalchipagingtest.md": {
+    "mtime": 1777537803.1598773,
+    "hash": "bce17810b0bbf79ad56fa8ded0182994"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/liquidcooling.md": {
+    "mtime": 1777537803.1589587,
+    "hash": "2adca38d80315240b94527eed454540b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/lfp_battery.md": {
+    "mtime": 1777564047.1149845,
+    "hash": "503d436cfcec8c75fafd9e2e01114112"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/rubin_gpu.md": {
+    "mtime": 1777564047.146297,
+    "hash": "f92c0bb9d047783c06e939987f91cb1b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/avgo_google_lta.md": {
+    "mtime": 1777564047.1259286,
+    "hash": "cf0a431a492fd48464947a7013f05a7b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/tfln_modulator.md": {
+    "mtime": 1777564047.1032238,
+    "hash": "8897dbcddbfbfaa21af1d8045af61fe9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/slp_pcb.md": {
+    "mtime": 1777564047.1264157,
+    "hash": "8fb6c2bfe80891bf10e8d5295cd3df06"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/wiki/archive/v1_pre_rebuild/taiex.md": {
+    "mtime": 1777564047.11604,
+    "hash": "3898883f80ad11897982f277a7314034"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/rules/confidence_levels.md": {
+    "mtime": 1777912891.041552,
+    "hash": "3fb13c87da2727e77dc8ad67d75b6556"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/rules/tpu_supply_chain.md": {
+    "mtime": 1777356327.7049565,
+    "hash": "8dcaf6c11a51ae189be3fa84698a8789"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/outputs/\u6e0a\u56fe_\u6570\u636e\u5e93_README.md": {
+    "mtime": 1777786375.4088895,
+    "hash": "ef3f7788bcc73d8c6318af4886e4efaa"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/\u5f85\u4e0b\u8f7d_\u534a\u5bfc\u4f53\u8bbe\u5907\u7814\u62a5\u6e05\u5355.md": {
+    "mtime": 1777988980.0163662,
+    "hash": "6ba7f04e877e508c58a6b751484c43a3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u6b22\u8fce.md": {
+    "mtime": 1777599234.9660745,
+    "hash": "5a3ebdfaef4110c4b5acfdd013b79abc"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Asia-Pacific_Technology_AI_Supply_Chain_Addressing.md": {
+    "mtime": 1777581514.0,
+    "hash": "aa42f8fc317e682162caa7d237a3ff87"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Greater_China_Semiconductors_The_Foundry_Floorplan.md": {
+    "mtime": 1777581516.0,
+    "hash": "b7da1f2c969d0a47409609c4f2ba6aeb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2025.12.02-\u5e15\u7c73\u5c14\u7814\u7a76\uff1aOCS\u4ea7\u4e1a\u94fe\u6df1\u5ea6\u89e3\u8bfb.md": {
+    "mtime": 1777811270.6320925,
+    "hash": "8a2495affda824394d37dd119ce6931d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7535\u5b50\u884c\u4e1a\u5468\u62a5\uff1a\u4e09\u661fQ2_DRAM\u5408\u7ea6\u4ef7\u9884\u8ba1\u73af\u6bd4\u4e0a\u6da830%\uff0c\u770b\u597d\u5b58\u50a8\u8bbe\u5907\u3001\u7b97\u529b\u9700\u6c42\u548c\u7aef\u4fa7AI\u786c\u4ef6\u521b\u65b0\u6d6a.md": {
+    "mtime": 1777581510.0,
+    "hash": "5cf86dc714358f31430e2099ce898bdd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u957f\u6c5f\u5efa\u6750-\u7535\u5b50\u5e03\u4e0b\u6e38\u4e13\u5bb6\u4ea4\u6d41.md": {
+    "mtime": 1777519141.6052322,
+    "hash": "ebfd00913a93e0ed10a4552af8ff95e7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Investor_Presentation_Greater_China_Semiconductors.md": {
+    "mtime": 1777581518.0,
+    "hash": "cd282cbbe95b63d579374b793f49565d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.28-\u5e15\u7c73\u5c14\u7814\u7a76\uff1aAI \u4e13\u5bb6\u4f1a\u8bae\u7eaa\u8981\uff1a\u5149\u7ea4\u5e02\u573a\u66f4\u65b0\u7b80\u8baf.md": {
+    "mtime": 1777517676.211536,
+    "hash": "95e67695ceaded8c16669aded69a4601"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u7535\u5b50\u5e03\u4e13\u5bb6\u4f1a\u8bae.md": {
+    "mtime": 1777518029.922616,
+    "hash": "6d927653d759bada641f1222277f9030"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.27-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u78f7\u5316\u94df\u886c\u5e95\u4f9b\u9700\u7f3a\u53e3\u548c\u6da8\u4ef7\u5206\u6790.md": {
+    "mtime": 1777518752.3904946,
+    "hash": "623d6b84507634d439aefe8a61e513b4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Innolight_(300308 SZ)_Optical_module_speed_migrati.md": {
+    "mtime": 1777581516.0,
+    "hash": "96c058f9349d1dfcb3c07e2b52d6094c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.28-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u897f\u90e8\u8ba1\u7b97\u673a-\u4ea4\u6362\u673a\u82af\u7247\u4ea7\u4e1a\u63a2\u7a76.md": {
+    "mtime": 1777517233.875671,
+    "hash": "abce74315236b76fbb08ab4a90db3983"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7eaa\u8981\u8be6\u60c5-\u8d85\u8282\u70b9\u5e26\u6765\u4e94\u5927\u53d8\u5316\u8d8b\u52bf-20260427.md": {
+    "mtime": 1777581510.0,
+    "hash": "1655cb1fbebf06436762747449a82a6b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.22-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u5b57\u8282\u91c7\u8d2d\u56fd\u4ea7\u82af\u7247\u4e13\u5bb6\u4ea4\u6d41.md": {
+    "mtime": 1777520066.150485,
+    "hash": "088d599b2ebd1c8b470341668f1deb55"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/China_AI_Chip_Fabless_Supply_a_short-term_bottlene.md": {
+    "mtime": 1777581516.0,
+    "hash": "ff319f0b1d7f6a03d35db6290b3c04a6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.20-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u5149\u6ce2\u5bfcOCS\u4ea4\u6362\u673a\u5934\u90e8\u5382\u5546\u8fd1\u51b5\u8c03\u7814.md": {
+    "mtime": 1777520486.9841793,
+    "hash": "8f24336214a190d2e2a401fe4e86be16"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Semiconductors_CY26_Data_Center_Capex_Revised_High.md": {
+    "mtime": 1777581520.0,
+    "hash": "31e76c006183800b305f768fe8302e62"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/MS_TSMC_AI_strength_Q1_review_20260420.md": {
+    "mtime": 1777581518.0,
+    "hash": "8da15eae0e50b3b5348af18025dde593"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.22-\u5e15\u7c73\u5c14\u7814\u7a76\uff1aSKTX\u8ba2\u5355\u5c55\u671b\u4e13\u5bb6\u4f1a.md": {
+    "mtime": 1777519235.0107281,
+    "hash": "4deca438ae3eb50d21492cd6e5a79ece"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Multiple_growth_drivers_ahead_in_AI_optical_networ.md": {
+    "mtime": 1777581520.0,
+    "hash": "abc246203f55c96254d18daf7f5d7d8f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.18-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e1c\u65b9\u7535\u5b50-AI \u8d85\u8282\u70b9\u4e13\u5bb6\u7cfb\u5217\u4f1a\u8bae\uff08\u4e00\uff09\u56fd\u4ea7\u8d85\u8282\u70b9\u8fce\u653e\u91cf\u5143\u5e74.md": {
+    "mtime": 1777520670.3557549,
+    "hash": "274bba20aa08f61d16141dcc4ac02936"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u672a\u547d\u540d.md": {
+    "mtime": 1777827253.810374,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.16-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u5185\u5934\u90e8\u5149\u82af\u7247\u5382\u5546\u8c03\u7814.md": {
+    "mtime": 1777520991.461882,
+    "hash": "d07ce56b40ba3fb0580348b82d8d8b15"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.22-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u78f7\u5316\u94df\u886c\u5e95\u4e13\u5bb6\u8bbf\u8c08\uff1aAI\u7b97\u529b\u6838\u5fc3\u6750\u6599\u4f9b\u9700\u7f3a\u53e3\u4e0e\u56fd\u4ea7\u66ff\u4ee3\u673a\u9047.md": {
+    "mtime": 1777519884.3381164,
+    "hash": "0d4e60d81f9839ca6f17fbd0a8bd3f88"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.27-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u5934\u90e8\u5c01\u88c5\u8bbe\u5907\u5382\u5546\u8fd1\u671f\u4e1a\u52a1\u8c03\u7814.md": {
+    "mtime": 1777518699.9112127,
+    "hash": "1de7765be2e03992181cf16e9e99a031"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Global_Memory_Tech_Weekly_theme_toned-down_HBM_LTA.md": {
+    "mtime": 1777581516.0,
+    "hash": "1b82f72ca058ed3518aaa6ea9418967a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/J P _Morgan_International_FTM_8_Apr_26_UMG;_Orange.md": {
+    "mtime": 1777581518.0,
+    "hash": "34ba1a7aaf316a7c459b2ed6d7b4bdf3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.17-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e13\u5bb6\u4f1a\uff1a\u5317\u7f8eCSP\u548cGPU\u66f4\u65b0\uff0cCRWV\uff0cNBIS\u65b0\u5408\u4f5c\uff0cTPU\u4ea7\u80fd\u7b49.md": {
+    "mtime": 1777520738.2023551,
+    "hash": "c94c93ded08a668abbb7c07de1e10041"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/TSMC_CoWoS_and_advanced_back-end_updates.md": {
+    "mtime": 1777828105.6315444,
+    "hash": "95ca7c5063c3cffb4ef0209866a08ce8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260424-\u9ad8\u76db\uff1aDeepSeek_V4\u53d1\u5e03-\u5bf9\u4e2d\u56fdAI\u6a21\u578b\u4e91\u4e0e\u6570\u636e\u4e2d\u5fc3\u7684\u5f71\u54cd GS-Deep.md": {
+    "mtime": 1777581508.0,
+    "hash": "8e54601cdc0efbe320c414057fb311af"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e2d\u6cf0\u7535\u65b0\u7eff\u7535\u76f4\u8fde-\u7b97\u7535\u534f\u540c\u4e13\u5bb6\u4ea4\u6d41.md": {
+    "mtime": 1777519074.7708683,
+    "hash": "9adda1abc4bacc4f10d76aa0bda63482"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260426-\u9ad8\u76db\uff1a4\u6708FOMC\u4f1a\u8bae\u524d\u77bb-\u6309\u5175\u4e0d\u52a8\u9759\u5f85\u9886\u5bfc\u5c42\u4ea4\u63a5 GS-April FOMC P.md": {
+    "mtime": 1777581508.0,
+    "hash": "e3c56f865d496e9d15f18303f70027f2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.22-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u65e5\u7cfbCCL\u4e13\u5bb6\u8c08\u7279\u79cd\u7535\u5b50\u5e03\u91c7\u8d2d\u2014Nittobo-Asahi Kasei-Grace Fabric.md": {
+    "mtime": 1777520136.8859518,
+    "hash": "93619eb5fb10ef0e342c100c7bbed567"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.21-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u5b57\u8282\u91c7\u8d2d\u56fd\u4ea7\u82af\u7247\u89e3\u8bfb.md": {
+    "mtime": 1777520383.03938,
+    "hash": "54b1ee848e6f54bf9799a4e261e41dc7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7eaa\u8981\u8be6\u60c5-\u94f6\u6cb3\u901a\u4fe1 _ \u5149\u7ea4\u5149\u7f06\u884c\u4e1a\u6df1\u5ea6\u518d\u68b3\u7406.md": {
+    "mtime": 1777581512.0,
+    "hash": "e80f3fb168fa4c13bc0b7ce7251e7bc2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/US_Semiconductors_and_Hardware_Weekly_Investor_Pul.md": {
+    "mtime": 1777581520.0,
+    "hash": "df6e7071cafbc6a9979e55ea4790c58d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Latest_Questions_From_Investors_as_Optical_Breaks_.md": {
+    "mtime": 1777581518.0,
+    "hash": "549e1c216f378127f729176ee0284f5b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/OSIC 2026-Laser.md": {
+    "mtime": 1777118434.2638042,
+    "hash": "b7341e1af36b36b7f88f5044aee28099"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7eaa\u8981\u8be6\u60c5-\u4e3a\u4f55\u82f1\u7279\u5c14\u66b4\u6da8\u540e\u4ecd\u503c\u5f97\u4e70\u5165.md": {
+    "mtime": 1777581512.0,
+    "hash": "4c5e365f5c95b69c94a1e35c62113ca4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.19-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e2d\u6cf0\u5efa\u6750&\u5316\u5de5\u5b59\u9896\u56e2\u961f-\u7535\u5b50\u5e03\u4e13\u5bb6\u4e00\uff1aPCB\u89c6\u89d2\u770blow-CTE&low-DK\u7535\u8bdd\u4f1a\u8bae.md": {
+    "mtime": 1777520601.26897,
+    "hash": "6804bec872cfb108344eb37c386e71f2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wr.md": {
+    "mtime": 1777828040.6629744,
+    "hash": "8c7c6caf024eeff9fc931d775977775c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u672a\u547d\u540d 2.md": {
+    "mtime": 1777810375.1684246,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.01.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a2026\u5e74\u5168\u7403\u78f7\u5316\u94df\u886c\u5e95\u4f9b\u9700\u5c55\u671b.md": {
+    "mtime": 1777811360.68634,
+    "hash": "2137be76708e401f69ff9a3ac8892a72"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.19-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u91d1\u5316\u5de5-AI\u6750\u6599\u5e93\u6295\u8d44\u673a\u4f1a\u63a2\u8ba8.md": {
+    "mtime": 1777828040.6614482,
+    "hash": "084e8686261b9a793fe4d299e87b50b1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Optical_transceiver_and_ABF_substrate_potential_up.md": {
+    "mtime": 1777581520.0,
+    "hash": "ff4a3e957ed55b78d82db3b8b0538b5c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u8054\u53d1\u79d1\u6280_(2454 TW)_\u653e\u773c\u4e8e\u667a\u80fd\u624b\u673a\u4e1a\u52a1\u75b2\u8f6f\u4e4b\u5916\uff0c\u6211\u4eec\u9884\u8ba12027\u5e74AI_ASIC\u6536\u5165\u5c06\u52a0\u901f.md": {
+    "mtime": 1777581512.0,
+    "hash": "4242e90ee03b7ecab2e69ccdd20efca6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260422-\u5c0f\u6469\uff1a\u5b81\u5fb7\u65f6\u4ee3(SZ300750) \u79d1\u6280\u5347\u7ea7\u6811\u7acb\u884c\u4e1a\u65b0\u6807\u6746\uff0c\u5c0f\u6469\u7ef4\u6301\u884c\u4e1a\u9996\u9009 JP.md": {
+    "mtime": 1777581508.0,
+    "hash": "057af316c5b60a2edbe2edd569c3b93f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u672a\u547d\u540d 3.md": {
+    "mtime": 1777811112.7785428,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260420-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u534a\u5bfc\u4f53\uff1a\u805a\u7126AI\u76f8\u5173\u534a\u5bfc\u4f53\u2014\u2014GPU\u3001ASIC\u3001CPU\u548c\u5149\u82af\u7247 MS-.md": {
+    "mtime": 1777828040.6621847,
+    "hash": "673447b4a43730b6336bea5c96abc673"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7535\u5b50\u884c\u4e1a\uff1aDeepSeek\u6b63\u5f0f\u53d1\u5e03\u65b0\u4e00\u4ee3\u5927\u6a21\u578bV4\uff0c\u770b\u597d\u5b58\u50a8\u8bbe\u5907\u3001\u7b97\u529b\u9700\u6c42\u548c\u7aef\u4fa7AI\u786c\u4ef6\u521b\u65b0\u6d6a\u6f6e.md": {
+    "mtime": 1777581510.0,
+    "hash": "e9ee1bc021496df60b1696e5a3a87a55"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7eaa\u8981\u8be6\u60c5-\u5149\u82af\u7247\u68c0\u6d4b20260426.md": {
+    "mtime": 1777581512.0,
+    "hash": "26cd7165aa2cd71a71299436356657e8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7535\u5b50\u884c\u4e1a\u5468\u62a5\uff1aSEMI\u8868\u793a2025\u5e74\u5168\u7403\u534a\u5bfc\u4f53\u8bbe\u5907\u5e02\u573a\u8fbe1351\u4ebf\u7f8e\u5143\uff0c\u770b\u597d\u5b58\u50a8\u8bbe\u5907\u3001\u7b97\u529b\u9700\u6c42\u548c\u7aef\u4fa7.md": {
+    "mtime": 1777581510.0,
+    "hash": "3f3f441872b705a4db5b2682376e574b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/MARUWA_(5344 T)_Raising_AI_sales_estimates_and_TP_.md": {
+    "mtime": 1777581518.0,
+    "hash": "c829682d95e0cc81b69a0bd6220b8711"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/China_AI_Intelligence_DeepSeek_V4_strengthening_mo.md": {
+    "mtime": 1777581516.0,
+    "hash": "592e539553ee8593aea810c0692b4f61"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260419-\u5927\u6469\uff1a\u4e2d\u56fd\u539f\u6750\u659926Q2\u5c55\u671b-\u5728\u4e0d\u786e\u5b9a\u6027\u4e2d\u5bfb\u627e\u786e\u5b9a\u6027 MS-2Q26 Outloo.md": {
+    "mtime": 1777581506.0,
+    "hash": "3ad9ca8b8e3d69395ce678119cd0ec4c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Citi_TaiwanSemi_TPU_Evolution_MediaTek_GUC_2026042.md": {
+    "mtime": 1777581516.0,
+    "hash": "79a23cb94dc8aca84a8df2130b4b882f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Taiwan_Tech_March_sales_Supply_chain_upside_driven.md": {
+    "mtime": 1777581520.0,
+    "hash": "c945cb3949fdbc5322e1932cb723996a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u534a\u5bfc\u4f53\u884c\u4e1a3\u6708\u4efd\u6708\u62a5\uff1aAI\u7b97\u529b\u9a71\u52a8\u4e0a\u6e38\u4ee3\u5de5\u589e\u957f_GTC\u5927\u4f1a\u53d1\u5e03VERA_RUBIN_AI\u8ba1\u7b97\u5e73\u53f0.md": {
+    "mtime": 1777581510.0,
+    "hash": "b740e52121ee6977cee9ec1db13d6750"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7eaa\u8981\u8be6\u60c5-\u8d85\u8282\u70b9\u7eaa\u898120260426.md": {
+    "mtime": 1777581510.0,
+    "hash": "ffa539cefc3e08e64327a65474f297d1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.20-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e2d\u4fe1\u5efa\u6295\u5316\u5de5-\u6c26\u6c14\u6da8\u4ef7\u5feb\u901f\u89e3\u8bfb\u53ca\u8d8b\u52bf\u5c55\u671b.md": {
+    "mtime": 1777520429.926164,
+    "hash": "d51b3f1a9a4a94019bb1f7232ba6039b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u56fd\u52a1\u9662\u9881\u5e03\u4ea7\u4e1a\u94fe\u4f9b\u5e94\u94fe\u5b89\u5168\u76f8\u5173\u89c4\u5b9a\uff0c\u534a\u5bfc\u4f53\u6750\u6599\u56fd\u4ea7\u5316\u5c06\u52a0\u901f\u2014\u2014\u57fa\u7840\u5316\u5de5\u884c\u4e1a\u5468\u62a5\uff0820260407-2.md": {
+    "mtime": 1777581510.0,
+    "hash": "d01b86268b3d62a7d3d28aa64360bda7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Global_Sustainability_ai_Supply_Chains_Meet_Energy.md": {
+    "mtime": 1777581516.0,
+    "hash": "c672128eac8cedadfbcee7dfd0db7afe"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/UBS_MediaTek_Key_Call_TPU_TAM_expanding_20260428.md": {
+    "mtime": 1777581520.0,
+    "hash": "d2aae1cfe8058f06bb4ab7a072dd63b0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Investor_Presentation_Build_for_future_AI_infrastr.md": {
+    "mtime": 1777828040.6636899,
+    "hash": "0d527a3d8aec32362c4a878a6297d8bc"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.30-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u8f7d\u677f\u8fce\u6765\u6da8\u4ef7\u6f6e\uff0c\u5174\u68ee\u79d1\u6280\u8fd1\u51b5\u8ddf\u8e2a.md": {
+    "mtime": 1777516949.9078836,
+    "hash": "0cfebd0a3e03ac9ec02b2ccd01089f8d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/TSMC_2026_Technology_Symposium_-_Quick_Takes.md": {
+    "mtime": 1777581520.0,
+    "hash": "ba100cf86bc878a65df5a1c166afa0f4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Greater_China_Semiconductors_Investor_Presentation.md": {
+    "mtime": 1777581516.0,
+    "hash": "5aad6211f077debff1de5665f7baae1e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Tech_Snippets_Reports_of_TSMC_accelerating_SoIC_ca.md": {
+    "mtime": 1777581520.0,
+    "hash": "ae364fc082bc990ce5a0803c2dd194e0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Asia_Technology_Updating_supply_demand_heatmap_for.md": {
+    "mtime": 1777581514.0,
+    "hash": "bb42de04677c4b5ec26a25644bb0a13d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u672a\u547d\u540d 4.md": {
+    "mtime": 1777811131.3788679,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7eaa\u8981\u8be6\u60c5-\u7535\u5b50\u5e03\u4e13\u5bb620260426.md": {
+    "mtime": 1777581512.0,
+    "hash": "29e51776f0bf2f23d1512283af1dd5eb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2025.10.30-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u8c37\u6b4c\u7b49\u5927\u5382\u7684OCS\u6280\u672f\u65b9\u6848\u548c\u56fd\u5185\u4f9b\u5e94\u94fe\u89e3\u8bfb.md": {
+    "mtime": 1777811308.4530203,
+    "hash": "819040b6ab15375a15a9ed5d4c4270cd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/J P _Morgan_GEMS_FTM_8_Apr_26_China_AI_Chip_Fables.md": {
+    "mtime": 1777581518.0,
+    "hash": "e2a554a4f1d3a4d3cfb6f69b6eca39a8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Toning_up_2026_revenue_and_capex_guidance_TSMC_(un.md": {
+    "mtime": 1777581520.0,
+    "hash": "7fcf96c29e804b83519547c9f37a777f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.29-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u897f\u90e8\u8ba1\u7b97\u673a-CPU\u63a2\u7a76.md": {
+    "mtime": 1777517041.4428163,
+    "hash": "127b59b484b3f398421c560d5c32b6d3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1amsap\u4e13\u5bb6\u4f1a\u8bae.md": {
+    "mtime": 1777517950.8711064,
+    "hash": "ced9a71edf5efe659f82ec003a7f87c9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260425-\u9ad8\u76db\uff1a\u53f0\u6e7e\u5468\u5ea6\u524d\u77bb GS-Taiwan Weekly Kickstart.md": {
+    "mtime": 1777581508.0,
+    "hash": "b713d2d8b953ad98db3c1bde286b7621"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260420-\u5927\u6469\uff1aAI Agent\u5174\u8d77\u7684\u5168\u7403\u542f\u793a MS-Rise of the AI Agen.md": {
+    "mtime": 1777581508.0,
+    "hash": "0f46ab892e106b0ae35646e5fa54c686"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260414-\u9ad8\u76db\uff1a\u535a\u901a(AVGO)\uff1a\u4e0eMeta\u5408\u4f5c\u5f3a\u5316\u5b9a\u5236\u82af\u7247\u4e0eAI\u7f51\u7edc\u6280\u672f\u4f18\u52bf GS-Par.md": {
+    "mtime": 1777581506.0,
+    "hash": "7146a440fdd7bccdaebe06f6fabbdcd6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/JPM_Broadcom_Google_LTA_Anthropic_MultiYear_TPU_20.md": {
+    "mtime": 1777581518.0,
+    "hash": "47fa525a58335421202cad254f9e0b48"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260420-\u5927\u6469\uff1aAI Agent\u5174\u8d77\u7684\u5168\u7403\u542f\u793a\uff08\u5e7b\u706f\u7247\uff09MS-Rise of the AI .md": {
+    "mtime": 1777581508.0,
+    "hash": "76d32eaab4816cef794b3efc875fb7f9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/OSIC 2026-TFLN.md": {
+    "mtime": 1777118519.821573,
+    "hash": "ff660df3ae4b3f2128c59d48ecf480e6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u5168\u7403_\u5149\u6a21\u5757_\u5c062026-28\u5e74800G\u53ca\u4ee5\u4e0a\u5e02\u573a\u51fa\u8d27\u91cf\u9884\u6d4b\u4e0a\u8c0314%_29%_33%\uff1bAI\u5c06\u63a8\u52a8\u672a.md": {
+    "mtime": 1777581514.0,
+    "hash": "21954ef7118651b350cb733434556f2f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/S_hengyi_Electronics_Growth_may_re-accelerate_from.md": {
+    "mtime": 1777581520.0,
+    "hash": "70a78c6c11e7c56f0bb29b31ebc93c99"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Marvell_Technology_Inc_ASICs_Are_Here_to_Stay_NVDA.md": {
+    "mtime": 1777581518.0,
+    "hash": "724186c31a087ce01a0da789fedd30e2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u91cd\u8981\u4ea7\u4e1a\u94fe\u53ca\u4ee3\u8868\u516c\u53f8\u6574\u7406.md": {
+    "mtime": 1777581514.0,
+    "hash": "61f8f307ca2fd5a046143c6970ab647e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.17-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u897f\u90e8\u8ba1\u7b97\u673a-\u5173\u6ce8\u5149\u4e92\u8054\u6700\u65b0\u8fdb\u5c55.md": {
+    "mtime": 1777520844.143342,
+    "hash": "505520da62ab3c4a9a3eb0108d38b700"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u534a\u5bfc\u4f534\u6708\u6295\u8d44\u7b56\u7565\uff1a\u63a8\u8350\u5468\u671f\u5411\u4e0a\u4e14\u4f4e\u4f4d\u7684\u6a21\u62df\u82af\u7247\u53ca\u9700\u6c42\u65fa\u76db\u7684\u7b97\u529b\u82af\u7247.md": {
+    "mtime": 1777581508.0,
+    "hash": "edf06696fe479670a26d5cb47315d63b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u5934\u90e8\u5c01\u88c5\u8bbe\u5907\u5382\u5546\u8fd1\u671f\u4e1a\u52a1\u8c03\u7814.md": {
+    "mtime": 1777581514.0,
+    "hash": "7178acb4915dcc6ab5180a571c4f5891"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.21-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e13\u5bb6\u4f1a\uff1a\u5317\u7f8eGPU\u548c\u6a21\u578b\u66f4\u65b0\uff0cCerebras\uff0cTPU\uff0cIFS\u5927\u5ba2\u6237\u8fdb\u5c55\u7b49.md": {
+    "mtime": 1777520226.497179,
+    "hash": "9e2767aa60c36ee95617b893cdfee061"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u672a\u547d\u540d 1.md": {
+    "mtime": 1777810364.7174015,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u4e1c\u5434\u73af\u4fdd\u516c\u7528-\u91cd\u6c34\u6c26\u6c14\u4e13\u5bb6\u4ea4\u6d41.md": {
+    "mtime": 1777518939.9905853,
+    "hash": "bdcfff1110abc7e1abb90f01c254cea5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Investor_Presentation_Greater_China_Semis_Focus_on.md": {
+    "mtime": 1777828040.6643598,
+    "hash": "f5a8144900cd7e745df5a94a49c567ce"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260419-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u79d1\u6280\u786c\u4ef6-\u5b8f\u89c2\u4e0d\u786e\u5b9a\u6027\u662f\u5426\u4f1a\u7ed9AI\u786c\u4ef6\u524d\u666f\u5e26\u6765\u538b\u529b MS-Greate.md": {
+    "mtime": 1777581506.0,
+    "hash": "88ca37ba1166bc223a9770c785de03ea"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260416-\u9ad8\u76db\uff1a\u65e5\u672c\u534a\u5bfc\u4f53\u8bbe\u5907\uff1aTSMC\u4e1a\u7ee9\u542f\u793a-\u8bbe\u5907\u9700\u6c42\u6301\u7eed\u63d0\u524d\u62c9\u52a8\uff0c\u62c9\u52a8\u6548\u5e94\u6301\u7eed\u5229\u597d G.md": {
+    "mtime": 1777581506.0,
+    "hash": "4a5c7d04321a11b3fce6656aea6c59cc"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.29-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u62db\u5546\u6709\u8272-\u78f7\u5316\u94df\u4e13\u5bb6\u4ea4\u6d41.md": {
+    "mtime": 1777517138.4581578,
+    "hash": "15ec6164c87cd8e0469cbb9521071ff6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/TSMC_Technology_Symposium_takeaways_Quick_Note.md": {
+    "mtime": 1777581520.0,
+    "hash": "031c09eda5da508c64e573f812be62be"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.03.31-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u5fb7\u79d1\u7acbQ1\u5c55\u671b\u4ee5\u53caOCS\u4e1a\u52a1\u5206\u6790.md": {
+    "mtime": 1777811204.490965,
+    "hash": "69d1f2226c689b3405262d737a3a7fbf"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.30-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u8fd1\u671f\u8c37\u6b4cTPU\u53ca\u4f9b\u5e94\u94fe\u60c5\u51b5\u8c03\u7814.md": {
+    "mtime": 1777516814.7512066,
+    "hash": "3a0b00efa45ca2ae657b481fd636b309"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.21-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u5929\u98ce\u7535\u65b0-\u8f7d\u4f53\u94dc\u7b94\u4e13\u5bb6\u4f1a.md": {
+    "mtime": 1777520284.3291745,
+    "hash": "3eba85b153ae94af811121907120ea3a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Expert_Call_Series_Takeaways_Optical_in_the_data_c.md": {
+    "mtime": 1777581516.0,
+    "hash": "c4fb957a5925c619b5d29f2308aed124"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/MS_AI_Infra_CPU_GPU_ASIC_Optical_China_chips_20260.md": {
+    "mtime": 1777581518.0,
+    "hash": "3fafe6108b224c2793f4fee273bb9db4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/JPM__APAC_Technology_-_INTC___TSMC___MTK___Murata_.md": {
+    "mtime": 1777581518.0,
+    "hash": "b21018c8cf40bc09cc18a13816c7b290"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2025.12.23-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u6ce1\u6ce1\u739b\u7279\u7ecf\u8425\u7b56\u7565\u53ca\u6d77\u5916\u5e02\u573a\u62d3\u5c55\u8fdb\u5ea6\u4ea4\u6d41\u2014\u20142025\u5e744\u5b63\u5ea6.md": {
+    "mtime": 1777811456.082807,
+    "hash": "69ffdc35a5c352f8e9d2267a8996fcb0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/OSIC 2026-CPO.md": {
+    "mtime": 1777118415.3036752,
+    "hash": "580ed5333013aa7cbfb4b96795b31126"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/GS_Broadcom_Google_Anthropic_custom_silicon_202604.md": {
+    "mtime": 1777581516.0,
+    "hash": "4c6e27c665858f43084c52c9c8d2459d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/UBS_Broadcom_Increasing_2027_TPU_Units_20260413.md": {
+    "mtime": 1777581520.0,
+    "hash": "134e7cf4f1738d1c51ddecc0770e1e3a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u56fd\u4ea7GPU\u548c\u6a21\u578b\u66f4\u65b0\uff0c\u4ea7\u80fd\u53d8\u52a8\uff0cDeepSeek V4\u667a\u8c31\u7b49.md": {
+    "mtime": 1777518813.2489278,
+    "hash": "b01ff2ca7d0b3ebcfd65d4cb94511380"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.02.04-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u82f1\u77fd\u667a\u80fdAI\u5236\u836f\u524d\u666f\u5206\u6790.md": {
+    "mtime": 1777811534.7644153,
+    "hash": "f44edd7ac5bb153ab44cdfc41e0591ba"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.26-\u5e15\u7c73\u5c14\u7814\u7a76\uff1aAI PCB\u4e13\u5bb6\u7cfb\u5217\u4f1a\u8bae\uff08\u5341\u56db\uff09#mSAP\u5de5\u827aPCB.md": {
+    "mtime": 1777518859.815212,
+    "hash": "3df014e8f0870dfe876042c7633b044e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/J P _Morgan_International_FTM_2_Apr_26_EU_Oil__Gas.md": {
+    "mtime": 1777581518.0,
+    "hash": "128463edf9a9f8340185223660b7a453"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Global_Optical_transceivers_Raising_800G_and_above.md": {
+    "mtime": 1777581516.0,
+    "hash": "61cdb9949f919936534b926d1d090db3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/OSIC 2026-OCS.md": {
+    "mtime": 1777118510.080362,
+    "hash": "b56cca4c80873a63f7906ccfd3b6bd01"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260424-\u5927\u6469\uff1a\u5730\u7f18\u653f\u6cbb\u91cd\u5851\u4e9a\u592a\u6295\u8d44\u683c\u5c40 MS-Geopolitics Rewires th.md": {
+    "mtime": 1777581508.0,
+    "hash": "ed9935591a4babc9672880ecc844800f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/MS-IT Hardware North America Monthly Data Tracker .md": {
+    "mtime": 1777581520.0,
+    "hash": "acf813ee470414948732d00a699c32d5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/Technology_-_Asia_Pacific_Optical_transceiver_expe.md": {
+    "mtime": 1777581520.0,
+    "hash": "6bfc894512f3aa63b199f70bfc37d6c5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/20260423-\u5c0f\u6469\uff1a\u56db\u5b63\u5ea6\u4e1a\u7ee9\u540e\u884c\u4e1a\u91cd\u4f30\uff0c\u817e\u8baf\u4e3a\u9996\u9009 JPM-China Internet Po.md": {
+    "mtime": 1777581508.0,
+    "hash": "45a6f6dfcc3c9b889a997d28da8a035e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/MediaTek_(2454 Tw)_Looking_beyond_smartphone_weakn.md": {
+    "mtime": 1777581518.0,
+    "hash": "40f210d93cc20d4f74b56758ad9434d2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.21-\u5e15\u7c73\u5c14\u7814\u7a76\uff1aOEM\u5382\u5546\u89e3\u8bfb\u56fd\u4ea7\u8d85\u8282\u70b9.md": {
+    "mtime": 1777520344.7733681,
+    "hash": "1ee8dc45be4a83caa2fd9ec7d0ed78a5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u5149\u901a\u4fe1-MOC.md": {
+    "mtime": 1777542061.8828635,
+    "hash": "1dc304b8b84f92c053adef1444fcd80c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/2026.04.17-\u5e15\u7c73\u5c14\u7814\u7a76\uff1a\u73af\u65ed\u7535\u5b502026\u5e74CPO\u4e1a\u52a1\u5c55\u671b.md": {
+    "mtime": 1777520903.5496533,
+    "hash": "c32bd71b2f3119b991fe42caa9359d48"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Obsidian Industrial/\u7eaa\u8981\u8be6\u60c5-msap\u4e13\u5bb620260426.md": {
+    "mtime": 1777581512.0,
+    "hash": "d59fda16478a7615471e7bcaa5cd28b7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/kb_snapshots/snapshot_tpu_cowos_20260428.md": {
+    "mtime": 1777360704.0574098,
+    "hash": "b6ca1c2edf0f775e74aa5de42c8d56f2"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260424-\u5927\u6469\uff1a\u5730\u7f18\u653f\u6cbb\u91cd\u5851\u4e9a\u592a\u6295\u8d44\u683c\u5c40 MS-Geopolitics Rewires the Investment Landscape.pdf": {
+    "mtime": 1777292847.4326048,
+    "hash": "92c234360104735808a7387de06e1564"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/J.P._Morgan_International_FTM_8_Apr_26_UMG;_Orange_SA;_The_SMid_View;_China_AI_Chip_Fabless;_Iluvatar_CoreX_-_H;_MetaX_-_A;_PayPay;_Polish_Apparel_Retail;_Brazil_Beer_Price_Check;_Guzman_Y_Gomez_and_More.pdf": {
+    "mtime": 1777354746.8495224,
+    "hash": "f7656328660a2beafb2536e6a47a7e6f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/TSMC_2026_Technology_Symposium_-_Quick_Takes.pdf": {
+    "mtime": 1777354809.1767235,
+    "hash": "13371deb9a8e96b5bc95c3071d8fc4eb"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/MARUWA_(5344.T)_Raising_AI_sales_estimates_and_TP_on_upward_revision_to_optical_transceiver_market_forecasts;_reiterate_Buy.pdf": {
+    "mtime": 1777354741.8218508,
+    "hash": "6499dea137038f720317e92c8367fdc0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Expert_Call_Series_Takeaways_Optical_in_the_data_center.pdf": {
+    "mtime": 1777354740.0267446,
+    "hash": "c0630dc104c5d7ef8f910fcb443ac0b8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Marvell_Technology_Inc_ASICs_Are_Here_to_Stay_NVDA_Investment_and_NVLink_Fusion_Partnership_Reaffirm_MRVL\u2018s_Position_as_a_Critical_Enabler_of_ASICs_Networking_for_Heterogeneous_AI_Infrastructure.pdf": {
+    "mtime": 1777354684.5824347,
+    "hash": "27666667d577a3d1c619b24a1b35ccd0"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260414-\u9ad8\u76db\uff1a\u535a\u901a(AVGO)\uff1a\u4e0eMeta\u5408\u4f5c\u5f3a\u5316\u5b9a\u5236\u82af\u7247\u4e0eAI\u7f51\u7edc\u6280\u672f\u4f18\u52bf GS-Partnership with Meta further reinforces Broadcom's technology advantage in c.pdf": {
+    "mtime": 1777292846.3280816,
+    "hash": "d8d11f06584bbf9222b11f31d328e6de"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Innolight_(300308.SZ)_Optical_module_speed_migration_continues_with_mix_upgrade_driving_GM_expansion;_TP_up_to_Rmb1,187;_Buy.pdf": {
+    "mtime": 1777354735.8560345,
+    "hash": "6a8b4324b110deaca1fc988af6365510"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/China_An_Equity_Strategist\u2019s_Diary_(H_A)_Weekly_wrap_(20-24_Apr)_AI_optimism_collides_with_labor_risks.pdf": {
+    "mtime": 1777354752.946409,
+    "hash": "245923e7df7fb276d2f49970b6128197"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u30a2\u30f3\u30ea\u30c4_(6754.T)_4Q\u60f3\u5b9a\u7dda_\u901a\u4fe1\u8a08\u6e2c\u8a08\u753b\u306f\u4e2d\u8a08\u304b\u3089\u4e0a\u65b9\u4fee\u6b63\uff1a\u5149\uff84\uff97\uff9d\uff7c\uff70\uff8a\uff9e\u5411\u3051\u306b\u52a0\u3048\u3001\u822a\u7a7a\u5b87\u5b99\u30fb\u5b89\u5168\u4fdd\u969c\u5411\u3051\u3082\u597d\u8abf\u3002\u696d\u7e3e\u30fbTP\u5f15\u304d\u4e0a\u3052\u3001\u8cb7\u3044\u518d\u5f37\u8abf\u3002.pdf": {
+    "mtime": 1777354742.3990164,
+    "hash": "903ff19dbcffcfaa0f9ca553f3832813"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Global_Sustainability_ai_Supply_Chains_Meet_Energy_Reality_Taiwan_and_Korea.pdf": {
+    "mtime": 1777354687.6947944,
+    "hash": "134741c7f259e215006e2f9bfc50dc13"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260424-\u9ad8\u76db\uff1aDeepSeek_V4\u53d1\u5e03-\u5bf9\u4e2d\u56fdAI\u6a21\u578b\u4e91\u4e0e\u6570\u636e\u4e2d\u5fc3\u7684\u5f71\u54cd GS-DeepSeek V4 launch \u2014 implications for China AI models_cloud_data centers.pdf": {
+    "mtime": 1777292846.6144552,
+    "hash": "d86ab93e2ead0306f8393f277f2547e1"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Investor_Presentation_Build_for_future_AI_infrastructure_\u2013_CPU,_GPU,_ASIC,_Optical,_and_China_chips.pdf": {
+    "mtime": 1777354756.3874774,
+    "hash": "b65ea9f2ea360debf2b0dc42a2e359af"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/S_hengyi_Electronics_Growth_may_re-accelerate_from_2Q26F_after_a_transition_period_...supported_by_stronger_demand_from_both_global_and_domestic_AI_customers.pdf": {
+    "mtime": 1777354757.0677564,
+    "hash": "ded0217bfb400dfda198d8958ee7967f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260426-\u9ad8\u76db\uff1a4\u6708FOMC\u4f1a\u8bae\u524d\u77bb-\u6309\u5175\u4e0d\u52a8\u9759\u5f85\u9886\u5bfc\u5c42\u4ea4\u63a5 GS-April FOMC Preview_ On Hold Ahead of the Leadership Transition.pdf": {
+    "mtime": 1777292849.214706,
+    "hash": "ae9bc0446bbc0a914658985dd6b6fb2e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260420-\u5927\u6469\uff1aAI Agent\u5174\u8d77\u7684\u5168\u7403\u542f\u793a\uff08\u5e7b\u706f\u7247\uff09MS-Rise of the AI Agent \u2013 Global Implications.pdf": {
+    "mtime": 1777292848.6488426,
+    "hash": "1d828e67eac9d445f80e34f54bf8c15d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u56fd\u52a1\u9662\u9881\u5e03\u4ea7\u4e1a\u94fe\u4f9b\u5e94\u94fe\u5b89\u5168\u76f8\u5173\u89c4\u5b9a\uff0c\u534a\u5bfc\u4f53\u6750\u6599\u56fd\u4ea7\u5316\u5c06\u52a0\u901f\u2014\u2014\u57fa\u7840\u5316\u5de5\u884c\u4e1a\u5468\u62a5\uff0820260407-20260410\uff09.pdf": {
+    "mtime": 1777354815.7477021,
+    "hash": "74e7386dd50d4f330d0c661efc3b9751"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Greater_China_Semiconductors_The_Foundry_Floorplan_TSMC_preview_update;_CoWoS_vs._EMIB_competition.pdf": {
+    "mtime": 1777354801.5423665,
+    "hash": "81703ce53213a84919ad555252ef4fb6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260419-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u79d1\u6280\u786c\u4ef6-\u5b8f\u89c2\u4e0d\u786e\u5b9a\u6027\u662f\u5426\u4f1a\u7ed9AI\u786c\u4ef6\u524d\u666f\u5e26\u6765\u538b\u529b MS-Greater China Technology Hardware Will Macro Uncertainties Weigh On AI Hardware Outlook.pdf": {
+    "mtime": 1777292849.1055853,
+    "hash": "6ff5dde9eade6ee34cc32016f71a8e09"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/UBS_Broadcom_Increasing_2027_TPU_Units_20260413.pdf": {
+    "mtime": 1777359884.903967,
+    "hash": "f6b677a3b79b417934ae02a9ca5df232"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Global_Optical_transceivers_Raising_800G_and_above_shipment_by_14%___29%___33%_for_2026-28E;_AI_to_drive_growth_ahead.pdf": {
+    "mtime": 1777354734.8561852,
+    "hash": "d238384503032a9604df887341070f54"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/China_AI_Chip_Fabless_Supply_a_short-term_bottleneck,_and_CSP_client_breakthrough_a_long-term_growth_driver.pdf": {
+    "mtime": 1777354750.9761896,
+    "hash": "bec4f2aea21f27c9911fbc8600b1a864"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Toning_up_2026_revenue_and_capex_guidance_TSMC_(unsurprisingly)_raises_guidance;_expresses_commitment_to_expand_capacity_in_due_course;_retain_Buy.pdf": {
+    "mtime": 1777354800.8368897,
+    "hash": "8186fdb016e09d8d80d10a0c2db1c321"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Global_Memory_Tech_Weekly_theme_toned-down_HBM_LTA,_L-T_shortages,_substrate_MLCC_upturn.pdf": {
+    "mtime": 1777354805.8240578,
+    "hash": "ab6b941f704b106ab802e6fe50c4864a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u8054\u53d1\u79d1\u6280_(2454.TW)_\u653e\u773c\u4e8e\u667a\u80fd\u624b\u673a\u4e1a\u52a1\u75b2\u8f6f\u4e4b\u5916\uff0c\u6211\u4eec\u9884\u8ba12027\u5e74AI_ASIC\u6536\u5165\u5c06\u52a0\u901f\u589e\u957f\uff1b\u91cd\u7533\u4e70\u5165\u8bc4\u7ea7\uff0c\u4e0a\u8c03\u76ee\u6807\u4ef7\u81f3\u65b0\u53f0\u5e012,454\u5143_(\u6458\u8981).pdf": {
+    "mtime": 1777354675.7155976,
+    "hash": "10be262a60b80a7401b223191cbf0e36"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/GS_Broadcom_Google_Anthropic_custom_silicon_20260408.pdf": {
+    "mtime": 1777359886.3829427,
+    "hash": "cc24ea1384dff72bc89ef984e3d18302"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/TSMC_CoWoS_and_advanced_back-end_updates.pdf": {
+    "mtime": 1777354799.1030116,
+    "hash": "ce901f37f0fda71e3f769cdc480871e7"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260422-\u5c0f\u6469\uff1a\u5b81\u5fb7\u65f6\u4ee3(SZ300750) \u79d1\u6280\u5347\u7ea7\u6811\u7acb\u884c\u4e1a\u65b0\u6807\u6746\uff0c\u5c0f\u6469\u7ef4\u6301\u884c\u4e1a\u9996\u9009 JPM-CATL Super Tech Day Sets New Industry Benchmarks.pdf": {
+    "mtime": 1777292846.6238852,
+    "hash": "5988af2c01894030ad15d5602acfeb54"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Investor_Presentation_Greater_China_Semiconductors_Global_AI_GPU_TPU_Industry_Updates_\u2013_What_Does_that_Mean_to_TSMC,_MediaTek_and_Niche_Memory.pdf": {
+    "mtime": 1777354683.399885,
+    "hash": "523f0b0940452697778e039175e65adc"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/MS_AI_Infra_CPU_GPU_ASIC_Optical_China_chips_20260427.pdf": {
+    "mtime": 1777359882.9763067,
+    "hash": "b65ea9f2ea360debf2b0dc42a2e359af"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260420-\u5927\u6469\uff1aAI Agent\u5174\u8d77\u7684\u5168\u7403\u542f\u793a MS-Rise of the AI Agent \u2013 Global Implications.pdf": {
+    "mtime": 1777292848.8285615,
+    "hash": "012ef7bda959d9cc56f95914206eaf3c"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Multiple_growth_drivers_ahead_in_AI_optical_network..._...1.6T_3.2T_transceivers,_NPO,_CPO_to_extend_AI_upcycle.pdf": {
+    "mtime": 1777354732.734726,
+    "hash": "a176324edd68072415b98c2dabb573ed"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Taiwan_Tech_March_sales_Supply_chain_upside_driven_by_AI_builds_and_early_pull-ins.pdf": {
+    "mtime": 1777354685.3006897,
+    "hash": "38e04359f65d2a829d5b23da43507743"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/MS_TSMC_AI_strength_Q1_review_20260420.pdf": {
+    "mtime": 1777359888.7163851,
+    "hash": "363552fbe4e6b26bdb8c347f27141316"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/US_Semiconductors_and_Hardware_Weekly_Investor_Pulse_Google_TPUs__TSMC_Technology_Roadmap.pdf": {
+    "mtime": 1777354807.5532432,
+    "hash": "fe7814a9b9f3e57d11ee4a56cac38ffd"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Semiconductors_CY26_Data_Center_Capex_Revised_Higher_and_Strong_Initial_Growth_Outlook_of_40%_for_CY27;_Positive_Across_the_Semiconductor_AI_Value_Chain_-_Potential_for_Continued_Upward_Revisions.pdf": {
+    "mtime": 1777354685.8505867,
+    "hash": "2dc7eae0712f8b8c1f6b1d3571ee1ae8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u534a\u5bfc\u4f53\u884c\u4e1a3\u6708\u4efd\u6708\u62a5\uff1aAI\u7b97\u529b\u9a71\u52a8\u4e0a\u6e38\u4ee3\u5de5\u589e\u957f_GTC\u5927\u4f1a\u53d1\u5e03VERA_RUBIN_AI\u8ba1\u7b97\u5e73\u53f0.pdf": {
+    "mtime": 1777354819.1507726,
+    "hash": "9ba70366a4430e18feada3df071b8ffe"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/J.P._Morgan_International_FTM_2_Apr_26_EU_Oil__Gas;_Paper__Packaging;_TSMC;_India_Consumer_Staples;_Power_Equipment;_China_Power_Equipment;_Japan_Equity_Strategy;_MENA_Fertilizers;_Brazilian_Homebuilders_and_More.pdf": {
+    "mtime": 1777354804.439122,
+    "hash": "46b7320f954518217769a036dd5c7b8a"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/JPM__APAC_Technology_-_INTC___TSMC___MTK___Murata_TY_APAC_Technology_-_Specialist_Sales_Commentary_Hardware_-_Semiconductors.pdf": {
+    "mtime": 1777354808.4335294,
+    "hash": "5eed21603f03b3fb94161abcd4b7c5ee"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u5168\u7403_\u5149\u6a21\u5757_\u5c062026-28\u5e74800G\u53ca\u4ee5\u4e0a\u5e02\u573a\u51fa\u8d27\u91cf\u9884\u6d4b\u4e0a\u8c0314%_29%_33%\uff1bAI\u5c06\u63a8\u52a8\u672a\u6765\u589e\u957f_(\u6458\u8981).pdf": {
+    "mtime": 1777354733.8778868,
+    "hash": "c40f66df51fb84d3c39417b287718db6"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/TSMC_Technology_Symposium_takeaways_Quick_Note.pdf": {
+    "mtime": 1777354806.982569,
+    "hash": "828768432b0132c81d831879283e5f85"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Latest_Questions_From_Investors_as_Optical_Breaks_Out_Optical__North_America.pdf": {
+    "mtime": 1777354739.094291,
+    "hash": "4045a18ce9fc44ff4be5e71fd7b89e22"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Greater_China_Semiconductors_Investor_Presentation_\u2013_Global_AI_GPU_TPU_Industry_Updates_Implications_for_TSMC,_MediaTek,_and_Niche_Memory.pdf": {
+    "mtime": 1777354680.9901822,
+    "hash": "989b3c80c8c02a4f71409b84fa157873"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Greater_China_Semiconductors_China's_AI_Accelerators_\u2013_Who's_Poised_to_Win.pdf": {
+    "mtime": 1777354758.37332,
+    "hash": "b7c8accc561cee66174925f80788d84d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u534a\u5bfc\u4f534\u6708\u6295\u8d44\u7b56\u7565\uff1a\u63a8\u8350\u5468\u671f\u5411\u4e0a\u4e14\u4f4e\u4f4d\u7684\u6a21\u62df\u82af\u7247\u53ca\u9700\u6c42\u65fa\u76db\u7684\u7b97\u529b\u82af\u7247.pdf": {
+    "mtime": 1777354820.3264945,
+    "hash": "8eb2672eabc1d8e89b93e225fbbbeb0b"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u7535\u5b50\u884c\u4e1a\u5468\u62a5\uff1aSEMI\u8868\u793a2025\u5e74\u5168\u7403\u534a\u5bfc\u4f53\u8bbe\u5907\u5e02\u573a\u8fbe1351\u4ebf\u7f8e\u5143\uff0c\u770b\u597d\u5b58\u50a8\u8bbe\u5907\u3001\u7b97\u529b\u9700\u6c42\u548c\u7aef\u4fa7AI\u786c\u4ef6\u521b\u65b0\u6d6a\u6f6e.pdf": {
+    "mtime": 1777354812.1666968,
+    "hash": "bf2c1814d070441f32bfc648496add09"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/MS-IT Hardware North America Monthly Data Tracker Previewing HDD Earnings...-20260422.pdf": {
+    "mtime": 1777292676.5953956,
+    "hash": "e59c9b8595d9ccb70d2d545f2e86d5f3"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Investor_Presentation_Greater_China_Semis_Focus_on_AI-related_semis_\u2013_GPU,_ASIC,_CPU,_and_Optical_Chips.pdf": {
+    "mtime": 1777354677.7582793,
+    "hash": "da7203a84b27c5eb5124de77b638b555"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Citi_TaiwanSemi_TPU_Evolution_MediaTek_GUC_20260427.pdf": {
+    "mtime": 1777359881.775775,
+    "hash": "c62e153d94b46fa0bde62e5804171342"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u91cd\u8981\u4ea7\u4e1a\u94fe\u53ca\u4ee3\u8868\u516c\u53f8\u6574\u7406.pdf": {
+    "mtime": 1777368664.1455312,
+    "hash": "b3bb38ae4ee5a6a76422b66c96e01c71"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/UBS_MediaTek_Key_Call_TPU_TAM_expanding_20260428.pdf": {
+    "mtime": 1777359880.7736523,
+    "hash": "198b1b50eac69db8b087120c2b3efe47"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260416-\u9ad8\u76db\uff1a\u65e5\u672c\u534a\u5bfc\u4f53\u8bbe\u5907\uff1aTSMC\u4e1a\u7ee9\u542f\u793a-\u8bbe\u5907\u9700\u6c42\u6301\u7eed\u63d0\u524d\u62c9\u52a8\uff0c\u62c9\u52a8\u6548\u5e94\u6301\u7eed\u5229\u597d GS-Japan SPE_ TSMC results read-across.pdf": {
+    "mtime": 1777292847.812039,
+    "hash": "a1062822e41bba41f2133fdc8ab5d4e9"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/J.P._Morgan_GEMS_FTM_8_Apr_26_China_AI_Chip_Fabless;_Iluvatar_CoreX_-_H;_MetaX_-_A;_Korea_Defense;_Brazil_Beer_Price_Check;_Brazil_Airlines;_Polish_Apparel_Retail_and_More.pdf": {
+    "mtime": 1777354748.1340399,
+    "hash": "332c98e3bdb6ae36ff51e362bd67e167"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Asia_Technology_Updating_supply_demand_heatmap_for_semis,_components,_and_materials;_tightness_intensified_YTD_for_AI_servers.pdf": {
+    "mtime": 1777354686.7364597,
+    "hash": "3d4c692ca904b996cf562d38856083c5"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Optical_transceiver_and_ABF_substrate_potential_upsides_Lift_PO_to_CNY340,_Buy.pdf": {
+    "mtime": 1777354737.100088,
+    "hash": "9f149b9a09b4163eb90428d013d38fdf"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Asia-Pacific_Technology_AI_Supply_Chain_Addressing_Questions_on_Nvidia_GPU_LPU_and_Google_TPU.pdf": {
+    "mtime": 1777354672.3020205,
+    "hash": "33235d6b3d0e1a863a3ad570428c6a55"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/China_AI_Intelligence_DeepSeek_V4_strengthening_model_efficiency_and_accelerating_compute_localisation.pdf": {
+    "mtime": 1777354752.198051,
+    "hash": "504a4020ce19cd1a25663e5bf1cca06f"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260423-\u5c0f\u6469\uff1a\u56db\u5b63\u5ea6\u4e1a\u7ee9\u540e\u884c\u4e1a\u91cd\u4f30\uff0c\u817e\u8baf\u4e3a\u9996\u9009 JPM-China Internet Post 4Q25 Results Sector Re-rating Tencent Top Pick.pdf": {
+    "mtime": 1777292847.8980765,
+    "hash": "09916cc0db02c50d123ba58a26134cf4"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/JPM_Broadcom_Google_LTA_Anthropic_MultiYear_TPU_20260407.pdf": {
+    "mtime": 1777359887.6166055,
+    "hash": "81c49872cbc92e04d51ccdda10559097"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260425-\u9ad8\u76db\uff1a\u53f0\u6e7e\u5468\u5ea6\u524d\u77bb GS-Taiwan Weekly Kickstart.pdf": {
+    "mtime": 1777292846.5948203,
+    "hash": "a347a89a4465dca0dc42c5dbdceeb4de"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/MediaTek_(2454.Tw)_Looking_beyond_smartphone_weakness,_we_expect_a_faster_AI_ASIC_revenue_ramp_in_2027;_reiterate_Buy_with_TP_up_to_NT$2,454.pdf": {
+    "mtime": 1777354679.147551,
+    "hash": "59eafd027270c976d676abccc50cdc31"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Technology_-_Asia_Pacific_Optical_transceiver_expert_call,_20_Apr_430pm_HKT.pdf": {
+    "mtime": 1777354740.7012138,
+    "hash": "dd407ec6a1ab86f457032d44e13b06e8"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u7535\u5b50\u884c\u4e1a\uff1aDeepSeek\u6b63\u5f0f\u53d1\u5e03\u65b0\u4e00\u4ee3\u5927\u6a21\u578bV4\uff0c\u770b\u597d\u5b58\u50a8\u8bbe\u5907\u3001\u7b97\u529b\u9700\u6c42\u548c\u7aef\u4fa7AI\u786c\u4ef6\u521b\u65b0\u6d6a\u6f6e.pdf": {
+    "mtime": 1777354813.401651,
+    "hash": "c9e6f65abaae8480a06a720600aa3d7e"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260419-\u5927\u6469\uff1a\u4e2d\u56fd\u539f\u6750\u659926Q2\u5c55\u671b-\u5728\u4e0d\u786e\u5b9a\u6027\u4e2d\u5bfb\u627e\u786e\u5b9a\u6027 MS-2Q26 Outlook Finding Certainty In Uncertainty.pdf": {
+    "mtime": 1777292848.5610251,
+    "hash": "5283e1b603de12d703f833f46ad62aac"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/Tech_Snippets_Reports_of_TSMC_accelerating_SoIC_capacity_positive_for_Besi.pdf": {
+    "mtime": 1777354802.830637,
+    "hash": "b634be61484c384f01148ae79e7f774d"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/\u7535\u5b50\u884c\u4e1a\u5468\u62a5\uff1a\u4e09\u661fQ2_DRAM\u5408\u7ea6\u4ef7\u9884\u8ba1\u73af\u6bd4\u4e0a\u6da830%\uff0c\u770b\u597d\u5b58\u50a8\u8bbe\u5907\u3001\u7b97\u529b\u9700\u6c42\u548c\u7aef\u4fa7AI\u786c\u4ef6\u521b\u65b0\u6d6a\u6f6e.pdf": {
+    "mtime": 1777354814.9831748,
+    "hash": "dadf16ad14d7dbfb658e00ccb3c28e01"
+  },
+  "/Users/lunarabbit/Documents/Database/\u884c\u4e1a\u7814\u7a76/raw/Industrial Analysis pdfs/20260420-\u5927\u6469\uff1a\u5927\u4e2d\u534e\u534a\u5bfc\u4f53\uff1a\u805a\u7126AI\u76f8\u5173\u534a\u5bfc\u4f53\u2014\u2014GPU\u3001ASIC\u3001CPU\u548c\u5149\u82af\u7247 MS-Greater China Semis_ Focus on AI-related semis \u2013 GPU, ASIC, CPU, and O.pdf": {
+    "mtime": 1777292847.7466989,
+    "hash": "ee371a6b2fc30d53ee76f1c0521db853"
+  }
+}

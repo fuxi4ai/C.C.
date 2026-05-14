@@ -11,11 +11,11 @@ type: log
 
 ## 待办
 
-- [ ] **给渊图跑 graphify**
+- [x] **给渊图跑 graphify**（832 nodes, $9.62）
   `cd ~/Documents/Database/行业研究 && graphify . --obsidian --obsidian-dir ~/Documents/Claude/brain/graphify/渊图`
   （需先确认 graphify 在 PATH：`export PATH="$PATH:~/.local/bin"`）
 
-- [ ] **给 DVA 跑 graphify**
+- [x] **给 DVA 跑 graphify**（1070 nodes, $0.85）
   `cd ~/Documents/Claude/Projects/DVA && graphify . --obsidian --obsidian-dir ~/Documents/Claude/brain/graphify/DVA`
 
 - [ ] **政治经济学 G-06 至 G-14 认识论陷阱全量入 brain**

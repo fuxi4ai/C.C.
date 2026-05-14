@@ -128,7 +128,17 @@ type: permanent       # permanent | fleeting | log | resource | decision
 2. 查询 vault 了解决策和上下文
 3. 最后才直接读源代码
 
-**当前有图谱的项目**：（待生成）
+**当前有图谱的项目**：
+
+| 项目 | 节点 | 路径 |
+|------|------|------|
+| DVA | 1070 节点 / 2203 边 / 65 community | `graphify/DVA/graphify-out/graph.json` |
+| 渊图 | 832 节点 / 多边 / N community | `graphify/渊图/graphify-out/graph.json` |
+
+查询：`graphify query "<问题>" --graph brain/graphify/{项目}/graphify-out/graph.json`
+解释：`graphify explain "节点名" --graph ...`
+最短路径：`graphify path "A" "B" --graph ...`
+
 
 ## 文件落点规则（Doctor 定，2026-05-14）
 

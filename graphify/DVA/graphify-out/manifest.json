@@ -1,0 +1,1466 @@
+{
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dva-to-graphify.js": {
+    "mtime": 1778047408.5430152,
+    "hash": "3152313c71f478d194a3064680e76c01"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/fix-profiles.js": {
+    "mtime": 1778007044.2242403,
+    "hash": "5673e703d1e7678e9eeec11332799512"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd-import.js": {
+    "mtime": 1778040528.7713661,
+    "hash": "5da0d811dd76c8057664e9f71431157e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/run-partial.js": {
+    "mtime": 1777999749.4000294,
+    "hash": "feba444e548c2c37e32ce171bf648fcf"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dva.js": {
+    "mtime": 1777917127.8186297,
+    "hash": "bba0330b7ed6ffab350363bcf9b9e205"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/rerun-semantic.js": {
+    "mtime": 1778008490.0105474,
+    "hash": "f4833ce8483d61824dde7b6ab4ac90ca"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/tools/auto-error-handler.js": {
+    "mtime": 1777888873.0,
+    "hash": "c96b703c6a8ea75ed864650906c567d6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/tools/check-browser.js": {
+    "mtime": 1777888873.0,
+    "hash": "f956c73ddb80928c8e82ced55e4a54d0"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/tools/project-health-check.js": {
+    "mtime": 1777888873.0,
+    "hash": "196c63ed5e6d0669a362d3e4915a94ee"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/tools/auto-fixers.js": {
+    "mtime": 1777888873.0,
+    "hash": "30ff96264a8149202d223397ee38818f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/tools/example-with-auto-error-handling.js": {
+    "mtime": 1777888873.0,
+    "hash": "8975e119d9581f38241b0ccc58fa9a04"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/yt-dlp/ytdlp-rename-folders.js": {
+    "mtime": 1778233572.5721278,
+    "hash": "b2c6c7e31289ed35cc22c8df77d3dd93"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/yt-dlp/ytdlp-import.js": {
+    "mtime": 1778233617.492498,
+    "hash": "4361aa12d87b4b2043fbfa28f1572568"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/1-\u83b7\u5f97\u89c6\u9891\u94fe\u63a5/get_video_links_reusable.js": {
+    "mtime": 1777888873.0,
+    "hash": "4b91053cc7216a1caf2e5a9fa34c303d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/1-\u83b7\u5f97\u89c6\u9891\u94fe\u63a5/dva_browser_utils.js": {
+    "mtime": 1777912565.8559039,
+    "hash": "ec6aff48bc663babfea967bfeb2eff80"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u57fa\u7840\u6a21\u5757/analysis-utils.js": {
+    "mtime": 1777997826.5186636,
+    "hash": "8eece3ea8d73a7a107a4c675ea52ac5b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u57fa\u7840\u6a21\u5757/douyin_database.js": {
+    "mtime": 1777970402.0595794,
+    "hash": "87d0b25d8f2cef5b85da64bfb55eb3b9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u57fa\u7840\u6a21\u5757/logger.ts": {
+    "mtime": 1777888873.0,
+    "hash": "d71ead24c8d2c1c7551c80fc53088aee"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u57fa\u7840\u6a21\u5757/dva_worker.js": {
+    "mtime": 1777888873.0,
+    "hash": "83c28fbd5a6ec5fec5180d44a2be6be8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u57fa\u7840\u6a21\u5757/llm-client.js": {
+    "mtime": 1777988476.8744938,
+    "hash": "32feea05dd7f3e528f509205014f2b35"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u57fa\u7840\u6a21\u5757/dva_config.js": {
+    "mtime": 1778038756.676803,
+    "hash": "48b1f81dbab4f7ff5d375386392653ff"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u57fa\u7840\u6a21\u5757/performance-optimizer.ts": {
+    "mtime": 1777888873.0,
+    "hash": "a27be5ca190440f3b269298fdc2266a8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/2-\u83b7\u5f97\u89c6\u9891\u6587\u672c\u5185\u5bb9/dva_crawler_playwright.js": {
+    "mtime": 1777888873.0,
+    "hash": "d78a15a5bbd6a71b7afecd745ebec232"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/analyze-author.js": {
+    "mtime": 1778059053.5791566,
+    "hash": "7a5c69d6c99f0ce9e6c9627db1ee8195"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/mind-model/mind-extractor.js": {
+    "mtime": 1778046002.2371938,
+    "hash": "68fc93d311f1a0d6ea8321c9eaf7d29f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/semantic-understanding/semantic-parser.js": {
+    "mtime": 1778038774.622462,
+    "hash": "6f1df88f114a529c37bb3ad49321fecf"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/institutional-tracker/merge-drivers.js": {
+    "mtime": 1778065898.3077903,
+    "hash": "6d952be1b5d2d36779fe753fc335e8c8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/institutional-tracker/institutional-tracker.js": {
+    "mtime": 1778075212.713728,
+    "hash": "17cee6e7a3b4f286131a0b2db638ff48"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/institutional-tracker/build-ticker-timeline.js": {
+    "mtime": 1778065735.2405114,
+    "hash": "d2f5e461c5ad66c82425765ec96650ee"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/insight-detection/signal-detector.js": {
+    "mtime": 1777888873.0,
+    "hash": "e835b6381d60a2f18394575309518b5c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/author-profile/author-profiler.js": {
+    "mtime": 1778233964.1964464,
+    "hash": "78c534b9cb8893754365c5b09b303676"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/panorama/panorama-scanner.js": {
+    "mtime": 1777888874.0,
+    "hash": "33608c04fbbf42de862ae8c8c3318067"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/validation/classification-validator.js": {
+    "mtime": 1777888874.0,
+    "hash": "f5aa2c505427d091d3e160427eac1140"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/validation/validation-report-generator.js": {
+    "mtime": 1777888874.0,
+    "hash": "e4b78745458ee47cc15465a7e145a013"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/validation/consistency-checker.js": {
+    "mtime": 1777888874.0,
+    "hash": "902ab1757ffe01c7e5a75057bef1a61e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/validation/accuracy-validator.js": {
+    "mtime": 1777888874.0,
+    "hash": "2bb12d93cada02c197b8d1267877d19c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/wisdom-sink/database-manager.js": {
+    "mtime": 1777973391.805083,
+    "hash": "db174492f6236a023d92df8e5fe379e5"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/wisdom-sink/embedding-generator.js": {
+    "mtime": 1777973391.809048,
+    "hash": "7bc6f5e0d23e15c56f1bc2cc741b9df2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/wisdom-sink/wisdom-extractor.js": {
+    "mtime": 1777975516.0985997,
+    "hash": "53012b78ce0ac6468400bf839a6d59f9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/wisdom-sink/knowledge-graph-generator.js": {
+    "mtime": 1777888874.0,
+    "hash": "90f9eb6e201950d59ac4cb8bef6d4282"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/wisdom-sink/vector-search.js": {
+    "mtime": 1777973391.8131788,
+    "hash": "cb43d9d0dda1149ecd3df303ed517388"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/dvaq.js": {
+    "mtime": 1777888874.0,
+    "hash": "cf52f771e83fc27be138ac0a2e1738d1"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/dvaq.ts": {
+    "mtime": 1777977136.2208822,
+    "hash": "034305ce536f1f8e1358c2536f042df7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/index.ts": {
+    "mtime": 1777888874.0,
+    "hash": "1003a9f477e5ac295c51df64a2216a77"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/types/index.ts": {
+    "mtime": 1777888874.0,
+    "hash": "eb8c755e01d7606cfb50312c8be95512"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/cli-shortcuts.ts": {
+    "mtime": 1777888874.0,
+    "hash": "579e8ddc41d0a45e18fc856201683431"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/market-data-fetcher.ts": {
+    "mtime": 1777888874.0,
+    "hash": "5b56247c0681ecc6d49b21c954bf7fed"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/progress-display.ts": {
+    "mtime": 1777888874.0,
+    "hash": "bcdd47d96a6301174faec46b0a66f18d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/visualization-generator.ts": {
+    "mtime": 1777888874.0,
+    "hash": "50fbfc2335235456bfc8d40c1a7056e2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/data-interface.ts": {
+    "mtime": 1777977063.0255978,
+    "hash": "63623bdd102265adee410091ea25fafe"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/result-comparison.ts": {
+    "mtime": 1777888874.0,
+    "hash": "56b27ba287e4c3340fab8fa37517164b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/factor-standardizer.ts": {
+    "mtime": 1777888874.0,
+    "hash": "b2fe38a6082f526f7aa8708afbd424e6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/rerun-from-file.ts": {
+    "mtime": 1777888874.0,
+    "hash": "0414046cc22cb9812322ed326e0ce8d3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/decision-tendency-analyzer.ts": {
+    "mtime": 1777888874.0,
+    "hash": "68ac02f1a550ecb764691db09067d4fc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/report-generator.ts": {
+    "mtime": 1777888874.0,
+    "hash": "c1487d450b08499ea758985c01129b9c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/regression-analyzer.ts": {
+    "mtime": 1777888874.0,
+    "hash": "d0337b4ecac96c5aae3a876d88affe17"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/human-readable-summary.ts": {
+    "mtime": 1777888874.0,
+    "hash": "55911ce9952a39d0e5785c81e671b5a5"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/src/core/dao-fa-shu-integrator.ts": {
+    "mtime": 1777888874.0,
+    "hash": "7d65002a03de686c2896f8433a3dc3cd"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/extract-dva-subtitles-for-graphify.js": {
+    "mtime": 1777888873.0,
+    "hash": "eea0f0ad8128e945358bde598b2c8200"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/run-dva-graphify.py": {
+    "mtime": 1777891278.0,
+    "hash": "d72ba1e88cdb1cf3a7ef570210502fd1"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvad-data-manager.js": {
+    "mtime": 1777888874.0,
+    "hash": "f82ea4041d21241bed782f5d63774716"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/seed-from-dyd.js": {
+    "mtime": 1777904983.8081021,
+    "hash": "a85005b1c4d6a1925a11d22cb0eb0a7b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/run.py": {
+    "mtime": 1777885358.28929,
+    "hash": "fd5cb19db6c972c424030934a1b9b8ed"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/__init__.py": {
+    "mtime": 1777885358.2518172,
+    "hash": "67932ff0f627bee87355924562ba7619"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/dva_asr.py": {
+    "mtime": 1777983266.690081,
+    "hash": "171dc2b7398ea5674f4e3e2d561a372d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tools/__init__.py": {
+    "mtime": 1777885358.3099468,
+    "hash": "c6c96e211af149db550dfc13d8637f56"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tools/cookie_fetcher.py": {
+    "mtime": 1777885358.3104694,
+    "hash": "e4d4b02e153a9de3aa1303dbe5ee0864"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/downloader_factory.py": {
+    "mtime": 1777885358.2658043,
+    "hash": "0f079db4ec11b0307771e550ab8715ed"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/music_downloader.py": {
+    "mtime": 1777885358.267398,
+    "hash": "a495a0338f0773179128cb50a80b0db2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_mode_registry.py": {
+    "mtime": 1777885358.2694237,
+    "hash": "9d11614e083602a0397171e482ca0afa"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/discovery.py": {
+    "mtime": 1777885358.264587,
+    "hash": "70654f16c08a0afecb638cd9bc93a54e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_downloader.py": {
+    "mtime": 1777885358.2690043,
+    "hash": "75f5e738872e1a2cdb498960efee9359"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/mix_downloader.py": {
+    "mtime": 1777885358.2668722,
+    "hash": "2539f4a9aacff8c2c07b98d049401f78"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/__init__.py": {
+    "mtime": 1777885358.2626605,
+    "hash": "673791d05a21eeed0b85664f6eb7728d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/transcript_manager.py": {
+    "mtime": 1777885358.268011,
+    "hash": "1f2c355398ee426ddbadd23111414b1d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/url_parser.py": {
+    "mtime": 1777885358.2684362,
+    "hash": "ca1caca793e5475a370e24f562cf6aca"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/live_downloader.py": {
+    "mtime": 1777885358.2663205,
+    "hash": "83e6a6a956f7b290a68717bf6cc7940f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/comments_collector.py": {
+    "mtime": 1777885358.2641842,
+    "hash": "32ce9123a3a8f6acd370e61413505279"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/api_client.py": {
+    "mtime": 1777885358.2637038,
+    "hash": "20239ff8ad2e181e495cf2bcb49973d9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/video_downloader.py": {
+    "mtime": 1777885358.273912,
+    "hash": "5f39da8cd9e6d647669401bc4a64fe08"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/downloader_base.py": {
+    "mtime": 1777885358.2653818,
+    "hash": "9836ac14a8bdf32a7b8cf66585137245"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/post_strategy.py": {
+    "mtime": 1777885358.273536,
+    "hash": "80474147183135a74989d05fba58375f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/base_strategy.py": {
+    "mtime": 1777885358.2710056,
+    "hash": "88a9c2050630fa80bfd31b8caf8ef338"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/__init__.py": {
+    "mtime": 1777885358.2704446,
+    "hash": "0931f661b5b6f8bc6f9e0e6c081625e0"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/collect_strategy.py": {
+    "mtime": 1777885358.2718327,
+    "hash": "c6759d1a74f76630512138d0a9ab5a7a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/music_strategy.py": {
+    "mtime": 1777885358.2731216,
+    "hash": "303e641aeacd4d26b1a0ee85f0045d9f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/like_strategy.py": {
+    "mtime": 1777885358.2722895,
+    "hash": "47f83fbee9da2bdab19e8dc424fdc3f4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/collect_mix_strategy.py": {
+    "mtime": 1777885358.2714221,
+    "hash": "ed645187f6b4c1af0a508c5f7cb5d9bd"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/mix_strategy.py": {
+    "mtime": 1777885358.2726827,
+    "hash": "005aceebed722ce5acb619f6109dbdf9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/config/config_loader.py": {
+    "mtime": 1777885358.2584963,
+    "hash": "aa1d86b15d064c5218a0ca7132cbc7bb"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/config/__init__.py": {
+    "mtime": 1777885358.2579658,
+    "hash": "9a3a55852eae520a03aa45a8032f301e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/config/default_config.py": {
+    "mtime": 1777885358.2588944,
+    "hash": "96582d1c6cf77367e4d3906b4d85c47e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/auth/__init__.py": {
+    "mtime": 1777885358.252849,
+    "hash": "17c6c55403a08519402f1d4092e5d877"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/auth/ms_token_manager.py": {
+    "mtime": 1777885358.2537236,
+    "hash": "ec3a8a066080c4835098482b9c0ca936"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/auth/cookie_manager.py": {
+    "mtime": 1777885358.2532675,
+    "hash": "d74d507fae40b3ab3bded2f811156965"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_api_client.py": {
+    "mtime": 1777885358.2947752,
+    "hash": "cc50d59501ba2aeba56f8ca8355b68a2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_comments_collector.py": {
+    "mtime": 1777885358.295775,
+    "hash": "0e2e7480a31f09be5795a3453a3f3867"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_database.py": {
+    "mtime": 1777885358.2986107,
+    "hash": "4498a1af050fea19345d5e3b2c0916bb"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_notifier.py": {
+    "mtime": 1777885358.302608,
+    "hash": "78db72f454c80eef9c99bd949fb97a41"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_cookie_manager.py": {
+    "mtime": 1777885358.2977536,
+    "hash": "9ceeb0e798b56c14492776e0e60f055f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_progress_display.py": {
+    "mtime": 1777885358.3030214,
+    "hash": "74b163e2b1b18d51f754194909d0081e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_config_loader.py": {
+    "mtime": 1777885358.296344,
+    "hash": "57ef94ed386f416d9731ee224a457cb6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_cookie_utils.py": {
+    "mtime": 1777885358.2981775,
+    "hash": "a55c78a6099329eb27f633c5d2ffaf70"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_user_downloader_modes.py": {
+    "mtime": 1777885358.3066876,
+    "hash": "61c122beb12c8980d02ca2aadfa9c2ce"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_cli_main.py": {
+    "mtime": 1777885358.2951496,
+    "hash": "ff69fdcafc3e02f79258e41fa6bacfe7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_video_downloader.py": {
+    "mtime": 1777885358.3085046,
+    "hash": "e907f59003df19aa979b4f276c2c172c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_file_manager.py": {
+    "mtime": 1777885358.2998405,
+    "hash": "3b74a8c8a6ec5e4432e313bcb43d9a49"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_cookie_fetcher.py": {
+    "mtime": 1777885358.2972918,
+    "hash": "7d33d6ac6325138dccc346adc524c1c8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_ms_token_manager.py": {
+    "mtime": 1777885358.3016462,
+    "hash": "63c662dd0ba4d8747bb9c71594979429"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_media_quality.py": {
+    "mtime": 1777885358.3008072,
+    "hash": "58fa275c1fd0d827f25f6070e6d5489b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_user_mode_strategies.py": {
+    "mtime": 1777885358.3077688,
+    "hash": "acb7d19738bbb5e35f8b0f104b83f1d9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_live_downloader.py": {
+    "mtime": 1777885358.3003705,
+    "hash": "bc768d231365451c93dfe6ff95b45fb4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_xbogus.py": {
+    "mtime": 1777885358.308909,
+    "hash": "fa69f1dc633168cfc9c53d7d903f3104"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_config_validation.py": {
+    "mtime": 1777885358.2967575,
+    "hash": "793c361c4fad98ea38d9fb32dbfd77b8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_mix_downloader.py": {
+    "mtime": 1777885358.3012087,
+    "hash": "9e710722ec58b7b9c30505959303a4e2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_discovery.py": {
+    "mtime": 1777885358.299039,
+    "hash": "9ae9368b1af454168a21eb2959522192"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_server.py": {
+    "mtime": 1777885358.3047445,
+    "hash": "2feac93e772f44e6459955170396e0f2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_retry_handler.py": {
+    "mtime": 1777885358.3042192,
+    "hash": "cf6e609545f5b611e45242abbb68ae87"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_url_parser.py": {
+    "mtime": 1777885358.305571,
+    "hash": "1631ef12174559247bbe4c16f5d26aa4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_transcript_manager.py": {
+    "mtime": 1777885358.3051605,
+    "hash": "500f2dadae50aaaf74132fbdaae60f46"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_rate_limiter.py": {
+    "mtime": 1777885358.303412,
+    "hash": "27f8904f1f7d9e7912a47db9ce72fe0d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_music_downloader.py": {
+    "mtime": 1777885358.3021488,
+    "hash": "33184b19e008ba903b1c0a2f27717529"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_downloader_factory.py": {
+    "mtime": 1777885358.2994428,
+    "hash": "fc63b0e8a5fac2f82652323f29d9d114"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_user_downloader.py": {
+    "mtime": 1777885358.306165,
+    "hash": "32b86711fe0d0eb94b9bcbb303c64347"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/test_user_mode_registry.py": {
+    "mtime": 1777885358.30709,
+    "hash": "7a1b894aa82a7bdaee8cdc1b6b97d997"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/server/__init__.py": {
+    "mtime": 1777885358.2899225,
+    "hash": "0b45f253d1daae2bad6cbd8598366011"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/server/jobs.py": {
+    "mtime": 1777885358.2909117,
+    "hash": "73b30bcd60bc903996198ff090aa21a4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/server/app.py": {
+    "mtime": 1777885358.290423,
+    "hash": "e451208740ea9aa9b8459c245b797aca"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/xbogus.py": {
+    "mtime": 1777885358.3155441,
+    "hash": "aca61ef64ba187e922aee57d54cc9d16"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/validators.py": {
+    "mtime": 1777885358.3150845,
+    "hash": "fa7d0857b05d940eafdf406a14e6855c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/notifier.py": {
+    "mtime": 1777885358.3146718,
+    "hash": "08107fce17a91857381123b917d5e38c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/__init__.py": {
+    "mtime": 1777885358.3117616,
+    "hash": "49f13b3956153f35e52a2e1d8bc70a29"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/logger.py": {
+    "mtime": 1777885358.3141441,
+    "hash": "db97fcafbfd6665cbb88638680d7f99a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/helpers.py": {
+    "mtime": 1777885358.313688,
+    "hash": "6e382cf731907be1c40623eb244e1e05"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/abogus.py": {
+    "mtime": 1777885358.3128083,
+    "hash": "ade968fdca724f08e811e2ed456e99b1"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/cookie_utils.py": {
+    "mtime": 1777885358.3132763,
+    "hash": "79c977c62cc62ab6475909cba2c21a0e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/cli/__init__.py": {
+    "mtime": 1777885358.2547154,
+    "hash": "cffa25aff6e1dd1d8ee2cfb9c71b43e7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/cli/main.py": {
+    "mtime": 1777885358.2553117,
+    "hash": "14768db607ad99e4bd59b87eea4c3f12"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/cli/progress_display.py": {
+    "mtime": 1777885358.2558424,
+    "hash": "263e821c27c5c3d348d991f2561dc8ef"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/cli/whisper_transcribe.py": {
+    "mtime": 1777885358.256542,
+    "hash": "2b3e745bfb875c25a26dc9d9bac352c4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/storage/database.py": {
+    "mtime": 1777885358.2926037,
+    "hash": "795879e3c31ff83a9dc25133d1ba6ecb"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/storage/__init__.py": {
+    "mtime": 1777885358.2920783,
+    "hash": "30d8c50d696cbedcde4a434c40ad3f64"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/storage/file_manager.py": {
+    "mtime": 1777885358.293121,
+    "hash": "69f85431c54bc954ac58e5b25fc5d24c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/storage/metadata_handler.py": {
+    "mtime": 1777885358.2935493,
+    "hash": "325651fd5ae669489998908ddfa9a0df"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/control/rate_limiter.py": {
+    "mtime": 1777885358.2607636,
+    "hash": "82ebea0e4df3c28c18a615b9b1ad8955"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/control/__init__.py": {
+    "mtime": 1777885358.259922,
+    "hash": "51d0b303caaa5b67c5fd3534edc82b7b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/control/retry_handler.py": {
+    "mtime": 1777885358.2611797,
+    "hash": "1d3c226f71f31ecaba84704e4cff9aec"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/control/queue_manager.py": {
+    "mtime": 1777885358.2603328,
+    "hash": "f1d246e6a60dee1b5c084fcadaa0c675"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/GOTCHAS.md": {
+    "mtime": 1778055348.0776825,
+    "hash": "a052ecdd917ed0d52f782e75031d5cd4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/CHANGELOG.md": {
+    "mtime": 1778236628.52793,
+    "hash": "fd67590583bd45986b71917c857defd8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/TROUBLESHOOTING.md": {
+    "mtime": 1777888873.0,
+    "hash": "90df6e20e31283674b91684758f896d5"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/PRD-per-author-modules.md": {
+    "mtime": 1778050236.6736712,
+    "hash": "c023ae87b0e19582cfd5c7062ad92073"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/TODO.md": {
+    "mtime": 1778055265.4833763,
+    "hash": "3f8ffecc8fd15bba527bcbbb48640804"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/README.md": {
+    "mtime": 1777888873.0,
+    "hash": "2eb9161d1dc656d3f80e17a655cfed5a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/INDEX.md": {
+    "mtime": 1778055288.5088382,
+    "hash": "e69e20a66c12fbfaf42fd762b5023e57"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u4f7f\u7528\u6d41\u7a0b.md": {
+    "mtime": 1777888873.0,
+    "hash": "bf6680ec7ff13fe78c4b96814defdb00"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/\u53ef\u590d\u7528\u539f\u5219.md": {
+    "mtime": 1777888873.0,
+    "hash": "7f4aaf9c7f125c8866a9eeccfd336cee"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/PRD-DYD-DVA-v1.0.md": {
+    "mtime": 1777891287.0,
+    "hash": "87ab3b181278d508166e9eae148bf04a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/yt-dlp/GOTCHAS.md": {
+    "mtime": 1778231282.6135428,
+    "hash": "46e6d72ee9c320d9ccc8ede8151803ad"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/yt-dlp/CHANGELOG.md": {
+    "mtime": 1778230461.044403,
+    "hash": "e2d87cf1f4099d044a1a343d1ab17fff"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/yt-dlp/TODO.md": {
+    "mtime": 1778230534.9717805,
+    "hash": "63eeca69011723a886293937bf17efc0"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/yt-dlp/README.md": {
+    "mtime": 1778230436.6327958,
+    "hash": "989590d38eaf616158057a6bf77b35b9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/CHANGELOG.md": {
+    "mtime": 1777888873.0,
+    "hash": "b1f66c847a98b8909e656e1526cf2179"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/README.md": {
+    "mtime": 1777888874.0,
+    "hash": "3e066ee3b25e67b83c3598f51e6f0fb6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/PRD-DVA4.0.md": {
+    "mtime": 1777888874.0,
+    "hash": "cd18782a9d1e412d14a4fb734e83bd1a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/mind-model/README.md": {
+    "mtime": 1777888873.0,
+    "hash": "252bee328825a21b76c3b7d1f3d8f590"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/semantic-understanding/README.md": {
+    "mtime": 1777888873.0,
+    "hash": "5ea151155f8aa6da3732c7a685ab7173"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/insight-detection/README.md": {
+    "mtime": 1777888873.0,
+    "hash": "788ad4efbafa123804c964030cd1c2ad"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/author-profile/README.md": {
+    "mtime": 1777888874.0,
+    "hash": "430fd074ef7559e44aacdd93aa5af681"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/panorama/README.md": {
+    "mtime": 1777888874.0,
+    "hash": "5a20238c48624cec8be7efe756c3180b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/validation/README.md": {
+    "mtime": 1777888874.0,
+    "hash": "70075844c1f0390c6cde2f9fccb9d77e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/3-\u6587\u672c\u5206\u6790/wisdom-sink/README.md": {
+    "mtime": 1777888874.0,
+    "hash": "c06a2eba585d8499d51396921d45cdf9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/CODE_MAPPING.md": {
+    "mtime": 1777888874.0,
+    "hash": "68b6ff056fc409d6ccc4644890391ad4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/README.md": {
+    "mtime": 1777888874.0,
+    "hash": "41447cf764528491a52868d2ba022061"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/4-\u91cf\u5316\u5206\u6790/QUICK_INDEX.md": {
+    "mtime": 1777888874.0,
+    "hash": "27433995bb89a2b9fb4aa685e5df674b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/AUTO_ERROR_HANDLING_README.md": {
+    "mtime": 1777888873.0,
+    "hash": "4f63f1590e395b02c66404b47a476731"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/author-profile-\u672a\u77e5\u4f5c\u8005.md": {
+    "mtime": 1777888873.0,
+    "hash": "3ddaef29f720a21b54b3c872639b14ff"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-report-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T12-33-16-601Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "acfbf80e4f2b6c747b9bdf2d772115c4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/DVA_\u5b8c\u6574\u7d22\u5f15.md": {
+    "mtime": 1777888873.0,
+    "hash": "eedc9ee68dafada11db66df249abab8f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/CALL_GRAPH.md": {
+    "mtime": 1777888873.0,
+    "hash": "82d80b1d5eeaf1c59520f426c602b339"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-report-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T16-16-23-985Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "f5f4fbc3af76290518d0baa299ec3e20"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/mind-model-report.md": {
+    "mtime": 1777912188.025394,
+    "hash": "89bab16f9353601e6527d0c1d77d4415"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-report-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T16-22-45-363Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "694ab49c4fc9456f39be1d1a7f1341d4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/wisdom-collection.md": {
+    "mtime": 1777912188.1474245,
+    "hash": "b4727c33e302f8ca27bd6d959ab45761"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/author-profile.md": {
+    "mtime": 1777888873.0,
+    "hash": "c70d6b27cd9f0fdffa8c7f4c167c39f7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/wisdom-collection-\u672a\u77e5\u4f5c\u8005.md": {
+    "mtime": 1777888873.0,
+    "hash": "327c0085e93873169310c4a58c5d75b7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/STRICT_USER_WORKFLOW.md": {
+    "mtime": 1777888873.0,
+    "hash": "1759a74efeb6abe375eb6b303c794bdf"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-visualization-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T16-55-15-014Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "1e69e0628091e03f48a75032d2968286"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-report-\u6295\u77e5\u541b\u541b\u4e70\u65b9\u89c6\u89d2-2026-04-19T12-35-42-947Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "55814dfd7a11923b04e580a6aa8f8b6c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-report-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T16-01-38-154Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "105a3b6ad24155587e119c7526defb84"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-report-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T16-55-15-014Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "53f6071e3ee07b531c9ff0474c8b0f9a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-report-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T16-34-48-755Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "80b946d37281f6f3b2b9a2663e2186b3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/mind-map-mermaid.md": {
+    "mtime": 1777888873.0,
+    "hash": "5d5d86a42b38cbd80119aa057c436ea6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dvaq-visualization-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-19T16-22-45-363Z.md": {
+    "mtime": 1777888874.0,
+    "hash": "02de101bf2cde1fcd6a405eb2dae9f34"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/semantic-understanding-report.md": {
+    "mtime": 1777912188.0615585,
+    "hash": "df9797f7f68ac015dbab1154087e6753"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dragon-spirit/database/_import_tmp/douyin/\u8001\u6bdb\u804a\u4ea4\u6613-20\u4e2a\u89c6\u9891\u5185\u5bb9\u5206\u7c7b\u5f52\u7eb3.md": {
+    "mtime": 1777911407.6591465,
+    "hash": "277e88b6c32f903d4486cfac82dbf71c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dragon-spirit/database/_import_tmp/douyin/DOUYIN_DATABASE_README.md": {
+    "mtime": 1777911407.6579845,
+    "hash": "b7fb535cf9d279643414c0ef8b209868"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dragon-spirit/database/_import_tmp/douyin/VERSION_HISTORY.md": {
+    "mtime": 1777911407.658511,
+    "hash": "4ca0725b050c57a165adb3488b368539"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dragon-spirit/database/douyin/\u8001\u6bdb\u804a\u4ea4\u6613-20\u4e2a\u89c6\u9891\u5185\u5bb9\u5206\u7c7b\u5f52\u7eb3.md": {
+    "mtime": 1777911396.0466683,
+    "hash": "277e88b6c32f903d4486cfac82dbf71c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dragon-spirit/database/douyin/DOUYIN_DATABASE_README.md": {
+    "mtime": 1777911396.0455575,
+    "hash": "b7fb535cf9d279643414c0ef8b209868"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dragon-spirit/database/douyin/VERSION_HISTORY.md": {
+    "mtime": 1777911396.0460494,
+    "hash": "4ca0725b050c57a165adb3488b368539"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dyd-transcripts/MS4wLjABAAAAzQQWlig6l3YHeqY94V3IWiHo5m19cS7yQ-V02_Rne7k/7268506827048996154.transcript.txt": {
+    "mtime": 1777903981.713482,
+    "hash": "0e54f7efef9924f6775464b0af24ed03"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dyd-transcripts/MS4wLjABAAAAzQQWlig6l3YHeqY94V3IWiHo5m19cS7yQ-V02_Rne7k/7635838313953365275.transcript.txt": {
+    "mtime": 1777904163.115024,
+    "hash": "711fa1a197023ca3a6ada2e301597b09"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dyd-transcripts/MS4wLjABAAAAzQQWlig6l3YHeqY94V3IWiHo5m19cS7yQ-V02_Rne7k/7558845038936427834.transcript.txt": {
+    "mtime": 1777904098.895902,
+    "hash": "8dad3880844e04b835901cdb1c510193"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dyd-transcripts/MS4wLjABAAAAzQQWlig6l3YHeqY94V3IWiHo5m19cS7yQ-V02_Rne7k/7291676310122941748.transcript.txt": {
+    "mtime": 1777904043.8085184,
+    "hash": "568f02534e8c9b98b21c2888fab6ed48"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-05/dyd-transcripts/MS4wLjABAAAAzQQWlig6l3YHeqY94V3IWiHo5m19cS7yQ-V02_Rne7k/7634198818233355558.transcript.txt": {
+    "mtime": 1777904499.33606,
+    "hash": "e60f52d774c55ebdfe6c53dd29c3a896"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-06/dvaq-report-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-24T05-44-25-657Z.md": {
+    "mtime": 1778050731.468908,
+    "hash": "3c68486265d92f32b20a7848c559ec4a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/archived/2026-05-06/dvaq-decision-tendency-\u8001\u6bdb\u804a\u4ea4\u6613-2026-04-24T05-44-25-657Z.md": {
+    "mtime": 1778050731.4703288,
+    "hash": "7b1f58097c65659ef7e828c0b154afb8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/PROJECT_SUMMARY.md": {
+    "mtime": 1777885358.2500768,
+    "hash": "faef9481da988934ac3a9dc2bf316760"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/config.example.yml": {
+    "mtime": 1777885358.2569242,
+    "hash": "2cf8b6d2330e87f4cb3bb01fb171a6ed"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/requirements.txt": {
+    "mtime": 1777885358.2888665,
+    "hash": "8d6142a853dc7ac6494718e1d840c4f7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/README.md": {
+    "mtime": 1777885358.2507474,
+    "hash": "6611b9ad90a85a44f2e9882528d42434"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/README.zh-CN.md": {
+    "mtime": 1777885358.251417,
+    "hash": "e3f8246d41b88e4b979ed82ea8d6cee6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/config.yml": {
+    "mtime": 1778039823.5819848,
+    "hash": "5339a162d403c91825cebea229698032"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/AGENTS.md": {
+    "mtime": 1777885358.248725,
+    "hash": "7d09d6c4e4d68a5610c06208ecd02ea3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tools/AGENTS.md": {
+    "mtime": 1777885358.3095238,
+    "hash": "fdd28ecc228d902ad16ce38541f2c02d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/AGENTS.md": {
+    "mtime": 1777885358.26225,
+    "hash": "392a4451491b0ee82b41a87d21a7afaf"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/core/user_modes/AGENTS.md": {
+    "mtime": 1777885358.270055,
+    "hash": "5b598cf7d0f4ab4f2248298d9dbc197d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/config/AGENTS.md": {
+    "mtime": 1777885358.2575638,
+    "hash": "d4a8ca449ac140647022eed93b64e904"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/auth/AGENTS.md": {
+    "mtime": 1777885358.252433,
+    "hash": "5b871c334203eea4724b421feb0cffb7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/tests/AGENTS.md": {
+    "mtime": 1777885358.2941594,
+    "hash": "279e38a13b4ee603baf9065813ee15b6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/utils/AGENTS.md": {
+    "mtime": 1777885358.311115,
+    "hash": "fd635c5c911ff508db7a767ddce29384"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/cli/AGENTS.md": {
+    "mtime": 1777885358.254307,
+    "hash": "a4a07b4acb992c41f21b78b1827fba7d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/storage/AGENTS.md": {
+    "mtime": 1777885358.2916093,
+    "hash": "0d085ffc3cae1bd050ce63755d445b45"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/control/AGENTS.md": {
+    "mtime": 1777885358.2595189,
+    "hash": "e577f7fabfab700c2da6cdd8ffefcc26"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/img/fuye.jpg": {
+    "mtime": 1777885358.2851012,
+    "hash": "7b069f9459171c32335c1f800f72811f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/img/logo.png": {
+    "mtime": 1777885358.2880125,
+    "hash": "9b8556d1eafb0097697808560f4ee192"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-22_\u5e02\u573a\u7092\u7684\u662f\u9884\u671f\uff0c\u4e0d\u662f\u7092\u73b0\u5b9e\uff01_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_7631567491604417835/2026-04-22_\u5e02\u573a\u7092\u7684\u662f\u9884\u671f\uff0c\u4e0d\u662f\u7092\u73b0\u5b9e\uff01_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_7631567491604417835.mp4": {
+    "mtime": 1777915911.8618898,
+    "hash": "3504a9a5efa249954be40c5e5198fef7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-10_\u4ea4\u6613\u574f\u6bdb\u75c5\u600e\u4e48\u6539_\u75bc\u4e86\u5c31\u4f1a\u6539\uff01_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5fc3\u5f97\u5206\u4eab_\u5927\u76d8_7593722740151028998/2026-01-10_\u4ea4\u6613\u574f\u6bdb\u75c5\u600e\u4e48\u6539_\u75bc\u4e86\u5c31\u4f1a\u6539\uff01_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5fc3\u5f97\u5206\u4eab_\u5927\u76d8_7593722740151028998.mp4": {
+    "mtime": 1777916024.3860145,
+    "hash": "9c263b12b8b5822e67c1ea7911e8f7ba"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-14_\u80a1\u5e02\u4f2a\u79d1\u5b66\uff0c\u4e3b\u529b\u771f\u7684\u4f1a\u6d17\u76d8\u5417\uff1f_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5\u63d0\u5347_7606700301105630490/2026-02-14_\u80a1\u5e02\u4f2a\u79d1\u5b66\uff0c\u4e3b\u529b\u771f\u7684\u4f1a\u6d17\u76d8\u5417\uff1f_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5\u63d0\u5347_7606700301105630490.mp4": {
+    "mtime": 1777916005.5066874,
+    "hash": "3312b0966a70b7faf34f9de9c7437b86"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-20_\u80a1\u5e02\u91cc\u6ca1\u6709\u79d8\u7c4d\uff0c\u8d5a\u94b1\u7684\u65b9\u6cd5\u90fd\u4e00\u6837\uff01_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_7630815916804164890/2026-04-20_\u80a1\u5e02\u91cc\u6ca1\u6709\u79d8\u7c4d\uff0c\u8d5a\u94b1\u7684\u65b9\u6cd5\u90fd\u4e00\u6837\uff01_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_7630815916804164890.mp4": {
+    "mtime": 1777915913.7907953,
+    "hash": "b2d24291b53c0a6b51b309a273c6eda8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-04_\u5e02\u573a\u7684\u7a7a\u5934\uff0c\u662f\u6da8\u51fa\u6765\u7684\uff01_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u8ba4\u77e5_7603010292817136946/2026-02-04_\u5e02\u573a\u7684\u7a7a\u5934\uff0c\u662f\u6da8\u51fa\u6765\u7684\uff01_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u8ba4\u77e5_7603010292817136946.mp4": {
+    "mtime": 1777916013.294484,
+    "hash": "ddf00aad8bbd1ed0c11588e930eae4e3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-20_\u4ea4\u6613\uff0c\u505a\u7684\u6c38\u8fdc\u662f\u7efc\u5408\u6027\u5224\u65ad\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u4ea4\u6613\u8ba4\u77e5_7608937349099162918/2026-02-20_\u4ea4\u6613\uff0c\u505a\u7684\u6c38\u8fdc\u662f\u7efc\u5408\u6027\u5224\u65ad\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u4ea4\u6613\u8ba4\u77e5_7608937349099162918.mp4": {
+    "mtime": 1777915998.751273,
+    "hash": "608d71676e45f78ac0e2ab960af6cc10"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-05_\u771f\u6b63\u7684\u4ea4\u6613\u4eba\u6027_\u662f\u548c\u81ea\u5df1\u8f83\u91cf\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5fc3\u5f97_A\u80a1_7613751307354000691/2026-03-05_\u771f\u6b63\u7684\u4ea4\u6613\u4eba\u6027_\u662f\u548c\u81ea\u5df1\u8f83\u91cf\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5fc3\u5f97_A\u80a1_7613751307354000691.mp4": {
+    "mtime": 1777915987.744729,
+    "hash": "a52c3dd0485d81a485e0d054173995cc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-25_\u53cd\u5f39\u80fd\u770b\u591a\u4e45\uff0c\u8fd9\u51e0\u4e2a\u5173\u952e\u6570\u636e\u76ef\u597d\u5c31\u884c\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_7621199112586792243/2026-03-25_\u53cd\u5f39\u80fd\u770b\u591a\u4e45\uff0c\u8fd9\u51e0\u4e2a\u5173\u952e\u6570\u636e\u76ef\u597d\u5c31\u884c\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_7621199112586792243.mp4": {
+    "mtime": 1777915953.1367357,
+    "hash": "f2109db4c3a3c7e1a750bf8f60661073"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-09_\u505a\u80a1\u7968\u5230\u5e95\u6323\u4ec0\u4e48\u94b1\uff1f_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_7626717796872883502/2026-04-09_\u505a\u80a1\u7968\u5230\u5e95\u6323\u4ec0\u4e48\u94b1\uff1f_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_7626717796872883502.mp4": {
+    "mtime": 1777915933.3632655,
+    "hash": "a84f6a4795f0591a4f3828a80bb1e315"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-09_\u62a5\u590d\u6027\u53cd\u5f39\uff0c\u8fd8\u80fd\u8d70\u591a\u8fdc\uff1f_\u80a1\u7968_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_7626418882374421811/2026-04-09_\u62a5\u590d\u6027\u53cd\u5f39\uff0c\u8fd8\u80fd\u8d70\u591a\u8fdc\uff1f_\u80a1\u7968_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_7626418882374421811.mp4": {
+    "mtime": 1777915937.585788,
+    "hash": "90896825a9a5cf2420ebc9d2ca2acdf0"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-19_\u6ca1\u6709\u4ea4\u6613\u7eaa\u5f8b\u7684\u4ea4\u6613\u5458\uff0c\u8fdf\u65e9\u4f1a\u88ab\u5e02\u573a\u6dd8\u6c70\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_\u4ea4\u6613\u5458_7618938413965643017/2026-03-19_\u6ca1\u6709\u4ea4\u6613\u7eaa\u5f8b\u7684\u4ea4\u6613\u5458\uff0c\u8fdf\u65e9\u4f1a\u88ab\u5e02\u573a\u6dd8\u6c70\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_\u4ea4\u6613\u5458_7618938413965643017.mp4": {
+    "mtime": 1777915965.3480082,
+    "hash": "480a8c08ebb0faf45c09bde3dad6b576"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-05-04_\u505a\u4ea4\u6613\uff0c\u6709\u4e9b\u4e8b\u5b9e\u4f60\u5fc5\u987b\u8ba4\u6e05\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_7635838313953365275/2026-05-04_\u505a\u4ea4\u6613\uff0c\u6709\u4e9b\u4e8b\u5b9e\u4f60\u5fc5\u987b\u8ba4\u6e05\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_7635838313953365275.mp4": {
+    "mtime": 1777915899.9268692,
+    "hash": "e82f2d87cc3cac73a882a6b17038498e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-30_\u4e0d\u8981\u53ea\u4f1a\u770b\u652f\u6491\u4f4d\uff0c\u771f\u6b63\u7684\u5356\u51fa\u7406\u7531\u53ea\u6709\u8fd9\u4e00\u4e2a\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_7623019251359681819/2026-03-30_\u4e0d\u8981\u53ea\u4f1a\u770b\u652f\u6491\u4f4d\uff0c\u771f\u6b63\u7684\u5356\u51fa\u7406\u7531\u53ea\u6709\u8fd9\u4e00\u4e2a\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_7623019251359681819.mp4": {
+    "mtime": 1777916249.1641417,
+    "hash": "c0d63456c6ceb6d93b73ec44c752cfa8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-22_\u5e02\u573a\u600e\u4e48\u8dcc\u4e0b\u6765\u7684\uff0c\u5c31\u5e94\u8be5\u600e\u4e48\u6da8\u4e0a\u53bb\uff01_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_7620084716640718118/2026-03-22_\u5e02\u573a\u600e\u4e48\u8dcc\u4e0b\u6765\u7684\uff0c\u5c31\u5e94\u8be5\u600e\u4e48\u6da8\u4e0a\u53bb\uff01_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_7620084716640718118.mp4": {
+    "mtime": 1777915962.3593314,
+    "hash": "ee0126b3935a1fcd1dc81926a7a73faa"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-29_\u4ea4\u6613\u4e0d\u505a\u603b\u7ed3\u7684_\u5e72\u4e0a\u4e00\u4e07\u7b14\u4e5f\u6ca1\u7528\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_\u5927\u76d8\u5206\u6790_7600736042827713838/2026-01-29_\u4ea4\u6613\u4e0d\u505a\u603b\u7ed3\u7684_\u5e72\u4e0a\u4e00\u4e07\u7b14\u4e5f\u6ca1\u7528\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_\u5927\u76d8\u5206\u6790_7600736042827713838.mp4": {
+    "mtime": 1777916016.9629724,
+    "hash": "d17bfa001798818c5cc3064187e536c1"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-05_\u4e0d\u8981\u625b\u5355\uff01\u505a\u4ea4\u6613\u524d\u6bcf\u5929\u8ddf\u81ea\u5df1\u8bf4\u4e09\u904d\uff01_\u4ea4\u6613\u5458_\u5927\u76d8\u5206\u6790_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_7591880506665438470/2026-01-05_\u4e0d\u8981\u625b\u5355\uff01\u505a\u4ea4\u6613\u524d\u6bcf\u5929\u8ddf\u81ea\u5df1\u8bf4\u4e09\u904d\uff01_\u4ea4\u6613\u5458_\u5927\u76d8\u5206\u6790_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_7591880506665438470.mp4": {
+    "mtime": 1777916104.7820837,
+    "hash": "7184efa31dfed7ec682d4405c98a84e2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-24_\u505a\u4ea4\u6613\uff0c\u4f60\u8981\u5141\u8bb8\u81ea\u5df1\u4e8f\u94b1\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7598931332252683558/2026-01-24_\u505a\u4ea4\u6613\uff0c\u4f60\u8981\u5141\u8bb8\u81ea\u5df1\u4e8f\u94b1\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7598931332252683558.mp4": {
+    "mtime": 1777916017.1359062,
+    "hash": "89d1f73c2758fffe8da4c474a71b67ee"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-16_\u6b63\u786e\u7684\u4ea4\u6613\u6a21\u5f0f\uff0c\u771f\u6ca1\u4f60\u60f3\u7684\u90a3\u4e48\u96be\uff01_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_7629304244239158537/2026-04-16_\u6b63\u786e\u7684\u4ea4\u6613\u6a21\u5f0f\uff0c\u771f\u6ca1\u4f60\u60f3\u7684\u90a3\u4e48\u96be\uff01_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_7629304244239158537.mp4": {
+    "mtime": 1777915920.411735,
+    "hash": "a28e6e075d5dd052e2c042f642a48449"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-28_\u4eca\u5e74\u7684\u5e02\u573a\u662f\u6709\u4ea7\u4e1a\u903b\u8f91\u7684\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_7622299879380897062/2026-03-28_\u4eca\u5e74\u7684\u5e02\u573a\u662f\u6709\u4ea7\u4e1a\u903b\u8f91\u7684\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_A\u80a1_7622299879380897062.mp4": {
+    "mtime": 1777915949.936137,
+    "hash": "9707af5f569647fde574c03939f77f48"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-03_\u60c5\u7eea\u5468\u671f\uff0c\u5728\u4ea4\u6613\u4f53\u7cfb\u91cc\u6c38\u8fdc\u662f\u7b2c\u4e00\u4f4d\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7602639457874873646/2026-02-03_\u60c5\u7eea\u5468\u671f\uff0c\u5728\u4ea4\u6613\u4f53\u7cfb\u91cc\u6c38\u8fdc\u662f\u7b2c\u4e00\u4f4d\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7602639457874873646.mp4": {
+    "mtime": 1777916010.171982,
+    "hash": "bab160289528fc824b2df5868ebbd090"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-22_\u804c\u4e1a\u4ea4\u6613\u5458\u7684\u5206\u6c34\u5cad\uff0c\u5c31\u662f\u60c5\u7eea\u7ba1\u7406\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7598178098227465507/2026-01-22_\u804c\u4e1a\u4ea4\u6613\u5458\u7684\u5206\u6c34\u5cad\uff0c\u5c31\u662f\u60c5\u7eea\u7ba1\u7406\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7598178098227465507.mp4": {
+    "mtime": 1777916020.0907526,
+    "hash": "47af0d474fe69b8ff5b1fbbbebabe7c8"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-25_\u8fc7\u6765\u4eba\u7684\u5fe0\u544a\uff0c\u505a\u4ea4\u6613\u6c38\u8fdc\u8981\u201c\u7a7a\u676f\u201d\uff01_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_7632659021391990067/2026-04-25_\u8fc7\u6765\u4eba\u7684\u5fe0\u544a\uff0c\u505a\u4ea4\u6613\u6c38\u8fdc\u8981\u201c\u7a7a\u676f\u201d\uff01_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_7632659021391990067.mp4": {
+    "mtime": 1777915931.7702367,
+    "hash": "e4d82fed01669f169e664d19fd5af85d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-24_\u4ea4\u6613\u5ba1\u7f8e\uff0c\u90fd\u662f\u5728\u4e00\u7b14\u7b14\u5b9e\u6218\u4e2d\u5582\u51fa\u6765\u7684\uff01_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5458_A\u80a1_7620813597974727971/2026-03-24_\u4ea4\u6613\u5ba1\u7f8e\uff0c\u90fd\u662f\u5728\u4e00\u7b14\u7b14\u5b9e\u6218\u4e2d\u5582\u51fa\u6765\u7684\uff01_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5458_A\u80a1_7620813597974727971.mp4": {
+    "mtime": 1777915958.7124517,
+    "hash": "f7767ea93ee293e4af9f899fe967f132"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-08_\u804c\u4e1a\u4ea4\u6613\u5458\uff0c\u6ca1\u4eba\u770b\u6307\u6807\u505a\u4ea4\u6613\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5fc3\u5f97_7614876049771433262/2026-03-08_\u804c\u4e1a\u4ea4\u6613\u5458\uff0c\u6ca1\u4eba\u770b\u6307\u6807\u505a\u4ea4\u6613\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5fc3\u5f97_7614876049771433262.mp4": {
+    "mtime": 1777915984.8800015,
+    "hash": "97e9f9d62b5b64d146c77797c904a07f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-02_\u770b\u61c2\u5e02\u573a\u98ce\u9669\u504f\u597d\uff0c\u5230\u5e95\u6709\u4ec0\u4e48\u7528\uff1f_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_\u4ea4\u6613\u5458_7624108028681309490/2026-04-02_\u770b\u61c2\u5e02\u573a\u98ce\u9669\u504f\u597d\uff0c\u5230\u5e95\u6709\u4ec0\u4e48\u7528\uff1f_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_\u4ea4\u6613\u5458_7624108028681309490.mp4": {
+    "mtime": 1777915947.306693,
+    "hash": "82d2a9c436b4091272493d110d7c7f4c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-18_\u4ea4\u6613\u5230\u6700\u540e\uff0c\u514b\u670d\u5f97\u90fd\u662f\u4eba\u6027\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u80a1\u6c11\u4ea4\u6d41_\u8d22\u7ecf_7608213116647689481/2026-02-18_\u4ea4\u6613\u5230\u6700\u540e\uff0c\u514b\u670d\u5f97\u90fd\u662f\u4eba\u6027\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u80a1\u6c11\u4ea4\u6d41_\u8d22\u7ecf_7608213116647689481.mp4": {
+    "mtime": 1777916001.100001,
+    "hash": "845447f2d35a448471b8ae43147d7a02"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-13_\u4eca\u5e74\u6700\u503c\u5f97\u5173\u6ce8\u7684\u65b9\u5411\uff0c\u53ef\u80fd\u662f\u5b83\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u8ba4\u77e5_7628177334327201070/2026-04-13_\u4eca\u5e74\u6700\u503c\u5f97\u5173\u6ce8\u7684\u65b9\u5411\uff0c\u53ef\u80fd\u662f\u5b83\uff01_\u4ea4\u6613\u5458_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u8ba4\u77e5_7628177334327201070.mp4": {
+    "mtime": 1777915931.335205,
+    "hash": "e88f3cdf24b6aa13f32e1cce4df5a341"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-12_\u89e3\u51b3\u625b\u5355\u7684\u552f\u4e00\u65b9\u6cd5\u5c31\u662f\u5148\u6302\u6b62\u635f\u5355\uff01_\u80a1\u7968_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_7627739861897792818/2026-04-12_\u89e3\u51b3\u625b\u5355\u7684\u552f\u4e00\u65b9\u6cd5\u5c31\u662f\u5148\u6302\u6b62\u635f\u5355\uff01_\u80a1\u7968_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_7627739861897792818.mp4": {
+    "mtime": 1777915994.8628545,
+    "hash": "4ae0a9ccc6cb83509e6cd25b65256d1c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-09_\u6211\u4eec\u4ea4\u6613\u7684\u662f\u4eba\uff0c\u4e0d\u662f\u80a1\u7968\uff01_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_\u5927\u76d8\u5206\u6790_\u4ea4\u6613\u5458_7604861882683493659/2026-02-09_\u6211\u4eec\u4ea4\u6613\u7684\u662f\u4eba\uff0c\u4e0d\u662f\u80a1\u7968\uff01_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_\u5927\u76d8\u5206\u6790_\u4ea4\u6613\u5458_7604861882683493659.mp4": {
+    "mtime": 1777916004.8702817,
+    "hash": "1c7ed68d47af916e436dc596fce43449"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-08_\u8fde\u4e8f20\u5929\uff0c\u6bdb\u603b\u65b0\u624b\u4e00\u671d\u987f\u609f\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7592652686881787178/2026-01-08_\u8fde\u4e8f20\u5929\uff0c\u6bdb\u603b\u65b0\u624b\u4e00\u671d\u987f\u609f\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7592652686881787178.mp4": {
+    "mtime": 1777916027.652331,
+    "hash": "5b37b0e50f837a42b6d3aff461012764"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-16_\u884c\u60c5\u5dee\u7ba1\u4e0d\u4f4f\u624b\uff1f\u6839\u672c\u539f\u56e0\u5c31\u8fd9\u4e24\u70b9_\u80a1\u7968\u5e72\u8d27_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7617815546486099227/2026-03-16_\u884c\u60c5\u5dee\u7ba1\u4e0d\u4f4f\u624b\uff1f\u6839\u672c\u539f\u56e0\u5c31\u8fd9\u4e24\u70b9_\u80a1\u7968\u5e72\u8d27_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7617815546486099227.mp4": {
+    "mtime": 1777915973.2188349,
+    "hash": "1594de596187d9de69189e819fe3f829"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-04_\u505a\u4ea4\u6613\uff0c\u5929\u8d4b\u975e\u5e38\u91cd\u8981\uff01_\u4ea4\u6613\u5458_\u52aa\u529b\u548c\u5929\u8d4b\u54ea\u4e2a\u91cd\u8981_\u80a1\u7968\u4ea4\u6613_7624834789853383942/2026-04-04_\u505a\u4ea4\u6613\uff0c\u5929\u8d4b\u975e\u5e38\u91cd\u8981\uff01_\u4ea4\u6613\u5458_\u52aa\u529b\u548c\u5929\u8d4b\u54ea\u4e2a\u91cd\u8981_\u80a1\u7968\u4ea4\u6613_7624834789853383942.mp4": {
+    "mtime": 1777915946.7814744,
+    "hash": "bbc0cbf124e674746e3b4275e644b7fa"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2025-10-08_\u6bcf\u4e00\u4e2a\u80a1\u7968\u4ea4\u6613\u8005\uff0c\u90fd\u5e94\u8be5\u6709\u7684\u4e00\u672c\u4e66\uff01_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u517b\u5bb6\u5fc3\u6cd5_7558845038936427834/2025-10-08_\u6bcf\u4e00\u4e2a\u80a1\u7968\u4ea4\u6613\u8005\uff0c\u90fd\u5e94\u8be5\u6709\u7684\u4e00\u672c\u4e66\uff01_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_\u517b\u5bb6\u5fc3\u6cd5_7558845038936427834.mp4": {
+    "mtime": 1777915897.8831465,
+    "hash": "7a01ba14ace097ae1eb6aa21b247ea9d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-26_\u804c\u4e1a\u4ea4\u6613\u5458\u7684\u64cd\u4f5c\u51b3\u7b56\uff0c\u5c31\u662f\u89c1\u62db\u62c6\u62db\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_\u5927\u76d8_7599662441680702747/2026-01-26_\u804c\u4e1a\u4ea4\u6613\u5458\u7684\u64cd\u4f5c\u51b3\u7b56\uff0c\u5c31\u662f\u89c1\u62db\u62c6\u62db\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_\u5927\u76d8_7599662441680702747.mp4": {
+    "mtime": 1777916014.520331,
+    "hash": "89f657bad6696753f56506ec91231d23"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-17_\u9009\u80a1\u6838\u5fc3\uff0c\u5c31\u8bb0\u8fd9\u4e09\u53e5\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u9009\u80a1_7596335582767238441/2026-01-17_\u9009\u80a1\u6838\u5fc3\uff0c\u5c31\u8bb0\u8fd9\u4e09\u53e5\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u9009\u80a1_7596335582767238441.mp4": {
+    "mtime": 1777916024.6648397,
+    "hash": "46ed7f21d39c56c146befd0221f93e1d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-29_\u62d2\u7edd_\u5ec9\u4ef7\u667a\u6167_\uff0c\u8fd9\u4e2a\u4ea4\u6613\u574f\u4e60\u60ef\u4e00\u5b9a\u8981\u6539!_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_\u4ea4\u6613\u5458_7634198818233355558/2026-04-29_\u62d2\u7edd_\u5ec9\u4ef7\u667a\u6167_\uff0c\u8fd9\u4e2a\u4ea4\u6613\u574f\u4e60\u60ef\u4e00\u5b9a\u8981\u6539!_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_\u4ea4\u6613\u5458_7634198818233355558.mp4": {
+    "mtime": 1777915908.7278168,
+    "hash": "bdc6dca8f465639b5af06fe4b1e23645"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-18_\u6b63\u786e\u7684\u4ea4\u6613\u601d\u8def\uff0c\u8fd9\u5c31\u662f\u6211\u4eec\u60f3\u8981\u4f20\u9012\u7684\uff01_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_7630039390546447654/2026-04-18_\u6b63\u786e\u7684\u4ea4\u6613\u601d\u8def\uff0c\u8fd9\u5c31\u662f\u6211\u4eec\u60f3\u8981\u4f20\u9012\u7684\uff01_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_7630039390546447654.mp4": {
+    "mtime": 1777915917.1036003,
+    "hash": "0f2ec2cd8f12372192bb7224ec985795"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-27_\u8ddf\u7740\u8d44\u91d1\u8d70\uff0c\u548c\u201c\u63a5\u76d8\u201d\u6709\u4ec0\u4e48\u533a\u522b\uff1f_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_\u4ea4\u6613\u5458_\u80a1\u7968\u4ea4\u6613_7633417082763332890/2026-04-27_\u8ddf\u7740\u8d44\u91d1\u8d70\uff0c\u548c\u201c\u63a5\u76d8\u201d\u6709\u4ec0\u4e48\u533a\u522b\uff1f_\u80a1\u6c11\u4ea4\u6d41_\u8ba4\u77e5_\u4ea4\u6613\u5458_\u80a1\u7968\u4ea4\u6613_7633417082763332890.mp4": {
+    "mtime": 1777915902.6176262,
+    "hash": "04a9bb98e3ea1155c9f4e9c5209f05e5"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-10_\u4f20\u5947\u4ea4\u6613\u5458\uff0c\u672c\u8eab\u5c31\u662f\u4f20\u5947\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u4ea4\u6613\u8ba4\u77e5_7615623651391491337/2026-03-10_\u4f20\u5947\u4ea4\u6613\u5458\uff0c\u672c\u8eab\u5c31\u662f\u4f20\u5947\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u4ea4\u6613\u8ba4\u77e5_7615623651391491337.mp4": {
+    "mtime": 1777915980.356966,
+    "hash": "c035a789ca255513c0aac72107e082be"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-03_\u597d\u7684\u4ea4\u6613\u5458_\u90fd\u662f\u4eba\u6027\u7b5b\u51fa\u6765\u7684_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_7612964539646217506/2026-03-03_\u597d\u7684\u4ea4\u6613\u5458_\u90fd\u662f\u4eba\u6027\u7b5b\u51fa\u6765\u7684_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_7612964539646217506.mp4": {
+    "mtime": 1777915992.1971214,
+    "hash": "ebc13ae9b5cc153ea48d07d6222d005a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-18_\u4e3a\u4ec0\u4e48\u8fde\u677f\u4eca\u5e74\u4e0d\u597d\u505a\uff1f_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_7618564459400842547/2026-03-18_\u4e3a\u4ec0\u4e48\u8fde\u677f\u4eca\u5e74\u4e0d\u597d\u505a\uff1f_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u80a1\u6c11\u4ea4\u6d41_A\u80a1_7618564459400842547.mp4": {
+    "mtime": 1777915968.5553074,
+    "hash": "9f324e3b52d453b06c98ce379db920aa"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-23_\u6ca1\u6709\u9884\u671f\u7684\u5229\u597d\u624d\u66f4\u503c\u5f97\u5173\u6ce8\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u80a1\u6c11\u4ea4\u6d41_\u8d22\u7ecf_7610047565660278042/2026-02-23_\u6ca1\u6709\u9884\u671f\u7684\u5229\u597d\u624d\u66f4\u503c\u5f97\u5173\u6ce8\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u80a1\u6c11\u4ea4\u6d41_\u8d22\u7ecf_7610047565660278042.mp4": {
+    "mtime": 1777915997.3126605,
+    "hash": "0f34fc583b7833b18dc5431693fd4ab7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-04-06_\u80fd\u505a\u597d\u4ea4\u6613\u7684\u4eba\uff0c\u90fd\u662f\u7ec6\u8282\u63a7\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7625614644257967369/2026-04-06_\u80fd\u505a\u597d\u4ea4\u6613\u7684\u4eba\uff0c\u90fd\u662f\u7ec6\u8282\u63a7\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7625614644257967369.mp4": {
+    "mtime": 1777915941.3006742,
+    "hash": "19b31df205cd58b21650a28a55a079b6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-14_\u4f60\u505a\u7684\u6bcf\u4e00\u7b14\u4ea4\u6613_\u90fd\u5fc5\u987b\u662f\u6e05\u6e05\u695a\u695a\u660e\u660e\u767d\u767d\uff01_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5fc3\u5f97_7595167373393546502/2026-01-14_\u4f60\u505a\u7684\u6bcf\u4e00\u7b14\u4ea4\u6613_\u90fd\u5fc5\u987b\u662f\u6e05\u6e05\u695a\u695a\u660e\u660e\u767d\u767d\uff01_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5458_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5fc3\u5f97_7595167373393546502.mp4": {
+    "mtime": 1777916023.0892727,
+    "hash": "b29233f05d0d255faacad6310d8dc7f6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-03-12_\u5e02\u573a\u5728\u53d8\uff0c\u6211\u4eec\u5c31\u8981\u8ddf\u7740\u53d8\uff01_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_A\u80a1_7616348249904942362/2026-03-12_\u5e02\u573a\u5728\u53d8\uff0c\u6211\u4eec\u5c31\u8981\u8ddf\u7740\u53d8\uff01_\u80a1\u6c11\u4ea4\u6d41_\u4ea4\u6613\u5458_\u4ea4\u6613\u8ba4\u77e5_A\u80a1_7616348249904942362.mp4": {
+    "mtime": 1777915977.33882,
+    "hash": "aab86ccd7f7359de6091d8625d8fc9b2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2023-10-19_20\u4e07\u5230\u4e00\u4e2a\u4ebf\uff0c\u8fd9\u6837\u7684\u4ea4\u6613\u8005\u6700\u53ef\u6015_\u4ea4\u6613\u5458_\u4ea4\u6613\u4eba\u751f_\u80a1\u7968\u4ea4\u6613_\u8d22\u7ecf_7291676310122941748/2023-10-19_20\u4e07\u5230\u4e00\u4e2a\u4ebf\uff0c\u8fd9\u6837\u7684\u4ea4\u6613\u8005\u6700\u53ef\u6015_\u4ea4\u6613\u5458_\u4ea4\u6613\u4eba\u751f_\u80a1\u7968\u4ea4\u6613_\u8d22\u7ecf_7291676310122941748.mp4": {
+    "mtime": 1777915900.8682857,
+    "hash": "d182c4059068d4b5c364368cc163b2e7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-24_\u5927\u4e8f\u6e90\u5934_\u8fd9\u4e2a\u4ea4\u6613\u4e60\u60ef\u4f60\u4e00\u5b9a\u8981\u6539\u6389\uff01_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_\u8d22\u7ecf\u77e5\u8bc6_\u80a1\u7968\u77e5\u8bc6_7610377060388785434/2026-02-24_\u5927\u4e8f\u6e90\u5934_\u8fd9\u4e2a\u4ea4\u6613\u4e60\u60ef\u4f60\u4e00\u5b9a\u8981\u6539\u6389\uff01_A\u80a1_\u80a1\u6c11\u4ea4\u6d41_\u8d22\u7ecf\u77e5\u8bc6_\u80a1\u7968\u77e5\u8bc6_7610377060388785434.mp4": {
+    "mtime": 1777916000.7207193,
+    "hash": "a414f3dc69dd6f2f18736404606cfb3d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2023-08-18_\u547d\u8fd0\u7684\u9f7f\u8f6e\u5f00\u59cb\u8f6c\u52a8_\u4ea4\u6613\u5458_\u4ea4\u6613\u4eba\u751f_\u547d\u8fd0\u7684\u9f7f\u8f6e\u5f00\u59cb\u8f6c\u52a8_\u8d22\u7ecf_7268506827048996154/2023-08-18_\u547d\u8fd0\u7684\u9f7f\u8f6e\u5f00\u59cb\u8f6c\u52a8_\u4ea4\u6613\u5458_\u4ea4\u6613\u4eba\u751f_\u547d\u8fd0\u7684\u9f7f\u8f6e\u5f00\u59cb\u8f6c\u52a8_\u8d22\u7ecf_7268506827048996154.mp4": {
+    "mtime": 1777915945.8154395,
+    "hash": "7b91f56eb3b7e6413a81889132124dd5"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-02-26_\u4e3a\u4ec0\u4e48\u804c\u4e1a\u4ea4\u6613\u5458\uff0c\u4ece\u6765\u4e0d\u5b9a\u76c8\u5229\u76ee\u6807\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7611096283134053678/2026-02-26_\u4e3a\u4ec0\u4e48\u804c\u4e1a\u4ea4\u6613\u5458\uff0c\u4ece\u6765\u4e0d\u5b9a\u76c8\u5229\u76ee\u6807\uff01_\u80a1\u6c11\u4ea4\u6d41_\u80a1\u7968\u77e5\u8bc6_\u4ea4\u6613\u5458_A\u80a1_7611096283134053678.mp4": {
+    "mtime": 1777915994.7242868,
+    "hash": "9c22d40483f58d97e5b642130c449705"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u8001\u6bdb\u804a\u4ea4\u6613/post/2026-01-08_\u4ea4\u6613\u592a\u201c\u52e4\u594b\u201d\uff0c\u4e5f\u672a\u5fc5\u662f\u597d\u4e8b\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7593001140925599019/2026-01-08_\u4ea4\u6613\u592a\u201c\u52e4\u594b\u201d\uff0c\u4e5f\u672a\u5fc5\u662f\u597d\u4e8b\uff01_\u4ea4\u6613\u5458_\u80a1\u7968_\u77ed\u7ebf\u4ea4\u6613_\u80a1\u6c11\u4ea4\u6d41_7593001140925599019.mp4": {
+    "mtime": 1777916028.5854151,
+    "hash": "ac9fa8a5a8397bedc76fc1c4a87ce152"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-10-27_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8\uff08\u4e0b\uff09\uff0c\u7528\u706b\u836f\u5199\u5546\u4e1a\u8ba1\u5212\u4e66_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8_\u516c\u53f8\u7ba1\u7406_\u5546\u4e1a\u89e3\u8bfb_\u5546\u4e1a\u8fd0\u8425_\u5377\u5b87\u5b99\u6f2b\u8c08_7565832217780292918/2025-10-27_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8\uff08\u4e0b\uff09\uff0c\u7528\u706b\u836f\u5199\u5546\u4e1a\u8ba1\u5212\u4e66_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8_\u516c\u53f8\u7ba1\u7406_\u5546\u4e1a\u89e3\u8bfb_\u5546\u4e1a\u8fd0\u8425_\u5377\u5b87\u5b99\u6f2b\u8c08_7565832217780292918.mp4": {
+    "mtime": 1778039001.2618215,
+    "hash": "2f8dd7b11add8d23ac2b1baf1a3a999a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-02-24_\u628a\u94a2\u94c1\u5356\u6210\u767d\u83dc\u4ef7\uff1a\u4e00\u573a\u8de8\u8d8a\u767e\u5e74\u7684\u201c\u6781\u81f4\u964d\u672c\u201d\uff0c\u8fbe\u6bd4\u5bb6\u65cf\u4e09\u4ee3\u4eba\u7684\u521b\u4e1a\u63a5\u529b_\u8fbe\u6bd4\u5bb6\u65cf_\u7126\u70ad\u70bc\u94c1_\u964d\u672c\u589e\u6548_\u5de5\u4e1a\u9769\u547d_\u5377\u5b87\u5b99\u6f2b\u8c08_7610351644953365798/2026-02-24_\u628a\u94a2\u94c1\u5356\u6210\u767d\u83dc\u4ef7\uff1a\u4e00\u573a\u8de8\u8d8a\u767e\u5e74\u7684\u201c\u6781\u81f4\u964d\u672c\u201d\uff0c\u8fbe\u6bd4\u5bb6\u65cf\u4e09\u4ee3\u4eba\u7684\u521b\u4e1a\u63a5\u529b_\u8fbe\u6bd4\u5bb6\u65cf_\u7126\u70ad\u70bc\u94c1_\u964d\u672c\u589e\u6548_\u5de5\u4e1a\u9769\u547d_\u5377\u5b87\u5b99\u6f2b\u8c08_7610351.mp4": {
+    "mtime": 1778038717.4287465,
+    "hash": "80afca582baa046a0e6cb732a23cc8c9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-05-13_\u4ece\u201c\u5c0f\u5e05\u5c0f\u7f8e\u201d\u5230\u9500\u91cf\u7ffb\u500d\uff01\u5fae\u77ed\u5267\u5982\u4f55\u8ba9\u7528\u6237\u201c\u8fb9\u9a82\u8fb9\u4e0b\u5355\u201d_\u77ed\u5267_\u5546\u4e1a_\u884c\u4e1a\u5206\u6790_\u8425\u9500_\u723d\u6587_7503553782807137551/2025-05-13_\u4ece\u201c\u5c0f\u5e05\u5c0f\u7f8e\u201d\u5230\u9500\u91cf\u7ffb\u500d\uff01\u5fae\u77ed\u5267\u5982\u4f55\u8ba9\u7528\u6237\u201c\u8fb9\u9a82\u8fb9\u4e0b\u5355\u201d_\u77ed\u5267_\u5546\u4e1a_\u884c\u4e1a\u5206\u6790_\u8425\u9500_\u723d\u6587_7503553782807137551.mp4": {
+    "mtime": 1778039278.1648357,
+    "hash": "daf157185eef3cd93b6835457d9907d3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-07-23_\u63ed\u79d8\u4f01\u4e1a\u201c\u9690\u5f62\u5fc3\u810f\u201d\uff1a\u4ece\u780d\u4ef7\u90e8\u95e8\u5230\u6218\u7565\u6838\u5fc3\uff0c\u4f9b\u5e94\u94fe\u5982\u4f55\u51b3\u5b9a\u4e00\u5bb6\u516c\u53f8\u7684\u751f\u6b7b_\u4f9b\u5e94\u94fe_\u5546\u4e1a\u8d22\u7ecf_\u5377\u5b87\u5b99\u6f2b\u8c08_\u5168\u7403\u8d38\u6613_\u4f01\u4e1a\u6218\u7565_7530203175236783396/2025-07-23_\u63ed\u79d8\u4f01\u4e1a\u201c\u9690\u5f62\u5fc3\u810f\u201d\uff1a\u4ece\u780d\u4ef7\u90e8\u95e8\u5230\u6218\u7565\u6838\u5fc3\uff0c\u4f9b\u5e94\u94fe\u5982\u4f55\u51b3\u5b9a\u4e00\u5bb6\u516c\u53f8\u7684\u751f\u6b7b_\u4f9b\u5e94\u94fe_\u5546\u4e1a\u8d22\u7ecf_\u5377\u5b87\u5b99\u6f2b\u8c08_\u5168\u7403\u8d38\u6613_\u4f01\u4e1a\u6218\u7565_7530203.mp4": {
+    "mtime": 1778039188.4635863,
+    "hash": "f6c80e231408f166332ae8a0bd26ee5d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-11-01_\u8377\u5170\u5bbf\u654c\uff0c\u82f1\u56fd\u4e1c\u5370\u5ea6\u516c\u53f8\u7684\u5d1b\u8d77_\u82f1\u56fd\u4e1c\u5370\u5ea6\u516c\u53f8_\u4f9b\u5e94\u94fe_\u5546\u4e1a\u89e3\u8bfb_\u4f01\u4e1a\u6218\u7565_\u5377\u5b87\u5b99\u6f2b\u8c08_7567696228742368562/2025-11-01_\u8377\u5170\u5bbf\u654c\uff0c\u82f1\u56fd\u4e1c\u5370\u5ea6\u516c\u53f8\u7684\u5d1b\u8d77_\u82f1\u56fd\u4e1c\u5370\u5ea6\u516c\u53f8_\u4f9b\u5e94\u94fe_\u5546\u4e1a\u89e3\u8bfb_\u4f01\u4e1a\u6218\u7565_\u5377\u5b87\u5b99\u6f2b\u8c08_7567696228742368562.mp4": {
+    "mtime": 1778038988.3380525,
+    "hash": "14a7e289b09c6f438145852bdf2083c7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-03-07_\u82f1\u4f1f\u8fbe\u5e1d\u56fd\u542f\u793a\u5f55\uff08\u4e0b\uff09\uff1aAI\u5723\u6bbf\u91cc\u7684\u8840\u8165\u732e\u796d_\u82f1\u4f1f\u8fbe_\u9ec4\u4ec1\u52cb_chatGPT_AI_\u5546\u4e1a_7478892202425371916/2025-03-07_\u82f1\u4f1f\u8fbe\u5e1d\u56fd\u542f\u793a\u5f55\uff08\u4e0b\uff09\uff1aAI\u5723\u6bbf\u91cc\u7684\u8840\u8165\u732e\u796d_\u82f1\u4f1f\u8fbe_\u9ec4\u4ec1\u52cb_chatGPT_AI_\u5546\u4e1a_7478892202425371916.mp4": {
+    "mtime": 1778039330.3193414,
+    "hash": "5ad3380fc93eba6698eb120e750e1cc3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-02-05_\u6d88\u706d\u8fd0\u6c14\uff0c\u5356\u6807\u51c6\u3002\u5de5\u4e1a\u9769\u547d\u4e2d\u7684\u6807\u51c6\u5316\uff0c\u82f1\u56fd\u7684\u4e0a\u5e1d\u4e4b\u624b_\u4f9b\u5e94\u94fe_\u6807\u51c6\u5316_\u7cbe\u76ca\u7ba1\u7406_\u751f\u6001\u5e03\u5c40_\u5377\u5b87\u5b99\u6f2b\u8c08_7603305903835712803/2026-02-05_\u6d88\u706d\u8fd0\u6c14\uff0c\u5356\u6807\u51c6\u3002\u5de5\u4e1a\u9769\u547d\u4e2d\u7684\u6807\u51c6\u5316\uff0c\u82f1\u56fd\u7684\u4e0a\u5e1d\u4e4b\u624b_\u4f9b\u5e94\u94fe_\u6807\u51c6\u5316_\u7cbe\u76ca\u7ba1\u7406_\u751f\u6001\u5e03\u5c40_\u5377\u5b87\u5b99\u6f2b\u8c08_760330590383571280.mp4": {
+    "mtime": 1778038751.1912425,
+    "hash": "d2c40cc96052b47550f5ac9c93c08bbc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-03-28_\u6d1e\u5bdf\u5e02\u573a\u771f\u76f8\uff0c\u4e54\u5e03\u65af\u4ece\u4e0d\u505a\u8c03\u7814\uff0c\u6d88\u8d39\u8005\u4ece\u4e0d\u77e5\u9053\u81ea\u5df1\u771f\u6b63\u8981\u4ec0\u4e48\uff0c\u76f4\u5230\u4f60\u628a\u5b83\u6446\u5230\u773c\u524d_\u5546\u4e1a\u601d\u7ef4_\u4ea7\u54c1\u8425\u9500_\u8425\u9500\u601d\u7ef4_\u7206\u54c1\u6218\u7565_\u54c1\u724c\u8425\u9500_7486487267163327796/2025-03-28_\u6d1e\u5bdf\u5e02\u573a\u771f\u76f8\uff0c\u4e54\u5e03\u65af\u4ece\u4e0d\u505a\u8c03\u7814\uff0c\u6d88\u8d39\u8005\u4ece\u4e0d\u77e5\u9053\u81ea\u5df1\u771f\u6b63\u8981\u4ec0\u4e48\uff0c\u76f4\u5230\u4f60\u628a\u5b83\u6446\u5230\u773c\u524d_\u5546\u4e1a\u601d\u7ef4_\u4ea7\u54c1\u8425\u9500_\u8425\u9500\u601d\u7ef4_\u7206\u54c1\u6218\u7565_\u54c1\u724c\u8425\u9500_748.mp4": {
+    "mtime": 1778039304.0519872,
+    "hash": "eb9dc85482ce6945b1690912ffc85196"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-11-24_\u4e3a\u98ce\u9669\u201c\u5b9a\u4ef7\u201d\uff0c\u4ece\u4f26\u6566\u5496\u5561\u9986\u8bde\u751f\u7684\u52b3\u5408\u793e\u4e0e\u4fdd\u9669_\u5546\u4e1a\u601d\u7ef4_\u8d22\u7ecf_\u98ce\u9669\u5b9a\u4ef7_\u4fdd\u9669_\u5377\u5b87\u5b99\u6f2b\u8c08_7576218357926612276/2025-11-24_\u4e3a\u98ce\u9669\u201c\u5b9a\u4ef7\u201d\uff0c\u4ece\u4f26\u6566\u5496\u5561\u9986\u8bde\u751f\u7684\u52b3\u5408\u793e\u4e0e\u4fdd\u9669_\u5546\u4e1a\u601d\u7ef4_\u8d22\u7ecf_\u98ce\u9669\u5b9a\u4ef7_\u4fdd\u9669_\u5377\u5b87\u5b99\u6f2b\u8c08_7576218357926612276.mp4": {
+    "mtime": 1778038956.568639,
+    "hash": "8dc146a77aaf92ae620ac7cd0c31dbc4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-04-29_\u7279\u522b\u7bc7\uff1a\u7f8e\u56fd\u5185\u6218\uff0c\u7eff\u949e\u3001\u56fd\u503a\u4e0e\u9053\u5fb7\u5c01\u9501\uff0c\u4e00\u573a\u5f3a\u5236\u51fa\u6e05\u65e7\u8d44\u4ea7\u7684\u201c\u517c\u5e76\u91cd\u7ec4\u201d_\u7f8e\u56fd\u5185\u6218_\u8d44\u4ea7\u91cd\u7ec4_\u8d44\u672c\u8fd0\u4f5c_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u5377\u5b87\u5b99\u6f2b\u8c08_7634100269843778851/2026-04-29_\u7279\u522b\u7bc7\uff1a\u7f8e\u56fd\u5185\u6218\uff0c\u7eff\u949e\u3001\u56fd\u503a\u4e0e\u9053\u5fb7\u5c01\u9501\uff0c\u4e00\u573a\u5f3a\u5236\u51fa\u6e05\u65e7\u8d44\u4ea7\u7684\u201c\u517c\u5e76\u91cd\u7ec4\u201d_\u7f8e\u56fd\u5185\u6218_\u8d44\u4ea7\u91cd\u7ec4_\u8d44\u672c\u8fd0\u4f5c_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u5377\u5b87\u5b99\u6f2b\u8c08_76341.mp4": {
+    "mtime": 1778038526.8207488,
+    "hash": "eb677ccb4833f72635c10110b54c788e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-04-18_\u5982\u4f55\u5728\u65b0\u5e73\u53f0\u2018\u7ea2\u5229\u2019\u8bf1\u60d1\u2faf\u524d\u4fdd\u6301\u6e05\u9192\uff1f\u65b0\u6e20\u9053\u6dd8\u2fa6\u8fd8\u662f\u8e29\u5751\uff1f\u522b\u88ab\u201c\u7ea2\u5229\u201d\u5ffd\u60a0\u7638\u4e86\uff01_\u8425\u9500\u601d\u7ef4_\u6d41\u91cf\u5bc6\u7801_\u6d41\u91cf\u9677\u9631_\u5e73\u53f0\u7ea2\u5229_\u8425\u9500\u7b56\u7565_7494278158196264201/2025-04-18_\u5982\u4f55\u5728\u65b0\u5e73\u53f0\u2018\u7ea2\u5229\u2019\u8bf1\u60d1\u2faf\u524d\u4fdd\u6301\u6e05\u9192\uff1f\u65b0\u6e20\u9053\u6dd8\u2fa6\u8fd8\u662f\u8e29\u5751\uff1f\u522b\u88ab\u201c\u7ea2\u5229\u201d\u5ffd\u60a0\u7638\u4e86\uff01_\u8425\u9500\u601d\u7ef4_\u6d41\u91cf\u5bc6\u7801_\u6d41\u91cf\u9677\u9631_\u5e73\u53f0\u7ea2\u5229_\u8425\u9500\u7b56\u7565_749.mp4": {
+    "mtime": 1778039291.785037,
+    "hash": "ad2f2680e0dc6fb8f28f9e2244af03d3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-06-16_\u522b\u518d\u5377\u540c\u884c\u4e86\uff0c\u4f60\u771f\u6b63\u7684\u5bf9\u624b\uff0c\u662f\u7528\u6237\u7684\u201c\u4e0b\u4e00\u4e2a\u9700\u6c42\u201d_\u884c\u4e1a\u5185\u5377_\u7528\u6237\u9700\u6c42_\u5546\u4e1a\u5206\u6790_\u8425\u9500_\u6d88\u8d39\u5fc3\u7406_7516171480086973732/2025-06-16_\u522b\u518d\u5377\u540c\u884c\u4e86\uff0c\u4f60\u771f\u6b63\u7684\u5bf9\u624b\uff0c\u662f\u7528\u6237\u7684\u201c\u4e0b\u4e00\u4e2a\u9700\u6c42\u201d_\u884c\u4e1a\u5185\u5377_\u7528\u6237\u9700\u6c42_\u5546\u4e1a\u5206\u6790_\u8425\u9500_\u6d88\u8d39\u5fc3\u7406_7516171480086973732.mp4": {
+    "mtime": 1778039254.050283,
+    "hash": "4ad5632bf91d9a69fe9f2d9ed9650088"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-08-04_\u4ece\u201c\u753b\u5927\u997c\u201d\u5230\u201c\u5c0f\u786e\u5e78\u201d\uff0c\u5982\u4f55\u62ff\u634f\u7528\u6237\u7684\u4ea7\u54c1\u9884\u671f_\u7528\u6237\u9884\u671f_\u4ea7\u54c1\u601d\u7ef4_\u5546\u4e1a\u5206\u6790_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7534656142970981651/2025-08-04_\u4ece\u201c\u753b\u5927\u997c\u201d\u5230\u201c\u5c0f\u786e\u5e78\u201d\uff0c\u5982\u4f55\u62ff\u634f\u7528\u6237\u7684\u4ea7\u54c1\u9884\u671f_\u7528\u6237\u9884\u671f_\u4ea7\u54c1\u601d\u7ef4_\u5546\u4e1a\u5206\u6790_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_75346561429709.mp4": {
+    "mtime": 1778039140.41068,
+    "hash": "f5ace07196e99023f642c93824c41fbe"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-04-09_\u653e\u5f03\u5b9e\u4e1a\u641e\u91d1\u878d\uff0c19\u4e16\u7eaa\u82f1\u56fd\u7684\u91d1\u672c\u4f4d\u548c\u82f1\u9551\u9738\u6743\uff0c\u4e0e\u5b83\u7684\u91d1\u878d\u6f6e\u6c50\u6536\u5272\uff01_\u5b8f\u89c2\u7ecf\u6d4e_\u91d1\u878d\u9738\u6743_\u534e\u5c14\u8857_\u91d1\u672c\u4f4d_\u5377\u5b87\u5b99\u6f2b\u8c08_7626688683604741428/2026-04-09_\u653e\u5f03\u5b9e\u4e1a\u641e\u91d1\u878d\uff0c19\u4e16\u7eaa\u82f1\u56fd\u7684\u91d1\u672c\u4f4d\u548c\u82f1\u9551\u9738\u6743\uff0c\u4e0e\u5b83\u7684\u91d1\u878d\u6f6e\u6c50\u6536\u5272\uff01_\u5b8f\u89c2\u7ecf\u6d4e_\u91d1\u878d\u9738\u6743_\u534e\u5c14\u8857_\u91d1\u672c\u4f4d_\u5377\u5b87\u5b99\u6f2b\u8c08_7626688683.mp4": {
+    "mtime": 1778038589.282644,
+    "hash": "98d745161cdba5f816f9af07c58f5f6a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-05-16_\u672a\u6765\u98df\u54c1\u6218\u4e89\uff1a\u8c01\u80fd\u540c\u65f6\u7edf\u6cbb70\u540e\u7684\u80c3\u300190\u540e\u7684\u5fc3\u548c\u4e0b\u5c42\u5e02\u573a\u7684\u670b\u53cb\u5708\uff1f_\u5546\u4e1a\u5206\u6790_\u6d88\u8d39\u8d8b\u52bf_\u6d88\u8d39\u4e3b\u4e49_\u96f6\u98df\u8d2d\u7269_\u98df\u54c1\u7535\u5546_7504667688057261339/2025-05-16_\u672a\u6765\u98df\u54c1\u6218\u4e89\uff1a\u8c01\u80fd\u540c\u65f6\u7edf\u6cbb70\u540e\u7684\u80c3\u300190\u540e\u7684\u5fc3\u548c\u4e0b\u5c42\u5e02\u573a\u7684\u670b\u53cb\u5708\uff1f_\u5546\u4e1a\u5206\u6790_\u6d88\u8d39\u8d8b\u52bf_\u6d88\u8d39\u4e3b\u4e49_\u96f6\u98df\u8d2d\u7269_\u98df\u54c1\u7535\u5546_750466768.mp4": {
+    "mtime": 1778039271.625006,
+    "hash": "8910d12c689989fd7c8dd78aa1ec18cc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-08-07_\u60f3\u8ba9\u4f60\u7684\u4ea7\u54c1\u65e2\u5f53\u8fd0\u52a8\u5458\uff0c\u53c8\u5f53\u88c1\u5224\uff1f\u90a3\u5c31\u4ece\u5356\u4ea7\u54c1\u5230\u5356\u6807\u51c6\u5f00\u59cb\u73a9_\u884c\u4e1a\u6807\u51c6_\u5546\u4e1a\u7b56\u7565_\u5e02\u573a\u5206\u6790_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7535777935358201128/2025-08-07_\u60f3\u8ba9\u4f60\u7684\u4ea7\u54c1\u65e2\u5f53\u8fd0\u52a8\u5458\uff0c\u53c8\u5f53\u88c1\u5224\uff1f\u90a3\u5c31\u4ece\u5356\u4ea7\u54c1\u5230\u5356\u6807\u51c6\u5f00\u59cb\u73a9_\u884c\u4e1a\u6807\u51c6_\u5546\u4e1a\u7b56\u7565_\u5e02\u573a\u5206\u6790_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_75357779.mp4": {
+    "mtime": 1778039128.2791164,
+    "hash": "392c7d178dbcc89e35d238813c4c947d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-11-06_\u6d77\u76d7\u6a21\u5f0f\uff0c\u9ec4\u91d1\u822a\u9053\u4e0a\u7684\u4ea1\u547d\u5f92\u7ecf\u6d4e\u5b66\uff08\u756a\u5916\u7bc7\uff09_\u6d77\u76d7_\u5546\u4e1a\u6a21\u5f0f_\u516c\u53f8\u7ba1\u7406_\u7ec4\u7ec7\u67b6\u6784_\u5377\u5b87\u5b99\u6f2b\u8c08_7569537244374043913/2025-11-06_\u6d77\u76d7\u6a21\u5f0f\uff0c\u9ec4\u91d1\u822a\u9053\u4e0a\u7684\u4ea1\u547d\u5f92\u7ecf\u6d4e\u5b66\uff08\u756a\u5916\u7bc7\uff09_\u6d77\u76d7_\u5546\u4e1a\u6a21\u5f0f_\u516c\u53f8\u7ba1\u7406_\u7ec4\u7ec7\u67b6\u6784_\u5377\u5b87\u5b99\u6f2b\u8c08_7569537244374043913.mp4": {
+    "mtime": 1778038999.776139,
+    "hash": "c39d59ca82f7cc27a628e13f7f41e476"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-05-30_\u94b1\u5305\u544a\u6025\uff1f\u4f60\u5bb6\u201c\u6bdb\u5b69\u5b50\u201d\u6b63\u5728\u517b\u6d3b\u4e00\u4e2a\u4e07\u4ebf\u4ea7\u4e1a\uff01_\u5ba0\u7269_\u793e\u4ea4_\u5ba0\u7269\u98df\u54c1_\u5ba0\u7269\u7528\u54c1_\u5546\u4e1a_7509860037418814720/2025-05-30_\u94b1\u5305\u544a\u6025\uff1f\u4f60\u5bb6\u201c\u6bdb\u5b69\u5b50\u201d\u6b63\u5728\u517b\u6d3b\u4e00\u4e2a\u4e07\u4ebf\u4ea7\u4e1a\uff01_\u5ba0\u7269_\u793e\u4ea4_\u5ba0\u7269\u98df\u54c1_\u5ba0\u7269\u7528\u54c1_\u5546\u4e1a_7509860037418814720.mp4": {
+    "mtime": 1778039263.334102,
+    "hash": "3f6d6fba6010ba1cc420ec520236daf4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-02-22_\u5c0f\u7c73su7ultra_\u5f53\u8d5b\u9053\u9047\u89c1\u751f\u6001\uff0c\u4e2d\u56fd\u5de5\u4e1a\u5236\u9020\u7684\u534f\u540c\u8dc3\u5347_su7ultra_\u96f7\u519b_\u65b0\u80fd\u6e90\u6c7d\u8f66_\u4e2d\u56fd\u5236\u9020_\u4ea7\u4e1a\u94fe_7474191910442159360/2025-02-22_\u5c0f\u7c73su7ultra_\u5f53\u8d5b\u9053\u9047\u89c1\u751f\u6001\uff0c\u4e2d\u56fd\u5de5\u4e1a\u5236\u9020\u7684\u534f\u540c\u8dc3\u5347_su7ultra_\u96f7\u519b_\u65b0\u80fd\u6e90\u6c7d\u8f66_\u4e2d\u56fd\u5236\u9020_\u4ea7\u4e1a\u94fe_74741919104.mp4": {
+    "mtime": 1778039346.650253,
+    "hash": "a61e5d7fa3ef5c223a8ae1bbfab1e056"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-07-31_\u4e3a\u4ec0\u4e48\u8bf4\u201c\u5f00\u4f1a\u6ca1\u4eba\u5435\u67b6\u201d\u7684\u516c\u53f8\uff0c\u79bb\u5012\u95ed\u5e76\u4e0d\u9065\u8fdc_\u5546\u4e1a\u5206\u6790_\u5546\u4e1a\u51b3\u7b56_\u4f01\u4e1a\u7ba1\u7406_\u5377\u5b87\u5b99\u6f2b\u8c08_\u6398\u91d1\u8ba1\u52122025_7533172488973389098/2025-07-31_\u4e3a\u4ec0\u4e48\u8bf4\u201c\u5f00\u4f1a\u6ca1\u4eba\u5435\u67b6\u201d\u7684\u516c\u53f8\uff0c\u79bb\u5012\u95ed\u5e76\u4e0d\u9065\u8fdc_\u5546\u4e1a\u5206\u6790_\u5546\u4e1a\u51b3\u7b56_\u4f01\u4e1a\u7ba1\u7406_\u5377\u5b87\u5b99\u6f2b\u8c08_\u6398\u91d1\u8ba1\u52122025_753317248897338.mp4": {
+    "mtime": 1778039152.9410503,
+    "hash": "33d3899079e413e331c9e0d5d6226fc9"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-06-20_\u4ea7\u54c1\u597d\uff0c\u4f46\u662f\u4e5f\u8981\u7528\u8425\u9500\u641e\u5b9a\u4eba\u5fc3_\u5c0f\u7c73\u6c7d\u8f66_su7_YU7_\u96f7\u519b_\u5c0f\u7c73_7517658018993949986/2025-06-20_\u4ea7\u54c1\u597d\uff0c\u4f46\u662f\u4e5f\u8981\u7528\u8425\u9500\u641e\u5b9a\u4eba\u5fc3_\u5c0f\u7c73\u6c7d\u8f66_su7_YU7_\u96f7\u519b_\u5c0f\u7c73_7517658018993949986.mp4": {
+    "mtime": 1778039246.2697132,
+    "hash": "0205ae3ae132e30e74772261db2500e5"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-06-11_\u94f6\u53d1\u7ecf\u6d4e\uff0c\u672a\u676510\u5e74\u6700\u5927\u7684\u6d88\u8d39\u98ce\u53e3_\u94f6\u53d1\u7ecf\u6d4e_\u6d88\u8d39_\u8001\u5e74\u751f\u6d3b_\u5546\u4e1a_7514320392585104675/2025-06-11_\u94f6\u53d1\u7ecf\u6d4e\uff0c\u672a\u676510\u5e74\u6700\u5927\u7684\u6d88\u8d39\u98ce\u53e3_\u94f6\u53d1\u7ecf\u6d4e_\u6d88\u8d39_\u8001\u5e74\u751f\u6d3b_\u5546\u4e1a_7514320392585104675.mp4": {
+    "mtime": 1778039249.5166678,
+    "hash": "829658e12067e38122364ffda5df99e0"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-12-27_\u4e00\u5bb6\u201c\u56fd\u5bb6\u98ce\u6295\u201d\u7684\u5d1b\u8d77\uff0c\u8461\u8404\u7259\u7684\u5927\u897f\u6d0b\u8d38\u6613\u9738\u6743_\u5168\u7403\u8d38\u6613_\u6d77\u6d0b\u9738\u6743_\u8461\u8404\u7259_\u5546\u4e1a\u5206\u6790_\u5377\u5b87\u5b99\u6f2b\u8c08_7588511091504729379/2025-12-27_\u4e00\u5bb6\u201c\u56fd\u5bb6\u98ce\u6295\u201d\u7684\u5d1b\u8d77\uff0c\u8461\u8404\u7259\u7684\u5927\u897f\u6d0b\u8d38\u6613\u9738\u6743_\u5168\u7403\u8d38\u6613_\u6d77\u6d0b\u9738\u6743_\u8461\u8404\u7259_\u5546\u4e1a\u5206\u6790_\u5377\u5b87\u5b99\u6f2b\u8c08_7588511091504729379.mp4": {
+    "mtime": 1778038860.85592,
+    "hash": "156f673518c48ab5849ef7fb6e3a13b4"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-01-19_\u5546\u4e1a\u6587\u660e\u7684\u5e95\u5c42\u903b\u8f91\uff08\u4e8c\uff09\u2014\u2014\u4ece\u63a0\u593a\u5230\u5951\u7ea6\uff0c\u82f1\u683c\u5170\u94f6\u884c\u4e0e\u73b0\u4ee3\u91d1\u878d\u7684\u8bde\u751f_\u82f1\u683c\u5170\u94f6\u884c_\u5b8f\u89c2\u7ecf\u6d4e_\u8d27\u5e01\u653f\u7b56_\u8d44\u4ea7\u8bc1\u5238\u5316_\u5377\u5b87\u5b99\u6f2b\u8c08_7596999211753721139/2026-01-19_\u5546\u4e1a\u6587\u660e\u7684\u5e95\u5c42\u903b\u8f91\uff08\u4e8c\uff09\u2014\u2014\u4ece\u63a0\u593a\u5230\u5951\u7ea6\uff0c\u82f1\u683c\u5170\u94f6\u884c\u4e0e\u73b0\u4ee3\u91d1\u878d\u7684\u8bde\u751f_\u82f1\u683c\u5170\u94f6\u884c_\u5b8f\u89c2\u7ecf\u6d4e_\u8d27\u5e01\u653f\u7b56_\u8d44\u4ea7\u8bc1\u5238\u5316_\u5377\u5b87\u5b99\u6f2b\u8c08_759699.mp4": {
+    "mtime": 1778038790.8204885,
+    "hash": "7bae38ad4c301b2b27e66c24f4fd454f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-12-12_\u5236\u9020\u7a00\u7f3a_vs_\u6781\u81f4\u89c4\u6a21\uff0c17\u4e16\u7eaa\u82f1\u6cd5\u4e24\u56fd\u7684\u9876\u7ea7\u5546\u4e1a\u5bf9\u51b3_\u91cd\u5546\u4e3b\u4e49_\u54c1\u724c\u8425\u9500_\u5b8f\u89c2\u7ecf\u6d4e_\u5962\u4f88\u54c1_\u5377\u5b87\u5b99\u6f2b\u8c08_7582899539284151592/2025-12-12_\u5236\u9020\u7a00\u7f3a_vs_\u6781\u81f4\u89c4\u6a21\uff0c17\u4e16\u7eaa\u82f1\u6cd5\u4e24\u56fd\u7684\u9876\u7ea7\u5546\u4e1a\u5bf9\u51b3_\u91cd\u5546\u4e3b\u4e49_\u54c1\u724c\u8425\u9500_\u5b8f\u89c2\u7ecf\u6d4e_\u5962\u4f88\u54c1_\u5377\u5b87\u5b99\u6f2b\u8c08_758289953928415.mp4": {
+    "mtime": 1778038880.3754578,
+    "hash": "b68ea9338a93fb153339d316b03fb1f1"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-05-06_46%\u624b\u6e38\u5f00\u59cb_\u6070\u996d_\uff01\u5e7f\u544a\u53d8\u73b0\u6b63\u5d1b\u8d77_\u624b\u6e38_\u5546\u4e1a_\u8425\u9500_\u884c\u4e1a\u5206\u6790_\u7535\u7ade_7500958413761809664/2025-05-06_46%\u624b\u6e38\u5f00\u59cb_\u6070\u996d_\uff01\u5e7f\u544a\u53d8\u73b0\u6b63\u5d1b\u8d77_\u624b\u6e38_\u5546\u4e1a_\u8425\u9500_\u884c\u4e1a\u5206\u6790_\u7535\u7ade_7500958413761809664.mp4": {
+    "mtime": 1778039287.2659996,
+    "hash": "920c63bb51802dd5ec52188d1661075d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-12-08_\u628a\u201cB2B\u4f9b\u5e94\u5546\u7ef4\u7cfb\u201d\u505a\u6210\u201c\u61d2\u4eba\u201d\u6a21\u5f0f\uff01\u54c8\u5fb7\u900a\u6e7e\u516c\u53f8\u201c\u5b88\u682a\u5f85\u5154\u201d\u5784\u65ad\u767e\u5e74_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u76ae\u8349_\u5546\u4e1a\u6a21\u5f0f_\u8d44\u672c\u535a\u5f08_\u5377\u5b87\u5b99\u6f2b\u8c08_7581408131784265001/2025-12-08_\u628a\u201cB2B\u4f9b\u5e94\u5546\u7ef4\u7cfb\u201d\u505a\u6210\u201c\u61d2\u4eba\u201d\u6a21\u5f0f\uff01\u54c8\u5fb7\u900a\u6e7e\u516c\u53f8\u201c\u5b88\u682a\u5f85\u5154\u201d\u5784\u65ad\u767e\u5e74_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u76ae\u8349_\u5546\u4e1a\u6a21\u5f0f_\u8d44\u672c\u535a\u5f08_\u5377\u5b87\u5b99\u6f2b\u8c08_7581408.mp4": {
+    "mtime": 1778038930.5849524,
+    "hash": "3a13110670fc3d140146eebb2977e8fe"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-10-13_\u7f8e\u7b2c\u5947\u94f6\u884c\uff0c\u7528\u91d1\u878d\u7edf\u6cbb\u4e00\u4e2a\u65f6\u4ee3_\u7f8e\u7b2c\u5947\u5bb6\u65cf_\u94f6\u884c_\u91d1\u878d_\u5546\u4e1a\u5206\u6790_\u5377\u5b87\u5b99\u6f2b\u8c08_7560629138600578319/2025-10-13_\u7f8e\u7b2c\u5947\u94f6\u884c\uff0c\u7528\u91d1\u878d\u7edf\u6cbb\u4e00\u4e2a\u65f6\u4ee3_\u7f8e\u7b2c\u5947\u5bb6\u65cf_\u94f6\u884c_\u91d1\u878d_\u5546\u4e1a\u5206\u6790_\u5377\u5b87\u5b99\u6f2b\u8c08_7560629138600578319.mp4": {
+    "mtime": 1778039016.4813657,
+    "hash": "193d87b1732a4d4c6cbaa4f83c37bb23"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-07-10_\u4f60\u6562\u76f8\u4fe1\uff1f\u5168\u7403\u5316\u7684\u5f00\u7aef\uff0c\u662f\u7531\u4e00\u4e2a\u5361\u8f66\u53f8\u673a\u89e6\u53d1\u7684_\u5168\u7403\u5316_\u5546\u4e1a\u8d22\u7ecf_\u8d38\u6613_\u7269\u6d41\u8fd0\u8f93_\u5377\u5b87\u5b99\u6f2b\u8c08_7525076229314120975/2025-07-10_\u4f60\u6562\u76f8\u4fe1\uff1f\u5168\u7403\u5316\u7684\u5f00\u7aef\uff0c\u662f\u7531\u4e00\u4e2a\u5361\u8f66\u53f8\u673a\u89e6\u53d1\u7684_\u5168\u7403\u5316_\u5546\u4e1a\u8d22\u7ecf_\u8d38\u6613_\u7269\u6d41\u8fd0\u8f93_\u5377\u5b87\u5b99\u6f2b\u8c08_7525076229314120975.mp4": {
+    "mtime": 1778039202.9574773,
+    "hash": "f84f56117cd51d7a48ecabcb5406e7dc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-08-28_\u4f1a\u5458\u5236\uff0c\u4e00\u573a\u4ece\u201c\u4ea4\u6613\u201d\u5230\u201c\u5173\u7cfb\u201d\u7684\u5546\u4e1a\u8303\u5f0f\u8f6c\u79fb_\u4f1a\u5458\u5236_\u5546\u4e1a\u5206\u6790_\u6d88\u8d39\u4e3b\u4e49_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7543564752044231971/2025-08-28_\u4f1a\u5458\u5236\uff0c\u4e00\u573a\u4ece\u201c\u4ea4\u6613\u201d\u5230\u201c\u5173\u7cfb\u201d\u7684\u5546\u4e1a\u8303\u5f0f\u8f6c\u79fb_\u4f1a\u5458\u5236_\u5546\u4e1a\u5206\u6790_\u6d88\u8d39\u4e3b\u4e49_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7543564752044231.mp4": {
+    "mtime": 1778039087.8274424,
+    "hash": "350f020ac66d1e58f98f6d7e7c7a6d01"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-03-11_\u963f\u514b\u83b1\u7279\u4e0e\u201c\u5168\u666f\u655e\u89c6\u4e3b\u4e49\u201d\u2014\u2014\u8c01\u53d1\u660e\u4e86\u6253\u5361\u3001\u5012\u73ed\u548cKPI\uff1f\u73b0\u4ee3\u4f01\u4e1a\u7ba1\u7406\u5b66\u80cc\u540e\u7684\u9f3b\u7956\uff01_\u7ba1\u7406\u5b66_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u963f\u514b\u83b1\u7279_\u6253\u5de5\u4eba_\u5377\u5b87\u5b99\u6f2b\u8c08_7615924098480344335/2026-03-11_\u963f\u514b\u83b1\u7279\u4e0e\u201c\u5168\u666f\u655e\u89c6\u4e3b\u4e49\u201d\u2014\u2014\u8c01\u53d1\u660e\u4e86\u6253\u5361\u3001\u5012\u73ed\u548cKPI\uff1f\u73b0\u4ee3\u4f01\u4e1a\u7ba1\u7406\u5b66\u80cc\u540e\u7684\u9f3b\u7956\uff01_\u7ba1\u7406\u5b66_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u963f\u514b\u83b1\u7279_\u6253\u5de5\u4eba_\u5377\u5b87\u5b99\u6f2b\u8c08_7.mp4": {
+    "mtime": 1778038684.4206073,
+    "hash": "035c21d341dbb49bb5bebdae0b8ec1f3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-01-04_\u82f1\u56fd\u5708\u5730\u8fd0\u52a8\u4e0e\u751f\u4ea7\u8981\u7d20\u7684\u5e02\u573a\u5316\u91cd\u7ec4_\u5708\u5730\u8fd0\u52a8_\u5b8f\u89c2\u7ecf\u6d4e_\u751f\u4ea7\u8981\u7d20_\u539f\u59cb\u8d44\u672c_\u5377\u5b87\u5b99\u6f2b\u8c08_7591434462940908827/2026-01-04_\u82f1\u56fd\u5708\u5730\u8fd0\u52a8\u4e0e\u751f\u4ea7\u8981\u7d20\u7684\u5e02\u573a\u5316\u91cd\u7ec4_\u5708\u5730\u8fd0\u52a8_\u5b8f\u89c2\u7ecf\u6d4e_\u751f\u4ea7\u8981\u7d20_\u539f\u59cb\u8d44\u672c_\u5377\u5b87\u5b99\u6f2b\u8c08_7591434462940908827.mp4": {
+    "mtime": 1778038825.9719937,
+    "hash": "3a99293a290b9485ad49448902de9b63"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-02-25_AI\u65f6\u4ee3\u7559\u7ed9\u767e\u5ea6\u7684\u9009\u62e9\u9898_\u5546\u4e1a_\u5546\u4e1a\u5206\u6790_\u767e\u5ea6_deepseek_\u5fae\u4fe1_7474996605096054066/2025-02-25_AI\u65f6\u4ee3\u7559\u7ed9\u767e\u5ea6\u7684\u9009\u62e9\u9898_\u5546\u4e1a_\u5546\u4e1a\u5206\u6790_\u767e\u5ea6_deepseek_\u5fae\u4fe1_7474996605096054066.mp4": {
+    "mtime": 1778039325.796232,
+    "hash": "8e6533758eb8c870bd9c77b38cb26770"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-05-04_\u5784\u65ad_\u5361\u7279\u5c14\u4e0e\u6258\u62c9\u65af\uff0c\u8d44\u672c\u5728\u201c\u7edf\u4e00\u5927\u5e02\u573a\u201d\u91cc\u7684\u9632\u5fa1\u4e0e\u6536\u5272_\u5b8f\u89c2\u7ecf\u6d4e_\u5784\u65ad_\u5361\u7279\u5c14_\u6258\u62c9\u65af_\u5377\u5b87\u5b99\u6f2b\u8c08_7635949802538159375/2026-05-04_\u5784\u65ad_\u5361\u7279\u5c14\u4e0e\u6258\u62c9\u65af\uff0c\u8d44\u672c\u5728\u201c\u7edf\u4e00\u5927\u5e02\u573a\u201d\u91cc\u7684\u9632\u5fa1\u4e0e\u6536\u5272_\u5b8f\u89c2\u7ecf\u6d4e_\u5784\u65ad_\u5361\u7279\u5c14_\u6258\u62c9\u65af_\u5377\u5b87\u5b99\u6f2b\u8c08_763594980253815937.mp4": {
+    "mtime": 1778038506.8122764,
+    "hash": "cfb5704e0015228ad9a5c410352c72f7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-03-03_\u82f1\u4f1f\u8fbe\u5e1d\u56fd\u542f\u793a\u5f55\uff08\u4e0a\uff09\uff1a\u4ece\u7845\u8c37\u5f03\u5b50\u5230\u7b97\u529b\u66b4\u541b\u7684\u767b\u57fa\u4e4b\u8def_\u82f1\u4f1f\u8fbe_\u9ec4\u4ec1\u52cb_AI_\u5546\u4e1a_H100_7477409416178830618/2025-03-03_\u82f1\u4f1f\u8fbe\u5e1d\u56fd\u542f\u793a\u5f55\uff08\u4e0a\uff09\uff1a\u4ece\u7845\u8c37\u5f03\u5b50\u5230\u7b97\u529b\u66b4\u541b\u7684\u767b\u57fa\u4e4b\u8def_\u82f1\u4f1f\u8fbe_\u9ec4\u4ec1\u52cb_AI_\u5546\u4e1a_H100_7477409416178830618.mp4": {
+    "mtime": 1778039334.4721637,
+    "hash": "6ccfcea5d16d9401786b83104616ff3f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-11-19_\u4ec0\u4e48\u662f\u201c\u535a\u50bb\u7406\u8bba\u201d\uff1f\u90c1\u91d1\u9999\u7684\u91d1\u878d\u6ce1\u6cab\uff0c400\u5e74\u524d\u7684\u75af\u72c2\u51fb\u9f13\u4f20\u82b1\u4e0e\u5168\u6c11\u72c2\u6b22_\u90c1\u91d1\u9999\u6ce1\u6cab_\u91d1\u878d\u5371\u673a_\u535a\u50bb\u7406\u8bba_\u91d1\u878d\u6ce1\u6cab_\u5377\u5b87\u5b99\u6f2b\u8c08_7574359743133715752/2025-11-19_\u4ec0\u4e48\u662f\u201c\u535a\u50bb\u7406\u8bba\u201d\uff1f\u90c1\u91d1\u9999\u7684\u91d1\u878d\u6ce1\u6cab\uff0c400\u5e74\u524d\u7684\u75af\u72c2\u51fb\u9f13\u4f20\u82b1\u4e0e\u5168\u6c11\u72c2\u6b22_\u90c1\u91d1\u9999\u6ce1\u6cab_\u91d1\u878d\u5371\u673a_\u535a\u50bb\u7406\u8bba_\u91d1\u878d\u6ce1\u6cab_\u5377\u5b87\u5b99\u6f2b\u8c08_75743.mp4": {
+    "mtime": 1778038965.3712182,
+    "hash": "b4a14823c89e27951f81473a16e7db6e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-04-20_\u4e07\u56fd\u5de5\u4e1a\u535a\u89c8\u4f1a\uff0c1851\u6c34\u6676\u5bab\uff0c\u82f1\u56fd\u7684\u201c\u5168\u7403\u4ea7\u54c1\u53d1\u5e03\u4f1a\u201d\u4e0e\u5fc3\u667a\u5360\u9886_\u4e07\u56fd\u535a\u89c8\u4f1a_\u54c1\u724c\u8425\u9500_\u6d88\u8d39\u5fc3\u667a_\u5b8f\u89c2\u7ecf\u6d4e_\u5377\u5b87\u5b99\u6f2b\u8c08_7630762216278527266/2026-04-20_\u4e07\u56fd\u5de5\u4e1a\u535a\u89c8\u4f1a\uff0c1851\u6c34\u6676\u5bab\uff0c\u82f1\u56fd\u7684\u201c\u5168\u7403\u4ea7\u54c1\u53d1\u5e03\u4f1a\u201d\u4e0e\u5fc3\u667a\u5360\u9886_\u4e07\u56fd\u535a\u89c8\u4f1a_\u54c1\u724c\u8425\u9500_\u6d88\u8d39\u5fc3\u667a_\u5b8f\u89c2\u7ecf\u6d4e_\u5377\u5b87\u5b99\u6f2b\u8c08_76307622.mp4": {
+    "mtime": 1778038562.7041934,
+    "hash": "f73192d684e2ca745bd7aec47b2a4217"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-04-14_\u82f9\u679c\u4ece\u4e0d\u6b7b\u78d5\u53c2\u6570\uff0c\u5374\u62e5\u6709\u6700\u597d\u7684\u7528\u6237\u4f53\u9a8c\uff0c\u54c1\u724c\u5982\u4f55\u907f\u514d\u8425\u9500\u53d9\u4e8b\u7684\u201c\u81ea\u55e8\u201d\u9677\u9631\uff1f_\u8425\u9500\u6848\u4f8b_\u8425\u9500\u601d\u7ef4_\u5546\u4e1a\u6a21\u5f0f_\u54c1\u724c\u6545\u4e8b_7492799263269752075/2025-04-14_\u82f9\u679c\u4ece\u4e0d\u6b7b\u78d5\u53c2\u6570\uff0c\u5374\u62e5\u6709\u6700\u597d\u7684\u7528\u6237\u4f53\u9a8c\uff0c\u54c1\u724c\u5982\u4f55\u907f\u514d\u8425\u9500\u53d9\u4e8b\u7684\u201c\u81ea\u55e8\u201d\u9677\u9631\uff1f_\u8425\u9500\u6848\u4f8b_\u8425\u9500\u601d\u7ef4_\u5546\u4e1a\u6a21\u5f0f_\u54c1\u724c\u6545\u4e8b_7492799263.mp4": {
+    "mtime": 1778039297.1813333,
+    "hash": "064641108d8b4654b5817ff0559eeb3b"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-03-02_\u94c1\u8def\u5982\u4f55\u7528\u4e00\u573a\u201c\u81f4\u547d\u4e8b\u6545\u201d\uff0c\u5f3a\u884c\u91cd\u7ec4\u4e86\u5168\u7403\u8d44\u672c\u7684\u5468\u8f6c\u5468\u671f\uff1f_\u4e54\u6cbb\u53f2\u8482\u82ac\u68ee_\u5de5\u4e1a\u9769\u547d_\u82f1\u56fd\u94c1\u8def_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u5377\u5b87\u5b99\u6f2b\u8c08_7612582617652759844/2026-03-02_\u94c1\u8def\u5982\u4f55\u7528\u4e00\u573a\u201c\u81f4\u547d\u4e8b\u6545\u201d\uff0c\u5f3a\u884c\u91cd\u7ec4\u4e86\u5168\u7403\u8d44\u672c\u7684\u5468\u8f6c\u5468\u671f\uff1f_\u4e54\u6cbb\u53f2\u8482\u82ac\u68ee_\u5de5\u4e1a\u9769\u547d_\u82f1\u56fd\u94c1\u8def_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u5377\u5b87\u5b99\u6f2b\u8c08_7612582617.mp4": {
+    "mtime": 1778038732.5257955,
+    "hash": "de89f239e1ed4765e8ca0ce866ecd449"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-08-18_\u7535\u5f71\u4e0d\u8d5a\u94b1\uff0c\u8fea\u58eb\u5c3c\u4e3a\u4ec0\u4e48\u8fd8\u8981\u6b7b\u78d5\u7535\u5f71\uff1f_\u8fea\u58eb\u5c3c_\u7535\u5f71_\u5546\u4e1a_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7539851538441751846/2025-08-18_\u7535\u5f71\u4e0d\u8d5a\u94b1\uff0c\u8fea\u58eb\u5c3c\u4e3a\u4ec0\u4e48\u8fd8\u8981\u6b7b\u78d5\u7535\u5f71\uff1f_\u8fea\u58eb\u5c3c_\u7535\u5f71_\u5546\u4e1a_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7539851538441751846.mp4": {
+    "mtime": 1778039153.047476,
+    "hash": "8bea1730f7c2be9cb39fced60f6875dd"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-04-07_\u8425\u9500\u7684\u6218\u4e89\u827a\u672f\uff0c\u4e3a\u4f60\u7684\u54c1\u724c\u6545\u4e8b\u5bfb\u627e\u201c\u53cd\u6d3e\u89d2\u8272\u201d_\u5546\u4e1a\u6a21\u5f0f_\u54c1\u724c\u8425\u9500_\u53ef\u4e50_\u8425\u9500\u601d\u7ef4_\u54c1\u724c\u6545\u4e8b_7490197084709129507/2025-04-07_\u8425\u9500\u7684\u6218\u4e89\u827a\u672f\uff0c\u4e3a\u4f60\u7684\u54c1\u724c\u6545\u4e8b\u5bfb\u627e\u201c\u53cd\u6d3e\u89d2\u8272\u201d_\u5546\u4e1a\u6a21\u5f0f_\u54c1\u724c\u8425\u9500_\u53ef\u4e50_\u8425\u9500\u601d\u7ef4_\u54c1\u724c\u6545\u4e8b_7490197084709129507.mp4": {
+    "mtime": 1778039312.4885752,
+    "hash": "0cfa6cb9fbc81a097fc859f87d633a49"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-12-24_\u4ea7\u6743\u7684\u89c9\u9192\uff0c\u82f1\u56fd\u300a\u5784\u65ad\u6cd5\u300b\u4e0e\u4e13\u5229\u4fdd\u62a4\u2014\u2014\u5546\u4e1a\u6587\u660e\u7684\u7cfb\u7edf\u6027\u5347\u7ea7_\u5b8f\u89c2\u7ecf\u6d4e_\u77e5\u8bc6\u4ea7\u6743_\u98ce\u9669\u6295\u8d44_\u5236\u5ea6\u7ecf\u6d4e\u5b66_\u5377\u5b87\u5b99\u6f2b\u8c08_7587352770919877903/2025-12-24_\u4ea7\u6743\u7684\u89c9\u9192\uff0c\u82f1\u56fd\u300a\u5784\u65ad\u6cd5\u300b\u4e0e\u4e13\u5229\u4fdd\u62a4\u2014\u2014\u5546\u4e1a\u6587\u660e\u7684\u7cfb\u7edf\u6027\u5347\u7ea7_\u5b8f\u89c2\u7ecf\u6d4e_\u77e5\u8bc6\u4ea7\u6743_\u98ce\u9669\u6295\u8d44_\u5236\u5ea6\u7ecf\u6d4e\u5b66_\u5377\u5b87\u5b99\u6f2b\u8c08_75873527709.mp4": {
+    "mtime": 1778038859.7668526,
+    "hash": "d7a790a20396791e9be20e23f04c6460"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-06-30_\u60c5\u7eea\u7ecf\u6d4e\u52a0\u5355\u8eab\u7ecf\u6d4e\uff0c\u5982\u4f55\u5f15\u7206\u5168\u65b0\u6d88\u8d39\u65f6\u4ee3_\u60c5\u7eea\u7ecf\u6d4e_\u5355\u8eab\u7ecf\u6d4e_\u6d88\u8d39\u4e3b\u4e49_\u8425\u9500_\u5377\u5b87\u5b99\u6f2b\u8c08_7521362087952633126/2025-06-30_\u60c5\u7eea\u7ecf\u6d4e\u52a0\u5355\u8eab\u7ecf\u6d4e\uff0c\u5982\u4f55\u5f15\u7206\u5168\u65b0\u6d88\u8d39\u65f6\u4ee3_\u60c5\u7eea\u7ecf\u6d4e_\u5355\u8eab\u7ecf\u6d4e_\u6d88\u8d39\u4e3b\u4e49_\u8425\u9500_\u5377\u5b87\u5b99\u6f2b\u8c08_7521362087952633126.mp4": {
+    "mtime": 1778039229.2158751,
+    "hash": "85893b36fd1b1111e688b192996157b6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-10-01_\u5c0f\u7c73\u201c\u6362\u5fc3\u201d\uff1a\u4e00\u573a\u4ece\u201c\u6548\u7387\u201d\u5230\u201c\u786c\u6838\u79d1\u6280\u201d\u7684\u9006\u5929\u6539\u547d_2025\u96f7\u519b\u5e74\u5ea6\u6f14\u8bb2_\u96f7\u519b_\u5c0f\u7c73\u6c7d\u8f66_\u7384\u6212\u82af\u7247_\u5c0f\u7c7317promax_7556144728224369920/2025-10-01_\u5c0f\u7c73\u201c\u6362\u5fc3\u201d\uff1a\u4e00\u573a\u4ece\u201c\u6548\u7387\u201d\u5230\u201c\u786c\u6838\u79d1\u6280\u201d\u7684\u9006\u5929\u6539\u547d_2025\u96f7\u519b\u5e74\u5ea6\u6f14\u8bb2_\u96f7\u519b_\u5c0f\u7c73\u6c7d\u8f66_\u7384\u6212\u82af\u7247_\u5c0f\u7c7317promax_7556144.mp4": {
+    "mtime": 1778039057.7063143,
+    "hash": "c154d3ed1f8f9d4834ddd778a0ffba16"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-04-15_\u5784\u65ad\u5168\u7403\u60c5\u62a5\u7f51\uff1a\u7535\u62a5\u3001\u6df1\u6d77\u7535\u7f06\u3001\u8def\u900f\u793e\u4e0e\u201c\u65f6\u95f4\u5957\u5229\u201d\u7684\u8bde\u751f\uff0c19\u4e16\u7eaa\u82f1\u56fd\u201c\u5168\u7ea2\u7ebf\u201d\u4e0e\u5b83\u7684\u4e0a\u5e1d\u89c6\u89d2_\u65f6\u95f4\u5957\u5229_\u9ad8\u9891\u4ea4\u6613_\u7535\u62a5_\u4fe1\u606f\u5dee_\u5377\u5b87\u5b99\u6f2b\u8c08_7628914642391239979/2026-04-15_\u5784\u65ad\u5168\u7403\u60c5\u62a5\u7f51\uff1a\u7535\u62a5\u3001\u6df1\u6d77\u7535\u7f06\u3001\u8def\u900f\u793e\u4e0e\u201c\u65f6\u95f4\u5957\u5229\u201d\u7684\u8bde\u751f\uff0c19\u4e16\u7eaa\u82f1\u56fd\u201c\u5168\u7ea2\u7ebf\u201d\u4e0e\u5b83\u7684\u4e0a\u5e1d\u89c6\u89d2_\u65f6\u95f4\u5957\u5229_\u9ad8\u9891\u4ea4\u6613_\u7535\u62a5_\u4fe1\u606f\u5dee_\u5377\u5b87\u5b99.mp4": {
+    "mtime": 1778038559.476131,
+    "hash": "4225e68cbdfbcd546f29996c5964139f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-12-18_\u53f2\u4e0a\u6700\u8d35\u88c1\u5458\uff0c\u6cd5\u56fd\u4eba\u529b\u8d44\u672c\u5371\u673a\uff0c\u5982\u4f55\u91cd\u5851\u4e86\u6b27\u6d32\u767e\u5e74\u7684\u7ecf\u6d4e\u683c\u5c40\uff1f_\u4eba\u529b\u8d44\u672c_\u98ce\u9669\u7ba1\u7406_\u4ea7\u4e1a\u8f6c\u79fb_\u5236\u5ea6\u7ecf\u6d4e\u5b66_\u5377\u5b87\u5b99\u6f2b\u8c08_7585122905932041535/2025-12-18_\u53f2\u4e0a\u6700\u8d35\u88c1\u5458\uff0c\u6cd5\u56fd\u4eba\u529b\u8d44\u672c\u5371\u673a\uff0c\u5982\u4f55\u91cd\u5851\u4e86\u6b27\u6d32\u767e\u5e74\u7684\u7ecf\u6d4e\u683c\u5c40\uff1f_\u4eba\u529b\u8d44\u672c_\u98ce\u9669\u7ba1\u7406_\u4ea7\u4e1a\u8f6c\u79fb_\u5236\u5ea6\u7ecf\u6d4e\u5b66_\u5377\u5b87\u5b99\u6f2b\u8c08_7585122905.mp4": {
+    "mtime": 1778038916.3748646,
+    "hash": "4e6ce79e49b7a1d911395682cac943b3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-01-08_\u68c9\u5e03\u4e0e\u6d88\u8d39\u5347\u7ea7\uff0c\u4e00\u573a\u5173\u4e8e\u4f9b\u5e94\u94fe\u3001\u6210\u672c\u7ed3\u6784\u4e0e\u5168\u7403\u5957\u5229\u7684\u5546\u4e1a\u6218\u4e89_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u5168\u7403\u5316_\u8d38\u6613\u6218_\u4ea7\u4e1a\u5347\u7ea7_\u5377\u5b87\u5b99\u6f2b\u8c08_7592918825658567971/2026-01-08_\u68c9\u5e03\u4e0e\u6d88\u8d39\u5347\u7ea7\uff0c\u4e00\u573a\u5173\u4e8e\u4f9b\u5e94\u94fe\u3001\u6210\u672c\u7ed3\u6784\u4e0e\u5168\u7403\u5957\u5229\u7684\u5546\u4e1a\u6218\u4e89_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u5168\u7403\u5316_\u8d38\u6613\u6218_\u4ea7\u4e1a\u5347\u7ea7_\u5377\u5b87\u5b99\u6f2b\u8c08_7592918825658.mp4": {
+    "mtime": 1778038825.3402927,
+    "hash": "b044f8443489dd73d770517e824d6152"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-11-10_\u4e16\u754c\u7b2c\u4e00\u4e2a\u201c\u592e\u884c_\uff1f\u963f\u59c6\u65af\u7279\u4e39\u94f6\u884c_\u963f\u59c6\u65af\u7279\u4e39\u94f6\u884c_\u592e\u884c_\u91d1\u878d_\u8d27\u5e01_\u5377\u5b87\u5b99\u6f2b\u8c08_7571025971978030351/2025-11-10_\u4e16\u754c\u7b2c\u4e00\u4e2a\u201c\u592e\u884c_\uff1f\u963f\u59c6\u65af\u7279\u4e39\u94f6\u884c_\u963f\u59c6\u65af\u7279\u4e39\u94f6\u884c_\u592e\u884c_\u91d1\u878d_\u8d27\u5e01_\u5377\u5b87\u5b99\u6f2b\u8c08_7571025971978030351.mp4": {
+    "mtime": 1778038975.3661237,
+    "hash": "fde9083c9039943776274438fb0e6e9c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-09-03_\u96f6\u552e\u4e1a\u7684\u5927\u8fc1\u5f99\uff0c\u4ece\u201c\u4eba\u627e\u8d27\u201d\u5230\u201c\u8d27\u627e\u4eba\u201d\u7684\u6743\u529b\u8f6c\u79fb_\u7535\u5546_\u96f6\u552e\u884c\u4e1a_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_\u5174\u8da3\u7535\u5546_7545794849186843967/2025-09-03_\u96f6\u552e\u4e1a\u7684\u5927\u8fc1\u5f99\uff0c\u4ece\u201c\u4eba\u627e\u8d27\u201d\u5230\u201c\u8d27\u627e\u4eba\u201d\u7684\u6743\u529b\u8f6c\u79fb_\u7535\u5546_\u96f6\u552e\u884c\u4e1a_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_\u5174\u8da3\u7535\u5546_754579484918684.mp4": {
+    "mtime": 1778039101.8860846,
+    "hash": "ec2c9353e71bfeb31dc5f365cd2c67ae"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-12-02_\u6210\u763e\u6027+\u590d\u8d2d\u7387\uff0c\u8517\u7cd6\u51ed\u4ec0\u4e48\u6210\u4e3a\u4eba\u7c7b\u53f2\u4e0a\u7b2c\u4e00\u4e2a\u6210\u763e\u54c1_\u4f9b\u9700\u5173\u7cfb_\u6210\u763e_\u5927\u5b97\u5546\u54c1_\u5546\u4e1a\u6a21\u5f0f_\u5377\u5b87\u5b99\u6f2b\u8c08_7579189061714316598/2025-12-02_\u6210\u763e\u6027+\u590d\u8d2d\u7387\uff0c\u8517\u7cd6\u51ed\u4ec0\u4e48\u6210\u4e3a\u4eba\u7c7b\u53f2\u4e0a\u7b2c\u4e00\u4e2a\u6210\u763e\u54c1_\u4f9b\u9700\u5173\u7cfb_\u6210\u763e_\u5927\u5b97\u5546\u54c1_\u5546\u4e1a\u6a21\u5f0f_\u5377\u5b87\u5b99\u6f2b\u8c08_7579189061714316598.mp4": {
+    "mtime": 1778038941.0046048,
+    "hash": "f98be5d36cdaa6a813b565f748863197"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-06-23_\u4e00\u4e2a\u54a7\u5634\u7684\u62c9\u5e03\u5e03\uff0c\u51ed\u4ec0\u4e48\u6bd4\u6700\u4f1a\u8bb2\u6545\u4e8b\u7684\u767d\u9152\u66f4\u61c2\u8425\u9500\uff1f_Labubu_\u6ce1\u6ce1\u739b\u7279_\u76f2\u76d2_7518769440930958632/2025-06-23_\u4e00\u4e2a\u54a7\u5634\u7684\u62c9\u5e03\u5e03\uff0c\u51ed\u4ec0\u4e48\u6bd4\u6700\u4f1a\u8bb2\u6545\u4e8b\u7684\u767d\u9152\u66f4\u61c2\u8425\u9500\uff1f_Labubu_\u6ce1\u6ce1\u739b\u7279_\u76f2\u76d2_7518769440930958632.mp4": {
+    "mtime": 1778039236.5336604,
+    "hash": "55b1cd7d099267593f4085fb08700e2d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-10-20_\u624b\u63e1\u738b\u70b8\uff0c\u4e3a\u4f55\u6253\u5f97\u7a00\u70c2\uff1f\u201c\u767d\u94f6\u5e1d\u56fd\u201d\u897f\u73ed\u7259\u7684\u5546\u4e1a\u590d\u76d8_\u897f\u73ed\u7259_\u767d\u94f6\u5e1d\u56fd_\u5546\u4e1a\u6a21\u5f0f_\u5168\u7403\u8d38\u6613_\u5377\u5b87\u5b99\u6f2b\u8c08_7563239318886567209/2025-10-20_\u624b\u63e1\u738b\u70b8\uff0c\u4e3a\u4f55\u6253\u5f97\u7a00\u70c2\uff1f\u201c\u767d\u94f6\u5e1d\u56fd\u201d\u897f\u73ed\u7259\u7684\u5546\u4e1a\u590d\u76d8_\u897f\u73ed\u7259_\u767d\u94f6\u5e1d\u56fd_\u5546\u4e1a\u6a21\u5f0f_\u5168\u7403\u8d38\u6613_\u5377\u5b87\u5b99\u6f2b\u8c08_75632393188865672.mp4": {
+    "mtime": 1778039036.5882757,
+    "hash": "86b5309b6bf71c9112f235a6b62b600c"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-09-16_\u662f\u964d\u672c\u589e\u6548\u8fd8\u662f\u964d\u672c\u589e\u7b11\uff0c\u591a\u6570\u516c\u53f8\u6284\u9519\u4e86\u201c\u964d\u672c\u589e\u6548\u201d\u7684\u4f5c\u4e1a_\u964d\u672c\u589e\u6548_\u4f01\u4e1a\u7ba1\u7406_\u5546\u4e1a\u5206\u6790_\u8425\u9500\u6a21\u5f0f_\u5377\u5b87\u5b99\u6f2b\u8c08_7550616916033899812/2025-09-16_\u662f\u964d\u672c\u589e\u6548\u8fd8\u662f\u964d\u672c\u589e\u7b11\uff0c\u591a\u6570\u516c\u53f8\u6284\u9519\u4e86\u201c\u964d\u672c\u589e\u6548\u201d\u7684\u4f5c\u4e1a_\u964d\u672c\u589e\u6548_\u4f01\u4e1a\u7ba1\u7406_\u5546\u4e1a\u5206\u6790_\u8425\u9500\u6a21\u5f0f_\u5377\u5b87\u5b99\u6f2b\u8c08_75506169160338.mp4": {
+    "mtime": 1778039080.7197835,
+    "hash": "ea23b1e10aacd7edc500c7d928d19f36"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-10-24_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8\uff08\u4e0a\uff09\uff0c\u4e16\u754c\u4e0a\u7b2c\u4e00\u4e2a\u201c\u80a1\u4efd\u516c\u53f8\u201d\u7684\u8bde\u751f_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8_\u516c\u53f8_\u5546\u4e1a\u89e3\u8bfb_\u91d1\u878d_\u5377\u5b87\u5b99\u6f2b\u8c08_7564716197388782890/2025-10-24_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8\uff08\u4e0a\uff09\uff0c\u4e16\u754c\u4e0a\u7b2c\u4e00\u4e2a\u201c\u80a1\u4efd\u516c\u53f8\u201d\u7684\u8bde\u751f_\u8377\u5170\u4e1c\u5370\u5ea6\u516c\u53f8_\u516c\u53f8_\u5546\u4e1a\u89e3\u8bfb_\u91d1\u878d_\u5377\u5b87\u5b99\u6f2b\u8c08_75647161973887828.mp4": {
+    "mtime": 1778039013.5063763,
+    "hash": "badd61fd1fae32d3e2181be1f2d5192e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-11-28_\u5927\u897f\u6d0b\u7684\u9ed1\u6697\u4e09\u89d2\uff0c\u5f53\u4eba\u547d\u6210\u4e3a\u201c\u71c3\u6599\u201d\uff0c\u590d\u76d8\u4eba\u7c7b\u53f2\u4e0a\u6700\u66b4\u5229\u7684\u5546\u4e1a\u95ed\u73af_\u5546\u4e1a\u6a21\u5f0f_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u98ce\u9669\u7ba1\u7406_\u5927\u897f\u6d0b\u8d38\u6613_\u5377\u5b87\u5b99\u6f2b\u8c08_7577705248874171684/2025-11-28_\u5927\u897f\u6d0b\u7684\u9ed1\u6697\u4e09\u89d2\uff0c\u5f53\u4eba\u547d\u6210\u4e3a\u201c\u71c3\u6599\u201d\uff0c\u590d\u76d8\u4eba\u7c7b\u53f2\u4e0a\u6700\u66b4\u5229\u7684\u5546\u4e1a\u95ed\u73af_\u5546\u4e1a\u6a21\u5f0f_\u4f9b\u5e94\u94fe\u7ba1\u7406_\u98ce\u9669\u7ba1\u7406_\u5927\u897f\u6d0b\u8d38\u6613_\u5377\u5b87\u5b99\u6f2b\u8c08_7577705.mp4": {
+    "mtime": 1778038933.8948138,
+    "hash": "e17f457e8919e4c5b20039b6c054074f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-03-30_\u82f1\u56fd\u7684\u6311\u6218\u8005\u4e00\u53f7\u6c49\u5bc6\u5c14\u987f\uff0c\u7f8e\u56fd\u5efa\u56fd\u521d\u671f\u7684\u9006\u5411\u5de5\u7a0b\u4e0e\u539f\u59cb\u79ef\u7d2f_\u5b8f\u89c2\u7ecf\u6d4e_\u4ea7\u4e1a\u5347\u7ea7_\u8d38\u6613\u4fdd\u62a4_\u6280\u672f\u5c01\u9501_\u5377\u5b87\u5b99\u6f2b\u8c08_7622981010837228840/2026-03-30_\u82f1\u56fd\u7684\u6311\u6218\u8005\u4e00\u53f7\u6c49\u5bc6\u5c14\u987f\uff0c\u7f8e\u56fd\u5efa\u56fd\u521d\u671f\u7684\u9006\u5411\u5de5\u7a0b\u4e0e\u539f\u59cb\u79ef\u7d2f_\u5b8f\u89c2\u7ecf\u6d4e_\u4ea7\u4e1a\u5347\u7ea7_\u8d38\u6613\u4fdd\u62a4_\u6280\u672f\u5c01\u9501_\u5377\u5b87\u5b99\u6f2b\u8c08_7622981010837.mp4": {
+    "mtime": 1778038687.8466487,
+    "hash": "d22742cc0dd729062bf08a91985f3904"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-03-24_\u8bfa\u57fa\u4e9a\u7684\u8870\u843d\uff0c\u50b2\u6162\u3001\u81ea\u5927\u3001\u7f3a\u4e4f\u521b\u65b0\uff0c\u66fe\u7ecf\u7684\u624b\u673a\u9738\u4e3b\u88ab\u8feb\u8f6c\u578b_\u8bfa\u57fa\u4e9a_iPhone_\u5b89\u5353_\u5546\u4e1a_\u624b\u673a_7485016289568738594/2025-03-24_\u8bfa\u57fa\u4e9a\u7684\u8870\u843d\uff0c\u50b2\u6162\u3001\u81ea\u5927\u3001\u7f3a\u4e4f\u521b\u65b0\uff0c\u66fe\u7ecf\u7684\u624b\u673a\u9738\u4e3b\u88ab\u8feb\u8f6c\u578b_\u8bfa\u57fa\u4e9a_iPhone_\u5b89\u5353_\u5546\u4e1a_\u624b\u673a_7485016289568738594.mp4": {
+    "mtime": 1778039321.3935232,
+    "hash": "5c711e6a2bbbedb4b9309d342d170467"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-08-13_\u4ea7\u54c1\u7684\u6210\u529f\uff0c\u6709\u65f6\u53d1\u751f\u5728\u4ea7\u54c1\u7684\u8ba1\u5212\u4e4b\u5916_\u5546\u4e1a\u5206\u6790_\u8425\u9500\u7b56\u7565_\u4e8f\u635f_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7537993718255668526/2025-08-13_\u4ea7\u54c1\u7684\u6210\u529f\uff0c\u6709\u65f6\u53d1\u751f\u5728\u4ea7\u54c1\u7684\u8ba1\u5212\u4e4b\u5916_\u5546\u4e1a\u5206\u6790_\u8425\u9500\u7b56\u7565_\u4e8f\u635f_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7537993718255668526.mp4": {
+    "mtime": 1778039117.4087434,
+    "hash": "54df1b52715abe56e5131d3ac138fdde"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-12-29_\u7406\u6027\u7684\u766b\u72c2\uff0c\u5357\u6d77\u6ce1\u6cab\u4e0e\u73b0\u4ee3\u91d1\u878d\u793e\u4f1a\u7684\u6210\u4eba\u793c_\u5357\u6d77\u6ce1\u6cab_\u5b8f\u89c2\u7ecf\u6d4e_\u98ce\u9669\u7ba1\u7406_\u5e9e\u6c0f\u9a97\u5c40_\u5377\u5b87\u5b99\u6f2b\u8c08_7589207749699931434/2025-12-29_\u7406\u6027\u7684\u766b\u72c2\uff0c\u5357\u6d77\u6ce1\u6cab\u4e0e\u73b0\u4ee3\u91d1\u878d\u793e\u4f1a\u7684\u6210\u4eba\u793c_\u5357\u6d77\u6ce1\u6cab_\u5b8f\u89c2\u7ecf\u6d4e_\u98ce\u9669\u7ba1\u7406_\u5e9e\u6c0f\u9a97\u5c40_\u5377\u5b87\u5b99\u6f2b\u8c08_7589207749699931434.mp4": {
+    "mtime": 1778038856.939524,
+    "hash": "642f71e0eb5d091f324643afd333684d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-01-30_\u5de5\u4e1a\u9769\u547d\u4e3a\u4f55\u5728\u82f1\u56fd\u7206\u53d1\uff1f\u82f1\u56fd\u7684\u5546\u4e1a\u6a21\u578b\uff1a\u4e00\u573a\u5168\u8981\u7d20\u7684\u7cfb\u7edf\u6d8c\u73b0_\u5b8f\u89c2\u7ecf\u6d4e_\u5de5\u4e1a\u9769\u547d_\u5927\u56fd\u535a\u5f08_\u81ea\u7531\u8d38\u6613_\u5377\u5b87\u5b99\u6f2b\u8c08_7601076247786949928/2026-01-30_\u5de5\u4e1a\u9769\u547d\u4e3a\u4f55\u5728\u82f1\u56fd\u7206\u53d1\uff1f\u82f1\u56fd\u7684\u5546\u4e1a\u6a21\u578b\uff1a\u4e00\u573a\u5168\u8981\u7d20\u7684\u7cfb\u7edf\u6d8c\u73b0_\u5b8f\u89c2\u7ecf\u6d4e_\u5de5\u4e1a\u9769\u547d_\u5927\u56fd\u535a\u5f08_\u81ea\u7531\u8d38\u6613_\u5377\u5b87\u5b99\u6f2b\u8c08_760107624778.mp4": {
+    "mtime": 1778038769.8163147,
+    "hash": "2a6ccc16a3fa64b4f2115a13be5a267e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-05-09_\u5c71\u59c6\u3001\u80d6\u4e1c\u6765\u96c6\u4f53\u201c\u8840\u6d17\u8d27\u67b6\u201d\uff01POSM\u9ed1\u79d1\u6280\uff0c\u8ba9\u4f60\u7684\u9500\u91cf\u539f\u5730\u8d77\u98de!_\u80d6\u4e1c\u6765_\u884c\u4e1a\u5206\u6790_\u8425\u9500_\u5546\u8d85_7502070939295747363/2025-05-09_\u5c71\u59c6\u3001\u80d6\u4e1c\u6765\u96c6\u4f53\u201c\u8840\u6d17\u8d27\u67b6\u201d\uff01POSM\u9ed1\u79d1\u6280\uff0c\u8ba9\u4f60\u7684\u9500\u91cf\u539f\u5730\u8d77\u98de!_\u80d6\u4e1c\u6765_\u884c\u4e1a\u5206\u6790_\u8425\u9500_\u5546\u8d85_7502070939295747363.mp4": {
+    "mtime": 1778039287.5499587,
+    "hash": "4f6a109f49b1d2526176f397a3aa4334"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-08-25_\u9965\u997f\u8425\u9500\u7684\u534a\u4e2a\u771f\u76f8\uff0c\u90a3\u4ef6\u8ba9\u4f60\u62a2\u7834\u5934\u7684\u9650\u91cf\u5546\u54c1\uff0c\u53ea\u662f\u201c\u95e8\u7968\u201d\u800c\u5df2_\u9965\u997f\u8425\u9500_\u5546\u4e1a_\u8d22\u7ecf_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7542449915327286543/2025-08-25_\u9965\u997f\u8425\u9500\u7684\u534a\u4e2a\u771f\u76f8\uff0c\u90a3\u4ef6\u8ba9\u4f60\u62a2\u7834\u5934\u7684\u9650\u91cf\u5546\u54c1\uff0c\u53ea\u662f\u201c\u95e8\u7968\u201d\u800c\u5df2_\u9965\u997f\u8425\u9500_\u5546\u4e1a_\u8d22\u7ecf_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_75424499153.mp4": {
+    "mtime": 1778039185.8497212,
+    "hash": "61898589b346dcc34f9134a3408aa9e7"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-01-26_\u8fd0\u6cb3\u72c2\u70ed\uff0c\u57fa\u7840\u8bbe\u65bd\u7684\u66b4\u529b\u5957\u5229\u4e0e\u8d44\u672c\u6ce1\u6cab\u7684\u5bbf\u547d_\u5b8f\u89c2\u7ecf\u6d4e_\u57fa\u5efa_\u8d44\u672c\u6ce1\u6cab_\u8fd0\u6cb3\u72c2\u70ed_\u5377\u5b87\u5b99\u6f2b\u8c08_7599590064330378522/2026-01-26_\u8fd0\u6cb3\u72c2\u70ed\uff0c\u57fa\u7840\u8bbe\u65bd\u7684\u66b4\u529b\u5957\u5229\u4e0e\u8d44\u672c\u6ce1\u6cab\u7684\u5bbf\u547d_\u5b8f\u89c2\u7ecf\u6d4e_\u57fa\u5efa_\u8d44\u672c\u6ce1\u6cab_\u8fd0\u6cb3\u72c2\u70ed_\u5377\u5b87\u5b99\u6f2b\u8c08_7599590064330378522.mp4": {
+    "mtime": 1778038778.470305,
+    "hash": "f21343092d84ad50b1304214ffb1e267"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-03-10_\u82f1\u7279\u5c14\u542f\u793a\u5f55\uff08\u4e0a\uff09\uff1a\u4ece\u8f66\u5e93\u5230\u5dc5\u5cf0\u7684\u4f20\u5947\u4e4b\u8def\u3002\u4ece\u4ed9\u7ae5\u534a\u5bfc\u4f53\u51fa\u8d70\u7684\u82f1\u7279\u5c14\u5de5\u7a0b\u5e08\u4eec\uff0c\u5982\u4f55\u7528\u4e00\u5757\u82af\u7247\u6539\u5199\u79d1\u6280\u53f2\uff0c\u6210\u5c31\u4e00\u6bb5\u4f20\u5947_\u82f1\u7279\u5c14_\u82af\u7247_\u5546\u4e1a_\u6398\u91d1\u8ba1\u52122025_CP_7480004714998943015/2025-03-10_\u82f1\u7279\u5c14\u542f\u793a\u5f55\uff08\u4e0a\uff09\uff1a\u4ece\u8f66\u5e93\u5230\u5dc5\u5cf0\u7684\u4f20\u5947\u4e4b\u8def\u3002\u4ece\u4ed9\u7ae5\u534a\u5bfc\u4f53\u51fa\u8d70\u7684\u82f1\u7279\u5c14\u5de5\u7a0b\u5e08\u4eec\uff0c\u5982\u4f55\u7528\u4e00\u5757\u82af\u7247\u6539\u5199\u79d1\u6280\u53f2\uff0c\u6210\u5c31\u4e00\u6bb5\u4f20\u5947_\u82f1\u7279\u5c14_\u82af\u7247_\u5546\u4e1a.mp4": {
+    "mtime": 1778039321.8583043,
+    "hash": "8d6f9696c90cb24dea74f19081654b89"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-03-16_\u88ab\u673a\u5668\u5e72\u6389\u7684\u9ad8\u85aa\u4e2d\u4ea7\uff1a\u5362\u5fb7\u8fd0\u52a8\u4e0e\u65e7\u4ea7\u80fd\u7684\u201c\u5f3a\u5236\u5e73\u4ed3\u201d_\u5362\u5fb7\u8fd0\u52a8_\u5b8f\u89c2\u7ecf\u6d4e_\u4ea7\u4e1a\u5347\u7ea7_\u7ed3\u6784\u6027\u5931\u4e1a_7617771737421319433/2026-03-16_\u88ab\u673a\u5668\u5e72\u6389\u7684\u9ad8\u85aa\u4e2d\u4ea7\uff1a\u5362\u5fb7\u8fd0\u52a8\u4e0e\u65e7\u4ea7\u80fd\u7684\u201c\u5f3a\u5236\u5e73\u4ed3\u201d_\u5362\u5fb7\u8fd0\u52a8_\u5b8f\u89c2\u7ecf\u6d4e_\u4ea7\u4e1a\u5347\u7ea7_\u7ed3\u6784\u6027\u5931\u4e1a_7617771737421319433.mp4": {
+    "mtime": 1778038662.0832365,
+    "hash": "30fafa69df621c58cdd6272ecad0f59d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-07-14_\u590d\u76d8\u53ef\u53e3\u53ef\u4e50\uff0c\u4e00\u90e8\u8d29\u5356\u201c\u4fe1\u4ef0\u201d\u7684\u767e\u5e74\u5546\u6218\u53f2\u8bd7_\u53ef\u4e50_\u5546\u4e1a\u8d22\u7ecf_\u5377\u5b87\u5b99\u6f2b\u8c08_7526553356316282155/2025-07-14_\u590d\u76d8\u53ef\u53e3\u53ef\u4e50\uff0c\u4e00\u90e8\u8d29\u5356\u201c\u4fe1\u4ef0\u201d\u7684\u767e\u5e74\u5546\u6218\u53f2\u8bd7_\u53ef\u4e50_\u5546\u4e1a\u8d22\u7ecf_\u5377\u5b87\u5b99\u6f2b\u8c08_7526553356316282155.mp4": {
+    "mtime": 1778039208.3453598,
+    "hash": "f78d24be5bb451d2b6a6dffbbebb7035"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-02-13_\u4f55\u5c0f\u9e4f\uff1a\u8463\u4e8b\u957f\u7684\u695a\u95e8\u4e16\u754c\uff08\u4e0b\uff09\uff0c\u94c1\u8840\u5973\u738b\u2014\u738b\u51e4\u82f1_\u4f55\u5c0f\u9e4f_\u5c0f\u9e4f\u6c7d\u8f66_\u738b\u51e4\u82f1_7470736403077385483/2025-02-13_\u4f55\u5c0f\u9e4f\uff1a\u8463\u4e8b\u957f\u7684\u695a\u95e8\u4e16\u754c\uff08\u4e0b\uff09\uff0c\u94c1\u8840\u5973\u738b\u2014\u738b\u51e4\u82f1_\u4f55\u5c0f\u9e4f_\u5c0f\u9e4f\u6c7d\u8f66_\u738b\u51e4\u82f1_7470736403077385483.mp4": {
+    "mtime": 1778039336.0380163,
+    "hash": "d7890ac7d3ab0b153d42390b42475f0f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-04-03_\u788e\u7247\u5316\u5546\u4e1a\u4f1a\u6fd2\u4e34\u7834\u4ea7\uff1f\u770b19\u4e16\u7eaa\u201c\u5fb7\u56fd\uff1f\u201d\u9762\u5bf9\u82f1\u56fd\u5982\u53cd\u51fb\u548c\u5d1b\u8d77\uff01_\u5b8f\u89c2\u7ecf\u6d4e_\u56fd\u5bb6\u8d44\u672c\u4e3b\u4e49_\u674e\u65af\u7279_\u4ea7\u4e1a\u5347\u7ea7_\u5377\u5b87\u5b99\u6f2b\u8c08_7624448008779861275/2026-04-03_\u788e\u7247\u5316\u5546\u4e1a\u4f1a\u6fd2\u4e34\u7834\u4ea7\uff1f\u770b19\u4e16\u7eaa\u201c\u5fb7\u56fd\uff1f\u201d\u9762\u5bf9\u82f1\u56fd\u5982\u53cd\u51fb\u548c\u5d1b\u8d77\uff01_\u5b8f\u89c2\u7ecf\u6d4e_\u56fd\u5bb6\u8d44\u672c\u4e3b\u4e49_\u674e\u65af\u7279_\u4ea7\u4e1a\u5347\u7ea7_\u5377\u5b87\u5b99\u6f2b\u8c08_762444800.mp4": {
+    "mtime": 1778038593.4957979,
+    "hash": "e70403811b2f98e6667293ae9791315d"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-07-05_\u5c0f\u7c73\u6c7d\u8f66YU7\uff0c\u6210\u529f\u80cc\u540e\u7684\u5546\u4e1a\u8303\u5f0f\u9769\u547d_YU7_\u96f7\u519b_\u5c0f\u7c73\u6c7d\u8f66_\u5546\u4e1a\u6a21\u5f0f_\u8425\u9500_7523412671912365354/2025-07-05_\u5c0f\u7c73\u6c7d\u8f66YU7\uff0c\u6210\u529f\u80cc\u540e\u7684\u5546\u4e1a\u8303\u5f0f\u9769\u547d_YU7_\u96f7\u519b_\u5c0f\u7c73\u6c7d\u8f66_\u5546\u4e1a\u6a21\u5f0f_\u8425\u9500_7523412671912365354.mp4": {
+    "mtime": 1778039220.1423907,
+    "hash": "c56ebd7a16aaf1df1837b1440312af81"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-05-19_\u4e07\u4ebf\u72c2\u6f6e\u4e0e\u7b97\u6cd5\u6218\u4e89\uff0c\u4e2d\u56fd\u65c5\u6e38\u4e1a\u7684\u75af\u72c2\u751f\u957f\u5bc6\u7801_\u5546\u4e1a_\u65c5\u6e38\u4e1a_\u793e\u4ea4_\u6570\u5b57\u6e38\u6c11_\u6587\u65c5_7505784545602440448/2025-05-19_\u4e07\u4ebf\u72c2\u6f6e\u4e0e\u7b97\u6cd5\u6218\u4e89\uff0c\u4e2d\u56fd\u65c5\u6e38\u4e1a\u7684\u75af\u72c2\u751f\u957f\u5bc6\u7801_\u5546\u4e1a_\u65c5\u6e38\u4e1a_\u793e\u4ea4_\u6570\u5b57\u6e38\u6c11_\u6587\u65c5_7505784545602440448.mp4": {
+    "mtime": 1778039277.90265,
+    "hash": "17ff580ba9d76ed7b7d6751132c748ff"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-07-18_\u6253\u8d25\u65e5\u672c\uff0c\u71ac\u6b7b\u7f8e\u56fd\uff0cASML\u51ed\u4ec0\u4e48\u9760\u5916\u5305\u6a21\u5f0f\uff0c\u5784\u65ad\u4e86\u5168\u7403\u82af\u7247\u7684\u547d\u8109_ASML_\u5149\u523b\u673a_\u82af\u7247_\u82f1\u4f1f\u8fbe_\u5377\u5b87\u5b99\u6f2b\u8c08_7528046974981999881/2025-07-18_\u6253\u8d25\u65e5\u672c\uff0c\u71ac\u6b7b\u7f8e\u56fd\uff0cASML\u51ed\u4ec0\u4e48\u9760\u5916\u5305\u6a21\u5f0f\uff0c\u5784\u65ad\u4e86\u5168\u7403\u82af\u7247\u7684\u547d\u8109_ASML_\u5149\u523b\u673a_\u82af\u7247_\u82f1\u4f1f\u8fbe_\u5377\u5b87\u5b99\u6f2b\u8c08_7528046974981.mp4": {
+    "mtime": 1778039180.8728359,
+    "hash": "8dc92fa42e2ee875ac6df61081304740"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-09-09_\u571f\u5473\u8425\u9500\u7684\u751f\u5b58\u6cd5\u5219\uff1a\u6211\u4eec\u770b\u7684\u662f\u5c34\u5c2c\uff0c\u54c1\u724c\u7b97\u7684\u662fROI_\u571f\u5473\u5e7f\u544a_\u5546\u4e1a\u5206\u6790_\u8425\u9500\u7b56\u7565_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7548015986742545703/2025-09-09_\u571f\u5473\u8425\u9500\u7684\u751f\u5b58\u6cd5\u5219\uff1a\u6211\u4eec\u770b\u7684\u662f\u5c34\u5c2c\uff0c\u54c1\u724c\u7b97\u7684\u662fROI_\u571f\u5473\u5e7f\u544a_\u5546\u4e1a\u5206\u6790_\u8425\u9500\u7b56\u7565_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_754801598674.mp4": {
+    "mtime": 1778039058.576047,
+    "hash": "b8541381454f06a5dc44b40a94960abc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-03-20_\u5229\u6da6\u5168\u62ff\u8d70\uff0c\u4ee3\u4ef7\u5168\u793e\u4f1a\u4e70\u5355\uff0c\u82f1\u56fd\u65e9\u671f\u5de5\u4e1a\u5316\u7684\u201c\u76d1\u7ba1\u5957\u5229\u201d_\u76d1\u7ba1\u5957\u5229_\u516c\u5730\u60b2\u5267_\u6069\u683c\u65af\u505c\u987f_\u5de5\u4e1a\u8d44\u672c_\u5377\u5b87\u5b99\u6f2b\u8c08_7619231754657778990/2026-03-20_\u5229\u6da6\u5168\u62ff\u8d70\uff0c\u4ee3\u4ef7\u5168\u793e\u4f1a\u4e70\u5355\uff0c\u82f1\u56fd\u65e9\u671f\u5de5\u4e1a\u5316\u7684\u201c\u76d1\u7ba1\u5957\u5229\u201d_\u76d1\u7ba1\u5957\u5229_\u516c\u5730\u60b2\u5267_\u6069\u683c\u65af\u505c\u987f_\u5de5\u4e1a\u8d44\u672c_\u5377\u5b87\u5b99\u6f2b\u8c08_7619231754657.mp4": {
+    "mtime": 1778038687.3058329,
+    "hash": "7d25b15d8f7b407f357c456ddde36322"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-01-14_\u5546\u4e1a\u6587\u660e\u7684\u5e95\u5c42\u903b\u8f91(\u4e00)\uff0c\u4e9a\u5f53\u00b7\u65af\u5bc6\u3001\u6548\u7387\u9769\u547d\u4e0e\u5927\u56fd\u535a\u5f08_\u4e9a\u5f53\u65af\u5bc6_\u56fd\u5bcc\u8bba_\u81ea\u7531\u8d38\u6613_\u5927\u56fd\u535a\u5f08_\u5377\u5b87\u5b99\u6f2b\u8c08_7595142106092424488/2026-01-14_\u5546\u4e1a\u6587\u660e\u7684\u5e95\u5c42\u903b\u8f91(\u4e00)\uff0c\u4e9a\u5f53\u00b7\u65af\u5bc6\u3001\u6548\u7387\u9769\u547d\u4e0e\u5927\u56fd\u535a\u5f08_\u4e9a\u5f53\u65af\u5bc6_\u56fd\u5bcc\u8bba_\u81ea\u7531\u8d38\u6613_\u5927\u56fd\u535a\u5f08_\u5377\u5b87\u5b99\u6f2b\u8c08_759514210609242.mp4": {
+    "mtime": 1778038837.149995,
+    "hash": "a69c128acd476e4c35083f0e144810d2"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-03-06_19\u4e16\u7eaa\u82f1\u56fd\u94c1\u8def\u72c2\u70ed\u662f\u5982\u4f55\u7528\u4e00\u573a\u201cIPO\u6ce1\u6cab\u201d\uff0c\u5f3a\u884c\u8ba9\u5168\u82f1\u56fd\u6563\u6237\u4e3a\u57fa\u5efa\u4e70\u5355\u7684\uff1f_\u5b8f\u89c2\u7ecf\u6d4e_\u94c1\u8def\u72c2\u70ed_\u5e9e\u6c0f\u9a97\u5c40_\u57fa\u5efa\u878d\u8d44_\u5377\u5b87\u5b99\u6f2b\u8c08_7614067180430232858/2026-03-06_19\u4e16\u7eaa\u82f1\u56fd\u94c1\u8def\u72c2\u70ed\u662f\u5982\u4f55\u7528\u4e00\u573a\u201cIPO\u6ce1\u6cab\u201d\uff0c\u5f3a\u884c\u8ba9\u5168\u82f1\u56fd\u6563\u6237\u4e3a\u57fa\u5efa\u4e70\u5355\u7684\uff1f_\u5b8f\u89c2\u7ecf\u6d4e_\u94c1\u8def\u72c2\u70ed_\u5e9e\u6c0f\u9a97\u5c40_\u57fa\u5efa\u878d\u8d44_\u5377\u5b87\u5b99\u6f2b\u8c08_761.mp4": {
+    "mtime": 1778038731.8177655,
+    "hash": "3f2ec09fe0fb8e8f90c3247c70f53626"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-11-14_\u201c\u8d4c\u573a\u201d\u8fd8\u662f\u201c\u5723\u6bbf\u201d\uff1f\u963f\u59c6\u65af\u7279\u4e39\u8bc1\u5238\u4ea4\u6613\u6240_\u80a1\u7968\u4ea4\u6613_\u5185\u5e55\u4ea4\u6613_\u8bc1\u5238\u4ea4\u6613_\u91d1\u878d_\u5377\u5b87\u5b99\u6f2b\u8c08_7572504109522111744/2025-11-14_\u201c\u8d4c\u573a\u201d\u8fd8\u662f\u201c\u5723\u6bbf\u201d\uff1f\u963f\u59c6\u65af\u7279\u4e39\u8bc1\u5238\u4ea4\u6613\u6240_\u80a1\u7968\u4ea4\u6613_\u5185\u5e55\u4ea4\u6613_\u8bc1\u5238\u4ea4\u6613_\u91d1\u878d_\u5377\u5b87\u5b99\u6f2b\u8c08_7572504109522111744.mp4": {
+    "mtime": 1778038964.724178,
+    "hash": "8bd4d88fa7110f215f1b8a39d76a3cbc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-02-12_\u4f55\u5c0f\u9e4f\uff1a\u8d70\u51fa\u8463\u4e8b\u957f\u7684\u695a\u95e8\u4e16\u754c\uff08\u4e0a\uff09\uff0c\u76f4\u9762\u5c0f\u9e4f\u6c7d\u8f66\u7684\u81f4\u547d\u95ee\u9898_\u4f55\u5c0f\u9e4f_\u5c0f\u9e4f\u6c7d\u8f66_\u738b\u51e4\u82f1_\u96f7\u519b_\u65b0\u80fd\u6e90\u6c7d\u8f66_7470355207470320937/2025-02-12_\u4f55\u5c0f\u9e4f\uff1a\u8d70\u51fa\u8463\u4e8b\u957f\u7684\u695a\u95e8\u4e16\u754c\uff08\u4e0a\uff09\uff0c\u76f4\u9762\u5c0f\u9e4f\u6c7d\u8f66\u7684\u81f4\u547d\u95ee\u9898_\u4f55\u5c0f\u9e4f_\u5c0f\u9e4f\u6c7d\u8f66_\u738b\u51e4\u82f1_\u96f7\u519b_\u65b0\u80fd\u6e90\u6c7d\u8f66_74703552074703209.mp4": {
+    "mtime": 1778039339.5398405,
+    "hash": "4ce95f0e04477fa1fa797f27fd2227e3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-03-25_\u653e\u5f03\u519c\u4e1a\u62bc\u6ce8\u5de5\u4e1a\uff01\u62c6\u89e319\u4e16\u7eaa\u82f1\u56fd\u7684\u201c\u4e3b\u8425\u4e1a\u52a1\u5927\u5265\u79bb\u201d\uff0c\u5e9f\u9664\u8c37\u7269\u6cd5\uff0c\u63a8\u81ea\u7531\u8d38\u6613_\u5b8f\u89c2\u7ecf\u6d4e_\u5168\u7403\u8d38\u6613_\u5168\u7403\u5316_\u4ea7\u4e1a\u94fe_\u5377\u5b87\u5b99\u6f2b\u8c08_7621112597319781651/2026-03-25_\u653e\u5f03\u519c\u4e1a\u62bc\u6ce8\u5de5\u4e1a\uff01\u62c6\u89e319\u4e16\u7eaa\u82f1\u56fd\u7684\u201c\u4e3b\u8425\u4e1a\u52a1\u5927\u5265\u79bb\u201d\uff0c\u5e9f\u9664\u8c37\u7269\u6cd5\uff0c\u63a8\u81ea\u7531\u8d38\u6613_\u5b8f\u89c2\u7ecf\u6d4e_\u5168\u7403\u8d38\u6613_\u5168\u7403\u5316_\u4ea7\u4e1a\u94fe_\u5377\u5b87\u5b99\u6f2b\u8c08_76211.mp4": {
+    "mtime": 1778038617.4177446,
+    "hash": "a5a006c25cb2173d85e2e115a85ff82f"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-10-10_\u4e1d\u7ef8\u4e4b\u8def\uff0c\u4e16\u754c\u4e0a\u6700\u53e4\u8001\u7684\u5546\u4e1a\u9879\u76ee_\u4e1d\u7ef8\u4e4b\u8def_\u5168\u7403\u8d38\u6613_\u4f9b\u5e94\u94fe_\u5546\u4e1a\u5206\u6790_\u5377\u5b87\u5b99\u6f2b\u8c08_7559511641352637711/2025-10-10_\u4e1d\u7ef8\u4e4b\u8def\uff0c\u4e16\u754c\u4e0a\u6700\u53e4\u8001\u7684\u5546\u4e1a\u9879\u76ee_\u4e1d\u7ef8\u4e4b\u8def_\u5168\u7403\u8d38\u6613_\u4f9b\u5e94\u94fe_\u5546\u4e1a\u5206\u6790_\u5377\u5b87\u5b99\u6f2b\u8c08_7559511641352637711.mp4": {
+    "mtime": 1778039031.9700017,
+    "hash": "7b5ba098dc2ed5ff4b93348083197dd3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-03-17_\u82f1\u7279\u5c14\u4e0b\u96c6\uff1a\u77ed\u89c6\u3001\u6df7\u4e71\u3001\u50b2\u6162\u3001\u627c\u6740\u521b\u65b0\uff0c\u82f1\u7279\u5c14\u5982\u4f55\u4ece\u5dc5\u5cf0\u8d70\u5411\u8870\u843d\u3002_\u82f1\u7279\u5c14_\u82af\u7247_\u5546\u4e1a_\u4f01\u4e1a\u8fd0\u8425_\u82f1\u7279\u5c14CEO_7482398509363219712/2025-03-17_\u82f1\u7279\u5c14\u4e0b\u96c6\uff1a\u77ed\u89c6\u3001\u6df7\u4e71\u3001\u50b2\u6162\u3001\u627c\u6740\u521b\u65b0\uff0c\u82f1\u7279\u5c14\u5982\u4f55\u4ece\u5dc5\u5cf0\u8d70\u5411\u8870\u843d\u3002_\u82f1\u7279\u5c14_\u82af\u7247_\u5546\u4e1a_\u4f01\u4e1a\u8fd0\u8425_\u82f1\u7279\u5c14CEO_7482398509363.mp4": {
+    "mtime": 1778039315.1718237,
+    "hash": "de8e657fb7788d924e3603d41392f7d3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-07-28_\u5de8\u5934\u4f01\u4e1a\u4e3a\u4ec0\u4e48\u4f1a\u5d29\u6e83\uff1f\u6740\u6b7b\u4f60\u7684\uff0c\u662f\u4f60\u6700\u64c5\u957f\u7684\u4e8b\ufeff_\u5927\u516c\u53f8\u75c5_\u4f01\u4e1a\u7ba1\u7406_\u5546\u4e1a\u5206\u6790_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_7532058350083689774/2025-07-28_\u5de8\u5934\u4f01\u4e1a\u4e3a\u4ec0\u4e48\u4f1a\u5d29\u6e83\uff1f\u6740\u6b7b\u4f60\u7684\uff0c\u662f\u4f60\u6700\u64c5\u957f\u7684\u4e8b\ufeff_\u5927\u516c\u53f8\u75c5_\u4f01\u4e1a\u7ba1\u7406_\u5546\u4e1a\u5206\u6790_\u6398\u91d1\u8ba1\u52122025_\u5377\u5b87\u5b99\u6f2b\u8c08_75320583500836.mp4": {
+    "mtime": 1778039165.5022159,
+    "hash": "b6ef844e5d1c5a4cc5e223adc93c1cd6"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-09-25_\u590d\u76d8\u9489\u9489\u5341\u5e74\uff1a\u770b\u5b83\u5982\u4f55\u4ece\u5931\u8d25\u7070\u70ec\u4e2d\u8bde\u751f\uff0c\u5411\u6b7b\u800c\u751f\u95ef\u51fa\u4e00\u6761\u65b0\u8def\uff0c\u6700\u7ec8\u5b8c\u6210\u4e00\u573a\u201c\u7edd\u5730\u91cd\u751f\u201d\uff0c\u8fd9\u662f\u5185\u90e8\u521b\u4e1a\u6700\u771f\u5b9e\u7684\u5199\u7167_\u9489\u9489_AI\u9489\u9489_\u521b\u4e1a_\u963f\u91cc\u5df4\u5df4_7553661809991896362/2025-09-25_\u590d\u76d8\u9489\u9489\u5341\u5e74\uff1a\u770b\u5b83\u5982\u4f55\u4ece\u5931\u8d25\u7070\u70ec\u4e2d\u8bde\u751f\uff0c\u5411\u6b7b\u800c\u751f\u95ef\u51fa\u4e00\u6761\u65b0\u8def\uff0c\u6700\u7ec8\u5b8c\u6210\u4e00\u573a\u201c\u7edd\u5730\u91cd\u751f\u201d\uff0c\u8fd9\u662f\u5185\u90e8\u521b\u4e1a\u6700\u771f\u5b9e\u7684\u5199\u7167_\u9489\u9489_AI\u9489\u9489_\u521b\u4e1a_\u963f.mp4": {
+    "mtime": 1778039044.3833258,
+    "hash": "4de0ef660ae4448280076d5143fca917"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-04-11_\u7834\u89e3\u5371\u673a\u516c\u5173\u7684\u5e95\u5c42\u903b\u8f91\uff0c\u4e3a\u4ec0\u4e4880%\u7684\u4f01\u4e1a\uff0c\u5728\u4e92\u8054\u7f51\u8425\u9500\u548c\u5371\u673a\u516c\u5173\u7684\u6218\u573a\u4e0a\uff0c\u4f9d\u7136\u663e\u5f97\u5982\u6b64\u88ab\u52a8\u548c\u8106\u5f31\uff1f_\u5371\u673a\u516c\u5173_\u4e92\u8054\u7f51\u8425\u9500_\u8425\u9500\u7b56\u5212_\u54c1\u724c\u8425\u9500_\u8425\u9500\u63a8\u5e7f_7491695433786428706/2025-04-11_\u7834\u89e3\u5371\u673a\u516c\u5173\u7684\u5e95\u5c42\u903b\u8f91\uff0c\u4e3a\u4ec0\u4e4880%\u7684\u4f01\u4e1a\uff0c\u5728\u4e92\u8054\u7f51\u8425\u9500\u548c\u5371\u673a\u516c\u5173\u7684\u6218\u573a\u4e0a\uff0c\u4f9d\u7136\u663e\u5f97\u5982\u6b64\u88ab\u52a8\u548c\u8106\u5f31\uff1f_\u5371\u673a\u516c\u5173_\u4e92\u8054\u7f51\u8425\u9500_\u8425\u9500\u7b56\u5212_\u54c1\u724c.mp4": {
+    "mtime": 1778039295.4822977,
+    "hash": "6cd27fc83d653629fc0c80e47c394152"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-04-24_19\u4e16\u7eaa\u7684\u4e16\u754c\u5927\u5206\u6d41\uff1a\u4e8c\u5143\u7ed3\u6784\u4e0e\u5168\u7403\u5b8f\u89c2\u8d44\u4ea7\u7684\u5f3a\u5236\u91cd\u7ec4\uff0c\u82f1\u56fd\u5403\u4e0b\u5168\u7403\u5316\u7b2c\u4e00\u6ce2\u8d62\u5bb6\u901a\u5403\u7ea2\u5229_\u91d1\u878d\u6536\u5272_\u5de5\u4e1a\u9769\u547d_\u89c4\u6a21\u7ecf\u6d4e_\u526a\u5200\u5dee_\u5377\u5b87\u5b99\u6f2b\u8c08_7632245732107390260/2026-04-24_19\u4e16\u7eaa\u7684\u4e16\u754c\u5927\u5206\u6d41\uff1a\u4e8c\u5143\u7ed3\u6784\u4e0e\u5168\u7403\u5b8f\u89c2\u8d44\u4ea7\u7684\u5f3a\u5236\u91cd\u7ec4\uff0c\u82f1\u56fd\u5403\u4e0b\u5168\u7403\u5316\u7b2c\u4e00\u6ce2\u8d62\u5bb6\u901a\u5403\u7ea2\u5229_\u91d1\u878d\u6536\u5272_\u5de5\u4e1a\u9769\u547d_\u89c4\u6a21\u7ecf\u6d4e_\u526a\u5200\u5dee_\u5377\u5b87\u5b99\u6f2b\u8c08.mp4": {
+    "mtime": 1778038530.866617,
+    "hash": "c05bafbe9e02cf8350cb8b9216b4b1cc"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-05-26_\u56fd\u6f2b\u5168\u662f\u7384\u5e7b\u4fee\u4ed9\uff1f\u89c2\u4f17\u6012\u55b7\uff1a\u9f99\u50b2\u5929\u6cdb\u6ee5\uff01\u5e73\u53f0\uff1a\u4e0d\u602a\u6211\uff0c\u662f\u4f60\u4eec\u7231\u770b\uff01_\u56fd\u6f2b_\u52a8\u6f2b_\u5546\u4e1a_\u4e2d\u56fd\u6587\u5316_\u7384\u5e7b_7508382331674119465/2025-05-26_\u56fd\u6f2b\u5168\u662f\u7384\u5e7b\u4fee\u4ed9\uff1f\u89c2\u4f17\u6012\u55b7\uff1a\u9f99\u50b2\u5929\u6cdb\u6ee5\uff01\u5e73\u53f0\uff1a\u4e0d\u602a\u6211\uff0c\u662f\u4f60\u4eec\u7231\u770b\uff01_\u56fd\u6f2b_\u52a8\u6f2b_\u5546\u4e1a_\u4e2d\u56fd\u6587\u5316_\u7384\u5e7b_750838233167411946.mp4": {
+    "mtime": 1778039285.9054835,
+    "hash": "c76ef6366cbf5eeb67b9bad6c930bbd3"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-06-27_\u62d2\u7edd\u201c\u6bd5\u4e1a\u5373\u725b\u9a6c\u201d\uff0c\u201c\u8425\u9500\u81ea\u5df1\u201d\u624d\u662f\u666e\u901a\u4eba\u771f\u6b63\u7684\u7834\u5c40\u4e4b\u8def_\u804c\u573aPUA_\u4e2a\u4eba\u6210\u957f_\u6c42\u804c\u7126\u8651_\u5927\u5b66\u751f_\u8425\u9500_7520254775431007526/2025-06-27_\u62d2\u7edd\u201c\u6bd5\u4e1a\u5373\u725b\u9a6c\u201d\uff0c\u201c\u8425\u9500\u81ea\u5df1\u201d\u624d\u662f\u666e\u901a\u4eba\u771f\u6b63\u7684\u7834\u5c40\u4e4b\u8def_\u804c\u573aPUA_\u4e2a\u4eba\u6210\u957f_\u6c42\u804c\u7126\u8651_\u5927\u5b66\u751f_\u8425\u9500_75202547754310075.mp4": {
+    "mtime": 1778039229.7782252,
+    "hash": "b7f93149824e45377c9b87ddf7d00d1e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2026-02-11_\u74e6\u7279\u4e0e\u535a\u5c14\u987f\uff0c\u7b2c\u4e00\u5bb6\u80fd\u6e90SaaS\u6a21\u5f0f\u516c\u53f8\u8bde\u751f_SaaS\u6a21\u5f0f_\u5de5\u4e1a\u9769\u547d_\u5546\u4e1a\u6a21\u5f0f_\u4e0d\u826f\u8d44\u4ea7\u91cd\u7ec4_\u5377\u5b87\u5b99\u6f2b\u8c08_7605535413087898914/2026-02-11_\u74e6\u7279\u4e0e\u535a\u5c14\u987f\uff0c\u7b2c\u4e00\u5bb6\u80fd\u6e90SaaS\u6a21\u5f0f\u516c\u53f8\u8bde\u751f_SaaS\u6a21\u5f0f_\u5de5\u4e1a\u9769\u547d_\u5546\u4e1a\u6a21\u5f0f_\u4e0d\u826f\u8d44\u4ea7\u91cd\u7ec4_\u5377\u5b87\u5b99\u6f2b\u8c08_7605535413087898.mp4": {
+    "mtime": 1778038803.080736,
+    "hash": "3e6e4e17dce0797ac770b3210a039a8a"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-06-03_1\u5206\u949f6.5\u4e07\u7f8e\u91d1\uff0c\u4e2d\u56fd\u77ed\u5267\u6398\u91d1\u5168\u7403\u7684\u79d8\u5bc6\uff01_\u77ed\u5267\u51fa\u6d77_\u4e2d\u56fd\u6587\u5316_\u5546\u4e1a_\u6587\u5316\u8f93\u51fa_7511354775330442536/2025-06-03_1\u5206\u949f6.5\u4e07\u7f8e\u91d1\uff0c\u4e2d\u56fd\u77ed\u5267\u6398\u91d1\u5168\u7403\u7684\u79d8\u5bc6\uff01_\u77ed\u5267\u51fa\u6d77_\u4e2d\u56fd\u6587\u5316_\u5546\u4e1a_\u6587\u5316\u8f93\u51fa_7511354775330442536.mp4": {
+    "mtime": 1778039259.4314964,
+    "hash": "bde8e1ad4ae31c842fafe42ec396e21e"
+  },
+  "/Users/lunarabbit/Documents/Claude/Projects/DVA/dyd/~/Documents/Database/Douyin/Downloaded/\u5377\u5b87\u5b99\u6f2b\u8c08/post/2025-04-01_\u9690\u6027\u9700\u6c42\u7684\u5546\u4e1a\u9b54\u6cd5\uff0c\u5982\u4f55\u752810%\u663e\u6027\u9700\u6c42\u64ac\u52a890%\u8d2d\u4e70\u529b_\u5546\u4e1a\u601d\u7ef4_\u54c1\u724c\u8425\u9500_\u8425\u9500\u601d\u7ef4_\u5546\u4e1a\u5206\u6790_\u7206\u54c1\u6218\u7565_7487998676720176447/2025-04-01_\u9690\u6027\u9700\u6c42\u7684\u5546\u4e1a\u9b54\u6cd5\uff0c\u5982\u4f55\u752810%\u663e\u6027\u9700\u6c42\u64ac\u52a890%\u8d2d\u4e70\u529b_\u5546\u4e1a\u601d\u7ef4_\u54c1\u724c\u8425\u9500_\u8425\u9500\u601d\u7ef4_\u5546\u4e1a\u5206\u6790_\u7206\u54c1\u6218\u7565_748799867672017.mp4": {
+    "mtime": 1778039304.565128,
+    "hash": "885020ec0719ba49dda9a873ebfc4619"
+  }
+}
