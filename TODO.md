@@ -40,24 +40,24 @@ type: log
 - [x] **REQ-A2** `/save` 命令实装 — 填模板写 logs/YYYY-MM-DD-主题.md
 - [x] **REQ-C4 / REQ-E1** Projects ↔ brain 关联 + 项目骨架生成器 `register-project.sh`
 - [x] **REQ-F1** 锚点触发机制（dva / 龙鱼五力 / 自检 / 天工开物 → 自动加载）
-- [ ] **REQ-G1** brain/ 纳入 git 版本管理（建私有 GitHub repo）
+- [x] **REQ-G1** brain/ 纳入 git 版本管理（commit c65bf5e → github.com/fuxi4ai/C.C.）
 
 ### P1（关键体验）
 
 - [x] **REQ-A3** `/note [主题]` 命令实装 — inbox/ 新建 + 采集态
-- [ ] **REQ-B1** frontmatter 验证脚本（`brain/.tools/validate-frontmatter.py`）
-- [ ] **REQ-B2** wikilink 回链索引（`brain/.index/backlinks.json`）
-- [ ] **REQ-B4** 全文/标签搜索（最简：ripgrep alias；推荐：Obsidian 已装 → 直接用）
-- [ ] **REQ-C1** Claude Code 对话导入 → `chats/code/`
+- [x] **REQ-B1** frontmatter 验证脚本（`brain/.tools/validate-frontmatter.py`）
+- [x] **REQ-B2** wikilink 回链索引（`brain/.index/backlinks.json`）
+- [x] **REQ-B4** 全文/标签搜索（`brain/.tools/search.sh`）
+- [x] **REQ-C1** Claude Code 对话导入（`import-chats.py` → chats/code/）
 - [x] **REQ-D1** 记忆引擎决策（已定单轨纯文件 + ripgrep）（双轨文件+LanceDB vs 单轨文件）
-- [ ] **REQ-E2** 项目状态看板 Artifact
+- [x] **REQ-E2** 项目状态看板 Artifact（brain-vault-dashboard）
 - [x] **REQ-F2** 所有 brain 注册项目补齐 GOTCHAS.md
 
 ### P2（锦上添花）
 
-- [ ] **REQ-B3** 孤儿笔记检测（permanent/ 笔记 wikilink < 2 的标红）
-- [ ] **REQ-C2** Claude Web/App 对话导入 → `chats/web/`
-- [ ] **REQ-C3** Graphify 集成（渊图 + DVA 先跑）
-- [ ] **REQ-D2** 语义检索 API（依赖 REQ-D1）
-- [ ] **REQ-G2** 备份策略（iCloud + git remote 双保险）
+- [x] **REQ-B3** 孤儿笔记检测（`find-orphans.py`）（permanent/ 笔记 wikilink < 2 的标红）
+- [x] **REQ-C2** Claude Web/App 手动导出指引（chats/README.md）
+- [x] **REQ-C3** Graphify 集成手册（`run-graphify.sh` + references/graphify-集成.md）
+- [~] **REQ-D2** 语义检索 API — 搁置（架构决策已排除 LanceDB）
+- [x] **REQ-G2** 备份策略（references/备份策略.md + `backup-icloud.sh`）
 
