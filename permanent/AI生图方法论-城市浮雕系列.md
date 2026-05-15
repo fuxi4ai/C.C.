@@ -5,39 +5,71 @@ created: 2026-05-15
 updated: 2026-05-15
 status: active
 type: permanent
+version: v1.1
 ---
 
-# AI 生图方法论 · 城市浮雕图谱系列
+# AI 生图方法论 · 城市浮雕图谱系列 v1.1
 
 > 跨项目可复用知识资产 · 指针文件
-> 完整版（10 章 · 15 KB）：[[O MY HTML/architecture/方法论]] · 项目内拷贝 `Projects/O MY HTML/METHODOLOGY.md`
+> 完整版（12 章 · 23 KB · v1.1）：[[O MY HTML/architecture/方法论]]
+> 源：`Projects/O MY HTML/METHODOLOGY.md`
 
 ## 适用项目
 
-任何"AI 文生图 + 后期 + 系列化"的城市/地标主题。源：长沙·秋 / 杭州·雪。
+任何"AI 文生图 + 后期 + 系列化"的城市/地标主题。源：长沙·秋 / 杭州·雪 + 对标牛马 AIGC 北京/杭州春景。
 
-## 一句话核心
+## v1.1 核心要点（速查）
 
-- **prompt 1500 字节** + 三段构图 + palette accent budget + 删 Negative 段
-- **API**：curl subprocess（不用 requests）+ 4xx 也 retry
-- **safety 矩阵**：`low+1024×1024` / `low+1024×1792` 是 APIYI 仅有的稳路；medium/high 多数被拦
-- **抽卡**：N=5 卡间 ≥ 30s · 5 维评分（风格凝聚力 > 细节精度）
-- **调色**：image-2 edit subtle 档（用 "very mild" 不要 "deeper"）· 显式 PRESERVE 保护区
-- **后期**：所有文字一律矢量上字，AI 写字必错
+### 视角 · 默认 3D 微缩
+- **3D 立体微缩浮雕地图海报** —— 默认推荐（单点透视，真实模型摄影感）
+- hand-carved bas-relief —— 备选（平面浅刻，文人画气质）
 
-## 已知触发词速查
+### 季节母题双轨
+- 主流先做：白居易/苏轼/官方文宣
+- 小众进阶：张岱/张继/文人趣味
 
-`twin towers` / `lone figure facing` / `no other people` / `muted crimson` / `Christmas red-green` → 全部规避
+### 视觉灵魂原则
+- 每城一个绝对中心占画面 35-45%（杭州=西湖 / 北京=紫禁城 / 重庆=两江交汇）
 
-## 关键失败模式
+### Phase 3 矢量后期 · 7 件套标配
+1. 西文主标（Trajan Pro）
+2. 中文主标（思源宋）
+3. 中文副标 + 英译
+4. **GPS 坐标档案锚**
+5. 罗盘（双语方位）
+6. **双语地标图例栏**（12-16 项）
+7. 三层印章（城市 / UNESCO / 朱文古印）
 
-- `Empty reply` / `HTTP 502` → retry，节点波动
-- `HTTP 400 + shell_api_error` → APIYI 节流伪装，60s 后 retry 一次能通；第 2 次仍 400 才是真错
-- 出图风格散 → prompt 太长，压到 ≤ 1500 字节
+### prompt 范式双轨
+- **中文二段**（核心场景 + 氛围）—— 默认 · 牛马 AIGC 范式
+- 英文三段（TOP/MIDDLE/BOTTOM）—— 备用
+
+### safety 矩阵（不变）
+- ✅ low + 1024×1024
+- ✅ low + 1024×1792
+- ❌ 其他组合（medium+ / 高质量 / 1024×1536）
+
+### 地域非视觉符号
+- 北京：鸽哨 / 柿子影
+- 杭州：桂雨 / 琴音 / 龙井香
+- 苏州：评弹 / 雨打芭蕉
+- 重庆：汽笛 / 麻辣腾雾
+
+### 已知触发词（不变）
+`twin towers` / `Lone figure` / `no other people` / `muted crimson` / `Christmas red-green` → 全部规避
+
+### 调色 subtle 档
+- `very mild / subtle / slight` 程度词
+- `PRESERVE / do not` 锁定保护区
+- Camera Raw 数值锚（"like Blacks -10, Contrast +8"）
 
 ## 关联
 
-- [[O MY HTML/architecture/系统概览]]
-- [[O MY HTML/architecture/方法论]]（完整版）
-- [[apiyi-transit-mode]]
+- [[O MY HTML/系统概览]]
+- [[O MY HTML/方法论]]（v1.1 完整版）
+- [[APIYI 转接模式]]
 - [[政治经济学/GOTCHAS]] —— 用 G-04 / G-12 评估方法论是否过拟合
+
+---
+
+_v1.1 · 2026-05-15 · 牛马 AIGC 双对标后修订_
