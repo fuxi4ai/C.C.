@@ -40,7 +40,7 @@ get_src_path() {
   esac
 }
 
-# 可跑列表（纯文档类如海螺姑娘/政治经济学/司南/Optical communication 不在列）
+# 可跑列表（纯文档类项目（海螺姑娘/政治经济学/司南）不在列）
 ALL_PROJECTS=("DVA" "渊图" "龙鱼五力" "O MY HTML")
 
 run_one() {

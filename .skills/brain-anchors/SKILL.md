@@ -1,6 +1,6 @@
 ---
 name: brain-anchors
-description: Auto-load full project context when Doctor's anchor keywords appear in conversation. Trigger when the user's message contains any of these anchors — "dva" / "DVA", "龙鱼五力", "自检", "天工开物", "渊图" / "行业图谱", "海螺姑娘", "政治经济学", "司南", "O MY HTML", "光通信", "星空" / "Starry Skies" — Claude stops the current task and reads the corresponding project's architecture, decisions, and gotchas before responding, so the answer is grounded in that project's accumulated context rather than generic knowledge.
+description: Auto-load full project context when Doctor's anchor keywords appear in conversation. Trigger when the user's message contains any of these anchors — "dva" / "DVA", "龙鱼五力", "自检", "天工开物", "渊图" / "行业图谱", "海螺姑娘", "政治经济学", "司南", "O MY HTML", "星空" / "Starry Skies" — Claude stops the current task and reads the corresponding project's architecture, decisions, and gotchas before responding, so the answer is grounded in that project's accumulated context rather than generic knowledge.
 ---
 
 # brain-anchors — 锚点触发自动加载
@@ -20,14 +20,13 @@ description: Auto-load full project context when Doctor's anchor keywords appear
 | `政治经济学` | `brain/政治经济学/architecture/系统概览.md`<br>`brain/政治经济学/frameworks/认识论框架.md`（若存在）<br>`brain/政治经济学/GOTCHAS.md`<br>`Projects/政治经济学/GOTCHAS.md`（若存在） |
 | `司南` | `brain/司南/architecture/系统概览.md`<br>`brain/司南/方法论概要.md`（若存在）<br>`brain/司南/GOTCHAS.md` |
 | `O MY HTML` / `omy` | `brain/O MY HTML/architecture/系统概览.md`<br>`brain/O MY HTML/GOTCHAS.md`<br>**额外**：可加载 `Vault/taste-skills/` 和 `Vault/emil/`（设计 skills） |
-| `光通信` / `Optical communication` | **轻量 stub**：`brain/Optical communication/Optical communication.md`（index，含项目定位 + 深读入口）<br>深读触发：Doctor 显式说"深入光通信" / "细读光通信" / 进入 `Projects/Optical communication/` 实际工作时<br>深读时再加载：`brain/Optical communication/architecture/系统概览.md` · `光通信产业链概要.md` · `GOTCHAS.md` |
 | `星空` / `Starry Skies` | **轻量 stub**：`brain/星空/星空.md`（index，含项目定位 + 深读入口）<br>深读触发：Doctor 显式说"深入星空" / "细读星空" / 进入 `Projects/星空/` 实际工作时<br>深读时再加载：`Projects/星空/PRD.md` · `Projects/星空/reference/REF-001-知识星河-design-language.md` · `Projects/星空/GOTCHAS.md`（若存在） |
 
 ## 行为规则
 
 ### 加载强度分两档
 
-- **轻量 anchor**：只读 stub index（数十行）；让 CC 知道项目存在、位置、一句话定位，不污染对话上下文。命中时**仅**读 stub 文件，深读条件单列在表中（Doctor 显式要求 / 进入项目目录工作时触发）。当前轻量：`DVA` · `龙鱼五力` · `光通信` · `星空`
+- **轻量 anchor**：只读 stub index（数十行）；让 CC 知道项目存在、位置、一句话定位，不污染对话上下文。命中时**仅**读 stub 文件，深读条件单列在表中（Doctor 显式要求 / 进入项目目录工作时触发）。当前轻量：`DVA` · `龙鱼五力` · `星空`
 - **重型 anchor**（旧默认）：直接读 architecture/系统概览/决策记录/GOTCHAS。仍为大多数项目使用。
 
 ### 通用规则

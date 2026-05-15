@@ -91,7 +91,6 @@ type: permanent       # permanent | fleeting | log | resource | decision
 | 政治经济学 | `政治经济学/` | 🟢 活跃 | 2026-05-12 |
 | 海螺姑娘（Conch 项目护航） | `海螺姑娘/` | 🟡 维护 | 2026-04-29 |
 | O MY HTML（设计师工具箱） | `O MY HTML/` | 🟡 维护 | 2026-05-10 |
-| Optical communication（光通信产业链） | `Optical communication/` | 📋 参考 | — |
 | 司南（项目护航方法论） | `司南/` | 📋 参考 | — |
 
 ## ⚡ GOTCHAS 自动记录规则（强制，无需 Doctor 提示）
