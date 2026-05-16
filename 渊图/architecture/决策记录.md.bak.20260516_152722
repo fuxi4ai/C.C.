@@ -1,0 +1,60 @@
+---
+title: 渊图 · 决策记录
+tags: [渊图, decision]
+created: 2026-05-14
+updated: 2026-05-14
+status: active
+type: decision
+project: 渊图
+---
+
+# 渊图 · 决策记录
+
+> 项目内重大决策的时间线。一条决策一个 H2。
+
+格式：
+
+```
+## YYYY-MM-DD · 决策标题
+
+**背景**：为什么要做这个决策
+
+**选项**：
+- A：...
+- B：...
+
+**选择**：B
+
+**理由**：
+
+**影响**：
+```
+
+---
+
+<!-- 在下方追加新决策 -->
+
+
+## 2026-05-16 · 关系类型扩展至 10 种（新增 causes / constrains）
+
+**背景**：V4 Pro 在 18 篇研报批量入库时自发输出了 5 条规范外关系（2 条 causes、3 条 constrains），不在 v2 原定 8 种类型集合中。这些边语义合理：
+- causes：事件传导/状态变化引发的强因果（如"服务器量缩 → CPU 恐慌囤货推高存储价格"）
+- constrains：硬约束/限制/拖累（如"三星代工产能瓶颈 → 海光 CPU 7000 系列"）
+
+**选项**：
+- A：接受扩成 10 种类型，更新 prompt + rel_classify + 文档
+- B：跑 `kg_rel_classify.py` 归并到 8 种（causes → enables、constrains → requires）
+
+**选择**：A
+
+**理由**：
+1. enables 已经吃了 solved_by/trades_off/scaffolds，再吞 causes 会让该桶过度泛化、丧失分析价值
+2. causes/constrains 是产业链分析的高价值关系（事件传导、政策反应、价格联动、产能瓶颈），归并必丢信息
+3. kg_rel_classify.py 自身已有 constrains 桶，schema 演化方向就是更细分类型，prompt 那 8 种是保守起点而非终态
+4. enables 表达"能力解锁（持续）"，causes 表达"事件传导（一次性）"，正交清晰
+
+**影响**：
+- `kg_ingest.py` prompt 扩到 10 种 + 加判断口诀
+- `kg_rel_classify.py` 加 causes 桶（在 constrains 前）
+- 系统概览.md / CLAUDE.md 数字与类型种数同步
+- 后续入库的研报会主动使用 causes/constrains，旧 canonical 不回填（数据增量自然演化）

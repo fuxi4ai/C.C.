@@ -1,0 +1,50 @@
+---
+title: 渊图系统概览
+tags: [渊图, architecture, knowledge-graph]
+created: 2026-05-14
+updated: 2026-05-14
+status: active
+type: permanent
+related: [项目总览.md]
+---
+
+# 渊图系统概览
+
+**定位**：慢更新长效行业知识库，只收结构性/半永久性知识
+**工作目录**：`~/Documents/Database/行业研究/`
+**Canonical 图谱**：`mapping/行业知识图谱_v2_20260504_010528_2篇.json`
+**最后更新**：2026-05-14
+
+## 当前数字（2026-05-04）
+
+| 维度 | 数值 |
+|------|------|
+| 节点 | 1203（concept 627 / company 250 / product 145 / metric 144 / material 30）|
+| 关系 | 1477 / 8种类型 |
+| 已入库研报 | 119篇 |
+| Wiki 卡片 | 182张（度≥4 全覆盖）|
+
+## 核心脚本
+
+| 脚本 | 用途 |
+|------|------|
+| `kg_ingest.py` | Obsidian Warehouse .md → 图谱 patch（每5篇滚动合并）|
+| `kg_merge.py` | 合并 patch 到图谱 |
+| `kg_rel_classify.py` | 边语义分类 |
+| `wiki_autogen.py` | 生成/更新 wiki 卡片（度≥4，不加--force只补新增）|
+| `kb.py` | 知识库语义检索 |
+| `tushare_ingest.py` | A股财务/行情独立查询（不入图谱）|
+
+## 关键规则
+
+- Patch 命名：`mapping/_v2_{timestamp}_{N}篇.json`
+- 高时效数据（股价、财务季报）**不入图谱**，用 `tushare_ingest.py` 独立查询
+- v1 已于 2026-05-03 归档，v2 从空白重跑（v1 三大质量问题：节点类型全写 concept、边字段命名错误、关系类型超13种）
+
+## 外部依赖
+
+| 服务 | 用途 | env 变量 | 凭证清单 |
+|------|------|---------|---------|
+| Tushare | A 股财务/行情独立查询（`tushare_ingest.py`，不入图谱） | `TUSHARE_TOKEN` | [[凭证清单#3]] |
+
+> 完整凭证存放位置、轮换记录见 [[凭证清单]]。
