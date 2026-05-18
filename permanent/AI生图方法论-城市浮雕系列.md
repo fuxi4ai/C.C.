@@ -65,9 +65,9 @@ version: v1.1
 
 ## 关联
 
-- [[O MY HTML/系统概览]]
-- [[O MY HTML/方法论]]（v1.1 完整版）
-- [[APIYI 转接模式]]
+- [[O MY HTML/architecture/系统概览]]
+- [[O MY HTML/architecture/方法论]]（v1.1 完整版）
+- [[O MY HTML/apiyi-transit-mode]]
 - [[政治经济学/GOTCHAS]] —— 用 G-04 / G-12 评估方法论是否过拟合
 
 ---
