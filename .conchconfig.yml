@@ -1,0 +1,17 @@
+type: brain_vault
+protect:
+  - logs/
+  - permanent/
+  - inbox/
+  - references/
+  - templates/
+  - "*.bak_pre_*"
+phases:
+  archive: true
+  repair: false
+  fill: false              # brain 已有自定义结构
+  standardize_scripts: false
+  sync_conversation: true
+  memory: false            # 跟 brain/CLAUDE.md START_HERE.md 冲突
+version_chain_keep: 5
+obsolete_threshold: 3
