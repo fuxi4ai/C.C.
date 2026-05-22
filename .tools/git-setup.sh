@@ -40,7 +40,7 @@ git config core.quotepath false
 if ! git rev-parse HEAD &>/dev/null; then
   echo "📝 首次提交"
   git add -A
-  git commit -m "init: brain vault 2026-05-14"$'\n\n''Co-authored by Doctor + CC. Includes:'$'\n''- 8 项目骨架 (DVA/O MY HTML/Optical communication/司南/政治经济学/海螺姑娘/龙鱼五力/渊图)'$'\n''- 4 brain skills (resume/save/note/anchors)'$'\n''- register-project.sh 骨架生成器'
+  git commit -m "init: brain vault 2026-05-14"$'\n\n''Co-authored by Doctor + CC. Includes:'$'\n''- 8 项目骨架 (DVA/O MY HTML/Optical communication/司南/PEC/海螺姑娘/龙鱼五力/渊图)'$'\n''- 4 brain skills (resume/save/note/anchors)'$'\n''- register-project.sh 骨架生成器'
 else
   echo "ℹ️  已有 commit 历史，跳过首次提交"
   echo "    若有未追踪文件，自行决定 git add -A && git commit"

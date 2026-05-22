@@ -11,7 +11,7 @@ project: brain-vault
 # 会话日志 — 2026-05-15
 
 **主题**：brain-vault-dashboard 从假数据到真治理
-**关联文件**：`brain-vault-dashboard` artifact / `MAX_HANDOFF.md` / `references/brain-对接需求-20260514.md` / `.tools/build-backlinks.py` / `permanent/AI生图方法论-城市浮雕系列.md` / `渊图,龙鱼五力,政治经济学/architecture/系统概览.md`
+**关联文件**：`brain-vault-dashboard` artifact / `MAX_HANDOFF.md` / `references/brain-对接需求-20260514.md` / `.tools/build-backlinks.py` / `permanent/AI生图方法论-城市浮雕系列.md` / `渊图,龙鱼五力,PEC/architecture/系统概览.md`
 
 ---
 
@@ -29,7 +29,7 @@ project: brain-vault
 
 ### 数据治理（4 步）
 - **A** 渊图/龙鱼五力 系统概览补正文 `**最后更新**：2026-05-14`，看板 src 从 frontmatter 改为正文
-- **B** 政治经济学日期 `2026-05-12（v2.10 状态同步）` 拆为日期独行 + `**当前版本**：v2.10`
+- **B** PEC日期 `2026-05-12（v2.10 状态同步）` 拆为日期独行 + `**当前版本**：v2.10`
 - **C** GOTCHAS 计数改严 `^## \[ERR-[0-9]`，过滤掉模板格式示例段（7 项目假 GOTCHAS 1 → 0）
 - **D** 修 build-backlinks.py 排除 inline code/fenced code、跳过 logs/chats、加 path-style wikilink；修 `permanent/AI生图方法论` 4 条带路径坏链 + `[[APIYI 转接模式]] → [[apiyi-transit-mode]]`；陷阱-G-06-G-14 内 9 条 `[[G-XX]] → [[陷阱-G-06-G-14#G-XX]]` self-section link
 
@@ -56,7 +56,7 @@ project: brain-vault
 无（A/B/C/D + 归档全闭环）。后续触发刷新只需 `/save` 后说"刷新看板"。
 
 可选进阶（不急）:
-- [ ] 政治经济学 4 条真 TODO 何时消化（陷阱-G-06-G-14 元机制识别四步骤）
+- [ ] PEC 4 条真 TODO 何时消化（陷阱-G-06-G-14 元机制识别四步骤）
 - [ ] DVA 9 天没动是真停滞还是只是没 touch `**最后更新**` —— 要么真做、要么改 status: stable
 
 ---

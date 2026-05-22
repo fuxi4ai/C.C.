@@ -1,18 +1,18 @@
 ---
-title: 政治经济学 · GOTCHAS（已知坑）
-tags: [政治经济学, gotchas]
+title: PEC · GOTCHAS（已知坑）
+tags: [PEC, gotchas]
 created: 2026-05-14
 updated: 2026-05-14
 status: active
 type: resource
-project: 政治经济学
+project: PEC
 ---
 
-# 政治经济学 · GOTCHAS（已知坑）
+# PEC · GOTCHAS（已知坑）
 
 > brain 侧定位 = **索引 + 分组导航**，不复制全文。
 > 完整正文见：
-> - G-01~G-05 → `~/Documents/Claude/Projects/政治经济学/GOTCHAS.md` §一~§二
+> - G-01~G-05 → `~/Documents/Claude/Projects/PEC/GOTCHAS.md` §一~§二
 > - G-06~G-14 → [[陷阱-G-06-G-14]]（同目录 `frameworks/陷阱-G-06-G-14.md`） + Projects 侧 GOTCHAS.md §三~§七
 
 ## 全表索引（G-01~G-14）
@@ -38,7 +38,7 @@ project: 政治经济学
 
 ### 一、概念与方法论基础（G-01~G-05）
 
-**所在文件**：`Projects/政治经济学/GOTCHAS.md` §一~§二（已收入通用教训）
+**所在文件**：`Projects/PEC/GOTCHAS.md` §一~§二（已收入通用教训）
 
 - **G-01 万能概念陷阱** — 防御工具：要求每个概念附明确反例条件
 - **G-02 主动/被动混用** — 防御工具：每条因果命题标注证据标准
@@ -91,7 +91,7 @@ project: 政治经济学
 
 CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
 
-- **实时操作日志** → `Projects/政治经济学/GOTCHAS.md`（全文）
+- **实时操作日志** → `Projects/PEC/GOTCHAS.md`（全文）
 - **本文件** → 仅在有**新 G-XX 编号**或**已有条目类别归属变更**时更新表头索引
 
 ## 关联
@@ -103,7 +103,7 @@ CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
 
 <!-- 在下方追加 G-15+ 索引行 -->
 
-## G-15+ 候选区索引（全文在 Projects/政治经济学/GOTCHAS.md）
+## G-15+ 候选区索引（全文在 Projects/PEC/GOTCHAS.md）
 
 | 编号 | 名称 | 类别 | 状态 |
 |------|------|------|------|

@@ -61,14 +61,14 @@ brain/{项目名}/
 #### ② REQ-C4 · 为 6 个项目生成 brain 骨架
 
 渊图已有，对其余 6 个跑 register-project.sh：
-`DVA` / `O MY HTML` / `Optical communication` / `司南` / `政治经济学` / `海螺姑娘` / `龙鱼五力`
+`DVA` / `O MY HTML` / `Optical communication` / `司南` / `PEC` / `海螺姑娘` / `龙鱼五力`
 
 生成后，从各项目的 README / PRD / GOTCHAS 里提取关键信息，填入 `architecture/系统概览.md`（参考已有的 `brain/渊图/architecture/系统概览.md` 格式）。
 
 各项目源文件位置：
 - DVA：`~/Documents/Claude/Projects/DVA/`
 - O MY HTML：`~/Documents/Claude/Projects/O MY HTML/`
-- 政治经济学：`~/Documents/Claude/Projects/政治经济学/`
+- PEC：`~/Documents/Claude/Projects/PEC/`
 - 龙鱼五力：`~/Documents/Claude/Projects/龙鱼五力/`
 - 海螺姑娘：`~/Documents/Claude/Projects/海螺姑娘/`
 - 司南：`~/Documents/Claude/Projects/司南/`

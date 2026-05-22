@@ -1,15 +1,15 @@
 ---
-title: 政治经济学
-tags: [政治经济学, index]
+title: PEC
+tags: [PEC, index]
 created: 2026-05-14
 updated: 2026-05-14
 status: active
 type: index
-project: 政治经济学
-code_path: Claude/Projects/政治经济学/
+project: PEC
+code_path: Claude/Projects/PEC/
 ---
 
-# 政治经济学
+# PEC
 
 > 政经分析认识论框架
 
@@ -21,5 +21,5 @@ code_path: Claude/Projects/政治经济学/
 
 ## 相关
 
-- 代码与产物：`Claude/Projects/政治经济学/`
+- 代码与产物：`Claude/Projects/PEC/`
 - [[项目总览]] — 8 个项目的全局索引

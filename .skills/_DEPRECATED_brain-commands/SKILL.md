@@ -33,7 +33,7 @@ ls -t ~/Documents/Claude/brain/logs/*.md | head -3
 把这 3 个文件全文读入。
 
 **Step 2 · 识别活跃项目**
-从日志的 `project:` frontmatter、文件名主题、或正文中提取最近活跃的项目名（DVA / 龙鱼五力 / 渊图 / O MY HTML / 政治经济学 / 海螺姑娘 / 司南 / Optical communication）。
+从日志的 `project:` frontmatter、文件名主题、或正文中提取最近活跃的项目名（DVA / 龙鱼五力 / 渊图 / O MY HTML / PEC / 海螺姑娘 / 司南 / Optical communication）。
 
 若识别到，读：
 ```

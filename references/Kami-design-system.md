@@ -95,7 +95,7 @@ Kami（外部 skill）：把上述输出排成正式文档（白皮书 / 研报 
 
 - [[O MY HTML/architecture/方法论]] · 城市浮雕系列定位章节
 - [[O MY HTML/architecture/方法论]] · v1.1 与 Kami 同构对比
-- [[政治经济学/architecture/系统概览]] · 文档输出可借 Kami 排版
+- [[PEC/architecture/系统概览]] · 文档输出可借 Kami 排版
 
 ---
 

@@ -18,8 +18,8 @@ type: log
 - [x] **给 DVA 跑 graphify**（1070 nodes, $0.85）
   `cd ~/Documents/Claude/Projects/DVA && graphify . --obsidian --obsidian-dir ~/Documents/Claude/brain/graphify/DVA`
 
-- [x] **政治经济学 G-06 至 G-14 认识论陷阱全量入 brain**（frameworks/陷阱-G-06-G-14.md，9 条全量）
-  读取 `Projects/政治经济学/GOTCHAS.md` 后半部分，提炼入 `brain/政治经济学/frameworks/认识论框架.md`
+- [x] **PEC G-06 至 G-14 认识论陷阱全量入 brain**（frameworks/陷阱-G-06-G-14.md，9 条全量）
+  读取 `Projects/PEC/GOTCHAS.md` 后半部分，提炼入 `brain/PEC/frameworks/认识论框架.md`
 
 ## 已完成
 

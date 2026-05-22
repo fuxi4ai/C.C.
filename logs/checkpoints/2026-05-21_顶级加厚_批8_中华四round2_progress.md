@@ -1,6 +1,6 @@
 ---
 title: checkpoint · 2026-05-21 顶级加厚 批8(中华四顶级 round2)
-tags: [checkpoint, 政治经济学, 跨文明哲学史, 顶级加厚]
+tags: [checkpoint, PEC, 跨文明哲学史, 顶级加厚]
 created: 2026-05-21
 status: done · 中华四顶级round2完成(全达40-50KB)
 ---

@@ -51,7 +51,7 @@ project: Brain Vault
 ## 遗留问题 / 待办
 
 只剩 1 条：
-- [ ] **政治经济学 G-06~G-14 认识论陷阱入 brain** —— 需 Doctor 口述 + `/note` 整理
+- [ ] **PEC G-06~G-14 认识论陷阱入 brain** —— 需 Doctor 口述 + `/note` 整理
 
 ### 已知坑
 - graphify `--out` 文档说会写到 `<DIR>/graphify-out/`，实际 v0.7.16 行为正常（验证）

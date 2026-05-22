@@ -19,7 +19,7 @@ project: Brain Vault
 3. 安装 graphify v0.7.16（`pip install graphifyy` + `graphify install`）
 4. 创建 4 个笔记模板（default-note, session-log, decision, resource）
 5. 在 Obsidian 中添加为新 vault（Doctor 已完成）
-6. 扫描 7 个活跃项目（DVA、渊图、龙鱼五力、政治经济学、海螺姑娘、O MY HTML、司南）
+6. 扫描 7 个活跃项目（DVA、渊图、龙鱼五力、PEC、海螺姑娘、O MY HTML、司南）
 7. 种植知识种子：`permanent/项目总览.md`、`permanent/通用教训.md`、各项目 architecture 文件
 
 ## 已知限制
@@ -31,7 +31,7 @@ project: Brain Vault
 
 - [ ] 给渊图跑 graphify（`graphify . --obsidian --obsidian-dir ~/Documents/Claude/brain/graphify/渊图`）
 - [ ] 给 DVA 跑 graphify
-- [ ] 政治经济学 GOTCHAS 全量迁移（G-06 至 G-14 还未入 brain）
+- [ ] PEC GOTCHAS 全量迁移（G-06 至 G-14 还未入 brain）
 - [ ] 龙鱼五力 RULES 详细规则入 brain/龙鱼五力/architecture/
 
 ## 相关笔记

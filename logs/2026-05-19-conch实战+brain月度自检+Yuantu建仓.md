@@ -23,7 +23,7 @@ project: 跨项目
 - 扫 7 个 Projects 子项目：
   - O MY HTML → 清 `design-ref/emil-design-eng.skill`（空文件，安装残留）
   - 海螺姑娘 → 清 `SKILL_v0.1.md.bak.20260518_101915`（v0.2 改造前的备份）
-  - DVA / 司南 / 政治经济学 / 星空 / 龙鱼五力 → 0 obsolete，干净
+  - DVA / 司南 / PEC / 星空 / 龙鱼五力 → 0 obsolete，干净
 - 扫 `~/Documents/Claude/` 顶层：清 `test`、`write_test.txt`、`渊图_数据库_20260503.zip`（620KB 老 zip）
 - 淘汰 `~/Documents/Claude/recycle/`（65MB 旧备份）→ 整目录搬到 `archived/2026-05-18/recycle_moved/`，等用户在 Finder 拖入废纸篓
 
@@ -86,7 +86,7 @@ project: 跨项目
 
 - [ ] 在 macOS Finder 里手动清 `~/Documents/Claude/archived/2026-05-18/`（含 65MB recycle_moved）
 - [ ] 在 macOS 终端跑 `cd ~/Documents/Claude/Projects/海螺姑娘 && git add -A && git commit -m "海螺姑娘: brain_checkup v1.2.0 + GOTCHAS sandbox 条目" && git push`
-- [ ] 政治经济学 G-06~G-14 框架 4 条 TODO 待 Doctor 自己思考填答（陷阱-G-06-G-14.md 第 147-150 行）
+- [ ] PEC G-06~G-14 框架 4 条 TODO 待 Doctor 自己思考填答（陷阱-G-06-G-14.md 第 147-150 行）
 
 ## 关键洞察
 

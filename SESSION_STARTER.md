@@ -25,7 +25,7 @@ Brain vault：~/Documents/Claude/brain/
 项目目录：~/Documents/Claude/Projects/
 技能仓库：~/Documents/Vault/
 
-当前活跃项目：渊图 / DVA / 龙鱼五力 / 政治经济学 / 海螺姑娘 / O MY HTML / 司南
+当前活跃项目：渊图 / DVA / 龙鱼五力 / PEC / 海螺姑娘 / O MY HTML / 司南
 
 当前安装的 Skills：
 - conch（/Conch 整理项目目录）

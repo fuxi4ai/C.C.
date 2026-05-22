@@ -32,7 +32,7 @@ project: 星空
 
 ### 三、brain-anchors 全局轻量化改造（顺带做的）
 - 加载强度分两档：轻量 stub vs 重型
-- Doctor 分类：轻量 4（DVA · 龙鱼五力 · 光通信 · 星空）/ 重型 7（自检 · 天工开物 · 渊图 · 海螺姑娘 · 政治经济学 · 司南 · O MY HTML）
+- Doctor 分类：轻量 4（DVA · 龙鱼五力 · 光通信 · 星空）/ 重型 7（自检 · 天工开物 · 渊图 · 海螺姑娘 · PEC · 司南 · O MY HTML）
 - 新建 `brain/星空/星空.md` stub（35 行）
 - 改 `brain/.skills/brain-anchors/SKILL.md` 表格 + 行为规则段
 
