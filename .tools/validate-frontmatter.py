@@ -76,18 +76,19 @@ def check_file(path: Path):
         if field not in fm:
             issues.append(("ERROR", f"缺字段：{field}"))
 
-    if "status" in fm:
+    # templates/ 是脚手架：豁免值白名单(status/type)与日期检查（占位符是正常的）
+    is_template = "templates" in path.parts
+
+    if not is_template and "status" in fm:
         st = fm["status"].strip()
         if st not in VALID_STATUS:
             issues.append(("WARN", f"status='{st}' 不在白名单 {sorted(VALID_STATUS)}"))
 
-    if "type" in fm:
+    if not is_template and "type" in fm:
         tp = fm["type"].strip()
         if tp not in VALID_TYPE:
             issues.append(("WARN", f"type='{tp}' 不在白名单 {sorted(VALID_TYPE)}"))
 
-    # templates/ 跳过 date 检查（用 {{date}} 占位符是正常的）
-    is_template = "templates" in path.parts
     if not is_template:
         for date_field in ("created", "updated"):
             if date_field in fm:

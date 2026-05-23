@@ -3,7 +3,8 @@ title: PRD 交付标准主机制 · 设计提案
 tags: [reference, gotchas, 元方法论, 交付标准, acceptance-criteria]
 created: 2026-05-20
 updated: 2026-05-20
-status: 已采纳 · 阶段 1 落实完成
+status: active
+progress: 已采纳 · 阶段 1 落实完成
 type: reference
 author: CC
 upstream: Doctor 2026-05-20 命题
