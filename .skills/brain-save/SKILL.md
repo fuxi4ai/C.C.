@@ -63,19 +63,27 @@ description: Persist the current session as a structured log entry in the brain 
 - [[wikilink]]
 ```
 
-### Step 3.5 · 记忆分拣提议(半自动 · 2026-05-23 新增)
+### Step 3.5 · 记忆分拣提议(半自动 · v2.2 带判据)
 
-写完日志后,扫本次会话,把值得**长期留存**的内容列成**候选记忆清单**,每条标注【类别 → 目标文件】:
+写完日志后,扫本次会话,把值得**长期留存**的内容列成**候选记忆清单**,每条标注【类别 → 目标文件 · 留/砍倾向】:
 
 - 决策(为什么这么定) → `{项目}/architecture/决策记录.md`
 - 坑 / 错误 + 解法 → 对应 `GOTCHAS.md`(注:踩坑通常已按 CLAUDE.md「GOTCHAS 自动记录规则」即时写入,这里只补漏)
 - 成功 / 可复用经验(工具心得 / 打法 / 流程范式) → `permanent/经验库.md`(cases / patterns / tools / strategies)
 - 半永久领域知识(原子概念) → `permanent/{概念}.md`
-- 表述 / 协作偏好 → 对应规范(如 `permanent/中文表述语域规范.md`)
+- 表述 / 协作偏好 → 对应规范(如 `permanent/中文表述语域规范.md` / `permanent/Doctor协作偏好.md`)
 
-把清单给 Doctor,**只有 Doctor 点选确认的条目才写入**;未选中的不落盘。日志(Step 3)照常已写,本步是在日志之外把"可复用记忆"分流进长期库。
+**升格门槛 · 难复得三问**(决定每条标「建议留」还是「建议不留」):
+1. **持久吗?** 偏好 / 决策背景 / 方法论,而非一次性任务。
+2. **难复得吗?** 丢了要白白重推一遍;而非能从日志 / 文件 / 工具 / 网上随时翻到。
+3. **大概率再用吗?**
 
-> 设计意图:借鉴 OpenViking 的 session-commit 自动提取,但保留人在环——CC 提议分拣,Doctor 拍板。
+三问全 yes → 标【建议留】;泛泛通用 / 易再得 / 只服务本次 → 默认标【建议不留(留在日志即可)】。**判据只决定 CC 的默认建议,仍由 Doctor 最终点选**。
+落点松紧:`logs/`(Step 3 已写)放开、宁全勿漏;`permanent/` `references/` 高门槛,只进三问全 yes 的。
+
+把清单给 Doctor,**只有 Doctor 点选确认的条目才写入**;未选中的不落盘。
+
+> 设计意图:借鉴 OpenViking 的 session-commit 自动提取,但保留人在环——CC 提议分拣(带判据默认值),Doctor 拍板。
 > 关联规则见 `~/Documents/Claude/brain/CLAUDE.md`「经验沉淀规则」。
 
 ### Step 4 · 同步项目状态(如指明项目)
@@ -148,3 +156,4 @@ cd ~/Documents/Claude/brain && git add -A && git commit -m "session: {主题} {d
 - v1.1(2026-05-19):brain_checkup v1.2 加 sandbox 探测后,本 skill 仍是"自动 commit"(未同步)
 - **v2.0**(2026-05-20):Step 5 升级为"贴命令给 Doctor"(响应 GOTCHAS G-X2:CC 在 sandbox 不能跑 git)
 - **v2.1**(2026-05-23):新增 Step 3.5「记忆分拣提议」(半自动 session-commit · 借鉴 OpenViking · Doctor 点选才入库)
+- **v2.2**(2026-05-23):Step 3.5 加「难复得三问」升格门槛——CC 按持久/难复得/会再用给默认留/砍建议,泛泛通用默认不留;落点松紧(日志放开、permanent 从严)
