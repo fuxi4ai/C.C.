@@ -63,6 +63,21 @@ description: Persist the current session as a structured log entry in the brain 
 - [[wikilink]]
 ```
 
+### Step 3.5 · 记忆分拣提议(半自动 · 2026-05-23 新增)
+
+写完日志后,扫本次会话,把值得**长期留存**的内容列成**候选记忆清单**,每条标注【类别 → 目标文件】:
+
+- 决策(为什么这么定) → `{项目}/architecture/决策记录.md`
+- 坑 / 错误 + 解法 → 对应 `GOTCHAS.md`(注:踩坑通常已按 CLAUDE.md「GOTCHAS 自动记录规则」即时写入,这里只补漏)
+- 成功 / 可复用经验(工具心得 / 打法 / 流程范式) → `permanent/经验库.md`(cases / patterns / tools / strategies)
+- 半永久领域知识(原子概念) → `permanent/{概念}.md`
+- 表述 / 协作偏好 → 对应规范(如 `permanent/中文表述语域规范.md`)
+
+把清单给 Doctor,**只有 Doctor 点选确认的条目才写入**;未选中的不落盘。日志(Step 3)照常已写,本步是在日志之外把"可复用记忆"分流进长期库。
+
+> 设计意图:借鉴 OpenViking 的 session-commit 自动提取,但保留人在环——CC 提议分拣,Doctor 拍板。
+> 关联规则见 `~/Documents/Claude/brain/CLAUDE.md`「经验沉淀规则」。
+
 ### Step 4 · 同步项目状态(如指明项目)
 
 更新 `~/Documents/Claude/brain/{项目名}/architecture/系统概览.md` 中"最后活跃"字段为今日。
@@ -132,3 +147,4 @@ cd ~/Documents/Claude/brain && git add -A && git commit -m "session: {主题} {d
 - v1.0(2026-05-14):初版 · Step 5 自动 git commit
 - v1.1(2026-05-19):brain_checkup v1.2 加 sandbox 探测后,本 skill 仍是"自动 commit"(未同步)
 - **v2.0**(2026-05-20):Step 5 升级为"贴命令给 Doctor"(响应 GOTCHAS G-X2:CC 在 sandbox 不能跑 git)
+- **v2.1**(2026-05-23):新增 Step 3.5「记忆分拣提议」(半自动 session-commit · 借鉴 OpenViking · Doctor 点选才入库)
