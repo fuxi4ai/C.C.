@@ -1,6 +1,10 @@
 ---
 type: bootstrap
 created: 2026-05-13
+title: Brain Vault — 起点
+tags: [brain]
+updated: 2026-05-14
+status: active
 ---
 
 # Brain Vault — 起点

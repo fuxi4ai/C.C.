@@ -1,3 +1,12 @@
+---
+title: SESSION STARTER — CC 快速唤醒模板
+tags: [brain]
+created: 2026-05-14
+updated: 2026-05-22
+status: active
+type: bootstrap
+---
+
 # SESSION STARTER — CC 快速唤醒模板
 
 > Doctor 在任何新 session 开始时，把下面【粘贴块】的内容复制粘贴为第一条消息。

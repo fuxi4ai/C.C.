@@ -1,3 +1,12 @@
+---
+title: Brain Vault — CC 全局记忆与知识库
+tags: [brain, bootstrap, index]
+created: 2026-05-14
+updated: 2026-05-23
+status: active
+type: bootstrap
+---
+
 # Brain Vault — CC 全局记忆与知识库
 
 > Doctor 的第二大脑。CC 每次进入此目录或被要求读取记忆时，先读本文件。
