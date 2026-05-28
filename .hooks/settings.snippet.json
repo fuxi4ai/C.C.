@@ -1,0 +1,38 @@
+{
+  "_comment": "把下面 hooks 块合并进 ~/.claude/settings.json（用户级，全局生效，任何 cwd 都触发）。若该文件已有 hooks 键，只把三个事件的数组项并进去，别整体覆盖。路径用绝对路径，不依赖 $HOME 展开。",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/lunarabbit/Documents/Claude/brain/.hooks/sessionstart_load.py",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/lunarabbit/Documents/Claude/brain/.hooks/precompact_snapshot.py",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/lunarabbit/Documents/Claude/brain/.hooks/stop_capture.py",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}
