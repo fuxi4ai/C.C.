@@ -35,3 +35,11 @@ project: 渊图
 **解决方案**: 链式 merge（前者 `--output` 临时文件当后者 base，末条 `--output` 回写 canonical），merge 后核对节点/边数等于预算值
 **预防措施**: 报告"Doctor 操作"节给链式命令+预期数字；"新建/更新 0"视为告警
 **详**: Database/行业研究/渊图_GOTCHAS.md
+
+## [ERR-20260531-003] kg_ingest max_retries=0 致端点抖动时整批全跳过
+**状态**: ✅ 已解决 **优先级**: 🔴 高
+**触发**: batch 21篇 PDF 每篇~10s Connection error, 0 patch
+**真因**: 端点瞬时抖动 + max_retries=0 不重试(非key/PDF/参数问题, 已 curl+诊断脚本 C1-C4 排除)
+**解决**: client 加 max_retries=4(KG_MAX_RETRIES可覆盖)+timeout=120; 幂等安全(失败篇未标kg_processed,可重跑)
+**预防**: LLM客户端永不 max_retries=0; 整批0 patch=基础设施故障先测端点
+**详**: Database/行业研究/渊图_GOTCHAS.md
