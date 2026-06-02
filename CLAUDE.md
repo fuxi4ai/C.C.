@@ -111,6 +111,7 @@ type: permanent       # permanent | fleeting | log | resource | decision
 | 海螺姑娘（Conch 项目护航） | `海螺姑娘/` | 🟡 维护 | 2026-04-29 |
 | O MY HTML（设计师工具箱） | `O MY HTML/` | 🟡 维护 | 2026-05-10 |
 | 司南（项目护航方法论） | `司南/` | 📋 参考 | — |
+| 数灵转移（云端agent→本地subagent） | `数灵转移/` | 🟢 活跃 | 2026-06-02 |
 
 ## 🗣 表述语域规范（全局默认 · 2026-05-22）
 
