@@ -43,3 +43,11 @@ project: 渊图
 **解决**: client 加 max_retries=4(KG_MAX_RETRIES可覆盖)+timeout=120; 幂等安全(失败篇未标kg_processed,可重跑)
 **预防**: LLM客户端永不 max_retries=0; 整批0 patch=基础设施故障先测端点
 **详**: Database/行业研究/渊图_GOTCHAS.md
+
+## [ERR-20260602-001] 生益/胜宏近名张冠李戴(3处)+名↔代码校验脚本
+**状态**: ✅ 2修+1提案+建校验 **优先级**: 🔴 高
+**触发**: ingest混淆 生益(Shengyi)/胜宏(Shenghong)拼音 + 生益科技600183(母CCL)/生益电子688183(子PCB)母子公司
+**3错节点**: ShengyiElectronics(已并)·Shengyi_PCB(提案待apply)→均name写胜宏实为生益电子;真胜宏Shenghong(300476)独立
+**解决**: 建 rules/name_code_consistency_check.py(代码↔name+拼音↔name自洽校验);入库后跑作delta gate
+**预防**: 易混公司登记校验表;修正走dry-run+防误伤断言(禁动生益科技/真胜宏)
+**详**: Database/行业研究/渊图_GOTCHAS.md
