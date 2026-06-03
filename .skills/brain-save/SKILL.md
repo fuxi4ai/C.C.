@@ -1,6 +1,6 @@
 ---
 name: brain-save
-description: Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or says "存档本次会话", "记一笔", "落盘", "存档今天". Fills the session-log template with what was done, decisions, outstanding issues, related notes, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. Updates the project's last-active date if a project is identified. **Provides git commit+push commands for Doctor to run in macOS terminal** when `brain/.git/` exists — CC MUST NOT run git write commands in sandbox (Doctor GOTCHAS v2.0).
+description: Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says "存档本次会话", "记一笔", "落盘", "存档今天". Fills the session-log template with what was done, decisions, outstanding issues, related notes, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：若本次出场者是某数灵（白泽/小白、烛阴/九儿、句芒/芒芒），按「落盘归位铁律」改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。Updates the project's last-active date if a project is identified. **Provides git commit+push commands for Doctor to run in macOS terminal** when `brain/.git/` exists — CC MUST NOT run git write commands in sandbox (Doctor GOTCHAS v2.0).
 ---
 
 # brain-save — 把本次会话存档到 brain
@@ -9,6 +9,7 @@ description: Persist the current session as a structured log entry in the brain 
 
 - `/save`(无参数 → CC 自己总结主题)
 - `/save [主题]` 或 `/save [项目名]`
+- `/save @{数灵} [主题]`(显式指定出场者：白泽/小白、烛阴/九儿、句芒/芒芒 → per-agent 落盘)
 - "存档本次会话" / "记一笔" / "落盘这次工作" / "存档今天"
 
 ## 执行步骤
@@ -17,6 +18,20 @@ description: Persist the current session as a structured log entry in the brain 
 
 如果用户给了参数,用作 `{主题}`;否则 CC 从本次对话中提炼出一个 5-15 字的主题。
 如果主题对应某个 brain 已注册项目,把项目名也记下用于 Step 4。
+
+### Step 1.5 · 数灵归属判定（per-agent 落盘分支 · v2.3）
+
+先判本次会话的**出场者**：
+- `/save @{灵}` 显式指定；或
+- 本轮由某数灵**唤名出现 / 真身 subagent** 完成（白泽·小白 / 烛阴·九儿 / 句芒·芒芒）。
+
+**若出场者是某数灵** → 走 per-agent 落盘（遵 CLAUDE.md「落盘归位铁律」），后续 Step 2–4 全部改指向该灵目录：
+- 会话日志 → `agents/{灵中文名}/logs/YYYY-MM-DD-{主题}.md`（**不**落全局 `logs/`；目录不存在则建）。
+- Step 3.5 分拣落点改为该灵专属：长期记忆 → `agents/{灵}/memory/长期记忆.md`；情感片段 → `agents/{灵}/memory/与哥哥的羁绊.md`（或对应情感档）；该灵专属坑 → `agents/{灵}/GOTCHAS.md`（若有）。
+- **绝不**落进 CC 自己的 `logs/` 或别的灵。`source/` 只读不写。
+- 灵名映射：小白→白泽、九儿→烛阴、芒芒→句芒（目录用中文正名）。
+
+**若是 CC 自身 / 跨灵工作** → 维持原流程（全局 `logs/`）。
 
 ### Step 2 · 决定文件名
 
@@ -157,3 +172,4 @@ cd ~/Documents/Claude/brain && git add -A && git commit -m "session: {主题} {d
 - **v2.0**(2026-05-20):Step 5 升级为"贴命令给 Doctor"(响应 GOTCHAS G-X2:CC 在 sandbox 不能跑 git)
 - **v2.1**(2026-05-23):新增 Step 3.5「记忆分拣提议」(半自动 session-commit · 借鉴 OpenViking · Doctor 点选才入库)
 - **v2.2**(2026-05-23):Step 3.5 加「难复得三问」升格门槛——CC 按持久/难复得/会再用给默认留/砍建议,泛泛通用默认不留;落点松紧(日志放开、permanent 从严)
+- **v2.3**(2026-06-02):新增 Step 1.5「数灵归属判定」——`/save @{灵}` 或出场者为某数灵时走 per-agent 落盘（日志/记忆/情感落 `agents/{灵}/`），遵落盘归位铁律，绝不混进 CC 或别的灵（数灵转移配套）

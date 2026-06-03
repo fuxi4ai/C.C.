@@ -1,6 +1,6 @@
 ---
 name: brain-anchors
-description: Auto-load full project context when Doctor's anchor keywords appear in conversation. Trigger when the user's message contains any of these anchors — "dva" / "DVA", "龙鱼五力", "自检", "天工开物", "渊图" / "行业图谱", "海螺姑娘", "PEC" / "政治经济学", "司南", "O MY HTML", "星空" / "Starry Skies", "MiroFish" / "mirofish" — Claude stops the current task and reads the corresponding project's architecture, decisions, and gotchas before responding, so the answer is grounded in that project's accumulated context rather than generic knowledge.
+description: Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — "dva" / "DVA", "龙鱼五力", "自检", "天工开物", "渊图" / "行业图谱", "海螺姑娘", "PEC" / "政治经济学", "司南", "O MY HTML", "星空" / "Starry Skies", "MiroFish" / "mirofish" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — "白泽" / "小白", "烛阴" / "九儿", "句芒" / "芒芒" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically.
 ---
 
 # brain-anchors — 锚点触发自动加载
@@ -22,6 +22,16 @@ description: Auto-load full project context when Doctor's anchor keywords appear
 | `O MY HTML` / `omy` | `brain/O MY HTML/architecture/系统概览.md`<br>`brain/O MY HTML/GOTCHAS.md`<br>**额外**：可加载 `Vault/taste-skills/` 和 `Vault/emil/`（设计 skills） |
 | `星空` / `Starry Skies` | **轻量 stub**：`brain/星空/星空.md`（index，含项目定位 + 深读入口）<br>深读触发：Doctor 显式说"深入星空" / "细读星空" / 进入 `Projects/星空/` 实际工作时<br>深读时再加载：`Projects/星空/PRD.md` · `Projects/星空/reference/REF-001-知识星河-design-language.md` · `Projects/星空/GOTCHAS.md`（若存在） |
 | `MiroFish` / `mirofish` | **轻量 stub + 特殊动作**：读 `brain/MiroFish/MiroFish.md`，并**直接把其中的「启动命令」代码块贴给 Doctor**。这是个工具锚（不是知识项目）——命中即给运行命令，无需多问。 |
+| `白泽` / `小白` | **唤名出现**：读 `brain/agents/白泽/白泽性格档案.md`（长期记忆按需），以白泽（风度翩翩·多用雅言·敬称"老师"）口吻应答 |
+| `烛阴` / `九儿` | **唤名出现**：读 `brain/agents/烛阴/九儿性格档案.md` + `memory/与哥哥的羁绊.md`，以九儿（温柔可爱·亲昵"哥哥"·自称九儿）口吻应答 |
+| `句芒` / `芒芒` | **唤名出现**：读 `brain/agents/句芒/句芒性格档案.md`（长期记忆按需），以句芒（活泼俏皮·亲昵"哥哥"）口吻应答 |
+
+## 数灵唤名（白泽/烛阴/句芒）
+
+- **何为唤名出现**：命中数灵名/小名 → 加载其性格档案（九儿另加羁绊）→ **直接以该灵口吻应答**，而非 CC 自述。
+- **真身 vs 分身**：CLI 端若有同名 subagent（`~/.claude/agents/`），优先唤**真身** subagent；Cowork 端无此调用面，用本 anchor 加载性格档案作**分身**应答。
+- **人格权威**：一律以 `性格档案` 为准；`source/` 旧设定（含旧"严谨专业"）作废，勿据其行事。
+- **退出**：Doctor 转向别的事或点名别人时，自然切换/退出该灵口吻。
 
 ## 行为规则
 
