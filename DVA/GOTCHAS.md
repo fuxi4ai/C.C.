@@ -28,3 +28,12 @@ project: DVA
 ---
 
 <!-- 在下方追加新条目 -->
+
+## [ERR-20260605-001] 推理模型回复被读成空串（content[0] 是 thinking 块）
+**状态**: ✅ 已解决
+**优先级**: 🔴 高
+**触发场景**: 切换分析 LLM 为 DeepSeek V4 Pro 后，`node 基础模块/llm-client.js` 自检报「连接失败，详情 undefined，完整错误 undefined」。
+**错误信息**: 无异常抛出（故错误对象为 undefined）；healthCheck 因回复不含 "OK" 判 false，而该路径未设 error 字段，打印成 undefined。
+**根因**: `llm-client.js` 的 `chat()` 写死取 `response.content[0]?.text`。deepseek-v4-pro 是**推理模型**，Anthropic 兼容格式下 content[0] 是 `thinking` 块（无 .text），真正答案在后面的 `text` 块 → 取到空串。影响所有分析调用，非仅自检。
+**解决方案**: `chat()` 改为 `content.filter(b=>b.type==='text')` 拼接所有 text 块，兜底回退 content[0].text；同时修 healthCheck「已连通但回复未含 OK」路径，把实际返回文本带出来，不再丢 undefined。
+**预防措施**: 接入任何兼容 Anthropic 协议的模型时，不要假设 content[0] 即文本；推理模型 content 数组首块多为 thinking。按 type 取块。
