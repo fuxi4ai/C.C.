@@ -2,7 +2,7 @@
 title: PEC
 tags: [PEC, index]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-06-10
 status: active
 type: index
 project: PEC
@@ -22,4 +22,5 @@ code_path: Claude/Projects/PEC/
 ## 相关
 
 - 代码与产物：`Claude/Projects/PEC/`
-- [[项目总览]] — 8 个项目的全局索引
+- [[项目总览]] — 全局项目索引
+- 方法论透镜：[[核学说分层]] · [[纪律轴-产业政策]]
