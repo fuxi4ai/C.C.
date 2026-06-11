@@ -22,7 +22,7 @@ cd "$REPO" || { echo "❌ 进不去 $REPO" >&2; exit 1; }
 # 1. 真 git 进程在跑？任何 git 都先让路
 if pgrep -x git >/dev/null 2>&1; then
   echo "⚠️  检测到 git 进程在运行，未动锁、未提交。先确认是谁占用："
-  ps -Ao pid,command | grep -E '[g]it ' || true
+  pgrep -x git | while read -r _p; do ps -p "$_p" -o pid=,command= 2>/dev/null; done
   echo "   （多半是某编辑器的 Git 集成在后台。等它结束、或关掉后重试）"
   exit 2
 fi
@@ -33,8 +33,12 @@ if [ -f .git/index.lock ]; then
   rm -f .git/index.lock
 fi
 
-# 3. 提交
-git add -- "$@"
-git commit -m "$MSG"
-git push
-echo "✅ 提交并推送完成: $MSG"
+# 3. 提交（逐步把关，任一步失败如实报错，不谎报成功）
+git add -- "$@" || { echo "❌ git add 失败" >&2; exit 1; }
+git commit -m "$MSG" || { echo "❌ git commit 失败（可能无改动可提交）" >&2; exit 1; }
+if git push; then
+  echo "✅ 提交并推送完成: $MSG"
+else
+  echo "⚠️  本地 commit 已完成，但 push 失败（常见：远端领先，需先 git pull --rebase 再推）。本地提交已保留，不会丢。" >&2
+  exit 1
+fi
