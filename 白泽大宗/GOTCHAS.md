@@ -1,8 +1,10 @@
 ---
 title: 白泽大宗 · GOTCHAS
+tags: [白泽大宗, gotchas]
 created: 2026-06-10
 updated: 2026-06-10
-type: gotchas
+status: active
+type: resource
 ---
 
 # 白泽大宗 GOTCHAS

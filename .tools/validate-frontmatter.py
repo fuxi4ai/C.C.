@@ -32,7 +32,10 @@ VALID_TYPE = {"permanent", "fleeting", "log", "resource", "decision", "spec", "i
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 # 跳过这些目录（非笔记内容）
-SKIP_DIRS = {".git", ".obsidian", ".index", ".tools", ".skills", "graphify", "_DEPRECATED", "_TRASH"}
+# agents/ 数灵自治区（source 只读 / memory archive 历史定格 / per-agent logs 各灵自理）
+# logs/checkpoints/ 中途 progress 文件 · .hooks/ 基础设施 —— 2026-06-11 consolidate 决议
+SKIP_DIRS = {".git", ".obsidian", ".index", ".tools", ".skills", ".hooks", "graphify",
+             "agents", "checkpoints", "_DEPRECATED", "_TRASH"}
 
 # 颜色
 RED = "\033[91m"
