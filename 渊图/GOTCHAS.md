@@ -82,6 +82,12 @@ project: 渊图
 **预防**: regime零容忍业绩下,ROE极低+靠guidance的设上限;同分段横向校验
 **详**: Database/行业研究/渊图_GOTCHAS.md
 
+## [ERR-20260611-merge] kg_merge 漏 --output 致 canonical 未更新 → kg_merge_safe.py 固化
+**状态**: ✅修正（2026-06-11 卡点修复批次）**优先级**: 🔴高
+**触发**: Doctor 跑 kg_merge 漏 `--output`，4 次默认输出时间戳文件、canonical 未动；commit 信息(2279/2777)与实际提交图谱(2227/2718)错位
+**解决**: 新建 `Database/行业研究/kg_merge_safe.py`——输出强制指向 canonical（无漏写可能）+ merge 前自动备份 backups/ + patch 格式闸（缺 add_nodes 等四键拒绝合并，防错文件静默合 0 条）+ merge 后重读盘校验节点/边只增不减 + 打印与实际图谱强一致的 commit 命令。**今后合并一律用 safe 包装，不再裸跑 kg_merge.py**
+**详**: kg_merge_safe.py 头注释；自测三关（合并/拒错/真库 dry-run）通过
+
 ## [ERR-20260609-001b] α折扣串维重复扣分→维度正交修正
 **状态**: ✅修正 **优先级**: 🔴高
 **触发**: ERR-001把"利润未兑现"同时扣技术+竞争+财务三维(扣三次);Doctor纠:财务问题只扣财务,技术好不扣技术,订单好不扣竞争,扩产对齐供需是好事
