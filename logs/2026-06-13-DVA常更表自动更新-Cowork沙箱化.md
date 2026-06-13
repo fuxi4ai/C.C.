@@ -39,6 +39,15 @@ project: DVA
 - [ ] vendored 依赖含 native ext(aiohttp/pyyaml)，绑定沙箱 Python 3.10.12；若沙箱镜像升级 python 版本，导入会失败 → 任务已内置自检报警，届时重新 vendor。
 - [ ] 本机 cron 方案可考虑废弃（已被 Cowork 任务取代），run-update-all.sh 暂留。
 
+## 后续状态更新（同日·首跑后复盘）
+
+- **首跑失败**，暴露两堵墙，部分推翻原设计：
+  1. **沙箱网络=HTTP 代理(localhost:3128)强制白名单**：本地 DNS(getent)一律失败属正常；代理对 douyin `curl` 返回 **403**。**关键澄清(Doctor)**：白名单**需新会话才生效**——当前会话早于加白名单，故 403；并非 douyin 加不进。→ 新会话里 douyin 应可通；且 DVA aiohttp 下载器默认不走代理，需在 dyd 配置里指定 proxy=http://localhost:3128。
+  2. **后台进程不跨 bash 调用存活（实测确认·环境约束·新会话不变）**：30s 纯写文件 nohup 进程，下一调用只 2 行且 PID 已死。→ **"后台+轮询绕 45s"方案作废**（经验库 EXP-20260613-005-P 已标⛔已证伪）。长任务(下载+ASR 数分钟·不可分段)不适合沙箱。
+- **任务现状**：显示名已改 `DVA Update`（SKILL.md name 字段）；Doctor **驳回了"暂停任务"**的改动，任务保持启用（会定时触发并失败，直到改路线）。
+- **下一步（新对话 /resume 后）**：① 先在新会话验证 douyin 经代理是否已通(`curl -I https://www.douyin.com`)；② 若通，试 dyd 配置加 proxy + 评估能否把 update-all 拆成 ≤45s 分段由 agent 逐段驱动；③ 若仍受 45s/无后台所阻 → **回退 Mac 本地 launchd 自动化**（douyin 通、无 45s 限、cookie/凭证/依赖现成，最初该走的路）。
+- 开场建议：「resume；DVA Update 转 Mac launchd（或先验证 douyin 新会话是否已通）」。
+
 ## 相关笔记
 
 - [[系统概览]]（DVA）
