@@ -29,6 +29,14 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [ERR-20260614-002] relation 旧字段 2777 条历史遗留（schema v3 称已删实未净）
+**状态**: ⏳ 观察（不阻塞）**优先级**: 🟢 低
+**触发**: 2026-06-14 帕米尔7篇入库做全图 8 项校验时，发现 2862 条边里 2777 条仍带 `relation` 旧字段（值如 relates_to/evolves_from/used_in）
+**核查**: canonical=2777 / _v2=2777 → **本批 0 新增**；属 canonical 既有遗留。schema v3 决策记录称"relation 字段删除 1155 条"，但实际仅删了"同时有 type+relation 的那批"，大量边的 relation 字段从未清。权威字段 `type` 全图干净（0 非法 type、11 种 schema 内），下游 wiki/kb 均读 type，故不影响分析正确性
+**绕过**: 入库 QA 只校验 type 字段；relation 视为死字段忽略
+**根治待办**: 若要彻底净化，写一次性脚本 `del e['relation']`（全图扫，注意先备份+断言 type 不动），与 schema v3 决策对齐。非紧急
+**详**: 本批未动，留待专门 pass
+
 ## [ERR-20260531-002] kg_merge 默认不回写 canonical，多 patch 必须链式
 **状态**: ✅ 已解决 **优先级**: 🔴 高
 **触发场景**: 同日多 patch 各自以原始 canonical 为 base 分别 merge → 后者不含前者节点，merge 报"新建/更新 0"，节点丢失

@@ -34,6 +34,7 @@ type: permanent
   - **选择题**：用 AskUserQuestion 作配套，**多选**（事项互不排斥时）；选项**保持精简**，理由别只埋在 option 描述里；
   - **选项标注**：每个 option 的 label/描述里**显式加（推荐 / 不推荐）**标签。Doctor 明示（2026-06-14 二次确认 + 扩展至全部待裁事项 + 选项加推荐标注）。
 - **/save 主动询问**：会话产出有沉淀价值时（立案/改框架/定偏好等），CC **主动给一道"是否 /save"的单选题 + 理由**（现在存 / 等裁完再存 / 暂不存），不等 Doctor 提。Doctor 明示（2026-06-14）。
+  - **硬性：必须用 AskUserQuestion 单选题问，禁用纯文本问（2026-06-14 二次明示）**——凡 CC 问「要不要 save / 落盘」一律走 AskUserQuestion（single-select），不许在正文里用一句话「要不要 save？」带过。反面教材：本次美股锚补跑收尾用纯文本问被 Doctor 纠正。
 - **更新 skill 后打包给 Doctor 直接安装覆盖**：每次改动任何 skill 的源（如 `Claude/Brain/.skills/<name>/SKILL.md`）后，CC 把该 skill 目录**打包成 `.skill`（zip）并用 present_files 贴到对话框**，让 Doctor 点「Save skill」一键安装覆盖、即时生效——不要只让 Doctor 手动去 设置→Capabilities 重新同步。Doctor 明示（2026-06-14）。
 
 ## 思维偏好：跳出二元、要有观点（2026-05-31 立）
