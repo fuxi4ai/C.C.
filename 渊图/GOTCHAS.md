@@ -113,3 +113,11 @@ project: 渊图
 **触发**: ERR-001把"利润未兑现"同时扣技术+竞争+财务三维(扣三次);Doctor纠:财务问题只扣财务,技术好不扣技术,订单好不扣竞争,扩产对齐供需是好事
 **解决**: 维度正交归因——负面信息先归一个维只在该维扣;扩产/重资产爬坡默认中性偏正;但竞争维真问题(源杰单客户/联讯链内循环)仍保留
 **详**: Database/行业研究/渊图_GOTCHAS.md
+
+## [FIX-20260615-001] 三环集团 id 拼音误植 Sanhua→Sanhuan（系统性近名坑）
+**状态**: ✅ 已修复 **优先级**: 🟡 中
+**触发**: 跑龙鱼五力时发现三环集团节点 id 为 `company_SanhuaGroup`——"Sanhua" 是三花（智控,002050,制冷/汽车热管理/机器人执行器）的拼音，三环应为 Sanhuan。属 ERR-20260602-001 同类近名坑。
+**核查**: name「三环集团」正确、内容(MLCC/离型膜/洁美/南充德阳)确系三环、图谱内**无三花智控节点**故零碰撞——错的仅 id 串与 alias「Sanhua Group」。误植系统性：连带 4 个 concept/metric 节点 id 同误。
+**方案B(彻底·Doctor 批)**: 5 个 id 全 Sanhua→Sanhuan + 9 边/12 端点同步 + alias 修正并补真别名(潮州三环/CCTC/300408) + 加 properties.stock_code 与 disambiguation 防混 + wiki 卡 sanhuagroup.md→sanhuangroup.md。
+**安全纪律**: 备份 backups/…preSanhuanRename + 断言节点2367/边2860守恒+无残留+无悬挂+body仅公司节点改。沙箱删不了旧 wiki，交 Doctor `git rm`。
+**预防**: 入库后跑 rules/name_code_consistency_check.py；易混公司(三环Sanhuan/三花Sanhua)登记防误。
