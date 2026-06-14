@@ -27,8 +27,10 @@ if not BRAIN_ROOT.exists():
     BRAIN_ROOT = SCRIPT_DIR.parent  # fallback：从 .tools/ 推算
 
 REQUIRED_FIELDS = ["title", "tags", "created", "updated", "status", "type"]
-VALID_STATUS = {"active", "archived", "draft"}
-VALID_TYPE = {"permanent", "fleeting", "log", "resource", "decision", "spec", "index", "reference", "handoff", "bootstrap"}
+VALID_STATUS = {"active", "archived", "draft", "失败"}
+VALID_TYPE = {"permanent", "fleeting", "log", "resource", "decision", "spec", "index", "reference", "handoff", "bootstrap",
+              # 2026-06-14 consolidate：纳入项目内复用的中文文档分类，保留 Doctor 的分类法
+              "提案", "实施记录", "检查报告", "checkup", "stub"}
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 # 跳过这些目录（非笔记内容）

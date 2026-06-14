@@ -1,6 +1,9 @@
 ---
 tags: [DVA, log, cron, 哨兵]
 date: 2026-06-14
+created: 2026-06-14
+updated: 2026-06-14
+type: log
 title: DVA 常更表自动更新（cowork 计划任务）
 status: 失败
 ---
