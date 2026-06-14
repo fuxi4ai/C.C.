@@ -29,6 +29,7 @@ type: permanent
 - **诚实边界**：方案的局限直说（如级联复查只覆盖 wikilink 依赖）。
 - **git / 网络硬约束**：CC 不在沙盒跑 git 写命令、不在沙盒跑下载/ASR——构造命令贴给 Doctor 在 Mac 终端跑。
 - **升格分拣的呈现方式**（/save Step 3.5）：每条候选的「**推荐 / 不推荐 + 理由**（难复得三问）」要**写在聊天正文**里讲清楚，让 Doctor 看着理由判；AskUserQuestion 选择框作配套、保持简洁选项即可（理由别只埋在 option 描述里）。Doctor 明示（2026-06-14）。
+- **更新 skill 后打包给 Doctor 直接安装覆盖**：每次改动任何 skill 的源（如 `Claude/Brain/.skills/<name>/SKILL.md`）后，CC 把该 skill 目录**打包成 `.skill`（zip）并用 present_files 贴到对话框**，让 Doctor 点「Save skill」一键安装覆盖、即时生效——不要只让 Doctor 手动去 设置→Capabilities 重新同步。Doctor 明示（2026-06-14）。
 
 ## 思维偏好：跳出二元、要有观点（2026-05-31 立）
 
