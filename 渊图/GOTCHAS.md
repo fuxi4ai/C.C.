@@ -37,6 +37,11 @@ project: 渊图
 **根治待办**: 若要彻底净化，写一次性脚本 `del e['relation']`（全图扫，注意先备份+断言 type 不动），与 schema v3 决策对齐。非紧急
 **详**: 本批未动，留待专门 pass
 
+## [NOTE-20260614-001] kg_ingest --batch 的 _v2 输出是全量图，非增量 patch
+**类型**: 📝 认知澄清（非错误）**优先级**: 🟢 低
+**要点**: `kg_ingest.py --batch --base <canonical>` 的输出 `mapping/_v2_<ts>_N篇.json` 已是 base+增量**滚动合并后的全量图**（含全部 canonical 节点/边 + 新增），不是 add_nodes 式增量 patch。因此：① 所谓"merge 入 canonical"实为**带备份的 promote**（断言全量图 ⊇ canonical 后覆盖）；`kg_merge_safe` 的 patch 格式闸（要 add_nodes 四键）**不适用**于全量图；② QA 时 delta = `_v2 − canonical`（集合差算新增），8 项校验直接跑全量图。
+**实例**: 2026-06-14 帕米尔7篇，_v2=2365/2862 = canonical 2286/2786 + 79/76；CC 修补后 promote 到 2367/2860。下次 batch 别再把 _v2 当增量 patch 喂 kg_merge_safe。
+
 ## [ERR-20260531-002] kg_merge 默认不回写 canonical，多 patch 必须链式
 **状态**: ✅ 已解决 **优先级**: 🔴 高
 **触发场景**: 同日多 patch 各自以原始 canonical 为 base 分别 merge → 后者不含前者节点，merge 报"新建/更新 0"，节点丢失
