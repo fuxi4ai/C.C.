@@ -112,6 +112,7 @@ description: Persist the current session as a structured log entry in the brain 
 - 所有题设 `multiSelect: true`。Doctor 勾哪条就写哪条;"Other" 选项控件自带,供 Doctor 补充或改落点。
 - 候选 >16 条(超 4 题装不下)→ 先按「难复得三问」砍到只报【建议留】+ 边界项,别用控件轰炸。
 - **理由上聊天、选项保简洁(v2.6)**:每条候选的「**推荐 / 不推荐 + 难复得三问理由**」**写在 /save 的聊天正文**里讲清楚、让 Doctor 据此判;AskUserQuestion 的 option 只放简洁标签(推荐/不推荐 + 一句话主题),**别把理由只埋进 description**。
+- **选项必带（推荐/不推荐）标签(v2.7·硬性)**:每个 option 的 label 或 description **显式写（推荐）或（不推荐）**,让默认值一眼可分。这是 [[Doctor协作偏好]]「待裁事项的呈现方式」全局规则在本 skill 的实例——**不限 /save，凡 CC 给 Doctor 的待裁选择题一律照此**(详细理由上正文 + 多选 + 选项加推荐标签)。Doctor 明示(2026-06-14)。
 
 **只有 Doctor 勾选确认的条目才写入**;未勾的不落盘(留在 Step 3 日志即可)。
 
@@ -193,3 +194,4 @@ cd ~/Documents/Claude/brain && git add -A && git commit -m "session: {主题} {d
 - **v2.4**(2026-06-13):Step 3.5 纳入「当下便签」——会话中途被纠正即随手记一笔，/save 时一并提议；新增"规则/skill/流程 该改"分拣类（提案制）。**取代独立 signal 队列**：经自检 signal→resume→consolidate 与 save→permanent 高度重复且 save 不可退役，遂将自进化塌缩进本 skill，不落 signals/ 文件夹、不跨会话兜底（[[视频方法论对照与开发流程优化-设计提案]] §7 · G-X10）
 - **v2.5**(2026-06-14):Step 3.5 点选改用 **AskUserQuestion 多选控件**(Doctor 命题)——不再让 Doctor 打字报编号;每题≤4 option,候选 >4 条按倾向拆题(建议留 / 建议不留·提案制),`multiSelect: true`,只勾选项入库
 - **v2.6**(2026-06-14):Step 3.5 点选——推荐/不推荐+难复得三问理由**写聊天正文**、选择框只保留简洁标签(理由别只埋 description)。Doctor 明示
+- **v2.7**(2026-06-14):Step 3.5 选项**硬性带（推荐/不推荐）标签**;并申明此呈现规则**不限 /save、适用 CC 给 Doctor 的一切待裁选择题**(挂 [[Doctor协作偏好]]「待裁事项的呈现方式」全局条)。Doctor 明示「选项后加（推荐/不推荐），更新 skills」

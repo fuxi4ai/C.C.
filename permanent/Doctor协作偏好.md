@@ -3,7 +3,7 @@ title: Doctor 协作偏好
 abstract: "重大改动须 propose-then-confirm：先出具体改动清单 → Doctor 批准 → 才执行；分级批准、可逆优先"
 tags: [偏好, 协作, workflow]
 created: 2026-05-23
-updated: 2026-06-11
+updated: 2026-06-14
 status: active
 type: permanent
 ---
@@ -28,7 +28,11 @@ type: permanent
 - **可逆优先**：不删文件（弃用走 `status: archived` 或 `_DEPRECATED_` 改名）；大面积改写历史的动作（如记忆固化）双重门控、先出 diff。
 - **诚实边界**：方案的局限直说（如级联复查只覆盖 wikilink 依赖）。
 - **git / 网络硬约束**：CC 不在沙盒跑 git 写命令、不在沙盒跑下载/ASR——构造命令贴给 Doctor 在 Mac 终端跑。
-- **升格分拣的呈现方式**（/save Step 3.5）：每条候选的「**推荐 / 不推荐 + 理由**（难复得三问）」要**写在聊天正文**里讲清楚，让 Doctor 看着理由判；AskUserQuestion 选择框作配套、保持简洁选项即可（理由别只埋在 option 描述里）。Doctor 明示（2026-06-14）。
+- **待裁事项的呈现方式（通用 · 含 /save 升格分拣 Step 3.5）**：凡需 Doctor 拍板的事项（升格分拣候选、案件裁定、方案选择…），一律「**详细信息在对话正文 + 精简选项在选择题**」——
+  - **正文**：每条候选/选项的「**推荐 / 不推荐 + 理由**」讲清楚（升格类用难复得三问），让 Doctor 看着理由判；
+  - **选择题**：用 AskUserQuestion 作配套，**多选**（事项互不排斥时）；选项**保持精简**，理由别只埋在 option 描述里；
+  - **选项标注**：每个 option 的 label/描述里**显式加（推荐 / 不推荐）**标签。Doctor 明示（2026-06-14 二次确认 + 扩展至全部待裁事项 + 选项加推荐标注）。
+- **/save 主动询问**：会话产出有沉淀价值时（立案/改框架/定偏好等），CC **主动给一道"是否 /save"的单选题 + 理由**（现在存 / 等裁完再存 / 暂不存），不等 Doctor 提。Doctor 明示（2026-06-14）。
 - **更新 skill 后打包给 Doctor 直接安装覆盖**：每次改动任何 skill 的源（如 `Claude/Brain/.skills/<name>/SKILL.md`）后，CC 把该 skill 目录**打包成 `.skill`（zip）并用 present_files 贴到对话框**，让 Doctor 点「Save skill」一键安装覆盖、即时生效——不要只让 Doctor 手动去 设置→Capabilities 重新同步。Doctor 明示（2026-06-14）。
 
 ## 思维偏好：跳出二元、要有观点（2026-05-31 立）
