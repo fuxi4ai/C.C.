@@ -2,7 +2,7 @@
 title: DVA · GOTCHAS（已知坑 · 索引）
 tags: [DVA, gotchas, index]
 created: 2026-05-14
-updated: 2026-06-13
+updated: 2026-06-14
 status: active
 type: resource
 project: DVA
@@ -46,3 +46,15 @@ project: DVA
 **根因：** `chat()` 写死取 `response.content[0]?.text`。推理模型在 Anthropic 兼容格式下 content[0] 是 `thinking` 块（无 `.text`），真正答案在后续 `text` 块 → 取到空串。影响所有分析调用，非仅自检。
 **修复：** `chat()` 改为 `content.filter(b=>b.type==='text')` 拼接所有 text 块，兜底回退 `content[0].text`；healthCheck「已连通但回复未含 OK」路径把实际文本带出，不再丢 undefined。（`llm-client.js:118-122`，已核实在库。）
 **通用预防：** 接入任何兼容 Anthropic 协议的模型时，不要假设 `content[0]` 即文本；按 `type` 取块。此教训对所有调用 LLM 的项目通用。
+
+## DVA 运维 / Codex 对接（2026-06-14）
+
+### [P0-20260614] `update-all` 失败路径写死源 GOTCHAS.md → 破"源只读"边界
+**状态：** ✅ 已修复（CC，2026-06-14）
+**根因：** `dva.js:80` `gotchasPath = path.join(__dirname,'GOTCHAS.md')` 写死；顶层 `mainWithErrorHandling` 出错即追加写**源** GOTCHAS.md。成功路径干净（只写 `/tmp` 与 `Database/`），仅失败路径破边界；每个子进程（harvest/analyze-level1）各带这套兜底。
+**修复：** 改 `process.env.DVA_ERROR_LOG_PATH || path.join(__dirname,'GOTCHAS.md')`。默认行为不变；自动任务设 env 改向 `Database/Douyin/DVA-ops/failures/dva-errors.md`（目标文件须含 `## 🐛 当前易错点` 标记，否则不写入）。已验证设 env 后源 GOTCHAS.md 字节前后一致。
+
+### [OPS-20260614] ASR finalize 卡点：先查落地路径，别先怪网络
+**现象：** 一条 ASR `--poll-once` 卡住，state 的 `_note` 写着"OSS 北京区白名单 blocker"。
+**真相：** 白名单 blocker 已不存在（transcript 正常下载）；实际卡点是 state 的 `out_txt` 硬编码到 stale `/tmp/dva_asr_out_5`（属主 nobody 不可写）。改向规范 `Transcripts/` 目录即一次 finalize 跑通。
+**教训：** transcript 写失败先查**输出路径**权限/存在性（尤其硬编码 `/tmp` 旧目录），再怀疑网络/白名单。另：挂载盘默认禁删，清理需 `allow_cowork_file_delete`。

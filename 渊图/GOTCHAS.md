@@ -88,6 +88,13 @@ project: 渊图
 **解决**: 新建 `Database/行业研究/kg_merge_safe.py`——输出强制指向 canonical（无漏写可能）+ merge 前自动备份 backups/ + patch 格式闸（缺 add_nodes 等四键拒绝合并，防错文件静默合 0 条）+ merge 后重读盘校验节点/边只增不减 + 打印与实际图谱强一致的 commit 命令。**今后合并一律用 safe 包装，不再裸跑 kg_merge.py**
 **详**: kg_merge_safe.py 头注释；自测三关（合并/拒错/真库 dry-run）通过
 
+## [ERR-20260614-001] TPU 在 evolves_from 裂成两分量 + 重复节点，待 dedup
+**状态**: ⏳ 待解决（已定位，不阻塞技术先进度落值）**优先级**: 🟡 中
+**触发**: 建技术先进度 family 时发现 谷歌TPU 在 evolves_from 子图里裂成两个连通分量——小写 `product_GoogleTPUv7/v8i/v8t/v9_Pumafish…` 与大写 `product_TPUV6/V7/V8/V9`；且 `product_TPUv8t` 与 `product_GoogleTPUv8t` 名称同为「谷歌TPU v8t（训练版）」疑似重复节点
+**影响**: 同一代际被拆成两套 id；按 family 聚合/溯源会低估关联；先进度对齐时需手工合并为一条 family（已在 tech_eras.json `family_google_tpu` 合并处理，不受影响）
+**根治待办**: 跑 dedup 把大小写两套 TPU 节点按代际对齐合并、删重复 v8t（注意 union data_sources，见 ERR-20260608-003）
+**详**: Database/行业研究/mapping/tech_eras.json review_notes
+
 ## [ERR-20260609-001b] α折扣串维重复扣分→维度正交修正
 **状态**: ✅修正 **优先级**: 🔴高
 **触发**: ERR-001把"利润未兑现"同时扣技术+竞争+财务三维(扣三次);Doctor纠:财务问题只扣财务,技术好不扣技术,订单好不扣竞争,扩产对齐供需是好事
