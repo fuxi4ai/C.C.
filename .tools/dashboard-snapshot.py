@@ -111,11 +111,101 @@ def count_gotchas(root, proj):
     return n
 
 
+# ── 4 库新鲜度巡检（PRD 2026-06-15）──────────────────────────────
+# 信号源 Doctor 锁定（2026-06-15）：路径相对 Database/ 根
+DB_FRESHNESS_SOURCES = [
+    {"name": "烛照九阴-复盘", "type": "mtime",
+     "path": "烛照九阴/recap.db", "threshold_hours": 30},
+    {"name": "剑酒青丘-行情", "type": "mtime",
+     "path": "Market-Data/market_data.db", "threshold_hours": 50},
+    {"name": "白泽大宗-商品", "type": "ingest_meta",
+     "path": "宏观-大宗商品/business_breakdown.db", "threshold_hours": 30},
+    {"name": "DVA-视频", "type": "watchlist",
+     "path": "Douyin/DVA-Database/indexes/watchlist.json", "threshold_hours": 168},
+]
+
+CST = timezone(timedelta(hours=8))
+
+
+def _parse_ts(s):
+    """解析时间戳→aware UTC datetime。结尾 Z=UTC；带 offset 用之；naive 视作 GMT+8。失败返回 None。"""
+    if not s or not isinstance(s, str):
+        return None
+    s = s.strip()
+    try:
+        if s.endswith("Z"):
+            return datetime.fromisoformat(s[:-1]).replace(tzinfo=timezone.utc)
+        dt = datetime.fromisoformat(s)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=CST)
+        return dt.astimezone(timezone.utc)
+    except ValueError:
+        m = DATE_RE.search(s)
+        if m:
+            return datetime.fromisoformat(m.group(1)).replace(tzinfo=CST).astimezone(timezone.utc)
+        return None
+
+
+def db_freshness(db_root, now_utc):
+    """对 4 库取最新更新时间 → [{name,path,last_update,age_hours,threshold_hours,stale,detail}]。
+    两类信号：mtime（文件本体）/ ingest_meta（max last_success_at）/ watchlist（enabled 作者 max lastUpdatedAt）。
+    缺失或读取异常一律优雅降级为 last_update=None、stale=False（绝不误报红、绝不编数）。"""
+    out = []
+    for cfg in DB_FRESHNESS_SOURCES:
+        p = db_root / cfg["path"]
+        last_utc, detail = None, ""
+        try:
+            if not p.exists():
+                detail = "路径缺失"
+            elif cfg["type"] == "mtime":
+                last_utc = datetime.fromtimestamp(p.stat().st_mtime, timezone.utc)
+                detail = "文件 mtime"
+            elif cfg["type"] == "ingest_meta":
+                import sqlite3
+                con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
+                try:
+                    rows = con.execute(
+                        "SELECT last_success_at, last_status FROM ingest_meta").fetchall()
+                finally:
+                    con.close()
+                ts = [t for t in (_parse_ts(r[0]) for r in rows) if t]
+                if ts:
+                    last_utc = max(ts)
+                n_ok = sum(1 for r in rows if (r[1] or "").lower() == "ok")
+                detail = f"{len(rows)}源·{n_ok}ok"
+            elif cfg["type"] == "watchlist":
+                data = json.loads(p.read_text(encoding="utf-8", errors="ignore"))
+                authors = [a for a in data.get("authors", []) if a.get("enabled")]
+                ts = [t for t in (_parse_ts(a.get("lastUpdatedAt")) for a in authors) if t]
+                if ts:
+                    last_utc = max(ts)
+                detail = f"{len(authors)}作者" + ("·未跑" if not ts else "")
+        except Exception as e:  # noqa: BLE001 — 任何异常都降级，不让单库拖垮整张快照
+            detail = "读取异常:" + str(e)[:40]
+
+        if last_utc is not None:
+            age_h = round((now_utc - last_utc).total_seconds() / 3600, 1)
+            stale = age_h > cfg["threshold_hours"]
+            last_iso = last_utc.astimezone(CST).strftime("%Y-%m-%dT%H:%M:%S+08:00")
+        else:
+            age_h, stale, last_iso = None, False, None
+
+        out.append({
+            "name": cfg["name"], "path": cfg["path"],
+            "last_update": last_iso, "age_hours": age_h,
+            "threshold_hours": cfg["threshold_hours"], "stale": stale,
+            "detail": detail,
+        })
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=None)
+    ap.add_argument("--db-root", default=None, help="Database/ 根，默认 brain 上两级的 Documents/Database")
     args = ap.parse_args()
     root = Path(args.root) if args.root else Path(__file__).resolve().parent.parent
+    db_root = Path(args.db_root) if args.db_root else (root.parent.parent / "Database")
 
     # 悬空 wikilink + 总笔记（复用 build-backlinks.py，只写 .index/）
     notes, dangling = -1, -1
@@ -169,15 +259,17 @@ def main():
         agents.append(a)
     agent_log_entries.sort(reverse=True)
 
-    now = datetime.now(timezone(timedelta(hours=8)))
+    now_utc = datetime.now(timezone.utc)
+    now = now_utc.astimezone(CST)
     print(json.dumps({
-        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "timestamp": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "local_time": now.strftime("%Y-%m-%d %H:%M") + " (GMT+8)",
         "notes": notes, "todos": total_todos, "dangling": dangling,
         "agents": agents, "projects": projects,
         "logs": [p.stem for p in log_files[:7]],
         "agentlogs": [e[1] for e in agent_log_entries[:3]],
         "toptodos": toptodos,
+        "db_freshness": db_freshness(db_root, now_utc),
     }, ensure_ascii=False, indent=2))
 
 
