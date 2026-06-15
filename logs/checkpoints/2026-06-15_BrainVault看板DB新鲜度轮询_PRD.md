@@ -41,8 +41,8 @@ template_version: v1.0
   | Doctor 点名 | 真实路径（2026-06-15 Doctor 锁定） | 新鲜度信号(实测最新 mtime) | 状态 |
   |---|---|---|---|
   | 烛照九阴-复盘数据库 | `Database/烛照九阴/recap.db` · 信号=文件 mtime | 2026-06-14 17:50 | ✅ 已锁 |
-  | DVA-视频数据库 | `Database/Douyin/DVA-Database/indexes/watchlist.json` · 信号=**读其中"最近更新时间记录"字段**（非目录 mtime） | 字段**待 Doctor 稍后实现**（现仅有顶层 `updatedAt` + 每作者 `addedAt`，无"最近更新"字段） | 🔒 路径已锁 · ⏳ **依赖 Doctor 落字段后对接** |
-  | 白泽大宗-商品数据库 | `Database/宏观-大宗商品/business_breakdown.db`（单文件，非整目录、非 macro_prediction.db）· 信号=文件 mtime | 2026-06-02 21:54（实测陈旧 13 天 · **更新情况 Doctor 从管线侧对接**） | ✅ 已锁（阈值待管线就绪后定） |
+  | DVA-视频数据库 | `Database/Douyin/DVA-Database/indexes/watchlist.json` · 信号=每作者 **`lastUpdatedAt`**，库级取 enabled 作者的 **max(lastUpdatedAt)** | 字段已补（2026-06-15 03:59）；当前所有 `lastUpdatedAt`=`null`（schema 就绪、尚未首次跑出数据） | ✅ 已锁（逻辑可落地；数据待首次更新跑出非 null） |
+  | 白泽大宗-商品数据库 | `Database/宏观-大宗商品/business_breakdown.db` · 信号=`ingest_meta` 表 **max(`last_success_at`)** over sources（非文件 mtime） | ✅ 表已建（6 source，`last_status` 全 ok），最新 `last_success_at`=2026-06-15T12:22:11 | ✅ 已锁（可落地） |
   | 剑酒青丘-行情数据库 | `Database/Market-Data/market_data.db`（公共行情主库，句芒维护·日更）· 信号=文件 mtime | 2026-06-15 02:27 | ✅ 已锁 |
 
 **任务规模估算**：
@@ -74,7 +74,7 @@ template_version: v1.0
 
 - [ ] `python3 brain/.tools/dashboard-snapshot.py` 跑通输出合法 JSON，`db_freshness` 每条含 `{name, path, last_update(ISO8601), age_hours(数值), threshold_hours(数值), stale(bool)}` 六字段：上条断言脚本扩展校验六字段存在，退出码 0
   - 证据栏(CC 填)：
-- [ ] 新鲜度信号取自该库路径下数据文件的**最新 mtime**，排除 `.DS_Store`/`.fuse_hidden*`/`*-journal`/`.git/`：脚本内含对应排除逻辑，对 `烛照九阴/recap.db` 输出的 `last_update` = 实测 mtime（±1 分钟）
+- [ ] 新鲜度信号按 §F 两类取（mtime 类 2 库 / 库内读取 2 库）：mtime 类排除 `.DS_Store`/`.fuse_hidden*`/`*-journal`/`.git/`，对 `烛照九阴/recap.db` 输出的 `last_update` = 实测 mtime（±1 分钟）；库内读取类未就绪时输出占位且 `stale=false`
   - 证据栏(CC 填)：
 - [ ] 某库 `age_hours > threshold_hours` 时 `stale=true`，看板该卡片渲染为红色告警样式（复用现有 `.h-critical`/红色 class）
   - 证据栏(CC 填 · 视觉需 Doctor 打开看板确认 → 填 `[~]` 标"Doctor 需测试")：
@@ -103,11 +103,11 @@ template_version: v1.0
 
 - [ ] **新鲜度信号定义**落地（**两类信号**）：
   - 证据栏：
-  - 类型一·文件 mtime（3 库）：烛照九阴 recap.db / 白泽 business_breakdown.db / 剑酒 market_data.db 取**该文件本体 mtime**；排除清单见 C。
-  - 类型二·字段读取（DVA）：从 `Database/Douyin/DVA-Database/indexes/watchlist.json` 读 Doctor 稍后落的"最近更新时间记录"字段（字段名/层级待 Doctor 对接确认）；**字段未就绪前**该卡片显示"待对接/无数据"，**不参与红色告警**（防误报常红）。
+  - 类型一·文件 mtime（2 库）：烛照九阴 `recap.db` / 剑酒 `market_data.db` 取**该文件本体 mtime**；排除清单见 C。
+  - 类型二·库内读取（2 库）：① 白泽——`sqlite3 business_breakdown.db` 读 **`ingest_meta` 表 max(`last_success_at`)** over sources（表已建·可落地；另可把任一 source `last_status`≠ok 透传给 AI 简报）；② DVA——读 `indexes/watchlist.json` 每作者 **`lastUpdatedAt`**，库级取 enabled 作者 **max(lastUpdatedAt)**（字段已就绪；全 null 时显示"尚无更新记录"）。**库内信号全空前**该卡片显示"待对接/无数据"，**不参与红色告警**（防误报常红）。
 - [ ] **每库超期阈值**（`threshold_hours`）写成脚本内可配置常量，采用下列**默认值（待 Doctor 调）**：
   - 证据栏：
-  - 提案默认：烛照九阴 recap = **30h**（日更06:00，留缓冲）；剑酒 行情库 = **50h**（交易日更新，覆盖周末）；白泽大宗-商品 = **待定**（Doctor 管线侧对接更新情况后再定，实测现陈旧13天）；DVA = **待 Doctor 字段就绪后定**（当前 manual·不定期，先不报红）
+  - 提案默认：烛照九阴 recap = **30h**（日更06:00，留缓冲）；剑酒 行情库 = **50h**（交易日更新，覆盖周末）；白泽大宗-商品 = **30h**（ingest_meta 现为日更·今早 12:22 成功，按日更留缓冲·待 Doctor 确认节奏）；DVA = **168h/7天**（字段已就绪，manual·不定期，全 null 期间不报红）
 - [ ] 看板新鲜度区块对每库展示：库名 + 最后更新时间 + 距今（如"14h 前"/"13 天前"）+ 健康/超期色块
   - 证据栏：
 
@@ -122,8 +122,9 @@ template_version: v1.0
 - 不包含：在沙箱跑 git 写命令 / ASR / 下载（遵硬约束，相关命令贴给 Doctor 终端跑）。
 
 **外部依赖（非 CC 本次交付，但影响验收完整度）**：
-- **DVA 新鲜度字段**：依赖 Doctor 在 `watchlist.json` 落"最近更新时间记录"字段并告知字段名/层级；未就绪前 DVA 卡片为"待对接"占位、不报红。字段就绪后再做一次小对接（读字段 + 设阈值）。
-- **白泽 商品库更新情况**：Doctor 从数据管线侧对接（看板侧只读 business_breakdown.db mtime，被动反映）；白泽阈值待管线节奏明确后再定。
+- ~~DVA 新鲜度字段~~：✅ **已就绪**（2026-06-15 03:59 Doctor 补 `lastUpdatedAt`）。
+- ~~白泽 `ingest_meta` 表~~：✅ **已就绪**（2026-06-15 Doctor 建表，6 source·全 ok·最新 last_success_at 12:22:11）。
+- **零外部依赖**：4 库信号源全部锁定可落地，本次可一次实做全部 4 库。
 
 ---
 
@@ -140,4 +141,7 @@ template_version: v1.0
 
 - 2026-06-15 10:54 CC：立 PRD 起草稿 · 含 §二 共 16 条交付标准（全留 [ ]）· doctor_decision: 待 · 含 2 处"待 Doctor 锁路径" + 1 处"待 Doctor 调阈值"
 - 2026-06-15 11:10 CC：Doctor 锁定 4 库确切路径（白泽=宏观-大宗商品/business_breakdown.db；剑酒=Market-Data/market_data.db；烛照=烛照九阴/recap.db；DVA=Douyin/DVA-Database/）· §一映射表已更新 · 仍待 Doctor 审/改/批 + 调阈值（尤其白泽商品库实测陈旧13天、DVA 当前 manual）
-- 2026-06-15 11:20 CC：按 Doctor 反馈修订两处信号源——① DVA 改读 `indexes/watchlist.json` 的"最近更新时间记录"字段（Doctor 稍后落字段，列为外部依赖，未就绪前不报红）；② 白泽更新情况由 Doctor 从管线侧对接，看板侧仅被动读 business_breakdown.db mtime。§一/§F/§三 已同步 · 仍待 Doctor 审/改/批
+- 2026-06-15 11:20 CC：按 Doctor 反馈修订两处信号源——① DVA 改读 `indexes/watchlist.json` 的"最近更新时间记录"字段；② 白泽更新情况由 Doctor 从管线侧对接。§一/§F/§三 已同步 · 仍待 Doctor 审/改/批
+- 2026-06-15 11:35 CC：按 Doctor 进一步指令再修订——白泽信号源由"文件 mtime"改为**读 `business_breakdown.db` 的 `ingest_meta` 表最新时间**；DVA 读 watchlist.json **"最近更新"字段**。实盘核验：白泽当前**无 `ingest_meta` 表**（仅 `update_log`，最新 2026-04-11 测试数据）、DVA 当前版本**无"最近更新"字段**——两者均列为待 Doctor 管线就绪后对接，不阻塞烛照/剑酒 2 库落地。§一/§二C/§F/§三 已同步 · 仍待 Doctor 审/改/批
+- 2026-06-15 11:45 CC：Doctor 已补 DVA 字段——实盘核验 watchlist.json（2026-06-15 03:59 更新）每作者新增 `lastUpdatedAt` 等 `lastUpdate*` 字段（当前全 null·待首次跑）。DVA 信号锁定为 enabled 作者 max(`lastUpdatedAt`)，本次可落地（数据待首跑）。**外部依赖仅剩白泽 `ingest_meta` 表**。本次可实做 3 库（烛照/剑酒/DVA）+ 白泽占位。§一/§F/§三 已同步 · 仍待 Doctor 审/改/批
+- 2026-06-15 11:55 CC：Doctor 已建白泽 `ingest_meta` 表——实盘核验通过（6 source：price_snapshots/stock_scores/fundamentals/crossval/web_probes/proxy_prices，`last_status` 全 ok，最新 `last_success_at`=2026-06-15T12:22:11）。白泽信号锁定为 max(`last_success_at`)。**4 库全部就绪、零外部依赖**，本次可一次实做全部 4 库。§一/§F/§三 已同步 · 仍待 Doctor 审/改/批
