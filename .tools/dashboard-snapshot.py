@@ -16,7 +16,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 EXCLUDE_TOP = {"agents", "chats", "fleeting", "graphify", "inbox", "logs",
-               "permanent", "references", "templates", "白泽大宗", "烛照九阴"}
+               "permanent", "references", "templates", "白泽大宗", "烛照九阴", "MiroFish"}
 TODO_EXCLUDE_PARTS = {"logs", "templates", "references", "chats", ".skills", ".index", ".tools"}
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
