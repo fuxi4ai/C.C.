@@ -29,6 +29,20 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [NOTE-20260617-001] kg_merge_safe --apply 日志"Δ+0/skipped"是幂等噪音，须读盘核验
+**类型**: 📝 认知澄清（非错误）**优先级**: 🟡 中
+**现象**: 跑 `kg_merge_safe.py <patch>`（非 dry-run）落盘第二批时，日志同时报"Nodes Skipped (3): ID 已存在→改为 update""Edges Updated/Skipped""Δ +0 节点/+0 边"，又报"合并后 canonical: 2383/2882"——自相矛盾。
+**真相**: 实际落盘**正确**（2380/2876 → 2383/2882，+3/+6）。日志的 skipped/Δ+0 是 merge 报告逻辑的幂等性噪音（疑似对已合并的中间态又比了一次），**不代表没写入**。
+**规则**: 落盘后**别信合并日志的增量数**，一律**读盘核验**——`json.load` canonical 数实际节点/边数 + 断言新节点/新边在库 + 0 悬挂/0 重复/边 id 唯一。三批均按此核验通过。
+**预防**: promote 工作流固定加"读盘核验"步（见 [[经验库]] EXP-20260617-004-P）。
+
+## [FIX-20260617-001] raw/ 被 .gitignore 忽略 → 视角层提炼成品须放 wiki/(tracked)
+**状态**: ✅ 已处理 **优先级**: 🟡 中
+**触发**: 投知君君视角层先把"产业逻辑 raw 摘录 + 反共识纠偏录"放 `raw/视角/投知君君/`；Doctor 第一批 commit 时 git 提示 `raw` 被 .gitignore（第16行 `raw/`）忽略——提炼成品没进版本控制、只在本地。
+**核查**: raw/ 全局 ignore 是设计（原始字幕/暂存料不入 git，老石谈芯 raw 同样不跟踪）；但**提炼成品价值高于原始料**，不该随 raw/ 被忽略。手工 patch json（mapping/_v3_*manual.json）同样被 ignore，属预期（canonical 为已提交真相）。
+**解决**: 提炼成品（`_产业逻辑raw.md` / `_反共识纠偏录.md`）`mv` 进 `wiki/视角/投知君君/`（wiki/ tracked），卡片 source/INDEX 引用同步改向；raw/视角/投知君君/ 仅留 README 指针。
+**预防**: 视角层"提炼成品进 wiki/（tracked）、原始料留 raw/（ignored）"作为归位铁律。
+
 ## [ERR-20260614-002] relation 旧字段 2777 条历史遗留（schema v3 称已删实未净）
 **状态**: ⏳ 观察（不阻塞）**优先级**: 🟢 低
 **触发**: 2026-06-14 帕米尔7篇入库做全图 8 项校验时，发现 2862 条边里 2777 条仍带 `relation` 旧字段（值如 relates_to/evolves_from/used_in）
