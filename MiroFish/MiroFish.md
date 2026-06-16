@@ -2,7 +2,7 @@
 title: MiroFish · 锚点 stub
 tags: [MiroFish, anchor, 工具]
 created: 2026-05-23
-updated: 2026-05-23
+updated: 2026-06-16
 status: active
 type: stub
 ---
@@ -15,7 +15,7 @@ type: stub
 ## 🚀 启动命令（命中即贴这个）
 
 ```bash
-cd ~/Documents/projects/MiroFish && npm run dev
+cd ~/Documents/Claude/Projects/MiroFish && npm run dev
 ```
 
 启动后浏览器打开 http://localhost:3000（后端 API 在 5001）。
@@ -23,12 +23,12 @@ cd ~/Documents/projects/MiroFish && npm run dev
 ## 重装/首次依赖（仅在报缺依赖时用）
 
 ```bash
-cd ~/Documents/projects/MiroFish && npm run setup:all && npm run dev
+cd ~/Documents/Claude/Projects/MiroFish && npm run setup:all && npm run dev
 ```
 
 ## 关键事实
 
-- 部署路径：`~/Documents/projects/MiroFish`
+- 部署路径：`~/Documents/Claude/Projects/MiroFish`
 - LLM：DeepSeek（`deepseek-chat`，OpenAI 兼容）｜ 记忆：Zep Cloud
 - Python：用 uv 钉 3.12（系统 3.13 不兼容 camel-oasis / camel-ai）；`backend/.python-version=3.12`
 - 配置：仓库根目录 `.env`（DeepSeek + Zep key + `OASIS_DEFAULT_MAX_ROUNDS=10`，**无** `LLM_BOOST_*`）
