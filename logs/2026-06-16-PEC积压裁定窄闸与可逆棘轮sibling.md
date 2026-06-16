@@ -55,7 +55,7 @@ project: PEC
 
 - [ ] 可逆棘轮 sibling 子条款维持候选级（worked sample×3 跨三文明），待更多文明锚点 + 跨市道复现再议升 Level A（G-12 守纪）。
 - [ ] 宽口径「文明/国家/民族自更新（含革命）」埋点候选：未来另立 CR 或挂第六条「宽口径对照」，启动前先查 CR-01/CR-03 避免重复。
-- [ ] DVA：上传步骤加 retry/backoff（把人肉定向复跑固化成自愈）——属源仓改动，仅 propose 未动手，待 Doctor 拍。
+- [x] DVA：上传步骤加 retry/backoff——**裁定不做·不动源**（Doctor 2026-06-16 选「不动源·靠 ops requeue 兜底」）。纠正 CC 误判：`dva_asr.py upload_to_tos()` 已有 5 次指数退避（≈22s·复用 tos_key·清孤儿），6/14「连续 5 次失败」＝瞬时窗口>预算被打满非缺重试；分钟级外停交现有 DVA-ops requeue。落 brain `DVA/architecture/决策记录.md` 2026-06-16 条。
 - [ ] PEC 其余积压（更早）：F-01~06 级待确认 / 系统概览内容资产快照待全量刷新（停 v2.20）。
 
 ## 相关笔记
