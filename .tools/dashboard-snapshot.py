@@ -6,7 +6,7 @@
 
 规则沿袭 2026-05-15 治理决议：
 - TODO 计数排除 logs/templates/references/chats/.skills/.index
-- GOTCHAS 严格匹配 ^## \[ERR-[0-9]（排除模板示例）
+- GOTCHAS 数「未消化的坑」：权威库 Projects/<proj> 优先 + brain 补，按 ID 去重，只计状态 🔄/⚠️/⏳
 - 悬空 wikilink 调 build-backlinks.py（其内部已跳过 logs/chats）
 - 项目最后活跃：max(日志, 正文**最后更新**, frontmatter updated)，标注来源
 维护：CC。落点：brain/.tools/dashboard-snapshot.py
@@ -16,7 +16,8 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 EXCLUDE_TOP = {"agents", "chats", "fleeting", "graphify", "inbox", "logs",
-               "permanent", "references", "templates", "白泽大宗", "烛照九阴", "MiroFish", "数灵转移"}
+               "permanent", "references", "templates", "白泽大宗", "烛照九阴", "MiroFish", "数灵转移",
+               "司南", "海螺姑娘"}
 TODO_EXCLUDE_PARTS = {"logs", "templates", "references", "chats", ".skills", ".index", ".tools"}
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
@@ -98,17 +99,49 @@ def count_todos(path, exclude_parts):
     return n, items
 
 
+# 坑条目标题：## 或 ### + [PREFIX-日期-序号]，PREFIX ∈ ERR/BUG/INFRA/RISK（NOTE/P/OPS 非坑不计）
+_GOTCHA_HDR = re.compile(r"^#{2,3}\s*\[((?:ERR|BUG|INFRA|RISK)-\d{6,8}-\d+)\]", re.M)
+# 状态行兼容两种写法：**状态：**（冒号在加粗内，DVA）/ **状态**:（冒号在外，渊图）
+_GOTCHA_STATUS = re.compile(r"\*\*状态\*\*[:：]?\s*(.+)|\*\*状态[:：]\*\*\s*(.+)")
+_UNRESOLVED_MARKS = ("🔄", "⚠️", "⏳")  # 未闭环：待修复 / 已知风险 / 待解决·观察
+
+
+def _gotcha_status(block):
+    for line in block.splitlines()[1:6]:
+        m = _GOTCHA_STATUS.search(line)
+        if m:
+            return (m.group(1) or m.group(2) or "").strip()
+    return ""
+
+
+def _is_unresolved(s):
+    if not s or s.lstrip()[:1] == "✅":
+        return False
+    return any(k in s for k in _UNRESOLVED_MARKS)
+
+
 def count_gotchas(root, proj):
-    n = 0
-    for gp in [root / proj / "GOTCHAS.md",
-               root / proj / "architecture" / "GOTCHAS.md",
-               root / proj / "architecture" / "已知坑.md"]:
-        if gp.exists():
-            try:
-                n += len(re.findall(r"^## \[ERR-[0-9]", gp.read_text(encoding="utf-8", errors="ignore"), re.M))
-            except OSError:
-                pass
-    return n
+    """数该项目「累计未消化的坑」：权威库 Projects/<proj>/GOTCHAS.md 为先，
+    brain 索引/architecture 为补；按条目 ID 去重，只计状态含 🔄/⚠️/⏳ 的未闭环条目。"""
+    cands = [root.parent / "Projects" / proj / "GOTCHAS.md",
+             root / proj / "GOTCHAS.md",
+             root / proj / "architecture" / "GOTCHAS.md",
+             root / proj / "architecture" / "已知坑.md"]
+    seen = {}
+    for gp in cands:
+        if not gp.exists():
+            continue
+        try:
+            t = gp.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        ms = list(_GOTCHA_HDR.finditer(t))
+        if not ms:
+            continue
+        bounds = [m.start() for m in ms] + [len(t)]
+        for k, m in enumerate(ms):
+            seen.setdefault(m.group(1), _is_unresolved(_gotcha_status(t[bounds[k]:bounds[k + 1]])))
+    return sum(1 for v in seen.values() if v)
 
 
 # ── 4 库新鲜度巡检（PRD 2026-06-15）──────────────────────────────
