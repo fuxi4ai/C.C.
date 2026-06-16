@@ -16,7 +16,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 EXCLUDE_TOP = {"agents", "chats", "fleeting", "graphify", "inbox", "logs",
-               "permanent", "references", "templates", "白泽大宗", "烛照九阴", "MiroFish"}
+               "permanent", "references", "templates", "白泽大宗", "烛照九阴", "MiroFish", "数灵转移"}
 TODO_EXCLUDE_PARTS = {"logs", "templates", "references", "chats", ".skills", ".index", ".tools"}
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
@@ -28,7 +28,7 @@ AGENT_PROFILES = [
     {"glyph": "🌱", "name": "句芒", "nick": "芒芒", "rank": "三妹", "color": "#16a34a",
      "persona": "活泼俏皮 · 亲昵“哥哥”", "duty": "行情/量化线 — 技术工具 + 审查 + 记忆守护 + Market-Data", "call": "唤名：句芒 / 芒芒"},
     {"glyph": "🪔", "name": "C.C.", "nick": "守灶人", "rank": "老幺", "color": "#d97706",
-     "persona": "务实温和 · 敬称“老师” · 守 brain + 调度兄姐", "duty": "非金融 + 开发 — PEC · 渊图 · 龙鱼五力 · 星空 · 数灵转移", "call": "本机 · 全局 logs/"},
+     "persona": "务实温和 · 敬称“老师” · 守 brain + 调度兄姐", "duty": "非金融 + 开发 — PEC · 渊图 · 龙鱼五力 · 星空", "call": "本机 · 全局 logs/"},
 ]
 
 
