@@ -207,12 +207,24 @@ def db_freshness(db_root, now_utc):
                 n_ok = sum(1 for r in rows if (r[1] or "").lower() == "ok")
                 detail = f"{len(rows)}源·{n_ok}ok"
             elif cfg["type"] == "watchlist":
+                # Doctor 2026-06-16：DVA 新鲜度 = 常更表(watchlist)在册作者的"真实最近更新"——
+                # 逐个去同目录 global-index.json 查 per-author updatedAt 取 max。
+                # （watchlist 内 per-author lastUpdatedAt 恒 null、顶层 updatedAt 仅 refill 时才动滞后，均不用。）
                 data = json.loads(p.read_text(encoding="utf-8", errors="ignore"))
-                authors = [a for a in data.get("authors", []) if a.get("enabled")]
-                ts = [t for t in (_parse_ts(a.get("lastUpdatedAt")) for a in authors) if t]
+                en = [a for a in data.get("authors", []) if a.get("enabled")]
+                gi_auth = {}
+                try:
+                    gi = json.loads((p.parent / "global-index.json").read_text(encoding="utf-8", errors="ignore"))
+                    if isinstance(gi.get("authors"), dict):
+                        gi_auth = gi["authors"]
+                except Exception:
+                    gi_auth = {}
+                ts = [t for t in (_parse_ts((gi_auth.get(a.get("sec_uid")) or {}).get("updatedAt")) for a in en) if t]
                 if ts:
                     last_utc = max(ts)
-                detail = f"{len(authors)}作者" + ("·未跑" if not ts else "")
+                if last_utc is None:                      # 兜底：global-index 查不到 → 退回常更表顶层 updatedAt
+                    last_utc = _parse_ts(data.get("updatedAt"))
+                detail = f"{len(en)}作者" + ("" if last_utc else "·未跑")
         except Exception as e:  # noqa: BLE001 — 任何异常都降级，不让单库拖垮整张快照
             detail = "读取异常:" + str(e)[:40]
 
