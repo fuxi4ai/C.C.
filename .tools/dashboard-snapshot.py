@@ -152,7 +152,7 @@ DB_FRESHNESS_SOURCES = [
     {"name": "剑酒青丘-行情", "type": "mtime",
      "path": "Market-Data/market_data.db", "threshold_hours": 50},
     {"name": "白泽大宗-商品", "type": "ingest_meta",
-     "path": "宏观-大宗商品/business_breakdown.db", "threshold_hours": 30},
+     "path": "宏观-大宗商品/business_breakdown.db", "threshold_hours": 192},  # 周更(周日14:30单轨,cron已退役)→8天阈值,只在真漏跑周日时报警(Doctor 2026-06-16)
     {"name": "DVA-视频", "type": "watchlist",
      "path": "Douyin/DVA-Database/indexes/watchlist.json", "threshold_hours": 168},
 ]
