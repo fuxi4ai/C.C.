@@ -121,3 +121,10 @@ project: 渊图
 **方案B(彻底·Doctor 批)**: 5 个 id 全 Sanhua→Sanhuan + 9 边/12 端点同步 + alias 修正并补真别名(潮州三环/CCTC/300408) + 加 properties.stock_code 与 disambiguation 防混 + wiki 卡 sanhuagroup.md→sanhuangroup.md。
 **安全纪律**: 备份 backups/…preSanhuanRename + 断言节点2367/边2860守恒+无残留+无悬挂+body仅公司节点改。沙箱删不了旧 wiki，交 Doctor `git rm`。
 **预防**: 入库后跑 rules/name_code_consistency_check.py；易混公司(三环Sanhuan/三花Sanhua)登记防误。
+
+## [FIX-20260616-001] 盛科重复节点 company_Centec / company_CenturyCore（ERR-20260602-001 同类）
+**状态**: ✅ 方案就绪（脚本 + dry-run 通过，待 Doctor 终端落盘）**优先级**: 🟡 中
+**触发**: 入交换芯片结构增量时发现盛科通信有两个节点——`company_Centec`（挂集采/SwitchTray 边）与 `company_CenturyCore`（挂 supplies Switch256T/512T、competes 博通/中兴微、enables from DualVendorPolicy 边），同实体重复。
+**核查**: 两节点 aliases 都含「盛科」；CenturyCore 的 competes_with 博通边与 Centec 既有 `rel_Centec_BroadcomCompete` 重叠。零代码碰撞（非近名拼音错，是纯重复实体）。
+**方案(Doctor 批 · 保 Centec)**: `mapping/dedup_centec_20260616.py`——重指 5 边(CenturyCore→Centec)、与既有同向同型边去重合并 data_sources、合并 props/aliases/data_sources(补真别名盛科通信/Centec Communications/688702)、删 CenturyCore 节点。备份 backups/…dedupCentec + 守恒断言(节点 -1 / 无残留 CenturyCore / 无悬挂 / 无重复边 / 无关节点逐字节守恒)。
+**预防**: 公司入库前先 kb 查重（同实体异 id）；入库后跑 name_code_consistency_check。
