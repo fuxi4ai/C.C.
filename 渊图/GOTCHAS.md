@@ -29,6 +29,15 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [FIX-20260619-001] 公司实体辨识坑：近名/英文名张冠李戴 + 母子混挂（ERR-20260602-001 族系总条）
+**状态**: ✅ 已批量清（dedup 54 簇审阅 commit `1e55bee`）**优先级**: 🔴 高
+**触发**: V4 Pro 入库时按英文名/拼音建公司节点，常把**另一家公司的英文名**当 id 或 name，或把母子/同集团公司事实混挂到一个节点。本轮深度审阅查实多例：
+- **id 英文名指向另一家公司**（张冠李戴）：`company_Eoptolink` name 标"中际旭创"实为**新易盛(300502)**（Eoptolink=新易盛）；`company_IluvatarCoreX` name 标"燧原科技"实为**天数智芯**（Iluvatar CoreX=天数智芯，8 条边错记到燧原账上）；`company_NewPhotonics` name 标"光迅科技"实为**以色列硅光初创**（与光迅 Accelink 002281 无关）；`company_Taiyo` 的 alias"Taiyo"实为**太阳诱电**（节点本体是台光电材 EMC 2383）；`company_TongfangPhotonics` id"同方"误导（本体是光库科技 300620）。
+- **母子/同集团混挂**：`company_Shengyi`（生益电子 688183）历史混挂 8 条**胜宏科技(300476)**边 + 3 条**生益科技(600183)**边——胜宏当时无独立节点。
+- **错 alias**：`company_Xinxing` 挂"景硕"（景硕=Kinsus 3189 是另一家）；`company_BoqianNewMaterials` 描述串"铂科新材"（铂科 300811≠博迁 605376）。
+**核查/解决**: 张冠李戴**禁按边数自动选 survivor**（会把对的边并进错实体）；必**逐边读边描述定归属 + 联网坐实英文名↔实体**，再决定改名/拆/并。本轮：Eoptolink→新易盛＋拆易飞扬建 Gigalight＋1017 布归旭创；IluvatarCoreX 8 边并入既有 `company_Tianshu`、伟测 FT 归燧原；生益电子拆出胜宏 `company_VictoryGiant`。
+**预防**: ① 建公司节点前 kb 查重（同实体异 id）；② 入库后跑 `name_code_consistency_check`；③ 易混中文公司 id 用「4 字简称全拼」（见通用教训 G-X22）；④ 登记易混英文名对照表（Eoptolink=新易盛 / IluvatarCoreX=天数智芯 / Enflame=燧原 / NewPhotonics=以色列 / Taiyo=太阳诱电 / 光库=Advanced Fiber Resources / 光迅=Accelink）。
+
 ## [NOTE-20260617-001] kg_merge_safe --apply 日志"Δ+0/skipped"是幂等噪音，须读盘核验
 **类型**: 📝 认知澄清（非错误）**优先级**: 🟡 中
 **现象**: 跑 `kg_merge_safe.py <patch>`（非 dry-run）落盘第二批时，日志同时报"Nodes Skipped (3): ID 已存在→改为 update""Edges Updated/Skipped""Δ +0 节点/+0 边"，又报"合并后 canonical: 2383/2882"——自相矛盾。
