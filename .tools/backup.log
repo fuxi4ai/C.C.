@@ -196,3 +196,21 @@ total size is 8121368  speedup is 17.40
 
 [2026-06-18 03:00:00] 完成。文件数：     578
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-06-19 03:00:00] backup-icloud.sh 开始
+  src: /Users/lunarabbit/Documents/Claude/brain
+  dst: /Users/lunarabbit/Library/Mobile Documents/com~apple~CloudDocs/brain-mirror
+
+logs/checkpoints/2026-06-18_\#345\#270\#270\#346\#233\#264\#350\#241\#250\#345\#210\#206\#347\#261\#273\#344\#270\#216\#346\#246\#202\#345\#277\#265\#346\#224\#271\#345\#220\#215_PRD.md
+permanent/
+permanent/\#347\#273\#217\#351\#252\#214\#345\#272\#223.md
+permanent/\#351\#200\#232\#347\#224\#250\#346\#225\#231\#350\#256\#255.md
+\#346\#270\#212\#345\#233\#276/
+\#346\#270\#212\#345\#233\#276/architecture/
+\#346\#270\#212\#345\#233\#276/logs/
+
+sent 365222 bytes  received 446 bytes  726829 bytes/sec
+total size is 8164019  speedup is 22.33
+
+[2026-06-19 03:00:00] 完成。文件数：     586
+
