@@ -25,6 +25,46 @@ DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 # 这里单列以喂「星空」面板（项目星）。Doctor 定案 2026-06-22：白泽大宗/烛照九阴/剑酒青丘。
 FINANCE_PROJECTS = ["白泽大宗", "烛照九阴", "剑酒青丘"]
 
+# 金融线数据链路（数据源 → 数据库 → 项目）——手工策划，Doctor 核过 2026-06-22。
+# 喂星图三环 + 生成 .index/finance-chain-status.json（库级 fresh/broken）。
+# sources = 外部原料/上游（可被多库共享）；consumes = 该项目跨库读取的「别人的库」（交叉调用）。
+FINANCE_CHAINS = [
+    {"project": "烛照九阴", "database": "烛照九阴-复盘",
+     "sources": ["四维度复盘课件", "渊图"],
+     "consumes": ["剑酒青丘-行情"]},  # 复盘拉四表行情(Market-Data)→日报，复用 daily_market/stock_tracking
+    {"project": "剑酒青丘", "database": "剑酒青丘-行情",
+     "sources": ["Tushare"], "consumes": []},
+    {"project": "白泽大宗", "database": "白泽大宗-商品",
+     "sources": ["Gangtise edb", "Tushare", "渊图", "龙鱼五力", "SMM/web补价", "管线 JSON"],
+     "consumes": []},  # 直连 tushare_pro 取期货/龙鱼，不走行情库
+]
+# 孤库：有数据源但不在金融执掌线（无项目产出方）
+FINANCE_ORPHAN_DBS = [
+    {"database": "DVA-视频", "sources": ["抖音"]},
+]
+
+
+def build_finance_chain(dbf):
+    """用实时 db_freshness 给链路叠加库级状态：broken = 库 stale 或 last_update 缺失。"""
+    by_name = {d["name"]: d for d in dbf}
+
+    def status_for(dbname):
+        d = by_name.get(dbname)
+        if not d:
+            return {"last_update": None, "age_hours": None, "threshold_hours": None,
+                    "stale": False, "broken": True, "detail": "库未在巡检表"}
+        broken = bool(d.get("stale")) or d.get("last_update") is None
+        return {"last_update": d.get("last_update"), "age_hours": d.get("age_hours"),
+                "threshold_hours": d.get("threshold_hours"), "stale": bool(d.get("stale")),
+                "broken": broken, "detail": d.get("detail", "")}
+
+    chains = [dict(project=c["project"], database=c["database"], sources=list(c["sources"]),
+                   consumes=list(c.get("consumes", [])), **status_for(c["database"]))
+              for c in FINANCE_CHAINS]
+    orphans = [dict(database=o["database"], sources=list(o["sources"]),
+                    **status_for(o["database"])) for o in FINANCE_ORPHAN_DBS]
+    return {"chains": chains, "orphan_databases": orphans}
+
 AGENT_PROFILES = [
     {"glyph": "🦌", "name": "白泽", "nick": "小白", "rank": "大哥", "color": "#2563eb",
      "persona": "风度翩翩 · 雅言 · 敬称“老师”", "duty": "宏观线 — 白泽观星 · 白泽大宗", "call": "唤名：白泽 / 小白"},
@@ -319,6 +359,23 @@ def main():
 
     now_utc = datetime.now(timezone.utc)
     now = now_utc.astimezone(CST)
+
+    # 数据库新鲜度（算一次，复用给链路）+ 金融链路状态
+    dbf = db_freshness(db_root, now_utc)
+    finance_chain = build_finance_chain(dbf)
+
+    # 另落一份 status json（Doctor 2026-06-22：可被别的工具消费）
+    try:
+        status_doc = {
+            "updated": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "local_time": now.strftime("%Y-%m-%d %H:%M") + " (GMT+8)",
+            **finance_chain,
+        }
+        (root / ".index" / "finance-chain-status.json").write_text(
+            json.dumps(status_doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError:
+        pass
+
     print(json.dumps({
         "timestamp": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "local_time": now.strftime("%Y-%m-%d %H:%M") + " (GMT+8)",
@@ -328,7 +385,8 @@ def main():
         "logs": [p.stem for p in log_files[:7]],
         "agentlogs": [e[1] for e in agent_log_entries[:3]],
         "toptodos": toptodos,
-        "db_freshness": db_freshness(db_root, now_utc),
+        "db_freshness": dbf,
+        "finance_chain": finance_chain,
     }, ensure_ascii=False, indent=2))
 
 
