@@ -53,14 +53,13 @@ FINANCE_FEEDBACK = [
 # task_id 用于刷新时按 id 查 scheduled-tasks 的 lastRunAt；task_name 是显示名。
 # last_run 留 None（占位）——snapshot 读不到 lastRunAt（app 内部态），由看板刷新流程(refresh 任务)填。
 # cron=True：Mac 本地 crontab、不在 Cowork scheduled-tasks 列表，无 lastRunAt 可取。
+# 只列「有产出/拉取该源的定时任务」的源。外部数据商/他项目输入（Gangtise edb、SMM/web补价、
+# 龙鱼五力）是被 baize 消费的输入、非任务产出 → 不列、卡片上游显「—」（Doctor 2026-06-22 校正）。
 FINANCE_SOURCE_TASKS = {
     "渊图":           {"task_id": "touzhijunjun-perspective-refresh", "task_name": "金融领域常更作者语料提炼"},
     "Tushare":        {"task_id": "market-data-daily-update", "task_name": "Market-Data 行情更新"},
     "四维度复盘课件":  {"task_id": "recap-kejian-daily-ingest", "task_name": "复盘课件入库"},
-    "SMM/web补价":    {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
-    "龙鱼五力":        {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
-    "管线 JSON":       {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
-    "Gangtise edb":   {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
+    "管线 JSON":       {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},  # baize 周报产出的本周真源 JSON
     "抖音":           {"task_id": None, "task_name": "DVA update-all", "cron": True},
 }
 
