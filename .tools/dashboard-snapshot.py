@@ -334,7 +334,9 @@ DVA_WATCHLIST_PATH = "Douyin/DVA-Database/indexes/watchlist.json"
 DVA_GLOBALINDEX_PATH = "Douyin/DVA-Database/indexes/global-index.json"
 DVA_AUTHORS_DIR = "Douyin/DVA-Database/authors"
 DVA_DOWNLOAD_DIR = "Douyin/Downloaded"
+DVA_TRANSCRIPTS_DIR = "Douyin/Transcripts"  # ASR 转写产物（transcribe-only 真实转写在此，不入 DVA-DB）
 DVA_TOL = 3  # 「完成」容差：落后 ≤ 此数视作追平（防一拉新视频就从完成闪成进行中）
+_DVA_AID_RE = re.compile(r"__(\d+)\.transcript\.txt$")
 
 
 def _dva_dl_count(post_dir):
@@ -388,6 +390,19 @@ def _dva_excluded_count(post_dir, ids, pats):
     return n
 
 
+def _dva_transcript_count(trans_dir):
+    """Transcripts/<昵称>/ 下不同 aweme_id 的转写条数（数 *.transcript.txt）。
+    这是 transcribe-only 作者的真实转写产物所在（不入 DVA-DB）。"""
+    if not trans_dir.is_dir():
+        return 0
+    ids = set()
+    for f in trans_dir.glob("*.transcript.txt"):
+        m = _DVA_AID_RE.search(f.name)
+        if m:
+            ids.add(m.group(1))
+    return len(ids)
+
+
 def _dva_video_stats(vdir):
     """读 per-video json 统计 转写/level1。返回 (ingested, transcribed, pending, unchecked, level1)。"""
     if not vdir.is_dir():
@@ -412,15 +427,20 @@ def _dva_video_stats(vdir):
     return (total, trans, pend, unchk, lv1)
 
 
-def _dva_state(mode, dl, ing, trans, lv1):
-    if dl == 0 and ing == 0:
-        return "待启动"
+def _dva_state(mode, dl, ing, lv1, excluded, transcripts):
     if mode == "download-only":
-        return "完成"
-    caught = (dl - ing) <= DVA_TOL
+        return "完成" if dl > 0 else "待启动"
     if mode == "transcribe-only":
-        return "完成" if (caught and (ing - trans) <= DVA_TOL and ing > 0) else "进行中"
+        # 目标=下载−排除（排除项不转写）；转写产物在 Transcripts/（不入 DVA-DB，故不看 ing/subtitle）
+        if dl == 0:
+            return "待启动"
+        target = dl - excluded
+        return "完成" if transcripts >= target - DVA_TOL else "进行中"
     if mode == "full":
+        # 全链：入 DVA-DB + level1 分析（import-transcripts 把字幕写进库）
+        if dl == 0 and ing == 0:
+            return "待启动"
+        caught = (dl - ing) <= DVA_TOL
         return "完成" if (caught and (ing - lv1) <= DVA_TOL and ing > 0) else "进行中"
     return "进行中"
 
@@ -447,7 +467,7 @@ def dva_authors(db_root):
         mode = a.get("mode") or ""
         rec = {
             "nickname": nick, "category": a.get("category") or "", "mode": mode,
-            "downloaded": 0, "ingested": 0, "transcribed": 0,
+            "downloaded": 0, "ingested": 0, "transcribed": 0, "transcripts": 0,
             "pending": 0, "unchecked": 0, "level1": 0, "excluded": 0, "state": "进行中",
         }
         try:
@@ -457,10 +477,12 @@ def dva_authors(db_root):
             gc = (gi_auth.get(sec) or {}).get("videoCount")
             rec["ingested"] = gc if gc is not None else ing
             rec["transcribed"], rec["pending"], rec["unchecked"], rec["level1"] = trans, pend, unchk, lv1
+            # transcribe-only 真实转写产物在 Transcripts/<昵称>/（不入 DVA-DB）
+            rec["transcripts"] = _dva_transcript_count(db_root / DVA_TRANSCRIPTS_DIR / nick)
             # 排除项（analyze-ignore.json，入库/ASR/分析三处共用）：下载里命中规则、永不入库的条数
             ig_ids, ig_pats = _dva_load_ignore(db_root / DVA_AUTHORS_DIR / sec)
             rec["excluded"] = _dva_excluded_count(post_dir, ig_ids, ig_pats)
-            rec["state"] = _dva_state(mode, rec["downloaded"], rec["ingested"], trans, lv1)
+            rec["state"] = _dva_state(mode, rec["downloaded"], rec["ingested"], lv1, rec["excluded"], rec["transcripts"])
         except Exception:
             pass  # 单作者异常降级，保留计数默认值、不拖垮快照
         last_utc = _parse_ts(a.get("lastUpdatedAt"))
