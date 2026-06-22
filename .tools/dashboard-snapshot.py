@@ -312,6 +312,51 @@ def _dva_dl_count(post_dir):
     return sum(1 for f in post_dir.rglob("*") if f.suffix.lower() == ".mp4" and f.is_file())
 
 
+def _dva_load_ignore(author_dir):
+    """读 analyze-ignore.json，等价 dva.js loadAnalyzeIgnore：
+    返回 (ids:set, patterns:[compiled re])。无文件 → (空, 空)。"""
+    p = author_dir / "analyze-ignore.json"
+    ids, pats = set(), []
+    if not p.is_file():
+        return ids, pats
+    try:
+        raw = json.loads(p.read_text(encoding="utf-8", errors="ignore"))
+    except Exception:
+        return ids, pats
+    for it in (raw if isinstance(raw, list) else (raw.get("ids") or raw.get("ignore") or [])):
+        aid = it if isinstance(it, str) else (it or {}).get("aweme_id")
+        if aid:
+            ids.add(str(aid))
+    for it in ([] if isinstance(raw, list) else (raw.get("patterns") or [])):
+        pat = it if isinstance(it, str) else (it or {}).get("pattern")
+        if not pat:
+            continue
+        try:
+            pats.append(re.compile(pat, re.IGNORECASE))  # 等价 new RegExp(p, 'i')
+        except re.error:
+            pass
+    return ids, pats
+
+
+def _dva_excluded_count(post_dir, ids, pats):
+    """下载区 *_data.json 中命中排除规则的条数（id 精确 或 desc 命中任一正则）。"""
+    if not post_dir.is_dir() or (not ids and not pats):
+        return 0
+    n = 0
+    for f in post_dir.rglob("*_data.json"):
+        if f.name.endswith("_comments.json"):
+            continue
+        try:
+            d = json.loads(f.read_text(encoding="utf-8", errors="ignore"))
+        except Exception:
+            continue
+        aid = str(d.get("aweme_id") or d.get("awemeId") or "")
+        desc = d.get("desc") or d.get("title") or ""
+        if (aid and aid in ids) or any(rx.search(desc) for rx in pats):
+            n += 1
+    return n
+
+
 def _dva_video_stats(vdir):
     """读 per-video json 统计 转写/level1。返回 (ingested, transcribed, pending, unchecked, level1)。"""
     if not vdir.is_dir():
@@ -372,14 +417,18 @@ def dva_authors(db_root):
         rec = {
             "nickname": nick, "category": a.get("category") or "", "mode": mode,
             "downloaded": 0, "ingested": 0, "transcribed": 0,
-            "pending": 0, "unchecked": 0, "level1": 0, "state": "进行中",
+            "pending": 0, "unchecked": 0, "level1": 0, "excluded": 0, "state": "进行中",
         }
         try:
-            rec["downloaded"] = _dva_dl_count(db_root / DVA_DOWNLOAD_DIR / nick / "post")
+            post_dir = db_root / DVA_DOWNLOAD_DIR / nick / "post"
+            rec["downloaded"] = _dva_dl_count(post_dir)
             ing, trans, pend, unchk, lv1 = _dva_video_stats(db_root / DVA_AUTHORS_DIR / sec / "videos")
             gc = (gi_auth.get(sec) or {}).get("videoCount")
             rec["ingested"] = gc if gc is not None else ing
             rec["transcribed"], rec["pending"], rec["unchecked"], rec["level1"] = trans, pend, unchk, lv1
+            # 排除项（analyze-ignore.json，入库/ASR/分析三处共用）：下载里命中规则、永不入库的条数
+            ig_ids, ig_pats = _dva_load_ignore(db_root / DVA_AUTHORS_DIR / sec)
+            rec["excluded"] = _dva_excluded_count(post_dir, ig_ids, ig_pats)
             rec["state"] = _dva_state(mode, rec["downloaded"], rec["ingested"], trans, lv1)
         except Exception:
             pass  # 单作者异常降级，保留计数默认值、不拖垮快照
