@@ -253,7 +253,9 @@ def db_freshness(db_root, now_utc):
             elif cfg["type"] == "watchlist":
                 # Doctor 2026-06-16：DVA 新鲜度 = 常更表(watchlist)在册作者的"真实最近更新"——
                 # 逐个去同目录 global-index.json 查 per-author updatedAt 取 max。
-                # （watchlist 内 per-author lastUpdatedAt 恒 null、顶层 updatedAt 仅 refill 时才动滞后，均不用。）
+                # （注：watchlist per-author lastUpdatedAt 自 2026-06 起已有值——但库级新鲜度仍按
+                #   Doctor 2026-06-16 决议用 global-index updatedAt 取 max；per-author 更新时刻另由
+                #   dva_authors() 取 watchlist.lastUpdatedAt 喂常更作者日报。顶层 updatedAt 仅 refill 才动、不用。）
                 data = json.loads(p.read_text(encoding="utf-8", errors="ignore"))
                 en = [a for a in data.get("authors", []) if a.get("enabled")]
                 gi_auth = {}
@@ -284,6 +286,33 @@ def db_freshness(db_root, now_utc):
             "last_update": last_iso, "age_hours": age_h,
             "threshold_hours": cfg["threshold_hours"], "stale": stale,
             "detail": detail,
+        })
+    return out
+
+
+# DVA 常更作者日报 · 每作者「最后更新时刻」(Doctor 2026-06-22 方案①)。
+# 取 watchlist 在册(enabled)作者的 per-author lastUpdatedAt = 管线上次成功拉取该作者的时刻
+# （逐人不同·名实相符；不用 global-index updatedAt——那是索引重建时间、聚簇且混历史作者）。
+DVA_WATCHLIST_PATH = "Douyin/DVA-Database/indexes/watchlist.json"
+
+
+def dva_authors(db_root):
+    p = db_root / DVA_WATCHLIST_PATH
+    out = []
+    try:
+        data = json.loads(p.read_text(encoding="utf-8", errors="ignore"))
+    except Exception:
+        return out
+    for a in data.get("authors", []):
+        if not a.get("enabled"):
+            continue
+        last_utc = _parse_ts(a.get("lastUpdatedAt"))
+        last_iso = last_utc.astimezone(CST).strftime("%Y-%m-%dT%H:%M:%S+08:00") if last_utc else None
+        out.append({
+            "nickname": a.get("nickname") or a.get("sec_uid") or "?",
+            "category": a.get("category") or "",
+            "last_update": last_iso,
+            "status": a.get("lastUpdateStatus") or "",
         })
     return out
 
@@ -387,6 +416,7 @@ def main():
         "toptodos": toptodos,
         "db_freshness": dbf,
         "finance_chain": finance_chain,
+        "dva_authors": dva_authors(db_root),
     }, ensure_ascii=False, indent=2))
 
 
