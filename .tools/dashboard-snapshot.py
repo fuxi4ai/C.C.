@@ -49,6 +49,21 @@ FINANCE_FEEDBACK = [
     {"from": "DVA-视频", "to": "渊图", "label": "反常识/视角料反哺（投知君君→渊图视角层）"},
 ]
 
+# 源 → 产出/刷新它的自动化任务（Doctor 核过 2026-06-22）。点击「源」节点卡的「上游」显示。
+# task_id 用于刷新时按 id 查 scheduled-tasks 的 lastRunAt；task_name 是显示名。
+# last_run 留 None（占位）——snapshot 读不到 lastRunAt（app 内部态），由看板刷新流程(refresh 任务)填。
+# cron=True：Mac 本地 crontab、不在 Cowork scheduled-tasks 列表，无 lastRunAt 可取。
+FINANCE_SOURCE_TASKS = {
+    "渊图":           {"task_id": "touzhijunjun-perspective-refresh", "task_name": "金融领域常更作者语料提炼"},
+    "Tushare":        {"task_id": "market-data-daily-update", "task_name": "Market-Data 行情更新"},
+    "四维度复盘课件":  {"task_id": "recap-kejian-daily-ingest", "task_name": "复盘课件入库"},
+    "SMM/web补价":    {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
+    "龙鱼五力":        {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
+    "管线 JSON":       {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
+    "Gangtise edb":   {"task_id": "baize-weekly-report", "task_name": "白泽大宗周报"},
+    "抖音":           {"task_id": None, "task_name": "DVA update-all", "cron": True},
+}
+
 # 星图节点一句话概要（Doctor 2026-06-22 手写·点击节点卡显示）。键＝节点名(项目/库/源)。
 FINANCE_NODE_DESC = {
     # 项目
@@ -93,8 +108,11 @@ def build_finance_chain(dbf):
                     **status_for(o["database"])) for o in FINANCE_ORPHAN_DBS]
     # 反哺边叠加库级状态（broken 跟随起点库）
     feedback = [dict(**fb, broken=status_for(fb["from"])["broken"]) for fb in FINANCE_FEEDBACK]
+    # 源→自动化任务（last_run 占位，由刷新流程按 task_id 填 lastRunAt）
+    source_tasks = {src: dict(last_run=None, **info) for src, info in FINANCE_SOURCE_TASKS.items()}
     return {"chains": chains, "orphan_databases": orphans,
-            "feedback_edges": feedback, "node_meta": dict(FINANCE_NODE_DESC)}
+            "feedback_edges": feedback, "node_meta": dict(FINANCE_NODE_DESC),
+            "source_tasks": source_tasks}
 
 AGENT_PROFILES = [
     {"glyph": "🦌", "name": "白泽", "nick": "小白", "rank": "大哥", "color": "#2563eb",
