@@ -29,6 +29,12 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [FIX-20260623-001] 张冠李戴修正须 name/aliases/边/desc 全字段同改（非只改 description）
+**状态**: ✅ 已立规 **优先级**: 🟡 中
+**触发**: `metric_ShengyiElectronicsRevenueForecast` 06-18 修张冠李戴时只改了 description（胜宏→生益电子）+ _meta，但 name「胜宏科技收入预测」、aliases[胜宏/VG/300476]、`measured_by` 边 source=`company_VictoryGiant`(胜宏) 全未改 → name_code_consistency_check 每次 recheck 持续报 2 条告警，入库 batch 也带出告警。
+**核查/解决**: 2026-06-23 联网坐实 Shengyi Electronics=生益电子 688183（纯 PCB 厂·Nomura BUY/TP RMB90·上调 2026E）、胜宏=Victory Giant 300476；归位：id 本就 `ShengyiElectronics` 语义正确**不动**，只归正 name/aliases + `measured_by` 边 source→`company_Shengyidianzi` + 两边 desc 胜宏→生益电子 + _meta 审计。告警清零。
+**预防**: 修近名/张冠李戴节点时，**name + aliases + 引用边(source/target/desc) + description + properties.stock_code 全字段一并核改**，不能只改 description；改完必跑 `name_code_consistency_check` 确认清零。属 ERR-20260602-001 / FIX-20260619-001 族系。
+
 ## [FIX-20260619-001] 公司实体辨识坑：近名/英文名张冠李戴 + 母子混挂（ERR-20260602-001 族系总条）
 **状态**: ✅ 已批量清（dedup 54 簇审阅 commit `1e55bee`）**优先级**: 🔴 高
 **触发**: V4 Pro 入库时按英文名/拼音建公司节点，常把**另一家公司的英文名**当 id 或 name，或把母子/同集团公司事实混挂到一个节点。本轮深度审阅查实多例：
