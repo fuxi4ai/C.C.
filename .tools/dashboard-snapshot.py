@@ -290,10 +290,63 @@ def db_freshness(db_root, now_utc):
     return out
 
 
-# DVA 常更作者日报 · 每作者「最后更新时刻」(Doctor 2026-06-22 方案①)。
-# 取 watchlist 在册(enabled)作者的 per-author lastUpdatedAt = 管线上次成功拉取该作者的时刻
-# （逐人不同·名实相符；不用 global-index updatedAt——那是索引重建时间、聚簇且混历史作者）。
+# DVA 常更作者日报 · 全数据驱动 (Doctor 2026-06-22 方案②)。
+# 每作者实时计数 + 按 mode(目标管线) 算状态。数据源：
+#   - downloaded：Douyin/Downloaded/<nickname>/post 下递归 mp4 计数（实拍视频文件）
+#   - ingested：global-index per-author videoCount（回退 authors/<sec>/videos/ 计数）
+#   - transcribed/pending/unchecked：读 per-video json 的 subtitle_status（已识别/待识别/未检查）
+#   - level1：per-video json 有 level1 分析的条数
+#   - mode（watchlist）：full=全链 / transcribe-only=转写 / download-only=仅下载 → 决定完成判据
+#   - last_update：watchlist.lastUpdatedAt（管线上次成功拉取该作者，逐人不同·名实相符）
+# 不用 global-index updatedAt（索引重建时间·聚簇·混历史作者）。
 DVA_WATCHLIST_PATH = "Douyin/DVA-Database/indexes/watchlist.json"
+DVA_GLOBALINDEX_PATH = "Douyin/DVA-Database/indexes/global-index.json"
+DVA_AUTHORS_DIR = "Douyin/DVA-Database/authors"
+DVA_DOWNLOAD_DIR = "Douyin/Downloaded"
+DVA_TOL = 3  # 「完成」容差：落后 ≤ 此数视作追平（防一拉新视频就从完成闪成进行中）
+
+
+def _dva_dl_count(post_dir):
+    if not post_dir.is_dir():
+        return 0
+    return sum(1 for f in post_dir.rglob("*") if f.suffix.lower() == ".mp4" and f.is_file())
+
+
+def _dva_video_stats(vdir):
+    """读 per-video json 统计 转写/level1。返回 (ingested, transcribed, pending, unchecked, level1)。"""
+    if not vdir.is_dir():
+        return (0, 0, 0, 0, 0)
+    trans = pend = unchk = lv1 = total = 0
+    for vf in vdir.glob("*.json"):
+        total += 1
+        try:
+            v = json.loads(vf.read_text(encoding="utf-8", errors="ignore"))
+        except Exception:
+            unchk += 1
+            continue
+        s = v.get("subtitle_status")
+        if s == "已识别":
+            trans += 1
+        elif s == "待识别":
+            pend += 1
+        else:
+            unchk += 1
+        if v.get("level1"):
+            lv1 += 1
+    return (total, trans, pend, unchk, lv1)
+
+
+def _dva_state(mode, dl, ing, trans, lv1):
+    if dl == 0 and ing == 0:
+        return "待启动"
+    if mode == "download-only":
+        return "完成"
+    caught = (dl - ing) <= DVA_TOL
+    if mode == "transcribe-only":
+        return "完成" if (caught and (ing - trans) <= DVA_TOL and ing > 0) else "进行中"
+    if mode == "full":
+        return "完成" if (caught and (ing - lv1) <= DVA_TOL and ing > 0) else "进行中"
+    return "进行中"
 
 
 def dva_authors(db_root):
@@ -303,17 +356,37 @@ def dva_authors(db_root):
         data = json.loads(p.read_text(encoding="utf-8", errors="ignore"))
     except Exception:
         return out
+    gi_auth = {}
+    try:
+        gi = json.loads((db_root / DVA_GLOBALINDEX_PATH).read_text(encoding="utf-8", errors="ignore"))
+        if isinstance(gi.get("authors"), dict):
+            gi_auth = gi["authors"]
+    except Exception:
+        gi_auth = {}
     for a in data.get("authors", []):
         if not a.get("enabled"):
             continue
+        nick = a.get("nickname") or a.get("sec_uid") or "?"
+        sec = a.get("sec_uid") or ""
+        mode = a.get("mode") or ""
+        rec = {
+            "nickname": nick, "category": a.get("category") or "", "mode": mode,
+            "downloaded": 0, "ingested": 0, "transcribed": 0,
+            "pending": 0, "unchecked": 0, "level1": 0, "state": "进行中",
+        }
+        try:
+            rec["downloaded"] = _dva_dl_count(db_root / DVA_DOWNLOAD_DIR / nick / "post")
+            ing, trans, pend, unchk, lv1 = _dva_video_stats(db_root / DVA_AUTHORS_DIR / sec / "videos")
+            gc = (gi_auth.get(sec) or {}).get("videoCount")
+            rec["ingested"] = gc if gc is not None else ing
+            rec["transcribed"], rec["pending"], rec["unchecked"], rec["level1"] = trans, pend, unchk, lv1
+            rec["state"] = _dva_state(mode, rec["downloaded"], rec["ingested"], trans, lv1)
+        except Exception:
+            pass  # 单作者异常降级，保留计数默认值、不拖垮快照
         last_utc = _parse_ts(a.get("lastUpdatedAt"))
-        last_iso = last_utc.astimezone(CST).strftime("%Y-%m-%dT%H:%M:%S+08:00") if last_utc else None
-        out.append({
-            "nickname": a.get("nickname") or a.get("sec_uid") or "?",
-            "category": a.get("category") or "",
-            "last_update": last_iso,
-            "status": a.get("lastUpdateStatus") or "",
-        })
+        rec["last_update"] = last_utc.astimezone(CST).strftime("%Y-%m-%dT%H:%M:%S+08:00") if last_utc else None
+        rec["status"] = a.get("lastUpdateStatus") or ""
+        out.append(rec)
     return out
 
 
