@@ -21,6 +21,10 @@ EXCLUDE_TOP = {"agents", "chats", "fleeting", "graphify", "inbox", "logs",
 TODO_EXCLUDE_PARTS = {"logs", "templates", "references", "chats", ".skills", ".index", ".tools"}
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
+# 金融项目（数灵金融线三条）——snapshot 的 EXCLUDE_TOP 把它们踢出常规 projects，
+# 这里单列以喂「星空」面板（项目星）。Doctor 定案 2026-06-22：白泽大宗/烛照九阴/剑酒青丘。
+FINANCE_PROJECTS = ["白泽大宗", "烛照九阴", "剑酒青丘"]
+
 AGENT_PROFILES = [
     {"glyph": "🦌", "name": "白泽", "nick": "小白", "rank": "大哥", "color": "#2563eb",
      "persona": "风度翩翩 · 雅言 · 敬称“老师”", "duty": "宏观线 — 白泽观星 · 白泽大宗", "call": "唤名：白泽 / 小白"},
@@ -282,6 +286,15 @@ def main():
                          "todos": tn, "gotchas": count_gotchas(root, d.name)})
     projects.sort(key=lambda p: p["last"] or "0000", reverse=True)
 
+    # 金融项目（喂星空·项目星）——绕开 EXCLUDE_TOP，对三条金融线单取最后活跃
+    finance_projects = []
+    for name in FINANCE_PROJECTS:
+        d = root / name
+        if not d.is_dir():
+            continue
+        last, src = project_last_active(root, name, log_files)
+        finance_projects.append({"name": name, "last": last, "src": src})
+
     # 全局 TODO（项目 + permanent + inbox + TODO.md）
     total_todos, todo_items = count_todos(root, TODO_EXCLUDE_PARTS | {"agents"})
     toptodos = [{"src": src, "text": txt[:90]} for src, txt in todo_items[:8]]
@@ -311,6 +324,7 @@ def main():
         "local_time": now.strftime("%Y-%m-%d %H:%M") + " (GMT+8)",
         "notes": notes, "todos": total_todos, "dangling": dangling,
         "agents": agents, "projects": projects,
+        "finance_projects": finance_projects,
         "logs": [p.stem for p in log_files[:7]],
         "agentlogs": [e[1] for e in agent_log_entries[:3]],
         "toptodos": toptodos,
