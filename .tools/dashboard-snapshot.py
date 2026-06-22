@@ -43,6 +43,34 @@ FINANCE_ORPHAN_DBS = [
     {"database": "DVA-视频", "sources": ["抖音"]},
 ]
 
+# 反哺边（离心·跨线回流）：DVA 金融作者(投知君君)反常识/视角料 → 渊图视角层。
+# 手工策划，Doctor 核过 2026-06-22。与 feed/own/cross 区别渲染。
+FINANCE_FEEDBACK = [
+    {"from": "DVA-视频", "to": "渊图", "label": "反常识/视角料反哺（投知君君→渊图视角层）"},
+]
+
+# 星图节点一句话概要（Doctor 2026-06-22 手写·点击节点卡显示）。键＝节点名(项目/库/源)。
+FINANCE_NODE_DESC = {
+    # 项目
+    "白泽大宗": "大宗商品基本面研究（数灵·白泽/小白·宏观线）",
+    "烛照九阴": "复盘 / 新闻线（数灵·烛阴/九儿）",
+    "剑酒青丘": "行情 / 量化线（数灵·句芒/芒芒）",
+    # 数据库
+    "白泽大宗-商品": "大宗商品基本面库（期货/现货/库存/评分）",
+    "烛照九阴-复盘": "每日复盘库（四表行情 + 课件）",
+    "剑酒青丘-行情": "Market-Data 行情库（Tushare 期货/股票）",
+    "DVA-视频": "抖音常更作者视频分析库（字幕 + 8 层智慧萃取）",
+    # 数据源
+    "渊图": "行业图谱知识库（节点-边图谱 + 价格层）",
+    "Tushare": "行情数据源（期货/股票 API）",
+    "Gangtise edb": "商品/宏观数据（edb）",
+    "龙鱼五力": "产业链五力分析源",
+    "SMM/web补价": "有色/商品现货补价（SMM + web）",
+    "四维度复盘课件": "复盘方法论课件源",
+    "管线 JSON": "周更管线产出的真源 JSON",
+    "抖音": "抖音视频原料（DYD 下载）",
+}
+
 
 def build_finance_chain(dbf):
     """用实时 db_freshness 给链路叠加库级状态：broken = 库 stale 或 last_update 缺失。"""
@@ -63,7 +91,10 @@ def build_finance_chain(dbf):
               for c in FINANCE_CHAINS]
     orphans = [dict(database=o["database"], sources=list(o["sources"]),
                     **status_for(o["database"])) for o in FINANCE_ORPHAN_DBS]
-    return {"chains": chains, "orphan_databases": orphans}
+    # 反哺边叠加库级状态（broken 跟随起点库）
+    feedback = [dict(**fb, broken=status_for(fb["from"])["broken"]) for fb in FINANCE_FEEDBACK]
+    return {"chains": chains, "orphan_databases": orphans,
+            "feedback_edges": feedback, "node_meta": dict(FINANCE_NODE_DESC)}
 
 AGENT_PROFILES = [
     {"glyph": "🦌", "name": "白泽", "nick": "小白", "rank": "大哥", "color": "#2563eb",
