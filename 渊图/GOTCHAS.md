@@ -14,7 +14,9 @@ project: 渊图
      ERR-20260614-002 relation 死字段 ✅ 已净化（P2）；
      ERR-20260608-003 provenance 🟧 第①步已修+单测，第②步另立 PRD（P1）；
      ERR-20260614-001 TPU ✅ 已结案（谱系理顺单脉 + 伞节点 Doctor 定为保留世代锚）。
-     当前开放 ⏳ = 0；待 Doctor 决策 = 1（ERR-003 第②步 kg_ingest 覆盖率根治 PRD 是否启动）。 -->
+     当前开放 ⏳ = 0；待 Doctor 决策 = 1（ERR-003 第②步 kg_ingest 覆盖率根治 PRD 是否启动）。
+     2026-06-24（二轮）：manifest `brain.gotchas` 3→1 回写（上轮只改本注释、漏回写 manifest 致看板仍显 3）；
+     口径＝🟧/⏳/⬜ 未闭环计数，apply 后 =1（仅 ERR-003 第②步待PRD）。BACKLOG-20260624-001 方案就绪待 apply；派工健康埋点 ✅ 已做。 -->
 
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
@@ -168,9 +170,9 @@ project: 渊图
 **预防**: 公司入库前先 kb 查重（同实体异 id）；入库后跑 name_code_consistency_check。
 
 ## [派工·非坑] ⚡ 更新健康埋点（派工v1 · 2026-06-24）
-**状态**: ⬜ 待办（此条为派工指针、非 gotcha；放此处因 渊图 anchor 必加载 GOTCHAS、命中即见）**优先级**: 🟡 中
-**待办**: kg_merge / 落盘收尾，写 `~/Documents/Database/行业研究/mapping/_health.json`（`updated_at`=图谱写盘时刻、`update_ok`=结构校验是否全绿），并在 `Claude/Projects/海螺姑娘/data/asset_manifest.json` 的 渊图KG 节点补 `"health_file": "Database/行业研究/mapping/_health.json"`。补完全局资产看板「渊图KG」卡自动点亮「更新时刻 +（更新无错误/报错）」。
-**详**: `Claude/Projects/海螺姑娘/dashboard/UPDATE_HEALTH_派工_v1.md`（任务卡 ⑤）
+**状态**: ✅ 已做（2026-06-24）**优先级**: 🟡 中
+**落地**: 写 `scripts/write_health.py`（可复用 stamp，跑结构校验→写 `mapping/_health.json`：updated_at=canonical mtime、update_ok=全绿则 true）+ 已生成首版 `_health.json`（全绿 2713/3260）；`asset_manifest.json` 渊图KG 节点补 `health_file`。看板「渊图KG」卡即点亮「更新时刻 +（无错误/报错）」。固化建议：把 write_health() 接进 kg_merge_safe 落盘成功分支，未来每跑自动刷新（未做，留待动既有码时一并）。
+**详**: `Claude/Projects/海螺姑娘/dashboard/UPDATE_HEALTH_派工_v1.md`（任务卡 ⑤）；原待办见 git 历史。
 
 ## [BACKLOG-20260624-001] 非规范前缀节点 + 剂泰科技/METiS 生物子图串入（2026-06-24 复盘：实况比记录严重，脚本就绪待 apply）
 **状态**: 🟧 方案就绪·dry-run 全过，待 Doctor 终端 apply+git **优先级**: 🟡 中（原记 🟢，复盘上调）
