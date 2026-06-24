@@ -33,10 +33,12 @@ project: 渊图
 - 本批新引入 7 处修补（`fix_batch_20260624.py`·备份+修后自检全绿）：① 悬挂 `昇腾950→product_H20` 重指 `product_NvidiaH200`（H200 已存·desc 支持）；② 删 TGV电镀自环；③ `鲲鹏 constrained_by ARM壁垒`→`ARM壁垒 constrains 鲲鹏`（非法 type 改向）；④ 填半空节点 `concept_MLCCDeliveryLeadtime`(type/name 都 None→concept/MLCC交付周期)；⑤ dedup 3 重复边；⑥⑦ 合并两个重复公司 `TongfuMicroelectronics→Tongfu`、`SourcePhotonicsRevenue2026Q1→SourcePhotonics`（索尔思那个 0 边孤儿）。
 - promote：2711/3262 落 canonical（备份+⊇断言），wiki 补卡，Doctor git push。
 
-### 四 · 海螺资产看板两条陈旧 issue 校正（顺带）
+### 四 · 海螺资产看板三条 stale/issue 校正（顺带·逐条核实）
 - `SMM/web补价`：三坑核实=陈旧——gzip(GOTCHA-024 已修)/SEO标题(GOTCHA-026 稀土摘走web)/代理墙(设计约束非bug)，钨补价正常(asof 06-18)。manifest 改 healthy·issues[]·freshness 重写。结案记入白泽 GOTCHAS 更新日志。
 - `recap.db`：wal/shm 残留=彻底根治——journal_mode=DELETE(结构上不再产)·目录零残留·integrity ok。manifest 改 healthy·issues[]。
-- 看板 issues 现已全清零，仅剩 market_data.db 一个 stale。
+- `market_data.db`：与前两条不同，是**真·派生表落后**(limit_list_daily/theme_etf_daily 06-23 22:24 时差1天)——但**数据已自行追平**(现都 06-23)。只读重跑剑酒 `market_health.py` 刷新 `_health.json`→overall=ok，再同步 manifest 节点(survey 的镜像·非裁定)。判据：STALE_DAYS=4·days_since=1·全表 lag 0。
+- **看板三条全核完 → stale/broken/needs_repair/issues 全清零，全绿**。
+- 方法论：manifest 节点分两类——策展文本(SMM/recap·人工核实陈旧→改)、自检驱动(market_data.db·有 health_file·只能刷自检不能手动翻牌)。
 
 ## 做出的决策
 
@@ -52,7 +54,7 @@ project: 渊图
 
 - [ ] **backlog（已记 GOTCHAS）**：6 个非规范前缀节点 `market_/technology_/milestone_*` 前缀↔type 不一致待规范化；其中 `technology_LipidBertModel`、`technology_HighThroughputLNPPlatform` 是生物 LNP/LipidBert，疑 MiroFish 内容串入渊图，是否剔除单独核。
 - [ ] stock_code 仅 16/472——可 backfill（tushare+易混表种子）让 node_reference 代码锚更全（中等项目）。
-- [ ] 海螺看板剩 market_data.db 一个 stale（派生表落后）。
+- [x] 海螺看板 market_data.db stale → 已核(派生表已追平)·刷新自检+同步 healthy·看板全绿。
 - [ ] 剑酒青丘 10 个 .fuse_hidden 旧版代码孤儿（本会话已出归档命令，待 Doctor 跑）。
 
 ## 相关笔记
