@@ -157,3 +157,8 @@ project: 渊图
 **核查**: 两节点 aliases 都含「盛科」；CenturyCore 的 competes_with 博通边与 Centec 既有 `rel_Centec_BroadcomCompete` 重叠。零代码碰撞（非近名拼音错，是纯重复实体）。
 **方案(Doctor 批 · 保 Centec)**: `mapping/dedup_centec_20260616.py`——重指 5 边(CenturyCore→Centec)、与既有同向同型边去重合并 data_sources、合并 props/aliases/data_sources(补真别名盛科通信/Centec Communications/688702)、删 CenturyCore 节点。备份 backups/…dedupCentec + 守恒断言(节点 -1 / 无残留 CenturyCore / 无悬挂 / 无重复边 / 无关节点逐字节守恒)。
 **预防**: 公司入库前先 kb 查重（同实体异 id）；入库后跑 name_code_consistency_check。
+
+## [派工·非坑] ⚡ 更新健康埋点（派工v1 · 2026-06-24）
+**状态**: ⬜ 待办（此条为派工指针、非 gotcha；放此处因 渊图 anchor 必加载 GOTCHAS、命中即见）**优先级**: 🟡 中
+**待办**: kg_merge / 落盘收尾，写 `~/Documents/Database/行业研究/mapping/_health.json`（`updated_at`=图谱写盘时刻、`update_ok`=结构校验是否全绿），并在 `Claude/Projects/海螺姑娘/data/asset_manifest.json` 的 渊图KG 节点补 `"health_file": "Database/行业研究/mapping/_health.json"`。补完全局资产看板「渊图KG」卡自动点亮「更新时刻 +（更新无错误/报错）」。
+**详**: `Claude/Projects/海螺姑娘/dashboard/UPDATE_HEALTH_派工_v1.md`（任务卡 ⑤）
