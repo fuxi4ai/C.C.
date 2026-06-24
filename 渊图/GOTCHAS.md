@@ -162,3 +162,10 @@ project: 渊图
 **状态**: ⬜ 待办（此条为派工指针、非 gotcha；放此处因 渊图 anchor 必加载 GOTCHAS、命中即见）**优先级**: 🟡 中
 **待办**: kg_merge / 落盘收尾，写 `~/Documents/Database/行业研究/mapping/_health.json`（`updated_at`=图谱写盘时刻、`update_ok`=结构校验是否全绿），并在 `Claude/Projects/海螺姑娘/data/asset_manifest.json` 的 渊图KG 节点补 `"health_file": "Database/行业研究/mapping/_health.json"`。补完全局资产看板「渊图KG」卡自动点亮「更新时刻 +（更新无错误/报错）」。
 **详**: `Claude/Projects/海螺姑娘/dashboard/UPDATE_HEALTH_派工_v1.md`（任务卡 ⑤）
+
+## [BACKLOG-20260624-001] 6 个非规范前缀节点（type↔id 前缀不一致）+ 疑 MiroFish 生物内容串入
+**状态**: ⬜ backlog（非阻塞·2026-06-24 帕米尔10篇入库 8 项校验时撞见）**优先级**: 🟢 低
+**触发**: 入库后 type↔id 前缀一致性校验报 6 个旧存节点前缀不在允许集（concept/company/product/metric/material/process/problem/solution/person/event）：`market_OpticalChipTestEquipment`、`milestone_OCSCertification`、`milestone_OCSVolumeOrder`、`milestone_OCSProfitRealization`（type 都标 concept，前缀 market_/milestone_ 非法）+ `technology_LipidBertModel`、`technology_HighThroughputLNPPlatform`。
+**核查**: 均 canonical 旧存、非本批引入（本批新引入的 7 处已修）。其中 `technology_LipidBertModel`(LipidBERT大模型)、`HighThroughputLNPPlatform`(高通量LNP制备筛选平台) 是**生物 LNP/脂质大模型**内容——与渊图（AI硬件/产业链）主题无关，疑 **MiroFish 项目内容误串入渊图**。
+**待办**: ① market_/milestone_/technology_ 前缀规范化到允许集（多为 concept_，OCS里程碑或可 event_）+ 同步 id 引用边；② LipidBert/LNP 两节点核来源 data_sources，确认是否 MiroFish 串入 → 若是则从渊图剔除（备份+守恒+不动别的）。走 propose-then-confirm，非紧急。
+**预防**: kg_ingest 已校 type↔id 前缀；这批是 V4 Pro 历史遗留前缀。可在 ingest 加「前缀∈允许集」硬校正。
