@@ -2,13 +2,20 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-06-24
 status: active
 type: resource
 project: 渊图
 ---
 
 # 渊图 · GOTCHAS（已知坑）
+
+<!-- 2026-06-24 错题本积压复盘：3 条 ⏳ 已消化 →
+     ERR-20260614-002 relation 死字段 ✅ 已净化（P2）；
+     ERR-20260608-003 provenance 🟧 第①步已修+单测，第②步另立 PRD（P1）；
+     ERR-20260614-001 TPU ✅ 已结案（谱系理顺单脉 + 伞节点 Doctor 定为保留世代锚）。
+     当前开放 ⏳ = 0；待 Doctor 决策 = 1（ERR-003 第②步 kg_ingest 覆盖率根治 PRD 是否启动）。 -->
+
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
 > 实时操作日志写在项目目录的 `Projects/渊图/GOTCHAS.md`；这里是沉淀+索引。
@@ -58,8 +65,9 @@ project: 渊图
 **解决**: 提炼成品（`_产业逻辑raw.md` / `_反共识纠偏录.md`）`mv` 进 `wiki/视角/投知君君/`（wiki/ tracked），卡片 source/INDEX 引用同步改向；raw/视角/投知君君/ 仅留 README 指针。
 **预防**: 视角层"提炼成品进 wiki/（tracked）、原始料留 raw/（ignored）"作为归位铁律。
 
-## [ERR-20260614-002] relation 旧字段 2777 条历史遗留（schema v3 称已删实未净）
-**状态**: ⏳ 观察（不阻塞）**优先级**: 🟢 低
+## [ERR-20260614-002] relation 旧字段历史遗留（schema v3 称已删实未净）
+**状态**: ✅ 已净化（2026-06-24，一次性脚本删 2755 条，type 逐边断言不变）**优先级**: 🟢 低
+**结案（2026-06-24 复盘 P2）**: 删 relation 死字段 2755→0；节点/边数不变 3263 条、type 字段 100% 覆盖且逐边比对未动、边 id 顺序不变。备份 `backups/…bak_pre_relclean.20260624_142719`。下方为原始诊断，留档。
 **触发**: 2026-06-14 帕米尔7篇入库做全图 8 项校验时，发现 2862 条边里 2777 条仍带 `relation` 旧字段（值如 relates_to/evolves_from/used_in）
 **核查**: canonical=2777 / _v2=2777 → **本批 0 新增**；属 canonical 既有遗留。schema v3 决策记录称"relation 字段删除 1155 条"，但实际仅删了"同时有 type+relation 的那批"，大量边的 relation 字段从未清。权威字段 `type` 全图干净（0 非法 type、11 种 schema 内），下游 wiki/kb 均读 type，故不影响分析正确性
 **绕过**: 入库 QA 只校验 type 字段；relation 视为死字段忽略
@@ -107,8 +115,8 @@ project: 渊图
 **预防**: 价格 schema 凡区分时态（现价/预测/历史对比）的维度都须进去重键
 
 ## [ERR-20260608-003] kg_merge 去重并入已有节点时不 union provenance → 已处理研报"零来源"
-**状态**: ⏳ 待解决（已诊断+定位，根治在 kg_merge，待 Doctor 定）
-**优先级**: 🟡 中
+**状态**: 🟧 第①步已修（2026-06-24），第②步另立 PRD **优先级**: 🟡 中
+**进展（2026-06-24 复盘 P1）**: 第①步落地——`kg_merge._merge_data_sources` 去重键 `reference` → `(file, reference)` 复合键，根治「同 reference 不同 file 被吞」；加 `tests/test_kg_merge_provenance.py` 4 测全过（含旧逻辑复现 ERR-003 对照）。**残留第②步**：某报告仅「提到」已存在实体、未改属性时 kg_ingest 不把它写进 patch → merge 层无源可 union，需改 kg_ingest patch 生成 + provenance 覆盖率门槛告警，触及入库主链、风险高，**另立 PRD**。下方为原始诊断。
 **触发**: 建生料关系图时发现 37 篇已 `kg_processed=true` 的研报在 canonical 里无任何节点/边 `data_sources.file` 记到 → 抽样核对其实体（碳化硅/华工/800G/电子布等）都已在图谱、但来源记的是别篇
 **真因**: kg_merge 合并时实体若已存在→并进已有节点，却**不把本篇 file union 进 data_sources**；报告"处理过"却查不到当过来源
 **影响**: 按 file 反查溯源的下游全漏记（生料图谱/信源覆盖/研报审计）；低估热门实体来源广度；误判已入库为未入库
@@ -131,7 +139,8 @@ project: 渊图
 **详**: kg_merge_safe.py 头注释；自测三关（合并/拒错/真库 dry-run）通过
 
 ## [ERR-20260614-001] TPU 在 evolves_from 裂成两分量 + 重复节点，待 dedup
-**状态**: ⏳ 待解决（已定位，不阻塞技术先进度落值）**优先级**: 🟡 中
+**状态**: ✅ 已结案（2026-06-24）**优先级**: 🟢 低
+**复盘核验+收口（2026-06-24）**: ① **重复节点已清**——codename_map 列的 6 个旧重复/张冠李戴节点（GoogleTPUv10Humufish / TPUV8AX / TPUV8X / GoogleTPUv8Zebrafish / GoogleTPUv7Ironwood / GoogleTPUv7eSunfish）逐一核对均已不在 canonical，06-19 dedup 已落地。② **「大小写两套」非重复而是两层粒度**：`TPUV6/V8/V9`=世代锚、`GoogleTPUv7/v8i/v8t/v10`=型号变体，图中 `v8t/v8i --part_of--> TPUV8` 结构本就对，不机械合并（ERR-001 自身铁律：张冠李戴禁自动选 survivor）。③ **谱系已理顺单脉**：删 3 条冗余/隔代 `evolves_from`（TPUV9→{GoogleTPUv7, v8t, v8i}）+ v10 改承 v9，世代脊成单线 `V6←v7←V8←V9←v10`，v8t/v8i 降生自 v7 + part_of V8；边 3263→3260，备份 `bak_pre_tpulineage.20260624_143139`。④ **伞节点框架决策（Doctor 2026-06-24 定）**：`TPUV8` **保留为 v8 世代锚**（维持 v8t/v8i part_of），不并入 v8i。下方为原始诊断。
 **触发**: 建技术先进度 family 时发现 谷歌TPU 在 evolves_from 子图里裂成两个连通分量——小写 `product_GoogleTPUv7/v8i/v8t/v9_Pumafish…` 与大写 `product_TPUV6/V7/V8/V9`；且 `product_TPUv8t` 与 `product_GoogleTPUv8t` 名称同为「谷歌TPU v8t（训练版）」疑似重复节点
 **影响**: 同一代际被拆成两套 id；按 family 聚合/溯源会低估关联；先进度对齐时需手工合并为一条 family（已在 tech_eras.json `family_google_tpu` 合并处理，不受影响）
 **根治待办**: 跑 dedup 把大小写两套 TPU 节点按代际对齐合并、删重复 v8t（注意 union data_sources，见 ERR-20260608-003）
