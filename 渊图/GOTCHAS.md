@@ -172,9 +172,11 @@ project: 渊图
 **待办**: kg_merge / 落盘收尾，写 `~/Documents/Database/行业研究/mapping/_health.json`（`updated_at`=图谱写盘时刻、`update_ok`=结构校验是否全绿），并在 `Claude/Projects/海螺姑娘/data/asset_manifest.json` 的 渊图KG 节点补 `"health_file": "Database/行业研究/mapping/_health.json"`。补完全局资产看板「渊图KG」卡自动点亮「更新时刻 +（更新无错误/报错）」。
 **详**: `Claude/Projects/海螺姑娘/dashboard/UPDATE_HEALTH_派工_v1.md`（任务卡 ⑤）
 
-## [BACKLOG-20260624-001] 6 个非规范前缀节点（type↔id 前缀不一致）+ 疑 MiroFish 生物内容串入
-**状态**: ⬜ backlog（非阻塞·2026-06-24 帕米尔10篇入库 8 项校验时撞见）**优先级**: 🟢 低
-**触发**: 入库后 type↔id 前缀一致性校验报 6 个旧存节点前缀不在允许集（concept/company/product/metric/material/process/problem/solution/person/event）：`market_OpticalChipTestEquipment`、`milestone_OCSCertification`、`milestone_OCSVolumeOrder`、`milestone_OCSProfitRealization`（type 都标 concept，前缀 market_/milestone_ 非法）+ `technology_LipidBertModel`、`technology_HighThroughputLNPPlatform`。
-**核查**: 均 canonical 旧存、非本批引入（本批新引入的 7 处已修）。其中 `technology_LipidBertModel`(LipidBERT大模型)、`HighThroughputLNPPlatform`(高通量LNP制备筛选平台) 是**生物 LNP/脂质大模型**内容——与渊图（AI硬件/产业链）主题无关，疑 **MiroFish 项目内容误串入渊图**。
-**待办**: ① market_/milestone_/technology_ 前缀规范化到允许集（多为 concept_，OCS里程碑或可 event_）+ 同步 id 引用边；② LipidBert/LNP 两节点核来源 data_sources，确认是否 MiroFish 串入 → 若是则从渊图剔除（备份+守恒+不动别的）。走 propose-then-confirm，非紧急。
-**预防**: kg_ingest 已校 type↔id 前缀；这批是 V4 Pro 历史遗留前缀。可在 ingest 加「前缀∈允许集」硬校正。
+## [BACKLOG-20260624-001] 非规范前缀节点 + 剂泰科技/METiS 生物子图串入（2026-06-24 复盘：实况比记录严重，脚本就绪待 apply）
+**状态**: 🟧 方案就绪·dry-run 全过，待 Doctor 终端 apply+git **优先级**: 🟡 中（原记 🟢，复盘上调）
+**复盘订正实况（2026-06-24）**: 记录原写「6 前缀 + 2 疑串入」，实测**非规范前缀 18 个**、**生物串入为整篇`剂泰科技：全球独家AI纳米递送平台`报告的 15 节点子图**（远超记录）。
+- **前缀 18 拆分**：`equipment_`×12（制造设备类·type=equipment·成体系）→ Doctor 裁定**纳入允许集**（已改 `kg_ingest.py` known_prefixes/KNOWN_PREFIXES 加 equipment，不动图）；`milestone_`×3（OCS认证/量产订单/盈利兑现）→ `event_`；`market_`×1（OpticalChipTestEquipment）→ `concept_`；`technology_`×2（LipidBert/高通量LNP）属下方 bio 子图，随删。
+- **bio 串入子图 15 节点**（剂泰/睿正/科拓/菁童/MITMediaLab + 陈红敏/赖才达 + MTS004/108 + LipidBert/高通量LNP + 非肝靶向/心肌靶向/双轮模式/LNP专利）：全溯源同一篇剂泰科技研报，属生物医药/mRNA递送，非渊图 AI 硬件域。
+**裁定（Doctor 2026-06-24）**: ① equipment_ 纳入允许集；② 边界点 `company_MITMediaLab` **保留+剥离**剂泰 data_source/bio 边（保住手工补的「电液纤维肌肉」合法关联），其余 14 节点删；③ `TFLNPhotonicChip`(薄膜铌酸锂光子芯片) 是正当光子内容**勿误删**（仅 substring 撞 LNP）。
+**落地**: `mapping/cleanup_yuantu_bio_prefix_20260624.py`（归档子图→archived/ + 备份 + 守恒断言 + 删14+改4前缀）dry-run 全过：节点 2713→2699、边 3260→3246、MITMediaLab 仍连电液纤维肌肉、前缀改名同步 16 边端点。**待 Doctor 终端 `--apply` + git**。
+**预防**: kg_ingest 已校 type↔id 前缀∈允许集（本次把 equipment 纳入唯一真相集）；建公司/技术节点前先 kb 查重 + 核 data_source 主题域，防跨项目（生物/AI硬件）串入。属 ERR-20260602-001 族系的「跨域串入」变体。
