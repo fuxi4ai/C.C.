@@ -1,6 +1,6 @@
 ---
 name: brain-anchors
-description: Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — "dva" / "DVA", "龙鱼五力", "自检", "天工开物", "渊图" / "行业图谱", "海螺姑娘", "PEC" / "政治经济学", "司南", "O MY HTML", "星空" / "Starry Skies", "MiroFish" / "mirofish", "个人图书馆" / "knowledge vault" / "KV", "周日白泽大宗工作流" / "白泽大宗工作流" / "周报工作流" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — "白泽" / "小白", "烛阴" / "九儿", "句芒" / "芒芒" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically.
+description: Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — "dva" / "DVA", "龙鱼五力", "自检", "天工开物", "渊图" / "行业图谱", "海螺姑娘", "PEC" / "政治经济学", "司南", "O MY HTML", "暖色·卡片页" / "warm card page" / "卡片页", "星空" / "Starry Skies", "MiroFish" / "mirofish", "个人图书馆" / "knowledge vault" / "KV", "周日白泽大宗工作流" / "白泽大宗工作流" / "周报工作流" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — "白泽" / "小白", "烛阴" / "九儿", "句芒" / "芒芒" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically.
 ---
 
 # brain-anchors — 锚点触发自动加载
@@ -20,6 +20,7 @@ description: Auto-load full project context — or summon a 数灵 by name — w
 | `PEC` / `政治经济学` | `brain/PEC/architecture/系统概览.md`<br>`brain/PEC/frameworks/认识论框架.md`（若存在）<br>`brain/PEC/GOTCHAS.md`<br>`Projects/PEC/GOTCHAS.md`（若存在） |
 | `司南` | `brain/司南/architecture/系统概览.md`<br>`brain/司南/方法论概要.md`（若存在）<br>`brain/司南/GOTCHAS.md` |
 | `O MY HTML` / `omy` | `brain/O MY HTML/architecture/系统概览.md`<br>`brain/O MY HTML/GOTCHAS.md`<br>**额外**：可加载 `Vault/taste-skills/` 和 `Vault/emil/`（设计 skills） |
+| `暖色·卡片页` / `warm card page` / `卡片页` | **设计原型锚（属 O MY HTML）**：要做暖色卡片页时，先读 `Projects/O MY HTML/design-system/warm-cardpage-styleguide.html`（范式：玻璃卡 + 双轴发光「色=类别/光=健康」+ 星云星点 + 行布局/连线 + 面板 + 原则）+ `warm-cardpage-boilerplate.html`（去数据起手骨架·改 NODES/EDGES/ROWS 即用）。base tokens 承 `jiuyin-warm-styleguide.html`。Canonical 活范例 = Artifact「Global Asset Inventory · 海螺姑娘」（`~/Documents/Claude/Artifacts/global-asset-inventory/index.html`，取最新视觉以它为准）。仅命中时加载，不主动激活其他设计 skills。 |
 | `星空` / `Starry Skies` | **轻量 stub**：`brain/星空/星空.md`（index，含项目定位 + 深读入口）<br>深读触发：Doctor 显式说"深入星空" / "细读星空" / 进入 `Projects/星空/` 实际工作时<br>深读时再加载：`Projects/星空/PRD.md` · `Projects/星空/reference/REF-001-知识星河-design-language.md` · `Projects/星空/GOTCHAS.md`（若存在） |
 | `MiroFish` / `mirofish` | **轻量 stub + 特殊动作**：读 `brain/MiroFish/MiroFish.md`，并**直接把其中的「启动命令」代码块贴给 Doctor**。这是个工具锚（不是知识项目）——命中即给运行命令，无需多问。 |
 | `个人图书馆` / `knowledge vault` / `KV` | **轻量 anchor + 独立项目**：读 `Database/Knowledge Vault/CLAUDE.md`（启动咒语：四层知识模型 + 入库流水线）+ `Database/Knowledge Vault/logs/接手指南-跨对话.md`（现状快照 + 铁律 + 健康检查脚本 + 待办）。这是 Doctor 的个人知识库（Obsidian vault），**仅 call 时加载**，日常不碰、不主动维护。<br>动手触发：Doctor 显式说"入库 / 建卡 / 织簇 / 更新图谱 / 盘点 raw / 查"时，进「图书管理员」模式按 CLAUDE.md 第 4 节流水线工作；**动手前先跑接手指南里的健康检查**（多会话可能并行加卡）。 |
