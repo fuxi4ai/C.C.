@@ -104,9 +104,9 @@ project: 渊图
 **详**: Database/行业研究/渊图_GOTCHAS.md
 
 ## [ERR-20260602-001] 生益/胜宏近名张冠李戴(3处)+名↔代码校验脚本
-**状态**: ✅ 2修+1提案+建校验 **优先级**: 🔴 高
+**状态**: ✅ 全闭环（2修+拆分落地+建校验；原「Shengyi_PCB 提案待apply」子项 2026-06-25 核 canonical 确认已并/拆净）**优先级**: 🔴 高
 **触发**: ingest混淆 生益(Shengyi)/胜宏(Shenghong)拼音 + 生益科技600183(母CCL)/生益电子688183(子PCB)母子公司
-**3错节点**: ShengyiElectronics(已并)·Shengyi_PCB(提案待apply)→均name写胜宏实为生益电子;真胜宏Shenghong(300476)独立
+**3错节点**: ShengyiElectronics·Shengyi_PCB→均已并/拆净（2026-06-25 核 canonical：两旧 id 皆不在；现 company_Shengyidianzi 生益电子 + company_VictoryGiant 胜宏 独立并存，FIX-20260619-001 拆分落地）;真胜宏Shenghong(300476)独立
 **解决**: 建 rules/name_code_consistency_check.py(代码↔name+拼音↔name自洽校验);入库后跑作delta gate
 **预防**: 易混公司登记校验表;修正走dry-run+防误伤断言(禁动生益科技/真胜宏)
 **详**: Database/行业研究/渊图_GOTCHAS.md
@@ -170,7 +170,7 @@ project: 渊图
 **预防**: 入库后跑 rules/name_code_consistency_check.py；易混公司(三环Sanhuan/三花Sanhua)登记防误。
 
 ## [FIX-20260616-001] 盛科重复节点 company_Centec / company_CenturyCore（ERR-20260602-001 同类）
-**状态**: ✅ 方案就绪（脚本 + dry-run 通过，待 Doctor 终端落盘）**优先级**: 🟡 中
+**状态**: ✅ 已落盘核验（2026-06-25 核 canonical：company_CenturyCore 已不在、company_Centec 保留并挂全 10 节点边系，去重生效）**优先级**: 🟡 中
 **触发**: 入交换芯片结构增量时发现盛科通信有两个节点——`company_Centec`（挂集采/SwitchTray 边）与 `company_CenturyCore`（挂 supplies Switch256T/512T、competes 博通/中兴微、enables from DualVendorPolicy 边），同实体重复。
 **核查**: 两节点 aliases 都含「盛科」；CenturyCore 的 competes_with 博通边与 Centec 既有 `rel_Centec_BroadcomCompete` 重叠。零代码碰撞（非近名拼音错，是纯重复实体）。
 **方案(Doctor 批 · 保 Centec)**: `mapping/dedup_centec_20260616.py`——重指 5 边(CenturyCore→Centec)、与既有同向同型边去重合并 data_sources、合并 props/aliases/data_sources(补真别名盛科通信/Centec Communications/688702)、删 CenturyCore 节点。备份 backups/…dedupCentec + 守恒断言(节点 -1 / 无残留 CenturyCore / 无悬挂 / 无重复边 / 无关节点逐字节守恒)。
