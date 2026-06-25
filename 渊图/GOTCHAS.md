@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-06-24
+updated: 2026-06-25
 status: active
 type: resource
 project: 渊图
@@ -37,6 +37,12 @@ project: 渊图
 ---
 
 <!-- 在下方追加新条目 -->
+
+## [FIX-20260625-001] 中兴微张冠李戴：误记「中科曙光旗下」实为中兴通讯子公司（ERR-20260602-001 族系）
+**状态**: ✅ 已 apply 落盘（2026-06-25，canonical 2700/3248，读盘核验全绿：错边 target=company_ZTECorp、desc 已改中兴通讯、0 重复 0 悬挂）**优先级**: 🟡 中
+**触发**: F9000 入库 kb 查重时撞见——`company_ZTEMicro`（中兴微）description 写「中科曙光旗下交换芯片公司」+ 错边 `rel_ZTEMicro_Dawning`（中兴微 --part_of--> 曙光；_meta relabel_2026_05_16 还以 0.95 置信"误确认"该隶属）。
+**核查/解决**: 2026-06-25 联网坐实 中兴微（Sanechips，深圳市中兴微电子）= 中兴通讯（ZTE，000063）控股子公司，前身 1996 年中兴 IC 设计部，与曙光无隶属。图谱已有 `company_ZTECorp`（中兴通讯）作正确锚。错源 = 2026-05-03 国产交换芯片研报把集采名单「中兴/华为/盛科」的"中兴"误并曙光。id/name/aliases 本就对，错的仅 description 与边 target。patch `mapping/_v3_20260625_ZTEMicro_fix.json`：update_nodes 修 description + 补 parent/stock_code；update_edges 把 `rel_ZTEMicro_Dawning` 的 target 改指 `company_ZTECorp`、desc/evidence 同步、_meta 记 supersedes；边 id 留旧（Doctor 定·仅内部标签）。Δ +0/+0，dry-run took_patch✅。
+**预防**: 入库后跑 `name_code_consistency_check`；研报里集采/名单类多公司并列（中兴/华为/盛科）易被 ingest 误并到相邻实体——建公司隶属（part_of）边前核 evidence 原文 + 联网坐实母子关系。
 
 ## [FIX-20260623-001] 张冠李戴修正须 name/aliases/边/desc 全字段同改（非只改 description）
 **状态**: ✅ 已立规 **优先级**: 🟡 中
