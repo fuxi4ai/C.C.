@@ -16,7 +16,8 @@ project: 渊图
      ERR-20260614-001 TPU ✅ 已结案（谱系理顺单脉 + 伞节点 Doctor 定为保留世代锚）。
      当前开放 ⏳ = 0；待 Doctor 决策 = 1（ERR-003 第②步 kg_ingest 覆盖率根治 PRD 是否启动）。
      2026-06-24（二轮）：manifest `brain.gotchas` 3→1 回写（上轮只改本注释、漏回写 manifest 致看板仍显 3）；
-     口径＝🟧/⏳/⬜ 未闭环计数，apply 后 =1（仅 ERR-003 第②步待PRD）。BACKLOG-20260624-001 方案就绪待 apply；派工健康埋点 ✅ 已做。 -->
+     口径＝🟧/⏳/⬜ 未闭环计数，apply 后 =1（仅 ERR-003 第②步待PRD）。BACKLOG-20260624-001 方案就绪待 apply；派工健康埋点 ✅ 已做。
+     2026-06-25：ERR-003 第②步 forward 已实装（Route A·非 PRD）→ ✅；BACKLOG-20260624-001 已 apply commit 9e9a259 → ✅。当前开放 🟧/⏳ = 0；唯一 followup = ERR-003 历史 207 孤儿回填（数据卫生·非坑）。看板 brain.gotchas 应随之 1→0（待重建 asset-dashboard.html）。 -->
 
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
@@ -123,7 +124,7 @@ project: 渊图
 **预防**: 价格 schema 凡区分时态（现价/预测/历史对比）的维度都须进去重键
 
 ## [ERR-20260608-003] kg_merge 去重并入已有节点时不 union provenance → 已处理研报"零来源"
-**状态**: 🟧 第①步已修（2026-06-24），第②步另立 PRD **优先级**: 🟡 中
+**状态**: ✅ 根治闭环（2026-06-25）——第①步 _merge_data_sources 复合键 (file,reference)；第②步 forward cite 指纹走 Route A（kg_ingest 加 cite_nodes 槽 + _cite_nodes_to_updates 纯函数 + 零足迹告警，单测 3/3、第①步回归 4/4），原拟「另立高风险 PRD」由更轻的 Route A 取代。残留仅历史 207 孤儿回填，降级为数据卫生 followup（forward-only 观察期）**优先级**: 🟡 中
 **进展（2026-06-24 复盘 P1）**: 第①步落地——`kg_merge._merge_data_sources` 去重键 `reference` → `(file, reference)` 复合键，根治「同 reference 不同 file 被吞」；加 `tests/test_kg_merge_provenance.py` 4 测全过（含旧逻辑复现 ERR-003 对照）。**残留第②步**：某报告仅「提到」已存在实体、未改属性时 kg_ingest 不把它写进 patch → merge 层无源可 union，需改 kg_ingest patch 生成 + provenance 覆盖率门槛告警，触及入库主链、风险高，**另立 PRD**。下方为原始诊断。
 **触发**: 建生料关系图时发现 37 篇已 `kg_processed=true` 的研报在 canonical 里无任何节点/边 `data_sources.file` 记到 → 抽样核对其实体（碳化硅/华工/800G/电子布等）都已在图谱、但来源记的是别篇
 **真因**: kg_merge 合并时实体若已存在→并进已有节点，却**不把本篇 file union 进 data_sources**；报告"处理过"却查不到当过来源
@@ -181,7 +182,7 @@ project: 渊图
 **详**: `Claude/Projects/海螺姑娘/dashboard/UPDATE_HEALTH_派工_v1.md`（任务卡 ⑤）；原待办见 git 历史。
 
 ## [BACKLOG-20260624-001] 非规范前缀节点 + 剂泰科技/METiS 生物子图串入（2026-06-24 复盘：实况比记录严重，脚本就绪待 apply）
-**状态**: 🟧 方案就绪·dry-run 全过，待 Doctor 终端 apply+git **优先级**: 🟡 中（原记 🟢，复盘上调）
+**状态**: ✅ 已 apply 落盘（2026-06-25，commit 9e9a259）——节点 2713→2699、边 3260→3246，MITMediaLab 保留+剥离、equipment_ 纳入允许集、milestone_×3→event_/market_×1→concept_ **优先级**: 🟡 中（原记 🟢，复盘上调）
 **复盘订正实况（2026-06-24）**: 记录原写「6 前缀 + 2 疑串入」，实测**非规范前缀 18 个**、**生物串入为整篇`剂泰科技：全球独家AI纳米递送平台`报告的 15 节点子图**（远超记录）。
 - **前缀 18 拆分**：`equipment_`×12（制造设备类·type=equipment·成体系）→ Doctor 裁定**纳入允许集**（已改 `kg_ingest.py` known_prefixes/KNOWN_PREFIXES 加 equipment，不动图）；`milestone_`×3（OCS认证/量产订单/盈利兑现）→ `event_`；`market_`×1（OpticalChipTestEquipment）→ `concept_`；`technology_`×2（LipidBert/高通量LNP）属下方 bio 子图，随删。
 - **bio 串入子图 15 节点**（剂泰/睿正/科拓/菁童/MITMediaLab + 陈红敏/赖才达 + MTS004/108 + LipidBert/高通量LNP + 非肝靶向/心肌靶向/双轮模式/LNP专利）：全溯源同一篇剂泰科技研报，属生物医药/mRNA递送，非渊图 AI 硬件域。
