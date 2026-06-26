@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-06-25
+updated: 2026-06-26
 status: active
 type: resource
 project: 渊图
@@ -189,3 +189,17 @@ project: 渊图
 **裁定（Doctor 2026-06-24）**: ① equipment_ 纳入允许集；② 边界点 `company_MITMediaLab` **保留+剥离**剂泰 data_source/bio 边（保住手工补的「电液纤维肌肉」合法关联），其余 14 节点删；③ `TFLNPhotonicChip`(薄膜铌酸锂光子芯片) 是正当光子内容**勿误删**（仅 substring 撞 LNP）。
 **落地**: `mapping/cleanup_yuantu_bio_prefix_20260624.py`（归档子图→archived/ + 备份 + 守恒断言 + 删14+改4前缀）dry-run 全过：节点 2713→2699、边 3260→3246、MITMediaLab 仍连电液纤维肌肉、前缀改名同步 16 边端点。**待 Doctor 终端 `--apply` + git**。
 **预防**: kg_ingest 已校 type↔id 前缀∈允许集（本次把 equipment 纳入唯一真相集）；建公司/技术节点前先 kb 查重 + 核 data_source 主题域，防跨项目（生物/AI硬件）串入。属 ERR-20260602-001 族系的「跨域串入」变体。
+
+## [FIX-20260626-001] 盛合 CoWoS-L 口径矛盾：节点 prop 与 supplies 边冲突（粒度+时效错配，非真矛盾）
+**状态**: ✅ 已校对落 patch（待 Doctor 终端 apply）**优先级**: 🟡 中
+**触发**: Doctor 追问「盛合也部分上混合键合了么」→ CC 核图谱发现 `concept_DomesticCoWoSLPackagingLandscape` prop「盛合承接 CoWoS-S，不涉及 950/960 CoWoS-L」与 `rel_Shenghejingwei_supplies_HiSilicon`（含 950PR）/ `rel_Shenghejingwei_Supplies_Ascend950PR`（封测）冲突。
+**核查**: 非真矛盾。旧口径 P1 = 帕米尔 2025-05-31（一年前·prop 标 undated）；新口径 P1 = 帕米尔 2026-04-27 / 2026-06-22。**950PR = 入门级小尺寸 CoWoS ≠ 950/960 旗舰大尺寸 CoWoS-L**——盛合承接 950PR 入门级，旗舰大尺寸归华为自有产线（Tier1 领先约 3 个月）。混合键合方面：盛合唯一连接是麒麟2026 一单（P2 华泰，2026 秋季未上市），确凿量产仍是 2.5D micro-bump 20μm。
+**解决**: 精修 prop 为分粒度口径 + 加 `_meta.校对_盛合CoWoSL粒度时效_2026_06_26`，保留全部边。patch `mapping/_v3_20260626_盛合校对_manual.json`，纯 update 计数 2702/3254 不变。
+**预防**: prop 带时态/粒度（入门级 vs 旗舰）须显式 as_of；近名/口径冲突先比 data_vintage 再判、新覆旧；同实体多批次入库做交叉口径核对。属 ERR-20260602-001 族系。
+
+## [NOTE-20260626-001] kg_ingest 后续薄 patch 把既有公司节点「瘦身」：desc 精简 + props 清空成 {}
+**类型**: 📝 数据卫生（回归）**优先级**: 🟡 中
+**现象**: `company_Shenghejingwei` 在 2026-06-22「950 产能」批次后 updated_at=2026-06-24，desc 仅剩 3 句、`properties={}`；而 wiki 卡（2026-06-23 快照）仍存 46 条 props——**卡比节点全**。
+**真因**: kg_merge `_merge_node` 在 patch 胜出时 `merged=deepcopy(patch_node)` 后只保留 base 中 patch **未提供**的顶层 key；若本批 LLM 产出薄 patch **带了** `properties`（哪怕是 {} 或少量），整块替换掉旧富 props（top-level 替换、非深合并）。
+**绕过/解决**: 从 wiki 06-23 快照回填 desc + 46 props（本次已做，保留 06-24 新增的「2025 管理问题」事实）。
+**预防**: ① 入库后抽查热门节点 props 是否被薄 patch 冲淡；② 富节点 props 以 wiki 卡为快照备份源；③ 治本选项：kg_merge `properties`/`_meta` 改深合并（patch 缺的子 key 保留 base）——触及入库主链，另议立项。
