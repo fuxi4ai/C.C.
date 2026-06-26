@@ -198,7 +198,8 @@ project: 渊图
 **预防**: prop 带时态/粒度（入门级 vs 旗舰）须显式 as_of；近名/口径冲突先比 data_vintage 再判、新覆旧；同实体多批次入库做交叉口径核对。属 ERR-20260602-001 族系。
 
 ## [NOTE-20260626-001] kg_ingest 后续薄 patch 把既有公司节点「瘦身」：desc 精简 + props 清空成 {}
-**类型**: 📝 数据卫生（回归）**优先级**: 🟡 中
+**类型**: 📝 数据卫生（回归）→ ✅ 已根治（2026-06-26 深合并实装）**优先级**: 🟡 中
+**根治（2026-06-26）**: `kg_merge._deep_merge_dict_fields` 对 `properties`/`_meta` 改子键并集深合并（patch 子键胜出、base 独有保留），took_patch 分支节点+边均接入。薄/空 props patch 不再冲掉富 props。单测 `tests/test_kg_merge_deepmerge.py` 4/4（含空 props、子键覆盖、_meta 并集、富 props 不丢）；provenance 既有单测 4/4 回归通过。代价：无法再经 patch 删子键（本库 props 累加事实，可接受；删走专门脚本）。下方为原始诊断，留档。
 **现象**: `company_Shenghejingwei` 在 2026-06-22「950 产能」批次后 updated_at=2026-06-24，desc 仅剩 3 句、`properties={}`；而 wiki 卡（2026-06-23 快照）仍存 46 条 props——**卡比节点全**。
 **真因**: kg_merge `_merge_node` 在 patch 胜出时 `merged=deepcopy(patch_node)` 后只保留 base 中 patch **未提供**的顶层 key；若本批 LLM 产出薄 patch **带了** `properties`（哪怕是 {} 或少量），整块替换掉旧富 props（top-level 替换、非深合并）。
 **绕过/解决**: 从 wiki 06-23 快照回填 desc + 46 props（本次已做，保留 06-24 新增的「2025 管理问题」事实）。
