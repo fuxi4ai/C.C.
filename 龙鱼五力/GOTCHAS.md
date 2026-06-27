@@ -35,7 +35,7 @@ project: 龙鱼五力
 **触发场景**: 想在 Cowork 沙箱里直接跑 `five_forces_engine_v3.py` + `score_with_llm.py` 做连通性/打分实测，而非只贴命令给 Doctor 终端。
 **关键点**:
 - **白名单**：本会话沙箱已含 `api.tushare.pro` / `api.waditu.com` / `hq.smm.cn` / `api.deepseek.com`（先 `curl -s -o /dev/null -w '%{http_code}'` 自检：非 000/403 才继续；白名单是会话启动快照 = GOTCHA-022）。
-- **Tushare token**：引擎 `_load_token()` **不读** `TUSHARE_TOKEN` 环境变量，只认 macOS Keychain（沙箱 Linux 无）或文件降级 `$HOME/.tushare/token`。须从 `Database/.env` **文件→文件**写过去（不回显明文）：`grep '^TUSHARE_TOKEN=' .env | cut -d= -f2- | tr -d "\"' \r\n" > ~/.tushare/token`。
+- **Tushare token**：~~引擎 `_load_token()` **不读** `TUSHARE_TOKEN` 环境变量~~（※2026-06-27 更正：此条已过时——引擎现 `_load_token()` 顺序为 **① `TUSHARE_TOKEN` env（优先）→ ② macOS Keychain → ③ `FF_TOKEN_PATH` 文件**，**读 env**。沙箱最简：`export TUSHARE_TOKEN=$(grep '^TUSHARE_TOKEN=' /sessions/<id>/mnt/Database/.env | cut -d= -f2- | tr -d '"' | tr -d "'" | xargs)` 后直跑引擎，本会话冒烟 600118 实测通）。文件降级仍可用 `$HOME/.tushare/token` 或 `FF_TOKEN_PATH=Claude/Env/tushare.token`。
 - **`~` 陷阱（叠加 GOTCHA-014）**：沙箱里 `~`/`$HOME` = `/sessions/<id>/`，**不是**挂载盘 `/sessions/<id>/mnt/Documents/`。`source ~/Documents/Database/.env` 会静默读空 → token 写空 → 报「找不到标的」（非代码错）。.env 必须用 mnt 绝对路径。引擎 `REPORT_DIR` 同理落到沙箱本地 home（产物不在挂载盘，实测无碍）。
 - **DeepSeek key**：`score_with_llm.py` 的 `KEY_ENV_CANDIDATES` 首位 `KG_API_KEY`，`export KG_API_KEY=$(grep ... .env ...)` 后脚本自动命中，无需 `--api-key-env`。
 - **45s 切分**：引擎 leg（~9s）与 DeepSeek leg（~22s，thinking:disabled）串起来可能逼近沙箱 bash 45s 上限 → 先 `engine --save --json-only` 落 JSON，再 `score_with_llm.py --engine-json <file>` 分两段跑。
