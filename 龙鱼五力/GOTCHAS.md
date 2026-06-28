@@ -40,3 +40,5 @@ project: 龙鱼五力
 - **DeepSeek key**：`score_with_llm.py` 的 `KEY_ENV_CANDIDATES` 首位 `KG_API_KEY`，`export KG_API_KEY=$(grep ... .env ...)` 后脚本自动命中，无需 `--api-key-env`。
 - **45s 切分**：引擎 leg（~9s）与 DeepSeek leg（~22s，thinking:disabled）串起来可能逼近沙箱 bash 45s 上限 → 先 `engine --save --json-only` 落 JSON，再 `score_with_llm.py --engine-json <file>` 分两段跑。
 **预防措施**: 沙箱实跑前先跑连通性 curl 自检 + 确认用 mnt 绝对路径读 .env；长链路拆 engine/score 两段。
+
+> **补充（2026-06-28 · 联瑞/东威/盛和跑分案再实证）**：本条再次踩到——直跑 `batch_score.py 688300.SH` **首发即 `ENGINE_FAILED`**，直跑引擎暴露真因 `FileNotFoundError: ~/.tushare/token`，即**引擎没拿到 token**。根因＝`batch_score.py` docstring 和龙鱼系统概览那句「沙箱经 localhost:3128 + Database/.env token 实跑」**易误读为「自动读 .env」**，实则引擎只读 `TUSHARE_TOKEN` **环境变量**、不自动 source .env 文件。**正解一行**：`cd consumers/龙鱼五力 && set -a; . <mnt>/Database/.env; set +a; export HTTPS_PROXY=http://localhost:3128 HTTP_PROXY=http://localhost:3128 && python3 batch_score.py <codes>`。实证 688300/688700/600392 三连 OK。**判别信号**：batch 全 `ENGINE_FAILED` 且直跑引擎报 `~/.tushare/token` not found ＝ 没 export token，不是网络/积分问题。
