@@ -6,6 +6,7 @@ updated: 2026-06-26
 status: active
 type: resource
 project: 渊图
+updated: 2026-06-28
 ---
 
 # 渊图 · GOTCHAS（已知坑）
@@ -38,6 +39,13 @@ project: 渊图
 ---
 
 <!-- 在下方追加新条目 -->
+
+## [NOTE-20260628-001] update_nodes/update_edges 改 properties 必带 updated_at，否则深合并不生效
+**类型**: 📝 数据卫生（合并语义坑）**优先级**: 🟡 中
+**触发**: 2026-06-28 央视华工入库 patch，A·`concept_COUPEGen2Production` update_node 只写 id+properties+data_sources（未写 `updated_at`）。kg_merge_safe dry-run 报 7 改、看似成功，但 in-memory 读盘核验发现 COUPE 新 props **没合进去**（仍 4 个），仅 data_sources 并了（1→2）。
+**真因**: `kg_merge._merge_node` 按 `updated_at` 判新旧——patch 无 updated_at → `_parse_ts("")` 视为极早 < base_ts → 走 **kept_base** 分支（只 append data_sources、**不调 `_deep_merge_dict_fields`**）。NOTE-20260626-001 的深合并只接在 **took_patch** 分支。同批 `company_HGTech` 因 base 本身无 updated_at（两边都空、不满足 patch_ts<base_ts）才侥幸走 took_patch、props 正常合并——纯属巧合。
+**解决**: 给两个 update_node 补 `updated_at=2026-06-28`（≥base）→ 强制走 took_patch → COUPE props 4→8 正确深合并、描述/其余字段不动、HGTech 旧 props 全保留。
+**预防**: ① **凡 update_nodes/update_edges 改 properties/_meta，patch 必带 `updated_at` 且 ≥ base 的 updated_at**，否则深合并静默失效；② 落盘前别只信 kg_merge_safe 的 diff 动作标签（kept_base/took_patch），必 **in-memory 跑 merge(dry_run=False) 读盘核验目标子键真在**（注意 `merge(dry_run=True)` 只算 diff、不返回已应用图，核验要用 dry_run=False 的内存结果，不写盘）。属 NOTE-20260626-001 族系。
 
 ## [FIX-20260625-001] 中兴微张冠李戴：误记「中科曙光旗下」实为中兴通讯子公司（ERR-20260602-001 族系）
 **状态**: ✅ 已 apply 落盘（2026-06-25，canonical 2700/3248，读盘核验全绿：错边 target=company_ZTECorp、desc 已改中兴通讯、0 重复 0 悬挂）**优先级**: 🟡 中
