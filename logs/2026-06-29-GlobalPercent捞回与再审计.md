@@ -33,15 +33,23 @@ project: GlobalPercent
 | 量纲风险只标待核、不盲改 | Polymarket `oneDayPriceChange` 是分数还是百分数沙箱核不了；盲改可能改错 | 留 RISK-20260629-001，待本机/白名单后核 |
 | 代码修复走 propose-then-confirm | Doctor 偏好：批准方向≠批准具体怎么改 | 已出逐文件修复清单，待二次确认 + 白名单开通 |
 
+## 全部修复（Doctor 批「全部执行」· 已完成）
+
+- **量纲（RISK-001）→ 已解除**：白名单是会话启动快照、本会话刷不进新域名（GOTCHA-022），改走官方 Gamma 文档核——`oneDayPriceChange` 是小数/价格点（`-0.02`），非百分数；动量量纲正确，**不改、不 /100**。
+- **滚动窗口（GOTCHA-003）→ 已修**：`store.percentile`/`_history_values` 加 `window_days`；`config.calibration_window_days`（env `GP_CALIB_WINDOW_DAYS` 默认 90，0=全量）；`aggregator._calibrator` 传入。功能验证：200 天前老点被正确排除。
+- **死分支（CODE-006）→ 已删**：`_calibrator` 的 `mod:` 不可达分支。
+- **文档数（DOC-005）→ 已修**：26→28，PRD/STATUS/INDEX 同步。
+- **复测**：`pytest` 28/28 绿。
+- 改动文件：`app/{store,config,aggregator}.py` + `PRD/STATUS/INDEX.md`。
+
 ## 遗留问题 / 待办
 
-**Doctor 已批「全部修复」，待执行（部分 gated）：**
-- [ ] **开白名单**（Doctor 来做）：`gamma-api.polymarket.com`、`clob.polymarket.com`、`api.elections.kalshi.com`（可选 `api.github.com` 给 gist 发布）
-- [ ] 白名单开通后：沙箱核 Polymarket `oneDayPriceChange` 量纲（RISK-001）→ 据实决定动量是否要 /100 或调 `momentum_ref`
-- [ ] 修文档测试数 21/26 → 28（DOC-005，trivial）
-- [ ] 百分位校准加滚动窗口（GOTCHA-003）
-- [ ] 删 `_calibrator` 死分支（可选）
-- [ ] **Doctor 终端 git**：commit 悬空改动（aggregator/publish/GOTCHAS/requirements/test_publish 改 + test_aggregator 新增）+ 本次 brain 改动
+**只剩 Doctor 终端 git（CC 不在沙箱跑 git 写命令）：**
+- [ ] commit 本次修复 + 之前悬空改动（aggregator/publish/GOTCHAS/requirements/test_publish 改 + test_aggregator 新增）—— 命令已拼好给 Doctor
+- [ ] brain 仓本次改动（GlobalPercent/ 新建 + 项目总览加行 + 本日志）commit+push
+
+**仍待本机（非阻断，参数经验校准）：**
+- [ ] 真实数据冒烟确认字段/分类无偏；据真实波动调 `GP_MOMENTUM_REF`/权重（沙箱核不了，需新会话或本机）
 
 ## 相关笔记
 
