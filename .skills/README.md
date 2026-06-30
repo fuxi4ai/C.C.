@@ -1,22 +1,34 @@
 ---
-title: brain/.skills — 4 个 brain skill
+title: brain/.skills — 7 个自制 skill（6 brain + gsap-frontend）
 tags: [skill, brain, install]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-06-30
 status: active
 type: resource
 ---
 
-# brain/.skills — 4 个 brain skill
+# brain/.skills — 自制 skill 真源
+
+> 跨工作环境的 skill **唯一真源**——切桌面应用 ↔ gateway ↔ Claude Code 时，从这里一键复装。详见 [[已装skill清单]]。
 
 ## 清单
+
+### brain vault 配套（6 个）
 
 | Skill | 触发 | 用途 |
 |-------|------|------|
 | `brain-resume` | `/resume` · "恢复上下文" | 跨 session 拉回工作状态 |
-| `brain-save` | `/save [主题]` · "存档" | 落盘会话 + git commit |
+| `brain-save` | `/save [主题]` · "存档" | 落盘会话 + 提供 git 命令 |
 | `brain-note` | `/note [主题]` · "起一条笔记" | inbox/ 采集态 |
-| `brain-anchors` | `dva` · `龙鱼五力` · `自检` · `天工开物` · `渊图` · ... | 关键词自动加载项目上下文 |
+| `brain-anchors` | `dva` · `龙鱼五力` · `渊图` · `白泽` · ... | 关键词自动加载项目/数灵上下文 |
+| `brain-prd` | `/prd [任务简称]` · "立 PRD" | 开工前对齐 + 起草 PRD |
+| `brain-consolidate` | `/consolidate` · "固化记忆" | 蒸馏日志入 permanent |
+
+### 前端工具（1 个）
+
+| Skill | 触发 | 用途 |
+|-------|------|------|
+| `gsap-frontend` | `GSAP` · `GreenSock` · `useGSAP` · `ScrollTrigger` 等专名 | GSAP 动画综合 skill（v2，2026-06-30 重做）。粘性生效——触发后整轮默认 GSAP 模式 |
 
 ## 设计哲学
 
@@ -42,6 +54,9 @@ type: resource
 - `brain-save.skill`
 - `brain-note.skill`
 - `brain-anchors.skill`
+- `brain-prd.skill`
+- `brain-consolidate.skill`
+- `gsap-frontend.skill`
 
 每次 Cowork 弹"Save skill"对话框，确认。
 
