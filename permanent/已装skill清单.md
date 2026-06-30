@@ -56,21 +56,24 @@ type: permanent
 
 ## D · 工作环境与 skill 目录映射
 
-| 工作环境 | skill 目录（host 路径） | 备注 |
-|----------|------------------------|------|
-| **Claude 桌面应用（官方版）** | `~/Library/Application Support/Claude-3p/.../skills/` | bundle id `com.anthropic.claudefordesktop`；不支持自定义 base_url |
-| **Gateway 工作环境**（当前） | `~/.claude/skills/`（沙箱挂载在 `/sessions/.../mnt/.claude/skills/`） | 切换 base_url 至 gateway 后 skill 目录另立，**与桌面应用不互通**——只手装过一次的（如 v1 gsap-frontend）会缺失 |
-| **Claude Code CLI** | `~/.claude/skills/`（与 gateway 共用） | 走 `ANTHROPIC_BASE_URL` |
+| 工作环境 | skill 安装机制 | 备注 |
+|----------|---------------|------|
+| **Claude 桌面应用（官方版）** | 双击 `.skill` 文件 → 系统弹卡片 → "Save skill" → 落到 `~/Library/Application Support/Claude/skills/<name>/` | bundle id `com.anthropic.claudefordesktop`；不支持自定义 base_url |
+| **Cowork / Claude-3p（gateway 模式 · 当前）** | **从 Settings 安装入口手动选 `.skill` 文件**（plugin 体系）；落点是内部 plugin 缓存（`/var/folders/.../claude-hostloop-plugins/...`），用户态目录不可见也不可手动塞 | 应用本体 `~/Library/Application Support/Claude-3p/skills/` **不被扫描**；手动塞这条死路、`~/.claude/skills/` 也死路 |
+| **Claude Code CLI** | `~/.claude/skills/<name>/`（与 gateway 共用文件系统） | 走 `ANTHROPIC_BASE_URL` |
 
-**切环境踩坑教训（2026-06-30）**：自制 skill 当时只装在桌面应用、`.skill` 包没落 brain → 切到 gateway 后丢失、源也找不回。**对策**见下条协作偏好。
+**切环境踩坑教训**：
+- **2026-06-30 上午**：自制 skill 当时只装在桌面应用、`.skill` 包没落 brain → 切到 gateway 后丢失、源也找不回。**对策**：`.skill` 包必落 `brain/.skills/`。
+- **2026-06-30 晚上**：Cowork 装 skill 前误以为是 `~/.claude/skills/` 文件系统直放，实测**不读**；正解是从 Settings 手动选 `.skill` 文件走 plugin 体系。
 
 ---
 
 ## E · 维护偏好（与 [[Doctor协作偏好]] 同步）
 
 1. **`.skill` 包必落 `brain/.skills/`**：任何自制 skill 一旦定稿，**必须**把目录打成 `.skill`（zip 改名）放到 `brain/.skills/<name>.skill`。这是跨工作环境的**唯一**真源——切环境/换机器只要 brain 在就能一键复装。
-2. **改 skill 源后必重打包**：运行时走已装缓存，改源不重装不生效。改完用 `present_files` 把 `.skill` 包贴对话框、Doctor 点 "Save skill" 一键覆盖。
+2. **改 skill 源后必重打包**：运行时走已装缓存，改源不重装不生效。改完把 `.skill` 包贴对话框（gateway 模式弹不出卡片，让 Doctor 自己去 Settings 装）。
 3. **切工作环境后第一件事**：对照本清单 A/B 两栏，把所有自制 skill 重装一遍；C 栏官方 skill 一般跟环境走、不需手动迁。
+4. **Cowork frontmatter 范式硬约束**（2026-06-30 教训）：`SKILL.md` 顶部 frontmatter 的 `name:` 和 `description:` 值**必须用 `"..."` 包裹**，description 内部所有 `"` **必须转义为 `\"`**。Cowork plugin parser 不接受 YAML plain scalar，否则报 `SKILL.md frontmatter missing name or description`、Settings 装不进。所有自制 skill 的 SKILL.md 必须按此范式落盘。详见 [[通用教训]] ERR-20260630-COWORK-FRONTMATTER。
 
 ---
 

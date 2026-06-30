@@ -1,7 +1,7 @@
 ---
-name: gsap-frontend
-description: GSAP (GreenSock Animation Platform) 前端动画综合 skill。触发条件极窄：用户消息中明确出现 "GSAP" / "gsap" / "GreenSock" 等专名才激活；一旦激活，整轮对话默认按 GSAP 模式工作，不再重新判定。覆盖 core API、timeline 编排、ScrollTrigger 滚动动画、React/Vue/Svelte 集成、所有官方插件、性能与反模式。基于 greensock/gsap-skills 官方 8 个 skill 蒸馏合并。Use when user explicitly invokes GSAP for animation work.
-license: MIT
+name: "gsap-frontend"
+description: "GSAP (GreenSock Animation Platform) 前端动画综合 skill。触发条件极窄：用户消息中明确出现 \"GSAP\" / \"gsap\" / \"GreenSock\" 等专名才激活；一旦激活，整轮对话默认按 GSAP 模式工作，不再重新判定。覆盖 core API、timeline 编排、ScrollTrigger 滚动动画、React/Vue/Svelte 集成、所有官方插件、性能与反模式。基于 greensock/gsap-skills 官方 8 个 skill 蒸馏合并。Use when user explicitly invokes GSAP for animation work."
+license: "MIT"
 ---
 
 # GSAP Frontend Skill

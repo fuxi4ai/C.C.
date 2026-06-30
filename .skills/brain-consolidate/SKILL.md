@@ -1,5 +1,5 @@
 ---
-name: brain-consolidate
+name: "brain-consolidate"
 description: "brain 原生记忆固化——把只增不减的会话日志蒸馏进 permanent，去重合并、修过期日期、修剪索引。触发：用户说 `/consolidate` 或 `/固化记忆` 或「固化记忆」「整理记忆」「记忆固化」「蒸馏日志」。双重门控：本 skill 只定义流程，绝不自动跑；每次运行先产出『拟改动 diff』给 Doctor 过目，批准后才落盘。取代通用 consolidate-memory（那个针对 MEMORY.md，与 brain 的 logs/permanent/inbox 结构不符）。"
 ---
 

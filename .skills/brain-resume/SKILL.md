@@ -1,6 +1,6 @@
 ---
-name: brain-resume
-description: Restore working context at the start of a session. Trigger when the user types `/resume` or says "恢复上下文", "继续上次", "上次干到哪了", "接着昨天". Reads the most recent 3 session logs from `~/Documents/Claude/brain/logs/`, plus the active project's architecture overview and decisions, then outputs a structured handoff: last project worked on, key decisions, outstanding TODOs, and three suggested next steps.
+name: "brain-resume"
+description: "Restore working context at the start of a session. Trigger when the user types `/resume` or says \"恢复上下文\", \"继续上次\", \"上次干到哪了\", \"接着昨天\". Reads the most recent 3 session logs from `~/Documents/Claude/brain/logs/`, plus the active project's architecture overview and decisions, then outputs a structured handoff: last project worked on, key decisions, outstanding TODOs, and three suggested next steps."
 ---
 
 # brain-resume — 恢复跨 session 工作上下文

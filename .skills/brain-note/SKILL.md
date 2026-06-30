@@ -1,6 +1,6 @@
 ---
-name: brain-note
-description: Start a structured note-capture session in the brain inbox. Trigger when the user types `/note [主题]` or `/note` or says "起一条笔记", "记个想法", "捕捉这个", "新开一条笔记". Creates a new file in `~/Documents/Claude/brain/inbox/{主题}.md` from the default-note template, then enters capture mode — Claude listens, structures user dictation into the note in real time, asks targeted follow-ups, and on maturity suggests promoting it to `permanent/`.
+name: "brain-note"
+description: "Start a structured note-capture session in the brain inbox. Trigger when the user types `/note [主题]` or `/note` or says \"起一条笔记\", \"记个想法\", \"捕捉这个\", \"新开一条笔记\". Creates a new file in `~/Documents/Claude/brain/inbox/{主题}.md` from the default-note template, then enters capture mode — Claude listens, structures user dictation into the note in real time, asks targeted follow-ups, and on maturity suggests promoting it to `permanent/`."
 ---
 
 # brain-note — Inbox 笔记采集

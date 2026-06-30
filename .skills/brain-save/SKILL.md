@@ -1,6 +1,6 @@
 ---
-name: brain-save
-description: Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says "存档本次会话", "记一笔", "落盘", "存档今天". Fills the session-log template with what was done, decisions, outstanding issues, related notes, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：若本次出场者是某数灵（白泽/小白、烛阴/九儿、句芒/芒芒），按「落盘归位铁律」改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。Updates the project's last-active date if a project is identified. **Provides git commit+push commands for Doctor to run in macOS terminal** when `brain/.git/` exists — CC MUST NOT run git write commands in sandbox (Doctor GOTCHAS v2.0).
+name: "brain-save"
+description: "Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template with what was done, decisions, outstanding issues, related notes, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：若本次出场者是某数灵（白泽/小白、烛阴/九儿、句芒/芒芒），按「落盘归位铁律」改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。Updates the project's last-active date if a project is identified. **Provides git commit+push commands for Doctor to run in macOS terminal** when `brain/.git/` exists — CC MUST NOT run git write commands in sandbox (Doctor GOTCHAS v2.0)."
 ---
 
 # brain-save — 把本次会话存档到 brain

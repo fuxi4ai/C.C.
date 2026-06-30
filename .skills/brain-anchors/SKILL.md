@@ -1,6 +1,6 @@
 ---
-name: brain-anchors
-description: Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — "dva" / "DVA", "龙鱼五力", "自检", "天工开物", "渊图" / "行业图谱", "海螺姑娘", "PEC" / "政治经济学", "司南", "O MY HTML", "暖色·卡片页" / "warm card page" / "卡片页", "星空" / "Starry Skies", "MiroFish" / "mirofish", "个人图书馆" / "knowledge vault" / "KV", "周日白泽大宗工作流" / "白泽大宗工作流" / "周报工作流" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — "白泽" / "小白", "烛阴" / "九儿", "句芒" / "芒芒" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically.
+name: "brain-anchors"
+description: "Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — \"dva\" / \"DVA\", \"龙鱼五力\", \"自检\", \"天工开物\", \"渊图\" / \"行业图谱\", \"海螺姑娘\", \"PEC\" / \"政治经济学\", \"司南\", \"O MY HTML\", \"暖色·卡片页\" / \"warm card page\" / \"卡片页\", \"星空\" / \"Starry Skies\", \"MiroFish\" / \"mirofish\", \"个人图书馆\" / \"knowledge vault\" / \"KV\", \"周日白泽大宗工作流\" / \"白泽大宗工作流\" / \"周报工作流\" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — \"白泽\" / \"小白\", \"烛阴\" / \"九儿\", \"句芒\" / \"芒芒\" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically."
 ---
 
 # brain-anchors — 锚点触发自动加载
