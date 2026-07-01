@@ -2,10 +2,12 @@
 title: 已装 skill 清单
 tags: [skill, index, 维护]
 created: 2026-06-30
-updated: 2026-06-30
+updated: 2026-07-01
 status: active
 type: permanent
 ---
+
+> **2026-07-01 切回官方工作区装机**：6 个自制 brain skill（`brain-anchors`/`resume`/`save`/`note`/`prd`/`consolidate`）已在官方桌面版**重装到位**。教训：`brain/.skills/` 里的旧 `.skill` 包**已过时**（无引号 frontmatter + 缺新内容），直接装会触发 `frontmatter missing name or description`——已从**现源重打 6 包**（python zipfile 直写，排除探针垃圾文件）并**覆盖刷新 `brain/.skills/` 镜像**，引号范式合规、内容最新。`handshake-consumer`（方案 B 搁置）、`gsap-frontend`（待重做）暂不装。**复用提醒**：定稿后改了 SKILL.md 源，务必同步重打 `.skill` 包，否则镜像与源漂移、下次切环境又踩装不进的坑。
 
 # 已装 skill 清单
 

@@ -9,6 +9,8 @@ type: permanent
 
 # 跨 AI 协作握手层（Handshake Layer）
 
+> **🅿️ 搁置（2026-07-01）**：Anthropic 官方订阅恢复，将投知君君移交 Codex 的动因消失，方案 B 迁移**暂缓**。握手层地基、schema、consumer skill **全部保留封存，随时可复起**；投知君君继续 Claude 侧运行（`touzhijunjun-perspective-refresh`，无需关停）。复起条件：再遇成本/额度压力需卸载定时任务负荷时。
+
 > 让不同 AI 承担不同职能而彼此不共享 runtime、不共享上下文时，靠**结构化文件契约**接力。适用 CC × Codex、CC × 数灵、CC × 未来第三家模型等一切"两个及以上 AI 分工"场景。
 
 ## 核心原则：能力分层 + 规矩不外泄
@@ -70,6 +72,30 @@ type: permanent
 1. **主场保留一个"薄定时任务"每天低峰醒一次跑 handshake-consumer**——最省心、成本最低（消费任务本身极轻，不 web、不子 agent）、Doctor 无需记流程。**默认档**。
 2. **Doctor 手动触发**——外援跑完发通知，Doctor 打开 Claude 说一句"消费握手"走 skill。备档。
 3. **launchd/fswatch 监听目录**——文件写入即触发主场。工程化最重，仅在高频/低延迟场景采用。
+
+## 落地实现（2026-07-01）——与上文设想的差异
+
+> 上文是方案 B **定案时的设想**；实现时有几处按现实微调，**以实体文件为准**（`~/Documents/4AI/Shake hands/`）：
+
+| 维度 | 设想 | 落地实现 | 原因 |
+|------|------|---------|------|
+| 回执方向命名 | 新建 `from CC/` | **复用现有 `to VV/`** | 握手层 6-14 已存在（CC↔VV 文档通道），`to VV`=Claude 写方向，语义已对齐，不另起 |
+| 机器通道位置 | schema/README 放 `spec/`+顶层 | 数据/ack 放各方向的 **`scheduled/` 子目录**，与人类文档通道并存 | 机器通道与既有散文通道隔离、互不干扰 |
+| ack 版本 | `{task_id}.ack.json` 单份 | **`.ack.latest.json`+`.ack.prev.json` 两版** | Doctor 定「两方向都留最新+副本」 |
+| 滚动方式 | 原子 rename | **copy-then-overwrite（只写不删）** | 挂载盘 rename/删除受限（[[通用教训]] G-X48） |
+| schema 字段 | `schema_version:1`(数字)、asof、producer、status、payload_kind | `schema_version:"1.0"`(字符串)、produced_at、produced_by、run_id、source_window、sample | 见 `spec/handshake-schema.json` 定稿 |
+
+**已就绪组件**：`spec/handshake-schema.json`、`scheduled/README.md`、consumer skill（`brain/.skills/handshake-consumer/`，含纯 stdlib `consume.py`）、定时任务 `handshake-consumer-daily`（每日 09:06）。样本 `sample:true` dry-run 全链路验证通过（校验+路由+ack 两版滚动+幂等+篡改拒绝）。
+
+## 迁移切换清单（首个试点：投知君君）
+
+单点验证优先、别大爆炸，三步走：
+
+- [ ] **① VV 手动出一批真实 payload**（先别上定时任务）：按 `to VV/scheduled/CC致VV-投知君君握手改造需求.md` 写真实 JSON 到 `to CC/scheduled/touzhijunjun-perspective-refresh.latest.json`。
+- [ ] **② Claude consumer 真实端到端验证**（`sample:false`，真落盘渊图 wiki）：验证路由/落盘/`_last_processed` 并入/git 命令全对。dry-run 替不了。
+- [ ] **③ 通过后固化+切换**：VV 侧把抓取+提炼固化成定时任务（产出须早于 Claude 每日 09:00 消费，原 05:00 天然满足）；**关停原 `touzhijunjun-perspective-refresh` Claude 定时任务**（职责已迁走，避免双跑）。
+
+**当前状态（2026-07-01）**：🅿️ **搁置**——订阅恢复，迁移暂缓（详见顶部说明）。Claude 侧地基全就绪、样本验证通过；三步待办封存待复起，非删除。原计划：⏳ 待 VV 接入（第①步）→ 端到端验证 → 固化切换 → 批量迁其余任务（见 [[定时任务清单]]）。
 
 ## 为什么优于"一家扛全套"
 

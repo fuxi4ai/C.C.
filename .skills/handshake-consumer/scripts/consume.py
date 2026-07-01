@@ -59,9 +59,8 @@ def validate_envelope(env):
             errors.append(f"缺必填字段: {k}")
     if errors:
         return errors
-    sv = str(env["schema_version"])
-    if sv.split(".")[0] != SCHEMA_VERSION.split(".")[0]:
-        errors.append(f"schema_version 主版本不兼容: 期望 {SCHEMA_VERSION.split('.')[0]}.x 得到 {sv}")
+    if env["schema_version"] != SCHEMA_VERSION:
+        errors.append(f"schema_version 不符: 期望 {SCHEMA_VERSION} 得到 {env['schema_version']}")
     tid = env["task_id"]
     if not isinstance(tid, str) or not re.match(r"^[a-z0-9][a-z0-9-]*$", tid):
         errors.append(f"task_id 非法: {tid!r}")
