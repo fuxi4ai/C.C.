@@ -63,7 +63,7 @@ Brain vault：~/Documents/Claude/brain/
 **skills 丢了怎么办**
 如果上面列出的 skills 在 Max 模式下不可用：
 → 去 `~/Documents/Vault/` 找对应的 `.skill` 文件，在 Finder 双击即可重装。
-→ 具体清单见 `~/Documents/Vault/SKILLS_MANIFEST.md`。
+→ 具体清单（真源 + 重装手册）见 `~/Documents/Claude/brain/permanent/已装skill清单.md`（2026-07-01 起为唯一真源；`Vault/SKILLS_MANIFEST.md` 已降为指针）。
 
 **brain vault 不会丢**
 所有项目知识、规则、日志都在 `~/Documents/Claude/brain/`，是纯文件，跟认证模式无关。
