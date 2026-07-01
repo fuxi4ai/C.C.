@@ -7,7 +7,12 @@ status: active
 type: permanent
 ---
 
-> **2026-07-01 切回官方工作区装机**：6 个自制 brain skill（`brain-anchors`/`resume`/`save`/`note`/`prd`/`consolidate`）已在官方桌面版**重装到位**。教训：`brain/.skills/` 里的旧 `.skill` 包**已过时**（无引号 frontmatter + 缺新内容），直接装会触发 `frontmatter missing name or description`——已从**现源重打 6 包**（python zipfile 直写，排除探针垃圾文件）并**覆盖刷新 `brain/.skills/` 镜像**，引号范式合规、内容最新。`handshake-consumer`（方案 B 搁置）、`gsap-frontend`（待重做）暂不装。**复用提醒**：定稿后改了 SKILL.md 源，务必同步重打 `.skill` 包，否则镜像与源漂移、下次切环境又踩装不进的坑。
+> **2026-07-01 切回官方工作区装机**：6 个自制 brain skill（`brain-anchors`/`resume`/`save`/`note`/`prd`/`consolidate`）已在官方桌面版**重装到位**。教训：`brain/.skills/` 里的旧 `.skill` 包**已过时**（无引号 frontmatter + 缺新内容），直接装会触发 `frontmatter missing name or description`——已从**现源重打 6 包**（python zipfile 直写，排除探针垃圾文件）并**覆盖刷新 `brain/.skills/` 镜像**，引号范式合规、内容最新。`handshake-consumer`（方案 B 搁置）暂不装。**复用提醒**：定稿后改了 SKILL.md 源，务必同步重打 `.skill` 包，否则镜像与源漂移、下次切环境又踩装不进的坑。
+>
+> **2026-07-01 装机进度补全**：
+> - **B 栏 `gsap-frontend`**：官方环境**已重装** ✅（从现源重打包 15.8K，主干 + 5 references，引号合规；镜像同步刷新）。
+> - **C 栏设计线**：`emil-design-eng` / `impeccable` / `minimalist-ui` Doctor **已重装** ✅；`frontend-design` / `design-taste-frontend` **未装**（第三方无本地源，需 marketplace/Settings 自取）。
+> - **海螺项目内自制 skill（本清单原漏记，2026-07-01 扫出）**：`conch`（`/conch` 项目维护，有 `Projects/海螺姑娘/conch-v0.2.skill` 包，frontmatter 无引号需修）、`meditation`（体检，已被 `brain-monthly-checkup` 定时任务直调脚本）、`project-review`（项目审核）。**当前未作 Cowork skill 装**——Doctor 决定**先用一用、积累经验再适配**（合 G-X10「规则从失败里长」）。想装时先修 frontmatter 引号 + 重打包。
 
 # 已装 skill 清单
 
