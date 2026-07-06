@@ -42,3 +42,17 @@ project: 龙鱼五力
 **预防措施**: 沙箱实跑前先跑连通性 curl 自检 + 确认用 mnt 绝对路径读 .env；长链路拆 engine/score 两段。
 
 > **补充（2026-06-28 · 联瑞/东威/盛和跑分案再实证）**：本条再次踩到——直跑 `batch_score.py 688300.SH` **首发即 `ENGINE_FAILED`**，直跑引擎暴露真因 `FileNotFoundError: ~/.tushare/token`，即**引擎没拿到 token**。根因＝`batch_score.py` docstring 和龙鱼系统概览那句「沙箱经 localhost:3128 + Database/.env token 实跑」**易误读为「自动读 .env」**，实则引擎只读 `TUSHARE_TOKEN` **环境变量**、不自动 source .env 文件。**正解一行**：`cd consumers/龙鱼五力 && set -a; . <mnt>/Database/.env; set +a; export HTTPS_PROXY=http://localhost:3128 HTTP_PROXY=http://localhost:3128 && python3 batch_score.py <codes>`。实证 688300/688700/600392 三连 OK。**判别信号**：batch 全 `ENGINE_FAILED` 且直跑引擎报 `~/.tushare/token` not found ＝ 没 export token，不是网络/积分问题。
+
+---
+
+## [NOTE-20260706-001] 引擎财务维对周期股「盈利能力」假阳性（GM 口径失真 + 跨周期 ROE 均值）
+**状态**: ⏳ 待解决（已识别·需人工 overlay 兜底；引擎口径修正待评估）
+**优先级**: 🟡 中（周期股/价差型标的必踩）
+**触发场景**: 用引擎跑周期性行业（存储模组/面板/大宗加工）的价差型公司，财务维 `financial_score` 自动打分。
+**现象**: 江波龙 301308.SZ（2026-07-06）引擎财务维把「盈利能力」子项打满 1.0/1，evidence＝「ROE 均值=23.0%>15% ✅；毛利率上升趋势(55.53%)↑」。但——
+- **GM 55.53% 口径失真**：报表实际毛利率 2023=8.19%/2024=19.05%/2025Q3=18.92%，从无 55% 量级（疑 Tushare `grossprofit_margin` 口径异常或取值错期，同族 ERR-20260602-002 三费口径坑）。
+- **ROE 均值 23% 含周期顶点**：15 期均值被 2026Q1 顶点（ROE 39.4%）拉高，掩盖 2023 下行 ROE −13.01%。
+两者叠加让引擎把"周期顶点的 β"误判成"稳定的盈利能力"——引擎本身几乎落入**假定价权陷阱**。
+**判别信号**: 周期性行业 + 财务维盈利能力满分 + 引擎 GM 远高于最近报表披露值（或明显不符行业常识）→ 别信 auto 分，人工核最近 4-8 季报表毛利率 + 看 ROE 是否穿越周期。
+**解决方案（当前）**: 人工 overlay——按 EXP-20260706-003-P「毛利率穿越周期看」核实，江波龙人工六维修正为 47.5/回避（引擎 auto 会高估）。GM 落库时加 `gm_flag` 标注口径异常（见 records/301308.SZ_江波龙.json.engine_facts）。
+**预防措施**: 引擎财务维「盈利能力」子项对周期股应改用「近 N 季报表 GM + 穿越周期 ROE（含最近一个完整下行）」而非跨期均值/单点趋势；口径修正前，跑周期股一律人工复核该子项。
