@@ -11,6 +11,10 @@ type: log
 
 ## 待办
 
+- [ ] **【G-X13 根治 C · Doctor】把 `permanent/全局偏好-Settings镜像.md` 全局块合并进 Cowork/桌面端个人偏好**（与「简洁直接」条并存）——唯一每轮注入、不依赖 anchor 的层；当前实际注入的个人偏好只有「简洁」一条、无「您」块，故 2026-07-07 会话仍误用「你」。合并块见该会话 CC 给的可直接贴版本。
+- [ ] **【G-X13 补丁 D · 改 skill】给 `brain-resume` 加 step 0：起手先读 `permanent/全局偏好-Settings镜像.md` 核心条**，堵 `/resume` 起手不载协作偏好的路径（CC 改不了只读缓存 skill，需 Doctor 用 skill-creator/Settings 改源+重装）。
+- [ ] **【brain-anchors · Doctor】补召回词「暗色·卡片页 / dark card page / 龙鱼看板」**（2026-07-07 立项，见 O MY HTML 决策记录）。
+
 - [x] **给渊图跑 graphify**（832 nodes, $9.62）
   `cd ~/Documents/Database/行业研究 && graphify . --obsidian --obsidian-dir ~/Documents/Claude/brain/graphify/渊图`
   （需先确认 graphify 在 PATH：`export PATH="$PATH:~/.local/bin"`）
