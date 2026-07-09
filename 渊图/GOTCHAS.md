@@ -6,7 +6,7 @@ updated: 2026-06-26
 status: active
 type: resource
 project: 渊图
-updated: 2026-07-02
+updated: 2026-07-09
 ---
 
 # 渊图 · GOTCHAS（已知坑）
@@ -39,6 +39,14 @@ updated: 2026-07-02
 ---
 
 <!-- 在下方追加新条目 -->
+
+## [ERR-20260709-001] kg_ingest 自动 base 查找不扫 mapping/ → 新终端未设 KG_BASE_JSON 即失败
+**状态**: ✅ 已解决（绕过）**优先级**: 🟡 中
+**要点**: 新登录 shell `python3 kg_ingest.py --batch` 报「未找到知识图谱 JSON」。根因 `find_latest_kg` 只扫 `~/Downloads`+行业研究根、**不扫 `mapping/`**，而 canonical 在 mapping/ 下；历史靠 profile 里 export `KG_BASE_JSON` 才隐性跑通。修：命令默认带 `--base mapping/行业知识图谱_完整数据库.json`（不依赖环境变量）。**详**: `Database/行业研究/渊图_GOTCHAS.md` [ERR-20260709-001]
+
+## [NOTE-20260709-001] CC 拼既有工具命令别从源码 grep 臆造参数——先查历史日志实敲命令
+**类型**: 📝 流程教训（CC 协作）**优先级**: 🟡 中
+**要点**: CC 拼渊图入库命令两次臆测两次错（文件列表式命令 vs 真实 `--batch` 扫目录；`DEEPSEEK_API_KEY` vs 真实 `KG_API_KEY`），根因都是从散落/过时源码 grep 拼参数、没核 main() 也没照历史实敲命令。取信序＝历史 logs 实敲命令 > `--help`/main() 现行 argparse > 源码推断。附元教训：落盘类动作宣称完成前必 grep/stat 复核（本坑上轮曾假完成）。**详**: `Database/行业研究/渊图_GOTCHAS.md` [NOTE-20260709-001]
 
 ## [NOTE-20260702-002] 渊图BT基板产业链A股缺口——供应商节点全为台股
 **类型**: 📝 数据缺口（如实记录）**优先级**: 🟡 中
