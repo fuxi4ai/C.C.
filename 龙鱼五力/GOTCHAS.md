@@ -60,7 +60,7 @@ project: 龙鱼五力
 ---
 
 ## [ERR-20260710-001] 引擎增长指标喂单季触底 YoY → 误导 deepseek 盲打、系统性打低「触底→转正」拐点标的
-**状态**: ⏳ 待根治（已识别 + 人工错误校正兜底；引擎取数 period 待 Doctor 终端核）
+**状态**: ✅ 已根治（2026-07-11 小改实装+验证）——引擎新增 `growth_period`/`growth_period_is_interim`/`tr_yoy_annual`/`netprofit_yoy_annual`（取最近 1231 年报期，不改既有 tr_yoy/netprofit_yoy 向后兼容）；score_subitems 打分提示加「增长口径铁律」优先年度、单季仅参考；`_facts` 补 np_yoy/annual/period 入库（今后可精确回扫）。**振华 000733.SZ 验证**：引擎单季 netprofit_yoy=−72.81%(20260331·interim) → 新增年度 netprofit_yoy_annual=**+5.69%**/tr_yoy_annual=+10.26%(20251231)，与 raw#4 FY25 +10%/+6% 吻合。根因＝`fetch_financial_indicators` 取 fina_indicator_vip 最新 end_date 累计 YoY，最新期为单季(Q1)时即窄口径。
 **优先级**: 🟡 中（拐点/周期反转标的必踩 · NOTE-20260706-001 族系）
 **触发场景**: 双 scorer 制度里 deepseek 自下而上盲打，引擎 `engine_facts.rev_yoy/np_yoy` 作为「供需兑现 / 增长-估值匹配」的关键锚。
 **现象**: 振华科技 000733（2026-07-05 deepseek）引擎喂 `rev_yoy=-7.86% / np_yoy=-72.81%`，deepseek 据此判「负增长、需求疲软、未见兑现」→ 供需端 8/35、估值增长匹配 1/15 → 总分 43/回避。但 raw#4 第九节 **P0 实测 FY2025 营收 +10%/归母 +6% 已确认拐点**（2025Q3 单季 +15.78%/净利 +38.68%）。引擎那个 -72.81% 精确匹配 2025Q1 单季触底（全年最差季），是滞后/单季口径、与全年转正相反。
