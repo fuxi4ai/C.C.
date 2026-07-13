@@ -242,3 +242,9 @@ updated: 2026-07-09
 **落地**: ① 合并 12 组（海光/海思/Meta/台光三合一/中兴微/鼎泰高科/通美/新凯来/鑫耀=新耀/天弘=Celestica/长光华芯/铟杰=英杰）；② 改名纠错（升腾删 Enflame 别名归华为昇腾·910C 实为昇腾；GUC 正名创意电子·清「世界先进/世芯」错挂）；③ 立**命名规范铁律**写进 `Database/行业研究/CLAUDE.md`（禁裸简称 id/上市带 code/大小写唯一/外企用全称）；④ 配检测脚本 `rules/bare_alias_check.py`（[1] 大小写重复必修·[2] 裸简称清单·[3] 近名兄弟簇），接 batch 后跑。治理后 [1]=0、33 组近名兄弟人工扫均为合理母子/不同实体。
 **遗留**: 利森诺克真身（独立 CCL 厂·联网未坐实）；宝德 PowerLeader 液冷描述疑张冠李戴（待回研报）；222 单义裸简称登记黑名单渐进改；先锐科技英文待核。
 **预防**: 新建 company 节点遵铁律；batch 后强制跑 bare_alias_check.py；易混/族系实体（先导/通美/住友/三菱/鼎泰/海光/海思/台光/中兴微/生益…）建节点前 kb 查重 + 联网坐实英文名↔实体。属 ERR-20260602-001 / FIX-20260619-001 族系总治理条。
+
+## [NOTE-20260712-001] kg_merge_safe.py 不吃 `--base`（与 kg_ingest.py 参数面正相反）——贴错旗标 argparse 直接报错、merge 空转
+**状态**: ✅ 已澄清 **优先级**: 🟢 低
+**触发场景**: 2026-07-12 特斯拉 patch promote，CC 给 Doctor 构造终端命令时写成 `python3 kg_merge_safe.py <patch> --base mapping/行业知识图谱_完整数据库.json`。两条 merge 命令（dry-run + 正式）argparse 均报 `error: unrecognized arguments: --base …`、**未执行**（无害：canonical 早已在本会话 promote 到 3125/3683，读盘核验 + git tree clean 佐证）。
+**根因**: 两脚本参数面**相反**、极易交叉记混——`kg_merge_safe.py` 签名仅 `[-h] [--dry-run] patch`，base=canonical **已内建强制指向**（见 ERR-20260611-merge：safe 包装就是为「输出强制指向 canonical 无漏写」而生），**不接 --base**；而 `kg_ingest.py --batch` 反而**必须**带 `--base mapping/行业知识图谱_完整数据库.json`（见 ERR-20260709-001：find_latest_kg 不扫 mapping/）。
+**预防**: 构造命令前认准脚本——**promote/merge** 走 `kg_merge_safe.py <patch> [--dry-run]`（无 --base）；**ingest 批处理**才带 --base。贴 Doctor 终端前对一眼 usage，避免整轮终端往返空转。
