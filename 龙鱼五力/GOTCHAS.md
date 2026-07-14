@@ -69,3 +69,21 @@ project: 龙鱼五力
 **解决方案（当前）**: 人工「错误校正」层——只弥合数据口径错误维(供需/估值增长匹配)、保留视角差异(竞争/新赛道)；振华校正后 deepseek 51/谨慎、claude 67/谨慎，收敛中枢 ~59。落 `records/000733.SZ_振华科技.json` 新增 `research-CC·错误校正` 条（**不覆盖原始盲打**）。**不手改 deepseek 盲打分以保独立盲打制度**。
 **根治待办**: ① Doctor 终端核 `five_forces_engine_v3` 的 rev_yoy/np_yoy 取数 period（应取最新年报/TTM 且标注 period，非滞后单季）；② engine_facts 加 `growth_period` 字段显式标口径；③ batch 回扫同批航天 universe 拐点标的（凡 FY25 转正但引擎 np_yoy 深负者）是否同样被误伤。
 **预防措施**: deepseek 盲打前引擎增长指标须与最新年报 P0 对齐并标 period；分歧归因先查「负增长前提」是否成立（核最新年报）再判视角 vs 错误。属 NOTE-20260706-001（引擎财务口径失真）族系。
+
+---
+
+## [NOTE-20260714-001] save_holdings 守恒校验挡增删 → 加/删标的须直改 holdings.json 源
+**状态**: ✅ 已知（设计如此·非 bug）
+**优先级**: 🟢 低（每次加删持仓标的会遇）
+**触发场景**: 想通过看板 MCP `save_holdings` 或编辑面板增/删持仓标的。
+**现象/根因**: `save_holdings` 带守恒校验「只数须与现有一致，防误覆盖」——它是给看板内联改股数/成本用的，**改只数（加/删标的，如 11→12 或 12→11）会被挡下**。
+**解决方案**: 加/删标的**直接改源文件** `龙鱼-标的分析库/holdings.json`（唯一维护点·"变动只改此文件"），用主机 Read/Write/Edit，不走 save_holdings。看板 `get_board_payload` 实时读，改完即显。
+**预防**: 常驻「编辑股数→0 自动删」若要落，需改 MCP（加 delete_holding / 放宽守恒校验）+ 重启 Desktop。
+
+## [NOTE-20260714-002] 看板 seg/plate 来自 `_index/细分环节.json`（非 record 的 track）→ 新标的入库须补这张表
+**状态**: ✅ 已知
+**优先级**: 🟢 低（每次新标的入 records 会遇）
+**触发场景**: 新标的写进 records 后，看板仍显示 seg=未归类。
+**现象/根因**: `board_data.py` 的 seg/plate 从 `龙鱼-标的分析库/_index/细分环节.json` 的 `map[ts_code]` 取（`{板块,环节,label,name}`），**不读 record 的 `track` 字段**（track 只作展示文本）。record 有六维但缺这张表的映射 → 落「未归类」。
+**解决方案**: 新标的入库时一并补 `_index/细分环节.json` 的 `map` 一条（如光库 300620.SZ → `{"板块":"AI硬件","环节":"光通信","label":"AI硬件｜光通信","name":"光库科技"}`）。
+**预防**: 把「补 seg 映射」纳入入库 playbook 常规步（与 record_writer + build_index 并列）。
