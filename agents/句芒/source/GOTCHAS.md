@@ -15,6 +15,7 @@
 - [ ] **长耗时 subprocess 卡死 session** — 项目审核脚本无 timeout 导致 session 挂起。**修复**：所有 subprocess 调用必须设 timeout（2026-05-23 session crash）
 - [ ] **Conch 周扫连续失败** — consecutiveErrors=2，报错 `Error: [1500] Unknown error`。可能原因：扫描范围过大导致 timeout（timeoutSeconds=300），或 Phase 1.6 数据健康检查卡住。**待排查**：手动跑一次观察（2026-05-31 发现）
 - [ ] **旧脚本路径残留** — `build_market_db.py` 仍引用 `dragon-palace/` 旧路径，`update_800_stocks_*.py` 已被 `update_market_data.py` 替代但未清理（2026-06-03 发现）
+- [ ] **ALTER RENAME 幂等碰撞误判** — 改主库退役表时 `ALTER TABLE x RENAME TO y` 报 `no such table: x`，但 `.tables`/`PRAGMA quick_check` 显示末态已正确（x 无、y 在、ok）＝重命名已生效、二次点名才报错。**处置**：看末态别看报错，末态对就别回滚（2026-07-17 fx_daily 退役发现）
 
 ### 🟢 低优先级
 - [ ] memory/ 日记连续性有断档 (4月16日→5月5日)
