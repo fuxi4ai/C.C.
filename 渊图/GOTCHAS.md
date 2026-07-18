@@ -315,3 +315,10 @@ updated: 2026-07-18
 - 动 brain tracked 文件前先 `git log --oneline -3 -- <file>` 看当日是否有并发会话触碰；写完到 Doctor commit 之间若跨越较长时间，commit 前重新核验。
 - 引用 canonical 计数前**当场读盘**，不沿用会话早期读到的值——并发 promote 会让它在会话中途改变。
 **预防**: 长会话中 brain 文件的「改 → 报告 → Doctor 提交」链条越长，被并发覆盖的窗口越大；高价值改动应**改完立刻请 Doctor 提交**，不要攒到会话末尾。
+
+**追加（同日 · CC 二次踩坑 · 铁律边界订正）**: 铁律「不在沙箱跑 git 写命令」的边界被 CC 划错——以为只禁写命令，于是跑了 `git status --short` 做落盘核验。**`git status` 会刷新索引并创建 `.git/index.lock`，而沙箱无权删除**（输出末尾已有 `warning: unable to unlink '.git/index.lock': Operation not permitted`，CC 当时未理会），残留 0 字节孤儿锁，导致 Doctor 终端 commit 报 `Another git process seems to be running`。
+- **订正后的铁律：沙箱内不跑任何 git 子命令，包括 `status`/`diff`/`log` 等看似只读的**。
+- 需核验落盘一律用 `grep` / `stat` / `ls`；需看仓库状态则构造命令交 Doctor 终端。
+- 残留锁处理：确认无真 git 进程后 `rm -f .git/index.lock`（本次锁为 0 字节、ps 无 git 进程，安全删除）。
+
+**追加二（同日 · 交付格式教训）**: CC 把「拟写入文件的 Markdown 正文」放进代码块给 Doctor 过目，Doctor 误当命令粘进终端，触发一串 `command not found`（无副作用）。**规则：代码块只放可执行命令；给 Doctor 审阅的文档正文用引用块或普通段落呈现，并显式标注「这是文件内容，不是命令」。** 更根本的是——**文件内容应由 CC 自己写入，不该让 Doctor 手工搬运**。
