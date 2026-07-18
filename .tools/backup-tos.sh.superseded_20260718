@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# backup-tos.sh — 数据层核心档 → 火山引擎 TOS（对象存储）
+# （CC 2026-07-18；取代原 backup-icloud.sh 的数据层设想。Doctor 裁定：整条 crontab 停、数据层走 TOS）
+#
+# 备份范围（~118MB，只收「不可再生」的）：
+#   1. recap.db                  5.1MB  几个月课件沉淀（industry_signals/dim1-4/emotion_cycle），任何 API 拉不回
+#   2. Raw-Recap/              112MB  235 份原始课件 = recap.db 的上游来源，比 recap.db 更根本
+#   3. business_breakdown.db     0.6MB
+# 明确不收：
+#   Douyin(66G)/YouTube — 可重下 ｜ Market-Data(2.4G) — tushare 可重拉
+#   各类 *.bak(2.0G) — 本地回滚锚，异地无意义
+#   龙鱼-标的分析库/ — 它自己是 git 仓且有远端 fuxi4ai/longyu-analysis-lib
+#
+# 凭证：读 ~/Documents/Database/.env（该目录非 git 仓，天然不会被提交）
+#   需含：TOS_ACCESS_KEY / TOS_SECRET_KEY / TOS_ENDPOINT / TOS_BUCKET
+#   可选：TOS_PREFIX（默认 zzjy-data）
+#
+# 用法：
+#   bash ~/Documents/Claude/brain/.tools/backup-tos.sh              # 跑一次
+#   bash ~/Documents/Claude/brain/.tools/backup-tos.sh --dry-run    # 只做快照与校验，不上传
+#
+# ⚠️ 前置：需先装 tosutil 并确认凭证传法（见下方 TOS_FLAGS 注释）
+
+set -uo pipefail          # 刻意不用 -e：单项失败要继续跑完其余项并在末尾汇总
+
+ENV_FILE="${HOME}/Documents/Database/.env"
+DB_SRC="${HOME}/Documents/Database"
+SNAP="/tmp/zzjy-dbsnap"
+LOG="${HOME}/Documents/Claude/brain/.tools/backup-tos.log"
+DRY_RUN=0
+[ "${1:-}" = "--dry-run" ] && DRY_RUN=1
+
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+FAILED=0
+
+# ── 凭证 ────────────────────────────────────────────────
+if [ ! -f "${ENV_FILE}" ]; then echo "✗ 缺 ${ENV_FILE}"; exit 1; fi
+set -a; . "${ENV_FILE}"; set +a
+: "${TOS_BUCKET:?缺 TOS_BUCKET（写进 ${ENV_FILE}）}"
+TOS_PREFIX="${TOS_PREFIX:-zzjy-data}"
+
+# ⚠️ 凭证传法二选一——用 `tosutil help sync` 核实后二选一，另一行注释掉：
+#   (a) 每条命令带 -i/-k/-e（凭证只在 .env，不落 tosutil 配置文件；本脚本默认）
+TOS_FLAGS=(-i="${TOS_ACCESS_KEY:-}" -k="${TOS_SECRET_KEY:-}" -e="${TOS_ENDPOINT:-}")
+#   (b) 若 sync 不吃这些 flag：先一次性 `tosutil config -i=.. -k=.. -e=..`，然后把上一行改成：
+# TOS_FLAGS=()
+
+# ── SQLite 一致性快照 ───────────────────────────────────
+# 直接传活库可能拷到撕裂状态；.backup 在并发写下也能出完整副本
+snap_db() {
+  local src="$1" name="$2"
+  if [ ! -f "${src}" ]; then echo "  ⏭ 跳过（不存在）：${name}"; return; fi
+  if ! sqlite3 "${src}" ".backup '${SNAP}/${name}'" 2>/dev/null; then
+    echo "  ✗ ${name} 快照失败（库被独占锁？）——保留云端上一版"; FAILED=1; return
+  fi
+  if sqlite3 "${SNAP}/${name}" "PRAGMA quick_check;" 2>/dev/null | grep -q '^ok$'; then
+    echo "  ✓ ${name} 快照 OK（$(du -h "${SNAP}/${name}" | cut -f1)）"
+  else
+    echo "  ✗ ${name} quick_check 未过——删快照、保留云端上一版"; rm -f "${SNAP}/${name}"; FAILED=1
+  fi
+}
+
+{
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "[${TIMESTAMP}] backup-tos.sh 开始  bucket=${TOS_BUCKET}/${TOS_PREFIX}$([ ${DRY_RUN} = 1 ] && echo '  (DRY-RUN)')"
+
+  rm -rf "${SNAP}"; mkdir -p "${SNAP}"
+  echo "── SQLite 一致性快照 ──"
+  snap_db "${DB_SRC}/烛照九阴/recap.db"                    "recap.db"
+  snap_db "${DB_SRC}/宏观-大宗商品/business_breakdown.db"  "business_breakdown.db"
+
+  if [ ${DRY_RUN} = 1 ]; then
+    echo "── DRY-RUN：跳过上传 ──"
+    echo "  快照产物：$(find "${SNAP}" -type f | wc -l | tr -d ' ') 个，$(du -sh "${SNAP}" 2>/dev/null | cut -f1)"
+  else
+    echo "── 上传 TOS ──"
+    # 数据库快照（小、每次全量覆盖）
+    if ! tosutil "${TOS_FLAGS[@]}" sync "${SNAP}/" "tos://${TOS_BUCKET}/${TOS_PREFIX}/db/" 2>&1 | tail -5; then
+      echo "  ✗ db 上传失败"; FAILED=1
+    fi
+    # 原始课件（大、静态，增量同步；不带 --delete，防本地误删传导到云端）
+    if ! tosutil "${TOS_FLAGS[@]}" sync \
+          "${DB_SRC}/烛照九阴/Raw-Recap/" "tos://${TOS_BUCKET}/${TOS_PREFIX}/Raw-Recap/" 2>&1 | tail -5; then
+      echo "  ✗ Raw-Recap 上传失败"; FAILED=1
+    fi
+  fi
+
+  if [ ${FAILED} = 0 ]; then echo "[${TIMESTAMP}] ✅ 完成"
+  else echo "[${TIMESTAMP}] ⚠️ 有失败项——见上（**绝不静默成功**）"; fi
+  echo ""
+} | tee -a "${LOG}"
+
+exit ${FAILED}

@@ -1,0 +1,46 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-07-18 05:45:10] backup-tos.sh 开始  bucket=dragonpalace/zzjy-data  (DRY-RUN)
+── SQLite 一致性快照 ──
+  ✓ recap.db 快照 OK（4.5M）
+  ✓ business_breakdown.db 快照 OK（576K）
+── DRY-RUN：跳过上传 ──
+  快照产物：2 个，5.1M
+[2026-07-18 05:45:10] ✅ 完成
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-07-18 05:49:08] backup-tos.py 开始  tos://dragonpalace/zzjy-data  (DRY-RUN)
+── SQLite 一致性快照 ──
+  ✓ recap.db 快照 OK（4.5 MB）
+  ✓ business_breakdown.db 快照 OK（0.6 MB）
+  待处理 414 个对象，共 115.8 MB（数据库 2 · 课件 412）
+── DRY-RUN：不联网、不上传 ──
+    db/recap.db
+    db/business_breakdown.db
+    Raw-Recap/260107四维度训练营-总结.pdf
+    Raw-Recap/260623四维度训练营-总结.pdf
+    Raw-Recap/260701四维度训练营-总结.pdf
+    …… 另 409 个
+[2026-07-18 05:49:08] ✅ 完成
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-07-18 05:50:09] backup-tos.py 开始  tos://dragonpalace/zzjy-data  (DRY-RUN)
+── SQLite 一致性快照 ──
+  ✓ recap.db 快照 OK（4.5 MB）
+  ✓ business_breakdown.db 快照 OK（0.6 MB）
+  待处理 414 个对象，共 115.8 MB（数据库 2 · 课件 412）
+── DRY-RUN：不联网、不上传 ──
+    db/recap.db
+    db/business_breakdown.db
+    Raw-Recap/260107四维度训练营-总结.pdf
+    Raw-Recap/260623四维度训练营-总结.pdf
+    Raw-Recap/260701四维度训练营-总结.pdf
+    …… 另 409 个
+[2026-07-18 05:50:09] ✅ 完成
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-07-18 06:03:38] backup-tos.py 开始  tos://dragonpalace/zzjy-data
+── SQLite 一致性快照 ──
+  ✓ recap.db 快照 OK（4.5 MB）
+  ✓ business_breakdown.db 快照 OK（0.6 MB）
+  待处理 414 个对象，共 115.8 MB（数据库 2 · 课件 412）
+── 上传 TOS ──
+  上传 414 个（115.8 MB）· 跳过 0 个（云端已一致）· 失败 0 个
+[2026-07-18 06:03:38] ✅ 完成
