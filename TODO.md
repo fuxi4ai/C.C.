@@ -11,6 +11,15 @@ type: log
 
 ## 待办
 
+- [ ] **扫一遍还有几个 brain 注册项目缺 `GOTCHAS.md`**（2026-07-19 挂 · 低优先）
+  烛照九阴是撞见才发现没有的，REQ-F2 当年标了 `[x]`「所有 brain 注册项目补齐 GOTCHAS」，说明当时可能只漏了它、也可能不止。
+  `for d in ~/Documents/Claude/brain/*/; do [ -f "$d/GOTCHAS.md" ] || echo "缺: $d"; done`
+  （Doctor 未表态，CC 按「不升 permanent、挂 TODO 即可」的默认处理）
+
+- [ ] **重跑 F5 校准取两腿新 lift**（2026-07-19 挂 · 中优先）
+  债腿降信息层后，纪要里的 lift 1.46 / 三态温度 3.2%·4.4%·9.7% 全是三腿口径，已标 ⚠ 但标注≠修好。
+  `cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 tools/calibrate_risk_factors.py`
+
 - [x] **给渊图跑 graphify**（832 nodes, $9.62）
   `cd ~/Documents/Database/行业研究 && graphify . --obsidian --obsidian-dir ~/Documents/Claude/brain/graphify/渊图`
   （需先确认 graphify 在 PATH：`export PATH="$PATH:~/.local/bin"`）
