@@ -2,7 +2,7 @@
 title: 烛照九阴 · GOTCHAS（已知坑）
 tags: [烛照九阴, gotchas]
 created: 2026-07-19
-updated: 2026-07-19
+updated: 2026-07-21
 status: active
 type: resource
 project: 烛照九阴
@@ -117,3 +117,26 @@ if d <= _lo_cov or lo >= _hi_cov: out["F4"] = None
 **边界**：本条只约束**截面占比**类统计。个股时间序列（单只票的价格/成交）不受影响——扩容只加票、不改已有票的历史。
 
 **来源** → `logs/2026-07-18-回调级别判别器.md`（坑首次暴露）· 本条 2026-07-19 由 Doctor 确认设计意图并补全边界日期
+
+---
+
+## [ERR-20260721-001] zhuzhao 任务 /tmp 副本域下 `DATABASE_ROOT.parent` 拼第三方路径全部失效——A6 断更 / B6 不可读 / 级别读数块消失,三症同根
+
+**状态**: ✅ 已解决(2026-07-21 修 gen_daily_report.py ×3 + calibrate_risk_factors.py ×1 + config b6.universe;Doctor 批清单后落地)
+
+**现象**:S2 首份日报(数据日 20260720)三症并发:①A6「最新分位 p91(数据截至 2026-07-17·当日缺→不可评)」;②B6「缺数·分位不可得(stock_daily/宇宙不可读)」;③回调级别读数块整体消失(全文 0 处渲染)。温度「共振1/1」——环境层三盏仅 F1 可评;B6 实际 p96 本应亮灯,当晚真值应为「共振2/3」,读数被低估。
+
+**根因**:zhuzhao 日更任务按 0623 管线 PRD 走 /tmp 副本域(`ZZJY_DATABASE_ROOT` 覆盖 `config.DATABASE_ROOT`)。凡以 `DATABASE_ROOT.parent` 拼「Database/ 之外的第三方路径」者,任务域下全部指向不存在的 /tmp/...:
+
+- grade_section 的 adjustment_grade.py 路径 → subprocess 双分支 FileNotFoundError 被 `except: continue` 静默吞掉 → **`--update` 从未在定时 run 里执行过** → index_research.db 断更在 0717 → A6 当日缺;
+- B6 的 universe_fixed.json 路径 → json.load OSError → 「不可读」。
+
+A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到真库,只是库没人更新。**数据本体全程无缺**:stock_daily 更到 0720、729 池当日截面 727 只、B6 只读复现 3.4s 出数(p96)。0718 部署当天的「三分支实测」全部跑在开发环境真路径下,任务域首个交易日(0720)即翻车——**开发环境实测 ≠ 任务沙箱域实测**(G-X8/G-X51 同族)。
+
+**判别信号**:日报 A6/B6/级别块任意组合「不可评/不可读/消失」,而同款命令终端手动跑一切正常;`index_research.db` 的 max(trade_date) 落后 `stock_daily`。
+
+**正确做法**:任务域内引用 Database/ 之外的资产,锚一律取 `PROJECT_ROOT`(脚本真实位置)或 `OUTPUT_ROOT`,禁用 `DATABASE_ROOT.parent`;config `b6.universe` 语义=相对 OUTPUT_ROOT。凡新增跨域路径,须在 `ZZJY_DATABASE_ROOT=/tmp/空目录` 模拟下断言可达再上线。静默吞噬按 0714 根治口径改 fail-loud(stderr 一行 + 日报灰字占位)。
+
+**断点回补**:2026-07-21 Doctor 终端 `adjustment_grade.py --update --json` 一次补齐三指数 0720+0721(各 +2 行),同时反证 token/网络/接口全程无恙。
+
+**来源** → 本场会话(2026-07-21,日志待 /save)· 承 [[2026-07-19-口径对齐-龙鱼订正与F5债腿降层]] S2 线 · PRD B 组 B1/B2 的数据链前提
