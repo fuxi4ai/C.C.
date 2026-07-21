@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-07-07
+updated: 2026-07-21
 status: active
 type: log
 ---
@@ -10,6 +10,26 @@ type: log
 # TODO
 
 ## 待办
+
+> 下面 6 条为 2026-07-21 文件系统健康自检产出（Doctor 批「全部挂 TODO」）。清理执行明细见 `~/Documents/_to_delete_20260721/_MANIFEST.md`（观察期至 2026-08-20）。
+
+- [ ] **E1 · DVA 13 个空转写重跑 ASR**（2026-07-21 挂 · 自检产出 · 中优先）
+  SansanYe×9/老石×2/AI个体指南×1 等 0 字节转写＝假完成标记（`dva_asr.py` 幂等只查存在不查大小，挡自动重转）；重跑须视频在场——**任何视频冷层外移前必须先完成本项**；连 `dy_downloader.db` 的 subtitleSource 状态一起核。附带反向对账「有转写无视频」（投知 183>179、卷宇宙 114>100）。
+
+- [ ] **E2 · $CODEX_HOME 字面目录根因修复 + 归位**（2026-07-21 挂 · 低优先）
+  Documents 根 `$CODEX_HOME/`＝变量未展开 bug，内含 automation「DVA 定期补库」memory.md（有价值）。顺序：Codex App 侧确认 automation dva-16469639bf3b 已停用 → memory.md 并回真实 CODEX_HOME → bug 目录进隔离区 → 修 automations 里未展开的变量引用。确认前不动（否则目录再生）。
+
+- [ ] **E3 · artifact 保存钩子节流**（2026-07-21 挂 · 改生产脚本，届时单独出方案批）
+  `gen_daily_report.py:1392` 每次保存落 2.1MB 全量 index.bak 无轮换（07-08 单日 42 份，且与日报侧 `.pre-*` 同一动作双倍落盘）；拟「同日只留末份 + 跨日轮换保 N」；`.pre-*` 同源同治（管线直落 `archived/_pre-snapshots/` + 轮换）。
+
+- [ ] **E4 · 备份策略统一 gz + 轮换**（2026-07-21 挂 · 改生产脚本，同上单独批）
+  Market-Data gz 快照已示范（~75MB/份，较裸 .bak 省 3.2 倍）；拟裸 .bak 复制流全面转 gz；recap predaily/preingest 双钩子同日去重；`bak_fxdeprecate_20260717` 等观察期锚随新策略自然轮换出局。
+
+- [ ] **E7 · 转写覆盖率测量陷阱记 DVA GOTCHAS**（2026-07-21 挂 · 低优先）
+  长标题文件名截断丢 aweme_id → ID-join 覆盖率 49% 假象，稳健口径实测 ≈97%+。防未来复测再踩。
+
+- [ ] **dyd 侧 dy_downloader.db 旧副本核实**（2026-07-21 挂 · 低优先 · Doctor 定「留原地挂 TODO」）
+  `Claude/Projects/DVA/dyd/dy_downloader.db`（110MB，07-13）比 ops 活跃本体（`DVA-ops/runtime/`，07-18）旧 5 天；核 dyd 本地开发流是否还读它——不需要则移隔离区，避免开发误用旧库。
 
 - [ ] **扫一遍还有几个 brain 注册项目缺 `GOTCHAS.md`**（2026-07-19 挂 · 低优先）
   烛照九阴是撞见才发现没有的，REQ-F2 当年标了 `[x]`「所有 brain 注册项目补齐 GOTCHAS」，说明当时可能只漏了它、也可能不止。
