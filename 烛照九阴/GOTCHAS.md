@@ -25,7 +25,7 @@ project: 烛照九阴
 
 ## [ERR-20260722-002] 生成器「已部署到 Cowork artifact」日志误导——写的是非规范本地镜像，非 live 真身
 
-**状态**: 🟧 部分解决（根因坐实；生成器误导文案待改 · propose-then-confirm）
+**状态**: ✅ 已解决（根因坐实 + 生成器误导文案已正名 2026-07-22；ARTIFACT_ROOT 是否统一为可选优化、非缺陷，暂不动）
 
 **现象**：手动跑 `gen_daily_report.py`（正式模式）日志打「🚀 已部署到 Cowork artifact → ~/Documents/Claude/Artifacts/...」，看着像 live 卡片更新了，但 Cowork 卡片其实没变——非手工 `update_artifact` 不动。
 
@@ -38,7 +38,7 @@ project: 烛照九阴
 
 **判别信号**：改了报告、生成器打「已部署」，但 Cowork 卡片不变；手工 `update_artifact` 后才变。
 
-**正确做法**：更新 live 卡片**只认 `update_artifact`**（daily 走 step 6.5；手动改后须自己补一发 `update_artifact`，html 取生成器写出的自包含 index.html）。**待改（propose-then-confirm）**：改生成器日志/注释，把「已部署到 Cowork artifact / 无需手工 update_artifact」正名为「已写本地镜像（非 live 真身，live 更新走 update_artifact）」；是否顺带把 `ARTIFACT_ROOT` 指向真身或删镜像，待 Doctor 定（直写真身能否被 Cowork 认、manifest 刷不刷，均未验，勿盲改）。
+**正确做法**：更新 live 卡片**只认 `update_artifact`**（daily 走 step 6.5；手动改后须自己补一发 `update_artifact`，html 取生成器写出的自包含 index.html）。**已改（2026-07-22 · Doctor 批）**：生成器 `_deploy_to_artifact` docstring/日志/meta 描述 + line44 注释已正名——日志由「🚀 已部署到 Cowork artifact」改「🪞 已写本地 artifact 镜像（非 live·真身走 update_artifact）」、meta 改「定时链 step 6.5 经 update_artifact 推送」、docstring 明写此目录非 live 真身。逻辑零改、py_compile 过。**仍开放（可选优化·非缺陷）**：是否把 `ARTIFACT_ROOT` 指向真身或删镜像——直写 `~/Claude's workspace/Artifacts` 能否被 Cowork 认、manifest 刷不刷均未验，Doctor 定「暂不动」。
 
 **来源** → logs/2026-07-22-成交额口径纠偏与条幅两行artifact推送.md · [[artifact存储机制]]
 
