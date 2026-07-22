@@ -23,6 +23,22 @@ project: 烛照九阴
 
 ---
 
+## [ERR-20260722-002] Cowork artifact 真身路径 与 生成器 ARTIFACT_ROOT 疑似不同源
+
+**状态**: ⏳ 待核（未证实是否软链；Doctor 终端待查）
+
+**现象**：`list_artifacts` 返回 zhuzhao-jiuyin-daily 的 path＝`~/Claude's workspace/Artifacts/zhuzhao-jiuyin-daily/index.html`，而生成器 `_deploy_to_artifact` 的 `config.ARTIFACT_ROOT` 写的是 `~/Documents/Claude/Artifacts/...`——两条路径字面不同源。
+
+**风险（若非软链）**：每天 07:00 定时链日志「🚀 已部署到 Cowork artifact」写的是 Cowork **不读**的那份镜像 → live 卡片不随定时链自动更新，只有手工 `update_artifact` 才真更新（这解释了 Doctor 直觉「有个 artifact 推送功能吧」）。本次修复版即靠 `update_artifact` 推送才落到真身、manifest updatedAt 才刷新。
+
+**判别信号**：生成器 deploy 日志的目标路径 ≠ `list_artifacts` 返回的 path；或改了报告但 Cowork 卡片不变、手工 update_artifact 后才变。
+
+**待核做法**（CC 沙箱未挂载 `Claude's workspace`，判不了软链）：Doctor 终端 `ls -la ~/"Claude's workspace"/Artifacts` + `readlink ~/Documents/Claude/Artifacts`（或 `stat` 比 inode）。若确非软链 → 修 `config.ARTIFACT_ROOT` 指向真身，让生成器 deploy 直达 Cowork 读的那份；证实后本条转 ✅ 并考虑是否升 [[通用教训]] G-X（「生成器自动部署路径 ≠ 平台真身路径」，待第二例）。
+
+**来源** → logs/2026-07-22-成交额口径纠偏与条幅两行artifact推送.md
+
+---
+
 ## [ERR-20260722-001] 日报把 market_amount_daily 成指代理当「两市/全市场成交额」显示——系统性低估约2成
 
 **状态**: ✅ 已解决（2026-07-22 换源）
