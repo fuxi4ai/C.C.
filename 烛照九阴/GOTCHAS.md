@@ -23,19 +23,24 @@ project: 烛照九阴
 
 ---
 
-## [ERR-20260722-002] Cowork artifact 真身路径 与 生成器 ARTIFACT_ROOT 疑似不同源
+## [ERR-20260722-002] 生成器「已部署到 Cowork artifact」日志误导——写的是非规范本地镜像，非 live 真身
 
-**状态**: ⏳ 待核（未证实是否软链；Doctor 终端待查）
+**状态**: 🟧 部分解决（根因坐实；生成器误导文案待改 · propose-then-confirm）
 
-**现象**：`list_artifacts` 返回 zhuzhao-jiuyin-daily 的 path＝`~/Claude's workspace/Artifacts/zhuzhao-jiuyin-daily/index.html`，而生成器 `_deploy_to_artifact` 的 `config.ARTIFACT_ROOT` 写的是 `~/Documents/Claude/Artifacts/...`——两条路径字面不同源。
+**现象**：手动跑 `gen_daily_report.py`（正式模式）日志打「🚀 已部署到 Cowork artifact → ~/Documents/Claude/Artifacts/...」，看着像 live 卡片更新了，但 Cowork 卡片其实没变——非手工 `update_artifact` 不动。
 
-**风险（若非软链）**：每天 07:00 定时链日志「🚀 已部署到 Cowork artifact」写的是 Cowork **不读**的那份镜像 → live 卡片不随定时链自动更新，只有手工 `update_artifact` 才真更新（这解释了 Doctor 直觉「有个 artifact 推送功能吧」）。本次修复版即靠 `update_artifact` 推送才落到真身、manifest updatedAt 才刷新。
+**根因坐实**（2026-07-22，`readlink` 确认**非软链**）：
+- `config.ARTIFACT_ROOT = <Documents>/Claude/Artifacts`（`config.py:52`，`PROJECT_ROOT.parents[3]`）——生成器 `_deploy_to_artifact` 写这里。
+- Cowork **真身**按 `list_artifacts` 的 `path` 落在 `~/Claude's workspace/Artifacts/{id}/index.html`（本环境 Cowork 工作区，另一物理目录；疑自 06-30 gateway 切换后与 Documents 镜像脱钩，参 [[artifact存储机制]]）。
+- 两者不同源 → 生成器的文件写只更新**非规范镜像**，Cowork 不读它。
 
-**判别信号**：生成器 deploy 日志的目标路径 ≠ `list_artifacts` 返回的 path；或改了报告但 Cowork 卡片不变、手工 update_artifact 后才变。
+**关键澄清（勿再误判）**：**live 卡片并非不更新**——定时链 SKILL（`Scheduled/zhuzhao-market-fetch-daily-report` step 6.5）每天独立做 §6.5 兼容转换后调 `update_artifact` 推真身，日更正常。缺陷只在**生成器自身的文案**：`_deploy_to_artifact` 的 `🚀 已部署到 Cowork artifact` 日志 + `无需手工 update_artifact` 注释（gen_daily_report.py ~line1405）给手动运行者**假信心**。
 
-**待核做法**（CC 沙箱未挂载 `Claude's workspace`，判不了软链）：Doctor 终端 `ls -la ~/"Claude's workspace"/Artifacts` + `readlink ~/Documents/Claude/Artifacts`（或 `stat` 比 inode）。若确非软链 → 修 `config.ARTIFACT_ROOT` 指向真身，让生成器 deploy 直达 Cowork 读的那份；证实后本条转 ✅ 并考虑是否升 [[通用教训]] G-X（「生成器自动部署路径 ≠ 平台真身路径」，待第二例）。
+**判别信号**：改了报告、生成器打「已部署」，但 Cowork 卡片不变；手工 `update_artifact` 后才变。
 
-**来源** → logs/2026-07-22-成交额口径纠偏与条幅两行artifact推送.md
+**正确做法**：更新 live 卡片**只认 `update_artifact`**（daily 走 step 6.5；手动改后须自己补一发 `update_artifact`，html 取生成器写出的自包含 index.html）。**待改（propose-then-confirm）**：改生成器日志/注释，把「已部署到 Cowork artifact / 无需手工 update_artifact」正名为「已写本地镜像（非 live 真身，live 更新走 update_artifact）」；是否顺带把 `ARTIFACT_ROOT` 指向真身或删镜像，待 Doctor 定（直写真身能否被 Cowork 认、manifest 刷不刷，均未验，勿盲改）。
+
+**来源** → logs/2026-07-22-成交额口径纠偏与条幅两行artifact推送.md · [[artifact存储机制]]
 
 ---
 
