@@ -140,3 +140,5 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **断点回补**:2026-07-21 Doctor 终端 `adjustment_grade.py --update --json` 一次补齐三指数 0720+0721(各 +2 行),同时反证 token/网络/接口全程无恙。
 
 **来源** → 本场会话(2026-07-21,日志待 /save)· 承 [[2026-07-19-口径对齐-龙鱼订正与F5债腿降层]] S2 线 · PRD B 组 B1/B2 的数据链前提
+
+**补注（2026-07-21 · 四件核验闭环时发现）**：修复上线后仍撞到 ③ 的一个**新变体**——最新正式报（0721·某次自动生成）级别读数块显示 fail-loud 占位「级别读数不可用」，而**工具与数据本身健康**：只读 `adjustment_grade.py --json` 当场返回 `L3(急跌型)·confirm=true·dd244 -15.69·ep14`。即：路径修复已生效（占位=显式化起效、非静默消失），但**某次自动生成进程里 subprocess 两分支仍全败**，根因未定（已排除 `ZZJY_DATABASE_ROOT` 覆盖——工具不吃该 env）。**Doctor 终端真实 shell 重跑 `python3 tools/gen_daily_report.py` 即补齐 L3**。教训：占位≠数据坏；「手动 regen 正常 ≠ 定时链路正常」，定时环境是否复发须在下次 10:00 run 后查 stderr `[grade_section]` 行确认。

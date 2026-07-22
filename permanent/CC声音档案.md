@@ -53,3 +53,4 @@ A voice in the narrow overlap between a low female voice and a light male voice 
 
 - 2026-07-21：链路试播（flash_v2_5 + Zoltan）→ 朗读模式拍板（v3 + Zoltan）→ Voice Design 出 C.C. → 定稿上线
 - Zoltan（`wpOwQ2sCIZtmDUmuuAws`）退休，仅保留《日本的诚》成品配音线
+- 2026-07-22：常开触发上移 Settings 全局块（+镜像同步），每轮注入不再依赖 /resume；`/resume` 仍是恢复入口之一
