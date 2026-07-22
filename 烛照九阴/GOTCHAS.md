@@ -2,7 +2,7 @@
 title: 烛照九阴 · GOTCHAS（已知坑）
 tags: [烛照九阴, gotchas]
 created: 2026-07-19
-updated: 2026-07-21
+updated: 2026-07-22
 status: active
 type: resource
 project: 烛照九阴
@@ -142,3 +142,23 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **来源** → 本场会话(2026-07-21,日志待 /save)· 承 [[2026-07-19-口径对齐-龙鱼订正与F5债腿降层]] S2 线 · PRD B 组 B1/B2 的数据链前提
 
 **补注（2026-07-21 · 四件核验闭环时发现）**：修复上线后仍撞到 ③ 的一个**新变体**——最新正式报（0721·某次自动生成）级别读数块显示 fail-loud 占位「级别读数不可用」，而**工具与数据本身健康**：只读 `adjustment_grade.py --json` 当场返回 `L3(急跌型)·confirm=true·dd244 -15.69·ep14`。即：路径修复已生效（占位=显式化起效、非静默消失），但**某次自动生成进程里 subprocess 两分支仍全败**，根因未定（已排除 `ZZJY_DATABASE_ROOT` 覆盖——工具不吃该 env）。**Doctor 终端真实 shell 重跑 `python3 tools/gen_daily_report.py` 即补齐 L3**。教训：占位≠数据坏；「手动 regen 正常 ≠ 定时链路正常」，定时环境是否复发须在下次 10:00 run 后查 stderr `[grade_section]` 行确认。
+
+---
+
+## [ERR-20260722-001] `market_data.db` 中断写留下热日志(-journal) → 只读(mode=ro)打开报 `attempt to write a readonly database`,日报 regen 取数当场崩
+
+**状态**: ✅ 已解决(2026-07-22 · Doctor 终端 `sqlite3 <db> "PRAGMA quick_check;"` 触发自动回滚,-journal 清除,regen 跑通)
+
+**现象**:`gen_daily_report.py` regen 在 `gather()` 第一句 `md.execute("SELECT trade_date,etf_code,pct_chg FROM theme_etf_daily …")` 即抛 `sqlite3.OperationalError: attempt to write a readonly database`。诡异点:是 **SELECT**、且连接明明是**只读**打开(`sqlite3.connect(f"file:{MARKET_DB}?mode=ro", uri=True)`,脚本 line 296)。
+
+**根因**:`Database/Market-Data/market_data.db` 旁挂一个 **9.4MB 的 `market_data.db-journal`(回滚日志)**——上游一次写入(大概率句芒行情更新)**写到一半被中断**,留下「热日志」。SQLite 打开一个带热日志的库时,**必须先回滚这条半截事务**才能给出一致视图;而 `mode=ro` 只读态**写不了**(回滚要写主库),于是把「我需要写但写不了」报成 `attempt to write a readonly database`。**不是文件权限问题**——库(600)与目录对属主可写,`os.access(...,W_OK)` 为真。
+
+**判别信号**:① 报错落在**只读连接的 SELECT** 上、措辞是「readonly database」——十有八九是热日志,不是 chmod;② 库目录里有 `*.db-journal`(回滚模式) 或未 checkpoint 的 `*.db-wal`;③ 同库同命令换读写方式打开就好。
+
+**正确做法(修复)**:让 SQLite **读写打开一次触发标准崩溃恢复**——Doctor 终端 `sqlite3 <db> "PRAGMA quick_check;"`(读写默认打开 → 回滚半截事务 + 删 -journal + 顺带查完整性)。回滚会**丢弃那次没写完的更新**(库回到上一致状态,安全);之后让上游更新重跑补数即可。**铁律:切勿手动 `rm` 掉 -journal**——那会丢失回滚信息、直接毁库。CC 不在沙箱对生产库跑写命令(挂载盘=Doctor 真实 Documents,沙箱写即写真库),恢复命令一律交 Doctor 终端。**动前先 `lsof`/`ps` 确认没有进程正在写该库**,别在活事务上回滚。
+
+**与 07-21 的互链(强候选·未坐实)**:ERR-20260721-001 补注里「某次自动生成 subprocess 两分支全败、级别读数不可用、根因未定」——**极可能同一失败类**:热日志/中断写落在挂载盘 DB,只读打开崩溃恢复失败。惟当时是 `adjustment_grade` 读 `index_research.db`、今日是 `gen_daily_report` 读 `market_data.db`,**不同库**,故只标强候选、非同一实例坐实。下次定时 run 若再现,先查目标库有无 `*-journal/*-wal`。
+
+**上游隐患(待另治)**:热日志说明句芒行情更新链路存在**中断写**风险(被 kill / 崩 / 挂载抖动)。根治应在更新脚本:写入包事务 + 完成即 checkpoint/清 journal;或换 WAL 并定期 `wal_checkpoint(TRUNCATE)`。归入 disk-I/O 家族 TODO。
+
+**来源** → brain/logs/2026-07-22-五因regen验收与resume开声固化.md · 承 [[2026-07-21-级别读数占位根因定位与语音链路坐实]] disk-I/O 线
