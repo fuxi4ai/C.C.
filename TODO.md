@@ -14,6 +14,16 @@ type: log
 - [ ] **明晨定时 10:00 run 后查级别读数块 + stderr `[grade_section]` 行**（2026-07-21 挂 · 时间敏感）
   17:43 手动 regen 已把 ③ 补上 L3(急跌型)，但**定时链路是否复发未定论**。明晨那次自动 run 后：③ 正常且无 `[grade_section]` stderr 行 → 17:09 属一次性瞬态，结案；若仍现占位/有该行 → 定时环境仍触发，再挖生成进程 python/依赖。参 [[烛照九阴/GOTCHAS]] ERR-20260721-001 补注 · [[2026-07-21-语音默认加载与S2四件核验]]。
 
+- [ ] **brain-save skill Step 5 的 `git add -A` 默认待审查/改**（2026-07-23 挂 · Doctor 授权仅记待办·暂不改 skill）
+  Step 5 默认 `git add -A && commit && push`，在工作树积压未提交改动时会混入范围不明的改动（DVA offsite 收尾实例 · 参 [[通用教训]] G-X83 / DVA GOTCHAS GIT-20260723-001）。建议默认流程改为「先探后加」：
+  ```
+  git status --short
+  git add <明确文件列表>
+  git diff --cached --check
+  git diff --cached --stat
+  ```
+  只有确认工作树全部改动均属本次保存范围，才允许 `git add -A`。**改 skill 须走 Settings > Capabilities**，本条只记待办、不擅改。
+
 > 下面 6 条为 2026-07-21 文件系统健康自检产出（Doctor 批「全部挂 TODO」）。清理执行明细见 `~/Documents/_to_delete_20260721/_MANIFEST.md`（观察期至 2026-08-20）。
 
 - [ ] **E1 · DVA 13 个空转写重跑 ASR**（2026-07-21 挂 · 自检产出 · 中优先）
