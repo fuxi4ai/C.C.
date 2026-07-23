@@ -199,3 +199,16 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **上游隐患(待另治)**:热日志说明句芒行情更新链路存在**中断写**风险(被 kill / 崩 / 挂载抖动)。根治应在更新脚本:写入包事务 + 完成即 checkpoint/清 journal;或换 WAL 并定期 `wal_checkpoint(TRUNCATE)`。归入 disk-I/O 家族 TODO。
 
 **来源** → brain/logs/2026-07-22-五因regen验收与resume开声固化.md · 承 [[2026-07-21-级别读数占位根因定位与语音链路坐实]] disk-I/O 线
+
+
+## ERR-20260722-003 · 沙箱经 FUSE 整库写回，大表(stock_daily)不 durable 落 Mac 真实盘 → 日报隔天退回
+
+**现象**：Doctor 报「复盘日报 artifact 落后一天」。07-23 中午库里 `stock_daily`/五张烛照表停 07-21、唯 `daily_market` 到 07-22。句芒 07-22 日志明写当时已把 07-22 落进 stock_daily（+5526、原子 mv、immutable 复读验过 max=20260722），但 **Doctor 自己 Mac 原生盘复核仍 stock_daily=20260721**。
+
+**根因**：句芒/九儿写库走「整库拷 /tmp → 改 → `mv` 覆盖回挂载盘」。这条 mv 覆盖经 Cowork 的 FUSE 桥回写 Mac 真实文件时**大写入不 durable**：5526 行的 stock_daily 新页没落住、1 行的 daily_market 侥幸落住 → 单表回退。**非 Tushare 缺数、非日报逻辑 bug、非读缓存陈旧**（Doctor 原生盘亲测坐实是"写没落住"＝A 类）。
+
+**判别信号**：① 某表沙箱内写完复读 OK、隔数小时/换进程读又退回旧值；② 大表退回、同库小表存活＝页级部分持久化特征；③ 到 Mac 原生盘复核最新交易日即定 A(写没落)/B(读脏)。
+
+**正确做法（根治）**：写库任务挪回 **Mac 原生 launchd**（本机 ext 写即 durable、无 /tmp mv、无 FUSE），沙箱侧改只读消费。见 `烛照九阴/ops/`（Phase 1）+ [[烛照九阴/architecture/决策记录]] 2026-07-22 迁移条。**缓解（未采）**：写锁 + mv 后 fsync + 丢缓存新连接复读重试。
+
+**同族**：disk-I/O 家族（ERR-20260719-003 历史 0-fill · 五因场热日志 -journal）· 句芒「放回必 cp→原子 mv、绝不 cp 盖原文件」。**来源** → brain/logs/2026-07-22-日报隔天退回根治与Mac原生Phase1.md
