@@ -23,7 +23,7 @@ template_version: v1.0
 > "定了：同一局域网，台式工作站，fuxi-station，访问方法见握手层"（+ 后续两问对齐）
 
 **多轮对齐结论**（2026-07-23 · AskUserQuestion）：
-- 落点：**新建独立 `F:\DVAColdArchive\Douyin\`**（与 Codex 的 `F:\CodexColdArchive` 分开——守 CC↔VV 互不写边界 + 数据层单一可信源）。
+- 落点：**新建独立 `F:\DVA_Vault\Douyin\`**（与 Codex 的 `F:\CodexColdArchive` 分开——守 CC↔VV 互不写边界 + 数据层单一可信源）。
 - 范围：**全部外移 1556 / 66.6 GB**（都已转写/无需转写，视频对分析已无用；要用再 resolver 按 aweme_id 取回）。
 - 传输/协议：复用 VV 指南的 verified-commit 范式，但落 DVA 独立区、用 DVA 自己的提交脚本（不写 Codex 地盘、不复用 Codex `remote_commit.ps1`）。
 
@@ -39,7 +39,7 @@ template_version: v1.0
 
 - [?] 外移编排器 `tools/offsite_push_fuxi.py`（Mac 侧执行·CC 只出脚本+命令）：读 manifest → 选样本 → Prepare/scp/Commit/写 pointer
   - 证据栏：在场、`py_compile` 过；`--dry-run --sample 2` 跑通、生成完整命令序列（Prepare→scp plan→scp 视频→Commit→写 pointer）。
-- [?] DVA 远端提交脚本 `tools/fuxi/dva_remote_commit.ps1`（部署到 `F:\DVAColdArchive\_tools\`）：Prepare/Commit/Status/Verify + SHA-256 校验 + 原子提交 + verification/COMMITTED
+- [?] DVA 远端提交脚本 `tools/fuxi/dva_remote_commit.ps1`（部署到 `F:\DVA_Vault\_tools\`）：Prepare/Commit/Status/Verify + SHA-256 校验 + 原子提交 + verification/COMMITTED
   - 证据栏：在场；Commit 读 `_plan.json` 取 dest+期望 sha、比对不一致即 throw、`Move-Item` 同盘原子提交、写 COMMITTED+verification（UTF-8 无 BOM）。**PowerShell 端到端须 Doctor 在 fuxi 跑（沙箱无 Windows，见 C-小样本干跑）。**
 - [?] pointer 写入 `DVA-ops/state/pointers/<aweme_id>.json`，`resolver` 可读为 offsite 态
   - 证据栏：编排器 Commit 确认 COMMITTED 后写 pointer（offsite_uri/rel_path/sha256/committed_at/session）；resolver 离线联测：源在→hot、源删→offsite，两态正确。
@@ -48,10 +48,10 @@ template_version: v1.0
 
 - [?] 三段哈希一致才提交：本地 sha256（编排器算）→ 写入 `_plan.json` → ps1 比对 incoming 实测 → 提交后 dest 复测；不一致即 throw、不 Move、留 `.incoming`
   - 证据栏：`offsite_push_fuxi.sha256_of` 本地算；ps1 `Get-FileHash` 比对 `$expected`，不一致 `throw REFUSED`；Commit 后再 `Get-FileHash $destFull` 写 verification。**端到端实测 Doctor 跑（[~]，见 C）。**
-- [?] offsite_uri 形如 `fuxi-station:F:/DVAColdArchive/Douyin/<rel_path>`；rel_path 与本地一致
+- [?] offsite_uri 形如 `fuxi-station:F:/DVA_Vault/Douyin/<rel_path>`；rel_path 与本地一致
   - 证据栏：dry-run 输出 offsite_uri 前缀正确、rel_path = manifest 相对路径。
-- [?] 目标仅 `F:\DVAColdArchive\Douyin\`；不碰 Codex 地盘
-  - 证据栏：`grep CodexColdArchive` 编排器/common = 0（仅注释）；ps1 `Assert-UnderRoot` 强制 dest 在 `F:\DVAColdArchive\Douyin` 下、越界 throw。
+- [?] 目标仅 `F:\DVA_Vault\Douyin\`；不碰 Codex 地盘
+  - 证据栏：`grep CodexColdArchive` 编排器/common = 0（仅注释）；ps1 `Assert-UnderRoot` 强制 dest 在 `F:\DVA_Vault\Douyin` 下、越界 throw。
 - [?] 引号安全（承握手层 §3.2/§10）：ssh 内联只传 ascii（session/aweme_id），长路径走 `_plan.json`/scp 文件名
   - 证据栏：`--sample 5` dry-run 所有 `ssh -o` 行经 grep 非 ascii = 0 命中（纯 ascii）。
 - [~] 幂等/断点续传：已 `COMMITTED` 的 aweme_id 重跑跳过、不重传
@@ -97,7 +97,7 @@ template_version: v1.0
 
 ## §三 · 非交付项（范围排除）
 
-- 不包含：碰 Codex 归档区 `F:\CodexColdArchive` / VV 的 `remote_commit.ps1` / ComfyUI / BlenderMCP（只用独立 `F:\DVAColdArchive`）。
+- 不包含：碰 Codex 归档区 `F:\CodexColdArchive` / VV 的 `remote_commit.ps1` / ComfyUI / BlenderMCP（只用独立 `F:\DVA_Vault`）。
 - 不包含：**未经 Doctor 逐批批准就删本地源**（删源永远是 Doctor 批准后的独立动作）。
 - 不包含：清理 fuxi 远端历史归档 / 改防火墙 / 网段 / SSH 升级。
 - 不包含：把 Downloaded 整目录做网络符号链接（指南 §7 明确不做）。
