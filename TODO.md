@@ -27,11 +27,19 @@ type: log
 
 > 下面 6 条为 2026-07-21 文件系统健康自检产出（Doctor 批「全部挂 TODO」）。清理执行明细见 `~/Documents/_to_delete_20260721/_MANIFEST.md`（观察期至 2026-08-20）。
 
-- [ ] **E1 · DVA 空转写重跑 ASR（2026-07-24 CC 已 prep·执行待 Doctor 终端）**（2026-07-21 挂 · 自检产出 · 中优先）
+- [x] **E1 · DVA 空转写重跑 ASR（2026-07-24 VV 执行完成·13 条确证真静音）**（2026-07-21 挂 · 自检产出 · 中优先）
+  **2026-07-24 结案**：VV 经握手层执行——13/13 从 fuxi 取回（SHA-256 逐条一致）→ 重提交 sensevoice-v1 → **全部 `EmptyOutput`（无可识别语音）**，现各带 `asr_status:"empty"` 的 `.transcript.json`，从「无定性 0 字节假完成」变「已确证真静音」。真相：这批是 SansanYe AI 画面/音乐视频 + 老石 122s「沉浸式开箱」ASMR，本就无解说，非丢失转写。dva_asr 幂等已凭 .json 定性不再重跑。回传 `4AI/Shake hands/to CC/VV回传-E1空转写取回重ASR-20260724.md`。VV 未碰 DB/canonical/正本（守握手层）。
+  **孤儿破案（第14条）**：`764710303268505`（15 位）＝**文件名截断**丢 id 的真视频 `7647103032685055247`（SansanYe《CHRONOS HUNTER》新片预告·offsite=1）——DYD 80 字截断坑活实例（[[DVA/GOTCHAS]] RISK-20260721-001）。因截断未 DB-匹配而漏批。**待办**：这第 14 条同样取回+ASR（AI 电影预告·大概率也无语音·低优）；截断转写文件名宜改回全 id。
+  反向对账「有转写无视频」（投知/卷宇宙）另账未动。
   SansanYe×9/老石×2/AI个体指南×1 等 0 字节转写＝假完成标记。
   **2026-07-24 核实**：实为 **14 个 0 字节转写**（SansanYe×11 / 老石谈芯×2 / AI个体指南×1）。其中 **13 个 offsite=1**（删源已删本地 mp4·元数据 json 留·**已避开路径假阳性坑**核实：file_path 存的是视频文件夹非 mp4，误判「在」）→ **须先 fuxi 取回再 ASR**；另 1 个 `764710303268505`（短 id）＝DB 孤儿、不在 aweme 表，单独查。**取回清单**：`outputs/E1_取回清单_20260724.tsv`（aweme_id/作者/offsite_uri/本地目标）。
   **好消息**：`dva_asr.py` 的 E1 核心坑**已修**（284-294/410 行·内容感知幂等：0 字节判未完成自动重转，无需手删）。**无批量取回脚本**（recovery_drill 只 verify）。
   **Doctor 终端序列**：① 按清单 scp 从 fuxi 取回 13 mp4 → 各自 file_path 文件夹；② `dva_asr.py --author-dir Downloaded/{作者}/post/ --sec-uid …`（SansanYe/老石/AI个体三个作者，幂等自动重转 0 字节）；③ 孤儿 764710303268505 单独处理（删空转写或重映射）。反向对账「有转写无视频」（投知/卷宇宙）另账。
+
+- [ ] **DVA ASR 云→本地迁移（SenseVoiceSmall·Doctor 批·执行中）**（2026-07-24 挂）
+  fuxi 有本地算力 → 甩掉云管线（DashScope key + 火山 TOS + OSS 白名单坑 + 计费 + 网络脆弱）。选型＝阿里开源 `iic/SenseVoiceSmall`（同现云端 sensevoice 家族·中文用例与云版实用等价·FunASR 一行调用·Windows CUDA/CPU 均支持）。方案 `Projects/DVA/docs/ASR本地化迁移方案_20260724.md`。
+  **次序（先部署后写码后验收·同 F4 纪律）**：① fuxi 装 `funasr==1.3.22`+modelscope、下载 `iic/SenseVoiceSmall`(~1GB)、最小验证（Doctor/VV 终端·沙箱做不了下载）；② 真实抖音音频本地 vs 云抽样对比；③ CC 改 dva_asr 加 `--backend local`（云默认不动·本地 opt-in·出 diff 待批·装好模型才可测）；④ E1 13 条作首批本地跑验收 → 全面切本地（云留兜底）；⑤ 更新 VV 请求为本地口径（已加前瞻 1b 标注）。
+  **CC 现在不改 dva_asr**：沙箱无模型不可测。
 
 - [ ] **E2 · $CODEX_HOME 字面目录根因修复 + 归位**（2026-07-21 挂 · 低优先）
   Documents 根 `$CODEX_HOME/`＝变量未展开 bug，内含 automation「DVA 定期补库」memory.md（有价值）。顺序：Codex App 侧确认 automation dva-16469639bf3b 已停用 → memory.md 并回真实 CODEX_HOME → bug 目录进隔离区 → 修 automations 里未展开的变量引用。确认前不动（否则目录再生）。
