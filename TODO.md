@@ -17,7 +17,7 @@ type: log
 
 - [x] **brain-save skill Step 5 改「先探后加」（2026-07-24 完成·Doctor 已安装 v2.9）**（2026-07-23 挂）
   Step 5 旧默认 `git add -A` 会在工作树积压时混入范围不明改动（G-X83 / DVA GIT-20260723-001）。**已改**：brain-save v2.9 四处 commit 模板（Step5 step2/3/4 + Step6 回报）全改「先探后加」（`git status --short` → `git add <明确文件>` → `git diff --cached --check` → commit → push），禁 `git add -A`。CC 出 `.skill` 包（源 `Claude/brain-save/`）→ Doctor 经 Settings/Save skill 安装生效。
-  **留档小事**：`Claude/Brain/.skills/brain-save/` 是 v2.7 旧漂移副本，与真源不同步（07-22 已记 .skills 漂移）——要清另说。
+  **留档小事**：`Claude/Brain/.skills/brain-save/` v2.7 旧漂移副本（07-22 记过 .skills 漂移·G-X90）——**2026-07-24 已冷区归档** → `_DEPRECATED_brain-save_v2.7_20260724`（dir + .skill 包·可逆）。真源 `Claude/brain-save/` v2.9。
 
 > 下面 6 条为 2026-07-21 文件系统健康自检产出（Doctor 批「全部挂 TODO」）。清理执行明细见 `~/Documents/_to_delete_20260721/_MANIFEST.md`（观察期至 2026-08-20）。
 
@@ -31,14 +31,14 @@ type: log
   **好消息**：`dva_asr.py` 的 E1 核心坑**已修**（284-294/410 行·内容感知幂等：0 字节判未完成自动重转，无需手删）。**无批量取回脚本**（recovery_drill 只 verify）。
   **Doctor 终端序列**：① 按清单 scp 从 fuxi 取回 13 mp4 → 各自 file_path 文件夹；② `dva_asr.py --author-dir Downloaded/{作者}/post/ --sec-uid …`（SansanYe/老石/AI个体三个作者，幂等自动重转 0 字节）；③ 孤儿 764710303268505 单独处理（删空转写或重映射）。反向对账「有转写无视频」（投知/卷宇宙）另账。
 
-- [ ] **DVA ASR 云→本地迁移（SenseVoiceSmall·Doctor 批·执行中）**（2026-07-24 挂）
+- [ ] **DVA ASR 云→本地迁移 → 已扩展为完全 fuxi 化并于当日完成单写切换（2026-07-24 深夜注记·CC 不代勾，请 Doctor 阅后自勾）**：Qwen3-ASR 本地后端+runtime+数据+调度全迁 fuxi，Phase 0→5 收官（终版包 135000Z·offsite 回填 1388·DVA-Refill Ready）。剩余尾巴已拆入新待办：07-25 首班核验 / Phase 6 观察期 / Phase 7 清理另批。详见 logs/2026-07-24-DVA-fuxi化Phase2至5单写切换完成。原条目内文（次序①-⑤）全部兑现。（2026-07-24 挂）
   fuxi 有本地算力 → 甩掉云管线（DashScope key + 火山 TOS + OSS 白名单坑 + 计费 + 网络脆弱）。**选型＝`Qwen/Qwen3-ASR-1.7B-hf`**（阿里 Qwen 开源·Apache-2.0·2026-01-29 开源/06-26 原生 Transformers·中文新一代 SOTA·22 方言·原生带 BGM 音频·可选词级时间戳·Open ASR 榜 WER 5.59）——**2026-07-24 Doctor 指正选型**：初稿推 SenseVoiceSmall，Qwen3-ASR 更强且同为阿里开源本地，改选它（SenseVoiceSmall 退备选）。方案 `Projects/DVA/docs/ASR本地化迁移方案_20260724.md`。
   **次序（先部署后写码后验收·同 F4 纪律）**：① fuxi 装 `git+transformers`+torch、下载 `Qwen/Qwen3-ASR-1.7B-hf`、最小验证（Doctor/VV 终端·沙箱做不了下载）；② 真实抖音音频（有语音的）本地 Qwen3 vs 云抽样对比；③ CC 改 dva_asr 加 `--backend local`（`AutoModelForMultimodalLM`+`apply_transcription_request`·云默认不动·本地 opt-in·出 diff 待批·装好模型才可测）；④ 首批本地跑验收 → 全面切本地（云留兜底）；⑤ 更新 VV 请求为 Qwen3 本地口径（已改前瞻 1b）。
   **CC 现在不改 dva_asr**：沙箱无模型不可测。
 
 - [x] **E2 · $CODEX_HOME 字面目录根因修复 + 归位（2026-07-24 闭环·仅剩正本合并 Mac 一行）**（2026-07-21 挂 · 低优先）
   **2026-07-24 VV+CC 协作闭环**：VV(Codex侧) 确认——① automation `dva-16469639bf3b` 已 ACTIVE→**PAUSED**；② 真实 CODEX_HOME=`/Users/lunarabbit/.codex`，正本 memory=`.codex/automations/dva-16469639bf3b/memory.md`；③ **根因加固**：automation 上下文注入未展开 `$CODEX_HOME/...`，2026-07-11 执行代理当字面相对路径写到 `Documents/$CODEX_HOME/` → prompt 已加**绝对路径锁**（只读写 .codex 正本·禁字面 $CODEX_HOME·禁相对 cwd 解析）。两份不重复：字面=7/11 记录、正本已有 7/18/7/22 → **合并非覆盖**。
-  **CC 主场**：字面目录移 `Documents/_隔离_20260724/CODEX_HOME字面bug/`（可逆·根已无）。**仅剩 Doctor Mac 一行**：把 7/11 条目 append 进 .codex 正本（`.codex` 沙箱不可达·命令已给·grep 去重）。跑完 E2 彻底结案。
+  **CC 主场**：字面目录移 `Documents/_隔离_20260724/CODEX_HOME字面bug/`（可逆·根已无）。**2026-07-24 Doctor 已跑正本合并**（7/11 条目 append 进 .codex 正本）→ **E2 彻底结案**（automation PAUSED + 根因加固 + 字面目录隔离 + 正本合并齐）。
   Documents 根 `$CODEX_HOME/`＝变量未展开 bug，内含 automation「DVA 定期补库」memory.md（有价值）。顺序：Codex App 侧确认 automation dva-16469639bf3b 已停用 → memory.md 并回真实 CODEX_HOME → bug 目录进隔离区 → 修 automations 里未展开的变量引用。确认前不动（否则目录再生）。
   **2026-07-24 CC 核实**：`$CODEX_HOME/` 内容＝`.DS_Store` + `automations/dva-16469639bf3b/memory.md`（仅此一文件有值）。真实 CODEX_HOME 沙箱内 `~/.codex` 未命中（在 Doctor Mac 侧·CC 定不了）。**memory.md 6 行内容存档防丢**：
   > `# DVA 定期补库 memory` · 2026-07-11 按要求仅执行一次 `Database/Douyin/DVA-ops/run_refill_watchlist.sh`；latest.json：status=success/exit_code=0/authors_ok=8/8/warning_count=0；摘要 `DVA-ops/summaries/refill-watchlist-20260711-112202-3308.md`；耗时~30s；期间一次 `/bin/ps: Operation not permitted` 告警但状态未受影响。
