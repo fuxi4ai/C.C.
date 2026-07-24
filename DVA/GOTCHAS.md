@@ -69,3 +69,10 @@ project: DVA
 **现象：** 一条 ASR `--poll-once` 卡住，state 的 `_note` 写着"OSS 北京区白名单 blocker"。
 **真相：** 白名单 blocker 已不存在（transcript 正常下载）；实际卡点是 state 的 `out_txt` 硬编码到 stale `/tmp/dva_asr_out_5`（属主 nobody 不可写）。改向规范 `Transcripts/` 目录即一次 finalize 跑通。
 **教训：** transcript 写失败先查**输出路径**权限/存在性（尤其硬编码 `/tmp` 旧目录），再怀疑网络/白名单。另：挂载盘默认禁删，清理需 `allow_cowork_file_delete`。
+
+### [INFRA-20260603-003 追加·2026-07-24] import 孤儿告警在 secUidFilter 过滤之前触发＝假红根因
+**关联：** INFRA-20260603-003（扫整根·本条为其治本①的机理补充）
+**机理：** `handleImportTranscriptsCommand` 的 `walk(rootDir)` 扫**整个** `TRANS_DIR`；解析不到 sec_uid 的字幕在 `dva.js:1608` 打 `[无法定位作者]` 告警，而**这一步早于 `secUidFilter` 过滤（1612 行）**。故定时班即便只补一个作者、传了 secUid，全树 ~630 条跨作者孤儿仍逐条假红——三桶分级只是把它单列止血，非治本。
+**治本①（1a·作者域扫描）：** harvest 第 3 步 import 扫描根改 `path.join(TRANS_DIR, authorName)`（不存在兜底退整根）→ 跨作者孤儿永不被访问。standalone `dva import-transcripts <dir> [sec_uid]` CLI 不改，整根手动导入仍照常告警（回归基线）。
+**排查提示：** 复查「假红/告警洪泛」先看**告警点与过滤点的行序**——过滤在告警之后＝全量误报。改 import 相关逻辑时以此为第一手线索。
+**状态：** ① 已改 Mac 源（未部署·待 bundle/VV 验）；② 孤儿集中裁决留①稳定后另起。
