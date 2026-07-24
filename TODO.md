@@ -27,8 +27,11 @@ type: log
 
 > 下面 6 条为 2026-07-21 文件系统健康自检产出（Doctor 批「全部挂 TODO」）。清理执行明细见 `~/Documents/_to_delete_20260721/_MANIFEST.md`（观察期至 2026-08-20）。
 
-- [ ] **E1 · DVA 13 个空转写重跑 ASR**（2026-07-21 挂 · 自检产出 · 中优先）
-  SansanYe×9/老石×2/AI个体指南×1 等 0 字节转写＝假完成标记（`dva_asr.py` 幂等只查存在不查大小，挡自动重转）；重跑须视频在场——**任何视频冷层外移前必须先完成本项**；连 `dy_downloader.db` 的 subtitleSource 状态一起核。附带反向对账「有转写无视频」（投知 183>179、卷宇宙 114>100）。
+- [ ] **E1 · DVA 空转写重跑 ASR（2026-07-24 CC 已 prep·执行待 Doctor 终端）**（2026-07-21 挂 · 自检产出 · 中优先）
+  SansanYe×9/老石×2/AI个体指南×1 等 0 字节转写＝假完成标记。
+  **2026-07-24 核实**：实为 **14 个 0 字节转写**（SansanYe×11 / 老石谈芯×2 / AI个体指南×1）。其中 **13 个 offsite=1**（删源已删本地 mp4·元数据 json 留·**已避开路径假阳性坑**核实：file_path 存的是视频文件夹非 mp4，误判「在」）→ **须先 fuxi 取回再 ASR**；另 1 个 `764710303268505`（短 id）＝DB 孤儿、不在 aweme 表，单独查。**取回清单**：`outputs/E1_取回清单_20260724.tsv`（aweme_id/作者/offsite_uri/本地目标）。
+  **好消息**：`dva_asr.py` 的 E1 核心坑**已修**（284-294/410 行·内容感知幂等：0 字节判未完成自动重转，无需手删）。**无批量取回脚本**（recovery_drill 只 verify）。
+  **Doctor 终端序列**：① 按清单 scp 从 fuxi 取回 13 mp4 → 各自 file_path 文件夹；② `dva_asr.py --author-dir Downloaded/{作者}/post/ --sec-uid …`（SansanYe/老石/AI个体三个作者，幂等自动重转 0 字节）；③ 孤儿 764710303268505 单独处理（删空转写或重映射）。反向对账「有转写无视频」（投知/卷宇宙）另账。
 
 - [ ] **E2 · $CODEX_HOME 字面目录根因修复 + 归位**（2026-07-21 挂 · 低优先）
   Documents 根 `$CODEX_HOME/`＝变量未展开 bug，内含 automation「DVA 定期补库」memory.md（有价值）。顺序：Codex App 侧确认 automation dva-16469639bf3b 已停用 → memory.md 并回真实 CODEX_HOME → bug 目录进隔离区 → 修 automations 里未展开的变量引用。确认前不动（否则目录再生）。
@@ -46,7 +49,8 @@ type: log
 
 - [ ] **dyd 侧 dy_downloader.db 旧副本核实**（2026-07-21 挂 · 低优先 · Doctor 定「留原地挂 TODO」· **2026-07-23 核实：不移**）
   `Claude/Projects/DVA/dyd/dy_downloader.db`（110MB，07-13）比 ops 活跃本体（`DVA-ops/runtime/`，07-18）旧 5 天；核 dyd 本地开发流是否还读它——不需要则移隔离区，避免开发误用旧库。
-  **2026-07-23 核实结论**：① dyd fork 自己的开发代码（`config/default_config.py`/`cli/main.py`/`asr_clean.py`/`storage/database.py`/`refresh-cookie.py`）**确引用本地 dy_downloader.db**——非孤儿，dyd 本地开发流在读它 → **按可逆优先，不移**。② TODO 里的「ops 活跃本体 `DVA-ops/runtime/`」本会话在 `Projects/` 下**未找到**（可能不在挂载范围/已移位）。**留验证给 Doctor**：确认 DVA-ops 现所在，再决定 dyd 开发流是否该改指向较新 ops 库（架构选型，须 Doctor 拍板）；在此之前 dyd 本地库留原地。
+  **2026-07-23 核实结论**：① dyd fork 自己的开发代码（`config/default_config.py`/`cli/main.py`/`asr_clean.py`/`storage/database.py`/`refresh-cookie.py`）**确引用本地 dy_downloader.db**——非孤儿，dyd 本地开发流在读它 → **按可逆优先，不移**。
+  **2026-07-24 悬案解决**：「ops 活跃本体」定位到 **`Database/Douyin/DVA-ops/runtime/dy_downloader.db`**（07-23 08:43·活跃·含 offsite 列，非 Projects 下故前次没找到）。dyd 副本（07-13·无 offsite 列）确是**旧开发库**。**待 Doctor 拍板**：dyd 本地开发流是否改指向 `DVA-ops/runtime` 活跃库（架构选型）；不改则 dyd 旧库留原地（已定不移）。
 
 - [ ] **扫一遍还有几个 brain 注册项目缺 `GOTCHAS.md`**（2026-07-19 挂 · 低优先 · **2026-07-23 已扫**）
   烛照九阴是撞见才发现没有的，REQ-F2 当年标了 `[x]`「所有 brain 注册项目补齐 GOTCHAS」，说明当时可能只漏了它、也可能不止。
