@@ -11,8 +11,9 @@ type: log
 
 ## 待办
 
-- [ ] **明晨定时 10:00 run 后查级别读数块 + stderr `[grade_section]` 行**（2026-07-21 挂 · 时间敏感）
-  17:43 手动 regen 已把 ③ 补上 L3(急跌型)，但**定时链路是否复发未定论**。明晨那次自动 run 后：③ 正常且无 `[grade_section]` stderr 行 → 17:09 属一次性瞬态，结案；若仍现占位/有该行 → 定时环境仍触发，再挖生成进程 python/依赖。参 [[烛照九阴/GOTCHAS]] ERR-20260721-001 补注 · [[2026-07-21-语音默认加载与S2四件核验]]。
+- [x] **定时 run 级别读数占位 → 根因已定位并修（2026-07-23 结案·待下班验证）**（2026-07-21 挂 · 时间敏感）
+  **定论：定时链路确复发**——07-23 10:11 定时班日报仍占位「级别读数不可用」（非一次性瞬态）。根因＝跨项目 `剑酒青丘/adjustment_grade.py` 的 `_mnt()` 硬走 `../×6`，沙箱平铺挂载下溢出到 `/` → `grade_section` 两分支皆败降级；app.log 无痕系 stderr 落定时会话而非 app.log。**已修**（Doctor 批准·自愈式+env 兵底）：`_find_root()` 改探测「含 Database 子目录的祖先」作根，Mac 正路零改动、平铺沙箱落 `/mnt`；三布局隔离测试 + 真脚本 `--json`(L3·confirm True) 均过。详见 [[烛照九阴/GOTCHAS]] GOTCHA-20260723-001。
+  **留验证**：下一工作日（07-24）10:00 定时班后，确认日报「回调级别读数」栏出真读数（非占位）即彻底结案；仍占位则回看 `剑酒青丘` 那班是否实际挂载/env。
 
 - [ ] **brain-save skill Step 5 的 `git add -A` 默认待审查/改**（2026-07-23 挂 · Doctor 授权仅记待办·暂不改 skill）
   Step 5 默认 `git add -A && commit && push`，在工作树积压未提交改动时会混入范围不明的改动（DVA offsite 收尾实例 · 参 [[通用教训]] G-X83 / DVA GOTCHAS GIT-20260723-001）。建议默认流程改为「先探后加」：
@@ -38,16 +39,17 @@ type: log
 - [ ] **E4 · 备份策略统一 gz + 轮换**（2026-07-21 挂 · 改生产脚本，同上单独批）
   Market-Data gz 快照已示范（~75MB/份，较裸 .bak 省 3.2 倍）；拟裸 .bak 复制流全面转 gz；recap predaily/preingest 双钩子同日去重；`bak_fxdeprecate_20260717` 等观察期锚随新策略自然轮换出局。
 
-- [ ] **E7 · 转写覆盖率测量陷阱记 DVA GOTCHAS**（2026-07-21 挂 · 低优先）
-  长标题文件名截断丢 aweme_id → ID-join 覆盖率 49% 假象，稳健口径实测 ≈97%+。防未来复测再踩。
+- [x] **E7 · 转写覆盖率测量陷阱记 DVA GOTCHAS**（2026-07-21 挂 · 低优先 · **2026-07-23 完成**）
+  长标题文件名截断丢 aweme_id → ID-join 覆盖率 49% 假象，稳健口径实测 ≈97%+。已落 `Projects/DVA/GOTCHAS.md` [RISK-20260721-001]（含稳健口径「按非零 .transcript.* 存在性计数」+ 反向对账正交提示）。
 
-- [ ] **dyd 侧 dy_downloader.db 旧副本核实**（2026-07-21 挂 · 低优先 · Doctor 定「留原地挂 TODO」）
+- [ ] **dyd 侧 dy_downloader.db 旧副本核实**（2026-07-21 挂 · 低优先 · Doctor 定「留原地挂 TODO」· **2026-07-23 核实：不移**）
   `Claude/Projects/DVA/dyd/dy_downloader.db`（110MB，07-13）比 ops 活跃本体（`DVA-ops/runtime/`，07-18）旧 5 天；核 dyd 本地开发流是否还读它——不需要则移隔离区，避免开发误用旧库。
+  **2026-07-23 核实结论**：① dyd fork 自己的开发代码（`config/default_config.py`/`cli/main.py`/`asr_clean.py`/`storage/database.py`/`refresh-cookie.py`）**确引用本地 dy_downloader.db**——非孤儿，dyd 本地开发流在读它 → **按可逆优先，不移**。② TODO 里的「ops 活跃本体 `DVA-ops/runtime/`」本会话在 `Projects/` 下**未找到**（可能不在挂载范围/已移位）。**留验证给 Doctor**：确认 DVA-ops 现所在，再决定 dyd 开发流是否该改指向较新 ops 库（架构选型，须 Doctor 拍板）；在此之前 dyd 本地库留原地。
 
-- [ ] **扫一遍还有几个 brain 注册项目缺 `GOTCHAS.md`**（2026-07-19 挂 · 低优先）
+- [ ] **扫一遍还有几个 brain 注册项目缺 `GOTCHAS.md`**（2026-07-19 挂 · 低优先 · **2026-07-23 已扫**）
   烛照九阴是撞见才发现没有的，REQ-F2 当年标了 `[x]`「所有 brain 注册项目补齐 GOTCHAS」，说明当时可能只漏了它、也可能不止。
   `for d in ~/Documents/Claude/brain/*/; do [ -f "$d/GOTCHAS.md" ] || echo "缺: $d"; done`
-  （Doctor 未表态，CC 按「不升 permanent、挂 TODO 即可」的默认处理）
+  **2026-07-23 扫描结果**：真项目里缺 brain 侧 `GOTCHAS.md` 索引的有 **4 个：`MiroFish` / `剑酒青丘` / `星空` / `称象`**（其余 agents/chats/fleeting/graphify/inbox/logs/permanent/references/templates/数灵转移 为基础设施目录、非项目，不计）。注：`剑酒青丘` 连 `Projects/` 侧权威 GOTCHAS 也无（本会话 GOTCHA-20260723-001 暂落 烛照九阴 权威库）。**待 Doctor 拍板**：这 4 个是否补建 GOTCHAS 索引（按 REQ-F2 口径应补齐），还是维持「撞见再补」。CC 默认不擅自补建（免造空壳）。
 
 - [x] **重跑 F5 校准取两腿新 lift**（2026-07-19 完成）
   F5 两腿：lift **2.31** / 12 触发日 / **9 独立事件**。同日连修校准工具三处（F4 可评日缺数当未触发、扫描表 lift 基准不同源、判定改卡独立事件数）。
@@ -94,11 +96,10 @@ type: log
 - [ ] **触发层 F4/F5 仍 sub-threshold（五因结案留尾）**（2026-07-23 挂 · 低优先 · 承上条结案）
   五因两层重构后，环境层 A6/B6 已加固共振，但**触发层仍只有 F4(4 独立事件)/F5(9 独立事件) 两个 sub-threshold 因子**，均未过 20 事件门槛——「仅 F4 有意义」的病根是**用共振层缓解、非触发层根治**。无需主动挖数，随行情自然积事件；等 F4/F5 任一过 20 事件门槛后重跑校准复核，或出现新的强机理触发候选时再议。
 
-- [ ] **驾驶舱接回调级别读数 · 开工**（2026-07-19 挂 · Doctor 已批 PRD §二「批，开工」，但当日未动手）
-  PRD：`logs/checkpoints/2026-07-19_驾驶舱接回调级别读数_PRD.md`（17 条交付标准）。
-  已定：全局横幅 · 纯展示 · **常驻不隐藏**（L1 也显示）· 视觉直接复用日报温度卡范式（同为 `--bg:#f5f4ed` 暖色卡片页，§六 第 1 条已作废）。
-  落点：`index.html` 的 `<div id="tab-cockpit">` 内，控制栏与 `#ck-pills` 之间。
-  **代码一行未动**，从零开始。
+- [x] **驾驶舱接回调级别读数（2026-07-23 核实：已上线·待 Doctor 终验 PRD[✓]）**（2026-07-19 挂 · Doctor 已批 PRD §二）
+  PRD：`logs/checkpoints/2026-07-19_驾驶舱接回调级别读数_PRD.md`（17 条交付标准）。全局横幅·纯展示·常驻·复用暖色温度卡范式·落 `#tab-cockpit` 控制栏与 `#ck-pills` 之间。
+  **2026-07-23 核实纠错**：本条 07-19 挂时写「代码一行未动·从零」，但 **07-21 数据层(cockpit_data.py 加 build_market_grade+payload market_grade 键)+展示层(artifact 横幅) 已落地、07-22 已部署上线**。本会话端到端复验全过：A1–A4（live `get_cockpit_payload` 返回 market_grade=L3/nn/hist/asof=20260722）· B1–B4（market_grade 在五函数体 0 命中·clocks 未变）· C1–C4（现网 artifact 横幅要件齐·DOM 内 0 禁词）· D1（py_compile OK）· E2（payload 应答+横幅在现网 HTML＝07-21 白名单阻塞已解、已部署）。今日 `adjustment_grade._mnt` 修复同惠及此数据源。
+  **余项（Doctor）**：① 桌面肉眼终验横幅渲染（E2 [~]·CC 无法代观察）；② PRD 17 条 `[?]`→`[✓]` 由 Doctor 落。**清理候选**：`Database/龙鱼-标的分析库/_artifact_pending_longyu-holdings-board.html`（07-21 待推件）已被 07-22 现网版超越、成陈旧，建议移 archived（可逆·不删）。
 
 - [x] **F5 油价腿历史回补**（2026-07-19 完成 · 同日）
   Doctor 终端 yfinance 回补 BZ=F 4150 行 [20091201→20260717]，CC 真隔夜回测 3914 可评日。**三裁定**：5% 档**平反**（45 事件 lift 2.03，非过拟合，lift 沿网格单调）；3% 档**弱信号定论**（155 事件 lift 1.29，预期的"转正"未发生）；**跨区制首例**（四段 lift 全 >2：2.12/2.83/2.02/2.42）。纪要升 v1.6。报告：`AI4ME/F5油价腿回补/CC-F5油价腿长样本回测-20260719.md`。
