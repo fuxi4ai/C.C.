@@ -15,15 +15,9 @@ type: log
   **定论：定时链路确复发**——07-23 10:11 定时班日报仍占位「级别读数不可用」（非一次性瞬态）。根因＝跨项目 `剑酒青丘/adjustment_grade.py` 的 `_mnt()` 硬走 `../×6`，沙箱平铺挂载下溢出到 `/` → `grade_section` 两分支皆败降级；app.log 无痕系 stderr 落定时会话而非 app.log。**已修**（Doctor 批准·自愈式+env 兵底）：`_find_root()` 改探测「含 Database 子目录的祖先」作根，Mac 正路零改动、平铺沙箱落 `/mnt`；三布局隔离测试 + 真脚本 `--json`(L3·confirm True) 均过。详见 [[烛照九阴/GOTCHAS]] GOTCHA-20260723-001。
   **留验证**：下一工作日（07-24）10:00 定时班后，确认日报「回调级别读数」栏出真读数（非占位）即彻底结案；仍占位则回看 `剑酒青丘` 那班是否实际挂载/env。
 
-- [ ] **brain-save skill Step 5 的 `git add -A` 默认待审查/改**（2026-07-23 挂 · Doctor 授权仅记待办·暂不改 skill）
-  Step 5 默认 `git add -A && commit && push`，在工作树积压未提交改动时会混入范围不明的改动（DVA offsite 收尾实例 · 参 [[通用教训]] G-X83 / DVA GOTCHAS GIT-20260723-001）。建议默认流程改为「先探后加」：
-  ```
-  git status --short
-  git add <明确文件列表>
-  git diff --cached --check
-  git diff --cached --stat
-  ```
-  只有确认工作树全部改动均属本次保存范围，才允许 `git add -A`。**改 skill 须走 Settings > Capabilities**，本条只记待办、不擅改。
+- [x] **brain-save skill Step 5 改「先探后加」（2026-07-24 完成·Doctor 已安装 v2.9）**（2026-07-23 挂）
+  Step 5 旧默认 `git add -A` 会在工作树积压时混入范围不明改动（G-X83 / DVA GIT-20260723-001）。**已改**：brain-save v2.9 四处 commit 模板（Step5 step2/3/4 + Step6 回报）全改「先探后加」（`git status --short` → `git add <明确文件>` → `git diff --cached --check` → commit → push），禁 `git add -A`。CC 出 `.skill` 包（源 `Claude/brain-save/`）→ Doctor 经 Settings/Save skill 安装生效。
+  **留档小事**：`Claude/Brain/.skills/brain-save/` 是 v2.7 旧漂移副本，与真源不同步（07-22 已记 .skills 漂移）——要清另说。
 
 > 下面 6 条为 2026-07-21 文件系统健康自检产出（Doctor 批「全部挂 TODO」）。清理执行明细见 `~/Documents/_to_delete_20260721/_MANIFEST.md`（观察期至 2026-08-20）。
 
@@ -42,7 +36,9 @@ type: log
   **次序（先部署后写码后验收·同 F4 纪律）**：① fuxi 装 `git+transformers`+torch、下载 `Qwen/Qwen3-ASR-1.7B-hf`、最小验证（Doctor/VV 终端·沙箱做不了下载）；② 真实抖音音频（有语音的）本地 Qwen3 vs 云抽样对比；③ CC 改 dva_asr 加 `--backend local`（`AutoModelForMultimodalLM`+`apply_transcription_request`·云默认不动·本地 opt-in·出 diff 待批·装好模型才可测）；④ 首批本地跑验收 → 全面切本地（云留兜底）；⑤ 更新 VV 请求为 Qwen3 本地口径（已改前瞻 1b）。
   **CC 现在不改 dva_asr**：沙箱无模型不可测。
 
-- [ ] **E2 · $CODEX_HOME 字面目录根因修复 + 归位（2026-07-24 CC prep 完成·执行待 Doctor Codex App）**（2026-07-21 挂 · 低优先）
+- [x] **E2 · $CODEX_HOME 字面目录根因修复 + 归位（2026-07-24 闭环·仅剩正本合并 Mac 一行）**（2026-07-21 挂 · 低优先）
+  **2026-07-24 VV+CC 协作闭环**：VV(Codex侧) 确认——① automation `dva-16469639bf3b` 已 ACTIVE→**PAUSED**；② 真实 CODEX_HOME=`/Users/lunarabbit/.codex`，正本 memory=`.codex/automations/dva-16469639bf3b/memory.md`；③ **根因加固**：automation 上下文注入未展开 `$CODEX_HOME/...`，2026-07-11 执行代理当字面相对路径写到 `Documents/$CODEX_HOME/` → prompt 已加**绝对路径锁**（只读写 .codex 正本·禁字面 $CODEX_HOME·禁相对 cwd 解析）。两份不重复：字面=7/11 记录、正本已有 7/18/7/22 → **合并非覆盖**。
+  **CC 主场**：字面目录移 `Documents/_隔离_20260724/CODEX_HOME字面bug/`（可逆·根已无）。**仅剩 Doctor Mac 一行**：把 7/11 条目 append 进 .codex 正本（`.codex` 沙箱不可达·命令已给·grep 去重）。跑完 E2 彻底结案。
   Documents 根 `$CODEX_HOME/`＝变量未展开 bug，内含 automation「DVA 定期补库」memory.md（有价值）。顺序：Codex App 侧确认 automation dva-16469639bf3b 已停用 → memory.md 并回真实 CODEX_HOME → bug 目录进隔离区 → 修 automations 里未展开的变量引用。确认前不动（否则目录再生）。
   **2026-07-24 CC 核实**：`$CODEX_HOME/` 内容＝`.DS_Store` + `automations/dva-16469639bf3b/memory.md`（仅此一文件有值）。真实 CODEX_HOME 沙箱内 `~/.codex` 未命中（在 Doctor Mac 侧·CC 定不了）。**memory.md 6 行内容存档防丢**：
   > `# DVA 定期补库 memory` · 2026-07-11 按要求仅执行一次 `Database/Douyin/DVA-ops/run_refill_watchlist.sh`；latest.json：status=success/exit_code=0/authors_ok=8/8/warning_count=0；摘要 `DVA-ops/summaries/refill-watchlist-20260711-112202-3308.md`；耗时~30s；期间一次 `/bin/ps: Operation not permitted` 告警但状态未受影响。
@@ -52,10 +48,11 @@ type: log
   `gen_daily_report.py` 每次保存落 2.1MB 全量 index.bak 无轮换（曾单日 42 份）+ 日报 `.pre-*` 同源双倍。**已改**（deletion-free·挂载盘禁删适配）：新增 `_rotate_backups()`（跨日保 5 天·`unlink` 包 try/except，Mac 清·沙箱静默跳）；index.bak 钩子改**日键命名**（同日覆盖去重·42/日→1/日）；`.pre-*` 钩子 `move`→`copy2`+路由 `archived/_pre-snapshots/`+日键+轮换。修一 bug：轮换日键取**末组** 8 位（`.pre-` 快照日，非数据日）。py_compile + 两命名隔离测均过。
   现存积压清理（23M index.bak+13M .pre-*）另走·可逆。
 
-- [ ] **E4 · 备份策略统一 gz + 轮换**（2026-07-21 挂 · **2026-07-23 分级 B 部分：recap 走 Mac 清理·gz 转换留待分级 C**）
+- [x] **E4 · 备份策略统一 gz + 轮换（分级 B 代码 + 分级 C backlog gz 均完成·2026-07-24）**（2026-07-21 挂）
   Market-Data gz 快照已示范（~75MB/份，较裸 .bak 省 3.2 倍）；拟裸 .bak 复制流全面转 gz；recap predaily/preingest 双钩子同日去重；`bak_fxdeprecate_20260717`（253MB）等观察期锚随新策略自然轮换出局。
   **2026-07-23 进展（分级 B）**：recap predaily 已按日键 cp（同日自动覆盖），跨日清理**沙箱禁删** → 给 Doctor Mac 清理命令（保最近 N 份），不塞沙箱 SKILL。
-  **2026-07-24 分级 C 复核（Doctor 批做 C）· CC 反建议缩范围**：清点后大户＝**两个 ~240MB market_data .bak**（`bak_fxdeprecate_20260717` 旧观察锚 + `bak_preF4backfill_20260723` F4 回补锚·已验证）＝空间 99% 在这俩；recap .bak 仅 ~4MB×7、已被 B 的轮换管着。故「裸 .bak **全面转 gz** 的代码改造」**边际极低**（无高频裸 .bak 钩子·snapshot_market_db.py 早已 gz），reader/回滚复杂度不值当。**CC 建议只做 backlog 压缩、不改代码**：`gzip` 那两个 240MB 锚（Mac·gzip 删原文件沙箱做不了）→ 省 ~320MB。preF4backfill 锚 F4 已验证可考虑直接删（可逆起见先 gz 留着）。命令见交付回报。
+  **2026-07-24 分级 C 复核（Doctor 批做 C）· CC 反建议缩范围**：清点后大户＝**两个 ~240MB market_data .bak**（`bak_fxdeprecate_20260717` 旧观察锚 + `bak_preF4backfill_20260723` F4 回补锚·已验证）＝空间 99% 在这俩；recap .bak 仅 ~4MB×7、已被 B 的轮换管着。故「裸 .bak **全面转 gz** 的代码改造」**边际极低**（无高频裸 .bak 钩子·snapshot_market_db.py 早已 gz），reader/回滚复杂度不值当。**CC 建议只做 backlog 压缩、不改代码**：`gzip` 那两个 240MB 锚（Mac·gzip 删原文件沙箱做不了）→ 省 ~320MB。preF4backfill 锚 F4 已验证可考虑直接删（可逆起见先 gz 留着）。
+  **2026-07-24 完成**：两个裸 .bak 已压 gz——`bak_fxdeprecate_20260717.gz` 73MB(原241) + `bak_preF4backfill_20260723.gz` 74MB(原245)，**486MB→147MB·省 ~339MB**。分级 C 的「全面转 gz 代码改造」按 CC 反建议不做（边际低）。E4 整条结案。
 
 - [x] **E7 · 转写覆盖率测量陷阱记 DVA GOTCHAS**（2026-07-21 挂 · 低优先 · **2026-07-23 完成**）
   长标题文件名截断丢 aweme_id → ID-join 覆盖率 49% 假象，稳健口径实测 ≈97%+。已落 `Projects/DVA/GOTCHAS.md` [RISK-20260721-001]（含稳健口径「按非零 .transcript.* 存在性计数」+ 反向对账正交提示）。
