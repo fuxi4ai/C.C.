@@ -114,11 +114,14 @@ type: log
   ③ 绝对 200亿 跨 era 不可比：同 200亿 抽 2010 的~20万亿池 vs 2026 的~90万亿+ 池，相对冲击天差地别→固定阈值污染跨 era lift。
   **裁断**：绝对 200亿 回补＝白干+造不可比事件。要有意义**必须先把绝对阈值换相对值**再回补；即便如此 F4 仍会薄。**2026-07-23 Doctor 定：换相对阈值·出方案**（见下条）。
 
-- [ ] **F4 绝对阈值 → 相对阈值（选型 B·募资/成交额比）· 等回补**（2026-07-23 挂 · Doctor 批「换相对阈值·选型 B」）
+- [x] **F4 绝对阈值 → 相对阈值（选型 B·募资/成交额比）· 2026-07-23 落地**（Doctor 批「换相对阈值·选型 B·p95」）
+  **已完成**：回补到位（ipo 2020-02+·成交额 2010+）→ 校准 p95(N10/M30/th0.045) → 改码四文件 + 单源 helper：`risk_function.py` 加 `f4_ratio_trigger()`（两端共用·G-X73）；`risk_factors.json` f4 换相对键(旧绝对降级 _deprecated·可回滚)；`calibrate_risk_factors.py`（load 成交额+F4块相对+扫描网格 ratio_th）；`gen_daily_report.py`（生产计算+展示相对口径）。三 py py_compile 过；用真 helper+线上 config 复现＝可评1567/触发78/**14事件/lift2.68**/P(冰|触)10.3%，与分析逐位一致。七问报告 `docs/五因回测校准_F4相对_20260723.md`（Q6 过：低成交额alone lift0·非伪代理；分子主导；跨4年散布）。regime：当前高流动性下长鑫666亿 ratio0.026<阈→F4 休眠(正解)。**余（Doctor 终端）**：`calibrate_risk_factors.py` 真跑重生成七问报告表 + `gen_daily_report.py` regen 让日报 F4 显新口径；git。仍 14<20＝方向真·样本不足档。
+  <details><summary>原「等回补」计划（已完成·留档）</summary>
   **选型 B**：rolling-N 日募资 ÷ 近 M 日日均全市场成交额 ≥ 阈值 →「IPO 抽走≈几天成交额」。机理最直接（虹吸=抽流动性），2025+ 验证成立：高流动性 era（日均~2万亿）巨型 IPO 也只抽~2-3% 一天成交额，正解释 F4 现弱；低流动性 era 同额 ratio 更高=虹吸更咬。
   **数据纠错**：`daily_market.volume_trillion` 历史全 0/坏（ERR-20260719-003·勿用）；可用成交额 `market_amount_daily` 仅 2025+。故分子(ipo_daily 2024+)与分母(成交额 2025+)**都需回补**。
   **前置·Doctor 终端（tushare 下载·不在沙箱跑）**：`fetch_ipo.py --from 20100101` + `fetch_market_amount.py --from 20100101`（回补前先 `cp market_data.db → .bak_preF4backfill_{日}`）。
-  **回补到位后·CC**：算相对口径校准（M/N/阈值网格）+ 出逐文件 diff（`risk_factors.json` f4 阈值形态改 funds_turnover_ratio + `calibrate_risk_factors.py` 加相对口径 + 回测七问）。**现在写码＝对单 era 2-4 事件校准＝预检警告的白干，故 CC 不预写、等回补。**
+  **回补到位后·CC**：算相对口径校准（M/N/阈值网格）+ 出逐文件 diff。
+  </details>
 
 - [x] ~~F3 tushare 历史回补~~ —— **2026-07-19 取消**（Doctor 批）。正反两方向皆为追认，控制行情后零增量，回补只是把追认结论说得更响。见纪要 §五-C。
 
