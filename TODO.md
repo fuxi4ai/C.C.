@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+- [ ] **DVA · fuxi 单视频入口验证开通（2026-07-25 挂·Doctor 定位：fuxi 在线时单视频优先走 fuxi）**：fuxi 侧 harvest-links 链路（DYD 单链下载+本地 Qwen3 转写+汇总）从未验证、VV 一直保持关闭。待 VV 白天用一条非敏感链接验证（env 同 harvest_one·历史坑：单链不 seed DB=INFRA-20260603-003 源头，第二线定位下不入库反而正确）→ 通过后 CC 出 single_one.ps1 + 把 dva-single.sh 的 fuxi 路由接通。Mac 保底线已可用（`dva-single.sh --force-local`·产物落 Douyin-2nd 第二线根·回流不冲）。
+
 - [ ] **DVA · Mac 旅行模式收尾两件（2026-07-24 深夜挂·Doctor 二次简化：出行不采集不下载，只分析）**：方案与入口已落（`docs/Mac旅行模式方案_20260724.md` + `dva-travel.sh analyze|status`·守卫永不解除·分析走显式 env·产物落 Reports-travel）。待做：① 快照回流适配（export 参数化跑 fuxi 侧 + Mac import 加「刷新替换」模式）——**服务三个消费方**：出行分析、**渊图喂料线**（transcripts-to-yuantu→行业研究/raw→kg_ingest·工具已参数化零改码·2026-07-25 凌晨核实·只欠数据时效）、graphify 线（消费 Reports·同理）；喂渊图动作＝回流一次→Mac 照旧跑；② `FROZEN-20260724.md` 改写 TRAVEL-STANDBY 语义（Doctor 资产·征得同意后改）。归整脚本/出行云转写已随简化取消。Phase 7「退役」议题取消；`data.first-round-20260724` 仍待观察期后清理。
 
 - [ ] **DVA · import-transcripts 扫整根治本提案（2026-07-24 深夜挂·告警洪泛根因）**：`dva.js:1609` import 扫整个 Transcripts 根 → 630 条「无法定位作者」历史噪声（29 目录/1455 字幕 vs DB 11 作者/973 记录·INFRA-20260603-003 放大版）。已用三桶分级止血（known_orphan 单列不定级）；治本二选一待 Doctor 裁：① import 只扫本次作者目录（改动小·孤儿噪声归零但孤儿依旧在野）；② 孤儿字幕集中裁决（有元数据的 seed 入库 / 无价值的进忽略清单·彻底清账但工作量大）。CC 推荐先①后②分两步。
