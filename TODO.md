@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+- [ ] **PEC · 关系化图谱可行性 → 落地（复用渊图图基建 + PEC 专属图 schema）（2026-07-25 挂 · ⏳ 等下周一 2026-07-27 Fable 5 额度恢复后再做）**：承 2026-07-25 会话「渊图关系化图谱能否在 PEC 整体实现」判定——**整体照搬渊图那套静态实体-关系图＝不行**（PEC 内核层：dated 裁定链 / 概率·双读 / α-α′ 二阶反身 / 机理论证，正是渊图刻意 strip 的高时效＋它没有的二阶关系，硬图化会失真）；**可行且值得＝复用渊图图基建（schema 化 kg_ingest / 结构 QA / wiki_autogen / provenance / 命名铁律）＋ 给 PEC 另配 schema**（node type：框架 / 预测 / 案例 / GOTCHA / 实体；edge type：挂框架 / 同族 / 精化 / 证伪-命中 / 校正 / α 审计；每断言带 `as_of` + `confidence`）——**共享工具链、不共享图模型/本体论**。**下一步（走 propose-then-confirm）**：① 出「PEC 可图化层 vs 不可图化层」映射表；② 草拟 PEC 专属图 schema 草案。**为何等 Fable 5**：任务重、跨渊图 × PEC 两库，留下周一额度恢复后做。关联：raw `Projects/PEC/raw/2026-07-25_analysis_江学勤预测性历史框架…`（同日会话上游）· 渊图系统概览（图模型/11 边 schema/基建）。
+
 - [ ] **DVA · fuxi 单视频入口验证开通（2026-07-25 挂·Doctor 定位：fuxi 在线时单视频优先走 fuxi）**：fuxi 侧 harvest-links 链路（DYD 单链下载+本地 Qwen3 转写+汇总）从未验证、VV 一直保持关闭。待 VV 白天用一条非敏感链接验证（env 同 harvest_one·历史坑：单链不 seed DB=INFRA-20260603-003 源头，第二线定位下不入库反而正确）→ 通过后 CC 出 single_one.ps1 + 把 dva-single.sh 的 fuxi 路由接通。Mac 保底线已可用（`dva-single.sh --force-local`·产物落 Douyin-2nd 第二线根·回流不冲）。
 
 - [ ] **DVA · Mac 旅行模式收尾两件（2026-07-24 深夜挂·Doctor 二次简化：出行不采集不下载，只分析）**：方案与入口已落（`docs/Mac旅行模式方案_20260724.md` + `dva-travel.sh analyze|status`·守卫永不解除·分析走显式 env·产物落 Reports-travel）。待做：① 快照回流适配（export 参数化跑 fuxi 侧 + Mac import 加「刷新替换」模式）——**服务三个消费方**：出行分析、**渊图喂料线**（transcripts-to-yuantu→行业研究/raw→kg_ingest·工具已参数化零改码·2026-07-25 凌晨核实·只欠数据时效）、graphify 线（消费 Reports·同理）；喂渊图动作＝回流一次→Mac 照旧跑；② `FROZEN-20260724.md` 改写 TRAVEL-STANDBY 语义（Doctor 资产·征得同意后改）。归整脚本/出行云转写已随简化取消。Phase 7「退役」议题取消；`data.first-round-20260724` 仍待观察期后清理。
