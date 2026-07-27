@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+- [ ] **警示页 styleguide §06 免责条款回灌（2026-07-27 挂·提案制·待 Doctor 点头）**：活范例 risk-daily 的 nowcast 免责已「缩一句并入综合读数标签行」（Doctor 批），styleguide §06 仍写「页首必挂**横幅**」+长版示例、§07 禁区条同——范式与 canonical 活范例不一致。待 Doctor 点头后 CC 改 §06 为「免责一句并入页首读数行即可（横幅可选）」+ 示例换短版（原长版注释保留·可逆）。顺带核 §07 反对条措辞。文件：`Projects/O MY HTML/design-system/warm-warningpage-styleguide.html`。
+
 - [ ] **PEC · 关系化图谱可行性 → 落地（复用渊图图基建 + PEC 专属图 schema）（2026-07-25 挂 · ⏳ 等下周一 2026-07-27 Fable 5 额度恢复后再做）**：承 2026-07-25 会话「渊图关系化图谱能否在 PEC 整体实现」判定——**整体照搬渊图那套静态实体-关系图＝不行**（PEC 内核层：dated 裁定链 / 概率·双读 / α-α′ 二阶反身 / 机理论证，正是渊图刻意 strip 的高时效＋它没有的二阶关系，硬图化会失真）；**可行且值得＝复用渊图图基建（schema 化 kg_ingest / 结构 QA / wiki_autogen / provenance / 命名铁律）＋ 给 PEC 另配 schema**（node type：框架 / 预测 / 案例 / GOTCHA / 实体；edge type：挂框架 / 同族 / 精化 / 证伪-命中 / 校正 / α 审计；每断言带 `as_of` + `confidence`）——**共享工具链、不共享图模型/本体论**。**下一步（走 propose-then-confirm）**：① 出「PEC 可图化层 vs 不可图化层」映射表；② 草拟 PEC 专属图 schema 草案。**为何等 Fable 5**：任务重、跨渊图 × PEC 两库，留下周一额度恢复后做。关联：raw `Projects/PEC/raw/2026-07-25_analysis_江学勤预测性历史框架…`（同日会话上游）· 渊图系统概览（图模型/11 边 schema/基建）。
 
 - [ ] **DVA · fuxi 单视频入口验证开通（2026-07-25 挂·Doctor 定位：fuxi 在线时单视频优先走 fuxi）**：fuxi 侧 harvest-links 链路（DYD 单链下载+本地 Qwen3 转写+汇总）从未验证、VV 一直保持关闭。待 VV 白天用一条非敏感链接验证（env 同 harvest_one·历史坑：单链不 seed DB=INFRA-20260603-003 源头，第二线定位下不入库反而正确）→ 通过后 CC 出 single_one.ps1 + 把 dva-single.sh 的 fuxi 路由接通。Mac 保底线已可用（`dva-single.sh --force-local`·产物落 Douyin-2nd 第二线根·回流不冲）。
