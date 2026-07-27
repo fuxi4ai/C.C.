@@ -44,4 +44,12 @@ project: 风险日报
 
 ---
 
+## [ERR-20260727-003] 石刻浮层可见性偶合 danger 类：非 danger 卡的浮层被 overflow:hidden 裁切
+**状态**: ✅ 已解决
+**优先级**: 🟡 中（新增任何石刻浮层必踩）
+**触发场景**: 上线「退」石刻（首个冷色浮层·亮在 geo near/taco none 等**非 danger** 卡上），Doctor 肉眼见「退字被裁了」。
+**错误信息**: 无报错——纯视觉裁切。`.scard{overflow:hidden}`，仅 `.scard.danger{overflow:visible}` 放开；而危(fired)/烈(红杀伤)/兆(必伴上游 hd)历来**恰好都只长在 danger 卡上**，偶合掩盖了缺陷；「退」首个亮在普通卡上即暴露（半出卡外的部分被裁）。
+**解决方案**: 加 `.scard.badged{overflow:visible;z-index:4}`（styleguide §04 本就有此款）；卡片模板改为**有任何浮层即挂 badged 类**（`const bz=dzb(...)` 先算再判 `${bz?' badged':''}`）。
+**预防措施**: ① 新增视觉元素时别只在「历史同类出现过的卡型」上验——**在最普通的卡上验一次**；② 「某特性恰好总与另一特性同现」的隐性偶合是潜伏 bug 温床，解耦时（本例：badge 与 danger 解耦）必须重查依赖链；③ styleguide 有 `.badged` 先例说明原作者早知此坑——落地时漏抄了，抄范式要抄全。
+
 <!-- 在下方追加新条目 -->
