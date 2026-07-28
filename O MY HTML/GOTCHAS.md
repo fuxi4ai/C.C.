@@ -44,3 +44,13 @@ project: O MY HTML
 **错误信息**: 无报错。按行业分组时新板块（AI硬件等）标的落入「其他」或从分组消失——**无论刷不刷新、推没推 update_artifact 都错**，因为 bug 在渲染时机：payload 正确的 sector 被加载脚本当场冲掉（空 industry→'其他'，对不上新表的→掉出分组）。
 **解决方案**: 删除或条件化该行 `if(!d.sector) d.sector=sectorOf(d.industry); if(!d._q) d._q=…`，让 payload 值优先。同步修生成器模板 `board_template.html`。
 **预防措施**: 分类真源上移到数据层时，**必须清掉客户端同名字段的无条件重算**。方法论铁律：**UI 分组/显示不对，第一步读「这个值在渲染时到底怎么算出来的」完整链路，别停在「数据文件是对的」就去猜缓存**——数据对≠渲染对，中间那段 JS 会变换。
+
+## [ERR-20260728-001] artifact 文件在 Cowork 会话中**只读**——CC 改不了，须走 patch 脚本 + Doctor 终端
+**状态**: ✅ 已解决（认知/流程）
+**优先级**: 🟡 中（凡要改 artifact 结构必踩）
+**触发场景**: 要给 `longyu-holdings-board` 加第三个标签页，用 Edit 工具直接改 `~/Claude's workspace/Artifacts/longyu-holdings-board/index.html`。
+**错误信息**: `... is read-only in this session (plugin, skill, or knowledge content). Write a modified copy under the outputs directory instead.`
+**解决方案**: 分清三种能力——**Read / Grep 能读** artifact（用来核锚点、核函数签名，很关键）；**Edit / Write 不能写**；**bash 沙箱连读都不行**（`~/Claude's workspace/` 未挂载，只挂 `~/Documents` 和 outputs）。故改 artifact **结构**的正确路径是：CC 写一个幂等 patch 脚本落到 `~/Documents/...` → **Doctor 在 Mac 终端跑** → Cowork 关掉重开。改 artifact **内容**（数据）则沿用生成器 + `update_artifact`。
+**预防措施**: ① 动手前先确认要改的是**结构**（走 patch 脚本）还是**数据**（走生成器）；② patch 脚本必须：幂等（已打过就跳过）、自动备份、**每个锚点命中数 ≠1 即中止且不落盘**；③ **写 patch 前用 Grep 核实真实代码**——本次核出两处会打歪的地方：`switchTab` 实参名是 `t` 不是直觉的 `name`；且该函数只管既有两页的显隐，**不补第三行新页永远 `display:none`**（光加按钮和容器会三页全空）。
+**同族**: ERR-20260706-001（update_artifact 的 `html_path` 反过来**不能**指向 artifact 自身路径，会被拒「outside this session's workspace」）——两条合起来是完整边界：**artifact 路径可读不可写，且不能当 update_artifact 的输入源**。
+**来源**: → logs/2026-07-28-PEC图谱试跑与NVIDIA循环融资研判.md · `Database/龙鱼-标的分析库/_index/patch_holdings_lib_tab.py`
