@@ -212,28 +212,3 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **正确做法（根治）**：写库任务挪回 **Mac 原生 launchd**（本机 ext 写即 durable、无 /tmp mv、无 FUSE），沙箱侧改只读消费。见 `烛照九阴/ops/`（Phase 1）+ [[烛照九阴/architecture/决策记录]] 2026-07-22 迁移条。**缓解（未采）**：写锁 + mv 后 fsync + 丢缓存新连接复读重试。
 
 **同族**：disk-I/O 家族（ERR-20260719-003 历史 0-fill · 五因场热日志 -journal）· 句芒「放回必 cp→原子 mv、绝不 cp 盖原文件」。**来源** → brain/logs/2026-07-22-日报隔天退回根治与Mac原生Phase1.md
-
-## [ERR-20260728-005] 同库两个「全市场成交额」定义相差 25%，无一处注明（同名异义）
-**状态**: ⏳ 待择一（已注明·2026-07-28 审计）
-**优先级**: 🔴 高（任何「全市场成交额分位」选错源结论即偏 25%）
-**触发场景**: `daily_market.volume_trillion`（≡SUM(stock_daily.amount)/1e9·全A逐股加总·20260727=2.089万亿）vs `market_amount_daily.total_trillion`（tushare 沪深两市官方口径·同日 1.6649万亿），系统性 +25~26%。
-**解决方案（临时）**: 已在 `Database/Market-Data/MANIFEST.md` 加「同名异义警示」节；正式择一并统一消费方待 Doctor 裁。
-**预防措施**: 新表引入时先做「同名概念对撞检查」；25% 级安静偏差比全 0 伪列更危险（后者一眼可穿）。
-
-## [ERR-20260728-006] 涨跌停家数双源不一致（差 3–22%），远超 MANIFEST 声明的 ±2 家
-**状态**: ⏳ 待择一（已注明）
-**优先级**: 🟡 中
-**触发场景**: `daily_market.limit_up/limit_down` vs `limit_list_daily` 计数：0723 涨停 127 vs 116、0727 119 vs 111、0720 跌停 257 vs 210（差 22%）。日报快照与 emotion_cycle 走 daily_market 支。
-**预防措施**: 同上「同名异义对撞检查」；emotion 引擎若换源须整体重校分位。
-
-## [ERR-20260728-007] `daily_market.max_consecutive` 与 `emotion_cycle.total_volume` 为 volume_trillion 同族伪列（未登记过）
-**状态**: ✅ 已定性（勿用）
-**优先级**: 🟡 中
-**触发场景**: `max_consecutive` 首个非零 20260603（此前全 0 非 NULL·与 ERR-20260719-003 同族同源）；`emotion_cycle.total_volume` 284/390 行为 0（与 seal_rate 死列同家）。
-**预防措施**: 伪列黑名单从单列扩为族：volume_trillion / max_consecutive / seal_rate / total_volume；回测取列前先做「量纲/符号/覆盖/披露制度」四查。
-
-## [ERR-20260728-008] north_flow 语义翻转日精确定位 20240819，且 daily_market.north_money 为同一污染的镜像列
-**状态**: ✅ 已定性（补充 ERR-20260727-004）
-**优先级**: 🟡 中
-**触发场景**: 20240816 net=−6774.99 → 20240819 起 north_money ≡ hgt+sgt（买卖成交总额·2025-26 零负值）。`daily_market.north_money` 与其同日完全相等＝同污染。
-**解决方案**: 净额语义 2024-08-19 前有效；此后仅可作「北向参与度/活跃度」用且须重命名语义；镜像列同禁。
