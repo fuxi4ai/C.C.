@@ -39,6 +39,18 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [NOTE-20260728-001] 贴出的入库命令＝已启动的开关——贴命令后不得再穿插会改 canonical 的手工 patch 流程
+**类型**: 📝 流程教训（CC 协作·并行基线）**优先级**: 🟡 中
+
+**触发**: 2026-07-28 CC 上一轮把 6 篇 batch 命令贴给 Doctor 后，本轮又与 Doctor 走「DUV 追新闻→手工 patch→promote」流程，且指令写「先 patch 后 batch 串行」。实际 Doctor 已按前一轮贴的命令起跑 batch（03:02 出 _v2·基线 3474），DUV patch 03:06 才落 canonical（→3476）——_v2 不含 DUV，直接 promote 会丢 +2 节点/+5 边。**07-06 CoWoS 并行基线坑的复现**，只是这次两个动作都出自 CC 自己贴的命令。
+
+**处置**: CC 沙箱把 DUV patch 叠合到 _v2 之上生成 final，断言 final ⊇ canonical（零丢失）+ 8 项 QA 后才放行 promote。另：kg_merge_safe 被双跑（多行粘贴/重复粘贴），幂等 Δ+0 无害——幂等性再次兜底（NOTE-20260617-001 族系），但不能指望每个脚本都幂等。
+
+**规则**:
+- **命令一经贴出，就当它已被执行**——之后若要插入任何会改 canonical 的手工 patch，必须先与 Doctor 确认前一条命令是否已跑/正在跑，或改为把 patch 排到 batch 收口之后；
+- 凡「手工 patch 与 batch 同日并行」，promote 前必做**三方计数对账**：pre-batch 基线 vs _v2 vs 当前 canonical——canonical ≠ _v2 的 base 即触发叠合流程（patch 合到 _v2 之上 + 超集断言），沿 07-06 CoWoS 先例；
+- 时序判定用**磁盘证据**（backups 时间戳、_v2 文件名时间、index mtime），不靠会话记忆推断（NOTE-20260719-001 同源）。
+
 ## [ERR-20260721-001] promote 门无 `set -e` → 结构断言失败仍 `cp` 覆盖，脏图被放行到生产
 **状态**: ✅ 已解决（2026-07-21·修门 + 按备份链回退重跑）**优先级**: 🔴 高
 
