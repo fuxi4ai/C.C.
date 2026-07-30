@@ -31,9 +31,12 @@ cat ~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
 ### Step 1 · 读最近 3 篇会话日志
 
 ```bash
-ls -t ~/Documents/Claude/brain/logs/*.md | head -3
+ls -t ~/Documents/Claude/brain/logs/*.md \
+      ~/Documents/Claude/brain/logs/[0-9][0-9][0-9][0-9]-[0-9][0-9]/*.md 2>/dev/null | head -3
 ```
 把这 3 个文件全文读入。
+
+> ⚠ **必须带上 `logs/YYYY-MM/` 子目录**：`meditation.fold_logs` 每月 1 号把上月日志折进子目录，月初根目录可能不足 3 篇——只扫根目录会在**每月 1 号前后静默读不满 3 篇**。刻意不用 `find` 全递归：那会把 `checkpoints/`（PRD）和 `checkups/`（体检报告）混进"最近会话日志"。
 
 ### Step 2 · 识别活跃项目
 

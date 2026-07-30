@@ -532,7 +532,12 @@ def main():
         notes = sum(1 for _ in root.rglob("*.md"))
 
     logs_dir = root / "logs"
-    log_files = sorted([p for p in logs_dir.glob("*.md")], key=lambda p: p.name, reverse=True)
+    # 含已折叠月份（logs/YYYY-MM/）——meditation.fold_logs 每月 1 号会把上月日志折进子目录，
+    # 只扫根目录会让 project_last_active 看不见历史（2026-07 起实际已失准）。
+    # 刻意不用 rglob：那会把 checkpoints/（33 篇含 project: 的 PRD）也算进"项目最后活跃"，属语义变更而非修 bug。
+    log_files = sorted(
+        list(logs_dir.glob("*.md")) + list(logs_dir.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9]/*.md")),
+        key=lambda p: p.name, reverse=True)
 
     # 项目：顶层目录（带 stub 或 architecture），排除基础设施与数灵金融线
     projects = []
