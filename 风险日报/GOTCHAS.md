@@ -89,4 +89,11 @@ project: 风险日报
 **解决方案**: 开窗放宽至 start−5（BT-18 事前 5 日窗背书）→ SPY −1.11%/上证 −1.00%，判型归位。
 **预防措施**: 开窗宽度 ≥ 窗定义 + 该源最大数据滞后；窄窗×人肉源先查「窗内实测点数」，≤1 点禁判型（fail-visible）。机理详见 决策记录 2026-07-30 议息卡节。
 
+## [ERR-20260730-003] Yahoo chart API 经沙箱 web_fetch 返回空体——us_anchor ×19 人肉工作流断供风险
+**状态**: ⚠ 值守中（2026-07-30 发现·未修）
+**优先级**: 🟡 中（若持续则升 🔴——us_anchor/TACO SPY 腿断供）
+**触发场景**: 拉 07-29 美股分时：`query1/query2.finance.yahoo.com/v8/finance/chart/` 经沙箱 web_fetch 连续 6 次返回空体（带/不带 %5E、含 period 参数均试）；Chrome 桥未连接。同端点 Doctor 终端 `curl -A "Mozilla/5.0" --compressed` 一次成功。
+**解决方案**: 当次走「构造 curl 命令交 Doctor 终端」（AI4ME/us_intraday_20260729/ 15 文件）。**根因未定**：可能是 Yahoo 对无 UA/无 cookie 抓取收紧，也可能是 web_fetch 对 application/json 的处理变化。
+**预防措施**: ① 九儿 us_anchor ×19 与 intl_index_daily 同源——**下一班跑前先单只试拉**，空体即切终端 curl 批量方案（命令模板见本条触发场景）；② 情报源台账「手工 web_fetch ×19」行的失败表现补「空体≠无数据，先当通道错」（fail-visible/G-X104 同族：静默空与真空同貌）。
+
 <!-- 在下方追加新条目 -->
