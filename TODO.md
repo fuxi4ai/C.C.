@@ -56,7 +56,7 @@ type: log
   ③ **TACO 复刻 3/6 掉线查因**。
 
 - [ ] **基建与另场专项三件（2026-07-30 从当日三场日志补挂）**
-  ① **定时任务清单全面对账**：`permanent/定时任务清单.md` 表内 cron 与 live 注册表多处不一致、且缺 7 月新增六班——重建前一律以 `list_scheduled_tasks` 为准；**另场专项做**。
+  ① ~~**定时任务清单全面对账**~~ → **2026-07-30 完成**：live 17 班 vs 清单 11 行 → 补 6 个 7 月新增班、订正 5 条 cron（4 条整体 −6h、market-data 挪至 01:30）、依赖链次序复核仍成立；表改三段式（日更链/周更月更/ad-hoc）。附带清洗「中立语境」description **A 组 6 条**（含地域标注者），**B 组 4 条待您定**（仅钟点无地域，见清单 §「中立语境」清洗节）；通知策略因 `list_scheduled_tasks` 不返回 `notifyOnCompletion` **无法核验**，6 个新班的通知列标「待核」。
   ② **BT-19 立 PRD**（观星概率序列 point-in-time 重建）；CN 腿首跑；Fed 腿日更入调度。
   ③ **Doctor 侧**：段A `stock_tracking` Mac 重灌；段B `ingest_meta` 标注；渊图链路修复。
 
