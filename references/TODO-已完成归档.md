@@ -25,6 +25,14 @@ type: log
   **落盘**：`warm-warningpage-styleguide.html` v1.3→**v1.4**（备份 `.bak_20260730_v13`）——新增 §12、头注版本、两处「十一件事」→「十二件事」并补 ⑫、§07 反对条 +2（雷达画带正负归因／象限雷达当主图令恒等式无处闭合）、footer 设计依据补 case study 路径；`README.md` 注册表行同步 v1.4。**零改旧章**（追加语法，同 v1.3 纪律）。自检过：13 section 全闭合、「十一件事」残留 0、v1.3 仅存历史沿革与旧章标注。
   **注记**：上场那份逐文件清单只活在对话里、未落盘（`logs/2026-07-30-事件归因值守系统上线.md:38` 仅记「清单已出」）→ 本次按 case study + 会话日志重建后经 Doctor 二次确认才动手。（2026-07-30 Doctor 裁：不升 G-X。）
 
+- [x] **PEC · 关系化图谱可行性 → 落地（复用渊图图基建 + PEC 专属图 schema）（2026-07-25 挂 · ⏳ 等下周一 2026-07-27 Fable 5 额度恢复后再做）**：承 2026-07-25 会话「渊图关系化图谱能否在 PEC 整体实现」判定——**整体照搬渊图那套静态实体-关系图＝不行**（PEC 内核层：dated 裁定链 / 概率·双读 / α-α′ 二阶反身 / 机理论证，正是渊图刻意 strip 的高时效＋它没有的二阶关系，硬图化会失真）；**可行且值得＝复用渊图图基建（schema 化 kg_ingest / 结构 QA / wiki_autogen / provenance / 命名铁律）＋ 给 PEC 另配 schema**（node type：框架 / 预测 / 案例 / GOTCHA / 实体；edge type：挂框架 / 同族 / 精化 / 证伪-命中 / 校正 / α 审计；每断言带 `as_of` + `confidence`）——**共享工具链、不共享图模型/本体论**。**下一步（走 propose-then-confirm）**：① 出「PEC 可图化层 vs 不可图化层」映射表；② 草拟 PEC 专属图 schema 草案。**为何等 Fable 5**：任务重、跨渊图 × PEC 两库，留下周一额度恢复后做。关联：raw `Projects/PEC/raw/2026-07-25_analysis_江学勤预测性历史框架…`（同日会话上游）· 渊图系统概览（图模型/11 边 schema/基建）。
+  **✅ 2026-07-31 Doctor 裁定销账 —— 两项「下一步」均已交付（2026-07-28 完成，做完未销账）**：
+  ① **可图化层 vs 不可图化层映射表**（15 层逐层判定）· ② **PEC 专属图 schema v0.1**（12 节点类型，含新立的 `case`/`prediction`/`verdict`/`clause`；11 边类型）——`verdict` 设为一等公民节点以承载「严读/宽读」双裁定，正是照搬渊图会失真的那部分。
+  **另加做了原方案没写的第三步**：拿 **IR 预测组**做样本试跑（`build_ir_sample.py` → **57 节点 / 92 边**，结构 QA **12 项全绿**），并在过程中新发现第 5 项 QA「双读一致性」。
+  **结论（与 07-25 原判定有出入，已在文档 §三 记明）**：可行**已证**、值得**未证** → 推荐 **lint-first**（先用图基建做一致性检查，暂不建全量图）。
+  **产出**：`Projects/PEC/图谱化方案_v0.1_20260727.md`（21252 B · 文件名沿用 07-27，实际成文 07-28）· `Projects/PEC/build_ir_sample.py`。
+  **⚠ 本条曾挂「⏳ 等 2026-07-27 Fable 5 额度恢复后再做」**——那天早已过、事也办了，属**做完未销账**；同期另有一处「引用自家编号」勘误（原写 G-11，实为 G-27 子条款）已在文档 §四 核验留痕中更正。
+
 - [x] **brain-save skill Step 5 改「先探后加」（2026-07-24 完成·Doctor 已安装 v2.9）**（2026-07-23 挂）
   Step 5 旧默认 `git add -A` 会在工作树积压时混入范围不明改动（G-X83 / DVA GIT-20260723-001）。**已改**：brain-save v2.9 四处 commit 模板（Step5 step2/3/4 + Step6 回报）全改「先探后加」（`git status --short` → `git add <明确文件>` → `git diff --cached --check` → commit → push），禁 `git add -A`。CC 出 `.skill` 包（源 `Claude/brain-save/`）→ Doctor 经 Settings/Save skill 安装生效。
   **留档小事**：`Claude/Brain/.skills/brain-save/` v2.7 旧漂移副本（07-22 记过 .skills 漂移·G-X90）——**2026-07-24 已冷区归档** → `_DEPRECATED_brain-save_v2.7_20260724`（dir + .skill 包·可逆）。真源 `Claude/brain-save/` v2.9。
