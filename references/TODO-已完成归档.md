@@ -14,6 +14,10 @@ type: log
 
 ## 已完成
 
+- [x] **DVA ASR 云→本地迁移 → 已扩展为完全 fuxi 化并于当日完成单写切换**（2026-07-24 挂 · **2026-07-31 由 Doctor 会话中口头确认「勾了」，CC 代记留痕并迁档**）：Qwen3-ASR 本地后端+runtime+数据+调度全迁 fuxi，Phase 0→5 收官（终版包 135000Z·offsite 回填 1388·DVA-Refill Ready）。剩余尾巴已拆入新待办：07-25 首班核验 / Phase 6 观察期 / Phase 7 清理另批。详见 logs/2026-07-24-DVA-fuxi化Phase2至5单写切换完成。原条目内文（次序①-⑤）全部兑现。
+  fuxi 有本地算力 → 甩掉云管线（DashScope key + 火山 TOS + OSS 白名单坑 + 计费 + 网络脆弱）。**选型＝`Qwen/Qwen3-ASR-1.7B-hf`**（阿里 Qwen 开源·Apache-2.0·2026-01-29 开源/06-26 原生 Transformers·中文新一代 SOTA·22 方言·原生带 BGM 音频·可选词级时间戳·Open ASR 榜 WER 5.59）——**2026-07-24 Doctor 指正选型**：初稿推 SenseVoiceSmall，Qwen3-ASR 更强且同为阿里开源本地，改选它（SenseVoiceSmall 退备选）。方案 `Projects/DVA/docs/ASR本地化迁移方案_20260724.md`。
+  **次序（先部署后写码后验收·同 F4 纪律）**：① fuxi 装 `git+transformers`+torch、下载 `Qwen/Qwen3-ASR-1.7B-hf`、最小验证（Doctor/VV 终端·沙箱做不了下载）；② 真实抖音音频（有语音的）本地 Qwen3 vs 云抽样对比；③ CC 改 dva_asr 加 `--backend local`（`AutoModelForMultimodalLM`+`apply_transcription_request`·云默认不动·本地 opt-in·出 diff 待批·装好模型才可测）；④ 首批本地跑验收 → 全面切本地（云留兜底）；⑤ 更新 VV 请求为 Qwen3 本地口径（已改前瞻 1b）。
+
 > 下面 6 条为 2026-07-21 文件系统健康自检产出（Doctor 批「全部挂 TODO」）。清理执行明细见 `~/Documents/_to_delete_20260721/_MANIFEST.md`（观察期至 2026-08-20）。
 
 - [x] **警示页 styleguide §06 免责条款回灌 → 核实已闭环、条目过期销账（2026-07-30 结案）**（2026-07-27 挂·提案制）
