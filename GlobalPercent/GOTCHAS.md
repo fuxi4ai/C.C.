@@ -2,8 +2,8 @@
 title: GlobalPercent · GOTCHAS（已知坑）
 tags: [GlobalPercent, gotchas, Financial]
 created: 2026-06-29
-updated: 2026-06-29
-status: active
+updated: 2026-08-01
+status: archived
 type: resource
 project: GlobalPercent
 ---
@@ -11,7 +11,7 @@ project: GlobalPercent
 # GlobalPercent · GOTCHAS（已知坑）
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
-> 项目内还有一份实时错题本：`Claude/Projects/Financial/GlobalPercent/GOTCHAS.md`；这里是沉淀+索引。
+> 项目内错题本已随仓库归档到 `Claude/Projects/Financial/备查区/GlobalPercent/GOTCHAS.md`；这里继续作为只读沉淀与索引。
 
 ## 格式
 

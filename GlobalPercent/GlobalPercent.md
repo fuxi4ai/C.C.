@@ -2,16 +2,16 @@
 title: GlobalPercent
 tags: [GlobalPercent, index, Financial, 情绪温度计]
 created: 2026-07-30
-updated: 2026-07-30
-status: active
+updated: 2026-08-01
+status: archived
 type: index
 project: GlobalPercent
-code_path: Claude/Projects/Financial/GlobalPercent/
+code_path: Claude/Projects/Financial/备查区/GlobalPercent/
 ---
 
 # GlobalPercent
 
-> 情绪温度计（Financial 线）。项目优先级见系统概览「当前阶段」。
+> 情绪温度计（Financial 线）。2026-08-01 已归档到备查区；方法教训继续有效，旧运行时不再启用。
 
 ## 入口
 

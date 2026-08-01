@@ -258,7 +258,7 @@ CC 创建/保存任何文件时，按以下规则选位置：
 - 文件是**给 Doctor 看的最终成果**（报告、总结、提案、可交付文档） → AI4ME
 - 二义性大 → 主动问 Doctor 一次
 
-**数灵金融线布局（2026-06-28 补正 · 见 [[家谱]] line36 + `Database/烛照九阴/_索引.md`）**：白泽/烛阴/句芒的金融项目按**三分布局**——**代码**落 `Documents/Claude/Projects/Financial/{项目}/`（白泽观星/白泽大宗/烛照九阴/剑酒青丘/GlobalPercent 均在此，已核）、**DB 层数据**（recap.db、Raw-Recap 语料等）落 `Documents/Database/{项目}/`、**魂/记忆**落 `brain/agents/{灵}/`。
+**数灵金融线布局（2026-06-28 补正 · 见 [[家谱]] line36 + `Database/烛照九阴/_索引.md`）**：白泽/烛阴/句芒的金融项目按**三分布局**——**代码**落 `Documents/Claude/Projects/Financial/{项目}/`（白泽观星/白泽大宗/烛照九阴/剑酒青丘均在此；GlobalPercent 已于 2026-08-01 迁入 `Financial/备查区/GlobalPercent/`）、**DB 层数据**（recap.db、Raw-Recap 语料等）落 `Documents/Database/{项目}/`、**魂/记忆**落 `brain/agents/{灵}/`。
 - ⚠️ **"Projects/Financial/" 是 `Claude/Projects/Financial/` 的简写**（家谱/索引常省 `Claude/` 前缀）——金融代码与 CC 开发项目**同在 `Claude/Projects/` 下**，金融归 `Financial/` 子目录，**并非另一套命名空间**。`Documents/根/Projects/` 下若出现同名目录＝**误落**，非正主。
 - ⚠️ **tier 甄别**：代码项目自带的 `data/` 工作产物（中间 json、审核台账 md 等）**属代码项目、留在项目内**，不算 DB 层数据、**不迁 Database**。只有 recap.db 这类结构化库 + Raw-Recap 原始语料才落 Database。（2026-06-28 教训：误把烛照九阴 `data/待人工复核-仓位.md` 当 DB 数据移进 Database，实则它是代码项目 data/ 的台账产物）
 
