@@ -31,3 +31,7 @@ Thumbs.db
 *~
 .idea/
 .vscode/
+
+# Python 缓存
+__pycache__/
+*.pyc
