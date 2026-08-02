@@ -1,0 +1,430 @@
+{
+ "_meta": {
+  "generated_at": "2026-08-02T00:59:54-07:00",
+  "host": "yuetudeMacBook-Air.local",
+  "generator": "brain/.tools/scheduler_snapshot.py",
+  "readonly": true
+ },
+ "_gaps": [
+  "Cowork 班的 cron 表达式脚本拿不到（只有 list_scheduled_tasks MCP 工具能给）——cowork[].cron 恒为 null，由 CC 回填。此缺失是显式的，勿当成「没有 cron」。",
+  "通知策略 notifyOnCompletion 同理，list_scheduled_tasks 亦不返回（2026-07-30 实测）。"
+ ],
+ "cowork_live": {
+  "path": "/Users/lunarabbit/Claude's workspace/Scheduled",
+  "count": 19,
+  "tasks": [
+   {
+    "taskId": "agents-memory-meditation",
+    "has_skill": true,
+    "skill_mtime": "2026-07-05 10:46",
+    "skill_sha12": "448e281ca97b",
+    "skill_lines": 17,
+    "name": "agents-memory-meditation",
+    "desc_head": "每周日 09:05 由句芒对 brain/agents 做数灵记忆体检（meditation 兜底），查人格冲突/记忆错位/漏记断链/归位合规，出报告",
+    "cron": null
+   },
+   {
+    "taskId": "baize-breakout-sentinel",
+    "has_skill": true,
+    "skill_mtime": "2026-07-09 03:50",
+    "skill_sha12": "e5b1f2139180",
+    "skill_lines": 32,
+    "name": "baize-breakout-sentinel",
+    "desc_head": "白泽每日哨兵：突破扫描 + 观察窗信号A/B/C2全生命周期（预注册规则自动记账）",
+    "cron": null
+   },
+   {
+    "taskId": "baize-weekly-report",
+    "has_skill": true,
+    "skill_mtime": "2026-07-31 23:56",
+    "skill_sha12": "756ff01971b0",
+    "skill_lines": 114,
+    "name": "baize-weekly-report",
+    "desc_head": "白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周日01:00，留足本地cron缓冲）",
+    "cron": null
+   },
+   {
+    "taskId": "brain-monthly-checkup",
+    "has_skill": true,
+    "skill_mtime": "2026-07-05 10:46",
+    "skill_sha12": "b484f5d271d7",
+    "skill_lines": 41,
+    "name": "brain-monthly-checkup",
+    "desc_head": "每月 1 号 09:00 跑 meditation 心灵与记忆健康自检：折叠上月 logs + 记忆指标 + 数灵人格层 + 警告",
+    "cron": null
+   },
+   {
+    "taskId": "cockpit-snapshot",
+    "has_skill": true,
+    "skill_mtime": "2026-07-30 06:03",
+    "skill_sha12": "6c33680aedea",
+    "skill_lines": 18,
+    "name": "cockpit-snapshot",
+    "desc_head": "影子驾驶舱夜间快照:三时钟状态落 cockpit.db(append-only)+ OOS 台账成熟(次一自然日)",
+    "cron": null
+   },
+   {
+    "taskId": "event-attribution-watch",
+    "has_skill": true,
+    "skill_mtime": "2026-07-30 01:14",
+    "skill_sha12": "2ddfd4f56421",
+    "skill_lines": 34,
+    "name": "event-attribution-watch",
+    "desc_head": "事件归因验证班：采集上一美股交易日数据→事件日判定→收盘级归因→与注册量级带对准→提案制汇报（剑酒青丘·解释层）",
+    "cron": null
+   },
+   {
+    "taskId": "handshake-consumer-daily",
+    "has_skill": true,
+    "skill_mtime": "2026-07-05 10:46",
+    "skill_sha12": "1135f288b6b3",
+    "skill_lines": 33,
+    "name": "handshake-consumer-daily",
+    "desc_head": "每日09:00消费Shake Hands机器握手通道(方案B)：扫to CC/scheduled→schema+checksum+run_id幂等校验→按task_id路由落盘(走brain铁律:真实性/不promote…",
+    "cron": null
+   },
+   {
+    "taskId": "longyu-weekly-dualscorer",
+    "has_skill": true,
+    "skill_mtime": "2026-08-01 22:28",
+    "skill_sha12": "840a7a7c574f",
+    "skill_lines": 43,
+    "name": "longyu-weekly-dualscorer",
+    "desc_head": "龙鱼标的库周更：常更标的每周双scorer打分(deepseek子项+claude top-down)落库+对比校正队列+刷新个股库看板artifact",
+    "cron": null
+   },
+   {
+    "taskId": "market-data-daily-update",
+    "has_skill": true,
+    "skill_mtime": "2026-08-01 06:34",
+    "skill_sha12": "b98e2afdacf9",
+    "skill_lines": 62,
+    "name": "market-data-daily-update",
+    "desc_head": "每交易日由句芒增量更新Market-Data行情到最近已收盘交易日=当日(收盘后第一时间;须在上游Tushare当日入库完成之后);去重+防空壳,取空则次日按缺口自动补回;下游白泽哨兵/次日晨报读到当日收盘;沙箱经代理+…",
+    "cron": null
+   },
+   {
+    "taskId": "recap-kejian-daily-ingest",
+    "has_skill": true,
+    "skill_mtime": "2026-07-30 06:02",
+    "skill_sha12": "4da3a77db942",
+    "skill_lines": 30,
+    "name": "recap-kejian-daily-ingest",
+    "desc_head": "由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2",
+    "cron": null
+   },
+   {
+    "taskId": "recap-kejian-review",
+    "has_skill": true,
+    "skill_mtime": "2026-07-31 23:56",
+    "skill_sha12": "60d437adc0d4",
+    "skill_lines": 33,
+    "name": "recap-kejian-review",
+    "desc_head": "每天09:30由句芒审核九儿课件入库：去重/数据合理性/P2标签/归位，扩审dim3(禁行情倒灌)与dim4仓位(归一/词表/待复核不重不漏)，出审核日志",
+    "cron": null
+   },
+   {
+    "taskId": "refresh-asset-dashboard",
+    "has_skill": true,
+    "skill_mtime": "2026-08-01 22:31",
+    "skill_sha12": "bf8a87844666",
+    "skill_lines": 48,
+    "name": "refresh-asset-dashboard",
+    "desc_head": "重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact），日更；挂载已收敛为 Projects+Database 两目录，覆盖 13/14 project",
+    "cron": null
+   },
+   {
+    "taskId": "refresh-risk-daily",
+    "has_skill": true,
+    "skill_mtime": "2026-07-31 10:03",
+    "skill_sha12": "2baa154d130d",
+    "skill_lines": 21,
+    "name": "refresh-risk-daily",
+    "desc_head": "每日刷新「风险日报」artifact（fetch TACO 外部分项·禁代理 → build_risk_daily.py → update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写）",
+    "cron": null
+   },
+   {
+    "taskId": "repair-finance-chain",
+    "has_skill": true,
+    "skill_mtime": "2026-07-05 10:46",
+    "skill_sha12": "97b9b07f274a",
+    "skill_lines": 33,
+    "name": "repair-finance-chain",
+    "desc_head": "看板星图「审查并修复」按钮触发：诊断金融数据链路断链节点→只跑已知安全幂等修复→破坏性/网络/git 改动只给 Doctor 命令不自动跑",
+    "cron": null
+   },
+   {
+    "taskId": "touzhijunjun-perspective-refresh",
+    "has_skill": true,
+    "skill_mtime": "2026-08-01 22:28",
+    "skill_sha12": "139923b77c15",
+    "skill_lines": 63,
+    "name": "touzhijunjun-perspective-refresh",
+    "desc_head": "投知君君视角层增量提炼+反共识纠偏+图谱候选核实（自检增量·不自动promote），周三/周六17:00",
+    "cron": null
+   },
+   {
+    "taskId": "us-close-backfill",
+    "has_skill": true,
+    "skill_mtime": "2026-08-01 09:12",
+    "skill_sha12": "aae001d8f84e",
+    "skill_lines": 118,
+    "name": "us-close-backfill",
+    "desc_head": "美股收盘补数班的只读看门狗——写库已迁本机 launchd(com.zhuzhao.usclose 14:00 PT)，本班 14:30 只核对两表水位与新鲜度并出简报，绝不写库(G019)；异常只给 Doctor 终端…",
+    "cron": null
+   },
+   {
+    "taskId": "yuantu-alarm-earnings-season",
+    "has_skill": true,
+    "skill_mtime": "2026-08-02 00:20",
+    "skill_sha12": "e8bcb5aedf35",
+    "skill_lines": 16,
+    "name": "yuantu-alarm-earnings-season",
+    "desc_head": "渊图警报监控·财报季加密（1/4/7/10月周四）核验折旧脚注/FCF/capex",
+    "cron": null
+   },
+   {
+    "taskId": "yuantu-alarm-weekly",
+    "has_skill": true,
+    "skill_mtime": "2026-07-22 23:52",
+    "skill_sha12": "2a486321e9fe",
+    "skill_lines": 16,
+    "name": "yuantu-alarm-weekly",
+    "desc_head": "渊图警报监控·常态每周核验 AI 科技股未定价危险时点",
+    "cron": null
+   },
+   {
+    "taskId": "zhuzhao-market-fetch-daily-report",
+    "has_skill": true,
+    "skill_mtime": "2026-08-02 00:59",
+    "skill_sha12": "ff0f5e557188",
+    "skill_lines": 92,
+    "name": "zhuzhao-market-fetch-daily-report",
+    "desc_head": "每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走yahoo chart API默认源·盘中守卫+null …",
+    "cron": null
+   }
+  ]
+ },
+ "documents_dead_tree": {
+  "exists": true,
+  "path": "/Users/lunarabbit/Documents/Claude/Scheduled",
+  "dir_count": 12,
+  "also_in_live": [
+   "agents-memory-meditation",
+   "baize-weekly-report",
+   "brain-monthly-checkup",
+   "handshake-consumer-daily",
+   "market-data-daily-update",
+   "recap-kejian-daily-ingest",
+   "recap-kejian-review",
+   "refresh-asset-dashboard",
+   "repair-finance-chain",
+   "touzhijunjun-perspective-refresh",
+   "zhuzhao-market-fetch-daily-report"
+  ],
+  "only_in_dead": [
+   "_archived"
+  ],
+  "content_diverged": [
+   {
+    "taskId": "baize-weekly-report",
+    "dead_mtime": "2026-07-09 03:10",
+    "live_mtime": "2026-07-31 23:56",
+    "dead_sha12": "4dbff7b87197",
+    "live_sha12": "756ff01971b0"
+   },
+   {
+    "taskId": "market-data-daily-update",
+    "dead_mtime": "2026-07-05 04:53",
+    "live_mtime": "2026-08-01 06:34",
+    "dead_sha12": "6cc421266444",
+    "live_sha12": "b98e2afdacf9"
+   },
+   {
+    "taskId": "recap-kejian-daily-ingest",
+    "dead_mtime": "2026-07-01 14:05",
+    "live_mtime": "2026-07-30 06:02",
+    "dead_sha12": "279edfdaae8b",
+    "live_sha12": "4da3a77db942"
+   },
+   {
+    "taskId": "recap-kejian-review",
+    "dead_mtime": "2026-07-30 22:32",
+    "live_mtime": "2026-07-31 23:56",
+    "dead_sha12": "b32c02b018b7",
+    "live_sha12": "60d437adc0d4"
+   },
+   {
+    "taskId": "refresh-asset-dashboard",
+    "dead_mtime": "2026-07-01 14:10",
+    "live_mtime": "2026-08-01 22:31",
+    "dead_sha12": "550f45e55403",
+    "live_sha12": "bf8a87844666"
+   },
+   {
+    "taskId": "touzhijunjun-perspective-refresh",
+    "dead_mtime": "2026-07-02 00:21",
+    "live_mtime": "2026-08-01 22:28",
+    "dead_sha12": "217ff8588e79",
+    "live_sha12": "139923b77c15"
+   },
+   {
+    "taskId": "zhuzhao-market-fetch-daily-report",
+    "dead_mtime": "2026-07-30 22:33",
+    "live_mtime": "2026-08-02 00:59",
+    "dead_sha12": "ae69624dda78",
+    "live_sha12": "ff0f5e557188"
+   }
+  ],
+  "note": "⚠ 死树仍在：改动落这里不会进生产（2026-07-31 ERR）。内容分叉项尤其危险——看起来改了，其实没进调度器。"
+ },
+ "launchd": {
+  "sources": {
+   "com.zhuzhao.marketdata": {
+    "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.marketdata.plist",
+    "src_sha12": "74d1af18a30e",
+    "src_mtime": "2026-07-22 22:11"
+   },
+   "com.zhuzhao.usclose": {
+    "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.usclose.plist",
+    "src_sha12": "22e181cf3484",
+    "src_mtime": "2026-08-01 09:01"
+   }
+  },
+  "installed": {
+   "com.google.GoogleUpdater.wake": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.google.GoogleUpdater.wake.plist",
+    "installed_sha12": "588a78258152",
+    "installed_mtime": "2026-07-01 09:22",
+    "program": "/Users/lunarabbit/Library/Application Support/Google/GoogleUpdater/Current/GoogleUpdater.app/Contents/MacOS/GoogleUpdater",
+    "schedule": null,
+    "run_at_load": null,
+    "runtime": {
+     "loaded": true,
+     "state": "not running",
+     "last_exit_code": "0"
+    }
+   },
+   "com.google.keystone.agent": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.google.keystone.agent.plist",
+    "installed_sha12": "97704a8960b4",
+    "installed_mtime": "2026-07-01 09:22",
+    "program": "?",
+    "schedule": null,
+    "run_at_load": null,
+    "runtime": {
+     "loaded": false,
+     "detail": "未加载（launchctl print 非 0）"
+    }
+   },
+   "com.google.keystone.xpcservice": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.google.keystone.xpcservice.plist",
+    "installed_sha12": "97704a8960b4",
+    "installed_mtime": "2026-07-01 09:22",
+    "program": "?",
+    "schedule": null,
+    "run_at_load": null,
+    "runtime": {
+     "loaded": false,
+     "detail": "未加载（launchctl print 非 0）"
+    }
+   },
+   "com.zhuzhao.marketdata": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.zhuzhao.marketdata.plist",
+    "installed_sha12": "74d1af18a30e",
+    "installed_mtime": "2026-07-22 22:12",
+    "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
+    "schedule": [
+     {
+      "Weekday": 1,
+      "Hour": 2,
+      "Minute": 30
+     },
+     {
+      "Weekday": 2,
+      "Hour": 2,
+      "Minute": 30
+     },
+     {
+      "Weekday": 3,
+      "Hour": 2,
+      "Minute": 30
+     },
+     {
+      "Weekday": 4,
+      "Hour": 2,
+      "Minute": 30
+     },
+     {
+      "Weekday": 5,
+      "Hour": 2,
+      "Minute": 30
+     }
+    ],
+    "run_at_load": false,
+    "runtime": {
+     "loaded": true,
+     "state": "not running",
+     "last_exit_code": "0"
+    }
+   },
+   "com.zhuzhao.usclose": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.zhuzhao.usclose.plist",
+    "installed_sha12": "22e181cf3484",
+    "installed_mtime": "2026-08-01 09:01",
+    "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
+    "schedule": [
+     {
+      "Weekday": 1,
+      "Hour": 14,
+      "Minute": 0
+     },
+     {
+      "Weekday": 2,
+      "Hour": 14,
+      "Minute": 0
+     },
+     {
+      "Weekday": 3,
+      "Hour": 14,
+      "Minute": 0
+     },
+     {
+      "Weekday": 4,
+      "Hour": 14,
+      "Minute": 0
+     },
+     {
+      "Weekday": 5,
+      "Hour": 14,
+      "Minute": 0
+     }
+    ],
+    "run_at_load": false,
+    "runtime": {
+     "loaded": true,
+     "state": "not running",
+     "last_exit_code": "0"
+    }
+   },
+   "netdisk_service": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/netdisk_service.plist",
+    "installed_sha12": "e7c2560f0716",
+    "installed_mtime": "2025-03-15 02:42",
+    "program": "/Applications/BaiduNetdisk_mac.app/Contents/Frameworks/netdisk_service",
+    "schedule": null,
+    "run_at_load": true,
+    "runtime": {
+     "loaded": true,
+     "state": "running",
+     "last_exit_code": "(never"
+    }
+   }
+  },
+  "consistency": []
+ },
+ "crontab": {
+  "entries": [],
+  "note": "为空 ✅"
+ }
+}
