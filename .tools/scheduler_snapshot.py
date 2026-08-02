@@ -35,6 +35,18 @@ Cowork 班的 **cron 表达式**只有 `list_scheduled_tasks` 这个 MCP 工具�
 --------
 除自己的两个输出文件外，不写任何东西；不跑 git 子命令；不碰调度器。
 `launchctl print` 是只读查询。
+
+输出契约：**正常时一个字都不打印**
+----------------------------------
+巡检会退化——跑一个月后所有人都会习惯性略过那几行摘要（同 G-X119：
+「两问的答案总是没问题」就是它变成套话的信号）。故：
+
+    无异常 → **零输出**，exit 0
+    有异常 → 异常清单写 stderr，exit 1
+    -v/--verbose → 打印四面全摘要（人工排查时用）
+
+**变化本身不算异常**，交给 `git diff` 报——脚本只报**结构性破损**，
+两者分工不重叠。唯一的例外是「班消失」：它可能是误删，故对比上次快照并出声。
 """
 import hashlib
 import json
@@ -125,7 +137,11 @@ def scan_dead(cowork_ids):
         return {"exists": False,
                 "archived_as": [p.name for p in arch] or None,
                 "note": "✅ 已归档（改名不删）" if arch else "✅ 不存在"}
-    dirs = sorted(p.name for p in DEAD_TREE.iterdir() if p.is_dir())
+    # ⚠ 与 scan_cowork 的过滤保持一致：`_archived` 是 Cowork 自己的归档目录、不是班。
+    #   这里漏过滤会让它在差集里冒充「仅死树有」，产生 RED 级误报——
+    #   2026-08-02 首次真机验证即栽在此（修 scan_cowork 时没扫同族，G-X111）。
+    dirs = sorted(p.name for p in DEAD_TREE.iterdir()
+                  if p.is_dir() and not p.name.startswith((".", "_")))
     both, only_dead = [], []
     for n in dirs:
         (both if n in cowork_ids else only_dead).append(n)
@@ -229,9 +245,91 @@ def scan_cron():
         return {"entries": None, "note": f"查不到：{type(e).__name__}"}
 
 
+# ───────────────────── 异常检测 ─────────────────────
+
+def detect_anomalies(snap, prev):
+    """只报**结构性破损**，不报「变化」（变化交给 git diff，不重复）。
+
+    分两级：RED 必须出声；YELLOW 可能正常，默认不出声（-a 才报）。
+    宁可少报也不误报——误报会让人忽略，忽略等于没有巡检。
+    """
+    red, yellow = [], []
+
+    # ── 第一层自证：巡检自己停摆了没有 ──
+    # 悖论：巡检定时任务的东西自己也是定时任务，它坏了谁发现？
+    # 这一条让「漏跑」在下一次跑时自己喊出来。挡不住「永远停摆」——
+    # 那一半由 /resume 检查快照新鲜度兜底（定时的东西用不定时的兜底）。
+    if prev:
+        ts = (prev.get("_meta") or {}).get("generated_at")
+        if ts:
+            try:
+                prev_dt = datetime.fromisoformat(ts)
+                gap = (datetime.now(prev_dt.tzinfo) - prev_dt).days
+                if gap > 8:                      # 周班间隔 7 天，留 1 天余量
+                    red.append(f"**巡检中断过 {gap} 天**（上次快照 {ts[:10]}）——周班停摆？")
+            except Exception:
+                red.append(f"上次快照的 generated_at 解析不了：{ts!r}")
+
+    cw = snap["cowork_live"]
+    if cw.get("_error"):
+        red.append(f"Cowork live 树读不到：{cw['_error']}")
+    for t in cw.get("tasks", []):
+        if not t["has_skill"]:
+            red.append(f"班 `{t['taskId']}` 没有 SKILL.md")
+
+    # 班消失＝可能误删（新增不报，那是正常操作）
+    if prev:
+        was = {t["taskId"] for t in prev.get("cowork_live", {}).get("tasks", [])}
+        now = {t["taskId"] for t in cw.get("tasks", [])}
+        for gone in sorted(was - now):
+            red.append(f"班 `{gone}` 消失了（上次快照还在）——误删？")
+
+    d = snap["documents_dead_tree"]
+    if d.get("content_diverged"):
+        yellow.append(f"死树内容分叉 {len(d['content_diverged'])} 个："
+                      + "、".join(x["taskId"] for x in d["content_diverged"])
+                      + "（已知状态：live 均较新，归档待定）")
+    if d.get("only_in_dead"):
+        red.append(f"**仅死树有**：{d['only_in_dead']} —— 这些改动从未进过调度器")
+
+    lg = snap["launchd"]
+    for f in lg.get("consistency", []):
+        red.append(f"launchd `{f['label']}`：{f['issue']}")
+    for label, i in lg.get("installed", {}).items():
+        if not label.startswith(("com.zhuzhao.", "com.globalpercent.",
+                                 "com.baize.", "com.yuantu.")):
+            continue
+        rt = i.get("runtime") or {}
+        if rt.get("loaded") is False:
+            red.append(f"launchd `{label}` **未加载**——装了但不会跑")
+        ec = rt.get("last_exit_code")
+        if ec not in (None, "0"):
+            red.append(f"launchd `{label}` 上次退出码 **{ec}**（非 0）")
+
+    if snap["crontab"].get("entries"):
+        yellow.append(f"crontab 非空（{len(snap['crontab']['entries'])} 条）"
+                      "——第四执行面已启用，需入账")
+
+    return red, yellow
+
+
 # ───────────────────── 汇总 ─────────────────────
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser(description="定时任务四执行面巡检（只读 · 正常静默）")
+    ap.add_argument("-v", "--verbose", action="store_true", help="打印四面全摘要")
+    ap.add_argument("-a", "--all", action="store_true", help="连 YELLOW 级也报")
+    args = ap.parse_args()
+
+    # 读上次快照（必须在覆盖之前）——用于检测「班消失」
+    prev = None
+    if OUT_JSON.exists():
+        try:
+            prev = json.loads(OUT_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            prev = None
+
     err, cowork = scan_cowork()
     ids = {c["taskId"] for c in cowork}
     snap = {
@@ -311,7 +409,26 @@ def main():
 
     OUT_MD.write_text("\n".join(L) + "\n", encoding="utf-8")
 
-    # 控制台摘要
+    # ── 输出契约：正常静默、异常出声 ──
+    red, yellow = detect_anomalies(snap, prev)
+    if red or (args.all and yellow):
+        print("⚠ 定时任务巡检发现异常：", file=sys.stderr)
+        for x in red:
+            print(f"  🔴 {x}", file=sys.stderr)
+        if args.all:
+            for x in yellow:
+                print(f"  🟡 {x}", file=sys.stderr)
+        print(f"\n  详见 {OUT_MD}", file=sys.stderr)
+
+    # ⚠ 只有 RED 才改退出码。🟡 是「已知且已判定无害」，让它把 exit code 染成 1
+    #   等于把周班每周都变成失败——那是把告警训练成噪声的另一条路。
+    if red and not args.verbose:
+        sys.exit(1)
+
+    if not args.verbose:
+        sys.exit(0)          # ← 正常：零输出
+
+    # 控制台摘要（仅 --verbose）
     print(f"✅ 快照已生成")
     print(f"   {OUT_JSON}")
     print(f"   {OUT_MD}")

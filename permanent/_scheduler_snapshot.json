@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-08-02T01:06:50-07:00",
+  "generated_at": "2026-08-02T01:28:51-07:00",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -11,7 +11,7 @@
  ],
  "cowork_live": {
   "path": "/Users/lunarabbit/Claude's workspace/Scheduled",
-  "count": 19,
+  "count": 20,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
@@ -154,6 +154,16 @@
     "cron": null
    },
    {
+    "taskId": "scheduler-weekly-audit",
+    "has_skill": true,
+    "skill_mtime": "2026-08-02 01:21",
+    "skill_sha12": "33e8c3ead816",
+    "skill_lines": 64,
+    "name": "scheduler-weekly-audit",
+    "desc_head": "定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py，exit 0 则完全静默不打扰；exit 1 才把 🔴 异常清单报给 Doctor。绝不自动修、不 commit、不碰调度器",
+    "cron": null
+   },
+   {
     "taskId": "touzhijunjun-perspective-refresh",
     "has_skill": true,
     "skill_mtime": "2026-08-01 22:28",
@@ -208,7 +218,7 @@
  "documents_dead_tree": {
   "exists": true,
   "path": "/Users/lunarabbit/Documents/Claude/Scheduled",
-  "dir_count": 12,
+  "dir_count": 11,
   "also_in_live": [
    "agents-memory-meditation",
    "baize-weekly-report",
@@ -222,9 +232,7 @@
    "touzhijunjun-perspective-refresh",
    "zhuzhao-market-fetch-daily-report"
   ],
-  "only_in_dead": [
-   "_archived"
-  ],
+  "only_in_dead": [],
   "content_diverged": [
    {
     "taskId": "baize-weekly-report",
