@@ -22,6 +22,13 @@ related: [定时任务巡检机制, portable/README]
 rsync -a --delete "/Users/lunarabbit/Claude's workspace/Scheduled/" ~/Documents/Claude/brain/references/scheduled-live-mirror/live/
 ```
 
+## artifacts/ 子目录（2026-08-02 追加 · 第四输出）
+
+**真源**：`/Users/lunarabbit/Claude's workspace/Artifacts/`（9 个 artifact；实测 241M 里 ~97% 是 Cowork 自管的 `versions/` 回滚历史）。
+本镜像只收各家 `index.html` 当前态：≤1M 全拷（7 家）；>1M 只在 `_artifacts_manifest.txt` 记 `sha12+字节+mtime`（zhuzhao-jiuyin-daily · yuantu-starry-skies——正文备份责任在生成器：`烛照九阴/tools/gen_daily_report.py` 在 git，星空可由渊图 canonical 重生成）。`versions/`、`thumbnail.png` 刻意不入。
+**dev 模式怎么用**：7 个纯 HTML 双击即看；`global-asset-inventory` 与 `longyu-holdings-board` 含 `window.cowork` 按钮（跑班/刷新类），dev 模式下按钮死、内容仍可读。
+清单另一职能：**Artifacts 自此是巡检看得见的第六个执行面**——盘上有/manifest 无的幽灵（今日实例 `touzhijunjun-workflow`）靠清单 diff 现形。
+
 ## 纪律
 
 - 本目录**只读参考**。改班走 Cowork 侧（`update_scheduled_task` 或侧栏），改完重刷镜像。

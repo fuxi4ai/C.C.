@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Global Asset Inventory",
+  "schemaVersion": 1,
+  "description": "海螺姑娘 · 全局资产管理看板——各项目资产/数据库健康与新鲜度盘点。切回官方工作区后从抢救出的原本体恢复；每日 refresh-asset-dashboard 任务刷新。"
+}
+</script>
+<html lang="zh"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>海螺姑娘 · 全局资产管理</title>
+<style>
+:root{ color-scheme:light;
+  --bg:#f5f4ed; --tx:#141413; --sub:#6b6a64; --line:#e8e6dc;
+  --whisper:0 4px 24px rgba(20,20,19,.05);
+  --zh:"Songti SC","Source Han Serif SC","Noto Serif CJK SC",STSong,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{ font-family:var(--zh); color:var(--tx); background:var(--bg);
+  background-image:
+    radial-gradient(40% 30% at 12% 6%, rgba(99,160,120,.10), transparent 70%),
+    radial-gradient(42% 32% at 88% 4%, rgba(27,54,93,.08), transparent 72%),
+    linear-gradient(180deg,#f8f4ea 0%, var(--bg) 42%, #eee7d8 100%);
+  background-attachment:fixed; min-height:100vh; }
+.wrap{ position:relative; max-width:1120px; margin:0 auto; padding:22px 22px 48px; }
+h1{ font-size:21px; color:#1b365d; letter-spacing:.6px; font-weight:700; margin:0 0 7px; }
+.sub{ font-size:12px; color:var(--sub); margin-bottom:14px; }
+.legend{ display:flex; flex-wrap:wrap; align-items:center; gap:9px 14px; margin-bottom:8px; font-size:11px; color:var(--sub); }
+.legend .lg-h{ font-weight:700; color:#1b365d; letter-spacing:.05em; }
+.legend .li{ display:flex; align-items:center; gap:5px; }
+.kc{ width:11px; height:11px; border-radius:50%; display:inline-block; }
+.gw{ width:13px; height:13px; border-radius:50%; display:inline-block; background:#fbf8ef; border:1px solid var(--line); }
+.eg{ width:18px; height:0; border-top:2px solid #b5934e; display:inline-block; }
+.eg.cross{ border-top:1.6px dashed #8a8aa0; } .eg.fb{ border-top:2px dotted #c8962a; }
+
+.board{ position:relative; margin-top:8px; }
+svg.links{ position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:visible; }
+.row{ position:relative; z-index:1; margin-bottom:20px; }
+.row-label{ font-family:var(--zh); font-size:13px; font-weight:700; letter-spacing:.12em; margin:0 0 9px;
+  display:flex; align-items:center; gap:8px; color:#3f3a30; }
+.row-label::before{ content:""; width:4px; height:15px; border-radius:2px; background:var(--rc,#1b365d); }
+.row-label .cnt{ font-weight:400; color:#b3a489; font-size:11px; letter-spacing:0; }
+.cards{ display:flex; flex-wrap:wrap; gap:13px; }
+
+/* 宣纸玻璃卡（承日报语言）。星云 --sc=类别色；外发光 --glow=健康度（健康为 none） */
+.card{ position:relative; width:172px; padding:13px 15px; cursor:pointer; overflow:hidden;
+  background:linear-gradient(150deg,#fbf8ef,#f0eadc 46%,#f7f3ea);
+  border:1px solid var(--line); border-radius:18px;
+  box-shadow:var(--whisper), inset 0 0 0 1px rgba(255,255,255,.42);
+  transition:transform .18s, box-shadow .18s, border-color .18s, opacity .18s; }
+.card::after{ content:""; position:absolute; left:0; right:0; top:0; height:34%; border-radius:18px 18px 0 0;
+  background:linear-gradient(180deg,rgba(255,255,255,.44),transparent 90%); pointer-events:none; z-index:2; }
+.card:hover{ transform:translateY(-3px); border-color:color-mix(in srgb,var(--sc) 45%,var(--line));
+  box-shadow:var(--whisper), 0 8px 26px rgba(20,20,19,.10), inset 0 0 0 1px rgba(255,255,255,.55),
+    0 0 18px -3px color-mix(in srgb,var(--glow,var(--sc)) 90%,transparent); }
+.card.dim{ opacity:.24; }
+/* —— 外发光 = 健康度 —— */
+.card[data-st="healthy"]{ /* 健康：无外发光 */ }
+.card[data-st="stale"]{ box-shadow:var(--whisper), inset 0 0 0 1px rgba(255,255,255,.42), 0 0 14px -3px var(--glow); }
+.card[data-st="orphan"]{ box-shadow:var(--whisper), inset 0 0 0 1px rgba(255,255,255,.42), 0 0 11px -4px var(--glow); }
+.card[data-st="needs_repair"]{ animation:glowPulse 2s ease-in-out infinite; }
+.card[data-st="broken"]{ animation:glowPulse 1.5s ease-in-out infinite; }
+@keyframes glowPulse{
+  0%,100%{ box-shadow:var(--whisper), inset 0 0 0 1px rgba(255,255,255,.42), 0 0 9px -3px var(--glow); }
+  50%{ box-shadow:var(--whisper), inset 0 0 0 1px rgba(255,255,255,.42), 0 0 24px 0px var(--glow); } }
+.card.arch{ opacity:.6; } .card.arch .neb{ filter:blur(11px) grayscale(.6); opacity:.45; }
+
+.neb{ position:absolute; inset:0; z-index:0; filter:blur(11px); opacity:.85; pointer-events:none;
+  animation:nebDrift 22s ease-in-out infinite alternate;
+  background:
+    radial-gradient(52% 60% at 12% 4%, color-mix(in srgb,var(--sc,#888) 60%,transparent), transparent 66%),
+    radial-gradient(56% 66% at 38% 26%, color-mix(in srgb,var(--sc,#888) 34%,transparent), transparent 70%),
+    radial-gradient(72% 82% at 66% 52%, color-mix(in srgb,var(--sc,#888) 18%,transparent), transparent 78%); }
+.stars{ position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.5;
+  background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.9),transparent),
+   radial-gradient(1px 1px at 70% 22%,rgba(255,255,255,.8),transparent),
+   radial-gradient(1px 1px at 45% 65%,rgba(255,255,255,.85),transparent),
+   radial-gradient(1px 1px at 85% 55%,rgba(255,255,255,.7),transparent),
+   radial-gradient(1px 1px at 30% 85%,rgba(255,255,255,.75),transparent);
+  animation:twinkle 4.6s ease-in-out infinite alternate; }
+@keyframes nebDrift{ from{transform:translate(-2%,-1%) scale(1)} to{transform:translate(2%,2%) scale(1.06)} }
+@keyframes twinkle{ 0%{opacity:.4} 100%{opacity:.7} }
+.cc{ position:relative; z-index:3; }
+.cc .nm{ font-family:var(--zh); font-size:15px; font-weight:700; letter-spacing:.5px; color:#141413; display:flex; align-items:center; gap:5px; }
+.cc .nm .infra{ color:#c8962a; font-size:12px; }
+.cc .fn{ font-size:10px; color:#a89f8b; font-family:ui-monospace,Menlo,monospace; margin-top:1px; letter-spacing:0; }
+.cc .mt{ font-size:10.5px; color:var(--sub); margin-top:4px; line-height:1.45; max-height:30px; overflow:hidden; }
+.cc .r2{ display:flex; align-items:center; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.cc .upd{ font-size:10px; color:#a89f8b; margin-left:auto; }
+.cc .dbupd{ display:flex; align-items:center; gap:6px; margin-top:5px; font-size:10px; flex-wrap:wrap; }
+.cc .upd-dt{ color:#8a8378; font-family:ui-monospace,Menlo,monospace; }
+.cc .upd-tag{ padding:1px 7px; border-radius:8px; font-weight:700; }
+.cc .upd-tag.ok{ background:#e4efe4; color:#2f7d63; }
+.cc .upd-tag.err{ background:#f3dcd0; color:#a94e3f; }
+.cc .upd-na{ color:#b9b1a0; }
+.panel .upd-tag{ padding:1px 7px; border-radius:8px; font-weight:700; font-size:11px; }
+.panel .upd-tag.ok{ background:#e4efe4; color:#2f7d63; }
+.panel .upd-tag.err{ background:#f3dcd0; color:#a94e3f; }
+.stat{ font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--stcol); }
+.tag{ font-size:10px; padding:1px 7px; border-radius:9px; background:#ebe6db; color:var(--sub); }
+.tag.iss{ background:#f3dcd0; color:#a94e3f; } .tag.clean{ background:#f0e6cf; color:#b8860b; }
+.tag.unscan{ background:#e8e4dc; color:#7a7368; }
+
+.panel{ position:fixed; right:18px; top:18px; width:320px; max-height:90vh; overflow:auto; z-index:30;
+  background:linear-gradient(150deg,#fbf8ef,#f3eddf); border:1px solid var(--line); border-radius:20px; padding:16px 18px;
+  box-shadow:0 16px 44px rgba(20,20,19,.20), inset 0 0 0 1px rgba(255,255,255,.5); font-size:12.5px; line-height:1.55; }
+.panel h3{ font-family:var(--zh); margin:0 0 2px; font-size:17px; letter-spacing:.5px; }
+.panel .kindt{ font-size:11px; color:var(--sub); margin-bottom:9px; }
+.pb{ display:inline-block; font-size:10.5px; padding:1px 9px; border-radius:9px; color:#fff; margin:0 5px 4px 0; }
+.panel .meta{ color:#3f3a30; margin:7px 0; }
+.sec{ margin-top:10px; } .sec .h{ font-size:11px; color:#1b365d; font-weight:700; letter-spacing:.05em; margin-bottom:4px; }
+.nd{ display:inline-block; background:#f4efe5; border:1px solid var(--line); border-radius:8px; padding:2px 9px; margin:2px 3px 0 0; font-size:11px; }
+.nd.fb{ background:#f6e8c8; }
+.iss-list{ margin:0; padding-left:16px; } .iss-list li{ color:#a94e3f; margin:2px 0; }
+.btn{ display:inline-block; margin-top:11px; margin-right:6px; background:#d2691e; color:#fff; border:none; border-radius:10px;
+  padding:8px 13px; font-size:12px; cursor:pointer; font-weight:700; font-family:var(--zh); }
+.btn.ghost{ background:#efe7d8; color:#6b6256; } .btn:active{ transform:translateY(1px); }
+/* 审查并修复：隐藏按钮外观，居中发光小字（按钮 padding 即点击范围） */
+.repair-link{ position:relative; display:block; width:100%; margin-top:13px; padding:11px 10px 14px;
+  background:none; border:none; cursor:pointer; text-align:center;
+  font-family:var(--zh); font-size:12.5px; font-weight:700; letter-spacing:.14em;
+  color:var(--rg,#d2691e); text-shadow:0 0 3px, 0 0 1px;   /* 省略颜色=用 currentColor 发光（已调弱） */
+  border-radius:12px; transition:transform .1s, letter-spacing .2s;
+  animation:repairGlow 2.4s ease-in-out infinite; }
+/* 下划线：中间粗亮、两端渐细渐隐（径向椭圆收尖 + 发光·整体调细） */
+.repair-link::after{ content:""; position:absolute; left:0; right:0; bottom:6px; margin:auto;
+  width:62%; height:4px; pointer-events:none;
+  background:radial-gradient(closest-side, var(--rg) 0%, color-mix(in srgb,var(--rg) 50%,transparent) 42%, transparent 80%);
+  filter:drop-shadow(0 0 2px var(--rg)); transition:width .2s; }
+.repair-link:hover{ letter-spacing:.2em; }
+.repair-link:hover::after{ width:76%; }
+.repair-link:active{ transform:translateY(1px); }
+@keyframes repairGlow{ 0%,100%{ text-shadow:0 0 2px,0 0 1px; } 50%{ text-shadow:0 0 6px,0 0 2px; } }
+.close{ float:right; cursor:pointer; color:#b3a489; font-size:18px; line-height:1; }
+.cmd{ background:#2b2b2b; color:#e8e2d2; border-radius:9px; padding:9px 11px; font-size:11px; font-family:ui-monospace,Menlo,monospace; white-space:pre-wrap; word-break:break-all; margin-top:6px; user-select:text; -webkit-user-select:text; cursor:text; }
+.note{ font-size:11px; color:var(--sub); margin-top:9px; }
+.aiout{ background:#f3ece0; border-radius:9px; padding:9px 11px; margin-top:8px; font-size:11.5px; white-space:pre-wrap; }
+.foot{ font-size:11px; color:#a89f8b; margin-top:10px; border-top:1px solid #eee3cf; padding-top:9px; }
+.rescan-btn{ position:absolute; top:25px; right:22px; z-index:20; display:inline-flex; align-items:center; gap:6px; padding:7px 13px; cursor:pointer;
+  font-family:var(--zh); font-size:12.5px; font-weight:700; color:#1b365d;
+  background:linear-gradient(150deg,#fbf8ef,#f0eadc); border:1px solid #d8cdb0; border-radius:11px;
+  box-shadow:var(--whisper), inset 0 0 0 1px rgba(255,255,255,.5); transition:transform .1s, box-shadow .15s; }
+.rescan-btn:hover{ box-shadow:0 0 0 1px rgba(27,54,93,.18), 0 6px 18px rgba(20,20,19,.12); }
+.rescan-btn:active{ transform:translateY(1px); }
+.rescan-btn[disabled]{ opacity:.75; cursor:progress; }
+
+/* —— 青碧告警晕（错题本积压≥3）：用 filter drop-shadow 叠在健康 box-shadow 之外（不被 overflow:hidden 裁掉·不顶替健康光·慢呼吸·区别于待修/断链的急促脉冲） —— */
+.card.gotcha-alert{ filter:drop-shadow(0 0 6px var(--alert,#0e8174)) drop-shadow(0 0 2px var(--alert,#0e8174)); animation:gotchaBreath 3.2s ease-in-out infinite; }
+.card.gotcha-alert:hover{ border-color:color-mix(in srgb,var(--alert,#0e8174) 42%,var(--line)); }
+@keyframes gotchaBreath{
+  0%,100%{ filter:drop-shadow(0 0 3px var(--alert,#0e8174)) drop-shadow(0 0 1px var(--alert,#0e8174)); }
+  50%{ filter:drop-shadow(0 0 12px var(--alert,#0e8174)) drop-shadow(0 0 4px var(--alert,#0e8174)); } }
+@media (prefers-reduced-motion: reduce){ .card.gotcha-alert{ animation:none; } }
+.gbadge{ position:absolute; top:9px; right:10px; z-index:4; display:inline-flex; align-items:center; gap:3px;
+  font-family:var(--zh); font-size:10px; font-weight:700; letter-spacing:.02em; line-height:1;
+  padding:3px 7px; border-radius:9px; color:#fff; background:var(--alert,#0e8174);
+  box-shadow:0 1px 4px color-mix(in srgb,var(--alert,#0e8174) 55%,transparent); }
+
+/* —— brain 治理 chips（项目二级卡） —— */
+.bchips{ display:flex; gap:7px; margin-top:5px; flex-wrap:wrap; }
+.bchip{ font-size:11px; padding:2px 9px; border-radius:9px; font-weight:700; background:#ebe6db; color:var(--sub); }
+.bchip.warn{ background:#f4ead0; color:#8b6f32; } .bchip.err{ background:#d8efec; color:#0a5c54; } .bchip.ok{ background:#e4efe4; color:#2f7d63; }
+.sec .untrk{ font-size:10.5px; color:#b9b1a0; margin-top:3px; }
+
+/* —— 数灵卡：复用资产卡 .card 同款形（星云+星点+宣纸玻璃），只加字形辅助 —— */
+.cc .nm .glyph{ font-size:15px; line-height:1; }
+.cc .nm .nick{ font-size:11px; color:#a89f8b; font-weight:400; letter-spacing:0; }
+.panel .ape{ font-size:11.5px; color:var(--sub); line-height:1.5; }
+.panel .logs-stat{ color:#8a8378; font-weight:600; }  /* 日志数：统一 muted 色·与版式融洽·四灵一致 */
+
+/* —— L2→L3 钻取入口（详情卡里的「常更作者表」按钮） —— */
+.drill-link{ display:flex; align-items:center; justify-content:center; gap:6px; width:100%; margin-top:13px;
+  padding:9px 12px; cursor:pointer; font-family:var(--zh); font-size:12.5px; font-weight:700; letter-spacing:.06em;
+  color:#8b6f32; background:linear-gradient(150deg,#faf2dd,#f4ead0); border:1px solid #e3d4a8; border-radius:11px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5); transition:transform .1s, box-shadow .15s, border-color .15s; }
+.drill-link:hover{ border-color:#d9b873; box-shadow:0 4px 14px rgba(139,111,50,.16); }
+.drill-link:active{ transform:translateY(1px); }
+
+/* —— L3：DVA 常更作者表 全屏暖 modal（承 BVD dva-sheet 范式） —— */
+.dva-overlay{ display:none; position:fixed; inset:0; background:rgba(20,20,19,.46); z-index:1000; align-items:flex-start; justify-content:center; padding:28px 16px; overflow-y:auto; }
+.dva-overlay.open{ display:flex; }
+.dva-sheet{ font-family:var(--zh); background:#f5f4ed; border:1px solid #e8e6dc; border-radius:16px; padding:24px 28px 20px; box-shadow:0 8px 40px rgba(20,20,19,.22); color:#141413; width:100%; max-width:720px; margin:auto; position:relative; }
+.dva-close{ position:absolute; top:16px; right:18px; width:30px; height:30px; border-radius:8px; border:1px solid #e8e6dc; background:#faf9f5; color:#6b6a64; font-size:17px; cursor:pointer; line-height:1; display:flex; align-items:center; justify-content:center; }
+.dva-close:hover{ background:#efe7d4; color:#8b6f32; }
+.dva-row{ display:flex; align-items:center; gap:12px; padding:11px 0; border-top:1px solid #eeeade; }
+.dva-row:first-of-type{ border-top:none; }
+.dva-nm{ font-size:16px; font-weight:500; }
+.dva-sub{ font-size:12px; color:#6b6a64; margin-top:2px; }
+.dva-upd{ font-size:11px; color:#9a9386; margin-top:3px; }
+.dva-upd.warn{ color:#a94e3f; }
+.dva-stat{ font-size:12.5px; padding:3px 11px; border-radius:999px; white-space:nowrap; font-weight:500; }
+.dva-sec{ background:#faf9f5; border:1px solid #e8e6dc; border-radius:12px; padding:14px 18px; margin-bottom:13px; }
+.dva-sh{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
+</style></head>
+<body>
+<div class="wrap">
+  <h1>🐚 海螺姑娘 · 全局资产管理</h1>
+  <div class="sub" id="sub"></div>
+  <button class="rescan-btn" id="rescanBtn" onclick="rescan(this)" title="重扫并刷新（survey→重建→update_artifact）">🔄 重新扫描（survey→重建→更新）</button>
+  <div class="legend" id="lg-kind"><span class="lg-h">类别配色</span>
+    <span class="li"><span class="kc" style="background:#3aa676"></span>信源</span>
+    <span class="li"><span class="kc" style="background:#3f72b0"></span>数据库</span>
+    <span class="li"><span class="kc" style="background:#8a6fd4"></span>项目</span>
+    <span class="li"><span class="kc" style="background:#c8962a"></span>基础设施 ◆</span>
+    <span class="li"><span class="kc" style="background:#4c6b6b"></span>数灵 Agents</span>
+  </div>
+  <div class="legend" id="lg-health"><span class="lg-h">健康度（外发光）</span>
+    <span class="li"><span class="gw"></span>健康·无光</span>
+    <span class="li"><span class="gw" style="box-shadow:0 0 9px 0 #c8962a"></span>陈旧·金光</span>
+    <span class="li"><span class="gw" style="box-shadow:0 0 9px 0 #e8731e"></span>待修·橙光(脉冲)</span>
+    <span class="li"><span class="gw" style="box-shadow:0 0 9px 0 #c0392b"></span>断链·红光(脉冲)</span>
+    <span class="li"><span class="gw" style="box-shadow:0 0 8px 0 #9a9386"></span>孤儿·灰光</span>
+    <span class="li"><span class="gw" style="opacity:.55"></span>退役·去饱和</span>
+  </div>
+  <div class="legend" id="lg-alert"><span class="lg-h">治理告警（叠加·青碧）</span>
+    <span class="li"><span class="gw" style="box-shadow:0 0 9px 0 #0e8174"></span>错题本积压 GOTCHAS≥3 · 青碧晕（在健康光之外·慢呼吸·待复盘）</span>
+  </div>
+  <div class="legend">
+    <span class="li"><span class="eg"></span>数据流</span>
+    <span class="li"><span class="eg cross"></span>跨库消费/先验</span>
+    <span class="li"><span class="eg fb"></span>反哺</span>
+  </div>
+  <div class="board" id="board"><svg class="links" id="links"></svg></div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<!-- L3 · DVA 常更作者表（全屏暖 modal · 从 DVA-Database 库卡 L2 详情钻取） -->
+<div class="dva-overlay" id="dva-overlay" onclick="if(event.target===this)closeDvaReport()">
+  <div class="dva-sheet" role="dialog" aria-modal="true" aria-label="DVA 常更作者表">
+    <button class="dva-close" onclick="closeDvaReport()" aria-label="关闭">✕</button>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-right:34px;">
+      <div>
+        <div style="font-size:23px;font-weight:700;letter-spacing:1px;">DVA 常更作者表</div>
+        <div style="font-size:12.5px;color:#6b6a64;margin-top:3px;">抖音常更作者 · 下载区 + 资料库合并核对</div>
+      </div>
+      <div style="text-align:right;font-size:12.5px;color:#6b6a64;line-height:1.6;">快照 · <span id="dva-snaptime">—</span></div>
+    </div>
+    <div style="height:3px;background:#8b6f32;border-radius:2px;margin:12px 0 3px;"></div>
+    <div style="height:1px;background:#e8e6dc;margin-bottom:16px;"></div>
+    <div style="background:#f1eee4;border:1px solid #eeeade;border-radius:12px;padding:15px 18px;margin-bottom:13px;">
+      <div style="font-size:12.5px;color:#8b6f32;font-weight:500;letter-spacing:2px;margin-bottom:11px;">采 集 总 览</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+        <div><div id="dva-ov-total" style="font-size:28px;font-weight:700;color:#1b365d;line-height:1;">—</div><div style="font-size:12px;color:#6b6a64;margin-top:5px;">已下载</div></div>
+        <div><div id="dva-ov-done" style="font-size:28px;font-weight:700;color:#2f7d63;line-height:1;">—</div><div style="font-size:12px;color:#6b6a64;margin-top:5px;">完成</div></div>
+        <div><div id="dva-ov-wip" style="font-size:28px;font-weight:700;color:#8b6f32;line-height:1;">—</div><div style="font-size:12px;color:#6b6a64;margin-top:5px;">进行中</div></div>
+        <div><div id="dva-ov-pending" style="font-size:28px;font-weight:700;color:#a94e3f;line-height:1;">—</div><div style="font-size:12px;color:#6b6a64;margin-top:5px;">待启动</div></div>
+      </div>
+    </div>
+    <div style="font-size:11.5px;color:#6b6a64;background:#eee6d6;border-radius:8px;padding:8px 12px;margin-bottom:16px;line-height:1.6;">完成度按各自管线目标判：<span style="color:#a35f4e;">仅下载</span> 下载即达标 · <span style="color:#a94e3f;">转写</span> 以下载≈转写为成（转写产物落 Transcripts/、供 PEC 消费·不入 DVA 库）· <span style="color:#8b6f32;">全链</span> 以分析入库为成。</div>
+    <div id="dva-body"></div>
+    <div style="font-size:11px;color:#9a9386;margin-top:13px;border-top:1px solid #eeeade;padding-top:9px;">数据取自本地库快照（snapshot.py 实时计数）· 下载＝Downloaded/&lt;作者&gt; 的 mp4｜转写＝Transcripts/&lt;作者&gt;｜入库/分析＝DVA-Database（仅 full）｜完成判据按 watchlist mode + 容差 3。暖色范式承烛照九阴日报。</div>
+  </div>
+</div>
+
+<script id="manifest-data" type="application/json">{"schema_version": "1.0", "generated": "2026-08-01", "generator": "海螺姑娘 conch survey (策展骨架 · 健康字段由 survey 回写)", "note": "单一真源。nodes/edges/categories/groups 手工策展；status/freshness 由 conch survey 回写。仅本地资产，已排除外部协作方名下资产。", "categories": ["resource", "database", "project"], "status_legend": {"healthy": "健康·绿", "stale": "陈旧·黄（超新鲜度阈/文档漂移·按表级非纯mtime）", "broken": "断链·红（上下游/凭证失效）", "needs_repair": "待修·橙（有已知 P0/P1 问题待修）", "orphan": "孤儿·灰（无连接）", "archived": "退役·暗灰"}, "groups": {"Infrastructure": ["海螺姑娘", "司南"]}, "nodes": [{"id": "渊图", "kind": "project", "group": null, "path": "Database/行业研究/", "status": "healthy", "freshness": {"last": "2026-06-14"}, "meta": "行业图谱知识库（节点-边图谱 + 价格层）", "issues": [], "conch": {"scanned": true, "obsolete_count": 0, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "DVA", "kind": "project", "group": null, "path": "Claude/Projects/DVA/", "status": "healthy", "freshness": {"last": "2026-06-23"}, "meta": "抖音常更作者视频分析库（字幕+8层智慧萃取·交易哲学按道法术）", "issues": [], "conch": {"scanned": true, "obsolete_count": 1, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "龙鱼五力", "kind": "project", "group": null, "path": "Database/行业研究/consumers/龙鱼五力/", "status": "healthy", "freshness": {"last": "2026-06-10"}, "meta": "产业链五力·六维评分（调用渊图查询接口）", "issues": [], "conch": {"scanned": true, "obsolete_count": 0, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "PEC", "kind": "project", "group": null, "path": "Claude/Projects/PEC/", "status": "healthy", "freshness": {"last": "2026-06-16"}, "meta": "政治经济学分析框架", "issues": [], "conch": {"scanned": true, "obsolete_count": 0, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "星空", "kind": "project", "group": null, "path": "Claude/Projects/星空/", "status": "healthy", "freshness": {"last": "2026-06-10"}, "meta": "可视化引擎（星云.json 渲染·跨线）", "issues": [], "conch": {"scanned": true, "obsolete_count": 1, "stale_count": 1, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "海螺姑娘", "kind": "project", "group": "Infrastructure", "path": "Claude/Projects/海螺姑娘/", "status": "healthy", "freshness": {"last": "2026-06-23"}, "meta": "Conch 项目护航 + 全局资产管理平台（本看板母项目）", "issues": [], "conch": {"scanned": true, "obsolete_count": 2, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": false}}, {"id": "O MY HTML", "kind": "project", "group": null, "path": "Claude/Projects/O MY HTML/", "status": "healthy", "freshness": {"last": "2026-06-11"}, "meta": "设计师工具箱（taste-skills / emil）", "issues": [], "conch": {"scanned": true, "obsolete_count": 3, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "司南", "kind": "project", "group": "Infrastructure", "path": "Claude/Projects/司南/", "status": "healthy", "freshness": {"last": "2026-05-14"}, "meta": "项目护航方法论（参考类）", "issues": [], "conch": {"scanned": true, "obsolete_count": 0, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": false}}, {"id": "数灵转移", "kind": "project", "group": null, "path": "Claude/Projects/（待落）", "status": "archived", "freshness": {"last": "2026-06-05"}, "meta": "已退役为文档记录（数灵/agent 架构）", "issues": [], "conch": {"scanned": false, "reason": "目录不存在"}, "brain": {"todos": 0, "gotchas": 0, "tracked": false}}, {"id": "MiroFish", "kind": "project", "group": null, "path": "Claude/Projects/MiroFish/", "status": "healthy", "freshness": {"last": "2026-06-16"}, "meta": "群体智能仿真预测引擎（OASIS·DeepSeek+Zep）", "issues": [], "conch": {"scanned": true, "obsolete_count": 4, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": false}}, {"id": "称象", "kind": "project", "group": null, "path": "Claude/Projects/称象/", "status": "healthy", "freshness": {"last": "2026-06-16"}, "meta": "代理度蒙特卡洛反解引擎（PEC衍生）", "issues": [], "conch": {"scanned": true, "obsolete_count": 2, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "剑酒青丘", "kind": "project", "group": null, "path": "Claude/Projects/Financial/剑酒青丘/", "status": "healthy", "freshness": {"last": "2026-06-23"}, "meta": "行情/量化线（句芒·Market-Data 维护·端到端失败告警已上线）", "issues": [], "conch": {"scanned": true, "obsolete_count": 1, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": true}}, {"id": "白泽大宗", "kind": "project", "group": null, "path": "Claude/Projects/Financial/白泽大宗/", "status": "healthy", "freshness": {"last": "2026-06-23"}, "meta": "大宗商品周报自动化（白泽·宏观线）", "issues": [], "conch": {"scanned": true, "obsolete_count": 4, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": false}}, {"id": "烛照九阴", "kind": "project", "group": null, "path": "Claude/Projects/Financial/烛照九阴/", "status": "healthy", "freshness": {"last": "2026-06-23", "detail": "回测落地(541自有样本/51.0%超额胜率) · PRD/STATUS 已重写(2026-06-24)"}, "meta": "复盘/新闻线（九儿·情绪周期/过热度）", "issues": [], "conch": {"scanned": true, "obsolete_count": 1, "stale_count": 0, "last_scan": "2026-08-01", "cleanup_suggested": false}, "brain": {"todos": 0, "gotchas": 0, "tracked": false}}, {"id": "market_data.db", "title": "公共行情库", "kind": "database", "group": null, "path": "Database/Market-Data/market_data.db", "health_file": "${CONCH_DATABASE_MOUNT}/Market-Data/_health.json", "status": "healthy", "freshness": {"last": "2026-07-31", "detail": "自检 ok·落后:north_flow·2026-07-31T10:05"}, "meta": "公共行情库（Tushare 期货/股票/北向 + theme_etf_daily 主线ETF）", "issues": [], "conch_health": {"overall": "ok", "fails": [], "warns": ["north_flow"], "target_date": "2026-07-31", "checked": "2026-07-31T10:05:32", "age_days": 1, "expect_days": 4}, "expect_days": 4, "health_age_days": 1, "update_health": {"at": "2026-07-31T10:05:32", "ok": true, "src": "interim"}, "db_updated": {"at": "2026-07-31T10:05:32", "src": "health"}}, {"id": "recap.db", "title": "每日复盘库", "kind": "database", "group": null, "path": "Database/烛照九阴/recap.db", "health_file": "${CONCH_DATABASE_MOUNT}/烛照九阴/_health.json", "status": "healthy", "freshness": {"last": "2026-07-30", "detail": "自检 ok·全表一致·2026-08-01T09:39"}, "meta": "每日复盘库（31表·emotion_cycle 365）", "issues": [], "conch_health": {"overall": "ok", "fails": [], "warns": [], "target_date": "2026-07-30", "checked": "2026-08-01T09:39:01-07:00", "age_days": 0, "expect_days": 4}, "expect_days": 4, "health_age_days": 0, "update_health": {"at": "2026-08-01T09:39:01-07:00", "ok": true, "src": "interim"}, "db_updated": {"at": "2026-08-01T09:39:01-07:00", "src": "health"}}, {"id": "business_breakdown.db", "title": "大宗·商品数据库", "kind": "database", "group": null, "path": "Database/宏观-大宗商品/business_breakdown.db", "health_file": "${CONCH_BAIZE_MOUNT}/data/weekly/_health.json", "status": "healthy", "freshness": {"last": "2026-07-26", "detail": "自检 ok·全表一致·2026-07-26T21:46"}, "meta": "大宗·商品数据库（期货/现货/库存品种行情 + 受益关系 + warehouse 汇总层；个股六维已迁出至龙鱼库）", "issues": [], "conch_health": {"overall": "ok", "fails": [], "warns": [], "target_date": "2026-07-26", "checked": "2026-07-26T21:46:23", "age_days": 6, "expect_days": 9}, "expect_days": 9, "health_age_days": 6, "update_health": {"at": "2026-07-26T21:46:23", "ok": true, "src": "interim"}, "db_updated": {"at": "2026-07-26T21:46:23", "src": "health"}}, {"id": "龙鱼基本面库", "title": "龙鱼·基本面库", "kind": "database", "group": null, "path": "Database/龙鱼-标的分析库/", "health_file": "${CONCH_DATABASE_MOUNT}/龙鱼-标的分析库/_health.json", "status": "healthy", "freshness": {"last": "2026-07-26", "detail": "自检 ok·全表一致·2026-07-26T21:46"}, "meta": "龙鱼·基本面库（公司级六维评分/评级/thesis 真源；龙鱼引擎写，跨项目只读）", "issues": [], "conch_health": {"overall": "ok", "fails": [], "warns": [], "target_date": "2026-07-26", "checked": "2026-07-26T21:46:23-07:00", "age_days": 6, "expect_days": 9}, "expect_days": 9, "health_age_days": 6, "update_health": {"at": "2026-07-26T21:46:23-07:00", "ok": true, "src": "interim"}, "db_updated": {"at": "2026-07-26T21:46:23-07:00", "src": "health"}}, {"id": "DVA-Database", "title": "抖音作者分析库", "kind": "database", "group": null, "path": "Database/Douyin/DVA-Database/", "health_file": "${CONCH_DATABASE_MOUNT}/Douyin/DVA-Database/_health.json", "status": "healthy", "freshness": {"last": "2026-07-25", "detail": "自检 ok·全表一致·2026-08-01T23:07"}, "meta": "抖音作者视频分析库（字幕+8层萃取）", "issues": [], "detail_view": "dva_authors", "conch_health": {"overall": "ok", "fails": [], "warns": [], "target_date": "2026-07-25", "checked": "2026-08-01T23:07:13-07:00", "age_days": 0, "expect_days": 14}, "health_age_days": 0, "update_health": {"at": "2026-08-01T23:07:13-07:00", "ok": true, "src": "interim"}, "db_updated": {"at": "2026-08-01T23:07:13-07:00", "src": "health"}}, {"id": "渊图KG", "title": "渊图知识图谱", "kind": "database", "group": null, "path": "Database/行业研究/mapping/latest.json", "status": "healthy", "freshness": {"last": "2026-08-01", "detail": "自检 ok·全表一致·2026-08-01T23:07"}, "health_file": "${CONCH_DATABASE_MOUNT}/行业研究/mapping/_health.json", "meta": "渊图知识图谱（节点-边 + 价格层·下游软链消费）", "issues": [], "conch_health": {"overall": "ok", "fails": [], "warns": [], "target_date": "2026-08-01", "checked": "2026-08-01T23:07:13-07:00", "age_days": 0, "expect_days": 14}, "health_age_days": 0, "update_health": {"at": "2026-08-01T22:11:15-07:00", "ok": true, "src": "explicit"}, "db_updated": {"at": "2026-08-01T22:11:15-07:00", "src": "health"}}, {"id": "Tushare", "kind": "resource", "group": null, "path": "api.tushare.pro", "status": "healthy", "freshness": {"detail": "沙箱已能连(2026-06-23)·白名单会话快照仍在"}, "meta": "行情数据源（期货/股票/ETF/北向·凭证 TUSHARE_TOKEN）", "issues": []}, {"id": "SMM/web补价", "kind": "resource", "group": null, "path": "hq.smm.cn / web", "status": "healthy", "freshness": {"detail": "Mac手跑·仅覆盖钨(黑钨精矿≥65%,页结构稳)·最近 asof 2026-06-18;gzip容错已修、稀土因SEO误命中摘走web(均06-14)"}, "meta": "有色/商品现货补价", "issues": []}, {"id": "抖音", "kind": "resource", "group": null, "path": "douyin (DYD下载)", "status": "healthy", "freshness": {"detail": "人工/DYD"}, "meta": "抖音视频原料", "issues": []}, {"id": "Obsidian研报", "kind": "resource", "group": null, "path": "Obsidian Industrial（121篇研报）", "status": "healthy", "freshness": {}, "meta": "渊图原料（行业研报）", "issues": []}, {"id": "Deepseek/KG", "kind": "resource", "group": null, "path": "api.deepseek.com", "status": "healthy", "freshness": {"detail": "六维LLM·复用渊图凭证"}, "meta": "LLM 评分/视角（六维·KG_API_KEY）", "issues": []}, {"id": "FRED", "kind": "resource", "group": null, "path": "FRED API", "status": "healthy", "freshness": {"detail": "FRED_API_KEY 已配·2026-06-03 CPIAUCSL 验通"}, "meta": "美国宏观（Fed 预测·独立模块·不进周报·当前休眠）", "issues": []}, {"id": "Gangtise", "kind": "resource", "group": null, "path": "Gangtise edb", "status": "healthy", "freshness": {"detail": "积分型·限AI硬件/光通讯/海关"}, "meta": "商品/宏观 edb（海关等）", "issues": []}, {"id": "小鲍课件", "kind": "resource", "group": null, "path": "Database/烛照九阴/Raw-Recap/", "status": "healthy", "freshness": {"detail": "人工投喂"}, "meta": "四维度复盘课件源", "issues": []}, {"id": "主线代表ETF", "kind": "resource", "group": null, "path": "Tushare fund_daily", "status": "healthy", "health_file": "${CONCH_DATABASE_MOUNT}/Market-Data/_health.json", "health_table": "theme_etf_daily", "freshness": {"last": "2026-07-31", "detail": "自检[theme_etf_daily] ok·落后:north_flow·2026-07-31T10:05"}, "meta": "主线强度/高低切替代源（相对沪深300超额）", "issues": [], "conch_health": {"overall": "ok", "fails": [], "warns": ["north_flow"], "target_date": "2026-07-31", "checked": "2026-07-31T10:05:32", "age_days": 1, "expect_days": 4}, "expect_days": 4, "health_age_days": 1}], "edges": [{"from": "Obsidian研报", "to": "渊图KG", "rel": "feed", "label": "121篇研报入库"}, {"from": "龙鱼五力", "to": "渊图", "rel": "consume", "label": "调用渊图查询接口"}, {"from": "渊图", "to": "白泽大宗", "rel": "prior", "label": "行业先验"}, {"from": "渊图", "to": "烛照九阴", "rel": "prior", "label": "买入信号/视角层"}, {"from": "渊图KG", "to": "渊图", "rel": "own", "label": "图谱产物"}, {"from": "Tushare", "to": "market_data.db", "rel": "feed", "label": "期货/股票/北向"}, {"from": "主线代表ETF", "to": "market_data.db", "rel": "feed", "label": "theme_etf_daily"}, {"from": "market_data.db", "to": "剑酒青丘", "rel": "own", "label": "行情库"}, {"from": "market_data.db", "to": "烛照九阴", "rel": "consume", "label": "公共行情"}, {"from": "小鲍课件", "to": "recap.db", "rel": "feed", "label": "课件入库"}, {"from": "recap.db", "to": "烛照九阴", "rel": "own", "label": "复盘库"}, {"from": "Tushare", "to": "business_breakdown.db", "rel": "feed", "label": "期货价"}, {"from": "SMM/web补价", "to": "business_breakdown.db", "rel": "feed", "label": "现货补价"}, {"from": "Gangtise", "to": "business_breakdown.db", "rel": "feed", "label": "海关/edb"}, {"from": "Deepseek/KG", "to": "龙鱼五力", "rel": "feed", "label": "六维LLM"}, {"from": "business_breakdown.db", "to": "白泽大宗", "rel": "own", "label": "商品行情+受益关系"}, {"from": "FRED", "to": "白泽大宗", "rel": "feed", "label": "Fed预测(独立模块·不进周报)"}, {"from": "抖音", "to": "DVA-Database", "rel": "feed", "label": "视频原料"}, {"from": "DVA-Database", "to": "DVA", "rel": "own", "label": "分析库"}, {"from": "DVA", "to": "渊图", "rel": "feedback", "label": "产业逻辑语料子类反哺（投知君君机构视角/产业逻辑）"}, {"from": "PEC", "to": "称象", "rel": "derive", "label": "代理度反解（PEC衍生）"}, {"from": "DVA", "to": "星空", "rel": "consume", "label": "星云.json 可视化"}, {"from": "PEC", "to": "星空", "rel": "consume", "label": "文明基因星云"}, {"from": "渊图", "to": "星空", "rel": "consume", "label": "渊图图谱星河化（压测170节点/609边）"}, {"from": "龙鱼基本面库", "to": "龙鱼五力", "rel": "own", "label": "个股六维真源"}, {"from": "龙鱼基本面库", "to": "白泽大宗", "rel": "feed", "label": "六维·实时只读"}, {"from": "龙鱼基本面库", "to": "烛照九阴", "rel": "feed", "label": "六维·实时只读"}], "agents": [{"glyph": "🦌", "name": "白泽", "nick": "小白", "rank": "大哥", "color": "#2563eb", "persona": "风度翩翩 · 雅言 · 敬称“老师”", "duty": "宏观线 — 白泽观星 · 白泽大宗", "call": "唤名：白泽 / 小白", "logs": 3, "last": "2026-06-14"}, {"glyph": "🐉", "name": "烛阴", "nick": "九儿", "rank": "二姐", "color": "#dc2626", "persona": "温柔可爱 · 亲昵“哥哥” · 自称九儿", "duty": "复盘线 — 烛照九阴 · 新闻模块", "call": "唤名：烛阴 / 九儿", "logs": 33, "last": "2026-06-24"}, {"glyph": "🌱", "name": "句芒", "nick": "芒芒", "rank": "三妹", "color": "#16a34a", "persona": "活泼俏皮 · 亲昵“哥哥”", "duty": "行情/量化线 — 技术工具 + 审查 + 记忆守护 + Market-Data", "call": "唤名：句芒 / 芒芒", "logs": 34, "last": "2026-06-24"}, {"glyph": "🪔", "name": "C.C.", "nick": "守灶人", "rank": "老幺", "color": "#d97706", "persona": "务实温和 · 敬称“老师” · 守 brain + 调度兄姐", "duty": "非金融 + 开发 — PEC · 渊图 · 龙鱼五力 · 星空", "call": "本机 · 全局 logs/", "logs": null, "last": "2026-06-24"}], "agents_note": "家谱定案 2026-06-03。三灵专司金融线、互不越界；金融之外与一切开发归 C.C. + 月兔。落盘归位：谁出场落谁的 agents/{灵}/memory/。数灵非数据资产，故无上下游连线。", "agents_snapshot": "2026-06-24（承 BVD）", "dva_snapshot": "2026-06-24（承 BVD·snapshot.py 实时计数 + mode 判状态）", "dva_authors": [{"nickname": "老毛聊交易", "category": "金融", "mode": "full", "downloaded": 500, "ingested": 501, "transcribed": 0, "transcripts": 21, "pending": 0, "unchecked": 501, "level1": 500, "excluded": 0, "state": "完成", "last_update": "2026-06-24T05:05:04+08:00", "status": "ok"}, {"nickname": "投知君君买方视角", "category": "金融", "mode": "full", "downloaded": 174, "ingested": 174, "transcribed": 0, "transcripts": 39, "pending": 0, "unchecked": 174, "level1": 174, "excluded": 0, "state": "完成", "last_update": "2026-06-24T05:07:12+08:00", "status": "ok"}, {"nickname": "卷宇宙漫谈", "category": "PEC语料", "mode": "transcribe-only", "downloaded": 98, "ingested": 96, "transcribed": 75, "transcripts": 112, "pending": 14, "unchecked": 7, "level1": 95, "excluded": 0, "state": "完成", "last_update": "2026-06-24T05:09:02+08:00", "status": "ok"}, {"nickname": "黑盒调查局", "category": "PEC语料", "mode": "transcribe-only", "downloaded": 36, "ingested": 29, "transcribed": 0, "transcripts": 36, "pending": 0, "unchecked": 29, "level1": 29, "excluded": 0, "state": "完成", "last_update": "2026-06-24T05:11:34+08:00", "status": "ok"}, {"nickname": "独夫之心", "category": "PEC语料", "mode": "transcribe-only", "downloaded": 74, "ingested": 1, "transcribed": 0, "transcripts": 68, "pending": 0, "unchecked": 1, "level1": 1, "excluded": 11, "state": "完成", "last_update": "2026-06-24T05:19:45+08:00", "status": "ok"}, {"nickname": "浪浪Insight", "category": "PEC语料", "mode": "transcribe-only", "downloaded": 58, "ingested": 0, "transcribed": 0, "transcripts": 58, "pending": 0, "unchecked": 0, "level1": 0, "excluded": 0, "state": "完成", "last_update": "2026-06-24T05:19:51+08:00", "status": "ok"}, {"nickname": "SansanYe", "category": "设计", "mode": "transcribe-only", "downloaded": 27, "ingested": 0, "transcribed": 0, "transcripts": 27, "pending": 0, "unchecked": 0, "level1": 0, "excluded": 0, "state": "完成", "last_update": "2026-06-24T05:20:09+08:00", "status": "ok"}, {"nickname": "麦橘MERJIC", "category": "设计", "mode": "download-only", "downloaded": 86, "ingested": 0, "transcribed": 0, "transcripts": 0, "pending": 0, "unchecked": 0, "level1": 0, "excluded": 0, "state": "完成", "last_update": "2026-06-24T05:20:13+08:00", "status": "ok"}]}</script>
+<script>
+const DATA=JSON.parse(document.getElementById('manifest-data').textContent);
+const KIND_SC={ resource:'#3aa676', database:'#3f72b0', project:'#8a6fd4' };  // 类别色（星云）
+const INFRA_SC='#c8962a';
+const GLOW={ healthy:null, stale:'#c8962a', needs_repair:'#e8731e', broken:'#c0392b', orphan:'#9a9386', archived:null }; // 健康度（外发光）
+const GOTCHA_ALERT=3, ALERT_COL='#0e8174', ALERT_INK='#0a5c54', AGENT_AC='#4c6b6b'; // 错题本积压阈值 / 青碧告警 / 青碧深(文字) / 数灵行黛青
+const STCOL={ healthy:'#2f7d63', stale:'#b8860b', needs_repair:'#d2691e', broken:'#a94e3f', orphan:'#9a9386', archived:'#b9b1a0' };
+const ROW_C={ resource:'#3aa676', database:'#3f72b0', project:'#8a6fd4', infra:'#c8962a' };
+const KIND_NAME={ project:'Project', database:'Database', resource:'Resource' };
+const STAT_NAME={ healthy:'健康', stale:'陈旧', broken:'断链', needs_repair:'待修', orphan:'孤儿', archived:'退役' };
+const CONCH='~/Documents/Claude/Projects/海螺姑娘/conch_engine.py'; const SVGNS='http://www.w3.org/2000/svg';
+const nmap={}; DATA.nodes.forEach(n=>nmap[n.id]=n);
+function scOf(n){ return n.group==='Infrastructure'?INFRA_SC:(KIND_SC[n.kind]||'#888'); }
+function relDay(ds){ if(!ds)return''; const m=String(ds).match(/(\d{4})-(\d{1,2})-(\d{1,2})/); if(!m)return'';
+  const d=new Date(+m[1],+m[2]-1,+m[3]); const t=new Date(); t.setHours(0,0,0,0);
+  const days=Math.round((t-d)/864e5); return days<=0?'今天':(days===1?'昨天':days+'天前'); }
+function fmtDT(s){ const m=String(s||'').match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?/); if(!m)return String(s||''); return m[1]+'-'+m[2]+'-'+m[3]+' '+m[4]+':'+m[5]+(m[6]?(':'+m[6]):''); }
+function fmtDate(s){ const m=String(s||'').match(/(\d{4})-(\d{2})-(\d{2})/); return m?(m[2]+'-'+m[3]):''; }
+function updLabel(s){ const m=String(s||'').match(/(\d{4})-(\d{1,2})-(\d{1,2})/); if(!m)return''; const d=new Date(+m[1],+m[2]-1,+m[3]); const t=new Date(); t.setHours(0,0,0,0); const days=Math.round((t-d)/864e5); if(days<=0)return'今天'; if(days===1)return'昨天'; if(days===2)return'前天'; return fmtDate(s); }
+document.getElementById('sub').textContent='盘点 '+DATA.nodes.length+' 项资产 · '+DATA.edges.length+' 条关系 · '+((DATA.agents&&DATA.agents.length)||0)+' 数灵 · 生成 '+DATA.generated+' · 数据源 conch survey + brain 快照';
+const needN=DATA.nodes.filter(n=>n.status==='needs_repair'||n.status==='broken'||n.status==='stale').length;
+const gAlertN=DATA.nodes.filter(n=>n.brain&&n.brain.gotchas>=GOTCHA_ALERT).length;
+const unscanN=DATA.nodes.filter(n=>n.conch&&n.conch.scanned===false).length;
+document.getElementById('foot').textContent='颜色=类别，外发光=健康度（健康无光）。其中 '+needN+' 项亮「审查并修复」（待修/断链·脉冲，陈旧·金光）；'+gAlertN+' 项错题本积压 GOTCHAS≥'+GOTCHA_ALERT+'（叠青碧晕·慢呼吸·待复盘）；'+unscanN+' 项本轮未扫描（打「未扫描」灰标，其状态为上次策展值、非实测）。数灵为操作者非数据资产，单列「数灵」行、不接连线。状态来自 conch 盘点 + brain 快照（Reload 取最新）。conch 默认 dry-run，修复需你批准才执行，绝不自动改资产。';
+
+const ROWS=[
+  {key:'resource',label:'信源 Resource', test:n=>n.kind==='resource'},
+  {key:'database',label:'数据库 Database', test:n=>n.kind==='database'},
+  {key:'project', label:'项目 Project', test:n=>n.kind==='project'&&n.group!=='Infrastructure'},
+  {key:'infra',   label:'基础设施 Infrastructure', test:n=>n.kind==='project'&&n.group==='Infrastructure'},
+];
+const board=document.getElementById('board'), svg=document.getElementById('links'), cardEl={};
+ROWS.forEach(row=>{ const items=DATA.nodes.filter(row.test);
+  const sec=document.createElement('div'); sec.className='row';
+  const lab=document.createElement('div'); lab.className='row-label'; lab.style.setProperty('--rc',ROW_C[row.key]);
+  lab.innerHTML=row.label+' <span class="cnt">· '+items.length+'</span>'; sec.appendChild(lab);
+  const cs=document.createElement('div'); cs.className='cards';
+  items.forEach(n=>{ const c=document.createElement('div'); c.className='card'+(n.status==='archived'?' arch':'');
+    c.dataset.id=n.id; c.dataset.st=n.status; c.style.setProperty('--sc',scOf(n)); c.style.setProperty('--stcol',STCOL[n.status]||'#888');
+    if(GLOW[n.status]) c.style.setProperty('--glow',GLOW[n.status]);
+    let badges=''; if(n.issues&&n.issues.length) badges+='<span class="tag iss">'+n.issues.length+' 问题</span>';
+    if(n.conch&&n.conch.cleanup_suggested) badges+='<span class="tag clean">可清 '+n.conch.obsolete_count+'</span>';
+    if(n.conch&&n.conch.scanned===false) badges+='<span class="tag unscan">未扫描</span>';
+    const title=n.title||n.id; const fnLine=n.title?'<div class="fn">'+n.id+'</div>':'';
+    let updLine='';
+    if(n.kind==='database'){ const du=(n.db_updated&&n.db_updated.at)||(n.update_health&&n.update_health.at)||(n.freshness&&n.freshness.last);
+      if(du){ const lb=updLabel(du); updLine='<span class="upd" title="更新 '+du+(n.db_updated&&n.db_updated.src?(' ·源:'+n.db_updated.src):'')+(relDay(du)?(' · '+relDay(du)):'')+'">'+(lb||relDay(du))+'</span>'; } }
+    else { const fl=n.freshness&&n.freshness.last; const lb=updLabel(fl); updLine=lb?'<span class="upd" title="'+(fl||'')+(relDay(fl)?(' · '+relDay(fl)):'')+'">'+lb+'</span>':''; }
+    c.innerHTML='<div class="neb"></div><div class="stars"></div><div class="cc">'+
+      '<div class="nm">'+(n.group==='Infrastructure'?'<span class="infra">◆</span>':'')+title+'</div>'+fnLine+
+      '<div class="mt">'+(n.meta||'')+'</div>'+
+      '<div class="r2"><span class="stat">'+STAT_NAME[n.status]+'</span>'+badges+updLine+'</div></div>';
+    if(n.brain&&n.brain.gotchas>=GOTCHA_ALERT){ c.classList.add('gotcha-alert'); c.style.setProperty('--alert',ALERT_COL);
+      const gb=document.createElement('span'); gb.className='gbadge'; gb.textContent='错题本 '+n.brain.gotchas; c.appendChild(gb); }
+    c.addEventListener('mouseenter',()=>highlight(n.id)); c.addEventListener('mouseleave',()=>highlight(null));
+    c.addEventListener('click',()=>openCard(n)); cs.appendChild(c); cardEl[n.id]=c; });
+  sec.appendChild(cs); board.appendChild(sec); });
+
+// 数灵行（Infrastructure 之下·无连线灵卡·黛青类别·各卡保留签名色）
+if(DATA.agents&&DATA.agents.length){
+  const sec=document.createElement('div'); sec.className='row';
+  const lab=document.createElement('div'); lab.className='row-label'; lab.style.setProperty('--rc',AGENT_AC);
+  lab.innerHTML='数灵 Agents <span class="cnt">· '+DATA.agents.length+'（操作者·非数据资产·无连线）</span>'; sec.appendChild(lab);
+  const cs=document.createElement('div'); cs.className='cards';
+  DATA.agents.forEach(a=>{ const c=document.createElement('div'); c.className='card';
+    c.style.setProperty('--sc',a.color||AGENT_AC); c.style.setProperty('--stcol',a.color||AGENT_AC);
+    const lastTxt=a.last?(relDay(a.last)||a.last):'待出场';
+    c.innerHTML='<div class="neb"></div><div class="stars"></div><div class="cc">'+
+      '<div class="nm"><span class="glyph">'+a.glyph+'</span>'+a.name+'<span class="nick">'+(a.nick||'')+'</span></div>'+
+      '<div class="mt">'+(a.duty||'')+'</div>'+
+      '<div class="r2"><span class="upd" style="margin-left:0">最近活跃 · '+lastTxt+'</span></div></div>';
+    c.addEventListener('click',()=>openAgent(a)); cs.appendChild(c); });
+  sec.appendChild(cs); board.appendChild(sec);
+}
+
+// 箭头 marker（三色·随线色·指向目标=方向）
+svg.innerHTML='<defs>'+
+ '<marker id="ar-feed" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L7,3 L0,6 Z" fill="#b5934e"/></marker>'+
+ '<marker id="ar-cross" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L7,3 L0,6 Z" fill="#8a8aa0"/></marker>'+
+ '<marker id="ar-fb" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L7,3 L0,6 Z" fill="#c8962a"/></marker>'+
+ '</defs>';
+const pathEl=[];
+DATA.edges.forEach(e=>{ if(!cardEl[e.from]||!cardEl[e.to])return; const p=document.createElementNS(SVGNS,'path');
+  const fb=e.rel==='feedback', cross=(e.rel==='consume'||e.rel==='prior'||e.rel==='derive');
+  p.setAttribute('fill','none'); p.setAttribute('stroke',fb?'#c8962a':(cross?'#8a8aa0':'#b5934e'));
+  p.setAttribute('stroke-width','1.4'); p.setAttribute('opacity','0.4');
+  p.setAttribute('marker-end','url(#ar-'+(fb?'fb':cross?'cross':'feed')+')');
+  if(fb)p.setAttribute('stroke-dasharray','2,4'); else if(cross)p.setAttribute('stroke-dasharray','4,4');
+  svg.appendChild(p); pathEl.push({el:p,e:e}); });
+function geo(el){ const r=el.getBoundingClientRect(), b=board.getBoundingClientRect();
+  return {x:r.left-b.left+r.width/2, y:r.top-b.top+r.height/2, hw:r.width/2, hh:r.height/2}; }
+function edgePt(g,tx,ty){ const dx=tx-g.x, dy=ty-g.y; if(!dx&&!dy)return {x:g.x,y:g.y};
+  const t=Math.min(g.hw/Math.abs(dx||1e-6), g.hh/Math.abs(dy||1e-6)); return {x:g.x+dx*t, y:g.y+dy*t}; }
+function layout(){ const b=board.getBoundingClientRect(); svg.setAttribute('width',b.width); svg.setAttribute('height',b.height); svg.setAttribute('viewBox','0 0 '+b.width+' '+b.height);
+  pathEl.forEach(({el,e})=>{ const A=geo(cardEl[e.from]), C=geo(cardEl[e.to]);
+    const s=edgePt(A,C.x,C.y), t=edgePt(C,A.x,A.y);  // 锚到卡片边缘，箭头落在目标卡边
+    let d; if(Math.abs(t.y-s.y)>=Math.abs(t.x-s.x)){ const m=s.y+(t.y-s.y)*0.5; d='M '+s.x+' '+s.y+' C '+s.x+' '+m+' '+t.x+' '+m+' '+t.x+' '+t.y; }
+    else { const m=s.x+(t.x-s.x)*0.5; d='M '+s.x+' '+s.y+' C '+m+' '+s.y+' '+m+' '+t.y+' '+t.x+' '+t.y; }
+    el.setAttribute('d',d); }); }
+function highlight(id){ pathEl.forEach(({el,e})=>{ const on=id&&(e.from===id||e.to===id);
+    el.setAttribute('opacity',id?(on?'0.95':'0.06'):'0.4'); el.setAttribute('stroke-width',on?'2.4':'1.4'); });
+  Object.entries(cardEl).forEach(([k,c])=>{ if(!id){ c.classList.remove('dim'); return; }
+    const linked=k===id||DATA.edges.some(e=>(e.from===id&&e.to===k)||(e.to===id&&e.from===k)); c.classList.toggle('dim',!linked); }); }
+// 重扫按钮右缘 = 最右卡片右缘（卡片定宽左对齐·右侧有留白，固定 right 会偏右；动态对齐）
+function alignRescan(){ const btn=document.getElementById('rescanBtn'); const wrap=document.querySelector('.wrap');
+  if(!btn||!wrap) return; const cs=document.querySelectorAll('.card'); if(!cs.length) return;
+  let maxR=0; cs.forEach(c=>{ const r=c.getBoundingClientRect(); if(r.right>maxR) maxR=r.right; });
+  const wr=wrap.getBoundingClientRect(); btn.style.right=Math.max(0,(wr.right-maxR))+'px'; }
+function relayout(){ layout(); alignRescan(); }
+window.addEventListener('resize',relayout); requestAnimationFrame(()=>{ relayout(); setTimeout(relayout,150); });
+
+function ioList(id,dir){ return DATA.edges.filter(e=>(dir==='up'?e.to:e.from)===id).map(e=>({name:dir==='up'?e.from:e.to,rel:e.rel})); }
+function chips(list){ if(!list.length)return '<span style="color:#b9b1a0">—</span>'; return list.map(x=>'<span class="nd'+(x.rel==='feedback'?' fb':'')+'">'+x.name+'</span>').join(' '); }
+function closeP(){ const p=document.getElementById('panel'); if(p)p.remove(); } window.closeP=closeP;
+function mkPanel(html,top){ closeP(); const p=document.createElement('div'); p.className='panel'; p.id='panel'; if(top)p.style.borderTop='3px solid '+top; p.innerHTML=html; document.body.appendChild(p); }
+function openCard(n){ const sc=scOf(n), stc=STCOL[n.status]||'#888';
+  let h='<span class="close" onclick="closeP()">×</span><h3>'+(n.group==='Infrastructure'?'◆ ':'')+(n.title||n.id)+'</h3>';
+  h+='<div class="kindt">'+KIND_NAME[n.kind]+(n.group?(' · '+n.group):'')+(n.title?(' · '+n.id):'')+(relDay(n.freshness&&n.freshness.last)?(' · '+relDay(n.freshness.last)):'')+'</div>';
+  h+='<div><span class="pb" style="background:'+stc+'">'+STAT_NAME[n.status]+'</span>';
+  if(n.conch&&n.conch.cleanup_suggested) h+='<span class="pb" style="background:#c8962a">可选清理 '+n.conch.obsolete_count+'</span>';
+  h+='</div><div class="meta">'+(n.meta||'')+'</div>';
+  if(n.kind==='database'){ const u=n.update_health; let body;
+    if(u&&u.at){ body='更新 '+fmtDT(u.at)+(u.src==='interim'?' ·自检':'')+' <span class="upd-tag '+(u.ok?'ok':'err')+'">'+(u.ok?'更新无错误':'更新报错')+'</span>'; }
+    else { body=(n.freshness&&n.freshness.last?('更新 '+n.freshness.last):'更新时间未记录')+(n.freshness&&n.freshness.detail?('<br>'+n.freshness.detail):''); }
+    h+='<div class="sec"><div class="h">更新状态</div>'+body+'</div>';
+  } else if(n.freshness&&(n.freshness.last||n.freshness.detail)) h+='<div class="sec"><div class="h">新鲜度</div>'+(n.freshness.last?('更新 '+n.freshness.last):'')+(n.freshness.detail?('<br>'+n.freshness.detail):'')+'</div>';
+  h+='<div class="sec"><div class="h">上游</div>'+chips(ioList(n.id,'up'))+'</div>';
+  h+='<div class="sec"><div class="h">下游</div>'+chips(ioList(n.id,'down'))+'</div>';
+  if(n.kind==='project'&&n.brain){ const br=n.brain;
+    if(br.tracked){ const tcl=br.todos>0?'warn':'ok', gcl=br.gotchas>=GOTCHA_ALERT?'err':(br.gotchas>0?'warn':'ok');
+      h+='<div class="sec"><div class="h">brain 治理</div><div class="bchips">'+
+         '<span class="bchip '+tcl+'">TODO '+br.todos+'</span><span class="bchip '+gcl+'">GOTCHAS '+br.gotchas+'</span></div>'+
+         (br.gotchas>=GOTCHA_ALERT?'<div class="untrk" style="color:'+ALERT_INK+'">⚠ 错题本积压 ≥'+GOTCHA_ALERT+'，已亮青碧告警晕 · 待复盘</div>':'')+'</div>';
+    } else { h+='<div class="sec"><div class="h">brain 治理</div><div class="untrk">未跟踪（BVD 旧线未覆盖此项目；统一计数规则接入 rescan 后回填）</div></div>'; } }
+  if(n.issues&&n.issues.length) h+='<div class="sec"><div class="h">已知问题</div><ul class="iss-list">'+n.issues.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  if(n.conch&&n.conch.scanned) h+='<div class="note">conch 盘点：陈旧文件 '+n.conch.obsolete_count+' · '+n.conch.last_scan+'</div>';
+  else if(n.conch&&n.conch.scanned===false) h+='<div class="note" style="color:#a94e3f">⚠ conch 未扫描 · '+(n.conch.reason||'原因未记录')+'<br>本项状态为上次策展值，<b>非本轮实测</b>。</div>';
+  if(n.detail_view==='dva_authors') h+='<button class="drill-link" onclick="event.stopPropagation();openDvaReport()">📖 常更作者表 ›</button>';
+  const isProj=n.kind==='project', br0=n.brain;
+  const gotAlert=isProj&&br0&&br0.tracked&&br0.gotchas>=GOTCHA_ALERT;
+  const cleanable=n.conch&&(n.conch.cleanup_suggested||n.conch.obsolete_count>0);
+  const showRepair=(n.status==='needs_repair'||n.status==='broken'||n.status==='stale')||gotAlert||cleanable||(n.issues&&n.issues.length);
+  if(showRepair){ const rg=(gotAlert&&n.status==='healthy')?ALERT_COL:stc;
+    h+='<button class="repair-link" style="--rg:'+rg+'" onclick="event.stopPropagation();openRepair(\''+n.id.replace(/'/g,"")+'\')">审查并修复</button>'; }
+  mkPanel(h,sc); }
+function openAgent(a){ const ac=a.color||AGENT_AC;
+  let h='<span class="close" onclick="closeP()">×</span><h3>'+a.glyph+' '+a.name+' <span style="font-size:12px;color:#a89f8b;font-weight:400">'+(a.nick||'')+'</span></h3>';
+  h+='<div class="kindt">数灵 Agent'+(a.last?(' · 最近出场 '+(relDay(a.last)||a.last)):'')+'</div>';
+  h+='<div class="meta"><strong>'+(a.duty||'')+'</strong></div>';
+  if(a.persona) h+='<div class="sec"><div class="h">性格</div><div class="ape">'+a.persona+'</div></div>';
+  const logsTxt=(a.logs===null||a.logs===undefined)?'统筹全局（不单列 per-agent 日志）':(a.logs+' 篇 per-agent 日志');
+  h+='<div class="sec"><div class="h">落盘</div><span class="logs-stat">'+logsTxt+'</span>'+(a.last?(' · 最近 '+a.last):'')+'</div>';
+  if(a.call) h+='<div class="sec"><div class="h">唤名 / 边界</div>'+a.call+'</div>';
+  if(DATA.agents_note) h+='<div class="note">'+DATA.agents_note+'</div>';
+  mkPanel(h,ac); }
+window.openAgent=openAgent;
+function ccPrompt(n){ const parts=[];
+  const iss=(n.issues||[]).map((x,i)=>(i+1)+') '+x).join('；'); if(iss) parts.push('待修问题：'+iss);
+  if(n.kind==='project'&&n.brain&&n.brain.tracked&&n.brain.gotchas>0)
+    parts.push('错题本积压 '+n.brain.gotchas+' 条：复盘 brain/'+n.id+'/GOTCHAS.md，逐条定状态（已修→归档／仍开→提炼成防再犯条目／作废→标注），消化后回写计数');
+  if(n.conch&&(n.conch.cleanup_suggested||n.conch.obsolete_count>0))
+    parts.push('清理：conch 标记陈旧文件 '+(n.conch.obsolete_count||0)+' 个，先 dry-run 列清单 → 归档 archived/（不删）→ 二次确认才动');
+  const body=parts.length?parts.join('；\n'):'例行自查（无显式待办，过一遍结构/陈旧/错题本）';
+  return '审查并修复「'+(n.title||n.id)+'」（'+(n.path||n.id)+'）。\n'+body+
+    '。\n按 propose-then-confirm：先出分级（P0/P1/P2）方案待我批，再逐文件改；可逆优先、不删文件（弃用改 archived/_DEPRECATED）、git 命令贴我终端。'; }
+function gotchasCmd(n){ return 'sed -n "1,80p" ~/Documents/Claude/brain/'+n.id+'/GOTCHAS.md   # 复盘未消化错题本（只读）'; }
+function localCmd(n){ if(n.kind==='project') return 'cd ~/Documents/'+n.path+' && python3 '+CONCH+' scan --scope .   # conch dry-run 自查（只看不改）';
+  if(n.kind==='database') return 'sqlite3 -readonly ~/Documents/'+(n.path||'')+' "PRAGMA integrity_check;"   # 库完整性 dry-check';
+  return 'grep -i "'+(n.id.split(/[\/ ]/)[0])+'" ~/Documents/Database/.env   # 核该信源凭证是否配置'; }
+window.openRepair=function(id){ const n=nmap[id]; if(!n)return; const cc=ccPrompt(n), term=localCmd(n);
+  const isProj=n.kind==='project', br=n.brain;
+  const hasGot=isProj&&br&&br.tracked&&br.gotchas>0;
+  const hasClean=n.conch&&(n.conch.cleanup_suggested||n.conch.obsolete_count>0);
+  let h='<span class="close" onclick="closeP()">×</span><h3>🔧 审查并修复 · '+(n.title||n.id)+'</h3>';
+  h+='<div class="kindt">不自动改 · 交 CC 走 propose-then-confirm 或本地 dry-run 自查</div>';
+  let todo='';
+  if(hasGot) todo+='<li style="color:'+ALERT_INK+'">错题本积压 '+br.gotchas+' 条 · 待复盘消化（已修归档／仍开提炼）</li>';
+  if(hasClean) todo+='<li style="color:#8b6f32">conch 可清理陈旧文件 '+(n.conch.obsolete_count||0)+' 个 · 归档不删</li>';
+  (n.issues||[]).forEach(x=>todo+='<li>'+x+'</li>');
+  if(!todo) todo='<li style="color:#7a7468">无显式待办 · 例行自查</li>';
+  h+='<div class="sec"><div class="h">待办</div><ul class="iss-list">'+todo+'</ul></div>';
+  h+='<div class="sec"><div class="h">① 修复指令（复制 → 粘贴到对话交给 CC）</div><div class="cmd" onclick="selCmd(this)" title="点此全选">'+cc+'</div>'+
+     '<button class="btn" data-cmd="'+encodeURIComponent(cc)+'" onclick="copyCmd(this)">复制修复指令</button></div>';
+  h+='<div class="sec"><div class="h">② 本地自查 / 清理 dry-run（贴终端·不改）</div><div class="cmd" onclick="selCmd(this)" title="点此全选">'+term+'</div>'+
+     '<button class="btn ghost" data-cmd="'+encodeURIComponent(term)+'" onclick="copyCmd(this)">复制自查命令</button></div>';
+  if(hasGot){ const gc=gotchasCmd(n);
+    h+='<div class="sec"><div class="h">③ 复盘错题本（只读）</div><div class="cmd" onclick="selCmd(this)" title="点此全选">'+gc+'</div>'+
+       '<button class="btn ghost" data-cmd="'+encodeURIComponent(gc)+'" onclick="copyCmd(this)">复制复盘命令</button></div>'; }
+  h+='<button class="btn ghost" onclick="aiTriage(\''+id.replace(/'/g,"")+'\',this)">🤖 AI 分级建议</button>';
+  h+='<div class="aiout" id="aiout" hidden></div>';
+  h+='<div class="note">绝不自动执行：①交 CC 会先出分级方案待你批；②本地命令为 dry-run / 只读；清理走「归档 archived/ 不删」。</div>';
+  mkPanel(h,hasGot&&n.status==='healthy'?ALERT_COL:'#d2691e'); }
+function selEl(el){ try{ const r=document.createRange(); r.selectNodeContents(el); const s=getSelection(); s.removeAllRanges(); s.addRange(r); return true; }catch(e){ return false; } }
+window.selCmd=function(el){ selEl(el); };
+function legacyCopy(txt){ try{ const ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;top:-9999px;left:0;opacity:0'; document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0,txt.length); const ok=document.execCommand&&document.execCommand('copy'); document.body.removeChild(ta); return !!ok; }catch(e){ return false; } }
+window.copyCmd=function(btn){ const c=decodeURIComponent(btn.getAttribute('data-cmd')); const o=btn.dataset.label||btn.textContent; btn.dataset.label=o;
+  const cmdEl=btn.parentNode&&btn.parentNode.querySelector('.cmd');
+  const done=()=>{ btn.textContent='✓ 已复制'; setTimeout(()=>btn.textContent=o,1400); };
+  const manual=()=>{ if(cmdEl)selEl(cmdEl); btn.textContent='已选中·按 Ctrl/Cmd+C'; setTimeout(()=>btn.textContent=o,2800); };
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(c).then(done).catch(()=>{ legacyCopy(c)?done():manual(); }); }
+  else { legacyCopy(c)?done():manual(); } }
+window.aiTriage=async function(id,btn){ const n=nmap[id]; const out=document.getElementById('aiout'); out.hidden=false; out.textContent='AI 分级中…'; btn.disabled=true;
+  try{ if(!window.cowork||!window.cowork.askClaude){ out.textContent='（此环境无 AI 推理；下方审查命令即可手动 dry-run。）'; return; }
+    const prompt='你是资产维护审查员。综合资产的已知问题、错题本积压(brain.gotchas)、可清理陈旧文件(conch.obsolete_count)，按 P0(阻断/数据失真)/P1(结构/可交接)/P2(治理) 分级，每条给一句最小修复方向；清理与错题本归 P2 治理除非阻断。只输出分级清单，简洁中文。';
+    const r=await window.cowork.askClaude(prompt,[{id:n.id,kind:n.kind,meta:n.meta,issues:n.issues,brain:n.brain,conch:n.conch}]);
+    out.textContent=(typeof r==='string'?r:JSON.stringify(r));
+  }catch(e){ out.textContent='（AI 调用失败，可手动跑下方 dry-run 命令。）'; } finally{ btn.disabled=false; } }
+// —— L3 · DVA 常更作者表（承 BVD·静态快照） ——
+const DVA_CAT={ '金融':{emoji:'🪙',color:'#8b6f32',target:'全链 · 下载+转写+分析入库 → DVA-金融分析库'},
+  'PEC语料':{emoji:'📚',color:'#a94e3f',target:'转写 · 下载 + 转写 → PEC'},
+  '设计':{emoji:'🎨',color:'#a35f4e',target:'仅下载 / 转写 → VV Design Reference'} };
+const DVA_CAT_ORDER=['金融','PEC语料','设计'];
+const DVA_STATE_STYLE={ '完成':'background:#e3ece5;color:#2f7d63;','进行中':'background:#f4ead0;color:#8b6f32;','待启动':'background:#f0e0dc;color:#a94e3f;' };
+const DVA_TOL=3;
+function dvaFmtTime(iso){ if(!iso)return'—'; const m=String(iso).match(/^\d{4}-(\d{2}-\d{2})T(\d{2}:\d{2})/); return m?(m[1]+' '+m[2]):iso; }
+function dvaSubText(a){ const dl=a.downloaded||0,ing=a.ingested||0,l1=a.level1||0,exc=a.excluded||0,trx=a.transcripts||0;
+  if(a.mode==='download-only') return '仅下载 · '+dl+' 条';
+  if(a.mode==='full'){ let s='下载 '+dl+' · 入库 '+ing+' · 分析 '+l1; if(ing>0&&(dl-ing-exc)>DVA_TOL)s+=' · ⚠待入库 '+(dl-ing-exc); if(exc>0)s+=' · 排除 '+exc; return s; }
+  const target=dl-exc, todo=target-trx; let s='下载 '+dl+' · 转写 '+trx; if(todo>DVA_TOL)s+=' · ⚠待转写 '+todo; if(exc>0)s+=' · 排除 '+exc; return s; }
+function renderDvaReport(){ const list=DATA.dva_authors||[]; const body=document.getElementById('dva-body');
+  if(body){ body.innerHTML=''; const groups={}; list.forEach(a=>{(groups[a.category]=groups[a.category]||[]).push(a);});
+    const cats=DVA_CAT_ORDER.filter(c=>groups[c]).concat(Object.keys(groups).filter(c=>DVA_CAT_ORDER.indexOf(c)<0));
+    cats.forEach((cat,ci)=>{ const meta=DVA_CAT[cat]||{emoji:'📁',color:'#6b6a64',target:''}; const sec=document.createElement('div'); sec.className='dva-sec'; if(ci===cats.length-1)sec.style.marginBottom='6px';
+      let html='<div class="dva-sh"><span style="font-size:16px;font-weight:500;color:'+meta.color+';">'+meta.emoji+' '+cat+' · '+groups[cat].length+'</span><span style="font-size:12px;color:'+meta.color+';">'+meta.target+'</span></div>';
+      groups[cat].forEach(a=>{ const bad=a.status&&String(a.status).toLowerCase()!=='ok'; const upd='最后更新 '+dvaFmtTime(a.last_update)+(bad?' · ⚠'+a.status:'');
+        html+='<div class="dva-row"><div style="flex:1;min-width:0;"><div class="dva-nm">'+a.nickname+'</div><div class="dva-sub">'+dvaSubText(a)+'</div><div class="dva-upd'+(bad?' warn':'')+'">'+upd+'</div></div><span class="dva-stat" style="'+(DVA_STATE_STYLE[a.state]||DVA_STATE_STYLE['进行中'])+'">'+(a.state||'进行中')+'</span></div>'; });
+      sec.innerHTML=html; body.appendChild(sec); }); }
+  const cnt={'完成':0,'进行中':0,'待启动':0}; list.forEach(a=>{cnt[a.state]=(cnt[a.state]||0)+1;});
+  const setTxt=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  setTxt('dva-ov-total',list.length); setTxt('dva-ov-done',cnt['完成']); setTxt('dva-ov-wip',cnt['进行中']); setTxt('dva-ov-pending',cnt['待启动']);
+  const st=document.getElementById('dva-snaptime'); if(st)st.textContent=DATA.dva_snapshot||DATA.generated||''; }
+function openDvaReport(){ renderDvaReport(); const ov=document.getElementById('dva-overlay'); if(ov){ov.classList.add('open'); document.body.style.overflow='hidden';} }
+function closeDvaReport(){ const ov=document.getElementById('dva-overlay'); if(ov){ov.classList.remove('open'); document.body.style.overflow='';} }
+window.openDvaReport=openDvaReport; window.closeDvaReport=closeDvaReport;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeDvaReport(); });
+
+// 点击卡片/面板之外的任意位置 → 关闭详情卡
+document.addEventListener('click', e=>{ const p=document.getElementById('panel');
+  if(p && !p.contains(e.target) && !e.target.closest('.card') && !e.target.closest('.panel') && !e.target.closest('.repair-link')) closeP(); });
+// 🔄 重新扫描：触发定时任务 refresh-asset-dashboard（survey→build→update_artifact），替代无效的 Reload
+window.rescan = async function(btn){
+  if(!(window.cowork && window.cowork.runScheduledTask)){
+    alert('此环境不支持触发重扫。请在对话里让 CC 跑：conch survey → build_asset_dashboard → update_artifact。'); return;
+  }
+  const o = btn.textContent; btn.disabled = true; btn.textContent = '🔄 重新扫描中…（约半分钟，完成后看板更新）';
+  try{
+    await window.cowork.runScheduledTask('refresh-asset-dashboard');
+    btn.textContent = '✓ 已触发·完成后看板自动更新（稍候或 Reload）';
+    setTimeout(()=>{ btn.textContent = o; btn.disabled = false; }, 9000);
+  }catch(e){ btn.textContent = '触发失败：' + e; btn.disabled = false; }
+};
+</script>
+</body></html>

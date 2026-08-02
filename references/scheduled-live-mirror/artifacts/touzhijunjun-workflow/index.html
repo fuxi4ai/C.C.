@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Touzhijunjun Workflow",
+  "schemaVersion": 1,
+  "description": "投知君君工作流全景（C.C. 目前理解版，待讨论）：抖音买方 KOL 信源 → ASR → 三分桶提炼（产业规律 vs 投资框架）→ 双线沉淀（渊图视角层线 markdown + DVA 金融提炼线结构化）。含方案 B 迁移（仅把渊图线的提炼外包给 Codex、Claude 照原样写库）与握手层机制。数据流用 mermaid 图呈现。"
+}
+</script>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>定时任务迁移工作流（方案 B）</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.min.js" integrity="sha384-yQ4mmBBT+vhTAwjFH0toJXNYJ6O4usWnt6EPIdWwrRvx2V/n5lXuDZQwQFeSFydF" crossorigin="anonymous"></script>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  max-width: 980px; margin: 0 auto; padding: 32px 24px 80px;
+  background: #fafaf8; color: #1f2328; line-height: 1.65; font-size: 15px;
+}
+h1 { font-size: 26px; margin: 0 0 4px; }
+.sub { color: #6a737d; font-size: 14px; margin-bottom: 28px; }
+h2 { font-size: 19px; margin: 34px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #e6e3dc; }
+h3 { font-size: 15px; margin: 18px 0 8px; color: #3a3f45; }
+p { margin: 8px 0; }
+code { background: #f0eee8; padding: 1px 5px; border-radius: 4px; font-size: 13px; font-family: "SF Mono", Menlo, monospace; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 13.5px; }
+th, td { border: 1px solid #e0ddd4; padding: 7px 10px; text-align: left; vertical-align: top; }
+th { background: #f3f1ea; font-weight: 600; }
+tr:nth-child(even) td { background: #fcfbf8; }
+.card { background: #fff; border: 1px solid #e6e3dc; border-radius: 10px; padding: 4px 20px 16px; margin: 14px 0; }
+.eg { background: #eef6ff; border: 1px solid #cfe2ff; border-left: 4px solid #1a5fb4; border-radius: 0 8px 8px 0; padding: 10px 16px; margin: 14px 0; font-size: 14px; }
+.eg b { color: #1a5fb4; }
+.note { background: #fff9e9; border-left: 3px solid #e3b341; padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 13.5px; }
+.mermaid { text-align: center; margin: 16px 0; }
+.keep { color: #1a7f37; font-weight: 600; }
+.change { color: #b5560a; font-weight: 600; }
+.status-done { color: #1a7f37; font-weight: 600; }
+.status-todo { color: #9a6700; font-weight: 600; }
+ul { margin: 6px 0; padding-left: 22px; }
+li { margin: 3px 0; }
+.foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid #e6e3dc; color: #6a737d; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>定时任务迁移工作流（方案 B）</h1>
+<div class="sub">通用工作流 · 以投知君君为例 · C.C. 目前理解版 · 2026-07-01 · 待讨论校准</div>
+
+<div class="card">
+<h3>核心一句话</h3>
+<p>方案 B 只做一件事：把定时任务里的<strong>重活（提炼）外包给 Codex</strong>；Claude 改为<strong>从握手层拿提炼结果 → 照原样写回该任务本来的库</strong>。<br>
+<span class="keep">库、格式、写库动作、产出报告——全不变。</span> <span class="change">变的只有：提炼由谁做、数据从哪来。</span></p>
+</div>
+
+<h2>一、通用工作流：迁移前 → 迁移后</h2>
+
+<h3>迁移前（Claude 全包一条龙）</h3>
+<pre class="mermaid">
+flowchart LR
+  R["原始语料"] --> A["Claude 定时任务"]
+  A --> P["提炼(重活)"]
+  P --> W["写自己的库"]
+  W --> O["产出/报告"]
+  style P fill:#ffeede,stroke:#b5560a
+</pre>
+
+<h3>迁移后（提炼外包，写库照旧）</h3>
+<pre class="mermaid">
+flowchart LR
+  R["原始语料"] --> CX["Codex 提炼(重活)"]
+  CX -->|"写 payload"| TC["握手层<br/>to CC/scheduled"]
+  TC -->|"读"| CC["Claude consumer<br/>每日 09:00"]
+  CC -->|"照原样写"| W["同一个库<br/>(格式不变)"]
+  W --> O["同样的产出/报告"]
+  CC -->|"写 ack"| TV["to VV/scheduled"]
+  style CX fill:#ffeede,stroke:#b5560a
+  style W fill:#e5f0ff,stroke:#1a5fb4
+</pre>
+
+<table>
+<tr><th></th><th>迁移前</th><th>迁移后</th></tr>
+<tr><td>提炼（重活）</td><td>Claude 自己做</td><td class="change">Codex 做</td></tr>
+<tr><td>数据来源</td><td>Claude 自抓自炼</td><td class="change">从握手层拿</td></tr>
+<tr><td>写哪个库</td><td colspan="2" class="keep">同一个库，不变</td></tr>
+<tr><td>写库格式 / 动作</td><td colspan="2" class="keep">照原样，不变</td></tr>
+<tr><td>产出 / 报告</td><td colspan="2" class="keep">一样，不变</td></tr>
+</table>
+
+<h2>二、握手层机制（通用交接管道）</h2>
+<ul>
+<li><strong>两个方向</strong>：<code>to CC/scheduled/</code>（Codex 写数据 payload）· <code>to VV/scheduled/</code>（Claude 写 ack 回执）；各留 <code>latest</code> + <code>prev</code> 两版。</li>
+<li><strong>consumer 流程</strong>（<code>handshake-consumer-daily</code>，每日 09:00）：扫 latest → <strong>校验</strong>(schema + checksum + run_id 幂等) → 按 task_id <strong>路由写库</strong> → <strong>写 ack</strong> → 报告 Doctor。</li>
+<li><strong>幂等</strong>：每批唯一 run_id；比对 ack 里 last_consumed_run_id，相同则跳过、不重复写。</li>
+<li><strong>规矩留 Claude 侧</strong>：数据真实性、不 promote、不在沙箱跑 git 写——Codex 只吐提炼数据，不越权落盘。</li>
+</ul>
+
+<h2>三、用投知君君走一遍（例子）</h2>
+<p>把上面的通用流程，代入投知君君这个具体任务：</p>
+<div class="eg">
+<b>① 原始语料</b>：抖音视频 ASR 转写 → <code>Database/Douyin/Transcripts/投知君君买方视角/*.transcript.txt</code>（由 <code>DVA-ops</code> 脚本抓取+ASR 产出）<br>
+<b>② 提炼（重活）</b>：三分桶——产业规律 / 投资框架 / 剔除<br>
+<b>③ 写自己的库</b>：产业规律条目 → <code>行业研究/wiki/视角/投知君君/</code>（<code>_产业逻辑raw.md</code>、<code>_反共识纠偏录.md</code>、图谱候选 PROPOSAL）<br>
+<b>④ 迁移</b>：②的提炼外包给 Codex → 写握手层 → Claude consumer 拿了<b>照原样写回同一个渊图 wiki</b>（格式、动作全不变）
+</div>
+<div class="note"><strong>边界（两条线的现状）</strong>：投知君君规划有两条线。上面举例的是 <strong>渊图视角层线</strong>（Claude 原来做的、本次迁移的对象）。另一条 <strong>DVA 金融提炼线目前尚未建立</strong>：<code>DVA-ops</code> 脚本现在只产出 transcript（＝ DVA 的原始语料），<strong>「提炼 transcript → 形成 DVA 报告 → 沉淀」这一步将来才做、现在还没做</strong>——不臆测。本次迁移只涉及渊图线。</div>
+
+<h2>四、迁移原则 + 当前状态</h2>
+<ul>
+<li><strong>逐个任务照搬</strong>：每个定时任务有自己的库，迁移时看它原来写什么库、就照原样写什么库——<strong>不搞统一体系、不复制新机制</strong>。</li>
+<li><strong>投知君君是第一个试点</strong>，跑通后再逐个迁其余任务。</li>
+</ul>
+<table>
+<tr><th>项</th><th>状态</th></tr>
+<tr><td>握手层地基 + consumer skill + 每日 09:00 任务</td><td class="status-done">✅ 建成</td></tr>
+<tr><td>空跑端到端（通道 + checksum + 幂等）</td><td class="status-done">✅ 通过</td></tr>
+<tr><td>投知君君渊图线 consumer 路由（照原样写 wiki）</td><td class="status-done">✅ 朴素版就位</td></tr>
+<tr><td>带真实数据的落盘验证</td><td class="status-todo">⏳ 待 Codex 首批真实 payload</td></tr>
+<tr><td>关停原 <code>touzhijunjun-perspective-refresh</code> 任务</td><td class="status-todo">⏳ 待真实端到端通过</td></tr>
+</table>
+
+<div class="foot">
+本图为 C.C. 目前理解的方案 B 通用迁移工作流，以投知君君为例，供讨论校准。核心原则：迁移＝把提炼外包，写库照旧、逐个照搬、不创新。
+</div>
+
+<script>
+mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });
+</script>
+</body>
+</html>

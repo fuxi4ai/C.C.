@@ -70,6 +70,9 @@ OPS_DIRS = [                                                   # plist 源文件
 OUT_JSON = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.json"
 OUT_MD = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.md"
 MIRROR_DIR = HOME / "Documents/Claude/brain/references/scheduled-live-mirror/live"  # 第三输出 · live 镜像（2026-08-02 Doctor 批）
+ARTIFACTS_TREE = HOME / "Claude's workspace" / "Artifacts"
+ART_MIRROR = HOME / "Documents/Claude/brain/references/scheduled-live-mirror/artifacts"  # 第四输出（2026-08-02 Doctor 批）
+ART_CAP = 1_000_000   # index.html >1M 只记 sha 不拷正文（zhuzhao/yuantu 两大件，备份责任在生成器）
 
 
 def sha(p: Path) -> str:
@@ -270,6 +273,36 @@ def mirror_live_tree():
     return f"镜像已同步：{len(live_files)} 文件（更新 {copied} · 移除 {removed}）"
 
 
+def mirror_artifacts():
+    """第四输出 · Artifacts 当前态镜像（2026-08-02 Doctor 批）。只收 index.html；
+    versions/ 是 Cowork 自管回滚历史（实测占 Artifacts 总量 ~97%）、thumbnail 可再生，均不入。
+    超 ART_CAP 只记清单行——变没变靠 sha 进 git diff，正文由生成器兜底。
+    副产品 _artifacts_manifest.txt 使 Artifacts 成为本机制看得见的第六个执行面。"""
+    import shutil
+    if not ARTIFACTS_TREE.exists():
+        return "Artifacts 树不可读，跳过"
+    ART_MIRROR.mkdir(parents=True, exist_ok=True)
+    lines, copied = [], 0
+    for d in sorted(ARTIFACTS_TREE.iterdir()):
+        f = d / "index.html"
+        if not d.is_dir() or not f.exists():
+            continue
+        size = f.stat().st_size
+        mode = "copy" if size <= ART_CAP else "sha-only"
+        lines.append(f"{d.name}\t{size}\t{sha(f)[:12]}\t{mode}\t{mtime(f)}")
+        dst = ART_MIRROR / d.name / "index.html"
+        if mode == "copy":
+            if (not dst.exists()) or sha(f) != sha(dst):
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(f, dst); copied += 1
+        elif dst.exists():
+            dst.unlink()   # 曾拷过后来超限：清正文，只留清单行
+    (ART_MIRROR / "_artifacts_manifest.txt").write_text(
+        "# name\tbytes\tsha12\tmode\tmtime —— 由 scheduler_snapshot.py 周更；盘上有/清单无的幽灵靠本清单 diff 现形\n"
+        + "\n".join(lines) + "\n", encoding="utf-8")
+    return f"Artifacts：{len(lines)} 个（拷 {copied} · 清单全量）"
+
+
 def detect_anomalies(snap, prev):
     """只报**结构性破损**，不报「变化」（变化交给 git diff，不重复）。
 
@@ -378,6 +411,7 @@ def main():
                         encoding="utf-8")
 
     mirror_note = mirror_live_tree()
+    art_note = mirror_artifacts()
 
     # ── 人读版 ──
     L = []
@@ -386,7 +420,7 @@ def main():
              f"{snap['_meta']['generated_at']}，**只读**。\n")
     L.append("> **本文件纳入 git；跑完 `git diff` 即知自上次快照以来什么变了** —— "
              "无论改动来自 Doctor、别的会话还是 CC 自己。\n")
-    L.append(f"> 镜像步：{mirror_note}\n")
+    L.append(f"> 镜像步：{mirror_note} · {art_note}\n")
 
     L.append(f"\n## 面① Cowork live 树（{len(cowork)} 个）\n")
     L.append("| taskId | SKILL mtime | 行数 | sha | 描述 |")

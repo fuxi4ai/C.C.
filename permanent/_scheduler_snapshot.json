@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-08-02T01:28:51-07:00",
+  "generated_at": "2026-08-02T10:42:45-07:00",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -11,7 +11,7 @@
  ],
  "cowork_live": {
   "path": "/Users/lunarabbit/Claude's workspace/Scheduled",
-  "count": 20,
+  "count": 19,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
@@ -71,16 +71,6 @@
     "skill_lines": 34,
     "name": "event-attribution-watch",
     "desc_head": "事件归因验证班：采集上一美股交易日数据→事件日判定→收盘级归因→与注册量级带对准→提案制汇报（剑酒青丘·解释层）",
-    "cron": null
-   },
-   {
-    "taskId": "handshake-consumer-daily",
-    "has_skill": true,
-    "skill_mtime": "2026-07-05 10:46",
-    "skill_sha12": "1135f288b6b3",
-    "skill_lines": 33,
-    "name": "handshake-consumer-daily",
-    "desc_head": "每日09:00消费Shake Hands机器握手通道(方案B)：扫to CC/scheduled→schema+checksum+run_id幂等校验→按task_id路由落盘(走brain铁律:真实性/不promote…",
     "cron": null
    },
    {
@@ -216,75 +206,11 @@
   ]
  },
  "documents_dead_tree": {
-  "exists": true,
-  "path": "/Users/lunarabbit/Documents/Claude/Scheduled",
-  "dir_count": 11,
-  "also_in_live": [
-   "agents-memory-meditation",
-   "baize-weekly-report",
-   "brain-monthly-checkup",
-   "handshake-consumer-daily",
-   "market-data-daily-update",
-   "recap-kejian-daily-ingest",
-   "recap-kejian-review",
-   "refresh-asset-dashboard",
-   "repair-finance-chain",
-   "touzhijunjun-perspective-refresh",
-   "zhuzhao-market-fetch-daily-report"
+  "exists": false,
+  "archived_as": [
+   "_DEPRECATED_Scheduled_20260802"
   ],
-  "only_in_dead": [],
-  "content_diverged": [
-   {
-    "taskId": "baize-weekly-report",
-    "dead_mtime": "2026-07-09 03:10",
-    "live_mtime": "2026-07-31 23:56",
-    "dead_sha12": "4dbff7b87197",
-    "live_sha12": "756ff01971b0"
-   },
-   {
-    "taskId": "market-data-daily-update",
-    "dead_mtime": "2026-07-05 04:53",
-    "live_mtime": "2026-08-01 06:34",
-    "dead_sha12": "6cc421266444",
-    "live_sha12": "b98e2afdacf9"
-   },
-   {
-    "taskId": "recap-kejian-daily-ingest",
-    "dead_mtime": "2026-07-01 14:05",
-    "live_mtime": "2026-07-30 06:02",
-    "dead_sha12": "279edfdaae8b",
-    "live_sha12": "4da3a77db942"
-   },
-   {
-    "taskId": "recap-kejian-review",
-    "dead_mtime": "2026-07-30 22:32",
-    "live_mtime": "2026-07-31 23:56",
-    "dead_sha12": "b32c02b018b7",
-    "live_sha12": "60d437adc0d4"
-   },
-   {
-    "taskId": "refresh-asset-dashboard",
-    "dead_mtime": "2026-07-01 14:10",
-    "live_mtime": "2026-08-01 22:31",
-    "dead_sha12": "550f45e55403",
-    "live_sha12": "bf8a87844666"
-   },
-   {
-    "taskId": "touzhijunjun-perspective-refresh",
-    "dead_mtime": "2026-07-02 00:21",
-    "live_mtime": "2026-08-01 22:28",
-    "dead_sha12": "217ff8588e79",
-    "live_sha12": "139923b77c15"
-   },
-   {
-    "taskId": "zhuzhao-market-fetch-daily-report",
-    "dead_mtime": "2026-07-30 22:33",
-    "live_mtime": "2026-08-02 00:59",
-    "dead_sha12": "ae69624dda78",
-    "live_sha12": "ff0f5e557188"
-   }
-  ],
-  "note": "⚠ 死树仍在：改动落这里不会进生产（2026-07-31 ERR）。内容分叉项尤其危险——看起来改了，其实没进调度器。"
+  "note": "✅ 已归档（改名不删）"
  },
  "launchd": {
   "sources": {
