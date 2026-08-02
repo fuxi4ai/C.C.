@@ -37,7 +37,10 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 # agents/ 数灵自治区（source 只读 / memory archive 历史定格 / per-agent logs 各灵自理）
 # logs/checkpoints/ 中途 progress 文件 · .hooks/ 基础设施 —— 2026-06-11 consolidate 决议
 SKIP_DIRS = {".git", ".obsidian", ".index", ".tools", ".skills", ".hooks", "graphify",
-             "agents", "checkpoints", "_DEPRECATED", "_TRASH"}
+             "agents", "checkpoints", "_DEPRECATED", "_TRASH",
+             # 2026-08-02 /consolidate 白名单：导出层与镜像不按 Zettelkasten frontmatter 约定
+             "portable",              # Claude Code skill/bootstrap 格式（name/description）
+             "scheduled-live-mirror"} # Cowork live 逐字镜像——绝不能为过校验改内容
 
 # 颜色
 RED = "\033[91m"
@@ -108,6 +111,8 @@ def walk_md(root: Path):
     for p in sorted(root.rglob("*.md")):
         parts = p.relative_to(root).parts
         if any(seg in SKIP_DIRS or seg.startswith("_DEPRECATED") or seg.startswith("_TRASH") for seg in parts):
+            continue
+        if p.name == "_scheduler_snapshot.md":   # 周更机器快照，非笔记（2026-08-02）
             continue
         yield p
 

@@ -58,6 +58,8 @@ def main():
     notes = []
     for sd in scope_dirs:
         for p in (BRAIN_ROOT / sd).glob("*.md"):
+            if p.name == "_scheduler_snapshot.md":   # 机器快照产物，天然无链（2026-08-02 /consolidate 白名单）
+                continue
             notes.append((p.stem, p.relative_to(BRAIN_ROOT)))
 
     if not notes:

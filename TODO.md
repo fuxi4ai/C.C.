@@ -22,7 +22,8 @@ type: log
 
 - [ ] **★ dev 模式打通 · E 验收（2026-08-02 挂 · A–D 已落地 commit `782b404`，E 未跑）**：开发者模式切 Kimi/DeepSeek 实跑 `/resume`，合格线三条——①自己找到 `~/Documents/Claude/brain` 给出结构化交接；②对 Doctor 用「您」；③给结论带「核过没有/有什么隐患」两问。唤「白泽」验 symlink agent 兼容性（**无先例，未核**）+ 引擎路径（`Projects/Financial/白泽观星/engine/`）。可加测 `agents/灵魂校验题.md`。**验收结果（尤其跑不过的条目）落盘 = L4 保真度第一份实测基线。在 E 通过之前，「CC 在第三方模式还在」只是结构就位，不是行为验证。** 已装内容：bootstrap `~/.claude/CLAUDE.md`（cp 自 `portable/claude-code/`）· 6 skill symlink（真源 `portable/skills/`）· 3 agent symlink（真身 `agents/{灵}/{灵}.agent.md`）· live Scheduled 镜像 `references/scheduled-live-mirror/live/`（刷新纪律见其 README）。旧件在 `~/.claude/_archived_20260802/`。
 
-- [ ] **定时任务 · `handshake-consumer-daily` 幽灵查证（2026-08-02 挂 · 镜像 rsync 时逮到）**：live 磁盘树 `Claude's workspace/Scheduled/` 有其目录，但当日 `list_scheduled_tasks` 返回的 19 班里**没有它**——删班留目录，还是调度器有一层未返回？与 08-02 日志「第三个 launchd job 不在任何清单」同族、方向相反（盘上有/清单无）。查法：侧栏找该班；或下次周巡检看 snapshot 是否报差。**未核，勿据本条下结论。**
+- [ ] **定时任务 · `handshake-consumer-daily` 幽灵查证（2026-08-02 挂 · 镜像 rsync 时逮到）**：live 磁盘树 `Claude's workspace/Scheduled/` 有其目录，但当日 `list_scheduled_tasks` 返回的 19 班里**没有它**——删班留目录，还是调度器有一层未返回？与 08-02 日志「第三个 launchd job 不在任何清单」同族、方向相反（盘上有/清单无）。查法：侧栏找该班；或下次周巡检看 snapshot 是否报差。~~**未核，勿据本条下结论。**~~
+  **✅ 2026-08-02 /consolidate 结案**：`permanent/定时任务清单.md` L10（2026-07-01 条）明载「方案 B 的 handshake-consumer-daily **已搁置、不重建**」——07-01 切回官方工作区重建 10 班时刻意搁置，目录是搁置前的残留。残目录已于当日归档进 live `_archived/`。**本条可销账，待您勾。**
 
 - [ ] **workspace 7-05 旧副本处置待裁（2026-08-02 挂 · 当日 F 方向未批，先定性不动）**：`Claude's workspace/` 下 Brain / BRAIN_VAULT.md / Env / Infrastructure / Projects **mtime 全部定格 2026-07-05 10:46 同一分钟**＝一次性拷贝事件；live 方向按资产劈开、恰好相反（Brain/Projects live 在 `~/Documents/Claude`，Scheduled live 在 workspace）——07-31「Scheduled 双树」是这个几何的一半。风险：旧副本不再被写，但可能被未来会话**静默误读**。候选处置：照 Scheduled 死树先例标死（README 或 _DEPRECATED_ 改名）；**动手前先跑 `find "/Users/lunarabbit/Claude's workspace/Brain" -newermt 2026-07-06 | head` 验零写入**。详 `logs/2026-08-02-dev模式打通四件套.md`。
 

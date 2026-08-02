@@ -1,3 +1,13 @@
+---
+title: 会话日志 2026-07-06 — 龙鱼周更双scorer首次自动run
+tags: [log, 龙鱼五力]
+created: 2026-07-06
+updated: 2026-07-06
+status: active
+type: log
+project: 龙鱼五力
+---
+
 # 2026-07-06 · 龙鱼周更双scorer · 首次自动 run（longyu-weekly-dualscorer）
 
 > 类型：Cowork Scheduled 自主任务 · 执行者：CC（research-CC）· 项目：龙鱼五力

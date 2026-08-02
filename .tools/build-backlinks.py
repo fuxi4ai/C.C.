@@ -160,14 +160,19 @@ def main():
                 resolved = name_to_file[t][0]
             if resolved is None:
                 # logs/ 和 chats/ 是历史定格内容，不算活跃 dangling
-                src_top = source_rel.split("/")[0]
-                if src_top in {"logs", "chats"}:
+                # 2026-08-02 订正：任何路径段含 logs 都算（渊图/logs、agents/烛阴/logs 同性质），原先只认顶层
+                src_parts = source_rel.split("/")
+                if "logs" in src_parts or src_parts[0] == "chats":
                     continue
                 # 三分法：标记 / 跨库 / 真悬空（见文件头 MARKER_RE 注释）
                 if MARKER_RE.match(t):
                     markers.append(f"{source_rel}  →  [[{t}]]")
                 elif t in crossref_index:
                     crossrefs.append(f"{source_rel}  →  [[{t}]]  ⇒  {crossref_index[t]}")
+                elif t.split("/")[0] in {"Database", "AI4ME"}:
+                    # 2026-08-02：路径式跨库（目标根在 ~/Documents 下、Claude/ 之外）——stem 索引永远配不上，
+                    # 且沙箱挂载看不到该根、无法验存在性 ⇒ 按路径前缀归跨库，不当真悬空报
+                    crossrefs.append(f"{source_rel}  →  [[{t}]]  ⇒  （路径式跨库 · 存在性未在本环境验证）")
                 else:
                     dangling.append(f"{source_rel}  →  [[{t}]]")
 
