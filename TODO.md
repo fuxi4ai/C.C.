@@ -11,6 +11,15 @@ type: log
 
 ## 待办
 
+- [ ] **★ 渊图 · `concept_XinsenBTSubstrateCustomerShare` 畸形节点还原 —— 11 个节点静默丢失 26 天（2026-08-01 挖出 · Doctor 定甲案「本批不动、另开一场」）**
+  **病灶**：该节点的 `aliases` 是个 15 元素数组，其中 **12 个是 dict** —— `[3]` 是它自己的 description/properties/data_sources（故顶层 `description=None`），`[4]~[14]` 是 **11 个完整节点**被整个吞了进去：`concept_XinsenS3BTExpansionCXMTSamsungLocked` · `concept_XinsenOpticalMSAPOrderStatus` · `concept_XinsenABFSubstrateOrderMix` · `metric_XinsenABFSubstrateRevenue2027E` · `metric_XinsenBTSubstrateRevenue2027E` · `concept_ABFSubstrateDomesticFilmSubstitution` · `company_HongchangElectronics` · `product_XinsenGlassCoreSubstrate` · `concept_BTSubstrateMarginUpsideScenario` · `concept_ABFSubstrateMarginUpsideScenario` · `device_Delphilaser_TGV`。
+  **实测**：这 11 个 id 在 canonical 里**一个都不存在**（静默丢失 11/11）；被吞节点 `created_at` 全为 `2026-07-06`、来源 `2026.07.05-帕米尔研究：封装载板…` ⇒ **07-06 那批入库时 LLM 的 JSON 就写坏了**，此后 **07-13 / 07-18 / 07-21 / 07-28 四批 QA 全部漏过**。全图仅此一例。
+  **⇒ 连带解开一个悬案**：`device_Delphilaser_TGV`（帝尔激光）正是 `渊图/architecture/系统概览.md` 里「前缀治理 · **未决：待帝尔激光命名治理批**」指向的节点——**它根本不在图里**，那条待办一个月来指向一个不存在的实体。且它 `type=company` 而 id 前缀是 `device_`，还原时要一并归正命名。
+  **为何 QA 漏过（根因）**：8 项校验查的是悬挂/自环/重复边/非法点边 type/大小写重复，**没有一项查 JSON 结构合法性**。⇒ **建议给 QA 加第 9 项**：`aliases` / `data_sources` 等数组字段的元素类型断言（元素必须是 str / 规定形状的 dict，出现"整节点"即报）。
+  **还原前必须先判的**：这 11 个还原后**是否有边**。canonical 悬挂=0 说明指向它们的边也一并丢了或从未产生 ⇒ 大概率是 **11 个孤儿节点（度 0）**，补边是内容工作、非机械还原，需逐个对 `raw/Obsidian Industrial/2026.07.05-…封装载板…md` 原文。
+  **为何走甲案**：数据完整地躺在 aliases 里、不会再丢；而把「历史欠账 +11」混进「9 篇入库 +107」的同一次 promote，会让入库账目永远说不清。
+  依据：`logs/checkpoints/2026-08-01_渊图9篇入库_修补清单.md` §一-④
+
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
   ② **`docs/兑现变更_*.md` 让脚本接管命名**：现有 9 件 untracked 里文件名分裂成两种（6 件 `2026-07-22` 带横杠 / 3 件 `20260723` 不带），标题分裂成三种（「兑现变更」/「兑现状态变更」/「兑现状态变更留痕」），而已 tracked 的 19 件**全部**不带横杠。Doctor 定**原样入仓**（不改名——已发生的历史就是这样，改名会让它看起来比实际整齐）。**根治点是成因不是存量**：全仓 grep `兑现变更_` 在 `.py`/`.sh` 里**零命中** ⇒ 这批是会话里手写落盘、无脚本约束，命名全靠当次记得（G-X103）。对照组 `docs/escalation_shadow_*` 有 `tools/escalation_shadow.py` 生成，9 件命名零漂移。⇒ 由 `closure_engine` 侧或新起小脚本统一产出文件名与标题。
