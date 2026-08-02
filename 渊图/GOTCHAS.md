@@ -39,6 +39,22 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [ERR-20260801-001] LLM 写坏 JSON：11 个完整节点被吞进另一节点的 `aliases` 数组，静默丢失 26 天，连过四批 QA
+
+- **状态**：🟥 未修复（数据完整可还原，Doctor 定「另开一场」，已挂 `brain/TODO.md` 段首）
+- **优先级**：高——**不是数据错误，是数据不存在**；且暴露的 QA 盲区会让同类事故继续无人发现
+- **触发场景**：2026-08-01 帕米尔 9 篇入库做沙箱 QA 时，「半空节点」检查揪出 `concept_XinsenBTSubstrateCustomerShare` 顶层 `description=None`，展开才发现病灶。
+- **病灶**：该节点 `aliases` 是 **15 元素数组，其中 12 个是 dict**——
+  - `[0][1][2]` 是字符串，但 `[1]` = `"兴森BT客户],\n      "`（被截断 ＋ 字面换行）、`[2]` = `"category\": \"场景"`（本该是 key 的文本）
+  - `[3]` 是**该节点自己的** `description` / `properties` / `data_sources`（故顶层 description 为空）
+  - `[4]~[14]` 是 **11 个完整节点**：`concept_XinsenS3BTExpansionCXMTSamsungLocked` · `concept_XinsenOpticalMSAPOrderStatus` · `concept_XinsenABFSubstrateOrderMix` · `metric_XinsenABFSubstrateRevenue2027E` · `metric_XinsenBTSubstrateRevenue2027E` · `concept_ABFSubstrateDomesticFilmSubstitution` · `company_HongchangElectronics` · `product_XinsenGlassCoreSubstrate` · `concept_BTSubstrateMarginUpsideScenario` · `concept_ABFSubstrateMarginUpsideScenario` · `device_Delphilaser_TGV`
+- **实测**：① 这 11 个 id 在 canonical 里**一个都不存在**（丢失 11/11）；② 被吞节点 `created_at` 全为 `2026-07-06`、来源 `2026.07.05-帕米尔研究：封装载板…` ⇒ **07-06 那批入库时就坏了**；③ **全图仅此一例**；④ **07-13 / 07-18 / 07-21 / 07-28 四批 QA 全部漏过**。
+- **为何四批 QA 全漏**：8 项校验查的是**悬挂边 / 自环 / 重复边 / 非法边 type / 非法点 type / 大小写重复 / 半空 / 超集断言**——**没有一项查 JSON 结构合法性**。畸形节点在结构校验眼里是「一个 type/name 齐全、只是 description 为空」的正常节点。
+- **连带**：`device_Delphilaser_TGV` 正是 `brain/渊图/architecture/系统概览.md`「前缀治理 · 未决：待帝尔激光命名治理批」指向的节点——**它根本不在图里**，那条待办一个月来指向一个不存在的实体（且 `type=company` 而前缀 `device_`，还原时一并归正）。
+- **解决方案（未执行）**：把 `aliases[3]` 的字段提回顶层；`aliases[4]~[14]` 还原为独立节点；`aliases` 只留两个真别名。**还原前必须先判**：canonical 悬挂=0 暗示指向这 11 个的边也一并丢失 ⇒ 大概率是 **11 个孤儿节点（度 0）**，补边需逐个对原文，是内容工作非机械还原。
+- **预防措施（该做但未做）**：**给沙箱 QA 加第 9 项——数组字段元素类型断言**。`aliases` 的元素必须是 `str`；`data_sources` 的元素必须是规定形状的 dict。出现「整节点」立即报。一行 assert 的事，却是这 26 天里唯一能发现它的方式。
+- **同族**：`ERR-20260721-002`（LLM 造孤儿边/非法 type 复发）——同为「LLM 产出畸形、靠 QA 兜」，但那些 8 项查得到，本条查不到。与 [[通用教训]] `G-X118`（静默成功）同构：**改动写进了一个真实存在、看起来正常、却没人读的位置**。
+
 ## [NOTE-20260728-001] 贴出的入库命令＝已启动的开关——贴命令后不得再穿插会改 canonical 的手工 patch 流程
 **类型**: 📝 流程教训（CC 协作·并行基线）**优先级**: 🟡 中
 
