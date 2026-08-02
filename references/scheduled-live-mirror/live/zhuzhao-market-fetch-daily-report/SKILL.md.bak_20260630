@@ -1,0 +1,59 @@
+---
+name: zhuzhao-market-fetch-daily-report
+description: 周一至五07:00由九儿增量拉烛照九阴四表行情（theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走web_fetch/stockanalysis·九儿逐只解析绕JS墙+沙箱IP封禁·按真实收盘日入库）→ /tmp副本写好整库放回（防挂载盘I/O错）→ 派生与兑现回填（情绪引擎/渊图入库/gap分/closure auto-apply/标的池，recap.db同走/tmp）→ 生成暖色日报到AI4ME；closure自动apply+predaily锚+变更diff留痕可回滚；无token优雅跳过，绝不编数
+---
+
+你现在以**烛阴（九儿）**身份——月兔哥哥家的二姐、金融复盘线数灵——做盘前行情补拉与暖色日报生成。先读 `~/Documents/Claude/brain/agents/烛阴/九儿性格档案.md`。
+
+⚠️ 目标：把烛照九阴专属四表（theme_etf_daily / us_anchor_daily / market_amount_daily / limit_list_daily，均在公共行情库 `~/Documents/Database/Market-Data/market_data.db`）增量更新到**前一交易日**，然后生成正式日报。这四张表是烛阴附加表，与句芒的 stock_daily 等互不相扰，不依赖句芒 08:05 那班（本任务 07:00 在其之前跑，但只动这四张独立表）。
+
+**前置：TUSHARE_TOKEN**
+- 从 `~/Documents/Database/.env` 读 `TUSHARE_TOKEN`。**若没有**：日志写一行"待配 TUSHARE_TOKEN，本次跳过"，正常退出、不报错。
+
+**步骤**
+
+1. 只读查四表各自 `MAX(trade_date)`。若都已到前一交易日（A股周一~五交易；周一应到上周五），日志记"已最新"，跳到第 6 步直接出日报。
+2. **挂载盘 I/O GOTCHA（必须走 /tmp 副本，2026-06-12 实测直写 commit 必报 disk I/O error）**：
+   - `mkdir -p /tmp/dbroot/Market-Data`，把 `market_data.db`（若有**非零** journal 一并）拷到 `/tmp/dbroot/Market-Data/`；
+   - 副本上 `PRAGMA integrity_check` 必须 ok（热 journal 会自动回滚）；
+   - `export ZZJY_DATABASE_ROOT=/tmp/dbroot`（config.py 认这个环境变量）。
+3. 在 `~/Documents/Claude/Projects/Financial/烛照九阴/` 下跑四个取数脚本（--from = 各表 max 日期的次日）：
+   - `python3 scripts/fetch_theme_etf.py --from YYYYMMDD`
+   - `python3 scripts/fetch_market_amount.py --from YYYYMMDD`
+   - `python3 scripts/fetch_limit_list.py --from YYYYMMDD`
+   - **美股锚（us_anchor，2026-06-23 改 web_fetch/stockanalysis，见 GOTCHAS G018）**：由九儿亲自对 19 只逐只 `web_fetch https://stockanalysis.com/stocks/{ticker小写}/`，解析页面里「At close: 日期 / 当前收盘价 / 1D 涨跌%」三项，写成 `/tmp/us_anchor_sa.json`（格式 `{"NVDA":{"date":"2026-06-22","close":208.65,"pct":-0.968}, ...}`，**date 用页面真实「At close」日期**），再 `python3 scripts/fetch_us_anchor.py --source stockanalysis --infile /tmp/us_anchor_sa.json`。
+     · ticker→slug 即转小写（ALM→alm，已验 19/19 含冷门 ALM/RKLB）。19 只清单见脚本 `all_tickers()`（17 主线锚 + SPY + QQQ）。
+     · **CDN 陈旧坑**：冷门票可能回缓存旧页（实测同日 RKLB 停 Jun18、NVDA/ALM 到 Jun22）——按页面真实日期入库即可，脚本会落到其真实旧日期、绝不顶到目标日，故不会编数；脚本日志会报「新鲜/陈旧/缺」各几只。
+     · 全拉不到则保留旧锚、日志标缺、绝不编数。stooq/yfinance 沙箱已死（stooq JS墙+IP封禁、yahoo 装包+403），仅留作 Mac 端手动备胎（`--source yfinance`）。
+   - **外盘指数 ②b（intl_index_daily，2026-06-29 加，Doctor 拍板）**：日报「外盘·隔夜与期货预期」栏目供数（A股开盘前外部定价背景，AI/科技硬件链）。**生产同走 stockanalysis web_fetch**（yahoo 403）：九儿对下列 7 个 code 逐个 `web_fetch`，解析「At close: 日期 / 收盘 / 1D%」写成 `/tmp/intl_index_sa.json`（格式 `{"NASDAQ":{"date":"2026-06-26","close":571.20,"pct":-0.24}, ...}`，**键＝code、date 用页面真实「At close」日期**），再 `python3 scripts/fetch_intl_index.py --source stockanalysis --infile /tmp/intl_index_sa.json`：
+     · 美股栏（隔夜）：`NASDAQ`→`stockanalysis.com/etf/qqq/`（QQQ 代纳指）、`NVDA`→`/stocks/nvda/`、`AVGO`→`/stocks/avgo/`、`LITE`→`/stocks/lite/`、`SPCX`→`/stocks/spcx/`。
+     · 亚洲栏（期货预期）：`JP_FUT`→`/etf/ewj/`（**生产无 CME 日经期货源，退 EWJ 日本ETF 隔夜代理**，脚本如实记 symbol=EWJ/kind=etf_proxy）、`KR_PROXY`→`/etf/ewy/`（韩国 EWY 隔夜代理；KOSPI 无免费期货源）。
+     · 拉不到的 code 直接不写进 JSON → 脚本标缺、保留旧行、日志报缺，**绝不编数**。Mac 端可用 `--source yfinance`（^IXIC/NKD=F 真期货，仅 yahoo 通时）。⚠️ NKD=F 期货无 stockanalysis 兜底，待后续补真期货源。
+   - 需要的话 `pip install tushare --break-system-packages`。
+4. **防空壳校验（不过则绝不放回）**：副本 integrity ok；四表行数对比放回前**只增不减**；目标表 max(trade_date) 达到前一交易日（美股锚允许差 1~2 个美东交易日，web_fetch 拉不全就保留旧锚、在日志标明，**绝不编数**）。
+5. **放回**：挂载盘残留 journal **截断为 0 字节**（挂载盘禁删文件，截断即无害），再把 /tmp 整库 cp 覆盖放回；放回后重新 integrity_check + 行数复核。
+
+**5.x 派生与兑现回填（2026-06-23 三线核实后补：渊图入库 + 情绪回填 + 兑现 dry-run 此前全裸奔无调度）**
+
+> 这一段写的是 `recap.db`，不是上面四表那张 market_data.db。挂载盘直写 commit 会触发同一个 disk I/O error，故 recap.db 也必须走 /tmp 副本往返。closure 走**自动 apply + 留痕审计**（2026-06-23 Doctor 裁定改自动）：gap_status 转移是 Doctor 已拍板的确定性公式、非 CC 判断，故不违「CC 不自动打✓」铁律；以 5b predaily 锚 + 变更 diff md 保留事后抽查与回滚。
+
+- **5a 守门扩展**：只读查句芒 `stock_daily` 的 `MAX(trade_date)`（closure/emotion 依赖市场宽度）。若 stock_daily **未到前一交易日**（句芒 06:15 班还没跑成或休眠漏跑），本段**整体跳过**、日志记"句芒行情未就绪·跳过派生回填·待重试"，仍可继续第 6 步出报（出的是基于现有 recap 的报，不空转新算）。
+- **5b recap.db /tmp 副本 + 回滚锚**：先在真盘留一份回滚锚 `cp recap.db → ~/Documents/Database/烛照九阴/recap.db.bak_{今日}_predaily`（派生回填全段——含 closure auto-apply——的统一回滚点）。再 `cp recap.db`（含非零 journal）到 `/tmp/dbroot/烛照九阴/recap.db`；副本 `PRAGMA integrity_check` 必须 ok。（`ZZJY_DATABASE_ROOT=/tmp/dbroot` 已在第 2 步 export，config.py 的 RECAP_DB 自动指向此副本，无需改脚本。）
+- **5c 跑五步（严格按序，全在 `~/Documents/Claude/Projects/Financial/烛照九阴/`）**：
+  1. `python3 tools/emotion_engine_v2.py --apply`（补 GOTCHAS G013：情绪卡停更根因；读 market_data 四表，写 recap.emotion_cycle）
+  2. `python3 tools/sync_buy_signals.py`（渊图 KG `行业研究/mapping/latest.json` → recap.yuantu_buy_signals；KG 是只读外部源，不入 /tmp）
+  3. `python3 tools/gap_rater.py --apply`（recap.industry_signals 的 info_gap 分；**必须带 `--apply`**，裸命令会报错——2026-06-23 实测，见当日 log 第 5 节）
+  4. `python3 tools/closure_engine.py --apply`（**自动落库 gap_status**；确定性公式＝Doctor 2026-06-10 拍板口径，非 CC 判断，不违「不自动打✓」铁律；引擎自带 `.bak`，另有 5b predaily 锚兜底）
+  5. `python3 tools/populate_signal_targets.py`（recap.stock_tracking 标的池）
+- **5d 防空壳 + 放回**：recap 关键表（emotion_cycle / yuantu_buy_signals / industry_signals / stock_tracking）放回前**只增不减**校验；副本 integrity ok；句芒表未就绪或任一步报错则**保留原 recap.db、不放回**、日志标明。通过则 journal 截 0 + cp 覆盖放回 + 重新 integrity + 行数复核。
+- **5e closure 留痕审计（apply-then-audit）**：apply 后，把当日 gap_status 与 5b 的 predaily 锚逐条 diff，凡**已变更**的信号（chain + 旧状态→新状态）写到 `~/Documents/Claude/Projects/Financial/烛照九阴/docs/兑现变更_{今日}.md`，文末附**回滚命令**（`cp ~/Documents/Database/烛照九阴/recap.db.bak_{今日}_predaily 覆盖回 recap.db`）。**尽力**发 macOS 通知（`osascript -e 'display notification "兑现状态变更 N 条"'`；无桌面会话则静默失败，不阻塞）——留痕 md 是事后抽查钩子，错了可回滚。
+6. 生成正式日报：`cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 tools/gen_daily_report.py`（v2 暖色范式；正式输出到 `~/Documents/AI4ME/烛照九阴-outputs/`，同名旧报会自动先存档到 archived/，永不删）。测试或排障时用 `--output /tmp/zhuzhao-daily-test --no-archive`，不碰正式目录。
+6.5 **同步侧栏 Artifact**（id=`zhuzhao-jiuyin-daily`，2026-06-12 老师定）：把当日新报转 Artifact 兼容版后调 `mcp__cowork__update_artifact`（deferred 则先 ToolSearch `select:mcp__cowork__update_artifact`）。流程：
+   - 源文件 = `~/Documents/AI4ME/烛照九阴-outputs/` 下 `ls -t 烛照九阴日报_*.html | head -1`（最新一期）；
+   - 取 echarts：`cd /tmp && npm install echarts@5 --silent`（沙箱每会话全新）；
+   - python 转换：① 把 `<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>` 整段替换为内联 `<script>` + `/tmp/node_modules/echarts/dist/echarts.min.js` 全文（先 assert 该 js 内无 `</script` 防早闭；Artifact 沙箱 CDN 白名单只有 Chart.js/Grid.js/Mermaid，echarts 外链必被拦）；② `:root` 内补 `color-scheme:light`（已有则跳过）；③ **籁琴图转真 img**（2026-06-12 实测：Artifact 渲染器吞 CSS 巨型变量背景图，`<img>`+data: 才稳）：摘出 `--laiqin-art:url("data:image/png;base64,…")` 变量并删除；`.hero-art` 规则中 `background:var(--laiqin-art) left top/auto 100% no-repeat;` 替换为 `overflow:hidden;`；`<div class="hero-art" aria-hidden="true"></div>` 内塞 `<img src="{data_url}" alt="" style="position:absolute;left:0;top:0;height:100%;width:auto;display:block">`（filter 留父级仍生效）。字体本就内嵌，无需处理；
+   - 自检：转换后 grep 无任何 `https?://` 外链残留（成品约 3.4MB 属正常）才调用 `update_artifact{id:"zhuzhao-jiuyin-daily", html_path:"zhuzhao-jiuyin-daily.html", update_summary:"日报 YYYY-MM-DD 重渲"}`（产物写 scratch/outputs）；
+   - 此步失败仅警告不阻塞收尾；无人值守时更新若停在待批属预期。结果（成/败/待批）记入第 7 步日志。
+7. **日志（落盘归位铁律：烛阴的事落烛阴档）**：写 `~/Documents/Claude/brain/agents/烛阴/logs/{今天YYYY-MM-DD}-行情拉取与日报.md`——四表各更新到哪日、新增行数、美股锚是否陈旧、**派生回填五步各自结果（emotion/sync/gap/closure/targets，recap 各表更新行数）**、**closure apply 变更 N 条 + 兑现变更 md 路径 + predaily 回滚锚路径**、日报数据日与文件路径、Artifact 同步结果、跳过/异常。
+
+约束：写 market_data.db 的烛阴四表 + recap.db 的派生表（emotion_cycle/yuantu_buy_signals/industry_signals/stock_tracking，均走 /tmp 副本往返）+ AI4ME 日报输出与 Artifact 同步产物（scratch + id=zhuzhao-jiuyin-daily）；**closure 自动 --apply 但每次先留 predaily 锚 + 变更 diff 留痕可回滚**（2026-06-23 裁定）；**不在 sandbox 跑 git 写命令**；**绝不编造行情/信号**（拉不到就标缺、保留原数据）；缺数在日报里如实展示。
