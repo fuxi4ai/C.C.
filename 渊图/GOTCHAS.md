@@ -39,6 +39,18 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [NOTE-20260801-001] 接入 Kimi K3 作审查腿：四个坑与一条真相源（`/v1/models` ＞ 任何文档）
+
+- **状态**：🟢 已跑通（2026-08-01 · 凭证在 `Database/.env` 的 `KIMI_*`）
+- **可用配置（实测）**：`KIMI_BASE_URL=https://api.moonshot.ai/anthropic` · `KIMI_MODEL=kimi-k3` · 认证 **`auth_token=` 与 `api_key=` 两种都收**（官方文档只提 `ANTHROPIC_AUTH_TOKEN`，实测 `x-api-key` 也通）。可直接复用 `anthropic` SDK，**无需适配层**。
+- **坑 1 · 模型名带 `[1m]` 是 Claude Code 客户端语法，API 层不认**。官方 `guide/claude-code-kimi` 页给的是 `kimi-k3[1m]`（`/status` 显示的那个名），直接打 API 会 404。**API 真名是裸 `kimi-k3`**。⇒ 文档没错，是**把 CLI 场景的值用到了 API 场景**。
+- **坑 2 · `404 ≠ 认证失败`**。Moonshot 用**同一条消息**表示两种原因：`Not found the model X or Permission denied`。看到 404 别急着怀疑 key——它恰恰说明**认证已过**（key 错会 401）。
+- **坑 3 · 两个端点模型名不同**。OpenAI 端点 `/v1` 用 `kimi-k3`；Claude Code 文档的 Anthropic 端点写 `kimi-k3[1m]`。照 Quickstart 抄名字去打 `/anthropic` 会踩坑。
+- **坑 4 · thinking 关不掉**。`/v1/models` 返回 `supports_thinking_type: "only"`、`reasoning_efforts.default_effort: "max"`。实测 content blocks = `['thinking','text']`，**一个四字回答消耗 output 130 token、其中 thinking 112（约 86%）**。⇒ 按 `$15/M` 输出计价时**必须把 thinking 算进去**；`valid_efforts` 含 `low`，降本可从这里入手（怎么在 anthropic 端点传该参数**未测**）。
+- **✅ 真相源**：`curl https://api.moonshot.ai/v1/models -H "Authorization: Bearer $KEY"` 返回**该账号此刻**的模型列表 ＋ `context_length` ＋ `think_efforts` ＋ `supports_thinking_type`。**比任何文档权威**——本次四个坑里有三个是靠它一次定案的。⇒ **接任何新模型的第一步都该是列模型，而不是读文档抄配置。**
+- **顺带实测**：缓存命中 `cache_read_input_tokens` 生效（$0.30/M vs $3/M ＝ 1/10 价）⇒ 审查腿应把 system prompt 与 canonical 子图固定在前缀复用。
+- **同族**：[[通用教训]] `G-X111`（二手名单/数字）——本条是它在「官方文档」上的变体：**文档是一手的，但「文档写的场景」和「我要用的场景」是两回事**。
+
 ## [ERR-20260801-001] LLM 写坏 JSON：11 个完整节点被吞进另一节点的 `aliases` 数组，静默丢失 26 天，连过四批 QA
 
 - **状态**：🟥 未修复（数据完整可还原，Doctor 定「另开一场」，已挂 `brain/TODO.md` 段首）
