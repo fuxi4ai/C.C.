@@ -24,6 +24,8 @@ type: log
 
 - [ ] **定时任务 · `handshake-consumer-daily` 幽灵查证（2026-08-02 挂 · 镜像 rsync 时逮到）**：live 磁盘树 `Claude's workspace/Scheduled/` 有其目录，但当日 `list_scheduled_tasks` 返回的 19 班里**没有它**——删班留目录，还是调度器有一层未返回？与 08-02 日志「第三个 launchd job 不在任何清单」同族、方向相反（盘上有/清单无）。查法：侧栏找该班；或下次周巡检看 snapshot 是否报差。**未核，勿据本条下结论。**
 
+- [ ] **workspace 7-05 旧副本处置待裁（2026-08-02 挂 · 当日 F 方向未批，先定性不动）**：`Claude's workspace/` 下 Brain / BRAIN_VAULT.md / Env / Infrastructure / Projects **mtime 全部定格 2026-07-05 10:46 同一分钟**＝一次性拷贝事件；live 方向按资产劈开、恰好相反（Brain/Projects live 在 `~/Documents/Claude`，Scheduled live 在 workspace）——07-31「Scheduled 双树」是这个几何的一半。风险：旧副本不再被写，但可能被未来会话**静默误读**。候选处置：照 Scheduled 死树先例标死（README 或 _DEPRECATED_ 改名）；**动手前先跑 `find "/Users/lunarabbit/Claude's workspace/Brain" -newermt 2026-07-06 | head` 验零写入**。详 `logs/2026-08-02-dev模式打通四件套.md`。
+
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
   ② **`docs/兑现变更_*.md` 让脚本接管命名**：现有 9 件 untracked 里文件名分裂成两种（6 件 `2026-07-22` 带横杠 / 3 件 `20260723` 不带），标题分裂成三种（「兑现变更」/「兑现状态变更」/「兑现状态变更留痕」），而已 tracked 的 19 件**全部**不带横杠。Doctor 定**原样入仓**（不改名——已发生的历史就是这样，改名会让它看起来比实际整齐）。**根治点是成因不是存量**：全仓 grep `兑现变更_` 在 `.py`/`.sh` 里**零命中** ⇒ 这批是会话里手写落盘、无脚本约束，命名全靠当次记得（G-X103）。对照组 `docs/escalation_shadow_*` 有 `tools/escalation_shadow.py` 生成，9 件命名零漂移。⇒ 由 `closure_engine` 侧或新起小脚本统一产出文件名与标题。
