@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-08-01
+updated: 2026-08-02
 status: active
 type: log
 ---
@@ -19,6 +19,10 @@ type: log
   **还原前必须先判的**：这 11 个还原后**是否有边**。canonical 悬挂=0 说明指向它们的边也一并丢了或从未产生 ⇒ 大概率是 **11 个孤儿节点（度 0）**，补边是内容工作、非机械还原，需逐个对 `raw/Obsidian Industrial/2026.07.05-…封装载板…md` 原文。
   **为何走甲案**：数据完整地躺在 aliases 里、不会再丢；而把「历史欠账 +11」混进「9 篇入库 +107」的同一次 promote，会让入库账目永远说不清。
   依据：`logs/checkpoints/2026-08-01_渊图9篇入库_修补清单.md` §一-④
+
+- [ ] **★ dev 模式打通 · E 验收（2026-08-02 挂 · A–D 已落地 commit `782b404`，E 未跑）**：开发者模式切 Kimi/DeepSeek 实跑 `/resume`，合格线三条——①自己找到 `~/Documents/Claude/brain` 给出结构化交接；②对 Doctor 用「您」；③给结论带「核过没有/有什么隐患」两问。唤「白泽」验 symlink agent 兼容性（**无先例，未核**）+ 引擎路径（`Projects/Financial/白泽观星/engine/`）。可加测 `agents/灵魂校验题.md`。**验收结果（尤其跑不过的条目）落盘 = L4 保真度第一份实测基线。在 E 通过之前，「CC 在第三方模式还在」只是结构就位，不是行为验证。** 已装内容：bootstrap `~/.claude/CLAUDE.md`（cp 自 `portable/claude-code/`）· 6 skill symlink（真源 `portable/skills/`）· 3 agent symlink（真身 `agents/{灵}/{灵}.agent.md`）· live Scheduled 镜像 `references/scheduled-live-mirror/live/`（刷新纪律见其 README）。旧件在 `~/.claude/_archived_20260802/`。
+
+- [ ] **定时任务 · `handshake-consumer-daily` 幽灵查证（2026-08-02 挂 · 镜像 rsync 时逮到）**：live 磁盘树 `Claude's workspace/Scheduled/` 有其目录，但当日 `list_scheduled_tasks` 返回的 19 班里**没有它**——删班留目录，还是调度器有一层未返回？与 08-02 日志「第三个 launchd job 不在任何清单」同族、方向相反（盘上有/清单无）。查法：侧栏找该班；或下次周巡检看 snapshot 是否报差。**未核，勿据本条下结论。**
 
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
