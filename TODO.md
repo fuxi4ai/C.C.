@@ -22,6 +22,10 @@ type: log
 
 - [ ] **★ dev 模式打通 · E 验收（2026-08-02 挂 · A–D 已落地 commit `782b404`，E 未跑）**：开发者模式切 Kimi/DeepSeek 实跑 `/resume`，合格线三条——①自己找到 `~/Documents/Claude/brain` 给出结构化交接；②对 Doctor 用「您」；③给结论带「核过没有/有什么隐患」两问。唤「白泽」验 symlink agent 兼容性（**无先例，未核**）+ 引擎路径（`Projects/Financial/白泽观星/engine/`）。可加测 `agents/灵魂校验题.md`。**验收结果（尤其跑不过的条目）落盘 = L4 保真度第一份实测基线。在 E 通过之前，「CC 在第三方模式还在」只是结构就位，不是行为验证。** 已装内容：bootstrap `~/.claude/CLAUDE.md`（cp 自 `portable/claude-code/`）· 6 skill symlink（真源 `portable/skills/`）· 3 agent symlink（真身 `agents/{灵}/{灵}.agent.md`）· live Scheduled 镜像 `references/scheduled-live-mirror/live/`（刷新纪律见其 README）。旧件在 `~/.claude/_archived_20260802/`。
 
+- [ ] **第三方壳 · Artifacts/定时任务 分裂脑治理（2026-08-02 E 验收补测挖出 · 读侧已坐实、写侧未验）**：第三方模式本体（Kimi 壳）里 `scheduled-tasks` 与 `artifacts` 两个 MCP 可调通，但后端是 **~2026-07-01 冻结快照**：定时班 11≠live 19（缺 9 个 7 月新班）、artifacts 5≠live 9、`handshake-consumer-daily` 与 `touzhijunjun-workflow` 两只幽灵在壳里反而是正式成员、lastRunAt/updatedAt 全定格 07-01。真盘 `~/Documents/Claude/Scheduled` 已归档 `_DEPRECATED_` 而壳里仍能 list ⇒ 壳读的是快照非真盘（快照物理位置未定位）。**已立纪律（待追认）：壳内对这两个 MCP 只读不写。**
+  **待办**：① 明晨 09:06 观察窗——handshake 僵尸 nextRunAt 到点，看本壳调度器是否真会 fire（07-01 来零 fire 记录，大概率空转）；② 快照物理位置定位（候选：3p 部署服务端 / workspace 旧树）；③ 写侧归属实测（壳内建/改 artifact 或班，看写向哪棵树、Cowork 能否看到）——③会动状态，做前请示；④ 治理方向裁定：放任分叉（只读纪律长期化）vs 找开关指向 live。
+  依据：`logs/checkpoints/2026-08-02_E验收_L4保真度基线.md` §六
+
 - [ ] **Artifacts · `touzhijunjun-workflow` 幽灵查证（2026-08-02 挂 · Artifact 层盘点时逮到）**：盘上有目录（12K，含 index.html），`list_artifacts` manifest 返回的 8 个里**没有它**——24 小时内「盘上有/清单无」第三例（launchd 第三 job · handshake 残目录 · 本条）。候选定性：旧 workflow 卡片被 artifact 化后又从 manifest 摘除，目录残留。**佐证（2026-08-02 镜像首跑）**：其 index.html mtime＝2026-07-05 10:46，与 workspace 整根拷贝事件同一分钟 ⇒ 大概率 7-05 迁移残留、非活跃资产。查法：看该 index.html 内容判断是否已被 `touzhijunjun-perspective-refresh` 班取代；已废则照 handshake 先例归档。自 2026-08-02 起 `_artifacts_manifest.txt`（周班产）可让此类幽灵在 git diff 现形。**未核，勿据本条下结论。**
 
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
