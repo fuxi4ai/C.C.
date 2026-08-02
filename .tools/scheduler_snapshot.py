@@ -69,6 +69,7 @@ OPS_DIRS = [                                                   # plist 源文件
 ]
 OUT_JSON = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.json"
 OUT_MD = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.md"
+MIRROR_DIR = HOME / "Documents/Claude/brain/references/scheduled-live-mirror/live"  # 第三输出 · live 镜像（2026-08-02 Doctor 批）
 
 
 def sha(p: Path) -> str:
@@ -247,6 +248,28 @@ def scan_cron():
 
 # ───────────────────── 异常检测 ─────────────────────
 
+def mirror_live_tree():
+    """第三输出 · live 树镜像 → brain（2026-08-02 Doctor 批 a 案）。
+    章程不变：只读 live、只写 brain 内自有输出目录，不修、不 commit、不碰调度器。
+    --delete 语义（镜像里删 live 已不存在的）不违反「不删文件」——镜像在 git 里，删除可见可回溯。"""
+    import shutil
+    if not LIVE_TREE.exists():
+        return "live 树不可读，镜像跳过"
+    MIRROR_DIR.mkdir(parents=True, exist_ok=True)
+    live_files = {p.relative_to(LIVE_TREE) for p in LIVE_TREE.rglob("*") if p.is_file()}
+    removed = 0
+    for p in [x for x in MIRROR_DIR.rglob("*") if x.is_file()]:
+        if p.relative_to(MIRROR_DIR) not in live_files:
+            p.unlink(); removed += 1
+    copied = 0
+    for rel in sorted(live_files):
+        src, dst = LIVE_TREE / rel, MIRROR_DIR / rel
+        if (not dst.exists()) or sha(src) != sha(dst):
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst); copied += 1
+    return f"镜像已同步：{len(live_files)} 文件（更新 {copied} · 移除 {removed}）"
+
+
 def detect_anomalies(snap, prev):
     """只报**结构性破损**，不报「变化」（变化交给 git diff，不重复）。
 
@@ -354,6 +377,8 @@ def main():
     OUT_JSON.write_text(json.dumps(snap, ensure_ascii=False, indent=1, sort_keys=False),
                         encoding="utf-8")
 
+    mirror_note = mirror_live_tree()
+
     # ── 人读版 ──
     L = []
     L.append(f"# 定时任务 · 四执行面现状快照\n")
@@ -361,6 +386,7 @@ def main():
              f"{snap['_meta']['generated_at']}，**只读**。\n")
     L.append("> **本文件纳入 git；跑完 `git diff` 即知自上次快照以来什么变了** —— "
              "无论改动来自 Doctor、别的会话还是 CC 自己。\n")
+    L.append(f"> 镜像步：{mirror_note}\n")
 
     L.append(f"\n## 面① Cowork live 树（{len(cowork)} 个）\n")
     L.append("| taskId | SKILL mtime | 行数 | sha | 描述 |")
