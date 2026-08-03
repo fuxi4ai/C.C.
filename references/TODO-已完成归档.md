@@ -2,7 +2,7 @@
 title: TODO 已完成归档
 tags: [todo, archive]
 created: 2026-07-30
-updated: 2026-08-02
+updated: 2026-08-03
 status: active
 type: log
 ---
@@ -13,6 +13,35 @@ type: log
 > 拆分动机：`TODO.md` 39KB 里 70% 是已完成条目，`brain-resume` 每场整篇读入，token 花在已经做完的事上。
 
 ## 已完成
+
+- [x] **第三方壳 · Artifacts/定时任务 分裂脑治理（2026-08-02 E 验收补测挖出 · 定时班侧已清、artifacts 侧残留 · 待您勾）**：第三方模式本体（Kimi 壳）里 `scheduled-tasks` 与 `artifacts` 两个 MCP 后端是 **07-01 被遗弃的原 store**（本壳注册表 + 旧数据根 `~/Documents/Claude/{Scheduled,Artifacts}`；官方活树在 `~/Claude's workspace/`）。**治理已执行（C 案 · Doctor 批）**：11 个僵尸班全部删除、复 list 验证本壳定时班 = 0，明晨 09:06 观察窗作废；artifacts 侧 5 个旧 manifest 条目 Doctor 手动删除、复 list 验证 = 0。**分裂脑清零，本壳两子系统均为「干净为空、保持为空」**；凡建/改一律回 Cowork 侧。
+  **剩余**：无（① 观察窗已作废 · ② 载体已定位 · ③ 写侧归属已推定 · ④ C 案已执行）。勾掉后按 v3.1 迁归档。
+  依据：`logs/checkpoints/2026-08-02_E验收_L4保真度基线.md` §六（含载体定位与治理执行）
+  **2026-08-03 /todo 首轮佐证**：本壳 `list_scheduled_tasks` = 19 班、`list_artifacts` = 6 条，全为 Gateway live store 内容，与迁移后架构一致。（**Doctor 2026-08-03 /todo 首轮勾定，CC 代记留痕并迁档**）
+
+- [x] **dyd 侧 dy_downloader.db 旧副本核实**（2026-07-21 挂 · 低优先 · Doctor 定「留原地挂 TODO」· **2026-07-23 核实：不移**）
+  `Claude/Projects/DVA/dyd/dy_downloader.db`（110MB，07-13）比 ops 活跃本体（`DVA-ops/runtime/`，07-18）旧 5 天；核 dyd 本地开发流是否还读它——不需要则移隔离区，避免开发误用旧库。
+  **2026-07-23 核实结论**：① dyd fork 自己的开发代码（`config/default_config.py`/`cli/main.py`/`asr_clean.py`/`storage/database.py`/`refresh-cookie.py`）**确引用本地 dy_downloader.db**——非孤儿，dyd 本地开发流在读它 → **按可逆优先，不移**。
+  **2026-07-24 悬案解决**：「ops 活跃本体」定位到 **`Database/Douyin/DVA-ops/runtime/dy_downloader.db`**（07-23 08:43·活跃·含 offsite 列，非 Projects 下故前次没找到）。dyd 副本（07-13·无 offsite 列）确是**旧开发库**。**待 Doctor 拍板**：dyd 本地开发流是否改指向 `DVA-ops/runtime` 活跃库（架构选型）；不改则 dyd 旧库留原地（已定不移）。
+  **✅ 结案（2026-07-31 实核 · 上面 07-24 那段的三条事实现已全部失效，本条可销账，待您勾）**——
+  ① **对照目标已不存在**：`Database/Douyin/DVA-ops/` 现只剩 `failures/state/summaries/tmp`，**无 `runtime/` 子目录**；那个库 07-25 被整体快照进 `DVA-ops.pre-refresh-20260725T054523Z/runtime/`（07-23 08:43·1559 行/39 作者/offsite=1 共 1556）。
+  ② **dyd 库不是旧开发库，是活的**：mtime **2026-07-31 03:27**·113MB·**offsite 三列齐全**（07-24 记的「07-13 / 110MB / 无 offsite 列」三条全不成立）。1396 行 / 37 作者。
+  ③ **03:27 那次写入查实＝人为单链下载**：`download_history` id=179 · `https://v.douyin.com/kec3SLI0RRQ/`（短链单条）· `download_time=1785493672`＝07-31 03:27:52 PDT · total=1/success=1 · config 里 `path=…/Database/Douyin-2nd/Downloaded/` `thread=3` `headless=false` `link=[单条]`。**18 个 live 调度里没有任何 DVA/dyd 下载班**，03:27 也无任何班 ⇒ 非残留调度。即 TODO「DVA·fuxi 单视频入口」条里写的那条 **Mac 保底线**（`dva-single.sh --force-local`·产物落 Douyin-2nd 第二线根）。按日聚合佐证：07-31 +1 / 07-29 +4 / 07-13 +1 / 07-05 +5（全个位数＝单链手动），而 6 月是 18–29 条/日（批量线）——**此库自 07-02 起只吃单链**。
+  ④ **`offsite=1` 计数为 0 不是 bug**：单链产物留在 Mac 本地 `Douyin-2nd`，从未外移 fuxi，offsite 本就该恒 0（另两个库 1434/1556 是批量线外移后的结果）。
+  **⇒ 架构结论：不改。** dyd 库是「Mac 单链保底线」的当前真相源，**不该指向任何 Mac 归档库**；原问题的两个候选里没有一个是「该切过去的活跃批量库」——批量线真相源在 fuxi 上（07-24 完全 fuxi 化之后）。三个 Mac 库行数/作者数互不包含（1396/37 · 1459/34 · 1559/39），是**三条各自演化的线**，不是同一谱系的新旧副本。
+  **2026-08-03 /todo 首轮复核**：结案四条事实全部成立（`aweme` 1396 行 · offsite 三列齐 · mtime 07-31 03:27 · `DVA-ops/` 无 runtime/）。（**Doctor 2026-08-03 /todo 首轮勾定，CC 代记留痕并迁档**）
+
+- [x] **烛照九阴 · 复核「US10Y 0.09pp 归因」→ ✅ 当日完成，质疑不成立、原归因成立（2026-07-30 挂于日志 · 2026-07-31 补挂 TODO 并当日结案，可销账待您勾）**
+  **⚠ 本条补挂时自身就带着两个错**（CC 照抄 07-30 日志的遗留段，没重取核对，与当日已连撞四次的是同一个病）：
+  ① **编号错**——该归因**不在 G030**（G030 是 `ticker_resolver` 种子源失联静默降级，与 US10Y 毫无关系），在 **G031「预防措施 ③」**：「`US10Y` 6 月起若干 0.09pp 级差异属 2dp 收盘价四舍五入，非本坑」。提出质疑的是 **G033 的「衍生待办」段**（`Projects/Financial/烛照九阴/GOTCHAS.md` L690），错号从那里起、经 07-30 日志传到本条。
+  ② **结论也反了**——原以为「2dp 误差上限 0.005 解释不了 0.09」，实测**恰恰解释得了**。
+  **实测（`market_data.db::intl_index_daily` code=US10Y · 20260601 起 42 个交易日 · 只读）**：逐日以表内 `close` 重算 `pct_chg` 与存值对照 ⇒ **差 >0.02pp 的 31 天，超出 2dp 舍入传播上限的 0 天**；最大差 **0.2239pp @ 20260702**，当日上限 0.2242pp，压线在内。
+  **质疑错在量纲**：拿 **close 的绝对舍入误差 ±0.005** 比 **`pct_chg` 的差 0.09pp`**。`pct=(c/prev−1)×100`，舍入误差经两条腿各放大 `100/prev`，yield≈4.6 时约 **43 倍**，上限 `100×(0.005/prev + c×0.005/prev²) ≈ ±0.217pp` ⇒ 0.09pp 在噪声内。**⇒ 四问（日期/时点/语义/源）之外还得加一问：量纲与传导。**
+  **已落盘**：`Projects/Financial/烛照九阴/GOTCHAS.md` L690 的衍生待办段已改为「已复核结案」（原文划线保留、不删），并写明 **G031 正文一字不改**、US10Y 的 0.09pp 与 G033 读数语义**无关**、勿再混为一谈。
+  **2026-08-03 /todo 首轮复核**：源头 GOTCHAS L690 状态行 =「✅ 已复核结案（2026-07-31）」，与条内一致。（**Doctor 2026-08-03 /todo 首轮勾定，CC 代记留痕并迁档**）
+
+- [x] **brain · 扫 TODO 里其余的二手名单（2026-07-31 挂）**：07-31 只订正了「系统概览缺口」这一条名单，**同类风险未扫**。**当日又连撞三条同病**——`P-11「15:30 ET 待坐实」`（其实当日已坐实）· `dyd 库「07-13 旧副本·无 offsite 列」`（实为 07-31 仍在写的活跃单链库，offsite 三列齐全，且对照目标 `DVA-ops/runtime` 已不存在）· `import-transcripts 治本①`（2026-07-24 就做完了，见 `dva.js` L1517-1524 与当日专场日志）。⇒ **TODO 里凡是「引用某个数字/名单/路径」的条目，引用前都要重取一次**；本条要做的是**逐条过一遍待办、把已失效的前提标出来**。
+  **✅ 2026-08-03 由 /todo 首轮执行完毕**：30 条逐条现核，逮到 3 处名单/计数漂移（系统概览注册数 15→16 · `.bak_audit20260728` 计数 8→10 · 烛阴课件日志「记 190 实测 192」指控不实）+ 2 条大前提失效（`us-close-backfill` 已重构为只读看门狗 · 双写者已加单写者锁），均已按 Doctor 批改写进对应条目。（**Doctor 2026-08-03 /todo 首轮勾定，CC 代记留痕并迁档**）
 
 - [x] **定时任务 · `handshake-consumer-daily` 幽灵查证（2026-08-02 挂 · 镜像 rsync 时逮到）**：live 磁盘树 `Claude's workspace/Scheduled/` 有其目录，但当日 `list_scheduled_tasks` 返回的 19 班里**没有它**——删班留目录，还是调度器有一层未返回？与 08-02 日志「第三个 launchd job 不在任何清单」同族、方向相反（盘上有/清单无）。查法：侧栏找该班；或下次周巡检看 snapshot 是否报差。~~**未核，勿据本条下结论。**~~
   **✅ 2026-08-02 /consolidate 结案**：`permanent/定时任务清单.md` L10（2026-07-01 条）明载「方案 B 的 handshake-consumer-daily **已搁置、不重建**」——07-01 切回官方工作区重建 10 班时刻意搁置，目录是搁置前的残留。残目录已于当日归档进 live `_archived/`。**本条可销账，待您勾。**
