@@ -18,4 +18,4 @@ description: 渊图警报监控·常态每周核验 AI 科技股未定价危险�
 5. 仅当某条 status 实际发生变化时，才用 Edit 更新 watchlist 里该条的 status 与 last_checked（写今天日期 YYYY-MM-DD）；无变化则不动文件（避免 git churn）。绝不触碰 canonical 图谱（mapping/）或价格层（prices/）。若改了文件，末尾附一句：请您到终端 `cd ~/Documents/Database/行业研究 && git add watch/ && git commit -m "alarm: 状态更新"` 落盘。
 6. 硬约束：不下载、不跑 ASR、不在沙箱跑任何 git 写命令（git 提交一律交给 Doctor 终端）。
 
-背景：这些时点是 2026-07-22 Google Q2 财报（capex 上修 $195–205B、FCF 首次转负）后登记的高时效判断，市场尚未充分定价、等验证。本层与 canonical 隔离，只读写 watch/。2026-08-03 追加 r6-yencarry（日元 carry 平仓螺旋·AI 股流动性尾险，PEC 日元专项产出）——宏观金融类信号按 step 2 末段示例核查，dated 高危窗（BOJ 9/17-18、10/29-30、12/17-18、FOMC 9/15-16、双央行周、Obon 薄窗、MOF 月报+GPIF 季报）内任一信号异动即升一级。
+背景：这些时点是 2026-07-22 Google Q2 财报（capex 上修 $195–205B、FCF 首次转负）后登记的高时效判断，市场尚未充分定价、等验证。本层与 canonical 隔离，只读写 watch/。2026-08-03 追加 r7-yencarry（日元 carry 平仓螺旋·AI 股流动性尾险，PEC 日元专项产出；初稿误用 r6 与 Risk Daily 快照「卖铲人」撞号，当日改 r7）——宏观金融类信号按 step 2 末段示例核查，dated 高危窗（BOJ 9/17-18、10/29-30、12/17-18、FOMC 9/15-16、双央行周、Obon 薄窗、MOF 月报+GPIF 季报）内任一信号异动即升一级。
