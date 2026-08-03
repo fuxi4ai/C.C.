@@ -11,6 +11,9 @@ type: log
 
 ## 待办
 
+- [ ] **PEC 日元落盘包（2026-08-03 挂 · 待 Doctor 批方向）**：① raw 一篇（日元能否救回全链推演 + 禁抛美债核验纠错留痕）；② `predictions-register` JP-P2 对账快照 + JP-P2a 观测追加（上半年净卖美债 $80B+ 记「机制混杂、信号部分反向」不判证伪 + 联手干预/FIMA dated 增量）；③ macro-facts §19 刷新（干预累计 ¥11.73 万亿 / 日本美债持仓 5 月 ~$1.143T / FY2026 国债费申请 ¥32.39T≈26.5%）；④ CS-08 A03 §5.3 摊牌触发条件第 3 条 dated 增量（2026-01 日债六西格玛 + 2026-07/08 许可制干预落地）。观察点：10 月日银会议（市场定价 80% 加 1.25%）· 2027 CPI 回 2% 时终端是否停 ≤1.5%（JP-P2 ① 腿真考验）。另：Doctor 若持贝森特「禁止抛售」逐字出处 → 入档补强（现分级：功能等价坐实、逐字待证）。
+  依据：`logs/2026-08-03-日元能否救回与禁抛美债核验.md`
+
 - [ ] **★ 渊图 · `concept_XinsenBTSubstrateCustomerShare` 畸形节点还原 —— 11 个节点静默丢失 26 天（2026-08-01 挖出 · Doctor 定甲案「本批不动、另开一场」）**
   **病灶**：该节点的 `aliases` 是个 15 元素数组，其中 **12 个是 dict** —— `[3]` 是它自己的 description/properties/data_sources（故顶层 `description=None`），`[4]~[14]` 是 **11 个完整节点**被整个吞了进去：`concept_XinsenS3BTExpansionCXMTSamsungLocked` · `concept_XinsenOpticalMSAPOrderStatus` · `concept_XinsenABFSubstrateOrderMix` · `metric_XinsenABFSubstrateRevenue2027E` · `metric_XinsenBTSubstrateRevenue2027E` · `concept_ABFSubstrateDomesticFilmSubstitution` · `company_HongchangElectronics` · `product_XinsenGlassCoreSubstrate` · `concept_BTSubstrateMarginUpsideScenario` · `concept_ABFSubstrateMarginUpsideScenario` · `device_Delphilaser_TGV`。
   **实测**：这 11 个 id 在 canonical 里**一个都不存在**（静默丢失 11/11）；被吞节点 `created_at` 全为 `2026-07-06`、来源 `2026.07.05-帕米尔研究：封装载板…` ⇒ **07-06 那批入库时 LLM 的 JSON 就写坏了**，此后 **07-13 / 07-18 / 07-21 / 07-28 四批 QA 全部漏过**。全图仅此一例。
@@ -35,6 +38,8 @@ type: log
   `mkdir -p ~/Gateway-workspace/Artifacts/_archived && mv ~/Gateway-workspace/Artifacts/龙鱼五力个股库看板 ~/Gateway-workspace/Artifacts/_archived/龙鱼五力个股库看板_DEPRECATED_20260803`
   勾掉后按 v3.1 迁归档。
   依据：[[数灵转移/architecture/决策记录]] D14 搬迁账目 · `logs/2026-08-03-数据根迁Gateway-workspace.md`
+
+- [ ] **fuxi 冷归档 · 三隔离区迁址与观察窗口清算（2026-08-03 挂 · Doctor 定迁 fuxi、窗口随迁）**：`_to_delete_20260721`（3.3GB·窗口至 **08-20**）· `_to_delete_20260723_tts`（9.5MB·窗口至 **08-22**）· `_隔离_20260724`（12K·随 08-22 一并裁）。三份 MANIFEST 迁址注记已落（写明期满删除对象改为 fuxi 侧副本）。**两段动作**：① 迁址（命令见 `logs/2026-08-03-数据根迁Gateway-workspace.md` 同场回报：本地打 tarball → scp 至 `fuxi-station:F:/Mac_Quarantine/.incoming/` → certutil 回验哈希 → 原子落位 → **批准后**才删本地源）；② 期满（08-20 / 08-22）确认无恢复需求后，fuxi 侧删除（Doctor 终端/授权）。勾掉后按 v3.1 迁归档。
 
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
