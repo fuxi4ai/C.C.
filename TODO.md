@@ -14,9 +14,6 @@ type: log
 - [ ] **风险日报 · AI 面板双硬编码根治（2026-08-03 挂 · Doctor 定是否做）**：`build_risk_daily.py` 的 `AI_RISKS`（7 条）与 `ai_tech_alarm_snapshot.html` 的 `RISKS`（7 条）是**两份手工维护的硬编码**——2026-08-03 注册 r7 时已手工对齐，但日后一方改分另一方不会跟（两处真源同族病）。根治 = 构建脚本改读 `Database/行业研究/watch/alarm_watchlist.jsonl`（watchlist 已是周班维护的活真源，含 scores/kill_score），快照亦可选同源生成。**注意差异**：快照 r6=卖铲人**不在** watchlist（该条只存在于快照/脚本），合并前先裁定卖铲人归何处。
   依据：`logs/2026-08-03-日元carry监控注册AI警报.md`
 
-- [ ] **PEC 日元落盘包（2026-08-03 挂 · 待 Doctor 批方向）**：① raw 一篇（日元能否救回全链推演 + 禁抛美债核验纠错留痕）；② `predictions-register` JP-P2 对账快照 + JP-P2a 观测追加（上半年净卖美债 $80B+ 记「机制混杂、信号部分反向」不判证伪 + 联手干预/FIMA dated 增量）；③ macro-facts §19 刷新（干预累计 ¥11.73 万亿 / 日本美债持仓 5 月 ~$1.143T / FY2026 国债费申请 ¥32.39T≈26.5%）；④ CS-08 A03 §5.3 摊牌触发条件第 3 条 dated 增量（2026-01 日债六西格玛 + 2026-07/08 许可制干预落地）。观察点：10 月日银会议（市场定价 80% 加 1.25%）· 2027 CPI 回 2% 时终端是否停 ≤1.5%（JP-P2 ① 腿真考验）。另：Doctor 若持贝森特「禁止抛售」逐字出处 → 入档补强（现分级：功能等价坐实、逐字待证）。
-  依据：`logs/2026-08-03-日元能否救回与禁抛美债核验.md`
-
 - [ ] **★ 渊图 · `concept_XinsenBTSubstrateCustomerShare` 畸形节点还原 —— 11 个节点静默丢失 26 天（2026-08-01 挖出 · Doctor 定甲案「本批不动、另开一场」）**
   **病灶**：该节点的 `aliases` 是个 15 元素数组，其中 **12 个是 dict** —— `[3]` 是它自己的 description/properties/data_sources（故顶层 `description=None`），`[4]~[14]` 是 **11 个完整节点**被整个吞了进去：`concept_XinsenS3BTExpansionCXMTSamsungLocked` · `concept_XinsenOpticalMSAPOrderStatus` · `concept_XinsenABFSubstrateOrderMix` · `metric_XinsenABFSubstrateRevenue2027E` · `metric_XinsenBTSubstrateRevenue2027E` · `concept_ABFSubstrateDomesticFilmSubstitution` · `company_HongchangElectronics` · `product_XinsenGlassCoreSubstrate` · `concept_BTSubstrateMarginUpsideScenario` · `concept_ABFSubstrateMarginUpsideScenario` · `device_Delphilaser_TGV`。
   **实测**：这 11 个 id 在 canonical 里**一个都不存在**（静默丢失 11/11）；被吞节点 `created_at` 全为 `2026-07-06`、来源 `2026.07.05-帕米尔研究：封装载板…` ⇒ **07-06 那批入库时 LLM 的 JSON 就写坏了**，此后 **07-13 / 07-18 / 07-21 / 07-28 四批 QA 全部漏过**。全图仅此一例。
