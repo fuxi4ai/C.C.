@@ -61,7 +61,8 @@ from pathlib import Path
 HOME = Path.home()
 
 LIVE_TREE = HOME / "Claude's workspace" / "Scheduled"          # Cowork 调度器真读的树
-DEAD_TREE = HOME / "Documents/Claude/Scheduled"                # 历史遗留，调度器不读
+GATEWAY_TREE = HOME / "Gateway-workspace" / "Scheduled"        # 第三方壳（Kimi 等 gateway 模式）live store · 2026-08-02 自 Documents/Claude 迁出（数灵转移 D14）。保护跟随 store：沙箱永不可读，仅 Mac 原生可扫。接入扫描面的改法待 08-09 周巡检后定（TODO 观察条）
+DEAD_TREE = HOME / "Documents/Claude/Scheduled"                # 旧第三方 store 位 · 2026-08-02 已迁 GATEWAY_TREE。正常＝不存在；再现＝异常（有壳/有人在此重建 store）
 DEAD_ARCHIVED_GLOB = "_DEPRECATED_Scheduled_*"                 # 归档后的名字（可逆优先：改名不删）
 LAUNCH_AGENTS = HOME / "Library/LaunchAgents"                  # launchd 装机位
 OPS_DIRS = [                                                   # plist 源文件所在处

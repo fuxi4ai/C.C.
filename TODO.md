@@ -22,14 +22,19 @@ type: log
 
 - [ ] **★ dev 模式打通 · E 验收（2026-08-02 挂 · A–D 已落地 commit `782b404`，E 未跑）**：开发者模式切 Kimi/DeepSeek 实跑 `/resume`，合格线三条——①自己找到 `~/Documents/Claude/brain` 给出结构化交接；②对 Doctor 用「您」；③给结论带「核过没有/有什么隐患」两问。唤「白泽」验 symlink agent 兼容性（**无先例，未核**）+ 引擎路径（`Projects/Financial/白泽观星/engine/`）。可加测 `agents/灵魂校验题.md`。**验收结果（尤其跑不过的条目）落盘 = L4 保真度第一份实测基线。在 E 通过之前，「CC 在第三方模式还在」只是结构就位，不是行为验证。** 已装内容：bootstrap `~/.claude/CLAUDE.md`（cp 自 `portable/claude-code/`）· 6 skill symlink（真源 `portable/skills/`）· 3 agent symlink（真身 `agents/{灵}/{灵}.agent.md`）· live Scheduled 镜像 `references/scheduled-live-mirror/live/`（刷新纪律见其 README）。旧件在 `~/.claude/_archived_20260802/`。
 
-- [ ] **巡检脚本/镜像适配 Kimi store（2026-08-02 迁移副产 · 观察条）**：19 班迁 Kimi 壳后，`~/Documents/Claude/Scheduled/` 从「死树」复活为 **Kimi 壳 live store**（19 enabled），而 `scheduler_snapshot.py` 的 `LIVE_TREE` 仍指 `~/Claude's workspace/Scheduled/`（Cowork store，19 班 disable 后将冻结）。**三重影响**：① `scheduler-weekly-audit` 在本壳每周只能报「无法在当前环境执行」（沙箱读不到 workspace 树）——噪音 or 静默，观察首周表现；② 巡检的 git diff 变更检测从此只见 Cowork 侧（冻结），**Kimi 侧的班 prompt 变更无人盯**——镜像脚本应考虑加第二源（`~/Documents/Claude/Scheduled/`，沙箱可达，可自动化）；③ `_DEPRECATED_Scheduled_20260802` 与新 live store 并存，`DEAD_ARCHIVED_GLOB` 语义待重估。触发点：下次周巡检（08-09）后据实际表现定改法。
-  依据：`logs/checkpoints/2026-08-02_19班迁Kimi壳与三级司法_PRD.md` §三 非交付项 · D13 遗留
+- [ ] **巡检脚本/镜像适配 Gateway store（2026-08-02 迁移副产 · 观察条 · 同日数据根迁出后改写）**：19 班 store 已迁 `~/Gateway-workspace/Scheduled/`（D14），`scheduler_snapshot.py` 的 `LIVE_TREE` 仍指 `~/Claude's workspace/Scheduled/`（Cowork store，19 班 disable 后冻结）。**新机制事实（2026-08-02 实测，改写本条的关键）**：保护**跟随 store**——`~/Gateway-workspace/Scheduled` 沙箱挂载同样被拒，故原设想「镜像脚本加第二源、沙箱自动化」**此路不通**；gateway 树的读取只有两条路：Mac 原生（`scheduler_snapshot.py` 已备 `GATEWAY_TREE` 常量、未接线）或 Doctor 终端 rsync 进镜像。**现状**：① `scheduler-weekly-audit` 已于 08-02 20:00:59 PDT 在本壳首点火（lastRunAt 实据），其产出/噪音表现待核——它在本壳跑脚本必报「live 树读不到」（`~/Claude's workspace` 沙箱不可达），每周一次的噪音 or 有价值告警，观察；② 巡检的 git diff 变更检测只见 Cowork 侧（冻结），**Kimi 侧班 prompt 变更无人盯**（如本次 longyu sed 修正即属此类）；③ `_DEPRECATED_Scheduled_20260802` 与新 live store 并存，`DEAD_ARCHIVED_GLOB` 语义待重估；④ `DEAD_TREE`（`~/Documents/Claude/Scheduled`）语义已改注释为「正常=不存在、再现=异常」。触发点：下次周巡检（08-09）后据实际表现定改法。
+  依据：`logs/checkpoints/2026-08-02_19班迁Kimi壳与三级司法_PRD.md` §三 非交付项 · D13/D14 遗留
 
 - [ ] **第三方壳 · Artifacts/定时任务 分裂脑治理（2026-08-02 E 验收补测挖出 · 定时班侧已清、artifacts 侧残留 · 待您勾）**：第三方模式本体（Kimi 壳）里 `scheduled-tasks` 与 `artifacts` 两个 MCP 后端是 **07-01 被遗弃的原 store**（本壳注册表 + 旧数据根 `~/Documents/Claude/{Scheduled,Artifacts}`；官方活树在 `~/Claude's workspace/`）。**治理已执行（C 案 · Doctor 批）**：11 个僵尸班全部删除、复 list 验证本壳定时班 = 0，明晨 09:06 观察窗作废；artifacts 侧 5 个旧 manifest 条目 Doctor 手动删除、复 list 验证 = 0。**分裂脑清零，本壳两子系统均为「干净为空、保持为空」**；凡建/改一律回 Cowork 侧。
   **剩余**：无（① 观察窗已作废 · ② 载体已定位 · ③ 写侧归属已推定 · ④ C 案已执行）。勾掉后按 v3.1 迁归档。
   依据：`logs/checkpoints/2026-08-02_E验收_L4保真度基线.md` §六（含载体定位与治理执行）
 
 - [ ] **Artifacts · `touzhijunjun-workflow` 幽灵查证（2026-08-02 挂 · Artifact 层盘点时逮到）**：盘上有目录（12K，含 index.html），`list_artifacts` manifest 返回的 8 个里**没有它**——24 小时内「盘上有/清单无」第三例（launchd 第三 job · handshake 残目录 · 本条）。候选定性：旧 workflow 卡片被 artifact 化后又从 manifest 摘除，目录残留。**佐证（2026-08-02 镜像首跑）**：其 index.html mtime＝2026-07-05 10:46，与 workspace 整根拷贝事件同一分钟 ⇒ 大概率 7-05 迁移残留、非活跃资产。查法：看该 index.html 内容判断是否已被 `touzhijunjun-perspective-refresh` 班取代；已废则照 handshake 先例归档。自 2026-08-02 起 `_artifacts_manifest.txt`（周班产）可让此类幽灵在 git diff 现形。**未核，勿据本条下结论。**
+
+- [ ] **Artifacts · `龙鱼五力个股库看板` 幽灵归档（2026-08-03 挂 · 数据根搬迁清点时逮到 · 处置已定、只差 Doctor 终端执行）**：`~/Gateway-workspace/Artifacts/龙鱼五力个股库看板/`（index.html mtime **2026-07-05 20:28**），不在 `list_artifacts` manifest 的 6 个之内——「盘上有/清单无」**第四例**（launchd 第三 job · handshake 残目录 · touzhijunjun-workflow · 本条），07-05 拷贝事件族，上代看板残留躯壳。处置已定（D14）：照 handshake 先例归档。Doctor 终端：
+  `mkdir -p ~/Gateway-workspace/Artifacts/_archived && mv ~/Gateway-workspace/Artifacts/龙鱼五力个股库看板 ~/Gateway-workspace/Artifacts/_archived/龙鱼五力个股库看板_DEPRECATED_20260803`
+  勾掉后按 v3.1 迁归档。
+  依据：[[数灵转移/architecture/决策记录]] D14 搬迁账目 · `logs/2026-08-03-数据根迁Gateway-workspace.md`
 
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
