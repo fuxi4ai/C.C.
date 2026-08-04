@@ -106,13 +106,6 @@ type: log
   ② **BT-19 立 PRD**（观星概率序列 point-in-time 重建）；CN 腿首跑；Fed 腿日更入调度。
   ③ **Doctor 侧**：段A `stock_tracking` Mac 重灌；段B `ingest_meta` 标注；渊图链路修复。
 
-- [ ] ★ **`us-close-backfill` 修复版首跑核验（2026-07-30 挂 · **2026-08-01 全条重写：首跑已发生且已零写入，四失败面已根治并装机，本条时效改为周一 08-03**）**
-  **原条已失效**：写的是「`lastRunAt` 不存在＝从未跑过，首跑就是 08-01」。实际 **07-31 13:34 PDT 已首跑**（`lastRunAt`=2026-07-31T20:34:45Z），但**库里零写入**——`us_anchor_daily` 07-31 零行、`intl_index_daily` 美股腿零行，且**简报从未取到**。
-  **08-01 已查明四个独立失败面并全部根治**（详见 `logs/2026-08-01-us-close-backfill四失败面根治.md`）：**F1** `cd` 两候选全摔（沙箱 `~/Documents` 不存在、`/mnt/` 空）· **F2** 挂载盘直写 `disk I/O error`（**比 F1 致命，cd 修好也写不进**；原 SKILL 全文无 `/tmp` 副本段）· **F3** ~~`--source yfinance` 已死~~ **系误判、当场证伪**（那是历史 choice 名，实走 urllib 直取 Yahoo chart）· **F4** 缺 G-X51「无人值守绝不 request」（**这条解释了为何连简报都没有**：request → 悬挂 → 超时杀）。
-  **已装**（2026-08-01 · 备份 `SKILL.md.bak_20260801` · `diff` 逐字一致）：挂载探测段 + `/tmp` 副本两件套 + 放回校验 + mtime 并发判据 + 核对段去 env + yfinance 措辞订正，90→约 160 行。
-  **⏸ 待核（窗已改 · 2026-08-03 /todo 现核改写）**：**班已于 08-01 09:00 重构为只读看门狗**（cron 14:30 PT · description「绝不写库(G019)」· 注册表实证），写库迁 launchd `com.zhuzhao.usclose`（14:00 PT）——出处 `logs/2026-08-02-定时任务巡检机制.md` §一。新核验窗 = **今日 14:00 launchd 首跑 + 14:30 看门狗简报**：① `us_anchor_daily` 当日 19 票是否补上 · ② `intl_index_daily` 美股腿（NASDAQ/SPCX/NVDA/AVGO/LITE）是否补上 · ③ **简报这次有没有产出**（F4 修没修好看这个）· ④⑤（放回只增不减校验 / 并发判据）**随 /tmp 副本写法退役而失效**（zhuzhao 班自身的放回校验是另一条线，不在本条）。⚠ 美股腿当前停 07-31 属正常（08-01/02 为周末）。
-  **⚠ 别当已结案**：四个面都是实测坐实的，但「零写入**就是**它们造成的」仍是**推断**——首跑简报始终没拿到，那才是决定性证据。**若周一仍零写入 ⇒ 存在第五个失败面。**
-
 - [ ] **`us-close-backfill` 与 `zhuzhao` 双写者职责未理清（2026-08-01 挂 · Doctor 定「本次不解决、单独挂」）**
   **前提更新（2026-08-03 /todo 现核）**：原条风险描述针对**已退役写法**——zhuzhao 08-01 已加**单写者锁**；`us-close-backfill` 已于 08-01 09:00 重构为**只读看门狗**（不再写库），写库迁 launchd `com.zhuzhao.usclose`（本机直写，无 /tmp 副本放回）。「两班写一库」已变为「班 + launchd 本机 job」；且 `us_anchor_daily` 的唯一主人已定位 = 补数班（巡检机制日志）。**本条收窄为**：新事实下的权属对账（launchd / zhuzhao / 五表双写三方一起），确认「两个主人＝没有主人」问题是否已实质解决。出处 `logs/2026-08-02-定时任务巡检机制.md` §一。
   两班**写同一个 `~/Documents/Database/Market-Data/market_data.db`，且都写 `us_anchor_daily` / `intl_index_daily` 这两张表**：`zhuzhao-market-fetch-daily-report` 10:03（周一~五）· `us-close-backfill` 13:35（周一~五）。
@@ -137,6 +130,8 @@ type: log
 - [ ] **哨兵班明早 02:40 自然确认（2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-哨兵班400风控二分定位.md`）**：手动终验已过（今日 03:47 手动 Run now，注册表 lastRunAt 实证）；若 08-04 02:40 自动点火再 400 则存在组合效应，需重启探针。
 
 - [ ] **财新 8/3 联手干预全文（低优先 · 2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元能否救回与禁抛美债核验.md`）**：付费墙，FIMA 句现仅经 meta 描述 + 金十交叉确认、未读全文；Doctor 若有订阅可取全文入档补强。
+
+- [ ] **看门狗班沙箱挂载缺失治理（2026-08-03 第二轮 /todo 逮到 · Doctor 定「CC 查配置方法再报」）**：`us-close-backfill`（14:30 看门狗）启动时沙箱**未挂载**烛照九阴项目与 Market-Data 目录（仅 brain + 白泽观星/engine），本轮靠临时申请获批才跑通核对；不补则每轮 14:30 都要人工批一次、无人值守时即失明。**下一步**：CC 查 scheduled task 的目录授权/挂载固化机制，出可批方案。同类班（zhuzhao / market-data-daily 等）是否同样缺挂载，一并扫（G-X111 同族扫）。
 
 ---
 
