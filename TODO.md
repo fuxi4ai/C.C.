@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-08-03
+updated: 2026-08-05
 status: active
 type: log
 ---
@@ -10,6 +10,9 @@ type: log
 # TODO
 
 ## 待办
+
+- [ ] **渊图 · 胜宏科技 M9/M10 认证法定披露校验窗口（2026-08-05 挂 · 2026 年 8 月底半年报）**：核实札记已定级——「M9 材料产品验证完成」P2 可坐实，「全球唯一通过英伟达 Rubin 正交背板验证」坐不实（公司 03-18 法定口径「正积极推进」、07-31 董秘回避）。**8 月底半年报是第一个法定披露校验点**：届时核对 M9/M10 认证表述是否升级，据此决定 hedged patch 起草/作废。旁线：SemiAnalysis「Rubin 因正交背板卡点延迟一年量产」（P1 外媒，与「已过验证」叙事正面冲突）若被英伟达官方/供应链否认 → 反向信号降级；若被证实 → 本身即图谱级信号（正交背板卡点 → VR200 子图），可另立核实。
+  依据：`Database/行业研究/raw/核实/2026-08-05-胜宏科技Rubin验证核实札记.md` · `logs/2026-08-05-渊图-胜宏科技过验证P2核实.md`
 
 - [ ] **风险日报 · AI 面板双硬编码根治（2026-08-03 挂 · Doctor 定是否做）**：`build_risk_daily.py` 的 `AI_RISKS`（7 条）与 `ai_tech_alarm_snapshot.html` 的 `RISKS`（7 条）是**两份手工维护的硬编码**——2026-08-03 注册 r7 时已手工对齐，但日后一方改分另一方不会跟（两处真源同族病）。根治 = 构建脚本改读 `Database/行业研究/watch/alarm_watchlist.jsonl`（watchlist 已是周班维护的活真源，含 scores/kill_score），快照亦可选同源生成。**注意差异**：快照 r6=卖铲人**不在** watchlist（该条只存在于快照/脚本），合并前先裁定卖铲人归何处。
   依据：`logs/2026-08-03-日元carry监控注册AI警报.md`
@@ -35,7 +38,7 @@ type: log
   勾掉后按 v3.1 迁归档。
   依据：[[数灵转移/architecture/决策记录]] D14 搬迁账目 · `logs/2026-08-03-数据根迁Gateway-workspace.md`
 
-- [ ] **fuxi 冷归档 · 三隔离区迁址与观察窗口清算（2026-08-03 挂 · Doctor 定迁 fuxi、窗口随迁）**：`_to_delete_20260721`（3.3GB·窗口至 **08-20**）· `_to_delete_20260723_tts`（9.5MB·窗口至 **08-22**）· `_隔离_20260724`（12K·随 08-22 一并裁）。三份 MANIFEST 迁址注记已落（写明期满删除对象改为 fuxi 侧副本）。**两段动作**：① 迁址（命令见 `logs/2026-08-03-数据根迁Gateway-workspace.md` 同场回报：本地打 tarball → scp 至 `fuxi-station:F:/Mac_Quarantine/.incoming/` → certutil 回验哈希 → 原子落位 → **批准后**才删本地源）；② 期满（08-20 / 08-22）确认无恢复需求后，fuxi 侧删除（Doctor 终端/授权）。勾掉后按 v3.1 迁归档。
+- [ ] **fuxi 冷归档 · 三隔离区期满清算（2026-08-03 挂 · 2026-08-04 迁址完成 · 仅剩期满删除）**：`_to_delete_20260721`（3.3GB·窗口至 **08-20**）· `_to_delete_20260723_tts`（9.5MB·窗口至 **08-22**）· `_隔离_20260724`（12K·随 08-22 一并裁）。**① 迁址已完成（2026-08-04）**：三件 tarball 经 scp 至 `fuxi-station:F:\Mac_Quarantine\`、SHA-256 三串逐位回验一致、cmd 侧解包 move 落位、本地源已删（释放 3.45GB · Doctor 批准）。**② 剩余**：期满（08-20 / 08-22）确认无恢复需求后，fuxi 侧物理删除（`rmdir /s /q F:\Mac_Quarantine\{三件}` · Doctor 终端/授权）。勾掉后按 v3.1 迁归档。
 
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
