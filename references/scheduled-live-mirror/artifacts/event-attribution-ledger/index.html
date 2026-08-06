@@ -177,7 +177,7 @@ details.fold>summary::-webkit-details-marker{display:none}
       <span class="strig" style="color:var(--t-fired)">已触发 · 连续第 3 日</span>
     </div>
   </div>
-  <div class="asum">+0.18 → +1.15 → +1.74 → <strong>+3.23pp（区间 +2.95~+3.50）</strong> ≫ 0.3pp 阈。缺口＝P-05 退款因子＋P-19 降温方向——<strong>两条漏网形态已于 2026-08-03 全部批入规则书 v1.1</strong>，明起值守班可合法记账；<strong>历史残差不回填</strong>（缝留在图上作记录）。事后补算（非记账）：两条新的解释因子约解释 +1.4~+2.0pp，<strong>剩余 ~+0.5 指向未注册的「宏观数据/贴现率因子」——缝明起应收，但大概率收不到 0.3 阈内</strong>（详见一节末「遗漏因子事后分析」卡）。恒等式在数值上恒成立，<strong>不闭合的是规则书的覆盖面，不是计算</strong>。</div>
+  <div class="asum">+0.18 → +1.15 → +1.74 → <strong>+3.23pp（区间 +2.95~+3.50）</strong> ≫ 0.3pp 阈。缺口＝P-05 退款因子＋P-19 降温方向——<strong>两条漏网形态已于 2026-08-03 全部批入规则书 v1.1</strong>，明起值守班可合法记账；<strong>历史残差不回填</strong>（缝留在图上作记录）。事后补算（非记账）：两条新的解释因子约解释 +1.4~+2.0pp，<strong>剩余 ~+0.5 指向未注册的「宏观数据/贴现率因子」——缝明起应收，但大概率收不到 0.3 阈内</strong>（详见一节末「因子拾遗」卡）。恒等式在数值上恒成立，<strong>不闭合的是规则书的覆盖面，不是计算</strong>。</div>
 </div>
 
 <!-- ==================== 一 ==================== -->
@@ -224,9 +224,9 @@ details.fold>summary::-webkit-details-marker{display:none}
 </figcaption>
 </figure>
 
-<!-- 遗漏因子事后分析 · 挂一节末 · 事后 sizing 非记账 -->
+<!-- 因子拾遗 · 挂一节末 · 事后 sizing 非记账 -->
 <details class="fold">
-  <summary>遗漏因子事后分析<span class="sconcl">P-05＋P-19 入册可解释残差大头（+1.4~+2.0pp / 3.23）；剩余 ~+0.5 指向第三条未注册因子：<strong>宏观数据/贴现率</strong>（GDP·PCE／ISM 55.6／10Y 回落 5.9bp）</span></summary>
+  <summary>因子拾遗<span class="sconcl">残差 +3.23 大头＝退款＋降温＋宏观数据三因子（合计带 +2.1~+3.3）；<strong>三者现已全部入册</strong>（退款 v1.1·降温 v1.1·宏观驱动 v1.3）· 缺口来源已无未注册项</span></summary>
   <div class="fold-body">
     <p class="note">残差逐日增量：07-30 <strong>+0.97</strong> ／ 07-31 <strong>+0.59</strong> ／ 08-03 <strong>+1.49</strong>（合计 ≈ +3.05，对 07-29 基线余量 +0.18 → 中值 +3.23）。尝试把这三天的缝分摊给「当时没注册、但市场里确实在作用」的形态：</p>
     <table>
@@ -234,11 +234,11 @@ details.fold>summary::-webkit-details-marker{display:none}
     <tbody>
     <tr><td><strong>退款因子</strong>（报复夜预支的对称回吐）</td><td class="num">+0.8 ~ +1.3</td><td>07-30 VIX −17.28% 完全回吐（SPX +1.66%）＋ 07-31 −6.44% 续探（SPX +0.70%）；MSFT/GDP/PCE 共振部分剔给宏观数据分项</td><td class="ok">✅ v1.1 已入册（P-05）</td></tr>
     <tr><td><strong>geo·降温兑现</strong></td><td class="num">+0.9 ~ +1.2</td><td>08-03 SPX +1.48%（道指纪录）· VIX 15.86 全程回吐完成 · 油 −5~−7%；周日期货缺口 −5.4% 一次兑现</td><td class="ok">✅ v1.1 已入册（P-19）</td></tr>
-    <tr><td><strong>宏观数据 / 贴现率因子</strong></td><td class="num">+0.4 ~ +0.8</td><td>07-30 Q2 GDP＋6 月 PCE 落地 · 08-03 ISM 55.6（2022-05 来最高）· 10Y ^TNX 4.75→4.686（−5.9bp·熊陡部分回吐）</td><td class="bad">✗ 无注册位</td></tr>
+    <tr><td><strong>宏观数据 / 贴现率因子</strong></td><td class="num">+0.4 ~ +0.8</td><td>07-30 Q2 GDP＋6 月 PCE 落地 · 08-03 ISM 55.6（2022-05 来最高）· 10Y ^TNX 4.75→4.686（−5.9bp·熊陡部分回吐）</td><td class="ok">✅ v1.3 已入册（P-21·宏观驱动）</td></tr>
     <tr><td><strong>合计 vs 残差 +3.23（中）</strong></td><td class="num">+2.1 ~ +3.3</td><td>带重叠，不可精确加总</td><td>—</td></tr>
     </tbody>
     </table>
-    <p class="note"><strong>读法</strong>：带内取中值则残差闭合到约 <strong>+0.5（+0~+1.1）</strong>——两个新因子入册后缝会明显收窄，但<strong>大概率收不进 0.3 阈</strong>；剩下的第一候选就是「宏观数据/贴现率因子」尚无注册位。<strong>若明晚残差仍 >0.3~0.5，这条因子的立项讨论就值得开</strong>（它同时是 P-04 杂质因子口径的近亲——都缺一张可信的分母）。</p>
+    <p class="note"><strong>读法</strong>：带内取中值则残差闭合到约 <strong>+0.5（+0~+1.1）</strong>——两个新因子入册后缝会明显收窄，但<strong>大概率收不进 0.3 阈</strong>；剩下的第一候选就是「宏观数据/贴现率因子」（它同时是 P-04 杂质因子口径的近亲——都缺一张可信的分母）。<strong>〔2026-08-06 更新〕该因子立项已落地＝宏观驱动（P-21·v1.3·Doctor 08-04 裁 C 案）——至此本卡三个遗漏因子全部入册（退款 v1.1·降温 v1.1·宏观驱动 v1.3），缺口来源已无未注册项；后续残差由值守班按新因子逐日重算验证收窄（宏观驱动首个候选轮＝08-07 NFP·已事前冻结）。</strong></p>
     <p class="note"><strong>⚠ 诚实标注</strong>：以上为<strong>事后 sizing</strong>（对着已知结果分摊份额），不是注册记账——G-04 事后拟合高危区；各因子份额不可加总成「对账表」，本卡只服务「缺口由什么构成」的主旨判断。历史残差不回填。</p>
   </div>
 </details>
@@ -469,7 +469,7 @@ details.fold>summary::-webkit-details-marker{display:none}
 <tr class="newrow"><td>2026-08-03</td><td>v1.1</td><td>P-07 不采纳（被 P-13 取代·冻结加样解除）</td><td>P-13 v2 分时证据</td></tr>
 <tr class="newrow"><td>2026-08-03</td><td><strong>v1.2</strong></td><td><strong>AI 持续性重构「轴+双翼」</strong>：L0 范式轴（三柱三态·常态化为退场判据）＋ L1 冲击翼（负偏离）＋ L2 恢复翼（正偏离·按 L0 解义过伸/重建/回归）；吸收 P-15（|传染| 定在场·符号定方向）与 P-17（变号不入序列/替代代理/统一基准）</td><td>Doctor 三段论（2026-08-03：在场有估值范式·受冲击烈度打折·恢复烈度反弹——「让无轴的双向变成有前提的跟随轴心的波动」）＋ v1.2 草案过目</td><td>Doctor 2026-08-03「入册」</td></tr>
 <tr class="newrow"><td>2026-08-04</td><td><strong>v1.2.1</strong></td><td>geo·降温兑现 VIX 分项加水平条件（「VIX↓，已低于冲击前水平则豁免」·P-20 选项一）；归因资格自暂停恢复（判变体非证伪）</td><td>08-04 第二样本 VIX 违例（15.86→16.50 +4.04%·系二元官宣前保费·P-10 镜像）</td><td>Doctor 2026-08-04「选项一」</td></tr>
-<tr class="newrow"><td>2026-08-04</td><td><strong>v1.3</strong></td><td><strong>新设因子位「宏观驱动」</strong>（P-21·C 案双分支）：@数据落地（顶级日历披露·只收超预期）／@利率重估（长端 |Δ|≥6bp 且无语言窗·与 ƒ 互斥）；量级带留空待样本</td><td>2-E 事后分析触发线已达（残差 +4.85）＋ 07-30 GDP/PCE · 08-03 ISM 双首例</td><td>Doctor 2026-08-04「C」</td></tr>
+<tr class="newrow"><td>2026-08-04</td><td><strong>v1.3</strong></td><td><strong>新设因子位「宏观驱动」</strong>（P-21·C 案双分支）：@数据落地（顶级日历披露·只收超预期）／@利率重估（长端 |Δ|≥6bp 且无语言窗·与 ƒ 互斥）；量级带留空待样本</td><td>2-E 因子拾遗触发线已达（残差 +4.85）＋ 07-30 GDP/PCE · 08-03 ISM 双首例</td><td>Doctor 2026-08-04「C」</td></tr>
 <tr class="newrow"><td>2026-08-06</td><td><strong>v1.3.1</strong></td><td>P-04 杂质因子口径闭合（净额进 Σ·gross 只作告警·官方锚+收益滚动分母）＋方向②科技资讯流证伪记录（0pp·只开测量窗）＋观察余量按新口径重算收栏（退款整轮 +1.58~+1.81pp·降温 08-04 +1.64~+1.65pp）＋<strong>量级带分层权限</strong>（严在权限·不严在记录）</td><td>VV 方向②④报告＋重算对照报告（官方锚闭环·原子差额替换）</td><td>Doctor 2026-08-06「tongyi」「同意」＋分层权限裁定</td></tr>
 </tbody>
 </table>
