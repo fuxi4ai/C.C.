@@ -2,7 +2,7 @@
 title: 白泽大宗 · GOTCHAS
 tags: [白泽大宗, gotchas]
 created: 2026-06-10
-updated: 2026-07-09
+updated: 2026-08-06
 status: active
 type: resource
 ---
@@ -15,3 +15,4 @@ type: resource
 - **G-04 配置权威源**：`configs/config_index.json` 为准（main_config=白泽大宗_v4.1.yaml）；CONFIG_INDEX.md 是人读摘要，曾滞后标 v3.0（2026-06-10 已同步，今后改配置两处一起动）。
 - **G-05 tushare-cache 仅 27 只标的**：是白泽取数缓存，不是全市场名单，不可用于 ST 识别/全市场统计。
 - **G-06 模板/artifact 字体壳分叉（技术债）**：看板 artifact `baize-weekly-dashboard` 的「系统中文衬线回退栈（Songti/STSong/SimSun）+ 去 Google Fonts 外链」只做在**产物侧手工壳**，**未并入** `_HTML_TMPL`。故每次从脚本重渲都得重套这层壳；下周日 Stage4 自动重渲若未先并模板，产出的 artifact 会缺系统回退栈（外链字体加载慢/失败时中文降级难看）。根治＝把这两项并进 `_HTML_TMPL`，让重渲直接产出 artifact 格式。（2026-07-09 涨价卡改多列时手工补壳发现）
+- **G-07 沙箱直写挂载盘 db 留热 journal（2026-08-06 实撞）**：对本库 business_breakdown.db 直接 UPDATE，commit 半途 disk I/O error 留 41KB 热 journal，此后连只读 open 都报 disk I/O error（要回滚 journal 而写入被拦）。处置：`: > business_breakdown.db-journal` 清零 → 备份 cat 恢复 → 改库全程在 /tmp 副本做、`cat /tmp/x.db > 挂载路径` 覆写回；只读查询用 `file:...?mode=ro` URI。注意 /tmp+cat 已裁定**仅应急**（通用教训 G-X131），常规写库走停写窗口+backup API+原子替换+查并发。
