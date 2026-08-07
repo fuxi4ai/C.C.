@@ -33,8 +33,8 @@ project: DVA
 > 详情见 `Projects/DVA/GOTCHAS.md` 对应条目；此处仅留指针，避免双写漂移。
 > **2026-06-23 梳理**：权威库当时 5 条非 ✅，已逐一处理——2 条治本、1 条待 Mac 收尾、2 条正式接受。
 > **2026-06-26 对齐**：BUG-20260505-003 权威库已闭环（✅）；当前权威库实况＝0 条 🔄 actionable + 2 条 ⚠️ 已接受/won't-fix。看板 manifest gotchas 口径定为「actionable-only」→ DVA 计数 2→0（⚠️ 已接受项不计积压）。
-> **2026-08-06 对齐**（DVA-Database 例行自查，修正上文旧口径）：权威库实况＝**2 条 🔄/⏳ actionable**（`BUG-20260711-002` update-all `--limit 0` 吞零，仍活在 fuxi 部署代码中；`INFRA-20260727-002` 恢复控制器迁移，镜像并入，待确认转 ✅）+ **1 条 ⏹ superseded**（`INFRA-20260702-001` Codex 看门狗误杀——07-24 fuxi 化后 Codex automation 已 PAUSED，事实架空）+ ⚠️ 已接受/won't-fix 若干（其中 `RISK-20260724-001` Mac 侧 cookie 四文件收敛仍待 Doctor 授权）。
-> **双库漂移修复（2026-08-06 已落笔）**：Codex 镜像 `Codex/Project Mirror/DVA/GOTCHAS.md` 11 条经内容级复核**全部**未进权威库（初判 7 条系弱关键词误中），且沿用 06-13 已废止的 ERR- 编号。已按 Doctor 裁定以**精华版**（重编号 INFRA-、逐条溯源原号）并入权威库第七节；镜像只读不动（VV 有 DVA 定时检查在跑）。此后纪律＝权威库单写，镜像只读回流，VV 新条目报 Doctor 后落权威库。
+> **2026-08-06 对齐**（DVA-Database 例行自查，修正上文旧口径）：权威库实况＝**1 条 🔄 actionable**（`BUG-20260711-002` update-all `--limit 0` 吞零，仍活在 fuxi 部署代码中）+ **2 条 ⏹**（`INFRA-20260702-001` Codex 看门狗——fuxi 化架空 superseded；`INFRA-20260727-002` 恢复控制器——Doctor 裁「按设计退役」：自动恢复已由 heartbeat 告警+人工授权补跑取代）+ ⚠️ 已接受/won't-fix 若干（其中 `RISK-20260724-001` Mac 侧 cookie 四文件收敛仍待 Doctor 授权）。
+> **双库漂移修复（2026-08-06 已落笔）**：Codex 镜像 `Codex/Project Mirror/DVA/GOTCHAS.md` 11 条经内容级复核——**10 条真正缺失**、1 条（`ERR-20260723-002`）与既有 `GIT-20260723-001` 同题双收（初判 7 条系弱关键词误中、中文标题曾漏过查重），且镜像沿用 06-13 已废止的 ERR- 编号。已按 Doctor 裁定以**精华版**（重编号 INFRA-、逐条溯源原号）并入权威库第七节，同题双收合并为 `INFRA-20260723-005`（留双溯源）；权威库非规范编号随之归零（`ERR-20260711-001`→`INFRA-20260711-001` 留曾用编号），终态 79 条。镜像只读不动（VV 有 DVA 定时检查在跑）。此后纪律＝权威库单写，镜像只读回流，VV 新条目报 Doctor 后落权威库。
 
 本轮（2026-06-23）处理结果：
 - ✅ `[BUG-20260618-002]` `--limit 0` 被 `|| 5` 吞 → 治本（`dva.js` 改 `Number.isFinite`）。
