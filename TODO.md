@@ -37,13 +37,6 @@ type: log
 - [ ] **巡检脚本/镜像适配 Gateway store（2026-08-02 迁移副产 · 观察条 · 同日数据根迁出后改写）**：19 班 store 已迁 `~/Gateway-workspace/Scheduled/`（D14），`scheduler_snapshot.py` 的 `LIVE_TREE` 仍指 `~/Claude's workspace/Scheduled/`（Cowork store，19 班 disable 后冻结）。**新机制事实（2026-08-02 实测，改写本条的关键）**：保护**跟随 store**——`~/Gateway-workspace/Scheduled` 沙箱挂载同样被拒，故原设想「镜像脚本加第二源、沙箱自动化」**此路不通**；gateway 树的读取只有两条路：Mac 原生（`scheduler_snapshot.py` 已备 `GATEWAY_TREE` 常量、未接线）或 Doctor 终端 rsync 进镜像。**现状**：① `scheduler-weekly-audit` 已于 08-02 20:00:59 PDT 在本壳首点火（lastRunAt 实据），其产出/噪音表现待核——它在本壳跑脚本必报「live 树读不到」（`~/Claude's workspace` 沙箱不可达），每周一次的噪音 or 有价值告警，观察；② 巡检的 git diff 变更检测只见 Cowork 侧（冻结），**Kimi 侧班 prompt 变更无人盯**（如本次 longyu sed 修正即属此类）；③ `_DEPRECATED_Scheduled_20260802` 与新 live store 并存，`DEAD_ARCHIVED_GLOB` 语义待重估；④ `DEAD_TREE`（`~/Documents/Claude/Scheduled`）语义已改注释为「正常=不存在、再现=异常」。触发点：下次周巡检（08-09）后据实际表现定改法。
   依据：`logs/checkpoints/2026-08-02_19班迁Kimi壳与三级司法_PRD.md` §三 非交付项 · D13/D14 遗留
 
-- [ ] **Artifacts · `touzhijunjun-workflow` 幽灵查证（2026-08-02 挂 · Artifact 层盘点时逮到）**：盘上有目录（12K，含 index.html），`list_artifacts` manifest 返回的 ~~8~~ **6** 个（2026-08-08 重取）里**没有它**——24 小时内「盘上有/清单无」第三例（launchd 第三 job · handshake 残目录 · 本条）。候选定性：旧 workflow 卡片被 artifact 化后又从 manifest 摘除，目录残留。**佐证（2026-08-02 镜像首跑）**：其 index.html mtime＝2026-07-05 10:46，与 workspace 整根拷贝事件同一分钟 ⇒ 大概率 7-05 迁移残留、非活跃资产。查法：看该 index.html 内容判断是否已被 `touzhijunjun-perspective-refresh` 班取代；已废则照 handshake 先例归档。自 2026-08-02 起 `_artifacts_manifest.txt`（周班产）可让此类幽灵在 git diff 现形。**未核，勿据本条下结论。**
-
-- [ ] **Artifacts · `龙鱼五力个股库看板` 幽灵归档（2026-08-03 挂 · 数据根搬迁清点时逮到 · 处置已定、只差 Doctor 终端执行）**：`~/Gateway-workspace/Artifacts/龙鱼五力个股库看板/`（index.html mtime **2026-07-05 20:28**），不在 `list_artifacts` manifest 的 6 个之内——「盘上有/清单无」**第四例**（launchd 第三 job · handshake 残目录 · touzhijunjun-workflow · 本条），07-05 拷贝事件族，上代看板残留躯壳。处置已定（D14）：照 handshake 先例归档。Doctor 终端：
-  `mkdir -p ~/Gateway-workspace/Artifacts/_archived && mv ~/Gateway-workspace/Artifacts/龙鱼五力个股库看板 ~/Gateway-workspace/Artifacts/_archived/龙鱼五力个股库看板_DEPRECATED_20260803`
-  勾掉后按 v3.1 迁归档。
-  依据：[[数灵转移/architecture/决策记录]] D14 搬迁账目 · `logs/2026-08-03-数据根迁Gateway-workspace.md`
-
 - [ ] **fuxi 冷归档 · 三隔离区期满清算（2026-08-03 挂 · 2026-08-04 迁址完成 · 仅剩期满删除）**：`_to_delete_20260721`（3.3GB·窗口至 **08-20**）· `_to_delete_20260723_tts`（9.5MB·窗口至 **08-22**）· `_隔离_20260724`（12K·随 08-22 一并裁）。**① 迁址已完成（2026-08-04）**：三件 tarball 经 scp 至 `fuxi-station:F:\Mac_Quarantine\`、SHA-256 三串逐位回验一致、cmd 侧解包 move 落位、本地源已删（释放 3.45GB · Doctor 批准）。**② 剩余**：期满（08-20 / 08-22）确认无恢复需求后，fuxi 侧物理删除（`rmdir /s /q F:\Mac_Quarantine\{三件}` · Doctor 终端/授权）。勾掉后按 v3.1 迁归档。
 
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
@@ -107,7 +100,7 @@ type: log
 - [ ] **基建与另场专项三件（2026-07-30 从当日三场日志补挂）**
   ① ~~**定时任务清单全面对账**~~ → **2026-07-30 完成**：live 17 班 vs 清单 11 行 → 补 6 个 7 月新增班、订正 5 条 cron（4 条整体 −6h、market-data 挪至 01:30）、依赖链次序复核仍成立；表改三段式（日更链/周更月更/ad-hoc）。附带清洗「中立语境」description **A 组 6 条**（含地域标注者），**B 组 4 条待您定**（仅钟点无地域，见清单 §「中立语境」清洗节）；通知策略因 `list_scheduled_tasks` 不返回 `notifyOnCompletion` **无法核验**，6 个新班的通知列标「待核」。
   ② **BT-19 立 PRD**（观星概率序列 point-in-time 重建）；CN 腿首跑；Fed 腿日更入调度。
-  ③ **Doctor 侧**：段A `stock_tracking` Mac 重灌；段B `ingest_meta` 标注；渊图链路修复。
+  ③ **Doctor 侧**：段A `stock_tracking` Mac 重灌；渊图链路修复。（段B `ingest_meta` 标注 **2026-08-08 已随 deprecate 脚本消**——Doctor 终端跑 `deprecate_legacy_price_tables_20260808.py`、ingest_meta 写入 deprecated 行；当日 /todo 裁定收窄，Doctor 批准）
 
 - [ ] **`us-close-backfill` 与 `zhuzhao` 双写者职责未理清（2026-08-01 挂 · Doctor 定「本次不解决、单独挂」）**
   **前提更新（2026-08-03 /todo 现核）**：原条风险描述针对**已退役写法**——zhuzhao 08-01 已加**单写者锁**；`us-close-backfill` 已于 08-01 09:00 重构为**只读看门狗**（不再写库），写库迁 launchd `com.zhuzhao.usclose`（本机直写，无 /tmp 副本放回）。「两班写一库」已变为「班 + launchd 本机 job」；且 `us_anchor_daily` 的唯一主人已定位 = 补数班（巡检机制日志）。**本条收窄为**：新事实下的权属对账（launchd / zhuzhao / 五表双写三方一起），确认「两个主人＝没有主人」问题是否已实质解决。出处 `logs/2026-08-02-定时任务巡检机制.md` §一。
@@ -150,6 +143,12 @@ type: log
 - [ ] **白泽大宗 · 周日班后核查（2026-08-08 专场挂 · dated 08-09 班后）**：08-09 01:09 周日班是 weekly_health.py 带新 legacy 登记的**定时链路首跑**（手动已验通，ERR-20260721-001 族「手动通≠定时通」）——班后查产物/stderr；ingest_meta 三行 deprecated（Doctor 终端脚本跑完后）只读复查；_health.json legacy_sources 应含两旧价表。四品种鲜价过期由该班处理（龙鱼 3 件②），与本条互证。
 
 - [ ] **跨项目 · .bak_20260808 批次清理（2026-08-08 挂 · dated 08-15 后）**：当日改动回滚备份留 7 天——三连场 6 件（各仓 .bak_20260808）＋白泽大宗 3 件（GOTCHAS.md / lib_public_read.py / weekly_health.py）。08-15 后随 /todo 统一清；清前确认对应改动均已稳定（含明早班首跑）。
+
+- [ ] **EAL · v6 分层抽样重跑 4,136 + CC 交叉核对（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-08-EAL口径v0.1收官.md`）**：（VV 侧）v6 分层抽样＋人工复核 → 正式重跑 4,136 条；其后 CC 交叉核对。口径 v0.1 收官后的正式验证步，活跃工作流，不挂易滑出视野。
+
+- [ ] **金融 · macro_prediction.db 择一为源（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-08-错题本三连与大宗白泽两专场.md`）**：MANIFEST 挂账、多源择一为权威。数据治理项，非单场范围。
+
+- [ ] **风险日报 · r7「6 月极值读数」按非商业口径回填（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-brain-todo建成与两轮实战.md`）**：AI 警报 r7 的 6 月极值读数待按 FuturesB 非商业口径回填。
 
 ---
 
