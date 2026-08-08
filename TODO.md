@@ -144,6 +144,10 @@ type: log
 
 - [ ] **烛照九阴 · daily_market.volume_trillion 历史 0-fill 回补（2026-08-08 错题本复盘补挂 · 源：ERR-20260719-003）**：该列 20260603 前 1552 行填 0 而非 NULL（名义覆盖 1584 日、实际非零仅 32 日），滚动分位恒≈1.0 失真；同族 `max_consecutive` 一并回补。回补路径＝tushare 大盘接口（**Doctor 终端跑**，沙箱不下载）；回补前长历史量能研究按条目口径用 `index_research.db` 000001.SH / 399006.SZ。回补后回写 ERR-20260719-003 状态行。
 
+- [ ] **白泽大宗 · 周日班后核查（2026-08-08 专场挂 · dated 08-09 班后）**：08-09 01:09 周日班是 weekly_health.py 带新 legacy 登记的**定时链路首跑**（手动已验通，ERR-20260721-001 族「手动通≠定时通」）——班后查产物/stderr；ingest_meta 三行 deprecated（Doctor 终端脚本跑完后）只读复查；_health.json legacy_sources 应含两旧价表。四品种鲜价过期由该班处理（龙鱼 3 件②），与本条互证。
+
+- [ ] **跨项目 · .bak_20260808 批次清理（2026-08-08 挂 · dated 08-15 后）**：当日改动回滚备份留 7 天——三连场 6 件（各仓 .bak_20260808）＋白泽大宗 3 件（GOTCHAS.md / lib_public_read.py / weekly_health.py）。08-15 后随 /todo 统一清；清前确认对应改动均已稳定（含明早班首跑）。
+
 ---
 
 > **已完成 / 已取消条目** → [[TODO-已完成归档]]（`references/TODO-已完成归档.md`）。
