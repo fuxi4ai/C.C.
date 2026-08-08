@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════
+  EAL 三时段图 · 渲染器与骨架【正源】（Doctor 2026-08-07 定 · brain #15）
+
+  这是什么：event-attribution-ledger artifact 第一节「函数式归因曲线」的三时段
+           标签结构 ＋ 机械层渲染器。值守班（event-attribution-watch）每晚重生成
+           artifact 时，第一节按本文件逐字复用。本文件是模板片段，不是独立页面。
+
+  两个 splice 点（每晚仅此两处换内容，其余逐字照搬、禁改逻辑）：
+    Ⓐ {{WEEK_FIGURE}} —— 近一周手绘「注册账＋15m磁带」<figure>…</figure>。
+                         与本文件无关，值守班按 v2.8 视觉语法用当日数据照旧重绘。
+    Ⓑ {{MECH_JSON}}   —— 跑 Database/剑酒青丘/backtest/export_mech_data.py 重查
+                         factor_daily_backtest(source='mech_v0') 导出的一行 JSON，
+                         整行替换 <script id="mech-data"> 的标签内文本。
+
+  铁律：
+    · 机械层＝非记账 · 只展示不进方程（量级＝注册带/观察锚中值常数化，逐日闭合靠残差兜底）
+    · 渲染器逐字复用、只换数据；禁改任何 JS 逻辑 / 几何 / 配色
+    · db 不可达 / export 失败 → 保留上一版 mech-data JSON，asof 文案标旧（fail-visible·不崩）
+    · 近一周（手绘·当日磁带幅度）与长段（机械·动态自适应）y 轴不同标——勿跨 tab 比斜率
+
+  视觉沿革：2026-08-07（Doctor 批 · 任务#21）geo·降温兑现改铺青碧色域（fill #2e7d6e·opacity .14，
+           折线照旧压域上）、图例换 swbox 色域样——向近一周「域＝结构性持续」看齐；
+           宏观仍金细线（事件性）、ƒ 仍朱红虚（不确定性）。
+           2026-08-08（Doctor 批 · 任务#41）口径 v0.1 落地后报复夜/退款进图：FACTORS 加两条——报复夜赭 #b05a2a
+           实线、退款因子浅赭 #d99a6c 虚线（同族异深编码「退款＝报复夜部分回吐」，避宏观金 #b8912c 撞色）；
+           图例/mech-note/asof 同步 v0.1（油腿 15m 分时窗、报复夜金腿降级参考、删「零命中」旧述）。
+           以上均为本正源已登记的受控变更，非值守班擅改。
+
+  组装方式：把下面【CSS 段】的 <style> 内容并入 artifact 的 <style>；
+           把【BODY 段】整体放到第一节原位（替换旧的单一 <figure>），
+           其中 {{WEEK_FIGURE}} 与 {{MECH_JSON}} 两处替换掉。
+═══════════════════════════════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════【CSS 段】并入 artifact 的 <style>════════════════════ -->
+<style>
+.ealtabs{display:flex;gap:8px;margin:8px 0 4px;flex-wrap:wrap;align-items:center}
+.ealtabs button{font-family:var(--zh);font-size:13px;padding:6px 16px;border-radius:99px;border:1px solid var(--rule);background:var(--paper);color:var(--ink-soft);cursor:pointer;letter-spacing:.03em;transition:all .15s}
+.ealtabs button:hover{border-color:var(--camel)}
+.ealtabs button.on{background:var(--acc);color:#fbf7ee;border-color:var(--acc);font-weight:600}
+.ealtabs .asof{font-size:11.5px;color:#9a8f7c;margin-left:auto}
+.tabpane[hidden]{display:none}
+.mech-note{font-size:12px;color:var(--ink-soft);background:#f4ecd9;border:1px dashed var(--rule);border-radius:8px;padding:8px 14px;margin:8px 0 0;line-height:1.7}
+</style>
+
+
+<!-- ════════════════════【BODY 段】第一节三时段结构════════════════════ -->
+<div class="ealtabs" role="tablist">
+  <button data-pane="pane-week" class="on" role="tab">近一周</button>
+  <button data-pane="pane-month" role="tab">近一月</button>
+  <button data-pane="pane-all" role="tab">2.28至今</button>
+  <span class="asof" id="mech-asof"></span>
+</div>
+
+<div class="tabpane" id="pane-week">
+{{WEEK_FIGURE}}
+</div><!-- /pane-week -->
+
+<div class="tabpane" id="pane-month" hidden>
+  <div class="mech-note">机械回测 v0.1 · 非记账 · 只展示不进方程：量级＝注册带/观察锚中值（常数化）；宏观驱动不分超预期/预期内；油腿 06-11 起用 15m 分时窗（报复夜看 09:30→23:45 油平、降温看 RTH/盘前/脉冲三窗）、此前回退日线代理；报复夜金腿降级为参考（GC=F 展期污染）；证伪退款·杂质判不了、入残差；AI 缺口为 SMH−SPY 跨截面相对读数、不入本图恒等式。<strong>07-28 起以台账注册账为准（见近一周）。</strong></div>
+  <figure><svg id="svg-month" viewBox="0 0 960 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="机械回测累计贡献曲线 · 近一月"></svg><div class="legend">
+  <span><i class="sw" style="border-color:#3a3126;border-top-width:3.4px"></i>墨线独粗＝实际指数（SPY 日线）</span>
+  <span><i class="sw" style="border-color:#9a8f7c;border-top-style:dashed"></i>灰虚＝残差（兜底）</span>
+  <span><i class="sw" style="border-color:#a3763f;border-top-style:dashed"></i>驼虚＝Σ机械因子</span>
+  <span><i class="sw" style="border-color:#b23b2e;border-top-style:dashed"></i>朱红虚＝ƒ·央行规则不确定性</span>
+  <span><i class="sw" style="border-color:#b05a2a"></i>赭＝地缘·报复夜（预支型）</span>
+  <span><i class="sw" style="border-color:#d99a6c;border-top-style:dashed"></i>浅赭虚＝退款因子（回吐）</span>
+  <span><i class="swbox" style="background:#2e7d6e;opacity:.35"></i>青碧域＝geo·降温兑现（结构性持续）</span>
+  <span><i class="sw" style="border-color:#b8912c"></i>金＝宏观驱动@数据落地</span>
+  <span><i class="sw" style="border-color:#d9cdb2"></i>金竖线＝事件时刻（悬停看详情）</span>
+</div></figure>
+</div>
+
+<div class="tabpane" id="pane-all" hidden>
+  <div class="mech-note">机械回测 v0.1 · 非记账 · 只展示不进方程：量级＝注册带/观察锚中值（常数化）；宏观驱动不分超预期/预期内；油腿 06-11 起用 15m 分时窗（报复夜看 09:30→23:45 油平、降温看 RTH/盘前/脉冲三窗）、此前回退日线代理；报复夜金腿降级为参考（GC=F 展期污染）；证伪退款·杂质判不了、入残差；AI 缺口为 SMH−SPY 跨截面相对读数、不入本图恒等式。<strong>07-28 起以台账注册账为准（见近一周）。</strong></div>
+  <figure><svg id="svg-all" viewBox="0 0 960 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="机械回测累计贡献曲线 · 2.28至今"></svg><div class="legend">
+  <span><i class="sw" style="border-color:#3a3126;border-top-width:3.4px"></i>墨线独粗＝实际指数（SPY 日线）</span>
+  <span><i class="sw" style="border-color:#9a8f7c;border-top-style:dashed"></i>灰虚＝残差（兜底）</span>
+  <span><i class="sw" style="border-color:#a3763f;border-top-style:dashed"></i>驼虚＝Σ机械因子</span>
+  <span><i class="sw" style="border-color:#b23b2e;border-top-style:dashed"></i>朱红虚＝ƒ·央行规则不确定性</span>
+  <span><i class="sw" style="border-color:#b05a2a"></i>赭＝地缘·报复夜（预支型）</span>
+  <span><i class="sw" style="border-color:#d99a6c;border-top-style:dashed"></i>浅赭虚＝退款因子（回吐）</span>
+  <span><i class="swbox" style="background:#2e7d6e;opacity:.35"></i>青碧域＝geo·降温兑现（结构性持续）</span>
+  <span><i class="sw" style="border-color:#b8912c"></i>金＝宏观驱动@数据落地</span>
+  <span><i class="sw" style="border-color:#d9cdb2"></i>金竖线＝事件时刻（悬停看详情）</span>
+</div></figure>
+</div>
+
+<script id="mech-data" type="application/json">{{MECH_JSON}}</script>
+<script>
+(function(){
+  var MECH = JSON.parse(document.getElementById('mech-data').textContent);
+  var NS='http://www.w3.org/2000/svg';
+  var X0=90,X1=830,TOP=52,BOT=492,LBLX=849,LBLW=56;
+  var FACTORS=[
+    {jkey:'f_omc', name:'ƒ',   full:'ƒ·央行规则不确定性', color:'#b23b2e', dash:'6 4', w:1.4},
+    {jkey:'retaliation', name:'报复夜', full:'地缘·报复夜', color:'#b05a2a', dash:null,  w:1.4},
+    {jkey:'refund', name:'退款', full:'退款因子',         color:'#d99a6c', dash:'4 3', w:1.4},
+    {jkey:'deesc', name:'降温', full:'geo·降温兑现',       color:'#2e7d6e', dash:null,  w:1.8, domain:true},
+    {jkey:'macro', name:'宏观', full:'宏观驱动@数据落地',   color:'#b8912c', dash:null,  w:1.4}
+  ];
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  function txt(x,y,s,a){var e=el('text',Object.assign({x:x,y:y},a||{}));e.textContent=s;return e;}
+  function cumsum(arr){var s=0,o=[0];for(var i=0;i<arr.length;i++){s+=(arr[i]||0);o.push(s);}return o;}
+  function niceStep(range){var c=[0.5,1,2,2.5,5,10];for(var i=0;i<c.length;i++){if(range/c[i]<=11)return c[i];}return 10;}
+
+  function render(svgId,startIdx){
+    var svg=document.getElementById(svgId); if(!svg) return;
+    var dates=MECH.dates.slice(startIdx), n=dates.length; if(n<2)return;
+    var actual=cumsum(MECH.actual.slice(startIdx));
+    var resid =cumsum(MECH.residual.slice(startIdx));
+    var fcum={}, ftot={};
+    FACTORS.forEach(function(f){ fcum[f.jkey]=cumsum(MECH[f.jkey].slice(startIdx)); ftot[f.jkey]=0; });
+    var sigmaDaily=[];
+    for(var i=0;i<n;i++){var s=0;FACTORS.forEach(function(f){s+=(MECH[f.jkey][startIdx+i]||0);});sigmaDaily.push(s);}
+    var sigma=cumsum(sigmaDaily);
+    // y 范围
+    var mn=0,mx=0;
+    [actual,resid,sigma].concat(FACTORS.map(function(f){return fcum[f.jkey];})).forEach(function(a){
+      a.forEach(function(v){ if(v<mn)mn=v; if(v>mx)mx=v; });
+    });
+    if(mx-mn<1){mx=mn+1;}
+    var step=niceStep(mx-mn);
+    var lo=Math.floor(mn/step)*step, hi=Math.ceil(mx/step)*step;
+    if(lo>0)lo=0; if(hi<0)hi=0;
+    function Y(v){return TOP+(BOT-TOP)*(hi-v)/(hi-lo);}
+    function X(i){return X0+(X1-X0)*i/n;}  // i in 0..n （基线0 + n 个日末）
+    // 横网格 + y 标签
+    var gg=el('g',{stroke:'#e6dbc4','stroke-width':1}), gl=el('g',{'font-size':11,fill:'#6b5f4e','text-anchor':'end','font-variant-numeric':'tabular-nums'});
+    for(var v=lo;v<=hi+1e-9;v+=step){
+      var y=Y(v);
+      if(Math.abs(v)>1e-9) gg.appendChild(el('line',{x1:X0,y1:y,x2:X1,y2:y}));
+      gl.appendChild(txt(82,y+4,(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1).replace('-',''),null));
+    }
+    svg.appendChild(gg); svg.appendChild(gl);
+    svg.appendChild(txt(82,TOP-6,'累计贡献 (pp)',{'font-size':11.5,fill:'#a3763f','text-anchor':'end'}));
+    // 零轴
+    svg.appendChild(el('line',{x1:X0,y1:Y(0),x2:X1+8,y2:Y(0),stroke:'#3a3126','stroke-width':1.6}));
+    // x 日期刻度（稀疏 ~7 个）
+    var xt=el('g',{'font-size':10,fill:'#6b5f4e','text-anchor':'middle'});
+    var ticks=Math.min(7,n), seen={};
+    for(var k=0;k<=ticks;k++){
+      var idx=Math.round(k*n/ticks); if(idx>n)idx=n;
+      var di=idx-1; // 日末索引（0 基线特殊）
+      var label, sub;
+      if(idx===0){label=MECH.dates[startIdx].slice(5)+' 前';sub='基线';}
+      else{label=dates[di].slice(5);sub='';}
+      if(seen[label])continue; seen[label]=1;
+      xt.appendChild(txt(X(idx),BOT+16,label,null));
+      if(sub)xt.appendChild(txt(X(idx),BOT+30,sub,{'font-size':9,fill:'#9a8f7c'}));
+    }
+    svg.appendChild(xt);
+    // 事件竖线（金·悬停看详情）
+    var eg=el('g',{stroke:'#b8912c','stroke-width':1.2,opacity:0.7});
+    var dateIdx={}; dates.forEach(function(d,i){dateIdx[d]=i+1;}); // +1 因基线占 0
+    MECH.events.forEach(function(ev){
+      var ii=dateIdx[ev.date]; if(ii==null)return;
+      var ln=el('line',{x1:X(ii),y1:TOP+10,x2:X(ii),y2:BOT});
+      var ti=el('title',{}); ti.textContent=ev.date.slice(5)+' · '+ev.title; ln.appendChild(ti);
+      eg.appendChild(ln);
+    });
+    svg.appendChild(eg);
+    // 折线
+    function poly(cum,color,w,dash){
+      var pts=[]; for(var i=0;i<=n;i++){pts.push(X(i).toFixed(1)+','+Y(cum[i]).toFixed(1));}
+      var p=el('polyline',{points:pts.join(' '),fill:'none',stroke:color,'stroke-width':w});
+      if(dash)p.setAttribute('stroke-dasharray',dash);
+      return p;
+    }
+    // 端点标注（pill + tooltip），按 y 去碰
+    var ends=[];
+    ends.push({cum:actual,color:'#3a3126',name:'实际',full:'实际指数（SPY 日线累计）',w:2.6,dash:null,r:3.4});
+    ends.push({cum:resid, color:'#9a8f7c',name:'残差',full:'残差（实际−Σ机械因子）',w:1.5,dash:'3 4',r:3});
+    ends.push({cum:sigma, color:'#a3763f',name:'Σ因子',full:'Σ机械因子合计',w:1.8,dash:'9 3',r:3});
+    FACTORS.forEach(function(f){
+      var arr=fcum[f.jkey], tot=arr[arr.length-1];
+      if(Math.abs(tot)<1e-9 && arr.every(function(v){return Math.abs(v)<1e-9;}))return; // 全零不画
+      ends.push({cum:arr,color:f.color,name:f.name,full:f.full,w:f.w,dash:f.dash,r:2.6,domain:f.domain});
+    });
+    // 色域（结构性持续因子·向近一周看齐）：先铺域、折线后画压其上（Doctor 2026-08-07 批 · 任务#21）
+    ends.forEach(function(e){
+      if(!e.domain)return;
+      var dp="M"+X(0).toFixed(1)+","+Y(0).toFixed(1);
+      for(var di=0;di<=n;di++){ dp+=" L"+X(di).toFixed(1)+","+Y(e.cum[di]).toFixed(1); }
+      dp+=" L"+X(n).toFixed(1)+","+Y(0).toFixed(1)+" Z";
+      svg.appendChild(el('path',{d:dp,fill:e.color,opacity:0.14,stroke:'none'}));
+    });
+    // 画线
+    ends.forEach(function(e){ svg.appendChild(poly(e.cum,e.color,e.w,e.dash)); });
+    // 端点 pill（按 y 排序去碰，最小间距 17px）
+    var placed=ends.map(function(e){return {e:e, y:Y(e.cum[n])};});
+    placed.sort(function(a,b){return a.y-b.y;});
+    for(var j=1;j<placed.length;j++){ if(placed[j].y-placed[j-1].y<17) placed[j].y=placed[j-1].y+17; }
+    var labg=el('g',{'font-size':9.5,'font-variant-numeric':'tabular-nums'});
+    placed.forEach(function(p){
+      var e=p.e, yv=e.cum[n], yd=Y(yv);
+      svg.appendChild(el('circle',{cx:X(n),cy:yd,r:e.r,fill:e.color}));
+      if(Math.abs(p.y-yd)>2) labg.appendChild(el('line',{x1:X(n)+6,y1:yd,x2:LBLX-2,y2:p.y,stroke:'#d9cdb2','stroke-width':1}));
+      var g=el('g',{});
+      var ti=el('title',{}); ti.textContent=(yv>0?'+':yv<0?'−':'')+Math.abs(yv).toFixed(2).replace('-','')+'pp（'+e.full+'）'; g.appendChild(ti);
+      g.appendChild(el('rect',{x:LBLX,y:p.y-7.5,width:LBLW,height:15,rx:7,ry:7,fill:'#fbf7ee',stroke:'#d9cdb2'}));
+      var te=txt(LBLX+LBLW/2,p.y+3.5,e.name,{'text-anchor':'middle',fill:e.color}); g.appendChild(te);
+      labg.appendChild(g);
+    });
+    svg.appendChild(labg);
+  }
+
+  var n=MECH.dates.length;
+  var monthStart=Math.max(0,n-22);
+  render('svg-month',monthStart);
+  render('svg-all',0);
+  var asof=document.getElementById('mech-asof');
+  if(asof)asof.textContent='长段＝机械回测 v0.1 · 数据截至 '+MECH.asof;
+  // 标签切换
+  var btns=document.querySelectorAll('.ealtabs button');
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      btns.forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      ['pane-week','pane-month','pane-all'].forEach(function(id){
+        var p=document.getElementById(id); if(p)p.hidden=(id!==b.getAttribute('data-pane'));
+      });
+    });
+  });
+})();
+</script>
