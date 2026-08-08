@@ -34,7 +34,7 @@ type: log
 - [ ] **巡检脚本/镜像适配 Gateway store（2026-08-02 迁移副产 · 观察条 · 同日数据根迁出后改写）**：19 班 store 已迁 `~/Gateway-workspace/Scheduled/`（D14），`scheduler_snapshot.py` 的 `LIVE_TREE` 仍指 `~/Claude's workspace/Scheduled/`（Cowork store，19 班 disable 后冻结）。**新机制事实（2026-08-02 实测，改写本条的关键）**：保护**跟随 store**——`~/Gateway-workspace/Scheduled` 沙箱挂载同样被拒，故原设想「镜像脚本加第二源、沙箱自动化」**此路不通**；gateway 树的读取只有两条路：Mac 原生（`scheduler_snapshot.py` 已备 `GATEWAY_TREE` 常量、未接线）或 Doctor 终端 rsync 进镜像。**现状**：① `scheduler-weekly-audit` 已于 08-02 20:00:59 PDT 在本壳首点火（lastRunAt 实据），其产出/噪音表现待核——它在本壳跑脚本必报「live 树读不到」（`~/Claude's workspace` 沙箱不可达），每周一次的噪音 or 有价值告警，观察；② 巡检的 git diff 变更检测只见 Cowork 侧（冻结），**Kimi 侧班 prompt 变更无人盯**（如本次 longyu sed 修正即属此类）；③ `_DEPRECATED_Scheduled_20260802` 与新 live store 并存，`DEAD_ARCHIVED_GLOB` 语义待重估；④ `DEAD_TREE`（`~/Documents/Claude/Scheduled`）语义已改注释为「正常=不存在、再现=异常」。触发点：下次周巡检（08-09）后据实际表现定改法。
   依据：`logs/checkpoints/2026-08-02_19班迁Kimi壳与三级司法_PRD.md` §三 非交付项 · D13/D14 遗留
 
-- [ ] **Artifacts · `touzhijunjun-workflow` 幽灵查证（2026-08-02 挂 · Artifact 层盘点时逮到）**：盘上有目录（12K，含 index.html），`list_artifacts` manifest 返回的 8 个里**没有它**——24 小时内「盘上有/清单无」第三例（launchd 第三 job · handshake 残目录 · 本条）。候选定性：旧 workflow 卡片被 artifact 化后又从 manifest 摘除，目录残留。**佐证（2026-08-02 镜像首跑）**：其 index.html mtime＝2026-07-05 10:46，与 workspace 整根拷贝事件同一分钟 ⇒ 大概率 7-05 迁移残留、非活跃资产。查法：看该 index.html 内容判断是否已被 `touzhijunjun-perspective-refresh` 班取代；已废则照 handshake 先例归档。自 2026-08-02 起 `_artifacts_manifest.txt`（周班产）可让此类幽灵在 git diff 现形。**未核，勿据本条下结论。**
+- [ ] **Artifacts · `touzhijunjun-workflow` 幽灵查证（2026-08-02 挂 · Artifact 层盘点时逮到）**：盘上有目录（12K，含 index.html），`list_artifacts` manifest 返回的 ~~8~~ **6** 个（2026-08-08 重取）里**没有它**——24 小时内「盘上有/清单无」第三例（launchd 第三 job · handshake 残目录 · 本条）。候选定性：旧 workflow 卡片被 artifact 化后又从 manifest 摘除，目录残留。**佐证（2026-08-02 镜像首跑）**：其 index.html mtime＝2026-07-05 10:46，与 workspace 整根拷贝事件同一分钟 ⇒ 大概率 7-05 迁移残留、非活跃资产。查法：看该 index.html 内容判断是否已被 `touzhijunjun-perspective-refresh` 班取代；已废则照 handshake 先例归档。自 2026-08-02 起 `_artifacts_manifest.txt`（周班产）可让此类幽灵在 git diff 现形。**未核，勿据本条下结论。**
 
 - [ ] **Artifacts · `龙鱼五力个股库看板` 幽灵归档（2026-08-03 挂 · 数据根搬迁清点时逮到 · 处置已定、只差 Doctor 终端执行）**：`~/Gateway-workspace/Artifacts/龙鱼五力个股库看板/`（index.html mtime **2026-07-05 20:28**），不在 `list_artifacts` manifest 的 6 个之内——「盘上有/清单无」**第四例**（launchd 第三 job · handshake 残目录 · touzhijunjun-workflow · 本条），07-05 拷贝事件族，上代看板残留躯壳。处置已定（D14）：照 handshake 先例归档。Doctor 终端：
   `mkdir -p ~/Gateway-workspace/Artifacts/_archived && mv ~/Gateway-workspace/Artifacts/龙鱼五力个股库看板 ~/Gateway-workspace/Artifacts/_archived/龙鱼五力个股库看板_DEPRECATED_20260803`
@@ -46,7 +46,7 @@ type: log
 - [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
   ② **`docs/兑现变更_*.md` 让脚本接管命名**：现有 9 件 untracked 里文件名分裂成两种（6 件 `2026-07-22` 带横杠 / 3 件 `20260723` 不带），标题分裂成三种（「兑现变更」/「兑现状态变更」/「兑现状态变更留痕」），而已 tracked 的 19 件**全部**不带横杠。Doctor 定**原样入仓**（不改名——已发生的历史就是这样，改名会让它看起来比实际整齐）。**根治点是成因不是存量**：全仓 grep `兑现变更_` 在 `.py`/`.sh` 里**零命中** ⇒ 这批是会话里手写落盘、无脚本约束，命名全靠当次记得（G-X103）。对照组 `docs/escalation_shadow_*` 有 `tools/escalation_shadow.py` 生成，9 件命名零漂移。⇒ 由 `closure_engine` 侧或新起小脚本统一产出文件名与标题。
-  ③ **`tools/sync_hot_sectors.py` 接线还是废弃**：104 行，07-30 新建，解决 `hot_sectors` **孤儿表**（全量 grep `INSERT INTO hot_sectors` 零命中，库里 36 行停在 2026-05-12、约 50 个交易日未更）。已按裁定入仓，**但全仓引用数＝0——没有任何脚本或文档调它**。属「已完工待接线」。⇒ 定：接进日更管道，还是标 `_DEPRECATED_`。**入仓只是让它不被遗忘，不等于它在跑。**
+  ③ **`tools/sync_hot_sectors.py` 接线还是废弃**：104 行，07-30 新建，解决 `hot_sectors` **孤儿表**（全量 grep `INSERT INTO hot_sectors` 零命中；~~库里 36 行停在 2026-05-12~~ 2026-08-08 现核：277 行、max 2026-07-30——07-30 回填 +241 后又 9 天未更，仍零调用）。已按裁定入仓，**但全仓引用数＝0——没有任何脚本或文档调它**。属「已完工待接线」。⇒ 定：接进日更管道，还是标 `_DEPRECATED_`。**入仓只是让它不被遗忘，不等于它在跑。**
   依据：`logs/checkpoints/2026-08-01_两仓清账_分类清单.md`
 
 - [ ] **brain · 8 个项目目录缺 `architecture/系统概览.md` → `brain-save` Step 4 对它们一直空转（2026-07-31 挂 · 由 G-X111 补扫查出 · 同日 ⚠ 名单订正 · ② 已落盘待您勾）**：`brain-save` Step 4 规定「同步项目状态 → 更新 `{项目}/architecture/系统概览.md` 的最后活跃字段」，缺文件即静默跳过、无人察觉；`dashboard-snapshot.py` 的项目卡也少一个信息源。
@@ -63,6 +63,7 @@ type: log
   **归属已判明：不是本次改号造成的**——本次只动 14 个 id，每个旧号都还留 1 条，新号全经「全文零出现」预检；这 7 个无一在改动清单内。`EXP-20260617-004-P` 尤其能证明：取新号时正因它**在正文被提及**而占了序号 4、才跳到 005，但它**从来没有对应的 `###` 条目**。
   **性质**：与撞号相反且**更隐蔽**——撞号是「一号指两条」（至少还能跳到某条）、悬空是「一号指零条」（彻底断链，且 `[[经验库#EXP-…]]` 点了没反应，容易被当成渲染问题而非数据问题）。
   **下一步**：逐个查这 7 个的引用上下文，判是①编号笔误（改引用）②条目被改名（补别名或改引用）③条目从未写成（补写或删引用）。**需 Doctor 参与判 ③**。
+  **⇒ 2026-08-08 /todo 逐条现核收口（修复已落盘 · 待 Doctor 勾）**：**3 假悬空**——`0607-001`/`0607-008`/`0727-005` 系日志区间简写被边界 grep 误捕，实指 `-P` 后缀条目均在；**2 后缀省略已消歧**——通用教训 L288 改 `EXP-20260613-005-P／006-P`；龙鱼 GOTCHAS 自编号撞经验库名空间，改 `NOTE-20260625-001`（L32）＋系统概览 L15 引用同步；**2 真悬空已补**——`0617-004-P` 条目头补 -P（L965，3 处既有引用全接通）；`0723-003` 删源收官三闸条目补写落经验库 L158。复扫：全库裸 005 / 裸 0625-001 残留＝0。
 
 - [ ] **风险日报 · 化合物 C1 回测的解锁项与准入项（2026-07-27 挂）**：① ~~★**AI 杀伤指数从今起逐日快照成序列**~~ → **✅ 已完成（2026-08-03 /todo 现核 · Doctor 勾定）**：`data/ai_kill_history.jsonl` 已建并逐日累积（8 行 · 班每日自动追加 · 今晨已写 08-04 行）；② **杠杆冲刺**（融资5日急增≥3%·控t5 后 2.20·四窗齐稳·7簇）进生产前须过准入全流程（阈值网格 + best-of-grid 置换·[[剑酒青丘/frameworks/回测准入机制]] / EXP-20260727-005-P）；③ 数据 fetch（Doctor 终端）：解禁日历 / 定增缴款日历（并入「广义募资比」GDR）· FOMC 日历 · 财政存款或 OMO 净投放（税期真剂量·大小月代理已证无效）· BZ=F 2010+ 回补（C1 油价对扩到 5 区制重跑）；④ C1 报告 §六 artifact 建议待 Doctor 总审（综合温度「十分位无单调分辨力」注记 / 共热计数 K 部件含全绿注记 / 「虹吸×弱承接」二元→剂量分档）；⑤ 回测 harness 是否落 `Projects/风险日报/scripts/` 待裁（现仅沙箱临时）。报告：`Projects/Financial/剑酒青丘/回测报告/2026-07-27_风险日报_化合物回测_C1.md`（BT-17·2026-07-28 归集后正本）。
 
@@ -104,7 +105,7 @@ type: log
 
 - [ ] **工作流值守 · 取数链路三件（2026-07-30 从当日三场日志补挂）**
   ① **us_anchor ×19 工作流值守**：沙箱 `web_fetch` 对 Yahoo chart 返回**空体**（Chrome 桥未连时无退路）→ 断供风险已入 GOTCHAS；若持续，改「构造 curl 命令交 Doctor 终端」方案固化进流程。
-  ② **us_anchor 手工 fetch 补 SPY 决定日反应**（滞后 2 天）。
+  ② ~~**us_anchor 手工 fetch 补 SPY 决定日反应**（滞后 2 天）~~ → **✅ 已完成（2026-08-08 /todo 现核 · Doctor 勾定，CC 代记留痕）**：`us_anchor_daily` MAX(trade_date)=20260807、7,500 行，已追平，无需手工补。
   ③ **TACO 复刻 3/6 掉线查因**。
 
 - [ ] **基建与另场专项三件（2026-07-30 从当日三场日志补挂）**
@@ -119,7 +120,7 @@ type: log
   **已带最小防护（非根治）**：放回前比对源库 mtime，与拷贝时刻不一致即**放弃放回、只报告**、副本留在 `/tmp` 交 Doctor 裁决。判据刻意用 mtime 而非时间窗——数据驱动，合项目「不信系统时钟」的一贯纪律。**局限**：它只能挡住"检测到冲突就退让"，退让后那一天的补数就丢了（需人工介入），且不解决"谁该拥有这两张表"。
   **同族**：上一场记的「五表双写」（`theme_etf`/`market_amount`/`limit_list`/`intl_index`/`kr_stocks` 被 launchd 02:30 与 zhuzhao 10:00 各写一遍）——**「两个主人＝没有主人」是同一个病**，理清职责需连 launchd、zhuzhao、backfill 三方一起做，且要 Doctor 定权属。**建议单开一场。**
 
-- [ ] **烛照九阴 · `conviction` 回填未收口（2026-07-30 挂于日志 · 2026-07-31 补挂 TODO）**：`dim4_stock_analysis` 缺 **13 个交易日 / 99 行**（`06-30~07-14` 连续 11 天 ＋ `07-22` ＋ `07-26`）。手术方仍在进行，CC 未介入。
+- [ ] **烛照九阴 · `conviction` 回填未收口（2026-07-30 挂于日志 · 2026-07-31 补挂 TODO）**：`dim4_stock_analysis` ~~缺 13 个交易日~~ **日期缺口已收窄为 2 天（`07-03` / `07-10`）＋ conviction 空 99 行**（2026-08-08 /todo 现核 recap.db：总 499 行，原 13 天已回填 11 天）。手术方仍在进行，CC 未介入。
 
 - [ ] **烛照九阴 · 07-30 晚间两轮写库无日志（2026-07-30 挂于日志 · 2026-07-31 补挂 TODO · 2026-08-03 /todo 收窄）**：21:35（两日入库）与 22:02（`hot_sectors` 回填 +241）**两事件当日日志仍无认领**（行情日志 0 命中已核）。~~课件入库日志记 `recap_daily=190` 而**实测 192**~~ → **此指控不实（2026-08-03 /todo 核）**：课件日志 L103 明记「recap_daily 190→192」、L105 记放回成功，首尾两态都在。待相关会话补记两事件。
 
@@ -133,11 +134,20 @@ type: log
 
 - [ ] **风险日报快照 r6/r7 渲染目验（2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md`）**：r6/r7 象限标签间距是估算；risk-daily artifact 已于 2026-08-03 09:27 更新（list_artifacts 实证），r7 卡应已上线——现在即可目验，标签重叠则调 OFF。
 
-- [ ] **哨兵班明早 02:40 自然确认（2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-哨兵班400风控二分定位.md`）**：手动终验已过（今日 03:47 手动 Run now，注册表 lastRunAt 实证）；若 08-04 02:40 自动点火再 400 则存在组合效应，需重启探针。
-
 - [ ] **财新 8/3 联手干预全文（低优先 · 2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元能否救回与禁抛美债核验.md`）**：付费墙，FIMA 句现仅经 meta 描述 + 金十交叉确认、未读全文；Doctor 若有订阅可取全文入档补强。
 
 - [ ] **看门狗班沙箱挂载缺失治理（2026-08-03 第二轮 /todo 逮到 · Doctor 定「CC 查配置方法再报」）**：`us-close-backfill`（14:30 看门狗）启动时沙箱**未挂载**烛照九阴项目与 Market-Data 目录（仅 brain + 白泽观星/engine），本轮靠临时申请获批才跑通核对；不补则每轮 14:30 都要人工批一次、无人值守时即失明。**下一步**：CC 查 scheduled task 的目录授权/挂载固化机制，出可批方案。同类班（zhuzhao / market-data-daily 等）是否同样缺挂载，一并扫（G-X111 同族扫）。
+  **进展（2026-08-08 /todo 现核）**：机制查明——`references/scheduled-live-mirror/README.md` 明记沙箱挂载根被管理员限在 `~/Documents`，**无全局固化入口**，惯例是各班 SKILL.md 自写「前置挂载确认」段（sentinel/recap-ingest 班均有）。同族扫：20 班 08-07 全部正常点火（lastRunAt 逐班过），仅本班 08-03 报过缺挂载。**剩余**：给本班 SKILL.md 补挂载前置段——文件在 Gateway 保护区，需 Doctor 贴该班现 prompt（由 CC 走 update_scheduled_task 改）或 app 侧加挂载授权。
+
+- [ ] **DVA · B 系列收口 7 件（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-07-DVA全链路收口与双边验收.md`）**：B3 fuxi 归档 `.wtest`＋EXCLUDE（VV 侧）· B4 持映射表 fuxi 侧改名——执行前 fuxi 现跑同脚本刷新候选集＋孤儿现查；**⛔3 孤儿处置与「Downloaded 175 件截断 `*_data.json` 是否扩层改名」双裁定待 Doctor** · B0 双前置闸核查通过后执行（首选单文件重跑 import，草案 `docs/B0_老石补录insert草案_20260807.sql`）· B5 Mx-Shell 命名归一（fuxi）· B6 三作者 authors 树目录残余查证（fuxi，严重度已降级）· B7 AIGC秋雅查源后 Doctor 裁去向 · Predictive History（YouTube 148）处置待 Doctor 裁定（VV 不动）。B4 映射表 `docs/B4_截断id映射表_20260807.md`（60 组 ✅57 ⛔3）已核在盘。
+
+- [ ] **EAL · 提案裁定队列（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-04-事件归因台账美化与v1.2入册.md` ＋ `logs/2026-08-06-回测库建成移交VV与台账v1.3.1闭合.md` · Doctor 2026-08-08 定：P 系列留周末专场）**：① **P-20**（geo·降温兑现 VIX 分项第二样本违例 · 三选一：加水平条件／◌不可分离／回炉——裁前该因子暂停归因资格、记账行标 ◌）② **P-21**（宏观数据/贴现率腿立项——2-E 触发线已达）③ **P-22**（宏观驱动 @数据落地 股票腿通道归属 · 三选一：方向不定只锚量级／regime 子句／维持原签名记变体——08-07 NFP 首测已记证伪样本）④ **量级带裁定**（六空带·须再攒 1-2 个独立事件轮，退款/降温各仅 1 轮——被数据积累阻塞）⑤ 台账 artifact v1.3.1/v2.8 渲染目验（artifact 08-07 19:34 PDT 已重绘 · 待 Doctor 目验）⑥ 封档观察：VIX/^TNX 数据源升档（Polygon Advanced/Indices）再议——当前封档。~~Kospi 笔误订正~~（**2026-08-08 Doctor 准，已改 2-C 原文 6,695.45→6,595.45**）· ~~斜纹区是否还原~~（**2026-08-08 Doctor 确认：不还原，退役定案**）。08-04 补数 curl ×4 大部已被值守班闭合或过时，作废不挂。
+
+- [ ] **EAL 回测库 · events 表补 `trade_date` 列（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-06-回测库建成移交VV与台账v1.3.1闭合.md`）**：周末事件映射规则写死（方向①终审复算差一天的根因；谁执行都行）。2026-08-08 现核：`Database/剑酒青丘/backtest/attribution.db` events 表 25 行、仍无该列。涉 DB 写，执行前需 Doctor 批。
+
+- [ ] **龙鱼 3 件（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-06-龙鱼白泽双库修复与空analyses审计.md`）**：① 真实浏览器目验龙鱼看板（泡泡玛特卡片/排序/弹窗/移动端——reviewer 认领，可随时开）② **氦气/六氟化钨/稀土/原油 价格锚点过期**（weekly_health warns 已显性化——周日白泽班重点，**明天 08-09 01:09 PDT 即班**）③ 泡泡玛特六维研究（待研究标记，排期未定）。
+
+- [ ] **渊图 2 件（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-05-渊图3篇入库_CCL年份偏移修补.md` ＋ `logs/2026-08-06-渊图4篇入库.md`）**：① batch 收尾加「解析日期≠文件年份」显式汇总行（07-28 已建议未实装，已三次复发）② 太空算力篇（07-30）处置——2026-08-08 现核 `raw/_hold_跨域待定/` 已积 6 篇（量子科技 07-09／药明康德 07-13／油运 07-16／CXO 07-17／AI 治理 07-17／太空算力 07-30），hold 清算待 Doctor 裁。
 
 ---
 

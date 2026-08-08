@@ -29,7 +29,7 @@ project: 龙鱼五力
 
 <!-- 在下方追加新条目 -->
 
-## [EXP-20260625-001] 在 Cowork 沙箱端到端实跑龙鱼引擎 + DeepSeek 评分
+## [NOTE-20260625-001] 在 Cowork 沙箱端到端实跑龙鱼引擎 + DeepSeek 评分
 **状态**: ✅ 已解决（实测德明利 001309.SZ 通）
 **优先级**: 🟢 低（操作经验）
 **触发场景**: 想在 Cowork 沙箱里直接跑 `five_forces_engine_v3.py` + `score_with_llm.py` 做连通性/打分实测，而非只贴命令给 Doctor 终端。
