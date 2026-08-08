@@ -2,7 +2,7 @@
 title: 烛照九阴 · GOTCHAS（已知坑）
 tags: [烛照九阴, gotchas]
 created: 2026-07-19
-updated: 2026-07-22
+updated: 2026-08-08
 status: active
 type: resource
 project: 烛照九阴
@@ -201,7 +201,9 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **来源** → brain/logs/2026-07-22-五因regen验收与resume开声固化.md · 承 [[2026-07-21-级别读数占位根因定位与语音链路坐实]] disk-I/O 线
 
 
-## ERR-20260722-003 · 沙箱经 FUSE 整库写回，大表(stock_daily)不 durable 落 Mac 真实盘 → 日报隔天退回
+## [ERR-20260722-003] 沙箱经 FUSE 整库写回，大表(stock_daily)不 durable 落 Mac 真实盘 → 日报隔天退回
+
+**状态**: ✅ 已根治（2026-07-22 写库迁 Mac 原生 launchd · plist 指向 `ops/mac_daily_marketdata.py` 在产、.sh 版已弃归档 · 2026-08-08 复盘补标；通用层 FUSE 隐患由「沙箱写库优先交 Mac 原生侧」规覆盖）
 
 **现象**：Doctor 报「复盘日报 artifact 落后一天」。07-23 中午库里 `stock_daily`/五张烛照表停 07-21、唯 `daily_market` 到 07-22。句芒 07-22 日志明写当时已把 07-22 落进 stock_daily（+5526、原子 mv、immutable 复读验过 max=20260722），但 **Doctor 自己 Mac 原生盘复核仍 stock_daily=20260721**。
 
@@ -214,14 +216,14 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **同族**：disk-I/O 家族（ERR-20260719-003 历史 0-fill · 五因场热日志 -journal）· 句芒「放回必 cp→原子 mv、绝不 cp 盖原文件」。**来源** → brain/logs/2026-07-22-日报隔天退回根治与Mac原生Phase1.md
 
 ## [ERR-20260728-005] 同库两个「全市场成交额」定义相差 25%，无一处注明（同名异义）
-**状态**: ⏳ 待择一（已注明·2026-07-28 审计）
+**状态**: ✅ 已裁定（2026-07-28 甲案·Doctor 批）：按用途定源＋禁跨源——分位/比值/回测类锁 `market_amount_daily.total_trillion`、水平显示/容量类锁 `daily_market.volume_trillion`；见 `Database/Market-Data/MANIFEST.md`「双源定源裁定」节。（2026-08-08 复盘补同步：本条「待择一」系档案滞后——甲案同日已批、状态行未回写，NOTE-20260719-001 族）
 **优先级**: 🔴 高（任何「全市场成交额分位」选错源结论即偏 25%）
 **触发场景**: `daily_market.volume_trillion`（≡SUM(stock_daily.amount)/1e9·全A逐股加总·20260727=2.089万亿）vs `market_amount_daily.total_trillion`（tushare 沪深两市官方口径·同日 1.6649万亿），系统性 +25~26%。
 **解决方案（临时）**: 已在 `Database/Market-Data/MANIFEST.md` 加「同名异义警示」节；正式择一并统一消费方待 Doctor 裁。
 **预防措施**: 新表引入时先做「同名概念对撞检查」；25% 级安静偏差比全 0 伪列更危险（后者一眼可穿）。
 
 ## [ERR-20260728-006] 涨跌停家数双源不一致（差 3–22%），远超 MANIFEST 声明的 ±2 家
-**状态**: ⏳ 待择一（已注明）
+**状态**: ✅ 已裁定（2026-07-28 甲案·Doctor 批）：`emotion_cycle` 存量链锁 `daily_market.limit_up/down` 不换（390 天分位历史自洽·换源=断代重校）；新增用途一律 `limit_list_daily`（个股级清单真源·连板梯队必经）；见 `Database/Market-Data/MANIFEST.md`「双源定源裁定」节。（2026-08-08 复盘补同步：本条「待择一」系档案滞后——甲案同日已批、状态行未回写）
 **优先级**: 🟡 中
 **触发场景**: `daily_market.limit_up/limit_down` vs `limit_list_daily` 计数：0723 涨停 127 vs 116、0727 119 vs 111、0720 跌停 257 vs 210（差 22%）。日报快照与 emotion_cycle 走 daily_market 支。
 **预防措施**: 同上「同名异义对撞检查」；emotion 引擎若换源须整体重校分位。
