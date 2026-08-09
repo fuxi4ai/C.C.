@@ -14,6 +14,9 @@ type: log
 
 ## 已完成
 
+- [x] **EAL 回测库 · events 表补 `trade_date` 列（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-06-回测库建成移交VV与台账v1.3.1闭合.md`）**：周末事件映射规则写死（方向①终审复算差一天的根因；谁执行都行）。2026-08-08 现核：`Database/剑酒青丘/backtest/attribution.db` events 表 25 行、仍无该列。涉 DB 写，执行前需 Doctor 批。**⇒ 2026-08-08 Doctor 批 CC 执行**（先 dry-run 报 diff、点头后才真写）；库未挂载，挂载后开做。
+  **⇒ 2026-08-08 收口**：列已落库（events 第 7 列 `trade_date TEXT`），25 行回填守恒——17 当日 + 4 顺延（02-28 开战→03-02、06-14 MOU→06-15、08-02 两件→08-03）+ 4 NULL（NFP 08-07 / Jackson Hole 08-27 / FOMC 09-16 日历未及 + '2026-05' 月级 MOU 粒度不足）；integrity_check 前后及真库三重 ok。口径三方写死：当日或之后首个 SPY 交易日（= `trade_day_on_or_after`，越窗/月级留 NULL）。`update_attribution_db.py` 已插防腐钩子（commit 前只补 NULL、幂等、异常不阻塞发布），`知会VV-events表trade_date列_20260808.md` 落 backtest/。首验观察点＝VV 下次发布应打印「补映射 1 行」（NFP 行 NULL 自解）。（**Doctor 2026-08-08 勾定 · CC 依 2026-08-03 长期授权执行并留痕**）
+
 - [x] **看门狗班沙箱挂载缺失治理（2026-08-03 第二轮 /todo 逮到 · Doctor 定「CC 查配置方法再报」）**：`us-close-backfill`（14:30 看门狗）启动时沙箱**未挂载**烛照九阴项目与 Market-Data 目录（仅 brain + 白泽观星/engine），本轮靠临时申请获批才跑通核对；不补则每轮 14:30 都要人工批一次、无人值守时即失明。**下一步**：CC 查 scheduled task 的目录授权/挂载固化机制，出可批方案。同类班（zhuzhao / market-data-daily 等）是否同样缺挂载，一并扫（G-X111 同族扫）。
   **进展（2026-08-08 /todo 现核）**：机制查明——`references/scheduled-live-mirror/README.md` 明记沙箱挂载根被管理员限在 `~/Documents`，**无全局固化入口**，惯例是各班 SKILL.md 自写「前置挂载确认」段（sentinel/recap-ingest 班均有）。同族扫：20 班 08-07 全部正常点火（lastRunAt 逐班过），仅本班 08-03 报过缺挂载。**剩余**：给本班 SKILL.md 补挂载前置段——文件在 Gateway 保护区，需 Doctor 贴该班现 prompt（由 CC 走 update_scheduled_task 改）或 app 侧加挂载授权。
   **⇒ 2026-08-08 收口**：前置段已补入——SKILL.md 新增「前置〇：挂载」段（缺挂载即用 `request_cowork_directory` 申请 Database + 烛照九阴两目录 / `ls /sessions/*/mnt/` 确认 / 挂不上则简报明写「失明可见」再停）＋「前置：路径」cd 行改 `/sessions/*/mnt/烛照九阴` glob 优先；Doctor 批准草案后 CC 走 update_scheduled_task 落盘、回读验证（段在 L35-39、cd 在 L44），其余内容未动。首次实战检验＝08-10 14:30 班。（**Doctor 2026-08-08 勾定，CC 代记留痕并迁档**）
