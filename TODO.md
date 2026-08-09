@@ -20,7 +20,7 @@ type: log
 - [ ] **渊图 · 胜宏科技 M9/M10 认证法定披露校验窗口（2026-08-05 挂 · 2026 年 8 月底半年报）**：核实札记已定级——「M9 材料产品验证完成」P2 可坐实，「全球唯一通过英伟达 Rubin 正交背板验证」坐不实（公司 03-18 法定口径「正积极推进」、07-31 董秘回避）。**8 月底半年报是第一个法定披露校验点**：届时核对 M9/M10 认证表述是否升级，据此决定 hedged patch 起草/作废。旁线：SemiAnalysis「Rubin 因正交背板卡点延迟一年量产」（P1 外媒，与「已过验证」叙事正面冲突）若被英伟达官方/供应链否认 → 反向信号降级；若被证实 → 本身即图谱级信号（正交背板卡点 → VR200 子图），可另立核实。
   依据：`Database/行业研究/raw/核实/2026-08-05-胜宏科技Rubin验证核实札记.md` · `logs/2026-08-05-渊图-胜宏科技过验证P2核实.md`
 
-- [ ] **风险日报 · AI 面板双硬编码根治（2026-08-03 挂 · Doctor 定是否做）**：`build_risk_daily.py` 的 `AI_RISKS`（7 条）与 `ai_tech_alarm_snapshot.html` 的 `RISKS`（7 条）是**两份手工维护的硬编码**——2026-08-03 注册 r7 时已手工对齐，但日后一方改分另一方不会跟（两处真源同族病）。根治 = 构建脚本改读 `Database/行业研究/watch/alarm_watchlist.jsonl`（watchlist 已是周班维护的活真源，含 scores/kill_score），快照亦可选同源生成。**注意差异**：快照 r6=卖铲人**不在** watchlist（该条只存在于快照/脚本），合并前先裁定卖铲人归何处。**⇒ 2026-08-08 Doctor 裁定根治**：`build_risk_daily.py` 改读 watchlist + r6 卖铲人补入 `alarm_watchlist.jsonl`（单一真源）；风险日报仓未挂载，挂载后出逐文件 patch。**⇒ 2026-08-08 四件全落**：① `alarm_watchlist.jsonl` 补登 r6 卖铲人（08-03 撞号漏登清算）+ r4 U8→7/kill79→77 + r2 prox8→9 口径回填 + 全 7 行补 `display_note`；② `build_risk_daily.py` 删 `AI_RISKS` 硬编码、改 loader 读 watchlist 单一真源（fail-visible·无硬编码兜底，py_compile ✓，loader 预演与 08-07 live JSON 同序同分）；③ yuantu-alarm-weekly 班 prompt 已同步（「本周 7 个」+ 五轴/kill/display_note 归 Risk Daily 单一真源权属注记 + 顺带归一既有双 frontmatter）；④ 快照与脚本双硬编码并源完成。**待今晚 risk-daily 班首验**（构建输出无 ⚠ alarm_watchlist 行即过），过后再提请 Doctor 勾。
+- [ ] **风险日报 · AI 面板双硬编码根治（2026-08-03 挂 · Doctor 定是否做）**：`build_risk_daily.py` 的 `AI_RISKS`（7 条）与 `ai_tech_alarm_snapshot.html` 的 `RISKS`（7 条）是**两份手工维护的硬编码**——2026-08-03 注册 r7 时已手工对齐，但日后一方改分另一方不会跟（两处真源同族病）。根治 = 构建脚本改读 `Database/行业研究/watch/alarm_watchlist.jsonl`（watchlist 已是周班维护的活真源，含 scores/kill_score），快照亦可选同源生成。**注意差异**：快照 r6=卖铲人**不在** watchlist（该条只存在于快照/脚本），合并前先裁定卖铲人归何处。**⇒ 2026-08-08 Doctor 裁定根治**：`build_risk_daily.py` 改读 watchlist + r6 卖铲人补入 `alarm_watchlist.jsonl`（单一真源）；风险日报仓未挂载，挂载后出逐文件 patch。**⇒ 2026-08-08 四件全落**：① `alarm_watchlist.jsonl` 补登 r6 卖铲人（08-03 撞号漏登清算）+ r4 U8→7/kill79→77 + r2 prox8→9 口径回填 + 全 7 行补 `display_note`；② `build_risk_daily.py` 删 `AI_RISKS` 硬编码、改 loader 读 watchlist 单一真源（fail-visible·无硬编码兜底，py_compile ✓，loader 预演与 08-07 live JSON 同序同分）；③ yuantu-alarm-weekly 班 prompt 已同步（「本周 7 个」+ 五轴/kill/display_note 归 Risk Daily 单一真源权属注记 + 顺带归一既有双 frontmatter）；④ 快照与脚本双硬编码并源完成。**待今晚 risk-daily 班首验**（构建输出无 ⚠ alarm_watchlist 行即过），过后再提请 Doctor 勾。（2026-08-09 目标模式 Doctor 裁：续挂待 09:08 班首验）
   依据：`logs/2026-08-03-日元carry监控注册AI警报.md`
 
 - [ ] **★ 渊图 · `concept_XinsenBTSubstrateCustomerShare` 畸形节点还原 —— 11 个节点静默丢失 26 天（2026-08-01 挖出 · Doctor 定甲案「本批不动、另开一场」）**
@@ -43,6 +43,7 @@ type: log
   ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
   ② **`docs/兑现变更_*.md` 让脚本接管命名**：现有 9 件 untracked 里文件名分裂成两种（6 件 `2026-07-22` 带横杠 / 3 件 `20260723` 不带），标题分裂成三种（「兑现变更」/「兑现状态变更」/「兑现状态变更留痕」），而已 tracked 的 19 件**全部**不带横杠。Doctor 定**原样入仓**（不改名——已发生的历史就是这样，改名会让它看起来比实际整齐）。**根治点是成因不是存量**：全仓 grep `兑现变更_` 在 `.py`/`.sh` 里**零命中** ⇒ 这批是会话里手写落盘、无脚本约束，命名全靠当次记得（G-X103）。对照组 `docs/escalation_shadow_*` 有 `tools/escalation_shadow.py` 生成，9 件命名零漂移。⇒ 由 `closure_engine` 侧或新起小脚本统一产出文件名与标题。
   ③ **`tools/sync_hot_sectors.py` 接线还是废弃**：104 行，07-30 新建，解决 `hot_sectors` **孤儿表**（全量 grep `INSERT INTO hot_sectors` 零命中；~~库里 36 行停在 2026-05-12~~ 2026-08-08 现核：277 行、max 2026-07-30——07-30 回填 +241 后又 9 天未更，仍零调用）。已按裁定入仓，**但全仓引用数＝0——没有任何脚本或文档调它**。属「已完工待接线」。⇒ 定：接进日更管道，还是标 `_DEPRECATED_`。**入仓只是让它不被遗忘，不等于它在跑。**
+  **⇒ 2026-08-09 Doctor 目标模式批开专场**（批准开这场 ≠ 批准具体做法；三尾逐条方案另出、propose-then-confirm）。
   依据：`logs/checkpoints/2026-08-01_两仓清账_分类清单.md`
 
 - [ ] **brain · 8 个项目目录缺 `architecture/系统概览.md` → `brain-save` Step 4 对它们一直空转（2026-07-31 挂 · 由 G-X111 补扫查出 · 同日 ⚠ 名单订正 · ② 已落盘待您勾）**：`brain-save` Step 4 规定「同步项目状态 → 更新 `{项目}/architecture/系统概览.md` 的最后活跃字段」，缺文件即静默跳过、无人察觉；`dashboard-snapshot.py` 的项目卡也少一个信息源。
@@ -87,7 +88,7 @@ type: log
   　**07-30 的新事实是「曲线没动」**：两端各 +1bp（在噪声内）、2s10s 零变化，而同日 SPX **+1.66%**、VIX **−17.28%** ⇒ **风险资产大幅回补而利率曲线纹丝不动**。
   　**⏸ 由此新挂两条（均需 Doctor 拍板，属改既有资产，走 propose-then-confirm）**：
   　① ~~**台账 2-B 观察项那句可能要收紧**~~（✅ 2026-08-09 完成）——原文「长端余震延续（30Y 盘中 5.24% 再创多年新高），与 ƒ 的『长端独立↑』腿方向一致」。但 07-29 ƒ 的实现形态是 **10Y +6 ／ 30Y +9 两者同向**；07-30 若 30Y 创新高而 **10Y 仅 +1bp**，那是 **30Y 独走**（期限溢价/久期供给），不是 ƒ 那条腿。**⚠ 未实测**：DGS30 本次没取，定案需补 `id=DGS30`。**⇒ ① 收口（Doctor 2026-08-09 勾定，CC 代记留痕）**：DGS30 H.15 正式值到手——07-29 **5.20** → 07-30 **5.21**（**+1bp**，与 10Y 同幅、**当日 30Y 无独走**，盘中 ~5.24 未坐实到收盘）→ 07-31 **5.27**（**+6bp**，独走跳升落在 07-31 而非本日）；处置格已按材料收紧改句落 `剑酒青丘/frameworks/事件归因台账.md` 2-B 格：「长端余震延续、与 ƒ 分项方向一致」对本日**不成立**，原判定（VIX 同日 −17.28% ⇒ 不构成 ƒ 新样本）结论不变且更硬；commit `081e49f` 已推远端。
-  　② **台账 07-31 行的 4.75/4.28/5.23 三个数未标口径**——FRED 截至 **2026-08-01 仍只发到 07-30**，故 07-31 的 H.15 尚未发布，那三个数只能是 `^TNX` 或新闻源。而 **P-11 立的规矩正是「利率一律以 H.15/FRED 为权威源，本地 ^TNX 只作时效代理并标口径」** ⇒ 这是 P-11 落地后的**第一个漏标**，值得当活例记。**⇒ 2026-08-08 Doctor 裁定**：用 FRED 正式值回填 07-31 行三数 + 补口径注记（等终端 curl `DGS2,DGS10,DGS30` 输出）；2-B 收紧裁定同待 DGS30 到手。
+  　② ~~**台账 07-31 行的 4.75/4.28/5.23 三个数未标口径**~~（✅ 2026-08-09 闭合）——FRED 截至 **2026-08-01 仍只发到 07-30**，故 07-31 的 H.15 尚未发布，那三个数只能是 `^TNX` 或新闻源。而 **P-11 立的规矩正是「利率一律以 H.15/FRED 为权威源，本地 ^TNX 只作时效代理并标口径」** ⇒ 这是 P-11 落地后的**第一个漏标**，值得当活例记。**⇒ 2026-08-08 Doctor 裁定**：用 FRED 正式值回填 07-31 行三数 + 补口径注记（等终端 curl `DGS2,DGS10,DGS30` 输出）；2-B 收紧裁定同待 DGS30 到手。**⇒ ② 收口（Doctor 2026-08-09 目标模式裁「inline 注记子项闭合」· CC 代记留痕）**：台账 07-31 行 08-08 已回填转正（30Y **5.27** FRED/H.15 正式值 · 原 ^TNX 代理 5.23 差 4bp · P-11 口径注记落盘），08-09 CC 以 FRED 单序列重取 DGS2/DGS10/DGS30 逐位复核一致、旁证序列 07-29/07-30 与台账既有记录吻合；「2-B 收紧同待 DGS30」已由 ① 闭合（commit `081e49f`）。
   　**⏸ 仍冻结**：「24pp 回落里 07-29 占多少 / 07-30 占多少」是 **FedWatch 9 月概率**的拆分，与本次利率数据无关，**未因本次解锁**；⑤ 与 P-05 退款腿归属、④⑤ 权重带继续冻结。
   　**取数命令（本次实跑成功 · 去掉 UA/`--http1.1`/`--compressed` 即通）**：`curl -sS "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS2,DGS10&cosd=2026-07-24" -o dgs.csv`。**注**：`fred.stlouisfed.org/data/DGS10.txt` 端点当日两次返回 `curl (52) Empty reply`，**换端点即通、与 UA 无关**。CSV 里 `cosd` 之前的 07-21~07-23 三行 DGS2 列为空，成因未查（不影响 07-24 起的结论）。
   关联：`logs/2026-07-30-FOMC×伊朗事件研究与五因子分解.md` · `剑酒青丘/frameworks/事件归因台账.md` · `剑酒青丘/cases/2026-07-30-消息爆发日事件研究-FOMC×伊朗五因子权重分解.md`。
@@ -115,7 +116,7 @@ type: log
 
 - [ ] **跨项目 · `.bak_audit20260728` 另 10 个散在 5 处（2026-07-30 挂于日志 · 2026-07-31 补挂 TODO · 2026-08-03 /todo 重取计数）**：风险日报 ×1 / 白泽大宗 ×3 / brain ×3 / Market-Data ×1 / **烛照九阴 archived ×2**（原条写「另 8 个散在 4 个项目」系 07-30 快照，archived 2 件当时在清单外）。同批产物应一起清，但跨 5 处，**不该在单项目自查名义下顺手做**，需单开一场。
 
-- [ ] **git 三仓提交 + brain 镜像 rsync（2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md`）**：终端命令（行业研究 / 风险日报 / brain 镜像）已贴两轮，**以最近一轮合并版为准**（见该场 /save 回报）。多条日志反复出现、从未进 TODO（日本的诚型漏挂）。属 Doctor 终端动作。
+- [ ] **git 三仓提交 + brain 镜像 rsync（2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md` · ⇒ 2026-08-09 目标模式 Doctor 裁：收窄改写）**：**前提部分失效**——brain / 行业研究两仓此后已有多轮提交（08-08 入库批、08-09 清洗 `e7b74f4` 等），本条收窄为：① 残留未提交批次（若有）以最近合并版命令为准（见 08-03 场 /save 回报）；② **brain 镜像 rsync 未核未跑**。属 Doctor 终端动作。
 
 - [ ] **V.V. ferry · Fable 5 API 密钥/预算（2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-哨兵班400风控二分定位.md`，承 08-02/08-03 场未变）**：Doctor 动作余项。
 
@@ -133,7 +134,7 @@ type: log
 
 - [ ] **烛照九阴 · daily_market.volume_trillion 历史 0-fill 回补（2026-08-08 错题本复盘补挂 · 源：ERR-20260719-003）**：该列 20260603 前 1552 行填 0 而非 NULL（名义覆盖 1584 日、实际非零仅 32 日），滚动分位恒≈1.0 失真；同族 `max_consecutive` 一并回补。回补路径＝tushare 大盘接口（**Doctor 终端跑**，沙箱不下载）；回补前长历史量能研究按条目口径用 `index_research.db` 000001.SH / 399006.SZ。回补后回写 ERR-20260719-003 状态行。**⇒ 2026-08-08 脚本已交付、待 Doctor 审后终端跑**：`backfill_daily_market_volume_20260808.py`（dry-run 默认 · 指数/本地双口径校验贴库率 <80% 即中止 · `.market-data-writer.lock` 单写者锁 · backup API 快照 · UPDATE 只命中 0/NULL · 写后行数守恒+integrity_check；落位 `Projects/Financial/剑酒青丘/infrastructure/取数工具/` 待定）。
 
-- [ ] **白泽大宗 · 周日班后核查（2026-08-08 专场挂 · dated 08-09 班后）**：08-09 01:09 周日班是 weekly_health.py 带新 legacy 登记的**定时链路首跑**（手动已验通，ERR-20260721-001 族「手动通≠定时通」）——班后查产物/stderr；ingest_meta 三行 deprecated（Doctor 终端脚本跑完后）只读复查；_health.json legacy_sources 应含两旧价表。四品种鲜价过期由该班处理（龙鱼 3 件②），与本条互证。
+- [ ] **白泽大宗 · 周日班后核查（2026-08-08 专场挂 · ⇒ 2026-08-09 Doctor 目标模式裁：改 dated 08-16 班后）**：weekly_health.py 带新 legacy 登记的**定时链路首验顺延**——08-09 01:09 定时班因三目录未挂载**阻塞未跑新码**（`logs/2026-08-09-白泽周报阻塞-挂载缺失.md`），当日晚 Doctor 补挂后手动补跑成功，但 ERR-20260721-001 族「手动通≠定时通」⇒ 定时首验 = 下周 08-16 01:09 班，班后查产物/stderr；ingest_meta 三行 deprecated（Doctor 终端脚本跑完后）只读复查；_health.json legacy_sources 应含两旧价表。四品种鲜价过期由该班处理（龙鱼 3 件②），与本条互证。
 
 - [ ] **跨项目 · .bak_20260808 批次清理（2026-08-08 挂 · dated 08-15 后）**：当日改动回滚备份留 7 天——三连场 6 件（各仓 .bak_20260808）＋白泽大宗 3 件（GOTCHAS.md / lib_public_read.py / weekly_health.py）＋**渊图 08-08 三轮入库产物（Doctor 08-09 批搭本车）**：`mapping/` 下 `行业知识图谱_v2_20260808_{231709_5篇,231813_6篇,234329_5篇,234455_6篇}.json` 四件合并中间图（含 23:38 毒批，gitignore 已盖住未进仓）＋其 pre_recheck/region .bak 六件（212837/231813/234455 三组各二）＋根目录 `index.json.bak_20260808_hold6`。08-15 后随 /todo 统一清；清前确认对应改动均已稳定（含明早班首跑）。
 
@@ -154,6 +155,10 @@ type: log
 - [ ] **风险日报 · yuantu-alarm-weekly 首跑带 r7（2026-08-09 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md` · dated 08-10 09:07 PDT）**：r7 于 08-03 白天注册、08-03 09:07 那班跑在注册前——**判级口径首验＝08-10 09:07 班**（班表实证 lastRunAt 08-03/nextRunAt 08-10）；scores 标度可按首跑回修。班后核 r7 是否进榜、判级是否合理。
 
 - [ ] **dev/19 班迁移收尾杂项包（2026-08-09 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-02-dev模式打通四件套.md` ＋ `logs/2026-08-02-E验收与19班迁Kimi壳.md` ＋ `logs/2026-08-03-数据根迁Gateway-workspace.md` · 多为 Doctor 终端小动作）**：① 沙箱垃圾清理 `rm -f ~/Documents/Claude/Brain/.__case_probe` · `.tts*`；② 字节级终封 diff 复跑（touzhijunjun 修正后应 19 OK）；③ longyu 步骤 2/3 修正状态核实；④ 龙鱼看板幽灵归档（`mv ~/Gateway-workspace/Artifacts/龙鱼五力个股库…`）；⑤ V.V. 盲审回收 → 比对 → 二审席裁定；⑥ workspace 7-05 旧副本处置（F 方向未批，先留定性）；⑦ `Brain`/`brain` 大小写归一（Linux 化前必做，本轮记档不动）；⑧ Settings 镜像 L20 过期提醒撤除（1 行改动，待批）。
+
+- [ ] **基建 · 镜像常态化刷新机制裁定（2026-08-09 目标模式补挂 · 源：`logs/2026-08-02-dev模式打通四件套.md`）**：巡检镜像的常态化刷新走哪条路——并进周巡检班 vs 手动随 /save；涉及巡检器只读章程，**需 Doctor 裁**。与 L37「巡检适配 Gateway store」分居：那条管脚本适配（08-09 20:00 周巡检后定改法），本条管刷新机制设计；L37 已实证沙箱直读 gateway store 此路不通，候选路 = Mac 原生 snapshot 或 Doctor 终端 rsync。
+
+- [ ] **基建 · 看门狗挂载治理 · 重开（2026-08-09 目标模式 Doctor 裁定重开 · 前条已闭合：归档「看门狗班沙箱挂载缺失治理」08-03 挂 · 08-08 Doctor 勾定迁档）**：前条闭合方案（前置确认段）未根治授权固化——2026-08-09 白泽周日班 01:09 又因三目录未挂载阻塞（`logs/2026-08-09-白泽周报阻塞-挂载缺失.md`，当日晚 Doctor 补挂后补跑成功）。待做：查 scheduled task 目录授权固化机制出方案 + 同族扫其他班是否同缺（G-X111）；与 L37 巡检适配并观。
 
 ---
 
