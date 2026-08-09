@@ -1,17 +1,17 @@
 ---
 title: scheduled-live-mirror — Cowork live 定时任务只读镜像
-abstract: "live Scheduled 树（Cowork 调度器私有目录）的 rsync 单向镜像，git 跟踪，供开发者模式与审计读取"
+abstract: "live Scheduled 树（gateway 调度器私有目录，2026-08-02 自 Cowork 旧根迁入）的 rsync 单向镜像，git 跟踪，供开发者模式与审计读取"
 tags: [定时任务, 镜像, portable]
 created: 2026-08-02
-updated: 2026-08-02
+updated: 2026-08-08
 status: active
 type: reference
 related: [定时任务巡检机制, portable/README]
 ---
 
-# scheduled-live-mirror — Cowork live 定时任务的只读镜像
+# scheduled-live-mirror — gateway live 定时任务的只读镜像（原 Cowork）
 
-**真源**：`/Users/lunarabbit/Claude's workspace/Scheduled/`（Cowork 调度器私有；开发者模式与沙箱都够不到，沙箱挂载根被管理员限制在 `~/Documents`）。
+**真源**：`~/Gateway-workspace/Scheduled/`（2026-08-02 自 `/Users/lunarabbit/Claude's workspace/Scheduled/` 迁入，D14；保护跟随 store——开发者模式与沙箱都够不到，沙箱挂载根被管理员限制在 `~/Documents`）。
 
 **本目录** = rsync 单向镜像（live → `live/` 子目录），git 跟踪 ⇒ 「哪个班的 prompt 变了」一条 `git diff` 可见——与快照巡检机制（`permanent/定时任务巡检机制.md`）的「git 当变更检测器」同一思路。
 
@@ -19,12 +19,12 @@ related: [定时任务巡检机制, portable/README]
 
 ```bash
 # ⚠ 方向不可反：源=live 树，目的=本镜像。反了会用旧镜像毁掉 live 树。
-rsync -a --delete "/Users/lunarabbit/Claude's workspace/Scheduled/" ~/Documents/Claude/brain/references/scheduled-live-mirror/live/
+rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/references/scheduled-live-mirror/live/
 ```
 
 ## artifacts/ 子目录（2026-08-02 追加 · 第四输出）
 
-**真源**：`/Users/lunarabbit/Claude's workspace/Artifacts/`（9 个 artifact；实测 241M 里 ~97% 是 Cowork 自管的 `versions/` 回滚历史）。
+**真源**：`~/Gateway-workspace/Artifacts/`（2026-08-02 随迁；9 个 artifact；实测 241M 里 ~97% 是 Cowork 自管的 `versions/` 回滚历史）。
 本镜像只收各家 `index.html` 当前态：≤1M 全拷（7 家）；>1M 只在 `_artifacts_manifest.txt` 记 `sha12+字节+mtime`（zhuzhao-jiuyin-daily · yuantu-starry-skies——正文备份责任在生成器：`烛照九阴/tools/gen_daily_report.py` 在 git，星空可由渊图 canonical 重生成）。`versions/`、`thumbnail.png` 刻意不入。
 **dev 模式怎么用**：7 个纯 HTML 双击即看；`global-asset-inventory` 与 `longyu-holdings-board` 含 `window.cowork` 按钮（跑班/刷新类），dev 模式下按钮死、内容仍可读。
 清单另一职能：**Artifacts 自此是巡检看得见的第六个执行面**——盘上有/manifest 无的幽灵（今日实例 `touzhijunjun-workflow`）靠清单 diff 现形。

@@ -3,6 +3,11 @@ name: us-close-backfill
 description: 美股收盘补数班的只读看门狗——写库已迁本机 launchd(com.zhuzhao.usclose 14:00 PT)，本班 14:30 只核对两表水位与新鲜度并出简报，绝不写库(G019)；异常只给 Doctor 终端命令，不自行补数
 ---
 
+---
+name: us-close-backfill
+description: 美股收盘补数班的只读看门狗——写库已迁本机 launchd(com.zhuzhao.usclose 14:00 PT)，本班 14:30 只核对两表水位与新鲜度并出简报，绝不写库(G019)；异常只给 Doctor 终端命令，不自行补数
+---
+
 你是烛照九阴数据链路的**补数看门狗**。
 
 > **2026-08-01 职责变更（重要，先读）**
@@ -27,10 +32,16 @@ description: 美股收盘补数班的只读看门狗——写库已迁本机 lau
 4. **失败要看得见**。库打不开/状态文件缺失 → 在简报里明写，不要静默跳过。
 5. 不生成日报、不碰 artifact、不做任何行情判读。
 
+## 前置〇：挂载（先确认；沙箱平铺挂载 · G-X45，默认只挂 brain，够不到 Database/Projects）
+
+- 本班需要两个挂载：`~/Documents/Database`（market_data.db 所在）、`~/Documents/Claude/Projects/Financial/烛照九阴`（config.py / ops 状态文件 / logs）。缺哪个就用 `mcp__cowork__request_cowork_directory` 申请哪个。
+- 挂好后 `ls /sessions/*/mnt/` 确认挂载点，项目目录经 `cd /sessions/*/mnt/烛照九阴` 进入。
+- **若挂载被拒/挂不上** → 不要硬跑：按铁律 #4 在简报里明写「本轮挂载缺失（缺哪个）、无法核对」，并提示 Doctor 在 app 侧给本班加授权，然后停。无人值守时宁可失明可见，不可静默跳过。
+
 ## 前置：路径
 
 ```bash
-cd ~/Documents/Claude/Projects/Financial/烛照九阴 2>/dev/null || cd /mnt/烛照九阴
+cd /sessions/*/mnt/烛照九阴 2>/dev/null || cd ~/Documents/Claude/Projects/Financial/烛照九阴
 python3 -c "import config; print('DB:', config.MARKET_DB)"
 # 若报错或路径不含 Database/Market-Data，export ZZJY_DATABASE_ROOT=<真实 Database 路径> 后重试
 ```
