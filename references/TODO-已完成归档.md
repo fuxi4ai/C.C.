@@ -14,6 +14,10 @@ type: log
 
 ## 已完成
 
+- [x] **看门狗班沙箱挂载缺失治理（2026-08-03 第二轮 /todo 逮到 · Doctor 定「CC 查配置方法再报」）**：`us-close-backfill`（14:30 看门狗）启动时沙箱**未挂载**烛照九阴项目与 Market-Data 目录（仅 brain + 白泽观星/engine），本轮靠临时申请获批才跑通核对；不补则每轮 14:30 都要人工批一次、无人值守时即失明。**下一步**：CC 查 scheduled task 的目录授权/挂载固化机制，出可批方案。同类班（zhuzhao / market-data-daily 等）是否同样缺挂载，一并扫（G-X111 同族扫）。
+  **进展（2026-08-08 /todo 现核）**：机制查明——`references/scheduled-live-mirror/README.md` 明记沙箱挂载根被管理员限在 `~/Documents`，**无全局固化入口**，惯例是各班 SKILL.md 自写「前置挂载确认」段（sentinel/recap-ingest 班均有）。同族扫：20 班 08-07 全部正常点火（lastRunAt 逐班过），仅本班 08-03 报过缺挂载。**剩余**：给本班 SKILL.md 补挂载前置段——文件在 Gateway 保护区，需 Doctor 贴该班现 prompt（由 CC 走 update_scheduled_task 改）或 app 侧加挂载授权。
+  **⇒ 2026-08-08 收口**：前置段已补入——SKILL.md 新增「前置〇：挂载」段（缺挂载即用 `request_cowork_directory` 申请 Database + 烛照九阴两目录 / `ls /sessions/*/mnt/` 确认 / 挂不上则简报明写「失明可见」再停）＋「前置：路径」cd 行改 `/sessions/*/mnt/烛照九阴` glob 优先；Doctor 批准草案后 CC 走 update_scheduled_task 落盘、回读验证（段在 L35-39、cd 在 L44），其余内容未动。首次实战检验＝08-10 14:30 班。（**Doctor 2026-08-08 勾定，CC 代记留痕并迁档**）
+
 - [x] **Artifacts · `touzhijunjun-workflow` 幽灵查证（2026-08-02 挂 · Artifact 层盘点时逮到）**：盘上有目录（12K，含 index.html），`list_artifacts` manifest 返回的 **6** 个里没有它——「盘上有/清单无」第三例。候选定性：旧 workflow 卡片被 artifact 化后又从 manifest 摘除，目录残留（index.html mtime＝2026-07-05 10:46，与 workspace 整根拷贝事件同一分钟，大概率 7-05 迁移残留）。**⇒ 2026-08-08 实核收口**：`ls ~/Gateway-workspace/Artifacts/` 示该目录已整个从盘上消失（live 6 个正好＝manifest 6 个、无它；`_archived` 里亦无）——查证对象不存在、前提消失、清理目的已达（被删而非归档；artifact 可由其班再生，风险低）。（**Doctor 2026-08-08 勾定 · CC 依 2026-08-03 长期授权执行并留痕**）
 
 - [x] **Artifacts · `龙鱼五力个股库看板` 幽灵归档（2026-08-03 挂 · 数据根搬迁清点时逮到）**：`~/Gateway-workspace/Artifacts/龙鱼五力个股库看板/`（index.html mtime 2026-07-05 20:28）不在 manifest 的 6 个之内——「盘上有/清单无」第四例，07-05 拷贝事件族，上代看板残留躯壳。处置已定（D14）：照 handshake 先例归档。依据：[[数灵转移/architecture/决策记录]] D14 搬迁账目 · `logs/2026-08-03-数据根迁Gateway-workspace.md`。**⇒ 2026-08-08 实核收口**：已归档——`_archived/龙鱼五力个股库看板_DEPRECATED_20260803` 在、live 旧壳已无（`_archived` 目录 mtime Aug 3 00:58，即挂条当日移入）；live 的 `longyu-stock-library`（08-06）即其新身。（**Doctor 2026-08-08 勾定 · CC 依 2026-08-03 长期授权执行并留痕**）
