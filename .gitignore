@@ -35,3 +35,10 @@ Thumbs.db
 # Python 缓存
 __pycache__/
 *.pyc
+
+# 本地快照与散件（不进版本 · 2026-08-09 集中清扫立 · Doctor 裁）
+backups/
+*.bak_2*
+logs/.wtest
+graphify/*/graphify-out/cache/
+graphify/*/graphify-out/.graphify_python
