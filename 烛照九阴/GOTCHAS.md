@@ -218,7 +218,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **同族**：disk-I/O 家族（ERR-20260719-003 历史 0-fill · 五因场热日志 -journal）· 句芒「放回必 cp→原子 mv、绝不 cp 盖原文件」。**来源** → brain/logs/2026-07-22-日报隔天退回根治与Mac原生Phase1.md
 
 ## [ERR-20260728-005] 同库两个「全市场成交额」定义相差 25%，无一处注明（同名异义）
-**状态**: ✅ 已裁定（2026-07-28 甲案·Doctor 批）：按用途定源＋禁跨源——分位/比值/回测类锁 `market_amount_daily.total_trillion`、水平显示/容量类锁 `daily_market.volume_trillion`；见 `Database/Market-Data/MANIFEST.md`「双源定源裁定」节。（2026-08-08 复盘补同步：本条「待择一」系档案滞后——甲案同日已批、状态行未回写，NOTE-20260719-001 族）
+**状态**: ✅ 已裁定（2026-07-28 甲案·Doctor 批）：按用途定源＋禁跨源——分位/比值/回测类锁 `market_amount_daily.total_trillion`、水平显示/容量类锁 `daily_market.volume_trillion`；见 `Database/Market-Data/MANIFEST.md`「双源定源裁定」节。（2026-08-08 复盘补同步：本条「待择一」系档案滞后——甲案同日已批、状态行未回写，NOTE-20260719-001 族）（**2026-08-09 乙案修订·Doctor 批**：成交额条改为 2020+ 全锁 `volume_trillion`，`market_amount_daily` 降 2010 前长史专用+对撞监控；甲案「少计属口径特征非误差」前提被实测证伪——两源比值日摆 1.18–1.79、252 日分位差中位 3.2pp/max 29.4pp。阈值分位等效重锚 0.045→0.030 等，详见 MANIFEST 定源裁定节）
 **优先级**: 🔴 高（任何「全市场成交额分位」选错源结论即偏 25%）
 **触发场景**: `daily_market.volume_trillion`（≡SUM(stock_daily.amount)/1e9·全A逐股加总·20260727=2.089万亿）vs `market_amount_daily.total_trillion`（tushare 沪深两市官方口径·同日 1.6649万亿），系统性 +25~26%。
 **解决方案（临时）**: 已在 `Database/Market-Data/MANIFEST.md` 加「同名异义警示」节；正式择一并统一消费方待 Doctor 裁。
@@ -231,7 +231,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防措施**: 同上「同名异义对撞检查」；emotion 引擎若换源须整体重校分位。
 
 ## [ERR-20260728-007] `daily_market.max_consecutive` 与 `emotion_cycle.total_volume` 为 volume_trillion 同族伪列（未登记过）
-**状态**: ✅ 已定性（勿用）
+**状态**: ✅ 已定性（勿用）（2026-08-09 注：`volume_trillion` 本体已 A2 回补修复、ERR-20260719-003 收口，并从 MANIFEST 伪列黑名单摘帽；本条对 `max_consecutive` / `seal_rate` / `total_volume` 继续有效）
 **优先级**: 🟡 中
 **触发场景**: `max_consecutive` 首个非零 20260603（此前全 0 非 NULL·与 ERR-20260719-003 同族同源）；`emotion_cycle.total_volume` 284/390 行为 0（与 seal_rate 死列同家）。
 **预防措施**: 伪列黑名单从单列扩为族：volume_trillion / max_consecutive / seal_rate / total_volume；回测取列前先做「量纲/符号/覆盖/披露制度」四查。
