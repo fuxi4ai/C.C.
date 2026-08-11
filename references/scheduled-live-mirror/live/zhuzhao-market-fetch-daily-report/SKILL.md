@@ -19,7 +19,6 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
   - `export MARKET_DATA_DIR="<Database 挂载点>/Market-Data"` —— 步骤 5.5 market_health.py 认它。
   - （可选）`export ZZJY_ARTIFACT_ROOT="<Claude/Artifacts 挂载点>"` —— 没挂 Artifacts 则步骤 6.5 仍走 update_artifact 的 host 路径，不必设。
   - 写 recap.db / market_data.db 走 /tmp 副本时另设 `ZZJY_DATABASE_ROOT={当班唯一副本根}`（见步骤 2 / 5b）。
-  - `export PYTHONPATH="<Database 挂载点>/pylib-linux"` —— tushare 及依赖的持久化目录（2026-08-06 落盘验证：aarch64 linux / cp310 wheels，151M，装一次永久可用；Mac 本机跑脚本用不了这份，别混）。
 
 **前置：TUSHARE_TOKEN**
 - 从 `~/Documents/Database/.env` 读 `TUSHARE_TOKEN`。**若没有**：日志写一行"待配 TUSHARE_TOKEN，本次跳过"，正常退出、不报错。
@@ -55,7 +54,7 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
      · 旧 stockanalysis 逐票 web_fetch 路已被 provenance 限制封死（G-20260721-002），`--source stockanalysis --infile` 仅留档备胎；stooq/yfinance 沙箱已死（JS墙+IP封禁 / 装包+403），仅 Mac 端手动备胎（`--source yfinance`）。
    - **外盘指数 ②b（intl_index_daily，2026-06-30 改 · Doctor 拍板「切 Yahoo 一劳永逸」）**：日报「外部定价·隔夜/期货」栏供数。**走 Yahoo chart API（urllib 直取，默认源）**：`python3 scripts/fetch_intl_index.py`——取 纳指QQQ / NVDA / AVGO / LITE / SPCX / 日经NKD=F（真期货）+ US10Y / BRENT（F5）写 intl_index_daily。**白名单已开、沙箱直达**。**美股收盘语义腿（NASDAQ/NVDA/AVGO/LITE/SPCX）已开同款盘中守卫（2026-07-28 同修）**——盘中触发自动落最近完整收盘；**JP_FUT/US10Y/BRENT 等期货与宏观读数腿保持「远期快照」口径不变**（栏目语义即预期读数，Doctor 批的界定）。拉不到→标缺、保留旧行、**绝不编数**。（旧 stockanalysis 路 `--source stockanalysis --infile` 保留作 yahoo 不通时备胎，SA_SOURCES 不删。）
    - **韩国存储双雄 ②c（2026-06-30 · Doctor 拍板：弃 EWY 代理，直追两只票）**：`python3 scripts/fetch_kr_stocks.py`——直连 Yahoo chart API（urllib，**白名单已开、沙箱直达**）取三星电子(005930.KS)+SK海力士(000660.KS)写 intl_index_daily（code=KR_SAMSUNG/KR_HYNIX，kind=kr_stock）。拉不到→标缺、保留旧行、绝不编。（KR_PROXY/EWY 旧行不删、不再更新。）
-   - **tushare 依赖（2026-08-06 起持久化）**：前置已 export `PYTHONPATH=<Database 挂载点>/pylib-linux`，先 `python3 -c "import tushare"` 探测；**失败才**回退 `pip install tushare --break-system-packages`（PyPI 兜底），回退发生后日志记一笔「pylib 失效已回退装包」（多半意味着 VM 的 Python 版本/架构变了，需重装 pylib-linux）。
+   - 需要的话 `pip install tushare --break-system-packages`。
 4. **防空壳校验（不过则绝不放回）**：副本 integrity ok；四表行数对比放回前**只增不减**；目标表 max(trade_date) 达到 `T_anchor`（美股锚允许差 1~2 个美东交易日——盘中守卫落最近完整收盘属预期，在日志标明即可，**绝不编数**）。
 5. **放回**：按“公共行情库单写者锁”协议复核 owner、main/WAL/journal 指纹和非零 sidecar；任一不符则保留 `/tmp` 副本并 fail-visible，绝不截断。通过后将本地 WAL checkpoint 入主文件，在源目录 staging 校验，再以同文件系统原子 `mv` 替换；放回后重新 integrity_check + 行数复核，失败即用持锁前主库副本原子回滚。
 

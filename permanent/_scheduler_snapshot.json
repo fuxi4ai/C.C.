@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-08-02T10:43:57-07:00",
+  "generated_at": "2026-08-09T20:22:29-07:00",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -234,9 +234,8 @@
     "schedule": null,
     "run_at_load": null,
     "runtime": {
-     "loaded": true,
-     "state": "not running",
-     "last_exit_code": "0"
+     "loaded": false,
+     "detail": "未加载（launchctl print 非 0）"
     }
    },
    "com.google.keystone.agent": {
@@ -349,9 +348,8 @@
     "schedule": null,
     "run_at_load": true,
     "runtime": {
-     "loaded": true,
-     "state": "running",
-     "last_exit_code": "(never"
+     "loaded": false,
+     "detail": "未加载（launchctl print 非 0）"
     }
    }
   },

@@ -14,7 +14,6 @@ description: 每交易日由句芒增量更新Market-Data行情到最近已收�
 - **⚠️ 防悬挂前置（G-X51，2026-07-05 加 · 根因修）**：`request_cowork_directory` 在无人值守时可能**悬挂**（等不到用户批准）→ 拖死整个 run、零日志零 run-summary（烛阴 07-03 16:00 班即此死法）。故**先探测、只补缺**：开工第一步用 `mcp__workspace__bash` 跑 `ls -d /sessions/*/mnt/*/ 2>/dev/null` 看哪些已挂载；**只对还没挂上的** 调 request_cowork_directory，已挂的直接用 `/sessions/…/mnt/{名}` 沙箱路径、别重复 request（每次 request 都是悬挂面，能省则省）。若某次 request 迟迟不返回＝正在 G-X51 悬挂，本 run 大概率被超时杀掉——靠末步 `market_health.py` 的 `overdue_tables` 事后兜底发现。
 - **挂好后导出路径 env**（脚本认 env、免去软链；不设则回退"向上找 Documents"在平铺挂载下会算错）：
   `export MARKET_DATA_DIR="<Database 挂载点>/Market-Data"` —— 第 9 步 `market_health.py` 认它，直接读写真实库的 `market_data.db` / `_health.json`。
-  `export PYTHONPATH="<Database 挂载点>/pylib-linux"` —— tushare 及依赖的持久化目录（2026-08-06 烛阴班落盘验证：aarch64 linux / cp310 wheels，151M，烛阴/句芒两班共用）。跑取数前先 `python3 -c "import tushare"` 探测，**失败才**回退 `pip install tushare --break-system-packages`（PyPI 兜底）并在日志记「pylib 失效已回退装包」（多半意味着 VM 的 Python 版本/架构变了，需重装 pylib-linux）。
 - 写库若撞挂载盘 disk I/O，按 GOTCHA 走 `/tmp` 副本往返（设 `ZZJY_*` 类 root env 指向副本）。
 
 **公共行情库单写者锁（2026-08-01）**：在任何会写 `market_data.db` 的步骤之前，先以原子 `mkdir "$MARKET_DATA_DIR/.market-data-writer.lock"` 抢锁并写唯一 owner；与 `zhuzhao-market-fetch-daily-report`、`us-close-backfill` 共用。锁从第一次写/取 `/tmp` 一致性快照前持有到第 9 步健康检查完成。抢锁失败即记录现有 owner、干净跳过本班写入，**不得删除别班的锁**；退出时仅在 owner 仍属于本班时释放。若走 `/tmp`：源库快照必须用 `sqlite3.Connection.backup()`，放回前复核 main/WAL/journal 指纹并拒绝任何非零 WAL/journal，禁止裸拷 live DB 三件套或截断 sidecar；放回使用源目录 staging + 同文件系统原子 `mv`，持锁前主库副本保留到 integrity_check 与只增不减校验通过。

@@ -2,7 +2,7 @@
 {
   "name": "Event Attribution Ledger",
   "schemaVersion": 1,
-  "description": "剑酒青丘 · 事件归因台账全量快照（暖色·警示页 v2.8）：残差告警卡／六日归因曲线／规则书 v1.2.1／记账表／提案区／验证簿。数据：Yahoo chart＋FRED 沙箱直取＋CNBC/Reuters/AP 检索。"
+  "description": "剑酒青丘 · 事件归因台账全量快照（暖色·警示页）：函数式归因曲线／注册表／记账表／提案区／变更记录／验证日历。2026-07-31 事件日重算重绘（三日累计）。"
 }
 </script>
 <html lang="zh-CN">
@@ -13,45 +13,41 @@
 <style>
 :root{
   color-scheme: light;
-  --bg:#f6efe0; --ink:#3a3126; --ink-soft:#6b5f4e;
-  --vermilion:#b23b2e; --teal:#2e7d6e; --camel:#a3763f;
-  --rule:#e6dbc4; --gold:#b8912c; --steel:#4a7ba6; --paper:#fbf7ee;
-  --acc:#1b365d;
-  --sev1:#2f7d63; --sev2:#2f8f86; --sev3:#c8962a; --sev4:#e0791e; --sev5:#c0392b;
-  --grey:#d3cdbe;
-  --t-none:#2f7d63; --t-near:#c8962a; --t-fired:#c0392b;
-  --wei:#c0392b;
-  --zh:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",Georgia,serif;
-  --shike:"字酷堂石刻体","ZKingKongShiKe","STKaiti","KaiTi",var(--zh);
-  --r-card:15px;
-  --whisper:0 4px 24px rgba(20,20,19,.05);
+  --bg:#f6efe0;
+  --ink:#3a3126;
+  --ink-soft:#6b5f4e;
+  --vermilion:#b23b2e;
+  --teal:#2e7d6e;
+  --camel:#a3763f;
+  --rule:#e6dbc4;
+  --gold:#b8912c;
+  --steel:#4a7ba6;
+  --paper:#fbf7ee;
 }
 *{box-sizing:border-box}
-body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--zh);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;
-  background-image:radial-gradient(40% 30% at 12% 6%, rgba(178,59,46,.05), transparent 70%),radial-gradient(42% 32% at 88% 4%, rgba(27,54,93,.06), transparent 72%),linear-gradient(180deg,#f8f2e6 0%, var(--bg) 42%, #efe7d6 100%);background-attachment:fixed;min-height:100vh}
+body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+  font-size:15px; line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
 .wrap{max-width:1140px;margin:0 auto;padding:38px 26px 90px}
-header.masthead{border-bottom:2px solid var(--acc);padding-bottom:16px;margin-bottom:8px}
+header.masthead{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:8px}
 .kicker{font-size:12px;letter-spacing:.34em;color:var(--camel);text-transform:uppercase;margin-bottom:10px}
-h1{font-size:31px;line-height:1.3;margin:0 0 10px;font-weight:600;letter-spacing:.02em;color:var(--acc)}
+h1{font-size:31px;line-height:1.3;margin:0 0 10px;font-weight:600;letter-spacing:.02em}
 .sub{font-size:13.5px;color:var(--ink-soft);margin:0}
-.disclaim{font-size:12px;color:#8a8578;margin-top:8px;line-height:1.8}
-.minicards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:14px 0 8px}
-@media(max-width:860px){.minicards{grid-template-columns:1fr}}
-details.minicard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--whisper);transition:border-color .15s}
-details.minicard:hover{border-color:var(--camel)}
-details.minicard>summary{cursor:pointer;list-style:none;padding:12px 14px;display:block}
-details.minicard>summary::-webkit-details-marker{display:none}
-details.minicard>summary .mt{font-size:13px;font-weight:700;color:var(--ink);line-height:1.4;display:flex;align-items:baseline;gap:6px}
-details.minicard>summary .mt::before{content:"▸";color:var(--camel);font-size:11px;flex-shrink:0}
-details.minicard[open]>summary .mt::before{content:"▾"}
-details.minicard>summary .mx{font-size:11.5px;color:var(--ink-soft);margin-top:4px;line-height:1.5}
-details.minicard .mbody{border-top:1px dashed var(--rule);margin:0 14px;padding:9px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.7}
-details.minicard .mbody strong{color:var(--ink)}
-.metabar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 22px}
-.chip{border:1px solid var(--rule);background:var(--paper);padding:4px 11px;font-size:12px;color:var(--ink-soft);border-radius:99px}
+.metabar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 30px}
+.chip{border:1px solid var(--rule);background:var(--paper);padding:4px 11px;font-size:12px;color:var(--ink-soft);border-radius:2px}
 .chip strong{color:var(--ink);font-weight:600}
+.chip.alert{border-color:var(--vermilion);color:var(--vermilion)}
+.chip.alert strong{color:var(--vermilion)}
+.chip.warn{border-color:var(--camel);color:var(--camel)}
+.chip.warn strong{color:var(--camel)}
 
 h2{font-size:20px;margin:46px 0 6px;padding-bottom:8px;border-bottom:1px solid var(--ink);font-weight:600;letter-spacing:.03em}
+h2 .n{color:var(--camel);margin-right:10px;font-size:16px}
 h3{font-size:15.5px;margin:28px 0 8px;color:var(--camel);font-weight:600;letter-spacing:.04em}
 p{margin:10px 0}
 .lede{font-size:14px;color:var(--ink-soft);border-left:3px solid var(--camel);padding:2px 0 2px 14px;margin:14px 0 18px}
@@ -65,16 +61,16 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .ok{color:var(--teal);font-weight:600}
 .bad{color:var(--vermilion);font-weight:600}
 .dim{color:#9a8f7c}
-.circ{color:#9a9386;font-weight:600}
+.circ{color:var(--camel);font-weight:600}
 .strike{text-decoration:line-through;color:#9a8f7c}
 tr.newrow td{background:#f4ecd9}
 
-.callout{border:1px solid var(--rule);border-left:4px solid var(--vermilion);background:var(--paper);padding:13px 16px;margin:18px 0;font-size:13.4px;border-radius:0 10px 10px 0}
+.callout{border:1px solid var(--rule);border-left:4px solid var(--vermilion);background:var(--paper);padding:13px 16px;margin:18px 0;font-size:13.4px}
 .callout.teal{border-left-color:var(--teal)}
 .callout.camel{border-left-color:var(--camel)}
 .callout .h{font-weight:600;display:block;margin-bottom:5px;letter-spacing:.03em}
 
-figure{margin:18px 0 6px;background:var(--paper);border:1px solid var(--rule);padding:14px 10px 8px;border-radius:12px}
+figure{margin:18px 0 6px;background:var(--paper);border:1px solid var(--rule);padding:14px 10px 8px}
 figcaption{font-size:12px;color:var(--ink-soft);padding:10px 12px 2px;line-height:1.7}
 svg{display:block;width:100%;height:auto}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;padding:12px 14px 4px;font-size:11.8px;color:var(--ink-soft)}
@@ -84,39 +80,6 @@ svg{display:block;width:100%;height:auto}
 
 footer{margin-top:60px;padding-top:16px;border-top:1px solid var(--rule);font-size:11.8px;color:var(--ink-soft);line-height:1.85}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.8px;background:#efe6d2;padding:1px 5px;border-radius:2px}
-
-.ledbar{display:inline-flex;gap:2.5px;align-items:center}
-.led{width:5px;height:15px;border-radius:2px}
-.strig{font-size:11.5px;font-weight:700;white-space:nowrap}
-.slabel{font-size:9.5px;color:#8a8578;font-weight:600;letter-spacing:.04em}
-.alertcard{position:relative;overflow:hidden;border-radius:var(--r-card);padding:15px 18px 14px;margin:6px 0 8px;
-  background:linear-gradient(150deg,color-mix(in srgb,var(--sev5) 9%,#fbf8ef),color-mix(in srgb,var(--sev5) 5%,#f0eadc) 46%,#f7f3ea);
-  border:0.5px solid color-mix(in srgb,var(--sev5) 30%,var(--rule));
-  box-shadow:var(--whisper),inset 0 0 0 1px rgba(255,255,255,.42)}
-.alertcard::after{content:"";position:absolute;left:0;right:0;top:0;height:32%;border-radius:14px 14px 0 0;background:linear-gradient(180deg,rgba(255,255,255,.44),transparent 90%);pointer-events:none}
-.alertcard .ahead{display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative;z-index:1}
-.alertcard .atitle{font-size:15px;font-weight:700;color:var(--ink)}
-.alertcard .asum{font-size:12.5px;color:var(--ink-soft);margin-top:6px;line-height:1.65;position:relative;z-index:1}
-.alertcard .aright{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.dz{font-family:var(--shike);font-weight:700;line-height:1;pointer-events:none}
-.dz.wei{color:var(--wei);animation:dzBreath 1.9s ease-in-out infinite}
-@keyframes dzBreath{0%,100%{opacity:.72;transform:scale(1);text-shadow:0 0 4px rgba(192,57,43,.55),0 0 8px rgba(192,57,43,.35),1px 1px 2px rgba(0,0,0,.3)}
-  50%{opacity:1;transform:scale(1.14);text-shadow:0 0 7px rgba(192,57,43,1),0 0 15px rgba(192,57,43,.7),0 0 24px rgba(192,57,43,.45),1px 1px 2px rgba(0,0,0,.3)}}
-@media (prefers-reduced-motion:reduce){.dz.wei{animation:none;text-shadow:0 0 8px rgba(192,57,43,.8),1px 1px 2px rgba(0,0,0,.3)}}
-.pcard{position:relative;overflow:visible;border-radius:var(--r-card);padding:15px 18px 13px;margin:16px 0;
-  background:linear-gradient(150deg,color-mix(in srgb,var(--sev3) 9%,#fbf8ef),color-mix(in srgb,var(--sev3) 5%,#f0eadc) 46%,#f7f3ea);
-  border:0.5px solid color-mix(in srgb,var(--sev3) 30%,var(--rule));
-  box-shadow:var(--whisper),inset 0 0 0 1px rgba(255,255,255,.42)}
-.pcard .dz.wei{position:absolute;top:-13px;left:-8px;font-size:26px;z-index:6}
-.pcard .ptitle{font-size:14.5px;font-weight:700}
-.pcard .psum{font-size:12.5px;color:var(--ink-soft);margin-top:5px;line-height:1.65}
-details.fold{margin:12px 0;background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:0}
-details.fold>summary{cursor:pointer;list-style:none;padding:11px 16px;font-size:13.5px;font-weight:600;color:var(--acc);display:flex;align-items:baseline;gap:8px}
-details.fold>summary::before{content:"▸";color:var(--camel);font-size:12px;transition:transform .15s}
-details.fold[open]>summary::before{content:"▾"}
-details.fold>summary .sconcl{font-weight:400;color:var(--ink-soft);font-size:12.5px}
-details.fold .fold-body{border-top:1px dashed var(--rule);margin:0 16px;padding:10px 0 14px}
-details.fold>summary::-webkit-details-marker{display:none}
 </style>
 </head>
 <body>
@@ -125,160 +88,183 @@ details.fold>summary::-webkit-details-marker{display:none}
 <header class="masthead">
   <div class="kicker">剑酒青丘 · 解释层 overlay · 预注册与持续验证</div>
   <h1>事件归因台账 · 签名与条件量级</h1>
-  <p class="disclaim">解释层台账 · nowcast 同步仪表 · 非预警器 · 永不直接驱动仓位或温度（risk_overlay_not_alpha）<br>
-  注册的不是某日的权重向量，而是每个因子的「截面签名 ＋ 条件量级带 ＋ 可证伪条件」——解释性权重 ≠ 预测性权重。规则书 <strong>v1.3.1</strong>（2026-08-06 Doctor 裁 P-04 口径闭合＋观察余量重算收栏＋量级带分层权限） · 快照 <strong>2026-08-06 20:5x ET</strong>（值守班 · 事件日重算重绘 · 七日累计）</p>
+  <p class="sub">注册的不是某日的权重向量，而是每因子的「截面签名 ＋ 条件量级带 ＋ 可证伪条件」。解释性权重 ≠ 预测性权重；risk_overlay_not_alpha。</p>
 </header>
 
-<!-- 本期导读 · 三张可点小卡 -->
-<div class="minicards">
-  <details class="minicard">
-    <summary><span class="mt">解释缺口 · 六连超阈</span><span class="mx">+3.91~+4.55pp · 连续第 6 日（警戒线 0.3）· 连续第 2 日收窄</span></summary>
-    <div class="mbody">把已注册的因子全加起来，还是追不上实际走势——缺口挂在 <strong>+4.23 个百分点</strong>（区间 +3.91~+4.55），连续第六天超警戒线，但已是连续第二天小幅收窄。缺口性质变了：不再是「有因子没注册」，而是三条已注册的新形态（退款、降温、宏观驱动）的「正常该多大」<strong>量级带还空着</strong>——等您裁带，缝才能真正收窄。</div>
-  </details>
-  <details class="minicard">
-    <summary><span class="mt">geo·降温回吐 · 候选形态</span><span class="mx">协议未官宣 · 油反向 +4.04%（n=1 记观察·不立项）</span></summary>
-    <div class="mbody">特朗普「48 小时内公布协议细节」的第一个截止点过了，协议没官宣。市场把前一天「快谈成了」的乐观吐回来，油价反弹 <strong>+4.04%</strong>。这正好卡在规则书空档：「geo→油」只登记「挨打油涨」、「geo·降温兑现」要有正式宣布才算数——「谈崩了油反弹」两边都罩不住。值班员记下这个候选形态（首例·样本不足暂不立项）；明晚协议若官宣或再落空，就有裁决依据。</div>
-  </details>
-  <details class="minicard">
-    <summary><span class="mt">宏观驱动 · 明晚 NFP 候选轮</span><span class="mx">已事前冻结 · 成立才记第 1 轮 · n=1 不落带</span></summary>
-    <div class="mbody">您 08-06 定的规矩：明晚 7 月非农是「宏观驱动」因子的<strong>第一个候选轮</strong>，窗口与签名已事前冻结（数据落地要「指数脉冲 ±0.3%+/30min＋VIX 反向＋长端同向确认」，只收超预期）。<strong>成立才记第 1 轮，不成立也留作证伪样本、不得事后剔除</strong>；就算成立，n=1 也先不落带。今天长端利率 +5.3bp（没到 6bp 阈）算一次同向「彩排」。</div>
-  </details>
+<div class="metabar">
+  <span class="chip">快照 <strong>2026-07-31 20:5x ET</strong>（值守班 · 事件日重算重绘）</span>
+  <span class="chip">注册表版本 <strong>v1.0</strong>（未改动）</span>
+  <span class="chip">全线 <strong>n=1 方向真档</strong></span>
+  <span class="chip">上一交易日 <strong>2026-07-31 ＝ 事件日</strong></span>
+  <span class="chip alert">残差告警 <strong>+1.46~+2.01pp &gt;&gt; 0.3pp</strong> · 连续第二日</span>
+  <span class="chip alert">新提案 <strong>P-13 ~ P-18</strong> 待批</span>
+  <span class="chip alert">⚠ <strong>P-16</strong> 触及注册表首例基线 · 请优先裁</span>
+  <span class="chip warn">H.15 仅发至 <strong>07-29</strong> · P-12 的 07-30 腿仍冻结</span>
+  <span class="chip warn">读数已按 <strong>market_data.db</strong> 订正（08-01）</span>
+  <span class="chip">✅ 分时磁带到手 · <strong>SMH／WTI／VIX ◌ 已闭合</strong></span>
 </div>
 
-<!-- 残差告警卡 -->
-<div class="alertcard">
-  <div class="ahead">
-    <span class="atitle">残差告警 · 疑漏因子连续第六日成立（连续第二日小幅收窄）</span>
-    <div class="aright">
-      <span class="slabel">杀伤</span>
-      <span class="ledbar">
-        <span class="led" style="background:var(--sev1);box-shadow:0 0 3px #2f7d6399"></span>
-        <span class="led" style="background:var(--sev1);box-shadow:0 0 3px #2f7d6399"></span>
-        <span class="led" style="background:var(--sev3);box-shadow:0 0 3px #c8962a99"></span>
-        <span class="led" style="background:var(--sev4);box-shadow:0 0 3px #e0791e99"></span>
-        <span class="led" style="background:var(--sev5);box-shadow:0 0 3px #c0392b99"></span>
-      </span>
-      <span class="strig" style="color:var(--t-fired)">已触发 · 连续第 6 日</span>
-    </div>
-  </div>
-  <div class="asum">+0.18 → +1.15 → +1.74 → +3.23 → +4.85 → +4.41 → <strong>+4.23pp（区间 +3.91~+4.55）</strong> ≫ 0.3pp 阈。缺口「构成」已换代：三条在作用的形态（退款·降温·宏观驱动）<strong>均已入册 v1.1~v1.3</strong>，如今冻结口径量的是「<strong>带缺席</strong>」多于「因子缺席」——收窄主路是 Doctor 裁量级带。恒等式在数值上恒成立，<strong>不闭合的是规则书的量级带，不是计算</strong>。明日 08-07 NFP＝宏观驱动首个候选轮（已事前冻结）：签名成立即留第 1 轮观察锚，不成立亦留作证伪样本。</div>
+<div class="callout teal">
+  <span class="h">🔑 2026-08-01 补数后的三条硬结论</span>
+  <strong>①</strong> 07-29 VIX 分时把 <strong>ƒ 与证伪退款在时间轴上切开了</strong>——14:00 决议落地 VIX −2.95%（退款），14:50→16:05 VIX +18.4%（官语再定价）。台账悬置三天的「④⑤共线不可分离」在分时级<strong>根本不成立</strong> → <strong>P-18</strong>。<br>
+  <strong>②</strong> 07-31 油<strong>不是没涨，是没脉冲</strong>：日内 +4.39%（03:00→11:05）但全日无任何 30min 窗超 +1.5%。<strong>预告改变的是形态不是幅度</strong> → P-13 重写为 v2。<br>
+  <strong>③</strong> SMH 全序列到手，<strong>推翻本班上一版「缺口连续两日回补」</strong>——主代理超额是 −3.25 → +5.20 → <strong>−0.42</strong>，回补只有一天。
 </div>
 
 <!-- ==================== 一 ==================== -->
-<h2>函数式归因曲线</h2>
+<h2><span class="n">一</span>函数式归因曲线</h2>
 
-<p class="lede">横轴＝事件时序；水平零轴；各因子累计贡献 <em>f(t)</em> ＋ 灰虚残差；<strong>Σ因子 ＋ 残差 ≡ 实际指数</strong>。本图为 07-29（触发日）→ 07-30（退款日）→ 07-31（报复落地）→ 08-03（主动降温）→ 08-04（降温②·纪录）→ 08-05（盘中纪录回落）→ <strong>08-06（协议未官宣）</strong>的<strong>七日累计</strong>路径。</p>
+<p class="lede">横轴＝事件时序；水平零轴；各因子累计贡献 <em>f(t)</em> ＋ 灰虚残差；<strong>Σ因子 ＋ 残差 ≡ 实际指数</strong>。事件日用当日数据重算重绘。本图为 07-29（触发日）→ 07-30（定价日）→ <strong>07-31（报复落地第二日）</strong>的<strong>三日累计</strong>路径。</p>
 
 <figure>
-<svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="事件归因累计贡献曲线 · 07-28 至 08-06 七日累计（实际指数＝15m 磁带）">
-<g stroke="#e6dbc4" stroke-width="1"><line x1="90.0" y1="60" x2="830.0" y2="60"/><line x1="90.0" y1="90" x2="830.0" y2="90"/><line x1="90.0" y1="120" x2="830.0" y2="120"/><line x1="90.0" y1="150" x2="830.0" y2="150"/><line x1="90.0" y1="180" x2="830.0" y2="180"/><line x1="90.0" y1="210" x2="830.0" y2="210"/><line x1="90.0" y1="240" x2="830.0" y2="240"/><line x1="90.0" y1="270" x2="830.0" y2="270"/><line x1="90.0" y1="300" x2="830.0" y2="300"/><line x1="90.0" y1="330" x2="830.0" y2="330"/><line x1="90.0" y1="390" x2="830.0" y2="390"/><line x1="90.0" y1="420" x2="830.0" y2="420"/><line x1="90.0" y1="450" x2="830.0" y2="450"/><line x1="90.0" y1="480" x2="830.0" y2="480"/></g>
-<g font-size="11" fill="#6b5f4e" text-anchor="end" font-variant-numeric="tabular-nums"><text x="82" y="64">+5.0</text><text x="82" y="94">+4.5</text><text x="82" y="124">+4.0</text><text x="82" y="154">+3.5</text><text x="82" y="184">+3.0</text><text x="82" y="214">+2.5</text><text x="82" y="244">+2.0</text><text x="82" y="274">+1.5</text><text x="82" y="304">+1.0</text><text x="82" y="334">+0.5</text><text x="82" y="364">+0.0</text><text x="82" y="394">−0.5</text><text x="82" y="424">−1.0</text><text x="82" y="454">−1.5</text><text x="82" y="484">−2.0</text></g>
-<text x="82" y="46" font-size="11.5" fill="#a3763f" text-anchor="end">累计贡献 (pp)</text>
-<line x1="90.0" y1="360" x2="838.0" y2="360" stroke="#3a3126" stroke-width="1.6"/>
-<g stroke="#d9cdb2" stroke-width="1" stroke-dasharray="2 4"><line x1="195.7" y1="52" x2="195.7" y2="492"/><line x1="301.4" y1="52" x2="301.4" y2="492"/><line x1="407.1" y1="52" x2="407.1" y2="492"/><line x1="512.9" y1="52" x2="512.9" y2="492"/><line x1="618.6" y1="52" x2="618.6" y2="492"/><line x1="724.3" y1="52" x2="724.3" y2="492"/></g>
-<g stroke="#b8912c" stroke-width="1.4" opacity="0.85"><line x1="210" y1="80" x2="210" y2="492"/><line x1="420" y1="80" x2="420" y2="492"/><line x1="525" y1="80" x2="525" y2="492"/><line x1="790" y1="80" x2="790" y2="492"/></g>
-<g font-size="10" fill="#b8912c" text-anchor="middle"><text x="210" y="74">盘后打击执行</text><text x="420" y="74">Trump 取消袭伊</text><text x="525" y="74">Bessent 协议</text><text x="790" y="74">沙漏到期未官宣</text></g>
-<g font-size="11" fill="#6b5f4e" text-anchor="middle"><text x="90.0" y="508">07-28 收</text><text x="90.0" y="522" font-size="10" fill="#9a8f7c">基线</text><text x="195.7" y="508">07-29 收</text><text x="195.7" y="522" font-size="10" fill="#9a8f7c">FOMC×拦截</text><text x="301.4" y="508">07-30 收</text><text x="301.4" y="522" font-size="10" fill="#9a8f7c">退款日</text><text x="407.1" y="508">07-31 收</text><text x="407.1" y="522" font-size="10" fill="#9a8f7c">落地二日</text><text x="512.9" y="508">08-03 收</text><text x="512.9" y="522" font-size="10" fill="#9a8f7c">主动降温</text><text x="618.6" y="508">08-04 收</text><text x="618.6" y="522" font-size="10" fill="#9a8f7c">降温②</text><text x="724.3" y="508">08-05 收</text><text x="724.3" y="522" font-size="10" fill="#9a8f7c">轻事件</text><text x="828" y="508" text-anchor="end">08-06 收</text><text x="828" y="522" font-size="10" fill="#9a8f7c" text-anchor="end">沙漏到期</text></g>
-<path d="M90.0,360.0 L195.7,315.0 L830.0,315.0 L830.0,360.0 Z" fill="#2e7d6e" opacity="0.14"/>
-<path d="M90.0,360.0 L195.7,381.0 L830.0,381.0 L830.0,360.0 Z" fill="#4a7ba6" opacity="0.16"/>
-<path d="M90.0,360.0 L195.7,366.0 L301.4,326.1 L407.1,318.9 L512.9,318.9 L618.6,306.6 L724.3,291.0 L830.0,291.0 L830.0,360.0 Z" fill="#8a8172" opacity="0.16"/>
-<polyline points="90.0,360.0 195.7,414.0 830.0,414.0" fill="none" stroke="#b8912c" stroke-width="1.4"/>
-<polyline points="90.0,360.0 195.7,315.0 830.0,315.0" fill="none" stroke="#2e7d6e" stroke-width="1.8"/>
-<polyline points="90.0,360.0 195.7,426.0 830.0,426.0" fill="none" stroke="#b23b2e" stroke-width="1.4" stroke-dasharray="6 4"/>
-<polyline points="90.0,360.0 195.7,381.0 830.0,381.0" fill="none" stroke="#4a7ba6" stroke-width="1.8"/>
-<polyline points="90.0,360.0 195.7,366.0 301.4,326.1 407.1,318.9 512.9,318.9 618.6,306.6 724.3,291.0 830.0,291.0" fill="none" stroke="#8a8172" stroke-width="1.3" stroke-dasharray="5 4"/>
-<polyline points="90.0,360.0 195.7,462.0 301.4,422.1 407.1,414.9 512.9,414.9 618.6,402.6 724.3,387.0 830.0,387.0" fill="none" stroke="#a3763f" stroke-width="1.8" stroke-dasharray="9 3"/>
-<polyline points="90.0,360.0 195.7,348.9 301.4,290.0 407.1,256.1 512.9,168.1 618.6,70.2 724.3,98.3 830.0,107.8" fill="none" stroke="#9a8f7c" stroke-width="1.5" stroke-dasharray="3 4"/>
-<polyline points="90.0,368.7 94.2,387.5 98.5,403.3 102.7,407.3 106.9,413.0 111.1,408.1 115.4,409.6 119.6,411.2 123.8,414.8 128.1,416.9 132.3,430.8 136.5,416.0 140.7,421.0 145.0,407.7 149.2,393.7 153.4,400.7 157.7,400.6 161.9,395.3 166.1,387.3 170.3,387.9 174.6,360.3 178.8,350.4 183.0,375.0 187.3,405.4 191.5,436.6 195.7,450.9 195.7,395.4 199.9,377.3 204.2,382.5 208.4,377.7 212.6,383.7 216.9,396.7 221.1,407.5 225.3,408.3 229.5,393.5 233.8,389.4 238.0,375.3 242.2,376.2 246.5,382.1 250.7,374.4 254.9,368.6 259.1,368.1 263.4,366.9 267.6,367.9 271.8,364.5 276.1,363.1 280.3,363.5 284.5,359.9 288.7,349.4 293.0,351.7 297.2,351.7 301.4,352.1 301.4,341.0 305.7,350.4 309.9,378.5 314.1,362.2 318.3,353.0 322.6,345.9 326.8,348.7 331.0,363.7 335.3,351.4 339.5,341.1 343.7,337.4 347.9,330.4 352.2,332.4 356.4,328.7 360.6,323.8 364.9,315.2 369.1,318.8 373.3,322.1 377.5,319.8 381.8,317.5 386.0,317.0 390.2,316.3 394.5,314.9 398.7,305.5 402.9,300.6 407.1,311.0 407.1,272.4 411.4,256.0 415.6,253.6 419.8,248.7 424.1,245.5 428.3,241.7 432.5,244.2 436.7,243.8 441.0,239.5 445.2,236.9 449.4,236.6 453.7,231.9 457.9,232.8 462.1,234.8 466.3,232.4 470.6,227.8 474.8,225.8 479.0,223.2 483.3,220.3 487.5,223.8 491.7,219.7 495.9,220.9 500.2,218.9 504.4,217.6 508.6,219.8 512.9,223.0 512.9,189.2 517.1,176.7 521.3,164.8 525.5,167.8 529.8,157.3 534.0,153.1 538.2,148.2 542.5,144.6 546.7,137.1 550.9,135.8 555.1,137.3 559.4,129.3 563.6,123.3 567.8,121.0 572.1,113.3 576.3,112.8 580.5,104.3 584.7,110.4 589.0,105.5 593.2,104.0 597.4,109.2 601.7,106.4 605.9,99.8 610.1,104.4 614.3,96.8 618.6,112.8 618.6,70.7 622.8,68.9 627.0,73.3 631.3,84.4 635.5,90.5 639.7,95.1 643.9,98.4 648.2,109.3 652.4,106.9 656.6,117.9 660.9,119.6 665.1,106.2 669.3,110.3 673.5,108.2 677.8,111.0 682.0,112.3 686.2,109.4 690.5,110.6 694.7,108.7 698.9,107.4 703.1,110.4 707.4,111.9 711.6,109.1 715.8,108.6 720.1,111.1 724.3,125.3 724.3,119.1 728.4,115.7 732.4,110.6 736.5,119.5 740.5,122.0 744.6,115.2 748.7,123.5 752.7,129.3 756.8,136.7 760.9,138.3 764.9,139.5 769.0,137.3 773.1,138.7 777.1,131.6 781.2,138.0 785.3,140.7 789.3,138.2 793.4,134.3 797.5,129.8 801.5,127.8 805.6,133.0 809.7,131.6 813.7,128.6 817.8,134.0 821.9,136.9 825.9,135.1 830.0,134.8" fill="none" stroke="#3a3126" stroke-width="2.6"/>
-<g font-size="9.5" font-variant-numeric="tabular-nums">
-<line x1="836" y1="387.0" x2="847" y2="399.0" stroke="#d9cdb2" stroke-width="1"/>
-<line x1="836" y1="414.0" x2="847" y2="417.0" stroke="#d9cdb2" stroke-width="1"/>
-<line x1="836" y1="426.0" x2="847" y2="435.0" stroke="#d9cdb2" stroke-width="1"/>
-<circle cx="830.0" cy="134.8" r="3.4" fill="#3a3126"/><g><title>+3.75pp（SPY 复利累计 · 七日）</title><rect x="849" y="127" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="138" fill="#3a3126" text-anchor="middle">实际</text></g>
-<circle cx="830.0" cy="107.8" r="3" fill="#9a8f7c"/><g><title>+4.20pp（实际−Σ·SPY 口径）</title><rect x="849" y="100" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="111" fill="#9a8f7c" text-anchor="middle">残差带</text></g>
-<circle cx="830.0" cy="387.0" r="3" fill="#a3763f"/><g><title>−0.45pp（注册因子合计）</title><rect x="849" y="391" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="402" fill="#a3763f" text-anchor="middle">Σ因子</text></g>
-<circle cx="830.0" cy="315.0" r="2.6" fill="#2e7d6e"/><g><title>+0.75pp（证伪退款）</title><rect x="849" y="307" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="318" fill="#2e7d6e" text-anchor="middle">退款</text></g>
-<circle cx="830.0" cy="291.0" r="2.6" fill="#8a8172"/><g><title>+1.15pp（单股杂质因子累计·冻结口径）</title><rect x="849" y="283" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="294" fill="#8a8172" text-anchor="middle">杂质</text></g>
-<circle cx="830.0" cy="381.0" r="2.6" fill="#4a7ba6"/><g><title>−0.35pp（AI 持续性缺口）</title><rect x="849" y="373" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="384" fill="#4a7ba6" text-anchor="middle">AI</text></g>
-<circle cx="830.0" cy="414.0" r="2.6" fill="#b8912c"/><g><title>−0.90pp（地缘·报复夜预支）</title><rect x="849" y="409" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="420" fill="#b8912c" text-anchor="middle">报复夜</text></g>
-<circle cx="830.0" cy="426.0" r="2.6" fill="#b23b2e"/><g><title>−1.10pp（央行规则不确定性）</title><rect x="849" y="427" width="56" height="15" rx="7" ry="7" fill="#fbf7ee" stroke="#d9cdb2"/><text x="877" y="438" fill="#b23b2e" text-anchor="middle">ƒ</text></g>
-</g>
+<svg viewBox="0 0 920 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="事件归因累计贡献曲线 · 07-28 至 07-31 三日累计">
+  <defs>
+    <pattern id="noTape" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#efe6d2" opacity="0.55"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#d9cdb2" stroke-width="2.4"/>
+    </pattern>
+  </defs>
+
+  <!-- no-tape zone -->
+  <rect x="250" y="58" width="550" height="342" fill="url(#noTape)"/>
+  <text x="525" y="74" text-anchor="middle" font-size="11.5" fill="#9a8f7c" letter-spacing="1.2">◌ 无分时磁带区 · 端点为收盘级读数，内部为示意插值</text>
+
+  <!-- grid -->
+  <g stroke="#e6dbc4" stroke-width="1">
+    <line x1="110" y1="70"  x2="800" y2="70"/>
+    <line x1="110" y1="110" x2="800" y2="110"/>
+    <line x1="110" y1="150" x2="800" y2="150"/>
+    <line x1="110" y1="190" x2="800" y2="190"/>
+    <line x1="110" y1="270" x2="800" y2="270"/>
+    <line x1="110" y1="310" x2="800" y2="310"/>
+    <line x1="110" y1="350" x2="800" y2="350"/>
+    <line x1="110" y1="390" x2="800" y2="390"/>
+  </g>
+  <g font-size="11" fill="#6b5f4e" text-anchor="end" font-variant-numeric="tabular-nums">
+    <text x="102" y="74">+2.0</text>
+    <text x="102" y="114">+1.5</text>
+    <text x="102" y="154">+1.0</text>
+    <text x="102" y="194">+0.5</text>
+    <text x="102" y="234">0</text>
+    <text x="102" y="274">−0.5</text>
+    <text x="102" y="314">−1.0</text>
+    <text x="102" y="354">−1.5</text>
+    <text x="102" y="394">−2.0</text>
+  </g>
+  <text x="34" y="232" font-size="11.5" fill="#a3763f" transform="rotate(-90 34 232)" text-anchor="middle">累计贡献 (pp)</text>
+
+  <!-- zero axis -->
+  <line x1="110" y1="230" x2="812" y2="230" stroke="#3a3126" stroke-width="1.6"/>
+
+  <!-- close nodes: 110 / 250 / 490 / 800 ; event hairlines: 370 / 610 / 700 -->
+  <g stroke="#d9cdb2" stroke-width="1" stroke-dasharray="2 4">
+    <line x1="250" y1="58" x2="250" y2="400"/>
+    <line x1="490" y1="58" x2="490" y2="400"/>
+    <line x1="800" y1="58" x2="800" y2="400"/>
+  </g>
+
+  <!-- 金细线＝事件性时刻 -->
+  <g stroke="#b8912c" stroke-width="1.4" opacity="0.85">
+    <line x1="370" y1="86" x2="370" y2="400"/>
+    <line x1="610" y1="86" x2="610" y2="400"/>
+    <line x1="700" y1="86" x2="700" y2="400"/>
+  </g>
+  <g font-size="10" fill="#b8912c" text-anchor="middle">
+    <text x="370" y="80">盘后打击执行</text>
+    <text x="610" y="80">科威特 overnight</text>
+    <text x="700" y="80">霍尔木兹油轮</text>
+  </g>
+
+  <g font-size="11" fill="#6b5f4e" text-anchor="middle">
+    <text x="110" y="420">07-28 收</text><text x="110" y="434" font-size="10" fill="#9a8f7c">基线</text>
+    <text x="250" y="420">07-29 收</text><text x="250" y="434" font-size="10" fill="#9a8f7c">FOMC×拦截</text>
+    <text x="490" y="420">07-30 收</text><text x="490" y="434" font-size="10" fill="#9a8f7c">退款日</text>
+    <text x="800" y="420">07-31 收</text><text x="800" y="434" font-size="10" fill="#9a8f7c">落地第二日</text>
+  </g>
+
+  <!-- ===== 色域：结构性持续因子 ===== -->
+  <!-- 杂质腿 浅灰域：0 → −0.10 → +0.56 → +0.58（带 +0.41~+0.96） -->
+  <path d="M110,230 L250,238 L490,185 L800,175 L800,230 Z" fill="#8a8172" opacity="0.16"/>
+  <path d="M250,238 L490,198 L800,197 L800,153 L490,172 Z" fill="#8a8172" opacity="0.11"/>
+  <!-- 证伪退款 青碧域：0 → +0.75 → 持平 -->
+  <path d="M110,230 L250,170 L800,170 L800,230 Z" fill="#2e7d6e" opacity="0.14"/>
+  <!-- AI持续性 青蓝域：0 → −0.35 → 持平 -->
+  <path d="M110,230 L250,258 L800,258 L800,230 Z" fill="#4a7ba6" opacity="0.16"/>
+
+  <!-- ===== 线 ===== -->
+  <!-- 杂质腿 灰实/虚 -->
+  <polyline points="110,230 250,238" fill="none" stroke="#8a8172" stroke-width="1.3"/>
+  <polyline points="250,238 490,185 800,175" fill="none" stroke="#8a8172" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <!-- 证伪退款 青碧 -->
+  <polyline points="110,230 250,170 490,170 800,170" fill="none" stroke="#2e7d6e" stroke-width="1.8"/>
+  <!-- AI 持续性 青蓝 -->
+  <polyline points="110,230 250,258 490,258 800,258" fill="none" stroke="#4a7ba6" stroke-width="1.8"/>
+  <!-- 地缘·报复夜 金细线＝事件性 -->
+  <polyline points="110,230 250,302 490,302 800,302" fill="none" stroke="#b8912c" stroke-width="1.4"/>
+  <!-- ƒ 朱红细虚＝不确定性 -->
+  <polyline points="110,230 250,318 490,318 800,318" fill="none" stroke="#b23b2e" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <!-- Σ 注册因子 驼色 -->
+  <polyline points="110,230 250,366 490,313 800,304" fill="none" stroke="#a3763f" stroke-width="1.8" stroke-dasharray="9 3"/>
+  <!-- 残差 灰虚＝不确定性 -->
+  <polyline points="110,230 250,216 490,138 800,91" fill="none" stroke="#9a8f7c" stroke-width="1.5" stroke-dasharray="3 4"/>
+  <!-- 实际指数 墨线独粗 -->
+  <polyline points="110,230 250,352 490,221 800,164" fill="none" stroke="#3a3126" stroke-width="3.2"/>
+
+  <!-- 残差区间带 07-31 -->
+  <line x1="800" y1="69" x2="800" y2="113" stroke="#9a8f7c" stroke-width="4" opacity="0.35"/>
+  <text x="812" y="92" font-size="10.5" fill="#9a8f7c">残差带 +1.46~+2.01</text>
+
+  <!-- 端点标注 -->
+  <g font-size="10.5" font-variant-numeric="tabular-nums">
+    <circle cx="800" cy="164" r="3.4" fill="#3a3126"/><text x="812" y="162" fill="#3a3126">实际 +0.82</text>
+    <circle cx="800" cy="304" r="3" fill="#a3763f"/><text x="812" y="316" fill="#a3763f">Σ因子 −0.92</text>
+    <circle cx="800" cy="170" r="2.6" fill="#2e7d6e"/><text x="812" y="178" fill="#2e7d6e">退款 +0.75</text>
+    <circle cx="800" cy="175" r="2.6" fill="#8a8172"/><text x="812" y="194" fill="#8a8172">杂质 +0.69</text>
+    <circle cx="800" cy="258" r="2.6" fill="#4a7ba6"/><text x="812" y="262" fill="#4a7ba6">AI −0.35</text>
+    <circle cx="800" cy="302" r="2.6" fill="#b8912c"/><text x="812" y="298" fill="#b8912c">报复夜 −0.90</text>
+    <circle cx="800" cy="318" r="2.6" fill="#b23b2e"/><text x="812" y="333" fill="#b23b2e">ƒ −1.10</text>
+  </g>
 </svg>
 <div class="legend">
   <span><i class="swbox" style="background:#4a7ba6;opacity:.35"></i>色域＝结构性持续因子（AI 持续性 · 青蓝）</span>
   <span><i class="swbox" style="background:#2e7d6e;opacity:.35"></i>证伪退款 · 青碧域</span>
-  <span><i class="swbox" style="background:#8a8172;opacity:.3"></i>单股杂质因子 · 浅灰域</span>
-  <span><i class="sw" style="border-color:#b8912c"></i>金细线＝事件性（地缘／事件时刻）</span>
+  <span><i class="swbox" style="background:#8a8172;opacity:.3"></i>单股杂质腿 · 浅灰域</span>
+  <span><i class="sw" style="border-color:#b8912c"></i>金细线＝事件性（地缘·报复夜／事件时刻）</span>
   <span><i class="sw" style="border-color:#b23b2e;border-top-style:dashed"></i>朱红细虚＝不确定性（ƒ）</span>
   <span><i class="sw" style="border-color:#9a8f7c;border-top-style:dashed"></i>灰虚＝残差</span>
   <span><i class="sw" style="border-color:#a3763f;border-top-style:dashed"></i>Σ 注册因子</span>
-  <span><i class="sw" style="border-color:#3a3126;border-top-width:3.4px"></i>墨线独粗＝实际指数（SPY 15m 磁带实测）</span>
+  <span><i class="sw" style="border-color:#3a3126;border-top-width:3.4px"></i>墨线独粗＝实际指数（SPX 复利累计）</span>
 </div>
+<figcaption>
+  <strong>读图</strong>：五条注册腿自 07-29 之后<strong>全部横平</strong>——不是因为它们停止作用，而是因为台账<strong>无权给它们加值</strong>（ƒ 无语言窗触发；报复夜的退款腿尚未注册；退款与 AI 的当日贡献 ◌不可分离）。唯一还在动的是单股杂质腿与实际指数，于是灰虚残差被<strong>越拉越开</strong>：+0.18 → +1.15 → <strong>+1.74pp</strong>。这条持续张开的缝，就是缺失注册项（<strong>P-05 退款腿</strong>）在图上的形状。
+</figcaption>
 </figure>
 
-<!-- 读图卡 -->
-<details class="fold">
-  <summary>读图<span class="sconcl">注册线横平＝当时无权记账，不是因子失效；缝从 +1.74 张到 +4.85 后连续两日收窄至 +4.23pp</span></summary>
-  <div class="fold-body">
-    <p class="note"><strong>为什么五条注册线 07-29 后全是平的</strong>：不是它们失效，是台账当时无权给它们加值——央行话术因子（ƒ）没等到新讲话窗；退款、降温、宏观驱动三个因子 08-03~08-04 才注册，此前无权记账；当日贡献又 ◌ 拆不开。</p>
-    <p class="note"><strong>残差为什么先冲顶后回落</strong>：08-04 冲到 +4.85 后，08-05、08-06 连续两日小幅收窄（指数自身回落＋无新单股头条）。但收窄与「覆盖面修复」无关——三条新形态的<strong>量级带还空着</strong>（待 Doctor 裁），缺口只能继续挂残差。</p>
-    <p class="note"><strong>七天盘面各说一句话</strong>：<br>07-29 高开低走、收在全天最低——冲击日典型形态；<br>07-30 早盘探低后逐级回收——退款（前夜预支的恐慌吐回）；<br>07-31 早盘冲高后回落——退款仍在但乏力；<br>08-03 跳空高开后极窄横盘——利好在周期货缺口一次兑现（降温兑现）；<br>08-04 全日单边上行首破 7,700——协议乐观（Bessent）＋双财报；<br>08-05 盘中创纪录 7,793 后回落收阴——过伸后获利回吐；<br>08-06 窄幅震荡收低、油独涨 +4%——协议未官宣，降温预期回吐。</p>
-    <p class="note"><strong>图注</strong>：墨粗线＝SPY 15m 磁带（Yahoo 沙箱直取），日末锚定台账收盘节点；<strong>曲线残差＝SPY 口径（端 +3.75），告警卡残差＝SPX 台账口径（中 +4.23），两口径差 &lt;0.05pp</strong>。</p>
-  </div>
-</details>
-
-<!-- 因子拾遗卡 -->
-<details class="fold">
-  <summary>因子拾遗<span class="sconcl">三个遗漏因子已全部入册，缺口来源已无未注册项；当前残差量的是「带缺席」，等 Doctor 裁带</span></summary>
-  <div class="fold-body">
-    <p class="note">残差逐日增量：07-30 <strong>+0.97</strong> ／ 07-31 <strong>+0.59</strong> ／ 08-03 <strong>+1.49</strong>（合计 ≈ +3.05，对 07-29 基线余量 +0.18 → 中值 +3.23）。尝试把这三天的缝分摊给「当时没注册、但市场里确实在作用」的形态：</p>
-    <table>
-    <thead><tr><th>遗漏因子</th><th>拟合份额（pp · 带）</th><th>依据</th><th>注册状态</th></tr></thead>
-    <tbody>
-    <tr><td><strong>退款因子</strong>（报复夜预支的对称回吐）</td><td class="num">+0.8 ~ +1.3</td><td>07-30 VIX −17.28% 完全回吐（SPX +1.66%）＋ 07-31 −6.44% 续探（SPX +0.70%）</td><td class="ok">✅ v1.1 已入册（P-05）</td></tr>
-    <tr><td><strong>geo·降温兑现</strong></td><td class="num">+0.9 ~ +1.2</td><td>08-03 SPX +1.48%（道指纪录）· VIX 15.86 全程回吐完成 · 油 −5~−7%</td><td class="ok">✅ v1.1 已入册（P-19）</td></tr>
-    <tr><td><strong>宏观数据 / 贴现率因子</strong></td><td class="num">+0.4 ~ +0.8</td><td>07-30 Q2 GDP＋6 月 PCE 落地 · 08-03 ISM 55.6（2022-05 来最高）· 10Y ^TNX 4.75→4.686（−5.9bp）</td><td class="ok">✅ v1.3 已入册（P-21·宏观驱动）</td></tr>
-    <tr><td><strong>合计 vs 残差 +3.23（中）</strong></td><td class="num">+2.1 ~ +3.3</td><td>带重叠，不可精确加总</td><td>—</td></tr>
-    </tbody>
-    </table>
-    <p class="note"><strong>读法</strong>：带内取中值则残差闭合到约 <strong>+0.5（+0~+1.1）</strong>——三个新因子入册后缝会明显收窄，但<strong>大概率收不进 0.3 阈</strong>。<strong>〔2026-08-06 更新〕三个遗漏因子现已全部入册（退款 v1.1·降温 v1.1·宏观驱动 v1.3），缺口来源已无未注册项</strong>；后续残差由值守班按新因子逐日重算验证收窄（宏观驱动首个候选轮＝08-07 NFP·已事前冻结）。</p>
-    <p class="note"><strong>⚠ 诚实标注</strong>：以上为<strong>事后 sizing</strong>（对着已知结果分摊份额），不是注册记账——G-04 事后拟合高危区；各因子份额不可加总成「对账表」，本卡只服务「缺口由什么构成」的主旨判断。历史残差不回填。</p>
-  </div>
-</details>
+<div class="callout">
+  <span class="h">恒等式状态：不闭合，且这是设计内的告警而非计算错误</span>
+  Σ因子 ＋ 残差 ≡ 实际指数在数值上恒成立，但残差整个区间 <strong>+1.46 ~ +2.01pp</strong> 远超 0.3pp 阈值 ⇒ <strong>疑漏因子告警连续第二个交易日成立且加重</strong>。本班仍<strong>拒绝</strong>给出「各因子分得多少」式的硬对账：SPX 权重口径（P-04）未标定，分母不可信。
+</div>
 
 <!-- ==================== 二 ==================== -->
-<details class="fold">
-  <summary>规则书<span class="sconcl">因子签名、正常阈值、可证伪条件 · v1.3.1</span></summary>
-  <div class="fold-body">
-<p class="note">2026-07-30 注册 · 基线＝07-29 首例 · <strong>v1.3.1（2026-08-06）</strong>：v1.1＝16 提案并入；v1.2＝AI 持续性重构「轴+双翼」；v1.2.1＝降温兑现加水平条件（P-20）；v1.3＝新设宏观驱动（P-21）；<strong>v1.3.1＝P-04 杂质因子口径闭合＋方向②科技资讯流证伪记录＋观察余量重算收栏＋量级带分层权限</strong>。术语：退款因子／杂质因子／证据因子（原称…腿·2026-08-03 Doctor 定）。</p>
+<h2><span class="n">二</span>签名与条件量级注册表</h2>
+<p class="note">2026-07-30 注册 · 基线＝07-29 首例 · <strong>v1.0，本班未改动一字</strong>。</p>
 
 <table>
-<thead><tr><th>因子</th><th>触发形态</th><th>截面签名（判型依据）</th><th>首例贡献</th><th>注册量级带</th><th>可证伪条件</th><th>可测频率</th></tr></thead>
+<thead><tr><th>因子</th><th>触发形态</th><th>截面签名（判型依据）</th><th>首例贡献</th><th>注册量级带</th><th>可证伪条件</th></tr></thead>
 <tbody>
-<tr><td><strong>ƒ·央行规则不确定性</strong></td><td>央行语言窗（决议后官语再定价·放雷余震型）</td><td><strong>短端跌 × 长端涨（单日熊陡 10bp）</strong>＋VIX↑↑＋金不定<span class="dim">〔v1.1·P-12 重写；机制不变、权重不下修〕</span></td><td class="num">−1.1pp</td><td class="num">−0.8~−1.4pp/次</td><td>下一例判 ƒ 而 2Y 同日 |Δ|&gt;8bp ⇒ 分类失效；连续 2 例 |贡献|&lt;0.3pp ⇒ 量级带下修</td><td>收盘（分时可按决议/官语时刻细分）</td></tr>
-<tr><td><strong>地缘·报复夜（预支型）</strong></td><td>报复已预告＋执行在盘后</td><td>VIX↑＋金被卖（清仓式非避险式）＋油平（无新头条）</td><td class="num">−0.9pp</td><td class="num">−0.6~−1.2pp/次</td><td>预告在案而尾盘不贴水（≥0 收）⇒ 预支假说弱化</td><td>分时＋收盘</td></tr>
-<tr><td>⤷ <strong>子结构·退款因子</strong><span class="dim">〔v1.1·P-05 增设·P-14 修订〕</span></td><td>预支已付＋落地日无升级</td><td><strong>VIX 回吐 ≥ 预支日涨幅 2/3 ＋ 指数正脉冲</strong><span class="dim">（油价分项删除·P-14）</span></td><td class="num">07-30 VIX −17.28% 完全回吐（n=1）</td><td class="num">暂不设数值（n=1）</td><td>落地日无升级而 VIX 不回吐 ⇒ 预支型分类失效；回吐可用分时基准</td><td>收盘（分时可用）</td></tr>
-<tr><td><strong>geo→美股 · 分支条件</strong><span class="dim">〔v1.1·P-06 改名扩分支〕</span></td><td>@拦截（现有）／@命中·盘后执行／@未确认／@取消<span class="dim">（后三者仅登记分支位·P-06/P-19②）</span></td><td>@拦截：隔夜股指期货 |Δ|&lt;0.5%，油独走</td><td class="num">ES −0.21%</td><td class="num">@拦截：断路（|Δ|&lt;0.5%）；余三分支不填带</td><td>拦截情形下 ES 隔夜 &lt;−1% ⇒ 断路假说证伪</td><td>隔夜（期货）</td></tr>
-<tr><td><strong>geo→油</strong></td><td>袭击类事件（不论拦截）；形态分支<span class="dim">〔v1.1·P-13〕</span>：<strong>@突袭</strong>（无预告）／<strong>@已预告执行</strong>（爬升型·不得用 30min 窗判违例）</td><td>30 分钟内油脉冲（@突袭）；@已预告执行改用日内累计带（起点取执行时刻）</td><td class="num">分时：20min +2.4%（磁带复核 ✓）· <strong>收盘基线〔v1.1·P-16 重算〕：Brent $90.74（+7.9082%）</strong>· WTI $83.65</td><td class="num">@突袭：&gt;+1.5%/30min；<strong>收盘映射带：&gt;+2.0%</strong><span class="dim">（P-03 暂设·待 n≥3）</span>；@已预告执行：日内累计带暂不设数值</td><td>袭击后 60min 油 |Δ|&lt;0.5% ⇒ 边降级</td><td>分时（@突袭）·收盘（@已预告执行）</td></tr>
-<tr><td><strong>证伪退款（落地兑现）</strong></td><td>日历披露落地 × 会前保险概率 p</td><td>指数正脉冲＋金同涨＋VIX↓（纯不确定性解除）</td><td class="num">p=37% → +0.75pp</td><td class="num">与 p 同向，量级待样本（暂记 ~2pp/100%p·仅示意）</td><td>落地符合主判而无正脉冲（±5min |Δ|&lt;5bp）⇒ 退款机制存疑</td><td>分时（落地 ±5min）·收盘</td></tr>
-<tr class="newrow"><td><strong>AI 估值范式持续性 · L0 范式轴</strong><span class="dim">〔v1.2 重构·前提层〕</span></td><td>慢变量·无事件窗</td><td><strong>三柱</strong>：① hyperscaler capex 指引未群体下修 ② FCF 未群体转负（alarm r2）③ 融资条件未系统性收紧（alarm r4 分项·利差/CDS）</td><td class="num">当前态：<strong>在场·柱②③受损</strong>（AMZN FCF −$7.6B 1/4 · CoreWeave CDS ~1000bp＋加点 125bp）</td><td class="num">—（轴不设带·柱阈值待 n 校准）</td><td>三柱判据连续两次证伪级误读 ⇒ 柱定义回炉；<strong>L0 常态化 ⇒ 因子退场</strong></td><td>周核（alarm 周班·滞后 ≤7 天）</td></tr>
-<tr class="newrow"><td>⤷ <strong>L1 冲击翼</strong>（负向偏离）</td><td>范式受冲击/承压时（平凡日截面可测）</td><td>缺口＝SMH 主代理相对 SPY 超额（pp）＋跨市场传染（Kospi 等）；缺口扩大（负）＋传染同向跌 ⇒「<strong>打折 / 回调</strong>」</td><td class="num">−0.35pp（07-29·沿自 v1.0 首例）</td><td class="num">逐日缺口序列（量级带暂不设数值）</td><td>（退场随 L0 常态化，不单列）</td><td>收盘（日线）</td></tr>
-<tr class="newrow"><td>⤷ <strong>L2 恢复翼</strong>（正向偏离）</td><td>冲击消退或范式过热时</td><td>同 L1、符号为正；缺口回补（正）＋传染同向涨 ⇒ <strong>按 L0 解义</strong>：在场＝<strong>过伸</strong>（回调风险）／受冲击＝<strong>重建</strong>／修复中＝<strong>回归途中</strong></td><td class="num">首样本：07-31 Kospi +17.9%（L0 在场 ⇒ 判<strong>过伸</strong>）；08-03 −5.12%（回吐未收敛）</td><td class="num">同 L1（暂不设数值）</td><td>L0 在场下 L2 烈度 >阈 后 5 日无回吐 ⇒ 改记「轴上移」候选（入提案区·不动注册）</td><td>收盘（日线）</td></tr>
-<tr class="newrow"><td><strong>geo·降温兑现</strong><span class="dim">〔v1.1·P-19① 新设〕</span></td><td>降温头条宣布时刻（停火/取消打击/谈判恢复）</td><td><strong>油↓↓＋VIX↓＋股↑＋长端收益率↓，金不定</strong><span class="dim">（VIX 分项：已低于冲击前水平则豁免——v1.2.1·P-20 选项一）</span></td><td class="num">08-03：SPX +1.48%（道指纪录）· VIX 15.86 全程回吐完成 · 油 −5~−7% · 周期货缺口 −5.4% 一次兑现（n=1）</td><td class="num">留空待样本（n=1 首见，不落带）</td><td>降温头条宣布而周日重开无缺口（|油 Δ|&lt;1%）⇒ 形态存疑</td><td>事件窗（宣布时刻＋期货重开）</td></tr>
-<tr class="newrow"><td><strong>宏观驱动</strong><span class="dim">〔v1.3·P-21 新设·Doctor 裁 C 案〕</span></td><td>双分支：<strong>@数据落地</strong>（顶级日历披露·CPI/NFP/GDP/PCE/ISM 55+ 级·二级数据不进）／<strong>@利率重估</strong>（长端 |Δ|≥6bp 且无央行语言窗·与 ƒ 互斥）</td><td>@数据落地：<strong>指数脉冲 ±0.3%+/30min＋VIX 反向＋长端同向确认·只收超预期</strong>（预期内归证伪退款）；@利率重估：<strong>长端 |Δ|≥6bp＋股指反向</strong>·不要求 VIX 方向</td><td class="num">首例基线：07-30（GDP+PCE·+0.2~+0.4pp 估）· 08-03（ISM 55.6·+0.4~+0.8pp 估）</td><td class="num">留空待样本（两分支共用·不落带）</td><td>数据符合预期而无脉冲 ⇒ @数据落地存疑；利率大动而股指无反向 ⇒ @利率重估存疑；geo 事件日 ◌不可分离</td><td>事件窗（披露）·收盘（利率）</td></tr>
+<tr><td><strong>ƒ·央行规则不确定性</strong></td><td>央行语言窗（决议后官语再定价·放雷余震型）</td><td><strong>2Y 平</strong>＋长端独立↑＋VIX↑↑＋金不定（可清仓式被卖）</td><td class="num">−1.1pp</td><td class="num">−0.8~−1.4pp/次</td><td>下一例判 ƒ 而 2Y 同日 |Δ|&gt;8bp ⇒ 分类失效；连续 2 例 |贡献|&lt;0.3pp ⇒ 量级带下修</td></tr>
+<tr><td><strong>地缘·报复夜（预支型）</strong></td><td>报复已预告＋执行在盘后</td><td>VIX↑＋金被卖（清仓式非避险式）＋油平（无新头条）</td><td class="num">−0.9pp</td><td class="num">−0.6~−1.2pp/次</td><td>预告在案而尾盘不贴水（≥0 收）⇒ 预支假说弱化</td></tr>
+<tr><td><strong>geo→美股 @拦截</strong></td><td>导弹袭击被成功拦截</td><td>隔夜股指期货 |Δ|&lt;0.5%，油独走</td><td class="num">ES −0.21%</td><td>断路（|Δ|&lt;0.5%）</td><td>拦截情形下 ES 隔夜 &lt;−1% ⇒ 断路假说证伪</td></tr>
+<tr><td><strong>geo→油</strong></td><td>袭击类事件（不论拦截）</td><td>30 分钟内油脉冲</td><td class="num">20min +2.4%</td><td class="num">&gt;+1.5%/30min</td><td>袭击后 60min 油 |Δ|&lt;0.5% ⇒ 边降级</td></tr>
+<tr><td><strong>证伪退款（落地兑现）</strong></td><td>日历披露落地 × 会前保险概率 p</td><td>指数正脉冲＋金同涨＋VIX↓（纯不确定性解除）</td><td class="num">p=37% → +0.75pp</td><td>与 p 同向，量级待样本（暂记 ~2pp/100%p·仅示意）</td><td>落地符合主判而无正脉冲（±5min |Δ|&lt;5bp）⇒ 退款机制存疑</td></tr>
+<tr><td><strong>AI 持续性（慢变量）</strong></td><td>无需事件窗——<strong>平凡日截面可测</strong></td><td>NVDA/SMH−SPX 缺口＋跨市场传染（Kospi 等）</td><td class="num">−0.35pp</td><td>存量腿·逐日缺口序列</td><td>缺口回补且传染消失 ⇒ 移出在场清单 <span class="bad">（文本缺陷见 P-15）</span></td></tr>
 </tbody>
 </table>
 
-<p class="note"><strong>翼内测量纪律（v1.2 · 吸收 P-15/P-17）</strong>：<strong>|传染| 的大小定「翅膀扇没扇」、符号只标方向</strong>——反向大幅传染判「因子仍在场、符号翻转」，不再误判退场（P-15）；SMH 主代理、NVDA 校验、背离 >2pp 两值并列、<strong>背离变号＝代理反转·该日不入单值序列</strong>（P-17①）；SMH 缺失用 TSM＋AVGO（误差 ≤0.14pp 已验）、基准统一 SPY 同库同源（P-17②③）。记账格式：事件日记 L0 柱态一行（带源注＋滞后）＋翼读数一行（L1/L2/◌）。<strong>分工</strong>：yuantu-alarm r2/r4＝阈值告警层，L0＝归因记账层。</p>
-<p class="note"><strong>通用纪律</strong>：每例必录<strong>混杂标注</strong>与<strong>残差</strong>（残差&gt;0.3pp ⇒ 疑漏因子）；基准指数先剔成分股杂质；判型先过签名再定量级，签名不符不得硬归因。<strong>v1.1 增五条</strong>：①可测频率 ②◌不可分离 ③杂质因子口径＝SPX 中性化净额进 Σ·gross 只作污染告警（v1.3.1 闭合）④水平≠变化 ⑤利率源三轴（权威源 H.15/FRED·^TNX 仅时效代理·禁代理外推·>2bp 源分歧两值并列）。</p>
-<p class="note"><strong>量级带分层权限（2026-08-06 Doctor 立 ·「严在权限，不严在记录」）</strong>：n=1 单轮观察锚·只展示不进方程 → n=2 暂定候选带·值守参考/影子记账 → n≥3 试注册带·方向一致性+离群敏感度检查后入方程·低置信 → n≥5 且跨环境·稳定注册带。「不落带」只禁进正式方程、不禁形成候选带。</p>
-  </div>
-</details>
+<p class="note"><strong>通用纪律</strong>：每例必录<strong>混杂标注</strong>与<strong>残差</strong>（残差&gt;0.3pp ⇒ 疑漏因子）；基准指数先剔成分股杂质；判型先过签名再定量级，签名不符不得硬归因。</p>
 
 <!-- ==================== 三 ==================== -->
-<details class="fold">
-  <summary>记账表<span class="sconcl">市场及因子边际变化 · 已延至 08-06</span></summary>
-  <div class="fold-body">
+<h2><span class="n">三</span>记账表（一行＝一因子 × 一事件日）</h2>
 
 <table>
 <thead><tr><th>日期</th><th>因子</th><th>签名符合?</th><th>贡献(pp)</th><th>残差</th><th>混杂</th><th>备注</th></tr></thead>
@@ -288,163 +274,249 @@ details.fold>summary::-webkit-details-marker{display:none}
 <tr><td>07-29</td><td>证伪退款</td><td class="ok">✓</td><td class="num">+0.75</td><td class="num">同上</td><td>同上</td><td>p=37%</td></tr>
 <tr><td>07-29</td><td>AI 持续性</td><td class="ok">✓</td><td class="num">−0.35</td><td class="num">同上</td><td>同上</td><td>Kospi −6% 传染</td></tr>
 <tr><td>07-29</td><td>geo→美股 @拦截</td><td class="ok">✓</td><td class="num">ES −0.21%</td><td class="dim">—</td><td>同上</td><td>断路首例</td></tr>
-<tr><td>07-30</td><td>ƒ</td><td class="dim">无触发</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>本日无央行语言窗</td></tr>
-<tr><td>07-30</td><td>地缘·报复夜</td><td class="bad">退款因子·规则书尚无此子结构</td><td class="circ">◌不可分离</td><td class="circ">◌</td><td>MSFT 单只</td><td>VIX −17.28% 完全回吐 → <strong>P-05</strong></td></tr>
+<tr><td>07-30</td><td>ƒ</td><td class="dim">无触发</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>本日无央行语言窗；长端余震见观察项</td></tr>
+<tr><td>07-30</td><td>地缘·报复夜</td><td class="bad">退款腿·注册表无此腿</td><td class="circ">◌不可分离</td><td class="circ">◌</td><td>MSFT 单只</td><td>VIX 20.66→17.09（−17.28%）完全回吐 → <strong>P-05</strong></td></tr>
 <tr><td>07-30</td><td>geo→美股 @拦截</td><td class="bad">条件不匹配</td><td class="num">SPX +1.66%</td><td class="dim">—</td><td>同上</td><td>命中/执行 ≠ 注册的拦截 → <strong>P-06</strong></td></tr>
 <tr><td>07-30</td><td>geo→油</td><td class="bad">方向不符</td><td class="num">WTI ≈平／−0.7%</td><td class="circ">◌</td><td>分时 ◌</td><td>执行日油不涨 → <strong>P-07</strong></td></tr>
-<tr><td>07-30</td><td>证伪退款</td><td class="ok">收盘级三项全符</td><td class="circ">◌不可分离</td><td class="circ">◌</td><td>MSFT×地缘×数据三方共振</td><td>±5min 分时脉冲 ◌</td></tr>
-<tr><td>07-30</td><td>AI 持续性</td><td class="ok">✓ 可测</td><td class="num">SMH +5.08pp／NVDA +0.28pp</td><td class="dim">—</td><td>MSFT 不在 SMH</td><td>两代理背离 ~5pp → <strong>P-08</strong></td></tr>
-<tr><td>07-31</td><td>ƒ</td><td class="dim">无触发</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>观察项：10Y <strong>4.75%</strong>（2025-01 来最高）</td></tr>
-<tr><td>07-31</td><td>地缘·报复夜</td><td class="bad">退款因子仍未注册</td><td class="circ">◌不可分离</td><td class="circ">◌</td><td>AMZN 单只</td><td>VIX −6.44% 二次下探；WTI 续涨 ⇒ P-05 油价分项第二样本不符 → <strong>P-14</strong></td></tr>
-<tr><td>07-31</td><td>geo→美股 @拦截</td><td class="bad">条件不匹配</td><td class="num">SPX +0.70%</td><td class="dim">—</td><td>AMZN×AAPL</td><td>科威特打击未获美方确认——规则书缺第三分支</td></tr>
-<tr><td>07-31</td><td>geo→油</td><td class="bad">幅度符 · 形态不符</td><td class="num">日内 +4.39%／收 +0.95%</td><td class="circ">◌</td><td>两起袭击不可分离</td><td>全日无 30min 窗超 +1.5% → <strong>P-13 v2</strong></td></tr>
-<tr><td>07-31</td><td>证伪退款</td><td class="circ">◌ 仍不可分离——但知道原因了</td><td class="circ">◌</td><td class="circ">◌</td><td>地缘定价同窗</td><td>10:00 UMich 后 5min VIX 不降反升 +2.70%（归 P-02）</td></tr>
-<tr><td>07-31</td><td>AI 持续性</td><td class="circ">✓ 部分（主代理仍缺）</td><td class="num">NVDA +2.21pp／TSM −0.49／AVGO −0.35</td><td class="dim">—</td><td>AMZN 不在 SMH</td><td>代理背离方向单日翻转 → <strong>P-17</strong>；传染反向爆发 → <strong>P-15</strong></td></tr>
-<tr class="newrow"><td><strong>08-03</strong></td><td>ƒ</td><td class="dim">无触发</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>无央行语言窗；观察项：^TNX <strong>4.686（−5.9bp·代理）</strong></td></tr>
-<tr class="newrow"><td><strong>08-03</strong></td><td>地缘·报复夜</td><td class="bad">形态外：主动降温日</td><td class="circ">◌不可分离</td><td class="circ">◌</td><td>周末宣布×ISM 共振</td><td>VIX <strong>15.86</strong> 全程回吐完成＋SPX +1.48%＋油 −5~−7% → <strong>P-19</strong></td></tr>
-<tr class="newrow"><td><strong>08-03</strong></td><td>geo→美股 @拦截</td><td class="bad">条件不匹配（第四形态「<strong>@取消</strong>」）</td><td class="num">SPX +1.48%（道指纪录收盘）</td><td class="dim">—</td><td>—</td><td>打击被叫停 → 并入 <strong>P-19</strong> 分支位</td></tr>
-<tr class="newrow"><td><strong>08-03</strong></td><td>geo→油</td><td class="bad">无袭击触发；降温幅度与袭击同级</td><td class="num">WTI −4.62%／Brent −6.57%（live）</td><td class="circ">◌</td><td>周日重开缺口 −5.4%</td><td>规则书只覆盖袭击方向，<strong>降温方向无带可记账</strong> → <strong>P-19</strong></td></tr>
-<tr class="newrow"><td><strong>08-03</strong></td><td>证伪退款</td><td class="bad">触发形态不匹配（ISM 非顶级披露）</td><td class="circ">◌不入样</td><td class="circ">◌</td><td>—</td><td>但签名三项经 geo 降温通道全符——<strong>同一签名形态可由不同通道实现</strong></td></tr>
-<tr class="newrow"><td><strong>08-03</strong></td><td>AI 持续性</td><td class="ok">✓ 可测（基准 SPY +1.4241%）</td><td class="num">NVDA +1.51pp／SMH −0.51pp</td><td class="dim">—</td><td>TSM −0.96／AVGO −0.67</td><td><strong>代理反转连续第二日</strong> ⇒ P-17 条件再触发；Kospi −5.12% 未收敛</td></tr>
-<tr class="newrow"><td><strong>08-04</strong></td><td>ƒ</td><td class="dim">无触发</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>DGS2/DGS10 08-03 官方 4.25/4.70（两源核对 1.4bp ✓）</td></tr>
-<tr class="newrow"><td><strong>08-04</strong></td><td>geo·降温兑现</td><td class="bad">签名 4/5 符 · VIX 分项违例</td><td class="circ">◌不可记账（带留空）</td><td class="circ">◌</td><td>PLTR/CAT×Bessent</td><td>n=2·VIX 15.86→16.50（+4.04%）✗ → <strong>P-20</strong></td></tr>
-<tr class="newrow"><td><strong>08-04</strong></td><td>geo→美股 @取消</td><td class="dim">延续观察</td><td class="num">SPX +1.79%（纪录·首破 7,700）</td><td class="dim">—</td><td>—</td><td>不新增分支登记</td></tr>
-<tr class="newrow"><td><strong>08-04</strong></td><td>geo→油</td><td class="bad">无袭击；降温方向第二样本</td><td class="num">WTI −5.4~−6.2%</td><td class="circ">◌</td><td>—</td><td>首个 15m 磁带锚定的降温样本</td></tr>
-<tr class="newrow"><td><strong>08-04</strong></td><td>证伪退款</td><td class="bad">触发形态不匹配（JOLTS 二级）</td><td class="circ">◌不入样</td><td class="circ">◌</td><td>—</td><td>下一净样本窗＝08-07 NFP</td></tr>
-<tr class="newrow"><td><strong>08-04</strong></td><td>AI 持续性</td><td class="ok">✓ 可测（基准 SPY +1.8029%）</td><td class="num">SMH +3.74pp／NVDA +0.76pp</td><td class="dim">—</td><td>TSM +0.92／AVGO +4.81</td><td>L2 正·L0 在场 ⇒ 判过伸；传染 Kospi +1.62%</td></tr>
-<tr class="newrow"><td><strong>08-05</strong></td><td>ƒ</td><td class="bad">条件不匹配（Cook 官语非决议后窗）</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>不记账；DGS2/DGS10 08-04 官方 4.20/4.63（两源核对 0.3bp ✓）</td></tr>
-<tr class="newrow"><td><strong>08-05</strong></td><td>geo·降温兑现</td><td class="bad">无触发（预告非宣布）</td><td class="circ">◌不入样</td><td class="circ">◌</td><td>—</td><td>官宣沙漏移至 08-06/07</td></tr>
-<tr class="newrow"><td><strong>08-05</strong></td><td>geo→美股 @取消</td><td class="dim">延续观察</td><td class="num">SPX −0.17%（盘中纪录 7,793.68）</td><td class="dim">—</td><td>—</td><td>不新增分支登记</td></tr>
-<tr class="newrow"><td><strong>08-05</strong></td><td>geo→油</td><td class="circ">◌不可分离（胡塞袭船×降温主导）</td><td class="num">WTI −1.13%</td><td class="circ">◌</td><td>降温通道主导</td><td>袭击溢价钝化候选（记观察）</td></tr>
-<tr class="newrow"><td><strong>08-05</strong></td><td>证伪退款</td><td class="bad">触发形态不匹配（ISM 服务业二级）</td><td class="circ">◌不入样</td><td class="circ">◌</td><td>—</td><td>下一净样本窗＝08-07 NFP</td></tr>
-<tr class="newrow"><td><strong>08-05</strong></td><td>AI 持续性</td><td class="ok">✓ 可测（基准 SPY −0.1997%）</td><td class="num">SMH −0.84pp／NVDA +3.64pp（变号·代理反转）</td><td class="dim">—</td><td>TSM −0.56／AVGO +0.23</td><td>代理反转近四日第三见；NVDA 单股劫持（Musk）</td></tr>
-<tr class="newrow"><td><strong>08-06</strong></td><td>ƒ</td><td class="dim">无触发</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>DGS2/DGS10 08-05 官方 4.18/4.63（两源核对 1.3bp ✓）；^TNX +5.3bp（代理）</td></tr>
-<tr class="newrow"><td><strong>08-06</strong></td><td>geo·降温兑现</td><td class="bad">无触发（协议未官宣）</td><td class="circ">◌不入样</td><td class="circ">◌</td><td>—</td><td>n=3 候选窗未触发·窗口移至 08-07</td></tr>
-<tr class="newrow"><td><strong>08-06</strong></td><td>geo→美股 @取消</td><td class="dim">延续观察</td><td class="num">SPX −0.18%·DJI −0.85%</td><td class="dim">—</td><td>—</td><td>不新增分支登记</td></tr>
-<tr class="newrow"><td><strong>08-06</strong></td><td>geo→油</td><td class="bad">触发形态不匹配（降温回吐·非袭击）</td><td class="num">WTI +4.04%</td><td class="circ">◌</td><td>—</td><td>规则书两方向均不覆盖·记观察不立项</td></tr>
-<tr class="newrow"><td><strong>08-06</strong></td><td>证伪退款</td><td class="bad">触发形态不匹配（初请二级）</td><td class="circ">◌不入样</td><td class="circ">◌</td><td>—</td><td>下一净样本窗＝08-07 NFP</td></tr>
-<tr class="newrow"><td><strong>08-06</strong></td><td>宏观驱动</td><td class="bad">无触发（初请二级·^TNX +5.3bp&lt;6bp）</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>near-miss·与 08-07 NFP 候选轮同向预热</td></tr>
-<tr class="newrow"><td><strong>08-06</strong></td><td>AI 持续性</td><td class="ok">✓ 可测（基准 SPY −0.1597%）</td><td class="num">SMH +0.47pp／NVDA +0.06pp</td><td class="dim">—</td><td>TSM +1.17／AVGO +0.71</td><td>四代理同号皆正；L2 正·L0 在场 ⇒ 判过伸</td></tr>
+<tr><td>07-30</td><td>证伪退款</td><td class="ok">收盘级三腿全符</td><td class="circ">◌不可分离</td><td class="circ">◌</td><td>MSFT×地缘×数据三方共振</td><td>±5min 分时脉冲 ◌</td></tr>
+<tr><td>07-30</td><td>AI 持续性</td><td class="ok">✓ 可测</td><td class="num">SMH 超额 +5.08pp（收盘核实）／NVDA +0.28pp</td><td class="dim">—</td><td>MSFT 不在 SMH</td><td>缺口大幅回补；两代理背离 ~5pp → <strong>P-08</strong></td></tr>
+
+<tr class="newrow"><td><strong>07-31</strong></td><td>ƒ</td><td class="dim">无触发</td><td class="dim">—</td><td class="dim">—</td><td class="dim">—</td><td>无央行语言窗；观察项：10Y <strong>4.75%</strong>（2025-01 来最高）、2Y 4.28%、30Y 5.23%</td></tr>
+<tr class="newrow"><td><strong>07-31</strong></td><td>地缘·报复夜</td><td class="bad">退款腿仍未注册</td><td class="circ">◌不可分离</td><td class="circ">◌</td><td>AMZN 单只</td><td>VIX 17.09→<strong>15.99（−6.44%）</strong>二次下探；<strong>但 WTI 续涨 ≈+0.95% ⇒ P-05 拟议「油不续涨」腿在第二样本不符</strong> → <strong>P-14</strong></td></tr>
+<tr class="newrow"><td><strong>07-31</strong></td><td>geo→美股 @拦截</td><td class="bad">条件不匹配</td><td class="num">SPX +0.70%</td><td class="dim">—</td><td>AMZN×AAPL</td><td>科威特打击<strong>未获美方确认</strong>——既非已证拦截、亦非已证命中，注册表缺第三分支</td></tr>
+<tr class="newrow"><td><strong>07-31</strong></td><td>geo→油</td><td class="bad">幅度符 · <strong>形态不符</strong></td><td class="num"><strong>日内 +4.39%</strong><br>03:00 82.31→11:05 峰 85.92<br>收 84.67（+0.95%）</td><td class="circ">◌</td><td>两起袭击不可分离</td><td><strong>收盘级「+0.95%」是假象</strong>；但<strong>全日无任何 30min 窗超 +1.5%</strong>（最大 +0.85%）⇒ 按注册签名判<strong>不成立</strong> → <strong>P-13 v2</strong></td></tr>
+<tr class="newrow"><td><strong>07-31</strong></td><td>证伪退款</td><td class="circ">◌ 仍不可分离——<strong>但知道原因了</strong></td><td class="circ">◌</td><td class="circ">◌</td><td>地缘定价同窗</td><td>VIX 09:30 16.66 → <strong>10:05 峰 18.64（+11.9%）</strong> → 收 15.99。10:00 UMich 后 5min VIX <strong>不降反升 +2.70%</strong> ⇒ 退款脉冲被开盘后的地缘定价埋住。<strong>不是缺数，是同窗共振</strong>（归 P-02）</td></tr>
+<tr class="newrow"><td><strong>07-31</strong></td><td>AI 持续性</td><td class="circ">✓ 部分（主代理仍缺）</td><td class="num">NVDA 单点 <strong>+2.21pp</strong><br>板块面 TSM <span class="bad">−0.49pp</span>／AVGO <span class="bad">−0.35pp</span></td><td class="dim">—</td><td>AMZN 不在 SMH</td><td><strong>代理背离方向单日翻转</strong> → <strong>P-17</strong>；Kospi +17.9%（三星 +26.81%、海力士 +29.95%）传染<strong>反向</strong>而非消失 → <strong>P-15</strong></td></tr>
 </tbody>
 </table>
 
-<details class="fold">
-  <summary>恒等式对账与告警测试（冻结口径 · 七日累计）<span class="sconcl">残差 +0.18 → +1.15 → +1.74 → +3.23 → +4.85 → +4.41 → +4.23，连续第六日超阈·连续第二日收窄；仍不做硬对账</span></summary>
-  <div class="fold-body">
-    <table>
-    <thead><tr><th>项</th><th>07-29</th><th>07-30</th><th>07-31</th><th>08-03</th><th>08-04</th><th>08-05</th><th>08-06</th></tr></thead>
-    <tbody>
-    <tr><td>ƒ</td><td class="num">−1.10</td><td class="num">−1.10</td><td class="num">−1.10</td><td class="num">−1.10</td><td class="num">−1.10</td><td class="num">−1.10</td><td class="num">−1.10</td></tr>
-    <tr><td>地缘·报复夜</td><td class="num">−0.90</td><td class="num">−0.90</td><td class="num">−0.90</td><td class="num">−0.90</td><td class="num">−0.90</td><td class="num">−0.90</td><td class="num">−0.90</td></tr>
-    <tr><td>证伪退款</td><td class="num">+0.75</td><td class="num">+0.75</td><td class="num">+0.75</td><td class="num">+0.75</td><td class="num">+0.75</td><td class="num">+0.75</td><td class="num">+0.75</td></tr>
-    <tr><td>AI 持续性</td><td class="num">−0.35</td><td class="num">−0.35</td><td class="num">−0.35</td><td class="num">−0.35</td><td class="num">−0.35</td><td class="num">−0.35</td><td class="num">−0.35</td></tr>
-    <tr><td>单股杂质因子（累计）</td><td class="num">−0.10</td><td class="num">+0.40~+0.73</td><td class="num">+0.41~+0.96</td><td class="num">+0.41~+0.96</td><td class="num">+0.59~+1.19</td><td class="num">+0.83~+1.47</td><td class="num">+0.83~+1.47（冻结）</td></tr>
-    <tr><td><strong>Σ 注册因子</strong></td><td class="num">−1.70</td><td class="num">−1.20~−0.87</td><td class="num">−1.19~−0.64</td><td class="num">−1.19~−0.64</td><td class="num">−1.01~−0.41</td><td class="num">−0.77~−0.13</td><td class="num"><strong>−0.77~−0.13（中 −0.45）</strong></td></tr>
-    <tr><td><strong>实际指数（复利累计）</strong></td><td class="num">−1.52</td><td class="num">+0.11</td><td class="num">+0.82</td><td class="num">+2.31</td><td class="num">+4.14</td><td class="num">+3.96</td><td class="num"><strong>+3.78（SPX 口径）</strong></td></tr>
-    <tr><td><strong>残差</strong></td><td class="num ok">+0.18</td><td class="num bad">+0.98~+1.31</td><td class="num bad">+1.46~+2.01</td><td class="num bad">+2.95~+3.50</td><td class="num bad">+4.55~+5.15</td><td class="num bad">+4.09~+4.73</td><td class="num bad"><strong>+3.91~+4.55（中 +4.23）</strong></td></tr>
-    </tbody>
-    </table>
-    <p class="note">缺口性质已换代：三条在作用的形态（退款·降温·宏观驱动）<strong>均已入册 v1.1~v1.3 但量级带留空</strong>——冻结口径如今量的是「<strong>带缺席</strong>」多于「因子缺席」。v1.3.1 P-04 已闭合杂质口径（净额入方程），但<strong>冻结残差未改</strong>（原子差额替换·口径自洽）。收窄主路＝Doctor 裁量级带；宏观驱动首个候选轮＝08-07 NFP（已事前冻结）。</p>
-  </div>
-</details>
+<div class="callout">
+  <span class="h">⚠ 全部读数已于 2026-08-01 按 <code>market_data.db</code> 订正</span>
+  首版用的是新闻源读数。Doctor 于 08-01 08:36 跑完取数脚本后，本班改用 <code>market_data.db</code>（yahoo·同源可复现）复核，<strong>推翻了其中数条</strong>——其中 <strong>07-29 Brent 差 4.49pp，直接触及注册表的 geo→油 首例基线（P-16）</strong>。订正明细见下方「源订正表」。
+</div>
 
-<details class="fold">
-  <summary>慢变量序列（AI 持续性缺口 · 基准 SPY · 同源）<span class="sconcl">08-06 四代理同号皆正（SMH +0.47／NVDA +0.06／TSM +1.17／AVGO +0.71）·前一日代理反转后首日恢复·L2 正·L0 在场 ⇒ 判过伸</span></summary>
-  <div class="fold-body">
-    <table>
-    <thead><tr><th>日期</th><th>SPY</th><th>SMH 超额</th><th>NVDA 超额</th><th>TSM 超额</th><th>AVGO 超额</th><th>跨市场传染（韩股）</th></tr></thead>
-    <tbody>
-    <tr><td>07-29</td><td class="num">−1.5387%</td><td class="num bad">−3.25pp</td><td class="num bad">−2.01pp</td><td class="num bad">−2.96pp</td><td class="num bad">−1.24pp</td><td>三星 −5.23%／海力士 −9.61%</td></tr>
-    <tr><td>07-30</td><td class="num">+1.6766%</td><td class="num ok">+5.20pp</td><td class="num ok">+0.97pp</td><td class="num ok">+5.97pp</td><td class="num ok">+3.05pp</td><td>三星 −0.72%／海力士 −5.64%</td></tr>
-    <tr><td>07-31</td><td class="num">+0.72%</td><td class="num bad">−0.42pp</td><td class="num ok">+2.21pp</td><td class="num bad">−0.49pp</td><td class="num bad">−0.35pp</td><td class="ok">三星 +26.81%／海力士 +29.95%</td></tr>
-    <tr><td>08-03</td><td class="num">+1.4241%</td><td class="num bad">−0.51pp</td><td class="num ok">+1.51pp</td><td class="num bad">−0.96pp</td><td class="num bad">−0.67pp</td><td>Kospi <strong>−5.12%</strong>（三星 −8.76%／海力士 −8.79%）</td></tr>
-    <tr class="newrow"><td><strong>08-04</strong></td><td class="num">+1.8029%</td><td class="num ok">+3.74pp</td><td class="num ok">+0.76pp</td><td class="num ok">+0.92pp</td><td class="num ok">+4.81pp</td><td>Kospi +1.62%（待回填）</td></tr>
-    <tr class="newrow"><td><strong>08-05</strong></td><td class="num">−0.1997%</td><td class="num bad">−0.84pp</td><td class="num ok">+3.64pp</td><td class="num bad">−0.56pp</td><td class="num ok">+0.23pp</td><td>Kospi ~+3.76%（08-05 bar 已回填 6,598.26 ✓）</td></tr>
-    <tr class="newrow"><td><strong>08-06</strong></td><td class="num">−0.1597%</td><td class="num ok">+0.47pp</td><td class="num ok">+0.06pp</td><td class="num ok">+1.17pp</td><td class="num ok">+0.71pp</td><td>Kospi 08-06 ◌（bar null·T+1）；08-07 live ~−4.33% 进行中·属下一班</td></tr>
-    </tbody>
-    </table>
-    <p class="note">08-06 背离 0.41pp&lt;2pp、未变号 ⇒ <strong>有效单值日</strong>（08-05 代理反转后首日恢复同号）；四代理同号皆正、TSM 领涨。传染 Kospi 08-06 ◌（T+1 未回填）；08-07 亚洲盘 live ~−4.33%（进行中·属下一班窗口，若收盘维持大跌将构成 L2 过伸后的回吐信号·待核）。<strong>L0 柱态</strong>：柱态源＝yuantu-alarm（risk-daily 08-05·滞后 1 天：r2 prox 9·窗口已进入／r4 prox 5·三引信）⇒ 柱②③受损态延续，L0 维持「在场」；翼读数：<strong>L2 正偏离·L0 在场 ⇒ 判过伸</strong>（延续）。</p>
-  </div>
-</details>
+<h3>2-A′ 首例分时复核（07-29 · n 不增）</h3>
+<p class="note"><code>range=5d</code> 的 5m 文件回溯覆盖 07-27~07-31，台账挂了三天的 07-29 分时 ◌ 由此闭合。</p>
 
-<details class="fold">
-  <summary>2-A′/2-C/2-D/2-F/2-G 复核与源订正档案<span class="sconcl">首例分时复核（变化率可信到 0.11pp·点位不可信）· ƒ×退款分时分离 · P-12 双源闭合 · 源订正表——逐日全文见台账 md §2-A~§2-G</span></summary>
-  <div class="fold-body">
-    <p class="note">本节为历史复核档案的提要落点；逐日完整的「双时间戳＋截面签名＋恒等式对账＋源订正表」见 <code>brain/剑酒青丘/frameworks/事件归因台账.md</code> §2-A／2-A′／2-B／2-C／2-D／2-F／2-G。三条最硬的方法论结论：</p>
-    <p class="note">① <strong>新闻源报涨跌幅可信、报点位不可信</strong>（P-10 家族）：geo→油 首例 20min +2.4% 经磁带复核差 0.11pp，而同日 WTI 收盘点位 82.09 vs 磁带 83.65 对不上 → P-16。② <strong>ƒ 与证伪退款在分时级可分</strong>（P-18）：07-29 VIX 磁带 14:00 决议单根 −2.95%＝退款、14:50→16:05 +18.4%＝ƒ 官语再定价，两段首尾相接不重叠。③ <strong>P-12 证据因子双源闭合</strong>：DGS2/DGS10 07-29 −4bp/+6bp（2s10s 35→45bp·单日熊陡 10bp），07-30/31 段解冻、两源核对 1.7/0.5bp 通过。</p>
-  </div>
-</details>
-  </div>
-</details>
+<table>
+<thead><tr><th>项</th><th>注册表登记</th><th>分时实测（CL=F·5m）</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>geo→油 首例贡献</td><td class="num">20min +2.4%</td><td class="num"><strong>最大 20min ＝ +2.290%</strong><br>07:55→08:15 ET · 82.53→84.42</td><td class="ok">✓ 吻合（差 0.11pp）</td></tr>
+<tr><td>geo→油 注册量级带</td><td class="num">&gt;+1.5%/30min</td><td class="num">最大 30min ＝ +2.351%</td><td class="ok">✓ 达标</td></tr>
+<tr><td class="bad">07-29 WTI 收盘</td><td class="num bad">$82.09（2-A 登记）</td><td class="num bad">日内区间 <strong>81.62~85.36</strong>，23:55 收 <strong>83.65</strong></td><td class="bad">✗ 落在区间下缘 → P-16 扩至 WTI</td></tr>
+</tbody>
+</table>
+
+<div class="callout camel">
+  <span class="h">一条更值得记的规律</span>
+  同一新闻源在 07-29 给的<strong>变化率</strong>（油 20min +2.4%）经磁带验证<strong>准确到 0.11pp</strong>，而它给的<strong>价格水平</strong>（WTI 82.09／Brent 86.97）与磁带、库值<strong>双双对不上</strong>。⇒ <strong>新闻源报涨跌幅可信、报点位不可信</strong>——这是 <strong>P-10「水平 ≠ 变化」</strong> 在取数层的又一次显形，建议 P-10 与 P-16 合并裁定。
+</div>
+
+<h4>ƒ 与「证伪退款」被分时分离 —— 悬置三天的核心难题</h4>
+<table>
+<thead><tr><th>时刻(ET)</th><th>VIX</th><th>事件 / 归属</th></tr></thead>
+<tbody>
+<tr><td>13:45</td><td class="num">19.54</td><td>决议前</td></tr>
+<tr><td>13:55</td><td class="num">19.34</td><td>—</td></tr>
+<tr><td><strong>14:00</strong></td><td class="num ok"><strong>18.77</strong></td><td><strong>FOMC 决议落地 → 单根 −2.95%</strong>＝<span class="ok">证伪退款</span></td></tr>
+<tr><td>14:15–14:30</td><td class="num">18.65~18.81</td><td>横盘</td></tr>
+<tr><td><strong>14:50</strong></td><td class="num ok"><strong>17.49（全日低）</strong></td><td>退款完成</td></tr>
+<tr><td>15:20</td><td class="num bad">19.12</td><td>最大 30min 涨 <strong>+9.32%</strong></td></tr>
+<tr><td><strong>16:05</strong></td><td class="num bad"><strong>20.71（全日高）</strong></td><td><strong>14:50→16:05 ＝ +18.4%</strong>＝<span class="bad">ƒ·官语再定价</span>；收 20.63</td></tr>
+</tbody>
+</table>
+<p class="note">两段<strong>首尾相接但不重叠</strong>。第五节原写「④⑤共线的分离依赖利率×油×金联动」——<strong>在收盘级确实共线，在分时级它们根本不在同一个时段</strong>。→ <strong>P-18</strong>。且两个符号都对（决议压 VIX、官语抬 VIX），<strong>这对现有分成是加固而非削弱</strong>。</p>
+
+<h3>07-31 截面签名实测（收盘级）</h3>
+<table>
+<thead><tr><th>标的</th><th>07-30 收</th><th>07-31 收</th><th>变化</th><th>口径备注</th></tr></thead>
+<tbody>
+<tr><td>SPX</td><td class="num">7,437.63</td><td class="num">7,489.72</td><td class="num ok">+0.70%</td><td>WaPo-AP／CNBC</td></tr>
+<tr><td>DJI</td><td class="num">52,208.06</td><td class="num">52,485.03</td><td class="num ok">+0.53%</td><td>+276.97 点</td></tr>
+<tr><td>IXIC</td><td class="num">25,122.18</td><td class="num">25,373.85</td><td class="num ok">+1.00%</td><td>—</td></tr>
+<tr><td><strong>VIX</strong></td><td class="num">17.09</td><td class="num"><strong>15.99</strong></td><td class="num ok">−6.44%</td><td>二次下探，低于 07-28</td></tr>
+<tr><td>10Y CMT</td><td class="circ">◌</td><td class="num">4.75%</td><td class="num">vs 07-29 4.67 → +8bp（两日）</td><td class="bad">次级源（Advisor Perspectives）</td></tr>
+<tr><td><strong>10Y ^TNX（库）</strong></td><td class="num">4.66</td><td class="num"><strong>4.74</strong></td><td class="num ok">+8bp（+1.7585%）</td><td class="ok">与 CMT 次级源差 <strong>1bp &lt; 2bp 阈</strong> ⇒ 不触发 P-11 源分歧</td></tr>
+<tr><td>2Y CMT</td><td class="circ">◌</td><td class="num">4.28%</td><td class="num">vs 07-29 4.22 → +6bp（两日）</td><td class="bad">次级源；短端<strong>由鸽转鹰回摆</strong></td></tr>
+<tr><td>30Y CMT</td><td class="circ">◌</td><td class="num">5.23%</td><td class="num">盘中 5.25%</td><td>2007 以来最高</td></tr>
+<tr><td>WTI</td><td class="num">~$83.87</td><td class="num">$84.67</td><td class="num ok">≈+0.95%</td><td class="bad">源分歧（RioTimes 给 −1.42%）；<strong>WTI 不在库中</strong></td></tr>
+<tr><td><strong>Brent（库）</strong></td><td class="num">$89.03</td><td class="num">$90.12</td><td class="num ok"><strong>+1.2243%</strong></td><td class="ok">与新闻源同价 ⇒ 采库值</td></tr>
+<tr><td>金（现货）</td><td class="num">~$4,080</td><td class="circ">◌</td><td class="circ">◌ 方向不定</td><td class="bad">$4,055.90／$4,059(−0.63%)／$4,086.21(−0.42%)＋「破 $4,100」标题，四源冲突</td></tr>
+<tr><td>AMZN</td><td class="dim">—</td><td class="num">$271.58</td><td class="num ok">+15.32%</td><td>AWS +37% y/y</td></tr>
+<tr><td>AAPL（库）</td><td class="num">333.43</td><td class="num">308.91</td><td class="num bad">−7.3539%</td><td>服务与中国不及预期（首版记 −7.09%）</td></tr>
+<tr><td><strong>NVDA（库）</strong></td><td class="num">195.04</td><td class="num">200.75</td><td class="num ok"><strong>+2.9276%</strong></td><td class="bad">首版记 +3.46%（差 0.53pp）；超额 <strong>+2.21pp</strong></td></tr>
+<tr><td>TSM（库）</td><td class="num">403.31</td><td class="num">404.25</td><td class="num">+0.2331%</td><td class="bad">板块面超额 <strong>−0.49pp</strong></td></tr>
+<tr><td>AVGO（库）</td><td class="num">387.84</td><td class="num">389.28</td><td class="num">+0.3713%</td><td class="bad">板块面超额 <strong>−0.35pp</strong></td></tr>
+<tr><td><strong>SMH</strong></td><td class="num">538.21</td><td class="circ"><strong>◌</strong></td><td class="circ">◌</td><td class="bad"><strong>不在库中</strong>·主代理连续缺失</td></tr>
+<tr><td>Kospi</td><td class="dim">—</td><td class="num">6,695.45</td><td class="num ok">+17.9%</td><td>库值：三星 <strong>+26.8116%</strong>、SK 海力士 <strong>+29.9546%</strong>（首版记 +28%／+30%）</td></tr>
+</tbody>
+</table>
+
+<h3>源订正表（首版新闻源 → <code>market_data.db</code>）</h3>
+<table>
+<thead><tr><th>项</th><th>首版（新闻源）</th><th>库值（可复现）</th><th>差</th><th>处置</th></tr></thead>
+<tbody>
+<tr><td>NVDA 07-31</td><td class="num">+3.46%</td><td class="num">+2.9276%</td><td class="num">0.53pp</td><td class="ok">已订正</td></tr>
+<tr><td>NVDA 07-30</td><td class="num">~+1.9%（◌待核）</td><td class="num">+2.6472%</td><td class="num bad">0.75pp</td><td class="ok">已订正 · ◌ 闭合</td></tr>
+<tr><td>NVDA 07-29</td><td class="num">−3.60%</td><td class="num">−3.5531%</td><td class="num">0.05pp</td><td>价一致，采库值</td></tr>
+<tr><td>AAPL 07-31</td><td class="num">−7.09%</td><td class="num">−7.3539%</td><td class="num">0.26pp</td><td class="ok">已订正</td></tr>
+<tr><td>Brent 07-31</td><td class="num">≈+1%（$90.12）</td><td class="num">+1.2243%（$90.12）</td><td class="num">价一致</td><td>采库值</td></tr>
+<tr><td class="bad"><strong>Brent 07-29</strong></td><td class="num bad">$86.97 +3.42%</td><td class="num bad">$90.74 +7.9082%</td><td class="num bad"><strong>$3.77／4.49pp</strong></td><td class="bad"><strong>触及 geo→油 首例基线 → P-16</strong><br>本班未改 2-A 一字</td></tr>
+<tr><td>^TNX 07-30</td><td class="circ">◌</td><td class="num">4.66</td><td class="dim">—</td><td>代理值到手（非 CMT，禁外推·P-11①）</td></tr>
+<tr><td>三星 07-31</td><td class="num">+28%</td><td class="num">+26.8116%</td><td class="num">1.19pp</td><td class="ok">已订正</td></tr>
+<tr><td>海力士 07-31</td><td class="num">+30%</td><td class="num">+29.9546%</td><td class="num">0.05pp</td><td class="ok">已订正</td></tr>
+<tr><td>SMH</td><td class="circ">◌</td><td class="bad">不在库中</td><td class="dim">—</td><td class="circ">仍 ◌，须外部补</td></tr>
+</tbody>
+</table>
+
+<div class="callout camel">
+  <span class="h">指数涨幅口径分歧（已裁）</span>
+  某检索快照给「SPX +0.67%／DJI +0.38%／IXIC +1.32%／RUT +1.37%」，与收盘价实算（+0.70%／+0.53%／+1.00%）不符 ⇒ 判为盘中/期货口径。<strong>本表一律用收盘价实算，分母取 07-30 收盘。</strong>
+</div>
+
+<h3>P-12「07-29 腿」由官方源独立闭合（本班收获）</h3>
+<table>
+<thead><tr><th>期限</th><th>07-27</th><th>07-28</th><th>07-29</th><th>Δ（07-28→07-29）</th></tr></thead>
+<tbody>
+<tr><td>2 年</td><td class="num">4.31</td><td class="num">4.26</td><td class="num"><strong>4.22</strong></td><td class="num bad">−4bp</td></tr>
+<tr><td>10 年</td><td class="num">4.65</td><td class="num">4.61</td><td class="num"><strong>4.67</strong></td><td class="num ok">+6bp</td></tr>
+<tr><td>20 年</td><td class="num">5.15</td><td class="num">5.11</td><td class="num">5.21</td><td class="num ok">+10bp</td></tr>
+<tr><td>30 年</td><td class="num">5.12</td><td class="num">5.09</td><td class="num"><strong>5.20</strong></td><td class="num ok">+11bp</td></tr>
+</tbody>
+</table>
+<p class="note">来源：Federal Reserve <strong>H.15（release 2026-07-30）</strong>。此前经 Doctor 终端 FRED CSV 取得的 4.22／4.67 <strong>由官方页面逐位复现</strong> ⇒ P-12 的 07-29 腿证据等级由「单源」升为「<strong>双源一致</strong>」；2s10s 35bp→45bp、单日熊陡 +10bp 成立。</p>
+
+<div class="callout">
+  <span class="h">⏸ 07-30 腿仍冻结（fail-visible）</span>
+  H.15 现行页截至本班（2026-07-31 20:4x ET）<strong>仍只发到 07-29</strong>；07-31 的 4.75／4.28／5.23 取自<strong>次级源</strong>，按 <strong>P-11 纪律①</strong>（权威源＝H.15/FRED）<strong>不得据此改带</strong>，且尚未做纪律②的两源 &gt;2bp 分歧核对。<strong>权重表继续保持原值不动。</strong>
+</div>
+
+<h3>恒等式对账：单股腿跨度收窄，但仍不做硬对账</h3>
+<table>
+<thead><tr><th>假设权重</th><th>贡献</th></tr></thead>
+<tbody>
+<tr><td>AMZN w ∈ [3.5%, 4.5%] × +15.32%</td><td class="num">+0.54 ~ +0.69pp</td></tr>
+<tr><td>AAPL w ∈ [6.5%, 7.5%] × −7.09%</td><td class="num">−0.46 ~ −0.53pp</td></tr>
+<tr><td><strong>净单股杂质腿</strong></td><td class="num"><strong>+0.01 ~ +0.23pp（中值 +0.12）</strong></td></tr>
+</tbody>
+</table>
+<p class="note">跨度 <strong>0.22pp &lt; 0.3pp 阈</strong>——但<strong>这不是 P-04 被解决</strong>，而是本日两只巨头方向相反、权重误差互相抵消，属运气而非口径闭合。<strong>P-04 仍未闭合。</strong></p>
+
+<h3>告警测试（冻结口径 · 三日累计 · 非贡献分解）</h3>
+<table>
+<thead><tr><th>项</th><th>07-29</th><th>07-30</th><th>07-31</th></tr></thead>
+<tbody>
+<tr><td>ƒ</td><td class="num">−1.10</td><td class="num">−1.10</td><td class="num">−1.10（无触发）</td></tr>
+<tr><td>地缘·报复夜</td><td class="num">−0.90</td><td class="num">−0.90</td><td class="num">−0.90（退款腿未注册，无权加值）</td></tr>
+<tr><td>证伪退款</td><td class="num">+0.75</td><td class="num">+0.75</td><td class="num">+0.75（本日不入样）</td></tr>
+<tr><td>AI 持续性</td><td class="num">−0.35</td><td class="num">−0.35</td><td class="num">−0.35（超额可测，对 SPX 贡献 ◌）</td></tr>
+<tr><td>单股杂质腿（累计）</td><td class="num">−0.10</td><td class="num">+0.40 ~ +0.73（中值 +0.565）</td><td class="num">+0.41 ~ +0.96（中值 +0.685）</td></tr>
+<tr><td><strong>Σ 注册因子</strong></td><td class="num">−1.70</td><td class="num">−1.20 ~ −0.87（中值 −1.04）</td><td class="num"><strong>−1.19 ~ −0.64（中值 −0.92）</strong></td></tr>
+<tr><td><strong>实际指数（复利累计）</strong></td><td class="num">−1.52</td><td class="num">+0.11</td><td class="num"><strong>+0.82</strong></td></tr>
+<tr><td><strong>残差</strong></td><td class="num ok">+0.18</td><td class="num bad">+0.98 ~ +1.31（中值 +1.15）</td><td class="num bad"><strong>+1.46 ~ +2.01（中值 +1.74）</strong></td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+  <span class="h">残差由 +1.15 扩大到 +1.74，告警连续第二日成立且加重</span>
+  缺口来源不变：<strong>地缘·报复夜的退款腿（P-05）</strong>——它已经连续两个交易日在市场里发挥作用，而台账<strong>无权给它记账</strong>。这既是提案区闸门设计的代价，也是它该被尽快裁决的理由。
+</div>
+
+<h3>慢变量序列（AI 持续性缺口 · 2026-08-01 全部同源重算 · 基准 SPY）</h3>
+<table>
+<thead><tr><th>日期</th><th>SPY</th><th>SMH 超额（主代理）</th><th>NVDA 超额</th><th>TSM 超额</th><th>AVGO 超额</th><th>跨市场传染（韩股）</th></tr></thead>
+<tbody>
+<tr><td>07-29</td><td class="num">−1.5387%</td><td class="num bad"><strong>−3.25pp</strong></td><td class="num bad">−2.01pp</td><td class="num bad">−2.96pp</td><td class="num bad">−1.24pp</td><td>三星 −5.23%／海力士 −9.61%</td></tr>
+<tr><td>07-30</td><td class="num">+1.6766%</td><td class="num ok"><strong>+5.20pp</strong></td><td class="num ok">+0.97pp</td><td class="num ok">+5.97pp</td><td class="num ok">+3.05pp</td><td>三星 −0.72%／海力士 −5.64%</td></tr>
+<tr><td><strong>07-31</strong></td><td class="num">+0.72%</td><td class="num bad"><strong>−0.42pp</strong></td><td class="num ok">+2.21pp</td><td class="num bad">−0.49pp</td><td class="num bad">−0.35pp</td><td class="ok">三星 <strong>+26.81%</strong>／海力士 <strong>+29.95%</strong></td></tr>
+</tbody>
+</table>
+<p class="note"><strong>SMH 全序列已闭合</strong>（Yahoo chart 日线·Doctor 终端 08-01 取）：07-29 <strong>504.22 −4.7923%</strong>｜07-30 <strong>538.90 +6.8780%</strong>｜07-31 <strong>540.53 +0.3025%</strong>。</p>
+
+<div class="callout">
+  <span class="h">⚠ 本班第二次自我订正：「缺口连续两日回补」作废</span>
+  上一版据 NVDA 写「回补腿连续两日成立」。SMH 到手后此结论<strong>不成立</strong>——主代理超额是 <strong>−3.25 → +5.20 → −0.42</strong>，<strong>回补只有一天，07-31 即转负</strong>。那是<strong>单点代理造成的假象</strong>。<br><br>
+  <strong>三个板块面代理在 07-31 高度一致</strong>：SMH −0.42／TSM −0.49／AVGO −0.35（极差 <strong>0.14pp</strong>），唯 NVDA +2.21pp 是离群值。这既确证 P-08「以 SMH 为主代理」，也<strong>独立验证 P-17 第②条</strong>——SMH 缺失时用 TSM＋AVGO 替代，本日误差 ≤0.14pp。<br><br>
+  <strong>对可证伪条件的影响</strong>：按主代理口径回补腿<strong>本就没有连续成立</strong>，因此「移出在场清单」的条件距离触发比上一版所述<strong>更远</strong>，退场风险已降低。
+</div>
+
+<div class="callout">
+  <span class="h">旧 NVDA 序列（−2.08／+0.28／+2.76）作废</span>
+  那是新闻源与库值<strong>跨源混算</strong>的结果：07-30 的 NVDA「+1.9%」实为 <strong>+2.6472%</strong>（差 0.75pp）、07-31 的「+3.46%」实为 <strong>+2.9276%</strong>（差 0.53pp）。同源同口径重算后正确值为 <strong>−2.01／+0.97／+2.21</strong>。<br><br>
+  <strong>重算后</strong>：① NVDA 单点序列 −2.01 → +0.97 → +2.21（但见上方订正框：主代理口径下回补并不连续）；② 07-31 <strong>板块面（SMH／TSM／AVGO）超额全部转负，与 NVDA 单点符号相反</strong>——代理背离方向<strong>在一天内翻转</strong> ⇒ <strong>P-17</strong>；③ 传染腿<strong>反向爆发</strong>而非消失 ⇒ <strong>P-15</strong>。<br><br>
+  <strong>⇒ SMH 已补齐，但结论不是「可以裁定了」而是「单代理不可用」被坐实</strong>：同一天里 NVDA 说缺口在回补、SMH/TSM/AVGO 说缺口在扩大。退场裁定仍不成立。
+</div>
 
 <!-- ==================== 四 ==================== -->
-<details class="fold">
-  <summary>提案区<span class="sconcl">改规则建议箱 · <strong>当前无在途提案</strong>——P-20／P-21／P-04 均已裁</span></summary>
-  <div class="fold-body">
-<p class="note">已裁提案的逐条原文迁入台账 <code>§七附·已裁提案档案</code>；摘要见下节ƒ 迭代。</p>
+<h2><span class="n">四</span>提案区（待 Doctor 批 · 批后移入变更记录）</h2>
+<p class="lede">值守班只写提案，<strong>不动注册表本体</strong>。P-01~P-04 为记账口径/观测频率类修订；P-05~P-08 触及签名结构与触发形态字段，量级带数值一律留空待样本；P-09 已撤回；P-10~P-12 为取数纪律与证据腿重写；<strong>P-13~P-15 为本班新增</strong>。</p>
+
 <table>
-<thead><tr><th>编号</th><th>日期</th><th>对象</th><th>要点</th><th>状态</th></tr></thead>
+<thead><tr><th>编号</th><th>日期</th><th>对象</th><th>实测/证据要点</th><th>建议</th></tr></thead>
 <tbody>
-<tr><td><strong>P-20</strong></td><td>08-04</td><td>geo·降温兑现 · VIX 分项违例</td><td>08-04 降温日股涨 VIX 反升 +4.04%——签名缺「地板条款」</td><td class="ok">✅ 已裁（选项一·加水平条件「已低于冲击前水平则豁免」）→ v1.2.1 · 归因资格恢复</td></tr>
-<tr><td><strong>P-21</strong></td><td>08-04</td><td>宏观数据/贴现率因子 · 立项</td><td>2-E 预设触发线已达（残差 +4.85）：GDP/PCE（07-30）、ISM 55.6（08-03）、10Y 回落这条腿尚无注册位</td><td class="ok">✅ 已裁（C 案·双分支合一）→ v1.3 新设「宏观驱动」因子位（@数据落地／@利率重估·带留空）</td></tr>
-<tr><td><strong>P-04</strong></td><td>08-06</td><td>杂质因子口径闭合</td><td>分子＝期初权重×(个股收益−SPX 收益) 净额进 Σ·gross 只作污染告警；分母＝官方锚+收益滚动（闭环最大差 0.0057pp）</td><td class="ok">✅ 已裁（Doctor「tongyi」）→ v1.3.1 · 首例三窗 07-30 +0.44/07-31 −0.09/08-04 +0.14pp</td></tr>
+<tr><td><strong>P-01</strong></td><td>07-30</td><td>地缘·报复夜</td><td>金 +0.27%（签名要求「金被卖」）；WTI +3.58%（签名要求「油平」）</td><td>签名列增列「<strong>可测频率</strong>」字段（分时／收盘）；收盘级复测不得据分时签名打 ✓ 或判违例，应标 ◌不同频</td></tr>
+<tr><td><strong>P-02</strong></td><td>07-30</td><td>报复夜 × geo→油</td><td>同日共振，「油平」腿结构上不可测</td><td>增设「<strong>◌不可分离</strong>」判定档：当同日另一因子直接作用于该腿的观测变量时，不计符合率也不计违例</td></tr>
+<tr><td><strong>P-03</strong></td><td>07-30</td><td>geo→油</td><td>注册带 &gt;+1.5%/30min（分时）；值守班只有收盘级</td><td>补一条<strong>收盘级映射带</strong>（建议暂设 &gt;+2.0%／待 n≥3 校准），或明示仅在分时磁带到位时可复测</td></tr>
+<tr><td><strong>P-04</strong></td><td>07-30</td><td>通用纪律 · 杂质腿</td><td>首例登记 −0.10pp；SPX 权重实算 CAT＋DE ≈ −0.015pp（差 0.085pp）</td><td>标定杂质腿的<strong>指数口径与构成清单</strong>。<span class="bad">07-31 复核：仍未闭合</span></td></tr>
+<tr><td><strong>P-05</strong></td><td>07-30</td><td>地缘·报复夜</td><td>07-30 VIX 完全回吐 −17.28%；股 +1.66%、金 ↑、油不再涨</td><td>注册表增设「<strong>退款腿</strong>」子结构（预支型的对称退款脉冲），量级带暂不设数值。<span class="bad">拟议签名的油腿见 P-14</span></td></tr>
+<tr><td><strong>P-06</strong></td><td>07-30</td><td>geo→美股 @拦截</td><td>注册条件写死「拦截」；07-30 为命中/执行</td><td>改名为「geo→美股 · 分支条件」并增设<strong>命中分支</strong>，仅登记分支位、不填量级带。<span class="bad">07-31 新增证据：还缺「结果未确认」第三分支</span></td></tr>
+<tr><td><strong>P-07</strong></td><td>07-30</td><td>geo 系通用 · 触发时刻锚定</td><td>07-29 预告日 VIX/油大动；07-30 执行日 VIX/油反向</td><td>把触发形态由「事件执行」改锚到「<strong>事件预告</strong>」（脉冲前置）。<span class="bad">首检结果见 P-13</span></td></tr>
+<tr><td><strong>P-08</strong></td><td>07-30</td><td>AI 持续性</td><td>07-30 SMH 超额 +5.08pp vs NVDA +0.28pp，两代理背离 ~5pp</td><td>以 <strong>SMH 为主代理</strong>、NVDA 为单点校验腿；背离 &gt;2pp 标「代理分歧」两值并列</td></tr>
+<tr><td class="strike"><strong>P-09</strong></td><td>07-30</td><td class="strike">ƒ 签名修订</td><td class="strike">据外推值「10Y +2bp」立论</td><td><strong>已撤回（07-31·第三次翻面）</strong>：权威值 DGS10 07-29＝4.67（+6bp），与外推差 5bp，前提不成立。不进变更记录、不影响权重表</td></tr>
+<tr><td><strong>P-10</strong></td><td>07-30</td><td>通用纪律 · 水平 ≠ 变化</td><td>媒体「19 年新高」讲的是<strong>水平</strong>；当日<strong>变化</strong>另一回事</td><td>归因账<strong>只吃变化、不吃水平</strong>；引用利率须同记 Δ 与 level，只有 Δ 进权重</td></tr>
+<tr><td><strong>P-11</strong></td><td>07-31</td><td>利率源同名异义 · 三轴</td><td>同为「07-29 10Y 收盘」，DGS10＝4.67 vs 本地 ^TNX＝4.62，劈 5bp；平日 7 天全部 0~1bp</td><td>①权威源＝H.15/FRED，^TNX 仅作时效代理，<strong>禁用代理外推权威值</strong>；②两源差 &gt;2bp 标「源分歧」两值并列；③跨源校准有效期只到下一个事件日。根因＝时点轴／报价-成交轴／插值-单券轴</td></tr>
+<tr><td><strong>P-12</strong></td><td>07-31</td><td>ƒ 证据腿重写</td><td>DGS2 4.26→4.22（−4bp）、DGS10 4.61→4.67（+6bp），2s10s 35→45bp <span class="ok">（07-31 经 H.15 官方双源确认）</span></td><td>①「2Y 全天持平」证伪但属<strong>边界读数</strong>；②证据腿改记「<strong>短端跌 × 长端涨 ＝ 单日熊陡 10bp</strong>」；③机制不变、签名重写、<strong>权重不下修</strong>；<span class="bad">⏸ 07-30 腿仍冻结，H.15 未发</span></td></tr>
+
+<tr class="newrow"><td><strong>P-13 v2</strong><br><span class="dim">08-01 重写</span></td><td>07-31<br>改写 08-01</td><td><strong>geo 系触发形态 ·「预告调制形态」假说（取代 P-07 的「预告锚定」）</strong></td><td><strong>v1 依据收盘级，已被分时推翻。</strong>07-31 WTI <strong>03:00 82.31 → 11:05 峰 85.92 ＝ +4.39%</strong>，<strong>但全日无任何 30min 窗超 +1.5%</strong>（最大 +0.85%）。<br>对照 07-29 首例：<strong>20min +2.4% 的真脉冲</strong>。<br>⇒ 两日<strong>幅度同级、形态迥异</strong>。</td><td>①<strong>「预告锚定」判定不成立</strong>：定价确实在执行日（07-30 预告日油不动，07-31 执行日 +4.39%）。<br>②<strong>但直觉可救回，机制换掉</strong>：<strong>预告不改变幅度，改变形态</strong>——07-29 无预告突袭 → 20min 脉冲；07-31 已预告执行 → 同等幅度摊成 <strong>8 小时爬升</strong>。预告消除的是<strong>突然性</strong>，不是定价本身。<br>③<strong>这条统一了原先互相矛盾的三个观测</strong>（07-29 脉冲／07-30 预告日不动／07-31 爬升），而 v1 的两条假说各自都有反例。<br>④<strong>建议</strong>：<code>geo→油</code> 增设形态分支——<strong>@突袭</strong>：30min &gt;+1.5% 脉冲带（现有）／<strong>@已预告执行</strong>：改用日内累计带，<strong>明令不得用 30min 窗判违例</strong>。<br><span class="bad">⚠ n=2，不推荐现在落带</span>，但建议先登记<strong>分支位</strong>，防止爬升型样本被脉冲带误判为「证伪」</td></tr>
+<tr class="newrow"><td><strong>P-14</strong></td><td><strong>07-31</strong></td><td><strong>P-05（退款腿）· 油腿第二样本不符</strong></td><td>P-05 拟议三腿：VIX 回吐 ≥ 2/3 ＋ 指数正脉冲 ＋ <strong>油不续涨</strong>。07-31 前两腿符（VIX −6.44%、SPX +0.70%），<strong>第三腿不符（WTI ≈+0.95%）</strong></td><td>建议在批 P-05 之前先改其拟议签名：把「油不续涨」腿<strong>删除</strong>，或降级为「◌不可分离（当日若另有独立 geo→油 触发则不计）」。理由：本日霍尔木兹油轮袭击是<strong>独立新头条</strong>，把它写进退款腿的必要签名，等于让退款腿承担另一因子的观测变量——正是 <strong>P-02</strong> 已指认的情形。<strong>非量级带修订，仍需明批</strong></td></tr>
+<tr class="newrow"><td><strong>P-15</strong></td><td><strong>07-31</strong></td><td><strong>AI 持续性 · 可证伪条件文本缺陷</strong></td><td>注册条件写「缺口回补<strong>且传染消失</strong> ⇒ 移出在场清单」。实际：缺口连续两日回补（SMH +5.08pp／NVDA +2.76pp），传染<strong>不是消失、是反向爆发</strong>——Kospi 07-29 −6% → 07-31 <strong>+17.9%</strong></td><td>建议把「传染消失」改写为「<strong>传染项的绝对值收敛</strong>」（|跨市场超额| 落入阈内才算消失）；<strong>反向大幅传染应判为「因子仍在场、符号翻转」而非「因子退场」</strong>。当前文本若照字面执行，会在一个史上最大单日涨幅的日子把 AI 因子误判为可移出清单——方向性风险。<br><strong>耦合提醒</strong>：与 P-08 相关——07-29 与 07-31 主代理 SMH 均 ◌，<strong>在 SMH 补齐前不宜做退场裁定</strong></td></tr>
+
+<tr class="newrow"><td class="bad"><strong>P-16</strong></td><td><strong>08-01</strong></td><td class="bad"><strong>geo→油 · 首例基线数疑似取自错误读数（⚠ 触及注册表首例贡献）</strong></td><td>台账 2-A 与注册表登记的 07-29 Brent＝<strong>$86.97 +3.42%</strong>（CNBC，并自注「盘中 +6% 至 87.01」）；<code>market_data.db</code>（BZ=F·yahoo）给 07-28 84.09 → 07-29 <strong>90.74（+7.9082%）</strong> → 07-30 89.03 → 07-31 90.12。<strong>差 $3.77／4.49pp。</strong><br><strong>不是合约月份差</strong>：07-31 两源同为 $90.12、分毫不差；若标的不同不可能只在 07-29 劈开而在 07-31 重合。<br><strong>更硬的内部矛盾</strong>：原稿自注「盘中最高 87.01」，而库给收盘 <strong>90.74</strong>——收盘高于自述的盘中最高，<strong>首版读数自相矛盾</strong>。</td><td><strong>建议用 <code>market_data.db</code> 重算 geo→油 首例基线</strong>，并连带复核 WTI 首例（$82.09 +3.58%；WTI 不在库中，须另取源）。<br><strong>本条与 P-01~P-15 性质不同</strong>：前面各条改的是「怎么记账」，本条动的是<strong>注册表「首例贡献」与「注册量级带」所依据的原始数</strong>。若 07-29 Brent 实为 +7.91%，则 <code>geo→油</code> 的分时带「&gt;+1.5%/30min」与 P-03 拟议的收盘带「&gt;+2.0%」<strong>都建立在偏低约 4.5pp 的基线上</strong>，量级带需整体上移。<br>⚠ <strong>值守班已按铁律止手</strong>：<strong>未改动 2-A 与注册表任何一字</strong>，仅出示矛盾。<br><br><strong>🔨 Doctor 裁定（2026-08-01）：「先补第三方源再裁」</strong> ⇒ 本条状态＝<strong>【待第三方仲裁源】</strong>，注册表首例贡献与量级带在仲裁源到手前<strong>一律不动</strong>。仲裁源须与 BZ=F <strong>同标的</strong>：<strong>ICE Brent 官方日结算价</strong>或 <strong>CME <code>BZ</code> 结算价</strong>。<br><br>
+<span class="bad"><strong>❌ 首次仲裁尝试失败（08-01 · 值守班自我否定）</strong></span>：EIA 命令块已跑通（两个 xls 均落盘 ~0.5MB），但<strong>这条路走不通</strong>：① <strong>滞后</strong>——EIA 现货止于 <strong>07-27</strong>，不覆盖 07-29；② <strong>更要命，标的不同</strong>——EIA 是 <strong>Brent 现货 FOB</strong>，库里是 <strong>BZ=F 期货连续</strong>，存在系统性基差（EIA 07-27 <strong>91.82</strong> vs 库 07-28 <strong>84.09</strong>，差约 8 美元）。<strong>用现货仲裁期货在方法上无效。</strong>⇒ 本班推荐的仲裁源<strong>选错了</strong>，如实记录，EIA/Reuters 现货降级为「不可用于本仲裁」。<br><br>
+<strong>📌 范围扩大</strong>：本条原只针对 Brent，现须并入 <strong>WTI</strong>——07-29 WTI 分时区间 81.62~85.36、收 83.65，而 2-A 登记的 <strong>$82.09</strong> 落在区间下缘。<br>
+<span class="ok"><strong>但出现一条重要反向证据</strong></span>：同源给的<strong>分时变化率</strong>（20min +2.4%）经磁带验证<strong>准确到 0.11pp</strong>。⇒ 可疑的只是<strong>点位读数</strong>，不是该源全部。本条由「新闻源是否可信」收窄为「<strong>点位不可信、涨跌幅可信</strong>」，与 <strong>P-10 同源，建议合并裁定</strong>。</td></tr>
+<tr class="newrow"><td><strong>P-17</strong></td><td><strong>08-01</strong></td><td><strong>AI 持续性 · 代理背离方向单日翻转（P-08 加强证据）</strong></td><td>同源重算（基准 SPY）：07-30 <strong>TSM +5.97pp／AVGO +3.05pp／SMH +5.08pp 远强于 NVDA +0.97pp</strong>；07-31 <strong>NVDA +2.21pp 而 TSM −0.49pp／AVGO −0.35pp</strong>——板块面与单点的符号<strong>在一天内对调</strong></td><td>① 支持 P-08「不得单代理入序列」，并把规则由「背离 &gt;2pp 标代理分歧」加强为「<strong>背离变号即标『代理反转』，该日不入单值序列</strong>」；② SMH 不可得时，用库中已有的 <strong>TSM＋AVGO 作板块面替代代理</strong>，避免整日 ◌；③ <strong>基准统一用 SPY</strong>（同库同源），停止 NVDA(库) 减 SPX(新闻源) 的跨源混算。<br><strong>方法论收获</strong>：本条不是发现了新的市场规律，而是发现<strong>原序列三个数里有两个是跨源混算出来的</strong>。跨源混算在平日只制造小数点噪声，在事件日会直接改写结论——与 <strong>P-11</strong> 同一根病灶，那次出在利率，这次出在股票。<br><br><span class="ok"><strong>✅ 已获独立验证（08-01 · SMH 到手后）</strong></span>：07-31 主代理 <strong>SMH −0.42pp</strong> 与替代代理 <strong>TSM −0.49／AVGO −0.35</strong> 三值极差仅 <strong>0.14pp</strong>，NVDA +2.21pp 为离群值。⇒ 第②条替代方案<strong>误差 ≤0.14pp，可用</strong>；第①条「背离变号」在本日<strong>实际触发</strong>。<strong>本条已从提案升为有实测支撑的建议，仍待明批。</strong></td></tr>
+
+<tr class="newrow"><td><strong>P-18</strong></td><td><strong>08-01</strong></td><td><strong>第五节「边界」· ④ƒ 与 ⑤证伪退款「共线不可分离」应订正为「收盘级共线 · 分时级可分」</strong></td><td>07-29 VIX 分时把两者在<strong>时间上</strong>分开：<strong>14:00 决议落地 → VIX 单根 −2.95%</strong>（19.34→18.77），<strong>14:50 全日低 17.49</strong>＝退款；<strong>14:50→16:05 → 17.49→20.71 ＝ +18.4%</strong>（最大 30min +9.32%）＝ ƒ 官语再定价。两段<strong>首尾相接但不重叠</strong>。</td><td>①<strong>订正第五节表述</strong>：现文称分离「依赖利率×油×金联动」——实际上<strong>根本不需要横截面分离，时间轴已把它们切开</strong>。建议改为「④⑤在<strong>收盘级</strong>共线；在<strong>分时级</strong>可按事件时刻直接分离（决议时点 vs 官语时段）」。<br>②<strong>这对注册表是加固不是削弱</strong>：现有分成（ƒ −1.1／退款 +0.75）在分时上得到形态支持——决议压 VIX、官语抬 VIX，<strong>两个符号都对</strong>。故<strong>不动任何量级带数值</strong>，只订正边界段方法论表述。<br>③<strong>连带收益</strong>：P-05 的「VIX 回吐」腿今后可用<strong>分时基准</strong>（峰值 vs 谷值）而非收盘，消除判定歧义——该歧义已在 07-31 实际出现。<br>⚠ 属边界段与方法论修订，需明批</td></tr>
 </tbody>
 </table>
-<p class="note"><strong>值守班观察（非提案·记入 2-H 结构性记录）</strong>：「geo·降温回吐」候选形态（08-06 协议未官宣·油 +4.04%＝降温预期落空反弹）——规则书两方向均不覆盖（geo→油 只收袭击、geo·降温兑现 需宣布）；n=1 样本不足不立项，待 08-07 裁决窗。</p>
+
 <div class="callout camel">
   <span class="h">铁律</span>
-  <strong>批准后才改带并写ƒ 迭代。</strong>未获 Doctor 明示批准前，规则书保持现行版本原文不动。值守班永不执行改带。
+  <strong>批准后才改带并写变更记录。</strong>未获 Doctor 明示批准前，注册表第一节保持 v1.0 原文不动。值守班永不执行改带。
 </div>
-  </div>
-</details>
 
 <!-- ==================== 五 ==================== -->
-<details class="fold">
-  <summary>ƒ 迭代<span class="sconcl">规则书的修订历史 · 最新 v1.3.1（2026-08-06）</span></summary>
-  <div class="fold-body">
+<h2><span class="n">五</span>变更记录（只增不减 · 权重带更改仅经 Doctor 批准后写入）</h2>
 <table>
 <thead><tr><th>日期</th><th>版本</th><th>变更</th><th>依据</th><th>批准</th></tr></thead>
 <tbody>
 <tr><td>2026-07-30</td><td>v1.0</td><td>初始注册：六因子签名＋条件量级带＋可证伪条件（07-29 首例基线）</td><td>cases/2026-07-30 事件研究</td><td>Doctor「先注册目前的权重，之后持续验证」</td></tr>
-<tr><td>2026-08-03</td><td><strong>v1.1</strong></td><td>ƒ 证据因子重写「短端跌×长端涨＝单日熊陡 10bp」（P-12）；报复夜增设「退款因子」（P-05）；geo→美股 四分支（P-06/P-19②）；geo→油 首例基线重算＋两分支（P-16/P-03/P-13）；新设「geo·降温兑现」（P-19①）；AI 代理规则（P-08）；通用纪律增五条；边界段订正（P-18）；P-07 不采纳</td><td>16 提案实测证据</td><td>Doctor 2026-08-03「P-15、P17 仔细解释一下，<strong>其他全部同意</strong>」</td></tr>
-<tr><td>2026-08-03</td><td><strong>v1.2</strong></td><td><strong>AI 持续性重构「轴+双翼」</strong>：L0 范式轴（三柱三态·常态化为退场判据）＋ L1 冲击翼＋ L2 恢复翼（按 L0 解义过伸/重建/回归）；吸收 P-15（|传染| 定在场）与 P-17（变号不入序列/替代代理/统一基准）</td><td>Doctor 三段论＋ v1.2 草案过目</td><td>Doctor 2026-08-03「入册」</td></tr>
-<tr><td>2026-08-04</td><td><strong>v1.2.1</strong></td><td>geo·降温兑现 VIX 分项加水平条件（「VIX↓，已低于冲击前水平则豁免」·P-20 选项一）；归因资格自暂停恢复</td><td>08-04 第二样本 VIX 违例（系二元官宣前保费·P-10 镜像）</td><td>Doctor 2026-08-04「选项一」</td></tr>
-<tr><td>2026-08-04</td><td><strong>v1.3</strong></td><td><strong>新设因子位「宏观驱动」</strong>（P-21·C 案双分支）：@数据落地（顶级日历披露·只收超预期）／@利率重估（长端 |Δ|≥6bp 且无语言窗·与 ƒ 互斥）；量级带留空待样本</td><td>2-E 因子拾遗触发线已达＋ 07-30 GDP/PCE · 08-03 ISM 双首例</td><td>Doctor 2026-08-04「C」</td></tr>
-<tr class="newrow"><td>2026-08-06</td><td><strong>v1.3.1</strong></td><td><strong>P-04 杂质因子口径闭合</strong>（净额进 Σ·gross 只作告警·官方锚+收益滚动分母）＋方向②科技资讯流证伪记录（0pp·只开测量窗）＋观察余量按新口径重算收栏（退款整轮 +1.58~+1.81pp·降温 08-04 +1.64~+1.65pp）＋<strong>量级带分层权限</strong>（严在权限·不严在记录）</td><td>VV 方向②④报告＋重算对照报告（官方锚闭环·原子差额替换）</td><td>Doctor 2026-08-06「tongyi」「同意」＋分层权限裁定</td></tr>
 </tbody>
 </table>
-<p class="note">v1.1 并入 16 提案；v1.2 重构 AI 持续性并吸收 P-15/P-17；v1.2.1 降温兑现加水平条件（P-20）；v1.3 新设宏观驱动（P-21）；v1.3.1 P-04 闭合＋方向②证伪＋分层权限。完整逐条变更文本见 <code>brain/剑酒青丘/frameworks/事件归因台账.md</code> §七。</p>
-  </div>
-</details>
+<p class="note">自 v1.0 起<strong>无任何权重带变更</strong>。P-01~P-18 全部滞留提案区，等待 Doctor 逐条裁定。<strong>P-16 已获裁定「先补第三方源再裁」（08-01）；P-17 已获方向批准，改动清单待二次确认后落盘。</strong></p>
 
 <!-- ==================== 六 ==================== -->
-<details class="fold">
-  <summary>验证簿<span class="sconcl">重要日期：08-07 NFP（宏观驱动候选轮·已事前冻结）· 8/27~29 央行年会</span></summary>
-  <div class="fold-body">
+<h2><span class="n">六</span>验证日历</h2>
 <table>
 <thead><tr><th>窗口</th><th>验什么</th><th>状态</th></tr></thead>
 <tbody>
-<tr><td class="strike">2026-07-30</td><td class="strike">空袭正式定价日——geo 命中情形首样本 × 报复夜是否退款</td><td class="ok">已观测（P-05 方向强证实／P-06 条件不匹配）</td></tr>
-<tr><td class="strike">2026-07-31</td><td class="strike">AMZN/AAPL 杂质因子放大＝P-04 天然窗 × 伊朗预告是否兑现＝P-07 检验</td><td class="ok">已观测（P-04 未被检验只是不咬人／P-07→P-13）</td></tr>
-<tr><td class="strike">2026-08-03</td><td class="strike">H.15 官方 CMT 解冻 × SMH 收盘 × Kospi 是否回吐</td><td class="ok">已观测：<strong>主动降温日首样本</strong>（P-19）；P-12 解冻；代理反转连续第二日</td></tr>
-<tr><td class="strike">2026-08-04</td><td class="strike">官方 CMT＋油金结算确认 × Kospi 08-04 收盘</td><td class="ok">已观测：<strong>geo·降温兑现 n=2·VIX 分项违例 → P-20</strong>；宏观数据分项立项 → P-21；15m 磁带沙箱首通</td></tr>
-<tr><td class="strike">2026-08-05</td><td class="strike">08-04 官方 CMT × 协议是否官宣 × ISM 服务业＋ADP</td><td class="ok">已观测：<strong>协议未官宣</strong>（预告非宣布）；Cook 放鹰（非决议后窗）；代理反转第三日；金展期污染坐实；残差首次收窄</td></tr>
-<tr><td class="strike">2026-08-06</td><td class="strike">「48 小时」沙漏第一截止点 × 初请（二级）× 08-05 官方 CMT × Kospi 回填 × 金换源</td><td class="ok">已观测：<strong>协议未官宣·n=3 候选窗未触发</strong>；油 +4.04%＝降温回吐（候选形态记观察）；08-05 CMT 到窗（核对 1.3bp ✓）；Kospi 08-05 bar 回填 ✓；金仍 ◌；残差连续第六日超阈·连续第二日收窄</td></tr>
-<tr style="background:#fdf3e7"><td class="bad"><strong>2026-08-07 NFP（下一验证窗）</strong></td><td><strong>宏观驱动因子的候选轮（已事前冻结）</strong>＋证伪退款净样本窗＋「48 小时」沙漏最终截止＋geo·降温回吐/兑现形态裁决窗</td><td class="circ">待跑</td></tr>
-<tr><td>2026-08-27~29 Jackson Hole</td><td>ƒ 的语言窗预热观察哨（Warsh keynote·9/15-16 FOMC 前最重要官语场合）</td><td class="circ">待</td></tr>
+<tr><td class="strike">2026-07-30</td><td class="strike">空袭正式定价日——geo 命中情形首样本 × 报复夜是否退款</td><td class="ok">已观测：退款腿方向强证实（P-05）；命中情形条件不匹配（P-06）；与 MSFT 不可分离</td></tr>
+<tr><td class="strike">2026-07-31</td><td class="strike">① AMZN/AAPL 单股杂质腿放大＝P-04 天然窗；② 伊朗预告是否兑现＝P-07 直接检验；③ 月末再平衡干扰</td><td class="ok">已观测：① 两只方向相反、误差互抵，<strong>P-04 未被检验只是不咬人</strong>；② 报复已兑现，<strong>P-07 首检方向相反</strong>→P-13；③ 干扰未能分离（SMH ◌）</td></tr>
+<tr><td><strong>2026-08-03（周一·下一验证窗）</strong></td><td>① 补 <strong>07-30／07-31 的 H.15 官方 CMT</strong> → 解冻 P-12 的 07-30 腿，并按 P-11 纪律②做两源分歧核对；② 补 <strong>SMH 07-29／07-31 收盘</strong>——P-08／P-15 均卡在这里；③ 观察 Kospi +17.9% 后是否回吐（喂 P-15）</td><td class="circ">待跑</td></tr>
+<tr><td>~2026-08 上旬 CPI／NFP</td><td>证伪退款的<strong>净样本窗</strong>（若无大财报共振，可摆脱不可分离问题）</td><td class="circ">待</td></tr>
 <tr><td>~2026-09 FOMC</td><td>ƒ 复测窗（官语再定价·FedWatch 仪表全程手更）</td><td class="circ">待</td></tr>
-<tr><td>伊朗后续互击</td><td>geo 系触发锚定的第三样本（P-13）；降温方向第二样本（P-19）</td><td class="circ">待</td></tr>
+<tr><td>伊朗后续互击</td><td>geo 系触发锚定的<strong>第三样本</strong>（P-13 的裁决依据）</td><td class="circ">待</td></tr>
 </tbody>
 </table>
-  </div>
-</details>
 
 <footer>
   <strong>边界</strong>：n=1 全线；权重百分比为当日实现值，不注册为常数；本台账为<strong>解释层</strong>，永不直接驱动仓位或温度。<br>
-  <strong>◌ 仍未闭合（08-06）</strong>：08-06 官方 2Y/10Y CMT（FRED T+1 到窗）｜油 08-06 官方结算（live 78.26·待 ICE/CME）｜<strong>金全部读数</strong>（GC=F 展期污染·换源前冻结·须现货 XAU 或固定月份合约）｜Kospi 08-06 Yahoo bar（T+1 回填中）＋三星/海力士 08-06 个股｜SPX 成分权重表（P-04 分母·官方锚已闭环但值守班侧权重表仍 ◌）｜隔夜 ES 磁带。<strong>缺数 ≠ 安全。</strong><br>
-  <strong>数据通道（本班）</strong>：stooq ✗（JS PoW·连续第四班）｜<strong>FRED ✓（DGS2/DGS10 至 08-05）· Yahoo chart ✓ 日线＋15m（SPY 全 8 日磁带·曲线延至 08-06）沙箱直取</strong>｜新闻源 ✓（CNBC liveblog／ABC live／DOL·检索快照）。<br>
-  <strong>主要来源</strong>：Yahoo chart API（v8·沙箱直取）／FRED 官方 CSV（沙箱直取）／CNBC liveblog 2026-08-06／ABC live／DOL 初请失业金。<br>
-  快照生成：值守班 <code>event-attribution-watch</code> 2026-08-06 20:5x ET 重算重绘（七日累计）· 暖色·警示页 v2.8 范式 · 规则书 <strong>v1.3.1</strong>（P-01~P-21 全部有归属：16 并入 v1.1、2 吸收进 v1.2、P-20→v1.2.1、P-21→v1.3、P-04→v1.3.1、1 撤回）。
+  <strong>✅ 本班已闭合的 ◌（08-01 补数）</strong>：SMH 全序列（504.22／538.90／540.53）｜WTI 07-31 分时 5m（geo→油 判型升级）｜VIX 07-31 分时 5m（退款腿两段式）｜<strong>07-29 分时回溯</strong>（首例脉冲复核 ＋ ƒ/退款 时间分离）。<br>
+  <strong>◌ 仍未闭合</strong>：H.15 官方 07-30／07-31 CMT（FRED CSV 两次失败含 <code>--http1.1</code>；^TNX 代理 4.66／4.74 但 P-11① 禁外推 ⇒ P-12 的 07-30 腿继续冻结）｜金的统一口径收盘（四源冲突）｜<strong>P-16 的同标的仲裁源</strong>（EIA 现货已证不可用）｜SPX 成分权重表（P-04 分母）｜隔夜 ES 磁带。<strong>缺数 ≠ 安全：本日的因子贡献分解同样不可信。</strong><br>
+  <strong>数据通道（本班）</strong>：stooq CSV ✗ 空体（ERR-20260730-003 第三次复现）｜FRED CSV ✗ 二进制（Doctor 终端 curl 亦 ✗ HTTP/2 INTERNAL_ERROR）｜Yahoo chart API ✗ provenance 拒绝｜H.15 官方页 ✓（仅至 07-29）｜<strong><code>market_data.db</code> ✓（本班权威源，08-01 08:36 由 Doctor 取数脚本写入）</strong>｜新闻源 ✓（已被库值订正数处）。<br>
+  <strong>主要来源</strong>：<code>Database/Market-Data/market_data.db</code>（us_anchor_daily／intl_index_daily·yahoo）／Federal Reserve H.15／WaPo-AP／CNBC／TheStreet／Al Jazeera／ETF Trends-Advisor Perspectives／TradingEconomics。<br>
+  快照生成：2026-07-31 20:5x ET 首版 · <strong>2026-08-01 08:5x 北京按 market_data.db 订正并追加 P-16／P-17</strong> · 值守班 <code>event-attribution-watch</code> · <strong>注册表 v1.0 未改动</strong>。
 </footer>
 
 </div>
