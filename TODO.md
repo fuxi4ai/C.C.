@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-08-09
+updated: 2026-08-10
 status: active
 type: log
 ---
@@ -29,7 +29,7 @@ type: log
   **为何走甲案**：数据完整地躺在 aliases 里、不会再丢；而把「历史欠账 +11」混进「9 篇入库 +107」的同一次 promote，会让入库账目永远说不清。
   依据：`logs/checkpoints/2026-08-01_渊图9篇入库_修补清单.md` §一-④
 
-- [ ] **巡检脚本/镜像适配 Gateway store（2026-08-02 迁移副产 · 观察条 · 同日数据根迁出后改写）**：19 班 store 已迁 `~/Gateway-workspace/Scheduled/`（D14），`scheduler_snapshot.py` 的 `LIVE_TREE` 仍指 `~/Claude's workspace/Scheduled/`（Cowork store，19 班 disable 后冻结）。**新机制事实（2026-08-02 实测，改写本条的关键）**：保护**跟随 store**——`~/Gateway-workspace/Scheduled` 沙箱挂载同样被拒，故原设想「镜像脚本加第二源、沙箱自动化」**此路不通**；gateway 树的读取只有两条路：Mac 原生（`scheduler_snapshot.py` 已备 `GATEWAY_TREE` 常量、未接线）或 Doctor 终端 rsync 进镜像。**现状**：① `scheduler-weekly-audit` 已于 08-02 20:00:59 PDT 在本壳首点火（lastRunAt 实据），其产出/噪音表现待核——它在本壳跑脚本必报「live 树读不到」（`~/Claude's workspace` 沙箱不可达），每周一次的噪音 or 有价值告警，观察；② 巡检的 git diff 变更检测只见 Cowork 侧（冻结），**Kimi 侧班 prompt 变更无人盯**（如本次 longyu sed 修正即属此类）；③ `_DEPRECATED_Scheduled_20260802` 与新 live store 并存，`DEAD_ARCHIVED_GLOB` 语义待重估；④ `DEAD_TREE`（`~/Documents/Claude/Scheduled`）语义已改注释为「正常=不存在、再现=异常」。触发点：下次周巡检（08-09）后据实际表现定改法。
+- [ ] **巡检脚本/镜像适配 Gateway store（2026-08-02 迁移副产 · 观察条 · 同日数据根迁出后改写）**：19 班 store 已迁 `~/Gateway-workspace/Scheduled/`（D14），`scheduler_snapshot.py` 的 `LIVE_TREE` 仍指 `~/Claude's workspace/Scheduled/`（Cowork store，19 班 disable 后冻结）。**新机制事实（2026-08-02 实测，改写本条的关键）**：保护**跟随 store**——`~/Gateway-workspace/Scheduled` 沙箱挂载同样被拒，故原设想「镜像脚本加第二源、沙箱自动化」**此路不通**；gateway 树的读取只有两条路：Mac 原生（`scheduler_snapshot.py` 已备 `GATEWAY_TREE` 常量、未接线）或 Doctor 终端 rsync 进镜像。**现状**：① `scheduler-weekly-audit` 已于 08-02 20:00:59 PDT 在本壳首点火（lastRunAt 实据），其产出/噪音表现待核——它在本壳跑脚本必报「live 树读不到」（`~/Claude's workspace` 沙箱不可达），每周一次的噪音 or 有价值告警，观察；② 巡检的 git diff 变更检测只见 Cowork 侧（冻结），**Kimi 侧班 prompt 变更无人盯**（如本次 longyu sed 修正即属此类）；③ `_DEPRECATED_Scheduled_20260802` 与新 live store 并存，`DEAD_ARCHIVED_GLOB` 语义待重估；④ `DEAD_TREE`（`~/Documents/Claude/Scheduled`）语义已改注释为「正常=不存在、再现=异常」。触发点：下次周巡检（08-09）后据实际表现定改法。**⇒ 2026-08-10 /todo 实测**：08-09 20:00 周巡检班在 Kimi 壳干净退出并贴 Doctor 终端命令（每周一次轻噪音，有「巡检中断自证」兜底、断档不被静默吞掉）；Doctor 20:18 原生跑 exit 0 无异常——但脚本 LIVE_TREE 扫的仍是冻结 Cowork 树，**Kimi 侧 gateway store 的班 prompt 变更依旧无人盯**（GATEWAY_TREE 常量备而未接线）。改法仍待 Doctor 定。
   依据：`logs/checkpoints/2026-08-02_19班迁Kimi壳与三级司法_PRD.md` §三 非交付项 · D13/D14 遗留
 
 - [ ] **fuxi 冷归档 · 三隔离区期满清算（2026-08-03 挂 · 2026-08-04 迁址完成 · 仅剩期满删除）**：`_to_delete_20260721`（3.3GB·窗口至 **08-20**）· `_to_delete_20260723_tts`（9.5MB·窗口至 **08-22**）· `_隔离_20260724`（12K·随 08-22 一并裁）。**① 迁址已完成（2026-08-04）**：三件 tarball 经 scp 至 `fuxi-station:F:\Mac_Quarantine\`、SHA-256 三串逐位回验一致、cmd 侧解包 move 落位、本地源已删（释放 3.45GB · Doctor 批准）。**② 剩余**：期满（08-20 / 08-22）确认无恢复需求后，fuxi 侧物理删除（`rmdir /s /q F:\Mac_Quarantine\{三件}` · Doctor 终端/授权）。勾掉后按 v3.1 迁归档。
@@ -123,7 +123,7 @@ type: log
 
 - [ ] **EAL · 提案裁定队列（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-04-事件归因台账美化与v1.2入册.md` ＋ `logs/2026-08-06-回测库建成移交VV与台账v1.3.1闭合.md` · Doctor 2026-08-08 定：P 系列留周末专场）**：① **P-20**（geo·降温兑现 VIX 分项第二样本违例 · 三选一：加水平条件／◌不可分离／回炉——裁前该因子暂停归因资格、记账行标 ◌）② **P-21**（宏观数据/贴现率腿立项——2-E 触发线已达）③ **P-22**（宏观驱动 @数据落地 股票腿通道归属 · 三选一：方向不定只锚量级／regime 子句／维持原签名记变体——08-07 NFP 首测已记证伪样本）④ **量级带裁定**（六空带·须再攒 1-2 个独立事件轮，退款/降温各仅 1 轮——被数据积累阻塞）⑤ 台账 artifact v1.3.1/v2.8 渲染目验（artifact 08-07 19:34 PDT 已重绘 · 待 Doctor 目验）⑥ 封档观察：VIX/^TNX 数据源升档（Polygon Advanced/Indices）再议——当前封档。~~Kospi 笔误订正~~（**2026-08-08 Doctor 准，已改 2-C 原文 6,695.45→6,595.45**）· ~~斜纹区是否还原~~（**2026-08-08 Doctor 确认：不还原，退役定案**）。08-04 补数 curl ×4 大部已被值守班闭合或过时，作废不挂。
 
-- [ ] **龙鱼 3 件（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-06-龙鱼白泽双库修复与空analyses审计.md`）**：① 真实浏览器目验龙鱼看板（泡泡玛特卡片/排序/弹窗/移动端——reviewer 认领，可随时开）② **氦气/六氟化钨/稀土/原油 价格锚点过期**（weekly_health warns 已显性化——周日白泽班重点，**明天 08-09 01:09 PDT 即班**）③ 泡泡玛特六维研究（待研究标记，排期未定）。
+- [ ] **龙鱼 3 件（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-06-龙鱼白泽双库修复与空analyses审计.md`）**：① 真实浏览器目验龙鱼看板（泡泡玛特卡片/排序/弹窗/移动端——reviewer 认领，可随时开）② **氦气/六氟化钨 价格锚点仍过期**（⇒ 2026-08-10 /todo 现核收窄：`_health.json` 08-09 补跑产物——稀土/原油已鲜价；氦气 asof 04-16·115 天、六氟化钨 asof 06-12·58 天仍 stale，原「四品种」收窄为两品种）③ 泡泡玛特六维研究（待研究标记，排期未定）。
 
 - [ ] **白泽大宗 · 周日班后核查（2026-08-08 专场挂 · ⇒ 2026-08-09 Doctor 目标模式裁：改 dated 08-16 班后）**：weekly_health.py 带新 legacy 登记的**定时链路首验顺延**——08-09 01:09 定时班因三目录未挂载**阻塞未跑新码**（`logs/2026-08-09-白泽周报阻塞-挂载缺失.md`），当日晚 Doctor 补挂后手动补跑成功，但 ERR-20260721-001 族「手动通≠定时通」⇒ 定时首验 = 下周 08-16 01:09 班，班后查产物/stderr；ingest_meta 三行 deprecated（Doctor 终端脚本跑完后）只读复查；_health.json legacy_sources 应含两旧价表。四品种鲜价过期由该班处理（龙鱼 3 件②），与本条互证。
 
@@ -141,10 +141,6 @@ type: log
 
 - [ ] **龙鱼 · 双 scorer 跟踪包（2026-08-09 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-08-龙鱼双scorer周更.md`）**：① holdings-board 镜像页（Doctor 终端跑镜像脚本）；② 长飞光纤中报验证后回归判分（高增兑现→claude 上修向其回归；回落→deepseek 靠拢）；③ 海光信息双腿方向相反，下周重点复核（claude 升 / ds 降）；④ **Kimi 基线 −8 初值 08-15 据实战复核（dated）**，定制度层最终平移量；⑤ 电科蓝天崩塌动因复核（中报/订单面），确认 −39 是否已充分定价；⑥ v2 点需 2–3 周累积后可信口径趋势才作数（当前多为混杂/跨口径，仅供参考）。
 
-- [ ] **EAL · event-attribution-watch 重生成（2026-08-09 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-08-EAL口径v0.1收官.md` · dated 08-10）**：周一 2026-08-10 17:44 PT 班（班表 nextRunAt 实证吻合）读更新后正源＋重跑 export_mech 重生成 artifact；班后核产物。
-
-- [ ] **风险日报 · yuantu-alarm-weekly 首跑带 r7（2026-08-09 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md` · dated 08-10 09:07 PDT）**：r7 于 08-03 白天注册、08-03 09:07 那班跑在注册前——**判级口径首验＝08-10 09:07 班**（班表实证 lastRunAt 08-03/nextRunAt 08-10）；scores 标度可按首跑回修。班后核 r7 是否进榜、判级是否合理。
-
 - [ ] **dev/19 班迁移收尾杂项包（2026-08-09 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-02-dev模式打通四件套.md` ＋ `logs/2026-08-02-E验收与19班迁Kimi壳.md` ＋ `logs/2026-08-03-数据根迁Gateway-workspace.md` · 多为 Doctor 终端小动作）**：① 沙箱垃圾清理 `rm -f ~/Documents/Claude/Brain/.__case_probe` · `.tts*`；② 字节级终封 diff 复跑（touzhijunjun 修正后应 19 OK）；③ longyu 步骤 2/3 修正状态核实；④ 龙鱼看板幽灵归档（`mv ~/Gateway-workspace/Artifacts/龙鱼五力个股库…`）；⑤ V.V. 盲审回收 → 比对 → 二审席裁定；⑥ workspace 7-05 旧副本处置（F 方向未批，先留定性）；⑦ `Brain`/`brain` 大小写归一（Linux 化前必做，本轮记档不动）；⑧ Settings 镜像 L20 过期提醒撤除（1 行改动，待批）。
 
 - [ ] **基建 · 镜像常态化刷新机制裁定（2026-08-09 目标模式补挂 · 源：`logs/2026-08-02-dev模式打通四件套.md`）**：巡检镜像的常态化刷新走哪条路——并进周巡检班 vs 手动随 /save；涉及巡检器只读章程，**需 Doctor 裁**。与 L37「巡检适配 Gateway store」分居：那条管脚本适配（08-09 20:00 周巡检后定改法），本条管刷新机制设计；L37 已实证沙箱直读 gateway store 此路不通，候选路 = Mac 原生 snapshot 或 Doctor 终端 rsync。
@@ -157,6 +153,15 @@ type: log
 - [ ] **渊图仓 · 工作区 3 个非我改未提交文件待 Doctor 认账（2026-08-09 目标模式补挂 · 源：`logs/2026-08-09-InP入库收口与TODO分流.md`）**：行业研究仓 git status 见 3 个非本会话改动的未提交文件（99 增 2 删，`git diff --stat` 可查），疑并行会话半成品或积压；待 Doctor 认账处置（提交/归档/还原——Doctor 终端动作，沙箱不跑 git）。与 L117「git 三仓提交+brain 镜像 rsync」分居：那条管 CC 自身提交批与镜像，本条管**外来**未提交改动认账。
 
 - [ ] **PEC 日本线 · 日元落盘包扩充（2026-08-09 目标模式末批补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md` L44）**：raw 落盘包在 08-03 已落四件套（专项 analysis + JP-P2 对账快照 + macro-facts §19「2026-08 流量刷新」+ CS-08 A03 §5.3 dated 补注）基础上**追加扩充**：carry 三层账本 + 美股定价四渠道 + 观察框架三层。原条 08-03 标注「TODO 已挂·待批方向」实则脱落未进 TODO，2026-08-09 漏挂对账翻出、Doctor 裁补回。**待 Doctor 批扩充方向**（D 类 · propose-then-confirm）。
+
+- [ ] **白泽大宗 · 仓 commit 确认（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-大宗库P0P1审查修复.md`）**：weekly_health.py（legacy 登记）+ `scripts/database/p1_truth_source_and_scale_20260809.py` + GOTCHAS.md 三件 commit——08-09 场命令已贴 Doctor 终端、未确认已跑。属 Doctor 终端动作。
+- [ ] **白泽大宗 · 中际旭创 1.6T 双值核验（2026-08-10 由 /todo 漏挂对账补挂 · 源：同上）**：benefit_relations 0.4 vs history 0.15 双值（GOTCHAS NOTE-20260809-001 已标「待核验」不改值）——核原始投资者问答/渊图分母口径后回写统一。
+- [ ] **白泽大宗 · update_log「5 行→2 行」订正（2026-08-10 由 /todo 漏挂对账补挂 · 源：同上）**：实测 2 行，GOTCHA 435 行 + 08-08 弃用脚本注释仍写 5——待 Doctor 点头后改。
+- [ ] **白泽大宗 · P2 缓项包（2026-08-10 由 /todo 漏挂对账补挂 · 源：同上）**：report_period 格式统一、商品命名归一、benefit_relations 20 行 NULL-source 回填、config_index.json 同步、ingest_meta rows_written 语义、macro_prediction.db v1/v3 注记；**附隐患**：data_hash 未随 revenue_ratio 同步更新（冻结表无妨；若手动跑旧 incremental_updater 会误判全变 + 旧刻度回混）。
+- [ ] **基建 · commit `9a531cf` 作者/message 未核（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-目标模式首验与量能回补收口.md`）**：沙箱跑不了 git log；若非 Doctor 手笔需查。需 Doctor 终端 `git log -1 9a531cf`（脑仓）。
+- [ ] **brain · 08-09 /save 记忆分拣三候选待 Doctor 点选（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-三轮尾账清算与todo清尾.md`）**：G-X135 Edit 误报 / EXP 清洗脚本六件套 / 失真 commit stance 三条。
+- [ ] **龙鱼 · classify_holdings.py 一键分态分类器（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-10-龙鱼持仓板并入个股库与持仓迭代.md` · ⇒ Doctor 2026-08-10 /todo 裁「立」）**：分态双轴规则（市值 30 万 × 利润率 30%、负成本=纯利不参与判定）已定量可复算，小脚本消手工重判；落 `consumers/龙鱼五力/`，不碰引擎。
+- [ ] **dev · 定时任务模型切换落点未核验（2026-08-10 由 /todo 漏挂对账补挂 · 源：同上）**：定时任务无 model 配置项、壳层派发现为 Kimi K3，Doctor 已自行配置切换，落点未核。
 
 ---
 

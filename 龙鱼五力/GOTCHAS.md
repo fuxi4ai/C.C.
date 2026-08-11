@@ -96,3 +96,11 @@ project: 龙鱼五力
 **问题**: 旧记「需 localhost:3128 代理」在本沙箱不通（curl 返回 000）；若写死 `export HTTPS_PROXY=localhost:3128`，首只标的会报误导性的「找不到标的」（实为代理 connection refused）。
 **解决方案**: 本沙箱**直连** `api.tushare.pro` 即通（HTTP 200）——`unset https_proxy HTTPS_PROXY http_proxy HTTP_PROXY` 后跑；引擎代码检测到代理 env 才走 CONNECT 隧道，不设则直连。token：`set -a; . Database/.env; set +a` 注入 `TUSHARE_TOKEN`（沙箱无 Keychain）。已实测长鑫688825/南亚688519 跑通。
 **预防措施**: 代理一律探测化（curl 试探再决定是否 export），勿写死。localhost:3128 是 gateway/CLI 等别的环境的配置，勿当成通用心智。
+
+---
+
+## [NOTE-20260810-002] 持仓无价标的手录维护：港股 px_hkd ×2 + ETF px_manual ×1
+**状态**: 🟢 长期维护条（设计如此）
+**优先级**: 🟢 低
+**内容**: 胜宏科技H(02476.HK)/智谱(02513.HK) 走 `px_hkd` 手录；半导体设备ETF国泰(159516) 走 `px_manual` 手录（2026-08-10 机制落地：board_data 节点加 px_manual、前端 computeDerived 回退、编辑器显示「当日价/净值」输入）。三者无本地自动行情，**价靠 Doctor 日常手录维护、不自动日更**。任何未来「无本地行情」的非港股标的通用 px_manual 道。
+**来源** → logs/2026-08-10-龙鱼持仓板并入个股库与持仓迭代.md
