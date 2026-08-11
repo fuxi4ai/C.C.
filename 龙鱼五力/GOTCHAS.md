@@ -87,3 +87,12 @@ project: 龙鱼五力
 **现象/根因**: `board_data.py` 的 seg/plate 从 `龙鱼-标的分析库/_index/细分环节.json` 的 `map[ts_code]` 取（`{板块,环节,label,name}`），**不读 record 的 `track` 字段**（track 只作展示文本）。record 有六维但缺这张表的映射 → 落「未归类」。
 **解决方案**: 新标的入库时一并补 `_index/细分环节.json` 的 `map` 一条（如光库 300620.SZ → `{"板块":"AI硬件","环节":"光通信","label":"AI硬件｜光通信","name":"光库科技"}`）。
 **预防**: 把「补 seg 映射」纳入入库 playbook 常规步（与 record_writer + build_index 并列）。
+
+
+## [NOTE-20260810-001] 龙鱼引擎在 Cowork 沙箱直连 Tushare——勿设代理 env
+**状态**: ✅ 已解决
+**优先级**: 🟡 中
+**触发场景**: 在本 Cowork（桌面 local-agent）沙箱跑 `five_forces_engine_v3.py` 实跑打分。
+**问题**: 旧记「需 localhost:3128 代理」在本沙箱不通（curl 返回 000）；若写死 `export HTTPS_PROXY=localhost:3128`，首只标的会报误导性的「找不到标的」（实为代理 connection refused）。
+**解决方案**: 本沙箱**直连** `api.tushare.pro` 即通（HTTP 200）——`unset https_proxy HTTPS_PROXY http_proxy HTTP_PROXY` 后跑；引擎代码检测到代理 env 才走 CONNECT 隧道，不设则直连。token：`set -a; . Database/.env; set +a` 注入 `TUSHARE_TOKEN`（沙箱无 Keychain）。已实测长鑫688825/南亚688519 跑通。
+**预防措施**: 代理一律探测化（curl 试探再决定是否 export），勿写死。localhost:3128 是 gateway/CLI 等别的环境的配置，勿当成通用心智。
