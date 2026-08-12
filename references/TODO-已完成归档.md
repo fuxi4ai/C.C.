@@ -14,6 +14,42 @@ type: log
 
 ## 已完成
 
+- [x] **brain 仓 · 中间 commit `9a531cf` 作者/message 未核（2026-08-11 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-目标模式首验与量能回补收口.md` · ⇒ Doctor 2026-08-11 裁「贴命令终端核」）**：沙箱跑不了 git log（硬约束）；若非 Doctor 手笔需查来源。命令见 08-11 /todo 回报；待 Doctor 终端跑完贴回，CC 比对判归属后勾销。
+  **⇒ 2026-08-11 目标模式收口（条内授权「CC 比对判归属后勾销」· CC 代记留痕并迁档）**：Doctor 终端 `git log/show 9a531cf` 实跑贴回——作者 **Doctor**（garciajessicadltis7409）、时间 08-09 20:15、主题「ERR-20260719-003 收口(A2双综指) + 甲案修订待裁补挂」；改动 TODO.md(+1)/烛照九阴GOTCHAS.md(8)。A2 双综指重填系 L151 所载真实 08-09 事件、message 连贯对应真实工作，判定为 Doctor 本人正常 commit，无疑问。
+
+- [x] **财新 8/3 联手干预全文（低优先 · 2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元能否救回与禁抛美债核验.md`）**：付费墙，FIMA 句现仅经 meta 描述 + 金十交叉确认、未读全文；Doctor 若有订阅可取全文入档补强。
+  **⇒ 2026-08-11 目标模式 Doctor 裁「关闭·不做了」（FIMA 句已 meta+金十两源交叉、全文仅边际补强、付费墙），CC 代记留痕并迁档**
+
+- [x] **dev · 定时任务模型切换落点未核验（2026-08-10 由 /todo 漏挂对账补挂 · 源：同上）**：定时任务无 model 配置项、壳层派发现为 Kimi K3，Doctor 已自行配置切换，落点未核。
+  **⇒ 2026-08-11 目标模式 Doctor 裁「关闭·不做了」（模型切换落点 Doctor 已自行配置、无需追踪），CC 代记留痕并迁档**
+
+- [x] **渊图 · CLAUDE.md 状态行顺手刷（2026-08-09 InP 入库聚簇补挂 · 琐碎 · 源：`logs/2026-08-09-InP衬底专项与入库.md`）**：下次入库顺手把「当前状态」段数字刷新——本会话已核盘上确为旧值：边 4426→4429、价格层 776→779、latest 760→763（InP 入库 commit `0961ad7` 所致）。不单独 commit，搭下次入库车。**⇒ 2026-08-11 目标模式执行（小快灵）**：`Database/行业研究/CLAUDE.md` L24/L34 已刷——关系 4426→**4429**、价格层 776→**779**、latest 760→**763**，节点 3928 不变；改前逐数现核（mapping/latest.json edges=4429 · commodity_prices.jsonl=779 行 · prices/latest.json=763 条），双 subagent 对照审查两路一致通过（agent-A 证据四数独立重算命中＋数据文件 mtime 停 08-09 未动 · agent-B 快照含旧值可 cp 回退、未触红线）。未 commit，随下次入库车。（**Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：CLAUDE.md L24/L34 新值在盘 ＋ 快照 `backups/todo-auto/2026-08-11-2159_行业研究CLAUDE.md` 含旧值**）
+
+- [x] **PEC 日本线 · 抖音口播稿《日本的诚》待您审稿（2026-07-21 产出 · 2026-07-30 从 inbox 归位并补挂）**：全文约 1600 字 / 正常语速约 5 分钟，三个标题候选，含发布小贴士。**⇒ 2026-08-11 全链收口**：Doctor 裁「时长=三分钟删减版 · 口味维持现状」（竖屏分镜/多音字清单未点=不要）→ 删减版落 `Projects/PEC/case-studies/CS-08_大和-日本文明/衍生传播/抖音口播稿_日本的诚_三分钟删减版.md`（删京都茶泡饭＋齐太史两处含收束句，约 1270 字；原稿一字未动）→ **Doctor 审过**（口头勾定「球在我这的现在都做了」）。（**Doctor 2026-08-11 口头勾定，CC 代记留痕并迁档** · 证据：删减版文件在盘 · 原稿未动）
+  关联：`logs/2026-07-21-日本的诚抖音口播稿.md` · `logs/2026-07-21-日本的诚配音体检.md`
+
+- [x] **PEC 日本线 · 日元落盘包扩充（2026-08-09 目标模式末批补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md` L44）**：raw 落盘包四件套基础上追加 carry 三层账本 + 美股定价四渠道 + 观察框架三层。**⇒ Doctor 2026-08-11 批「照三向扩充」→ CC 起草落盘 → Doctor 把关通过**：三件全文落 `raw/2026-08-03_analysis_日元能否救回与禁抛美债核验_专项.md` §七（含 08-11 COT 口径勘误补注：非商业 6 月极值 -155,092／首破 -150k=06-16 期／08-04 期 -45,473）。（**Doctor 2026-08-11 口头勾定，CC 代记留痕并迁档** · 证据：专项文件 §七在盘 · L87 指针已改指 §七）
+
+- [x] **基建 · 镜像常态化刷新机制裁定（2026-08-09 目标模式补挂 · 源：`logs/2026-08-02-dev模式打通四件套.md`）**：巡检镜像的常态化刷新走哪条路——并进周巡检班 vs 手动随 /save。**⇒ 2026-08-11 Doctor 裁：并进周巡检班**——scheduler-weekly-audit 班 prompt 已加「沙箱无法执行时贴 Doctor 终端双命令（巡检＋`rsync -a --delete ~/Gateway-workspace/Scheduled/ → scheduled-live-mirror/live/`）」步、description 同步（update_scheduled_task 落）；Kimi 侧班 prompt 变更监控由镜像 git diff 承载，脚本不接 GATEWAY_TREE、零改动（与 L32 定案联动闭合）。08-16 周巡检班首验并班。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：update_scheduled_task 返回「updated: prompt, description」＋镜像目录 20 班在盘）
+
+- [x] **风险日报 · 成交额定源裁定（甲案）修订裁定（2026-08-09 级联复查补挂 · 源：ERR-20260719-003 收口）**：甲案前提「volume_trillion 仅 2026-06 起」已破，待 Doctor 裁 2020+ 窗口是否切源。**⇒ 2026-08-11 /todo 现核：本条已被 08-09 乙案落地消化（前提失效）**——`Market-Data/MANIFEST.md` L71-77「双源定源裁定（2026-08-09 Doctor 批·乙案，成交额条取代 07-28 甲案）」全文在盘：2020+ 统一锁 `volume_trillion`、`market_amount_daily` 降 2010 前长史专用、F4/ipo 阈值重锚 0.045→0.030 等已随案生效；另两处落点已不存在（风险日报仓无 `architecture/决策记录.md`、烛照九阴无 `architecture/` 目录、「长序列仍用 index_research」全文无命中）。Doctor 08-11 再裁「照修订切源」与盘上乙案一致，无需动笔。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：MANIFEST.md L71-77 乙案全文在盘）
+
+- [x] **白泽大宗 · update_log「5 行→2 行」订正（2026-08-10 由 /todo 漏挂对账补挂 · 源：同上）**：实测 2 行，GOTCHA 435 行 + 08-08 弃用脚本注释仍写 5。**⇒ 已改（Doctor 2026-08-11 点头）**：改前复核 update_log 实测 8 行中 `data_source='测试数据'` 恰 2 行（id 7/8 嘉元 Gen4/山东黄金），GOTCHAS L435 与 `deprecate_legacy_price_tables_20260808.py` L7 两处「5 行」→「2 行」已订正。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：`business_breakdown.db` update_log 8 行全量 dump 实测 ＋ 两处文件 Edit 落盘）
+
+- [x] **brain · 08-09 /save 记忆分拣三候选待 Doctor 点选（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-三轮尾账清算与todo清尾.md`）**：G-X135 Edit 误报 / EXP 清洗脚本六件套 / 失真 commit stance 三条。**⇒ 2026-08-11 /todo 现核：三条已全落 permanent（前提失效）**——G-X135（Edit 误报）· G-X137（口径双纪律 · 失真 commit 族）在 `permanent/通用教训.md`，EXP-20260809-001-P（六件套）在 `经验库.md` L1598；「不改写历史」stance 由 G-X134＋L154③＋L729③ 覆盖。Doctor 08-11 点选「三条全要」与盘上现状一致，无需补写。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：通用教训 L1457/L1473 ＋ 经验库 L1598 条目在盘）
+
+- [x] **风险日报 · r7「6 月极值读数」按非商业口径回填（2026-08-08 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-brain-todo建成与两轮实战.md`）**：AI 警报 r7 的 6 月极值读数待按 FuturesB 非商业口径回填。**⇒ 2026-08-11 执行（Doctor /todo 批「照数值回填」）**：CFTC 官方 Socrata 实测——6 月极值=06-30 期 **-155,092 张**（多 111,872/空 266,964）、首破 -150k 线=**06-16 期 -150,132**（07-28 期 -163,412 非首破），已落 watchlist r7 卡 trigger+notes 两处（改前快照 `backups/todo-auto/2026-08-11-0805_alarm_watchlist.jsonl`，改后 JSONL 7 行 parse 复验通过）；同场顺带实证 08-04 期非商业 -45,473、单周净转向 +117,939=2003 年有数以来最大。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：`alarm_watchlist.jsonl` r7 卡 trigger 尾部含「06-30 期 -155,092…首破=06-16 期」＋ notes 尾部含「2026-08-11 非商业口径回填」段）
+
+- [x] **基建 · commit `9a531cf` 作者/message 未核（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-目标模式首验与量能回补收口.md`）**：沙箱跑不了 git log；若非 Doctor 手笔需查。需 Doctor 终端 `git log -1 9a531cf`（脑仓）。**⇒ 2026-08-11 Doctor 终端实跑**：Author=**Doctor 本人**、2026-08-09 20:15 PDT、message「ERR-20260719-003 收口(A2双综指) + 甲案修订待裁补挂」——与 08-09 收口场记录吻合，非外来改动。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：终端 `git log -1 9a531cf` 输出Author 行）
+
+- [x] **渊图仓 · 工作区 3 个非我改未提交文件待 Doctor 认账（2026-08-09 目标模式补挂 · 源：`logs/2026-08-09-InP入库收口与TODO分流.md`）**：行业研究仓 git status 见 3 个非本会话改动的未提交文件（99 增 2 删），疑并行会话半成品或积压；待 Doctor 认账处置。**⇒ 2026-08-11 现核前提已消**：reflog 实证 08-10 晚两个 commit（`58b1fbb` r7 Obon 注记 21:55 PDT · `dbb84136` 同上+classify_holdings 落地 22:53 PDT）已把外来改动认账入史；当前 status 仅剩 CC 的 r7 回填（M watch/alarm_watchlist.jsonl·搭下次入库车）+ 3 件有档 .bak（08-15 清理批）。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：Doctor 终端 `git status --short` 输出 ＋ `.git/logs/HEAD` 尾两行）
+
+- [x] **白泽大宗 · 仓 commit 确认（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-大宗库P0P1审查修复.md`）**：weekly_health.py（legacy 登记）+ `scripts/database/p1_truth_source_and_scale_20260809.py` + GOTCHAS.md 三件 commit——08-09 场命令已贴 Doctor 终端、未确认已跑。属 Doctor 终端动作。**⇒ 2026-08-11 /todo 纯文本核查闭环（沙箱零 git 子命令）**：P0 `08fafdc`（08-09 21:33 PDT）+ P1 `6589297`（22:06）已 commit，且 origin/main=6589297 于 08-10 00:27 PDT **已 push 上 GitHub**（该仓有远端 Baize-Commodity.git，非本地单点）；08-08 三场前置 commit 亦同批在远端。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：`.git/logs/HEAD` reflog 五行 ＋ `refs/remotes/origin/main`=6589297 ＋ origin reflog「update by push」@1786346816）
+  依据：`logs/2026-08-09-大宗库P0P1审查修复.md`
+
+- [x] **龙鱼 · classify_holdings.py 一键分态分类器（2026-08-10 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-10-龙鱼持仓板并入个股库与持仓迭代.md` · ⇒ Doctor 2026-08-10 /todo 裁「立」）**：分态双轴规则（市值 30 万 × 利润率 30%、负成本=纯利不参与判定）已定量可复算，小脚本消手工重判；落 `consumers/龙鱼五力/`，不碰引擎。**⇒ 裁「立」当日 22:29 已落成**：只读复算器（数据源=board_data.build_payload 单一真源，价源回退 行情库→px_hkd/px_manual 手录，贴边 ±2万/±3pp 警示，不一致 exit 1）。2026-08-11 /todo 实跑验证：16 只持仓复算与现分态 **0 不一致**、exit 0、行情锚 20260811、分布 利润奔跑3/最小观察7/成本较高6 与 08-10 核定一致。（**Doctor 2026-08-11 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：文件在盘 mtime 08-10 22:29 ＋ 本场实跑输出 16 只全一致 exit 0）
+  依据：`logs/2026-08-10-龙鱼持仓板并入个股库与持仓迭代.md`
+
 - [x] **风险日报 · yuantu-alarm-weekly 首跑带 r7（2026-08-09 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md` · dated 08-10 09:07 PDT）**：r7 于 08-03 白天注册、08-03 09:07 那班跑在注册前——**判级口径首验＝08-10 09:07 班**（班表实证 lastRunAt 08-03/nextRunAt 08-10）；scores 标度可按首跑回修。班后核 r7 是否进榜、判级是否合理。**⇒ 2026-08-10 首验通过**：r7 进榜且为本周头条（COT 日元投机净空 -101,990→-60,825 张 · 2011 年来最大单周转向），班判「有序疏解非失序螺旋」维持 warming；Obon 窗沿裁定（Doctor：窗沿+有序释放+无阈值击穿=不升级）已注记 watchlist r7 卡 notes。（**Doctor 2026-08-10 /todo 统一授权勾定，CC 代记留痕并迁档** · 证据：班表 lastRunAt 2026-08-10T16:07Z ＋ 班 transcript 简报在 ＋ `alarm_watchlist.jsonl` r7 notes 含「2026-08-10 裁定」jsonl parse 复验）
   依据：`logs/2026-08-03-日元carry监控注册AI警报.md` · `logs/2026-08-10-渊图星空常驻与观察点核验.md`
 

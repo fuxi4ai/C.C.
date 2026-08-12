@@ -682,3 +682,8 @@ total size is 10142259  speedup is 16.75
 
 [2026-07-18 03:00:00] 完成。文件数：     875
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-08-11 23:22:57] backup-icloud.sh 开始
+  src: /Users/lunarabbit/Documents/Claude/brain
+  dst: /Users/lunarabbit/Library/Mobile Documents/com~apple~CloudDocs/brain-mirror
+
