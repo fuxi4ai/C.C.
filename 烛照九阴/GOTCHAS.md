@@ -267,3 +267,14 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **与 G033 的关系**: G033 管「同一张表里读数语义腿 vs 收盘语义腿」（**表内**分层），本条管「同一标的跨库两个源的时点口径」（**跨源**分层）。两者叠加意味着 `US10Y` 这条腿有**双重语义风险**：既可能取到盘中读数、又与官方 CMT 口径不同源。
 
 **来源** → brain/logs/2026-07-31-*（2Y终核与P-09撤回）· [[剑酒青丘/frameworks/事件归因台账]] §六 P-11/P-12 · 同族 ERR-20260728-005（全市场成交额两口径差 25%）
+
+## [ERR-20260811-001] 内联 echarts 大 HTML 找 body/切片：`h.find("<body")` 会误中 echarts JS 字符串，真 body 在首个 `</script>` 后
+**状态**: ✅ 已定性（2026-08-11 手机卡切片两次踩中后定位）
+**优先级**: 🟡 中（凡要解析/切片烛照九阴日报这类「1MB echarts 全内联」的单文件 HTML 就绕不开）
+**触发场景**: 做 9:16 手机卡要切日报结构。`h.find("<body")` 命中 @849272——那是 echarts toolbox saveAsImage 代码里的字符串 `'<body style="margin:0;">...'`，不是真 body；真 body 在 @2054693。接着 html.parser 切结构又吐垃圾伪标签 `<e.length;r++){var>`——内联 echarts JS 里的 `<` 被当标签解析。
+**根因**: 烛照日报把 ~1MB echarts 库整段内联在 `<script>`（@164→1033604），里面含 `<body`、`<div`、大量 `<` 比较符。任何「全文找标签 / 正则定位 / 不剥 script 的 parser」都会被这些字符串带偏。
+**正确做法**:
+- 找真 body：取**第一个 `</script>` 之后**的 `<body`（`h.find("<body", h.find("</script>"))`）；`</body>` 用 `rfind`。
+- 切 top-level 结构前**先 `re.sub(r"<script[\s\S]*?</script>","",body)` 剥掉内联脚本**（`<template>`/`<style>` 同理），否则 echarts JS 里的 `<` 会被 HTMLParser 当开标签、吐出 `<e.length...` 伪节点。
+- 定位各 section 用**带 id 的锚点**（`<h2 id="sec-main"/sec-gap/sec-opp"`）或唯一类名（`.rr-band`/`.p0-strip`），别用会被 CSS/字符串撞中的裸文本。
+**来源** → brain/logs/2026-08-11-手机卡916模块点名与终卡.md
