@@ -22,10 +22,10 @@ type: log
 
 - [ ] **fuxi 冷归档 · 三隔离区期满清算（2026-08-03 挂 · 2026-08-04 迁址完成 · 仅剩期满删除）**：`_to_delete_20260721`（3.3GB·窗口至 **08-20**）· `_to_delete_20260723_tts`（9.5MB·窗口至 **08-22**）· `_隔离_20260724`（12K·随 08-22 一并裁）。**① 迁址已完成（2026-08-04）**：三件 tarball 经 scp 至 `fuxi-station:F:\Mac_Quarantine\`、SHA-256 三串逐位回验一致、cmd 侧解包 move 落位、本地源已删（释放 3.45GB · Doctor 批准）。**② 剩余**：期满（08-20 / 08-22）确认无恢复需求后，fuxi 侧物理删除（`rmdir /s /q F:\Mac_Quarantine\{三件}` · Doctor 终端/授权）。勾掉后按 v3.1 迁归档。
 
-- [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成，此三条是清账时挖出的、当场未做）**
-  ① **`_ingest_九儿_*.py` 护栏抽公共模块**：11 个脚本已按 Doctor 裁定入 `.gitignore`（每日一次性、19~47 KB/个、同族 tracked 数原本就＝0）。**但 `GOTCHAS.md` L235/L240 与 `docs/审计_DB写入口越界清单_20260629.md` 都在逐个点名引用它们、称「已加固：认 `ZZJY_DATABASE_ROOT`、沙箱拒写挂载盘真盘、写后强 integrity_check」——ignore 之后，这句「已加固」将彻底无版本可追溯。** ⇒ 把三段护栏抽成 `tools/_ingest_guard.py`（或同类命名）并入仓，各脚本 import 之。**在抽出来之前，「加固」这件事在仓里是不存在的。**
-  ② **`docs/兑现变更_*.md` 让脚本接管命名**：现有 9 件 untracked 里文件名分裂成两种（6 件 `2026-07-22` 带横杠 / 3 件 `20260723` 不带），标题分裂成三种（「兑现变更」/「兑现状态变更」/「兑现状态变更留痕」），而已 tracked 的 19 件**全部**不带横杠。Doctor 定**原样入仓**（不改名——已发生的历史就是这样，改名会让它看起来比实际整齐）。**根治点是成因不是存量**：全仓 grep `兑现变更_` 在 `.py`/`.sh` 里**零命中** ⇒ 这批是会话里手写落盘、无脚本约束，命名全靠当次记得（G-X103）。对照组 `docs/escalation_shadow_*` 有 `tools/escalation_shadow.py` 生成，9 件命名零漂移。⇒ 由 `closure_engine` 侧或新起小脚本统一产出文件名与标题。
-  ③ **`tools/sync_hot_sectors.py` 接线还是废弃**：104 行，07-30 新建，解决 `hot_sectors` **孤儿表**（全量 grep `INSERT INTO hot_sectors` 零命中；~~库里 36 行停在 2026-05-12~~ 2026-08-08 现核：277 行、max 2026-07-30——07-30 回填 +241 后又 9 天未更，仍零调用）。已按裁定入仓，**但全仓引用数＝0——没有任何脚本或文档调它**。属「已完工待接线」。⇒ 定：接进日更管道，还是标 `_DEPRECATED_`。**入仓只是让它不被遗忘，不等于它在跑。**
+- [ ] **两仓清账的三条尾巴（2026-08-01 挂 · 清账主体已完成 · ⇒ ✅ 三尾全收口 2026-08-13）**
+  ① ~~**`_ingest_九儿_*.py` 护栏抽公共模块**~~ **✅ 已解决（2026-08-13）**：护栏早已抽到 `config.py` 的 `connect_write()` 中央函数（Phase-1 落地），`_ingest_九儿` 现均 `import config` 走中央护栏——加固逻辑在 config.py（tracked 有版本），抽 `_ingest_guard.py` 是重复劳动。GOTCHAS L240 描述已同步更新。
+  ② ~~**`docs/兑现变更_*.md` 让脚本接管命名**~~ **✅ 已做（2026-08-13）**：closure_engine --apply 加自动留痕（读旧 gap_status → 对比收集变更 → 写统一命名 `兑现变更_{YYYYMMDD}.md`），py_compile 通过，下次 --apply 首跑即产零漂移留痕。
+  ③ ~~**`tools/sync_hot_sectors.py` 接线还是废弃**~~ **✅ 已裁废弃（2026-08-13）**：改名 `tools/_DEPRECATED_sync_hot_sectors.py`（可逆）。hot_sectors 表脚本层零读者 + xiaobao_extractor 已写 Top 5（双写者口径冲突），sync 派生全量无人读，废弃。
   **⇒ 2026-08-09 Doctor 目标模式批开专场**（批准开这场 ≠ 批准具体做法；三尾逐条方案另出、propose-then-confirm）。
   依据：`logs/checkpoints/2026-08-01_两仓清账_分类清单.md`
 
