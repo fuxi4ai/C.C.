@@ -14,6 +14,14 @@ type: log
 
 ## 已完成
 
+- [x] **渊图 · kg_ingest 机制修复（2026-08-09 挂）**：③ 机制修复——价格钩子幂等查重已在 `price_query.append_prices`（按 commodity/grade/price_type/as_of/source_file/horizon 去重，L145-149）；防重跑保险丝已在 kg_ingest L1094（没有新的未处理文件即退出）。**⇒ 2026-08-13 标已解决（两机制均已实装，诊断过时 · CC 代记留痕）**
+
+- [x] **白泽大宗 · benefit_relations 银泰黄金→山金国际名称规范化（2026-08-06 挂）**：id=918 name「银泰黄金」→「山金国际」+ ts_code 补 000975.SZ；龙鱼侧 grep 零残留，白泽 archive 历史脚本静态配置留档不动。**⇒ 2026-08-13 白泽专场已做（Doctor 批 5 项全做 · CC 代记留痕）**
+
+- [x] **两仓清账的三条尾巴（2026-08-01 挂）**：①护栏抽公共模块——护栏早已在 config.py connect_write（标已解决）②兑现变更命名——closure_engine --apply 自动留痕统一命名（py_compile 过）③sync_hot_sectors——废弃改名 _DEPRECATED_。**⇒ 2026-08-13 三尾全收口（Doctor 批 · CC 代记留痕）**
+
+- [x] **白泽大宗 · 中际旭创 1.6T 双值核验（2026-08-10 挂）**：benefit_relations 0.4 保留 + raw_json 加口径注记（0.4 vs history latest 0.15，疑分母口径不同，原文不可得待核）。**⇒ 2026-08-13 标口径双留（Doctor 批 · CC 代记留痕）**
+
 - [x] **★ 渊图 · `concept_XinsenBTSubstrateCustomerShare` 畸形节点还原 —— 11 个节点静默丢失 26 天（2026-08-01 挖出 · Doctor 定甲案「本批不动、另开一场」）**
   **病灶**：该节点的 `aliases` 是个 15 元素数组，其中 **12 个是 dict** —— `[3]` 是它自己的 description/properties/data_sources（故顶层 `description=None`），`[4]~[14]` 是 **11 个完整节点**被整个吞了进去。
   **⇒ 2026-08-13 目标模式代勾**（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：canonical 11 节点入图 + 16 边 + 6 update + 帝尔归正并入 company_DRLaser，QA 四查全 0，nodes 3930→3912；剩 QA 第9/10项机制修复挂 TODO「08-08 三轮清洗」③）
