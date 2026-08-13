@@ -14,6 +14,13 @@ type: log
 
 ## 已完成
 
+- [x] **★ 渊图 · `concept_XinsenBTSubstrateCustomerShare` 畸形节点还原 —— 11 个节点静默丢失 26 天（2026-08-01 挖出 · Doctor 定甲案「本批不动、另开一场」）**
+  **病灶**：该节点的 `aliases` 是个 15 元素数组，其中 **12 个是 dict** —— `[3]` 是它自己的 description/properties/data_sources（故顶层 `description=None`），`[4]~[14]` 是 **11 个完整节点**被整个吞了进去。
+  **⇒ 2026-08-13 目标模式代勾**（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：canonical 11 节点入图 + 16 边 + 6 update + 帝尔归正并入 company_DRLaser，QA 四查全 0，nodes 3930→3912；剩 QA 第9/10项机制修复挂 TODO「08-08 三轮清洗」③）
+
+- [x] **渊图 · 幽灵 file 专项审计（2026-08-12 补挂 · 2026-08-13 已执行）**：实测 58 真幽灵（571 引用去重 = 165 web + 25 跨命名空间 + 381 文件引用）。
+  **⇒ 2026-08-13 目标模式代勾**（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：校正 7 file 值 99 处 + 标 unresolvable 49 值 521 处 + 图手术（畸形还原 + 双 id 28 合并墓碑 29），canonical QA 全绿）
+
 - [x] **brain 仓 · 中间 commit `9a531cf` 作者/message 未核（2026-08-11 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-09-目标模式首验与量能回补收口.md` · ⇒ Doctor 2026-08-11 裁「贴命令终端核」）**：沙箱跑不了 git log（硬约束）；若非 Doctor 手笔需查来源。命令见 08-11 /todo 回报；待 Doctor 终端跑完贴回，CC 比对判归属后勾销。
   **⇒ 2026-08-11 目标模式收口（条内授权「CC 比对判归属后勾销」· CC 代记留痕并迁档）**：Doctor 终端 `git log/show 9a531cf` 实跑贴回——作者 **Doctor**（garciajessicadltis7409）、时间 08-09 20:15、主题「ERR-20260719-003 收口(A2双综指) + 甲案修订待裁补挂」；改动 TODO.md(+1)/烛照九阴GOTCHAS.md(8)。A2 双综指重填系 L151 所载真实 08-09 事件、message 连贯对应真实工作，判定为 Doctor 本人正常 commit，无疑问。
 
