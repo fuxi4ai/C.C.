@@ -14,6 +14,10 @@ type: log
 
 ## 已完成
 
+- [x] **`us-close-backfill` 与 `zhuzhao` 双写者职责未理清（2026-08-01 挂）**：**⇒ 2026-08-13 已解决（Doctor 裁「标已解决+补注记」）**——重盘：三写者（zhuzhao 班/launchd marketdata/launchd usclose）全部 INSERT OR IGNORE 幂等 + 直接写、无 /tmp 整库 cp 覆盖，『整片抹掉』机制已不存在；us-close-backfill 班只读看门狗。权属清单注记落 `烛照九阴/GOTCHAS.md` NOTE-20260813-001。两处诊断过时：五表→四表+intl_index、kr_stocks 表已废。
+
+- [x] **金融 · A股首样本记账（2026-07-30 挂）**：「暂停转鹰×事前负×hold」＋事后首日弱格 obs ＋ 混杂标注。**⇒ 已做（07-30 当晚 BT-18 报告「追记 A股首样本记账·记录但 n 不增·Doctor 批」L108-118 + 07-30 日志①，含空袭带弹混杂标注）；08-03 定「补记」系记忆漂移，实际当晚已记 · CC 2026-08-13 重盘认定**
+
 - [x] **渊图 · kg_ingest 机制修复（2026-08-09 挂）**：③ 机制修复——价格钩子幂等查重已在 `price_query.append_prices`（按 commodity/grade/price_type/as_of/source_file/horizon 去重，L145-149）；防重跑保险丝已在 kg_ingest L1094（没有新的未处理文件即退出）。**⇒ 2026-08-13 标已解决（两机制均已实装，诊断过时 · CC 代记留痕）**
 
 - [x] **白泽大宗 · benefit_relations 银泰黄金→山金国际名称规范化（2026-08-06 挂）**：id=918 name「银泰黄金」→「山金国际」+ ts_code 补 000975.SZ；龙鱼侧 grep 零残留，白泽 archive 历史脚本静态配置留档不动。**⇒ 2026-08-13 白泽专场已做（Doctor 批 5 项全做 · CC 代记留痕）**
