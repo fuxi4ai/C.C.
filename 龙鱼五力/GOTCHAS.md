@@ -104,3 +104,12 @@ project: 龙鱼五力
 **优先级**: 🟢 低
 **内容**: 胜宏科技H(02476.HK)/智谱(02513.HK) 走 `px_hkd` 手录；半导体设备ETF国泰(159516) 走 `px_manual` 手录（2026-08-10 机制落地：board_data 节点加 px_manual、前端 computeDerived 回退、编辑器显示「当日价/净值」输入）。三者无本地自动行情，**价靠 Doctor 日常手录维护、不自动日更**。任何未来「无本地行情」的非港股标的通用 px_manual 道。
 **来源** → logs/2026-08-10-龙鱼持仓板并入个股库与持仓迭代.md
+
+---
+
+## [NOTE-20260813-001] five_forces_engine_v3 REPORT_DIR 沙箱路径错位
+**状态**: 🔴 待修（沙箱跑引擎时数据包存错位置）
+**优先级**: 🟡 中
+**内容**: 引擎 `REPORT_DIR` 用 `os.path.expanduser('~/Documents/...')`，在 Cowork 沙箱里 `~` = `/sessions/{id}`，数据包落到沙箱本地 `/sessions/{id}/Documents/...`（会话结束即丢），而非挂载盘 `/sessions/{id}/mnt/Documents/...`。2026-08-13 重跑天孚/仕佳时踩到，靠手动 cp 落库补救。
+**修复方向**: 跑引擎时显式 `export FF_REPORT_DIR=<挂载盘路径>`，或引擎 REPORT_DIR 改用挂载盘探测（同 G-X88 平铺挂载族）。
+**来源** → logs/2026-08-13-大活专项清理马拉松.md
