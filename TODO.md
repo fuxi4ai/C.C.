@@ -21,7 +21,7 @@ type: log
 
 - [ ] **DVA · 孤儿字幕②（2026-07-24 挂 · 收窄 2026-08-14 · ⇒ VV 08-14 剩尾 4 件完成 3 件）**：single_one 首跑 ✓（BOM 修复生效·取景框视频转写成功·退出码 0·无残留锁）；AIGC秋雅 Downloaded 落位 ✓；滞留进程安全终止 ✓（0.3s CPU/零网络/零写入僵死·留痕 closure.log）。**剩 1 件**：包外孤儿 2 目录裁（TechScopeLab-科境坊 FCC 反转 1 篇 + 机构调研日记 光通信梳理 1 篇——投资向但 aweme 表无行无 sec_uid，待 Doctor 裁：归档+正文研判 / 归档 / seed 搜作者）。
 
-- [ ] **白泽观星 · CN 腿首跑 + Fed 腿日更入调度（2026-08-14 自 BT-19 条拆出）**：CN 腿 tushare --dry 对键→取数（Doctor 终端件）；Fed 腿 fetch_fed_inputs_fred.py 日更入调度（消费 `白泽观星/data/processed/bt19_fed_pit_36meetings.{json,csv}` 序列库）；烛照九阴 fomc_note 对接待 Fed 腿稳定后。
+- [ ] **白泽观星 · CN 腿首跑（2026-08-14 自 BT-19 条拆出 · Fed 腿日更 08-14 已入调度 guanxing-fed-daily）**：CN 腿 tushare --dry 对键→取数（Doctor 终端件）；烛照九阴 fomc_note 对接待 Fed 腿稳定后。
 
 - [ ] **V.V. ferry · Fable 5 API 密钥/预算（2026-08-03 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-03-哨兵班400风控二分定位.md`，承 08-02/08-03 场未变）**：Doctor 动作余项。
 
