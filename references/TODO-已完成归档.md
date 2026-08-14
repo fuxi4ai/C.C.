@@ -14,6 +14,23 @@ type: log
 
 ## 已完成
 
+- [x] **跨项目 · `.bak_audit20260728` 另 10 个散在 5 处（2026-07-30 挂 · ⇒ ✅ 已清（Doctor 终端）· 2026-07-31 补挂 TODO · 2026-08-03 /todo 重取计数）**：风险日报 ×1 / 白泽大宗 ×3 / brain ×3 / Market-Data ×1 / 烛照九阴 archived ×2。**⇒ ✅ 最终收口（2026-08-14 问答板 Q4A 裁删 · Doctor 终端 rm 清掉实余 5 个〔沙箱 find 证据正确〕；贴回的 transcript 系第二遍 rm 的 No such file 输出 · 证据：Doctor 确认「贴上来之前 rm 跑了两遍」+ 沙箱复查五路径已消失）**
+
+
+- [x] **EAL · 08-12 台账 2-L p≈50% 订正（2026-08-14 目标模式补挂）**：会前保险概率 p≈50%（检索快照）vs CME FedWatch 官方 ~34.4%。**⇒ ✅ 已执行（Doctor 2026-08-14 问答板 Q8A 裁「加双口径注记」· CC 代记留痕 · 证据：事件归因台账.md 2-L 段已落「双口径注记 2026-08-14 Doctor 裁」——注册时点以检索快照为准、官方值作参照并存）**
+
+
+- [x] **金融 · macro_prediction.db 择一为源（2026-08-08 挂）**：v3（macro_predictions_v3）是白泽观星引擎 engine_cn.py 写的新版口径（L662 建表），v1 是旧表；消费方=白泽观星。**⇒ ✅ 已执行（Doctor 终端 v1 改名 deprecated）· 收口（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：macro_prediction.db 现表清单= _deprecated_macro_predictions/_deprecated_macro_indicators + macro_predictions_v3/macro_indicators_v3，08-14 现核）**
+
+- [x] **白泽大宗 · P2 缓项包（2026-08-10 挂）**：NULL-source 20 行回填「人工配置」+ data_source 归一 + config_index 补 benefit_relations（08-13 已做）；剩 ingest_meta rows_written 语义 + macro v1/v3 注记 + data_hash 隐患。**⇒ ✅ 全收口（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：incremental_updater.py 守卫生在盘〔grep「已退役（2026-08-13）」命中〕+ GOTCHAS 死链清单条目已补加固段 + checkpoint 2026-08-13_白泽P2剩尾收口.md 在盘；data_hash 刻意不重算〔重算=回混放大器〕）**
+
+- [x] **渊图 · 兴森「广州兴森 2025 收入 2689.99 万/净亏 5.33 亿」两数待核（2026-08-12 由 /todo 漏挂对账补挂）**：**⇒ ✅ tushare 核证（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：行业知识图谱_完整数据库.json 含注记「广州兴森收入 2689.99 万」确证有误〔IC 基板分部 16.70 亿〕·「净亏 5.33 亿」量级合理，08-14 现核）**
+
+- [x] **金融 · 9 月加息概率实时数值源未核（2026-08-12 挂）**：**⇒ ✅ 已核（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：Projects/风险日报/fomc_market_exp.json 在盘〔hold 65.6% / 加 25bp 34.4%〕，08-14 现核；Kalshi 26SEP 订单簿全空=无定价已查明）**
+
+- [x] **渊图 · 云锗「InP 业务贡献多少业绩」未核财报（2026-08-13 挂）**：**⇒ ✅ tushare 核证（Doctor 2026-08-09 目标模式授权代勾 · CC 代记留痕 · 证据：08-13 大活日志载核证结果〔化合物半导体材料分部 2025 收入 1.38 亿/占 12.9%/分部利润 3217 万·「5.7-8.55 亿」系远期长单〕，08-14 现核）**
+
+
 - [x] **`us-close-backfill` 与 `zhuzhao` 双写者职责未理清（2026-08-01 挂）**：**⇒ 2026-08-13 已解决（Doctor 裁「标已解决+补注记」）**——重盘：三写者（zhuzhao 班/launchd marketdata/launchd usclose）全部 INSERT OR IGNORE 幂等 + 直接写、无 /tmp 整库 cp 覆盖，『整片抹掉』机制已不存在；us-close-backfill 班只读看门狗。权属清单注记落 `烛照九阴/GOTCHAS.md` NOTE-20260813-001。两处诊断过时：五表→四表+intl_index、kr_stocks 表已废。
 
 - [x] **金融 · A股首样本记账（2026-07-30 挂）**：「暂停转鹰×事前负×hold」＋事后首日弱格 obs ＋ 混杂标注。**⇒ 已做（07-30 当晚 BT-18 报告「追记 A股首样本记账·记录但 n 不增·Doctor 批」L108-118 + 07-30 日志①，含空袭带弹混杂标注）；08-03 定「补记」系记忆漂移，实际当晚已记 · CC 2026-08-13 重盘认定**

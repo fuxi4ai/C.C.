@@ -250,6 +250,26 @@ def scan_cron():
         return {"entries": None, "note": f"查不到：{type(e).__name__}"}
 
 
+# ───────────────────── 面 ⑤ 挂载检查（2026-08-13 看门狗挂载治理）─────────────
+MOUNT_MARKERS = [
+    ("Database", ["Database/Market-Data", "Database/龙鱼-标的分析库", "Database/.env"]),
+    ("烛照九阴", ["Claude/Projects/Financial/烛照九阴/config.py"]),
+    ("剑酒青丘", ["Claude/Projects/Financial/剑酒青丘/strategies", "Claude/Projects/Financial/剑酒青丘/docs"]),
+    ("白泽大宗", ["Claude/Projects/Financial/白泽大宗/configs"]),
+    ("brain", ["Claude/brain/TODO.md"]),
+]
+
+def scan_mounts():
+    """检查定时班关键目录是否挂载。挂载是会话级、非任务级固化（2026-08-13 治理结论），
+    缺挂载则定时班阻塞或静默失败。探测挂载根：$HOME/mnt/Documents/ 或 /sessions/*/mnt/Documents/。"""
+    import glob as _g
+    roots = [HOME / "mnt" / "Documents"]
+    roots += [Path(p) / "Documents" for p in _g.glob("/sessions/*/mnt")]
+    found = {}
+    for name, markers in MOUNT_MARKERS:
+        found[name] = any((r / m).exists() for r in roots for m in markers)
+    return found
+
 # ───────────────────── 异常检测 ─────────────────────
 
 def mirror_live_tree():
@@ -405,6 +425,7 @@ def main():
         "documents_dead_tree": scan_dead(ids),
         "launchd": scan_launchd(),
         "crontab": scan_cron(),
+        "mounts": scan_mounts(),
     }
 
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
@@ -468,6 +489,14 @@ def main():
         for e in cr["entries"]:
             L.append(f"- `{e}`")
 
+    mt = snap["mounts"]
+    L.append(f"\n## 面⑤ 挂载检查（2026-08-13 看门狗挂载治理）\n")
+    missing = [k for k, ok in mt.items() if not ok]
+    if not missing:
+        L.append("✅ 关键目录全部挂载（Database/烛照九阴/剑酒青丘/白泽大宗/brain）")
+    else:
+        L.append(f"⚠ **缺挂载 {len(missing)} 个**：{'、'.join(missing)}——定时班跑前需补挂，否则阻塞/静默失败")
+
     OUT_MD.write_text("\n".join(L) + "\n", encoding="utf-8")
 
     # ── 输出契约：正常静默、异常出声 ──
@@ -498,6 +527,8 @@ def main():
           + (f"（内容分叉 {len(d['content_diverged'])}）" if d.get("content_diverged") else ""))
     print(f"面③ launchd      : 源 {len(lg['sources'])} · 装机 {len(lg['installed'])}"
           + (f" · ⚠ 一致性问题 {len(lg['consistency'])} 处" if lg["consistency"] else " · ✅ 一致"))
+    _mt_missing = [k for k, ok in snap["mounts"].items() if not ok]
+    print(f"面⑤ 挂载          : {'⚠ 缺 ' + '、'.join(_mt_missing) if _mt_missing else '✅ 关键目录全挂载'}")
     print(f"面④ crontab      : {cr['note']}")
     if lg["consistency"]:
         print("\n⚠ launchd 源↔装机不一致（＝死树分叉的 launchd 版）：")
