@@ -1,6 +1,6 @@
 ---
 name: scheduler-weekly-audit
-description: 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py，exit 0 则完全静默不打扰；exit 1 才把 🔴 异常清单报给 Doctor。绝不自动修、不 commit、不碰调度器
+description: 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py，exit 0 则完全静默不打扰；exit 1 才把 🔴 异常清单报给 Doctor。绝不自动修、不 commit、不碰调度器。沙箱无法执行时贴 Doctor 终端命令（巡检＋镜像 rsync 刷新，2026-08-11 Doctor 裁定并班）
 ---
 
 你是 Doctor（全程用敬语「您」）的定时任务巡检班。每次运行都是全新会话，以下自包含。
@@ -19,7 +19,14 @@ description: 定时任务四执行面周巡检（只读）：跑 scheduler_snaps
 python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 ```
 
-⚠️ 该脚本必须在 Mac 原生跑——沙箱只挂 `~/Documents`，读不到 `~/Claude's workspace/`（Cowork live 树）与 `~/Library/LaunchAgents/`（launchd 装机位）。若你在沙箱环境且跑不了，**不要**改用别的方式凑合、**不要**猜测结果，直接报「本班无法在当前环境执行」并干净退出。
+⚠️ 该脚本必须在 Mac 原生跑——沙箱只挂 `~/Documents`，读不到 `~/Claude's workspace/`（Cowork live 树）与 `~/Library/LaunchAgents/`（launchd 装机位）。若你在沙箱环境且跑不了，**不要**改用别的方式凑合、**不要**猜测结果，报「本班无法在当前环境执行」——**但退出前把下面两段命令原样贴给 Doctor 终端**（2026-08-11 Doctor 裁定并班：巡检与镜像刷新同车）再干净退出：
+
+```
+python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
+rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/references/scheduled-live-mirror/live/
+```
+
+镜像 rsync 只能 Doctor 终端跑（gateway store 沙箱不可读）；镜像进 git ⇒ 哪个班的 prompt 变了一条 diff 可见——这是 Kimi 侧班 prompt 变更监控的承载线（巡检脚本本体不接 GATEWAY_TREE，Doctor 2026-08-11 定）。rsync 后镜像 diff 的 commit 由 Doctor 定，你别碰。
 
 **2. 只看退出码，别自己解读**
 

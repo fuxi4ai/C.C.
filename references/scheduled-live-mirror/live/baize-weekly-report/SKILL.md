@@ -1,6 +1,6 @@
 ---
 name: baize-weekly-report
-description: 白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周日01:00，留足本地cron缓冲）
+description: 白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周更）
 ---
 
 ---

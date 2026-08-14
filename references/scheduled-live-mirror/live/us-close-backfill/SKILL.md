@@ -120,6 +120,13 @@ EOF
 launchctl kickstart -k gui/$(id -u)/com.zhuzhao.usclose
 sleep 60; cat ~/Documents/Claude/Projects/Financial/烛照九阴/logs/mac_usclose_$(date +%Y%m%d).log
 
+# kickstart 报 "Could not find service" → job 未加载，先重装再触发
+# （plist 已改实体拷贝、勿改回软链——2026-08-12 软链曾致失载停摆）
+cp ~/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.usclose.plist \
+   ~/Library/LaunchAgents/com.zhuzhao.usclose.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.zhuzhao.usclose.plist
+launchctl kickstart -k gui/$(id -u)/com.zhuzhao.usclose
+
 # 确认 job 还在不在（被 bootout 过就没了）
 launchctl print gui/$(id -u)/com.zhuzhao.usclose | head -20
 

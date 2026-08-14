@@ -1,6 +1,6 @@
 ---
 name: brain-monthly-checkup
-description: 每月 1 号 09:00 跑 meditation 心灵与记忆健康自检：折叠上月 logs + 记忆指标 + 数灵人格层 + 警告
+description: 每月初跑 meditation 心灵与记忆健康自检：折叠上月 logs + 记忆指标 + 数灵人格层 + 警告
 ---
 
 执行 Doctor 的 brain 月度自检（meditation：心灵 + 记忆健康）。
