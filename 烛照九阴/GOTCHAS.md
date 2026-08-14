@@ -278,3 +278,25 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 - 切 top-level 结构前**先 `re.sub(r"<script[\s\S]*?</script>","",body)` 剥掉内联脚本**（`<template>`/`<style>` 同理），否则 echarts JS 里的 `<` 会被 HTMLParser 当开标签、吐出 `<e.length...` 伪节点。
 - 定位各 section 用**带 id 的锚点**（`<h2 id="sec-main"/sec-gap/sec-opp"`）或唯一类名（`.rr-band`/`.p0-strip`），别用会被 CSS/字符串撞中的裸文本。
 **来源** → brain/logs/2026-08-11-手机卡916模块点名与终卡.md
+
+## [ERR-20260813-001] Safari 不吃 `display:grid`：手机卡壳内可见 grid 容器须全转 flex
+**状态**: ✅ 已定性（2026-08-13 手机卡打磨实测三连踩：GAP 标签列 → row2 图表 → 四联条依次在 Safari 上下堆叠；同文件 Chrome headless 渲染正常）
+**优先级**: 🔴 高（手机卡在 Safari 是第一查看环境；任何新增 grid 布局都会重蹈）
+**触发场景**: 手机卡壳（`#zzcard` 内嵌报告 + zz-card-css）里用 `display:grid` 的容器——`.zzgrid .zzrow`（GAP 左列）、`.row2`（情绪图×容量表）、`.snapshot-band`（四联条）、`.liquidity-grid`（成交额×满载）——在 Safari 全部失效为普通流/行内，布局上下堆叠；同文件 Chrome 无头渲染完全正常。缓存已排除（换文件名重开同样复现）。
+**根因**: 未深挖 WebKit 具体缺陷（规则字节干净、括号配平、Safari 26 理应支持 grid）；从工程角度判为「本环境 Safari 对 body 内嵌 `<style>` 中 grid 规则的选择性失效」。
+**正确做法**:
+- 壳内**可见布局容器一律 flex**：`.row2` 用定宽百分比（`width:calc(54% - 6px)` 等比，勿依赖 flex-grow 让图表固有宽度干扰）；左列 gutter 用 `flex:0 0 {px}` 固定宽 + `justify-content:center`。
+- 改完必验双端：Chrome 无头渲染 + Safari 真机刷新（本坑 Chrome 全绿、Safari 全崩，只看一端必漏）。
+- 隐藏模块（`.zzh{display:none}`）内的 grid 不必动——不渲染不害事。
+**来源** → brain/logs/2026-08-13-手机卡终卡打磨与兑现闸门回测落地.md
+
+## [ERR-20260813-002] `<b>` 标签的 `font-weight:bolder` 是**相对值**：父级提重后子级漂移一档
+**状态**: ✅ 已定性（2026-08-13 手机卡加粗后「情绪周期与市场快照」h2 与「满载」b 明显不同重）
+**优先级**: 🟡 中（凡给容器整体加粗/改字重就会触发）
+**触发场景**: body `font-weight` 400→700 后，「满载」等 `<b>` 文本从 Bold 变成 Heavy（900），而显式写 700 的 h2 停在 Bold——两处视觉明显不同重，Doctor 报「字体变了」。查规则链条：h2 与 b 的 font-family 完全同栈，唯一差异在字重。
+**根因**: 浏览器 UA 默认样式里 `<b>,<strong>` 是 `font-weight:bolder`（**相对父级**的档位），不是绝对 bold。父级 400 时 b=700；父级 700 时 b=900。改容器字重不动 `<b>`，它就跟着漂。
+**正确做法**:
+- 要让某元素与 `<b>` 视觉同重，按其**实际解析值**显式对齐（本例 h2 700→900），别写「和 b 一样 bold」。
+- 容器加粗时，逐元素核对 `<b>/<strong>` 是否漂移；要钉死就用显式数值（700/900）。
+- 与 ERR-20260731-001 同族：**相对语义 vs 绝对语义**——bolder 是相对、bold 是绝对，命名像、行为不同。
+**来源** → brain/logs/2026-08-13-手机卡终卡打磨与兑现闸门回测落地.md
