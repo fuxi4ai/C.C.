@@ -43,6 +43,19 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [NOTE-20260814-001] 手工 patch update_nodes 的 `updated_at` 必须放条目顶层（放 properties 里会被静默 kept_base）
+
+**状态**: ✅ 已实证修复 **优先级**: 🟡 中
+
+**触发**: 2026-08-14 NV CPO 量产 patch 首跑 promote，Merge Diff 报 `Nodes Updated (2) (kept_base)`——props 一条没落地、仅 data_sources 追加，且脚本零报错。复读 canonical 才发现 props 未变。
+
+**真因**: `kg_merge._merge_node` 的时戳闸读 `patch_node.get("updated_at")`（**顶层**字段）。DUV 旧样例（`_v3_20260728_国产DUV量产_manual.json`）把 `updated_at` 放进了 properties → 顶层解析为空 → patch_ts=datetime.min < base_ts → 静默走 kept_base 分支。当时无人复读 props，该 patch 的 update 实际从未生效（历史副作用未知，属 ERR-20260718-002 族「宣称完成未核」）。
+
+**规则**:
+- 手工 patch 的 update_nodes 条目：`updated_at` 放**顶层**（与 id 同级），properties 只放事实 props。
+- patch 落盘前用真函数预检：`from kg_merge import _merge_node; _merge_node(base, u)[1]` 必须 == `"took_patch"`；或 promote 后看 Merge Diff 的 `(kept_base/took_patch)` 标注，kept_base 即未生效。
+- 首跑 kept_base 不丢数据（data_sources 已并、边已入、边幂等），修 patch 后二跑即补齐，无需回滚；`_merge_data_sources` 按 (file, reference) 去重，重跑无重复追加。
+
 ## [NOTE-20260801-001] 接入 Kimi K3 作审查腿：四个坑与一条真相源（`/v1/models` ＞ 任何文档）
 
 **状态**: ✅ 已沉淀（2026-08-08 复盘补标 · 原标 🟢 已跑通 2026-08-01 · 凭证在 `Database/.env` 的 `KIMI_*`）
