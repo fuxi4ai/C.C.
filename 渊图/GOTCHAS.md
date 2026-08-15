@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-08-08
+updated: 2026-08-14
 status: active
 type: resource
 project: 渊图
@@ -463,3 +463,9 @@ project: 渊图
 - 残留锁处理：确认无真 git 进程后 `rm -f .git/index.lock`（本次锁为 0 字节、ps 无 git 进程，安全删除）。
 
 **追加二（同日 · 交付格式教训）**: CC 把「拟写入文件的 Markdown 正文」放进代码块给 Doctor 过目，Doctor 误当命令粘进终端，触发一串 `command not found`（无副作用）。**规则：代码块只放可执行命令；给 Doctor 审阅的文档正文用引用块或普通段落呈现，并显式标注「这是文件内容，不是命令」。** 更根本的是——**文件内容应由 CC 自己写入，不该让 Doctor 手工搬运**。
+
+## [ERR-20260814-001] xlsx recalc.py 沙箱超时 → soffice convert 等效重算绕过
+**状态**: ✅ 已解决 **优先级**: 🟡 中
+**触发**: xlsx skill 生成带公式工作簿（CPO 评分表 v2，52 公式）后，沙箱跑 recalc.py 验证公式缓存——profile 创建环节反复超时（29s/119s/100s/180s 四次全断），pkill soffice 无效，重建 xlsx 后复现。LibreOffice 首次启动 profile 初始化在沙箱里卡死。
+**解决方案**: 绕过 recalc.py——`soffice --headless --convert-to 'xlsx:Calc MS Excel 2007 XML' 目标.xlsx`（LibreOffice 加载时自动重算公式并写缓存，等效重算）；python openpyxl data_only 读缓存与手算对照，全对后 cp 覆盖原文件；再 openpyxl 双视图扫描确认 52 公式保留、0 错误值。
+**预防措施**: ①沙箱验证带公式 xlsx 优先走 soffice convert 路径，recalc.py 只作备选；②convert 写回会**去掉无空格 sheet 名的引号**（='附注'!$B$2 → =附注!$B$2），跨表公式完整性检测勿用精确前缀匹配（会误报「跨表公式=0」），直接抽查公式单元格内容即可。
