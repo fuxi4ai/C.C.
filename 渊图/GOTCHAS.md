@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-08-14
+updated: 2026-08-15
 status: active
 type: resource
 project: 渊图
@@ -42,6 +42,21 @@ project: 渊图
 ---
 
 <!-- 在下方追加新条目 -->
+
+## [NOTE-20260815-001] batch LLM 缩写覆盖既有富 desc——QA 第 10 项候选（desc 不缩减检测）
+
+**状态**: ✅ 本批已修（15 节点恢复/合并 · 2026-08-15）**优先级**: 🟡 中
+
+**触发**: 08-15 帕米尔 15 篇 batch 后沙箱 QA，抽查沃尔德篇「更新节点 120」（异常大）时发现 `company_Apple` desc 228→23 字。全量扫出 **15 个节点** desc 被缩写覆盖（阈值：缩短 >10% 且 >30 字），最重的几个：`company_Apple`（韬定律 N2 客户身份/UALink 创始全丢）、`concept_HumanoidRobotVisionPerception`（三条技术路线细节丢）、`concept_TauLawHardwareImplementation`（器件/封装/系统三层体系丢成一句话）。另有 `concept_AIInfraHardwareDemandPeak2027` 的 props 被清空成 {}。
+
+**真因**: LLM 对 update 节点写缩写 desc，`kg_merge` 的顶层 description 是整替换（NOTE-20260626-001 的深合并只保护 properties/_meta）；**8+1 项校验（悬挂/自环/重复/非法 type/大小写/半空/超集/数组元素）没有一项查 desc 缩减**——半空检查只查「desc 为空」，不查「变短」。
+
+**处置**: 12 个纯退化恢复 base desc；3 个新 desc 带增量信息合并保留（三星天津 2026 底 +20% 产能、三环工程能力/成本良率、MLCC 转换比 4 倍→迭代后 5-6 倍）；props 恢复 1。
+
+**预防**:
+- 沙箱 QA 加**第 10 项「desc 不缩减断言」**：patch 后对比 base，`len(desc) < 90% × base 且差额 >30 字` 即报（本批正是用这个阈值全量扫出的，零误报 15 全中）；
+- 或 kg_merge 对 description 做「patch 短于 base 则保 base」保护——触入库主链，另议；
+- 与 ERR-20260719-001 同族：LLM 逐节点自由裁量、部分对部分错，混合污染难查。本批沃尔德篇 120 个 update 里只有少数出问题，若无阈值扫描极易整批漏过。
 
 ## [NOTE-20260814-001] 手工 patch update_nodes 的 `updated_at` 必须放条目顶层（放 properties 里会被静默 kept_base）
 
