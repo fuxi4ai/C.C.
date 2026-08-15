@@ -43,9 +43,9 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
-## [NOTE-20260815-001] batch LLM 缩写覆盖既有富 desc——QA 第 10 项候选（desc 不缩减检测）
+## [NOTE-20260815-001] batch LLM 缩写覆盖既有富 desc——QA 第 11 项已固化（`rules/check_desc_shrink.py`）
 
-**状态**: ✅ 本批已修（15 节点恢复/合并 · 2026-08-15）**优先级**: 🟡 中
+**状态**: ✅ 已修 + 已配检测脚本（2026-08-15 · 15 节点恢复/合并；`rules/check_desc_shrink.py` 落仓并自测通过——对未修 _v2 报出 15 处、对 canonical 报 0）**优先级**: 🟡 中
 
 **触发**: 08-15 帕米尔 15 篇 batch 后沙箱 QA，抽查沃尔德篇「更新节点 120」（异常大）时发现 `company_Apple` desc 228→23 字。全量扫出 **15 个节点** desc 被缩写覆盖（阈值：缩短 >10% 且 >30 字），最重的几个：`company_Apple`（韬定律 N2 客户身份/UALink 创始全丢）、`concept_HumanoidRobotVisionPerception`（三条技术路线细节丢）、`concept_TauLawHardwareImplementation`（器件/封装/系统三层体系丢成一句话）。另有 `concept_AIInfraHardwareDemandPeak2027` 的 props 被清空成 {}。
 
@@ -54,7 +54,8 @@ project: 渊图
 **处置**: 12 个纯退化恢复 base desc；3 个新 desc 带增量信息合并保留（三星天津 2026 底 +20% 产能、三环工程能力/成本良率、MLCC 转换比 4 倍→迭代后 5-6 倍）；props 恢复 1。
 
 **预防**:
-- 沙箱 QA 加**第 10 项「desc 不缩减断言」**：patch 后对比 base，`len(desc) < 90% × base 且差额 >30 字` 即报（本批正是用这个阈值全量扫出的，零误报 15 全中）；
+- **已固化**：`rules/check_desc_shrink.py`（QA 第 11 项「desc 不缩减断言」）——对比 base 与 candidate，`len(desc) < 90% × base 且差额 >30 字` 即报，退出码 1（2026-08-15 自测：对未修 _v2 准确报出本批 15 处、对 canonical 报 0）；
+- 编号注记：质检门第 10 项已被 08-15 三轮专场占用（file 存在性断言），本条检测为第 11 项；
 - 或 kg_merge 对 description 做「patch 短于 base 则保 base」保护——触入库主链，另议；
 - 与 ERR-20260719-001 同族：LLM 逐节点自由裁量、部分对部分错，混合污染难查。本批沃尔德篇 120 个 update 里只有少数出问题，若无阈值扫描极易整批漏过。
 
