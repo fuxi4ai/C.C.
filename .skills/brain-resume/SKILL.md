@@ -53,6 +53,19 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 
 读 `~/Documents/Claude/brain/TODO.md` 的"待办"段。
 
+### Step 3.5 · git 账核实（日志或 TODO 出现 git 待办时必做 · 堵「已跑当未跑」盲区）
+
+Doctor 常在会话后自行把贴过的 git 命令跑掉、且不一定回来说（2026-08-15 实证：08-14 三场日志全写「git 待 Doctor 终端」，实际五仓已全部 commit）。因此**凡 Step 1 日志的遗留待办或 Step 3 TODO 里出现 git commit / push / 「待 Doctor 终端」类条目，先核实再开口**：
+
+```bash
+python3 ~/Documents/Claude/brain/.skills/brain-resume/gitcheck.py <repo1> [repo2 ...]
+```
+
+- **仓清单按日志项目筛**：brain `~/Documents/Claude/brain`；渊图 `~/Documents/Database/行业研究`；白泽观星 `~/Documents/Claude/Projects/Financial/白泽观星`；剑酒青丘回测报告 `~/Documents/Claude/Projects/Financial/剑酒青丘`；剑酒青丘数据 `~/Documents/Database/剑酒青丘`；白泽大宗 `~/Documents/Claude/Projects/Financial/白泽大宗`；风险日报（本地-only·无远端，脚本自动跳过 push 判定）。沙箱环境先按挂载映射翻译路径。
+- 脚本**只读 .git/ 纯文本**（index/HEAD/对象库/logs/HEAD/refs），绝不跑任何 git 子命令——沙箱硬约束，Mac 原生也可跑（纯标准库）。
+- **结果处置**：该仓 `staged-uncommitted: none` 且 `worktree modified: 0` → 视为已同步，摘要里**不再提出**该 git 待办；TODO 中对应条目的 git 子项**直接勾掉**（Doctor 2026-08-15 授权：已同步即勾，不必再问）——用 Edit 把状态行 `- [ ]` 改 `- [x]`，行尾留痕「已核实（gitcheck.py · YYYY-MM-DD）」，不整条删内容。有改动或未 push → **直接贴整合命令**（多仓合并一个 code block 分段连发），不写「待 Doctor 终端」空话。
+- 说「已核实已提交」前答两问：①脚本真跑过没有；②内容级比对覆盖了 tracked 文件没有——mtime 探测不算数（挂载层 sub-second mtime 与 index 整秒缓存必误报，脚本内已做内容哈希兜底）。隐患：pack 里的 delta 对象脚本会拒读（commit/tree 极少 delta，实测五仓 HEAD 全可读）。
+
 ### Step 4 · 输出结构化摘要
 
 ```
@@ -80,3 +93,4 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 - 所有路径用绝对 `~/Documents/Claude/brain/...`
 - Step 0 全局偏好每次起手必载，不因"上次读过"跳过（会话间不延续）
 - resume 起手第一轮默认开声（语音链路可用时）；不可用静默跳过
+- Step 3.5 git 核实是「察觉到 git 待办」的前置条件：没核实不得把 git 待办当残留提给 Doctor；核实工具=skill 目录内 `gitcheck.py`（只读 .git 纯文本，禁 git 子命令）。已同步 → 不再提出 + 直接勾 TODO 对应条目（Edit 改状态行并留痕，Doctor 授权）
