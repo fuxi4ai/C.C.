@@ -25,6 +25,10 @@
            2026-08-08（Doctor 批 · 任务#41）口径 v0.1 落地后报复夜/退款进图：FACTORS 加两条——报复夜赭 #b05a2a
            实线、退款因子浅赭 #d99a6c 虚线（同族异深编码「退款＝报复夜部分回吐」，避宏观金 #b8912c 撞色）；
            图例/mech-note/asof 同步 v0.1（油腿 15m 分时窗、报复夜金腿降级参考、删「零命中」旧述）。
+           2026-08-15（Doctor 裁「两阶段都做」· PRD 战争因子两阶段）geo·战争冲击进图：FACTORS 加一条——战争
+           炭褐 #6b5f4e 实线 1.8px·铺域（domain）＝3/3→4/7 战争段（事后 sizing·非记账·只展示·不进 Σ）；
+           事件日单点（4/8 停火 +2.55、6/15 MOU +1.70、7/8 宣停火 +2.55、7/13 照会 −0.48、7/14 封锁 −0.31）。
+           数据源＝台账 2-O（export_mech_data.py war 键）；与报复夜/退款/降温已记因子同日不重复计。
            以上均为本正源已登记的受控变更，非值守班擅改。
 
   组装方式：把下面【CSS 段】的 <style> 内容并入 artifact 的 <style>；
@@ -58,7 +62,7 @@
 </div><!-- /pane-week -->
 
 <div class="tabpane" id="pane-month" hidden>
-  <div class="mech-note">机械回测 v0.1 · 非记账 · 只展示不进方程：量级＝注册带/观察锚中值（常数化）；宏观驱动不分超预期/预期内；油腿 06-11 起用 15m 分时窗（报复夜看 09:30→23:45 油平、降温看 RTH/盘前/脉冲三窗）、此前回退日线代理；报复夜金腿降级为参考（GC=F 展期污染）；证伪退款·杂质判不了、入残差；AI 缺口为 SMH−SPY 跨截面相对读数、不入本图恒等式。<strong>07-28 起以台账注册账为准（见近一周）。</strong></div>
+  <div class="mech-note">机械回测 v0.1 · 非记账 · 只展示不进方程：量级＝注册带/观察锚中值（常数化）；宏观驱动不分超预期/预期内；油腿 06-11 起用 15m 分时窗（报复夜看 09:30→23:45 油平、降温看 RTH/盘前/脉冲三窗）、此前回退日线代理；报复夜金腿降级为参考（GC=F 展期污染）；证伪退款·杂质判不了、入残差；AI 缺口为 SMH−SPY 跨截面相对读数、不入本图恒等式。<strong>war 域/线（v1.5）＝geo·战争冲击事后 sizing·非记账·只展示不进 Σ</strong>（3/3→4/7 战争段每日实际为域、4/8 停火＋6/15 MOU＋7/8 宣停火＋7/13 照会＋7/14 封锁为事件单点；源＝台账 2-O；与报复夜/退款/降温已记同日不重复计）。<strong>07-28 起以台账注册账为准（见近一周）。</strong></div>
   <figure><svg id="svg-month" viewBox="0 0 960 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="机械回测累计贡献曲线 · 近一月"></svg><div class="legend">
   <span><i class="sw" style="border-color:#3a3126;border-top-width:3.4px"></i>墨线独粗＝实际指数（SPY 日线）</span>
   <span><i class="sw" style="border-color:#9a8f7c;border-top-style:dashed"></i>灰虚＝残差（兜底）</span>
@@ -67,13 +71,14 @@
   <span><i class="sw" style="border-color:#b05a2a"></i>赭＝地缘·报复夜（预支型）</span>
   <span><i class="sw" style="border-color:#d99a6c;border-top-style:dashed"></i>浅赭虚＝退款因子（回吐）</span>
   <span><i class="swbox" style="background:#2e7d6e;opacity:.35"></i>青碧域＝geo·降温兑现（结构性持续）</span>
+  <span><i class="swbox" style="background:#6b5f4e;opacity:.25"></i>炭褐域＝geo·战争冲击（事后 sizing·只展示·v1.5）</span>
   <span><i class="sw" style="border-color:#b8912c"></i>金＝宏观驱动@数据落地</span>
   <span><i class="sw" style="border-color:#d9cdb2"></i>金竖线＝事件时刻（悬停看详情）</span>
 </div></figure>
 </div>
 
 <div class="tabpane" id="pane-all" hidden>
-  <div class="mech-note">机械回测 v0.1 · 非记账 · 只展示不进方程：量级＝注册带/观察锚中值（常数化）；宏观驱动不分超预期/预期内；油腿 06-11 起用 15m 分时窗（报复夜看 09:30→23:45 油平、降温看 RTH/盘前/脉冲三窗）、此前回退日线代理；报复夜金腿降级为参考（GC=F 展期污染）；证伪退款·杂质判不了、入残差；AI 缺口为 SMH−SPY 跨截面相对读数、不入本图恒等式。<strong>07-28 起以台账注册账为准（见近一周）。</strong></div>
+  <div class="mech-note">机械回测 v0.1 · 非记账 · 只展示不进方程：量级＝注册带/观察锚中值（常数化）；宏观驱动不分超预期/预期内；油腿 06-11 起用 15m 分时窗（报复夜看 09:30→23:45 油平、降温看 RTH/盘前/脉冲三窗）、此前回退日线代理；报复夜金腿降级为参考（GC=F 展期污染）；证伪退款·杂质判不了、入残差；AI 缺口为 SMH−SPY 跨截面相对读数、不入本图恒等式。<strong>war 域/线（v1.5）＝geo·战争冲击事后 sizing·非记账·只展示不进 Σ</strong>（3/3→4/7 战争段每日实际为域、4/8 停火＋6/15 MOU＋7/8 宣停火＋7/13 照会＋7/14 封锁为事件单点；源＝台账 2-O；与报复夜/退款/降温已记同日不重复计）。<strong>07-28 起以台账注册账为准（见近一周）。</strong></div>
   <figure><svg id="svg-all" viewBox="0 0 960 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="机械回测累计贡献曲线 · 2.28至今"></svg><div class="legend">
   <span><i class="sw" style="border-color:#3a3126;border-top-width:3.4px"></i>墨线独粗＝实际指数（SPY 日线）</span>
   <span><i class="sw" style="border-color:#9a8f7c;border-top-style:dashed"></i>灰虚＝残差（兜底）</span>
@@ -82,6 +87,7 @@
   <span><i class="sw" style="border-color:#b05a2a"></i>赭＝地缘·报复夜（预支型）</span>
   <span><i class="sw" style="border-color:#d99a6c;border-top-style:dashed"></i>浅赭虚＝退款因子（回吐）</span>
   <span><i class="swbox" style="background:#2e7d6e;opacity:.35"></i>青碧域＝geo·降温兑现（结构性持续）</span>
+  <span><i class="swbox" style="background:#6b5f4e;opacity:.25"></i>炭褐域＝geo·战争冲击（事后 sizing·只展示·v1.5）</span>
   <span><i class="sw" style="border-color:#b8912c"></i>金＝宏观驱动@数据落地</span>
   <span><i class="sw" style="border-color:#d9cdb2"></i>金竖线＝事件时刻（悬停看详情）</span>
 </div></figure>
@@ -98,7 +104,8 @@
     {jkey:'retaliation', name:'报复夜', full:'地缘·报复夜', color:'#b05a2a', dash:null,  w:1.4},
     {jkey:'refund', name:'退款', full:'退款因子',         color:'#d99a6c', dash:'4 3', w:1.4},
     {jkey:'deesc', name:'降温', full:'geo·降温兑现',       color:'#2e7d6e', dash:null,  w:1.8, domain:true},
-    {jkey:'macro', name:'宏观', full:'宏观驱动@数据落地',   color:'#b8912c', dash:null,  w:1.4}
+    {jkey:'macro', name:'宏观', full:'宏观驱动@数据落地',   color:'#b8912c', dash:null,  w:1.4},
+    {jkey:'war', name:'战争', full:'geo·战争冲击（事后 sizing·只展示）', color:'#6b5f4e', dash:null, w:1.8, domain:true}
   ];
   function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
   function txt(x,y,s,a){var e=el('text',Object.assign({x:x,y:y},a||{}));e.textContent=s;return e;}
@@ -113,7 +120,7 @@
     var fcum={}, ftot={};
     FACTORS.forEach(function(f){ fcum[f.jkey]=cumsum(MECH[f.jkey].slice(startIdx)); ftot[f.jkey]=0; });
     var sigmaDaily=[];
-    for(var i=0;i<n;i++){var s=0;FACTORS.forEach(function(f){s+=(MECH[f.jkey][startIdx+i]||0);});sigmaDaily.push(s);}
+    for(var i=0;i<n;i++){var s=0;FACTORS.forEach(function(f){if(f.jkey==='war')return;s+=(MECH[f.jkey][startIdx+i]||0);});sigmaDaily.push(s);}
     var sigma=cumsum(sigmaDaily);
     // y 范围
     var mn=0,mx=0;
