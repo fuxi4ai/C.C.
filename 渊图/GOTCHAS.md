@@ -488,3 +488,9 @@ project: 渊图
 **触发**: xlsx skill 生成带公式工作簿（CPO 评分表 v2，52 公式）后，沙箱跑 recalc.py 验证公式缓存——profile 创建环节反复超时（29s/119s/100s/180s 四次全断），pkill soffice 无效，重建 xlsx 后复现。LibreOffice 首次启动 profile 初始化在沙箱里卡死。
 **解决方案**: 绕过 recalc.py——`soffice --headless --convert-to 'xlsx:Calc MS Excel 2007 XML' 目标.xlsx`（LibreOffice 加载时自动重算公式并写缓存，等效重算）；python openpyxl data_only 读缓存与手算对照，全对后 cp 覆盖原文件；再 openpyxl 双视图扫描确认 52 公式保留、0 错误值。
 **预防措施**: ①沙箱验证带公式 xlsx 优先走 soffice convert 路径，recalc.py 只作备选；②convert 写回会**去掉无空格 sheet 名的引号**（='附注'!$B$2 → =附注!$B$2），跨表公式完整性检测勿用精确前缀匹配（会误报「跨表公式=0」），直接抽查公式单元格内容即可。
+
+## [NOTE-20260816-001] kg_promote 丢失检查不豁免改名——改名批绕一键门直改 canonical
+**状态**: 🟢 已知边界 **优先级**: 🟡 中
+**触发**: Boss老白批 QA 把 7 个非规范前缀节点（device_×4 / eqpt_×3）改名 equipment_ 后走 kg_promote——被「丢失旧内容=7」拦下：旧 id 只入 aliases 不出现在节点 id 集合，kg_promote 的 `lost = canonical_ids - batch_ids` 检查无 aliases 豁免。
+**真相/裁定**: kg_promote 的丢失检查设计目标=防合并丢内容，改名不在其语义内。改名批（id 变更 + 边端点同步 + aliases 留旧）的正确路径 = 单进程直改 canonical + 先 cp 备份 + 同进程复检（悬挂/自环/非法 type/节点 id 重复）+ 写回复校 + wiki regen，不走一键门。
+**预防/可选根治**: 若日后改名批频繁，可给 kg_promote 加 `--allow-renames` 参数（lost 检查时对出现在任意节点 aliases 里的旧 id 豁免）；当前按直改路径走，不改门。
