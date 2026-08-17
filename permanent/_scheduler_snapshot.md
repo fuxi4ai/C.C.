@@ -1,10 +1,10 @@
 # 定时任务 · 四执行面现状快照
 
-> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-08-09T20:22:29-07:00，**只读**。
+> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-08-17T01:26:41-07:00，**只读**。
 
 > **本文件纳入 git；跑完 `git diff` 即知自上次快照以来什么变了** —— 无论改动来自 Doctor、别的会话还是 CC 自己。
 
-> 镜像步：镜像已同步：31 文件（更新 22 · 移除 1） · Artifacts：9 个（拷 1 · 清单全量）
+> 镜像步：镜像已同步：31 文件（更新 26 · 移除 2） · Artifacts：9 个（拷 1 · 清单全量）
 
 
 ## 面① Cowork live 树（19 个）
@@ -45,7 +45,7 @@
 | `com.google.keystone.agent` | — | False | — | 2026-07-01 09:22 |
 | `com.google.keystone.xpcservice` | — | False | — | 2026-07-01 09:22 |
 | `com.zhuzhao.marketdata` | [{"Weekday": 1, "Hour": 2, "Minute": 30}, {"Weekday": 2, "Hour": 2, "Minute": 30}, {"Weekday": 3, "Hour": 2, "Minute": 30}, {"Weekday": 4, "Hour": 2, "Minute": 30}, {"Weekday": 5, "Hour": 2, "Minute": 30}] | True | 0 | 2026-07-22 22:12 |
-| `com.zhuzhao.usclose` | [{"Weekday": 1, "Hour": 14, "Minute": 0}, {"Weekday": 2, "Hour": 14, "Minute": 0}, {"Weekday": 3, "Hour": 14, "Minute": 0}, {"Weekday": 4, "Hour": 14, "Minute": 0}, {"Weekday": 5, "Hour": 14, "Minute": 0}] | True | 0 | 2026-08-01 09:01 |
+| `com.zhuzhao.usclose` | [{"Weekday": 1, "Hour": 14, "Minute": 0}, {"Weekday": 2, "Hour": 14, "Minute": 0}, {"Weekday": 3, "Hour": 14, "Minute": 0}, {"Weekday": 4, "Hour": 14, "Minute": 0}, {"Weekday": 5, "Hour": 14, "Minute": 0}] | True | 0 | 2026-08-12 21:21 |
 | `netdisk_service` | — | False | — | 2025-03-15 02:42 |
 
 ✅ 源与装机全部一致
@@ -53,3 +53,7 @@
 ## 面④ crontab
 
 为空 ✅
+
+## 面⑤ 挂载检查（2026-08-13 看门狗挂载治理）
+
+⚠ **缺挂载 5 个**：Database、烛照九阴、剑酒青丘、白泽大宗、brain——定时班跑前需补挂，否则阻塞/静默失败

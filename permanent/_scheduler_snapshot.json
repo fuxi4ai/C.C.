@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-08-09T20:22:29-07:00",
+  "generated_at": "2026-08-17T01:26:41-07:00",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -304,7 +304,7 @@
    "com.zhuzhao.usclose": {
     "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.zhuzhao.usclose.plist",
     "installed_sha12": "22e181cf3484",
-    "installed_mtime": "2026-08-01 09:01",
+    "installed_mtime": "2026-08-12 21:21",
     "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
     "schedule": [
      {
@@ -358,5 +358,12 @@
  "crontab": {
   "entries": [],
   "note": "为空 ✅"
+ },
+ "mounts": {
+  "Database": false,
+  "烛照九阴": false,
+  "剑酒青丘": false,
+  "白泽大宗": false,
+  "brain": false
  }
 }
