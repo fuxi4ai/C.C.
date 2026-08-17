@@ -11,6 +11,9 @@ type: log
 
 ## 待办
 
+- [ ] **EAL · v2.3 五项方法 gate（2026-08-17 VV 六轮验收闭环后剩尾 · 源：VV 补充回执 §3/§4）**：① CAR 三套窗口统一（规则书 [0,+3] / 2-P [+1,+3] / 2-Q calendar+3 并存——需统一口径）；② 事件时钟（event_ts_utc/first_public_ts/effective_trade_date + close-cutoff·07-29 盘后事件映射修正）；③ 价格口径敏感性（Yahoo raw close vs adjusted/roll-adjusted·CL=F 换月跳点排除）；④ 可复现包固化（估计脚本+FRED CSV 原档+vintage/hash+设计矩阵日期+SPY-grid 对齐+HAC 参数——commit 400d203 只有结论无包）；⑤ local-level 完整候选梯（AR-only/local-level-only/combined + expanding one-step log score）。五项完成前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
+  依据：`4AI/Shake hands/to CC/VV补充回执-EAL-v2.3版本错位与实证复核-20260817.md` · `logs/2026-08-15-EAL方法论重构v1.4至v2.2.md`
+
 - [ ] **龙鱼 · 待校正队列两条旧账（2026-08-15 畸形收口场 /resume 补挂 · 源：`logs/2026-08-15-渊图15篇入库与光通信龙鱼重打分.md` 遗留）**：奥比 688322（08-15 现核 Δ+10.5 · ds 80.0 vs claude 69.5）、海光 688041（现核 Δ−10.5 · ds 50.5 vs claude 61.0；昨日日志「+17/−16」口径无法从 records 复现——records 最新 08-08、无校正条目）——随下轮 dualscorer 班或专项校正处理。
 
 - [ ] **渊图 · 胜宏科技 M9/M10 认证法定披露校验窗口（2026-08-05 挂 · 2026 年 8 月底半年报）**：核实札记已定级——「M9 材料产品验证完成」P2 可坐实，「全球唯一通过英伟达 Rubin 正交背板验证」坐不实（公司 03-18 法定口径「正积极推进」、07-31 董秘回避）。**8 月底半年报是第一个法定披露校验点**：届时核对 M9/M10 认证表述是否升级，据此决定 hedged patch 起草/作废。旁线：SemiAnalysis「Rubin 因正交背板卡点延迟一年量产」（P1 外媒，与「已过验证」叙事正面冲突）若被英伟达官方/供应链否认 → 反向信号降级；若被证实 → 本身即图谱级信号（正交背板卡点 → VR200 子图），可另立核实。
