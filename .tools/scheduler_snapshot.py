@@ -60,8 +60,9 @@ from pathlib import Path
 
 HOME = Path.home()
 
-LIVE_TREE = HOME / "Claude's workspace" / "Scheduled"          # Cowork 调度器真读的树
-GATEWAY_TREE = HOME / "Gateway-workspace" / "Scheduled"        # 第三方壳（Kimi 等 gateway 模式）live store · 2026-08-02 自 Documents/Claude 迁出（数灵转移 D14）。保护跟随 store：沙箱永不可读，仅 Mac 原生可扫。接入扫描面的改法待 08-09 周巡检后定（TODO 观察条）
+LIVE_TREE = HOME / "Gateway-workspace" / "Scheduled"            # 2026-08-17 VV 五轮 P0 + Doctor 批：Scheduled 唯一真源＝Gateway 壳（反转 08-11「不接 GATEWAY_TREE」裁定——Kimi 已 21 班全迁·旧 Cowork 树冻结降级是镜像失真根源）。保护跟随 store：沙箱永不可读，仅 Mac 原生可扫
+LEGACY_LIVE_TREE = HOME / "Claude's workspace" / "Scheduled"    # 旧 Cowork 树 · 2026-08-17 起只留名不再镜像（曾为 LIVE_TREE 真源）
+GATEWAY_TREE = LIVE_TREE                                        # 别名 · 兼容旧引用（原「待接扫描面」观察条已随真源接线消解）
 DEAD_TREE = HOME / "Documents/Claude/Scheduled"                # 旧第三方 store 位 · 2026-08-02 已迁 GATEWAY_TREE。正常＝不存在；再现＝异常（有壳/有人在此重建 store）
 DEAD_ARCHIVED_GLOB = "_DEPRECATED_Scheduled_*"                 # 归档后的名字（可逆优先：改名不删）
 LAUNCH_AGENTS = HOME / "Library/LaunchAgents"                  # launchd 装机位
@@ -273,25 +274,34 @@ def scan_mounts():
 
 # ───────────────────── 异常检测 ─────────────────────
 
-def mirror_live_tree():
+def mirror_live_tree(dry=False):
     """第三输出 · live 树镜像 → brain（2026-08-02 Doctor 批 a 案）。
     章程不变：只读 live、只写 brain 内自有输出目录，不修、不 commit、不碰调度器。
-    --delete 语义（镜像里删 live 已不存在的）不违反「不删文件」——镜像在 git 里，删除可见可回溯。"""
+    --delete 语义（镜像里删 live 已不存在的）不违反「不删文件」——镜像在 git 里，删除可见可回溯。
+    dry=True（2026-08-17 VV 五轮要求）：只列将更新/移除清单，不落盘。"""
     import shutil
     if not LIVE_TREE.exists():
         return "live 树不可读，镜像跳过"
     MIRROR_DIR.mkdir(parents=True, exist_ok=True)
     live_files = {p.relative_to(LIVE_TREE) for p in LIVE_TREE.rglob("*") if p.is_file()}
-    removed = 0
+    removed, copied = 0, 0
+    would_remove, would_copy = [], []
     for p in [x for x in MIRROR_DIR.rglob("*") if x.is_file()]:
         if p.relative_to(MIRROR_DIR) not in live_files:
-            p.unlink(); removed += 1
-    copied = 0
+            if dry:
+                would_remove.append(str(p.relative_to(MIRROR_DIR)))
+            else:
+                p.unlink(); removed += 1
     for rel in sorted(live_files):
         src, dst = LIVE_TREE / rel, MIRROR_DIR / rel
         if (not dst.exists()) or sha(src) != sha(dst):
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dst); copied += 1
+            if dry:
+                would_copy.append(str(rel))
+            else:
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(src, dst); copied += 1
+    if dry:
+        return f"[dry-run] live 镜像：将更新 {len(would_copy)} 件 · 将移除 {len(would_remove)} 件（不落盘）\n  更新: {sorted(would_copy)}\n  移除: {sorted(would_remove)}"
     return f"镜像已同步：{len(live_files)} 文件（更新 {copied} · 移除 {removed}）"
 
 
@@ -398,6 +408,7 @@ def main():
     ap = argparse.ArgumentParser(description="定时任务四执行面巡检（只读 · 正常静默）")
     ap.add_argument("-v", "--verbose", action="store_true", help="打印四面全摘要")
     ap.add_argument("-a", "--all", action="store_true", help="连 YELLOW 级也报")
+    ap.add_argument("--dry-run", action="store_true", help="镜像只列将更新/移除清单，不落盘（2026-08-17 VV 五轮要求）")
     args = ap.parse_args()
 
     # 读上次快照（必须在覆盖之前）——用于检测「班消失」
@@ -433,7 +444,7 @@ def main():
     OUT_JSON.write_text(json.dumps(snap, ensure_ascii=False, indent=1, sort_keys=False),
                         encoding="utf-8")
 
-    mirror_note = mirror_live_tree()
+    mirror_note = mirror_live_tree(dry=args.dry_run)
     art_note = mirror_artifacts()
 
     # ── 人读版 ──
