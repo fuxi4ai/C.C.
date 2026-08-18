@@ -49,6 +49,10 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
    - `python3 scripts/fetch_market_amount.py --from YYYYMMDD`
    - `python3 scripts/fetch_limit_list.py --from YYYYMMDD`
    - **自愈**：`--from` 取各表自身 `MAX(trade_date)` 次日 → 一次成功 run 会把此前**所有**漏跑交易日（如漏了周一就连周一一起）一次补齐，无需专门"补昨天"。
+   - **Mac 02:30「原生行情落库」班（2026-08-17 核实 · Doctor 拍板维持现状）**：Mac 侧 launchd 每交易日 02:30 PDT 跑（日志 `~/Documents/Claude/Projects/Financial/烛照九阴/logs/mac_marketdata_{YYYYMMDD}.log`），**直写 live market_data.db、不拿公共写锁**，7 天回看幂等，已覆盖 theme_etf/market_amount 当日行（含 stock_daily/aggregate/fill_index/limit_list/margin/intl/kr）。据此：
+     · 班前 theme_etf/market_amount 的 max(trade_date) ≥ `T_anchor` 属**预期常态**，按步骤 1 判据跳过取数即可，**勿考古**（行的 updated_at 为 UTC 09:3x＝Mac 班写库时刻；句芒班 health 若记这两表 lag1 只是它体检跑在 Mac 写库之前，均非异常）。
+     · Mac 班 02:30 跑时 tushare 通常**尚未发布当日 limit_list**（写入 0 行，2026-08-17 实证）——本班 10:00 取数才是当日 limit_list 的实际供数方，`--from` 自愈补齐。
+     · 已知结构风险：Mac 班与句芒班放回时间窗贴着，若句芒班跑慢，其快照无 Mac 新写、mv 可能覆盖——Mac 班 7 天回看幂等**次日自愈**，且句芒指纹复核 + health 灯兜底，非静默灾难。Doctor 2026-08-17 裁定维持现状、不加锁；本班 SKILL 只记不改。
    - **美股锚（us_anchor，2026-07-28 Doctor 拍板：`--source yahoo` 转正默认源，见 GOTCHA-20260728-003）**：`python3 scripts/fetch_us_anchor.py --from {us_anchor 表内 MAX(trade_date) 前推 5 日历日的 YYYY-MM-DD}`——yahoo chart API urllib 直取（白名单直达、零依赖、与 intl/kr 同源），adjclose 复权价；19 只清单仍见 `all_tickers()`（17 主线锚 + SPY + QQQ）。
      · **--from 前推 5 日是有意为之**：INSERT OR REPLACE 幂等重写近端，自动吸收 Yahoo 收盘后的结算修正（实测贴近收盘抓价与次日结算终值差 0.3~3%，G-20260728-003 ③态）。
      · 脚本内置**盘中守卫 + null bar 丢弃**（纯数据驱动、不碰系统钟）：美股盘中/收盘过渡态触发时末根自动丢弃，落到最近完整收盘日——比 `T_anchor` 晚 1~2 美东交易日属预期，**绝不以盘中价充收盘、绝不编数**；全拉不到则保留旧锚、日志标缺。
@@ -57,7 +61,7 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
    - **韩国存储双雄 ②c（2026-06-30 · Doctor 拍板：弃 EWY 代理，直追两只票）**：`python3 scripts/fetch_kr_stocks.py`——直连 Yahoo chart API（urllib，**白名单已开、沙箱直达**）取三星电子(005930.KS)+SK海力士(000660.KS)写 intl_index_daily（code=KR_SAMSUNG/KR_HYNIX，kind=kr_stock）。拉不到→标缺、保留旧行、绝不编。（KR_PROXY/EWY 旧行不删、不再更新。）
    - **tushare 依赖（2026-08-06 起持久化）**：前置已 export `PYTHONPATH=<Database 挂载点>/pylib-linux`，先 `python3 -c "import tushare"` 探测；**失败才**回退 `pip install tushare --break-system-packages`（PyPI 兜底），回退发生后日志记一笔「pylib 失效已回退装包」（多半意味着 VM 的 Python 版本/架构变了，需重装 pylib-linux）。
 4. **防空壳校验（不过则绝不放回）**：副本 integrity ok；四表行数对比放回前**只增不减**；目标表 max(trade_date) 达到 `T_anchor`（美股锚允许差 1~2 个美东交易日——盘中守卫落最近完整收盘属预期，在日志标明即可，**绝不编数**）。
-5. **放回**：按“公共行情库单写者锁”协议复核 owner、main/WAL/journal 指纹和非零 sidecar；任一不符则保留 `/tmp` 副本并 fail-visible，绝不截断。通过后将本地 WAL checkpoint 入主文件，在源目录 staging 校验，再以同文件系统原子 `mv` 替换；放回后重新 integrity_check + 行数复核，失败即用持锁前主库副本原子回滚。
+5. **放回**：按"公共行情库单写者锁"协议复核 owner、main/WAL/journal 指纹和非零 sidecar；任一不符则保留 `/tmp` 副本并 fail-visible，绝不截断。通过后将本地 WAL checkpoint 入主文件，在源目录 staging 校验，再以同文件系统原子 `mv` 替换；放回后重新 integrity_check + 行数复核，失败即用持锁前主库副本原子回滚。
 
 5.5 **公共库健康自检（2026-06-30 加 · 根因修：体检挪到末位写库方跑）**：四表放回且 integrity ok 后，跑 `MARKET_DATA_DIR="<Database 挂载点>/Market-Data" python3 ~/Documents/Claude/Projects/Financial/剑酒青丘/infrastructure/取数工具/market_health.py`（沙箱必带 MARKET_DATA_DIR，见前置；Mac 上可省）刷新 `Database/Market-Data/_health.json`。只读全库、零网络、不写主库。**本步完成后才按 owner 校验释放公共行情库写锁**。**为何在此**：句芒 06:15 班末步那次体检跑在本任务装 limit_list/theme_etf 之前，会把这两表误判 fail；由本任务（末位写库方）收尾再亮灯，`_health.json` 才反映完整状态。结果记入第 7 步日志。
 

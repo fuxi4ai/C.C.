@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-08-17T01:26:41-07:00",
+  "generated_at": "2026-08-17T23:33:39-07:00",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -10,24 +10,24 @@
   "通知策略 notifyOnCompletion 同理，list_scheduled_tasks 亦不返回（2026-07-30 实测）。"
  ],
  "cowork_live": {
-  "path": "/Users/lunarabbit/Claude's workspace/Scheduled",
-  "count": 19,
+  "path": "/Users/lunarabbit/Gateway-workspace/Scheduled",
+  "count": 21,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
     "has_skill": true,
-    "skill_mtime": "2026-07-05 10:46",
-    "skill_sha12": "448e281ca97b",
+    "skill_mtime": "2026-08-11 09:01",
+    "skill_sha12": "dbc6ca59c8b6",
     "skill_lines": 17,
     "name": "agents-memory-meditation",
-    "desc_head": "每周日 09:05 由句芒对 brain/agents 做数灵记忆体检（meditation 兜底），查人格冲突/记忆错位/漏记断链/归位合规，出报告",
+    "desc_head": "每周由句芒对 brain/agents 做数灵记忆体检（meditation 兜底），查人格冲突/记忆错位/漏记断链/归位合规，出报告",
     "cron": null
    },
    {
     "taskId": "baize-breakout-sentinel",
     "has_skill": true,
-    "skill_mtime": "2026-07-09 03:50",
-    "skill_sha12": "e5b1f2139180",
+    "skill_mtime": "2026-08-12 18:56",
+    "skill_sha12": "dca78b053024",
     "skill_lines": 32,
     "name": "baize-breakout-sentinel",
     "desc_head": "白泽每日哨兵：突破扫描 + 观察窗信号A/B/C2全生命周期（预注册规则自动记账）",
@@ -36,27 +36,27 @@
    {
     "taskId": "baize-weekly-report",
     "has_skill": true,
-    "skill_mtime": "2026-07-31 23:56",
-    "skill_sha12": "756ff01971b0",
-    "skill_lines": 114,
+    "skill_mtime": "2026-08-11 09:01",
+    "skill_sha12": "e00689cd613a",
+    "skill_lines": 120,
     "name": "baize-weekly-report",
-    "desc_head": "白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周日01:00，留足本地cron缓冲）",
+    "desc_head": "白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周更）",
     "cron": null
    },
    {
     "taskId": "brain-monthly-checkup",
     "has_skill": true,
-    "skill_mtime": "2026-07-05 10:46",
-    "skill_sha12": "b484f5d271d7",
+    "skill_mtime": "2026-08-11 09:01",
+    "skill_sha12": "f5b2a3680c56",
     "skill_lines": 41,
     "name": "brain-monthly-checkup",
-    "desc_head": "每月 1 号 09:00 跑 meditation 心灵与记忆健康自检：折叠上月 logs + 记忆指标 + 数灵人格层 + 警告",
+    "desc_head": "每月初跑 meditation 心灵与记忆健康自检：折叠上月 logs + 记忆指标 + 数灵人格层 + 警告",
     "cron": null
    },
    {
     "taskId": "cockpit-snapshot",
     "has_skill": true,
-    "skill_mtime": "2026-07-30 06:03",
+    "skill_mtime": "2026-08-12 18:59",
     "skill_sha12": "6c33680aedea",
     "skill_lines": 18,
     "name": "cockpit-snapshot",
@@ -66,19 +66,29 @@
    {
     "taskId": "event-attribution-watch",
     "has_skill": true,
-    "skill_mtime": "2026-07-30 01:14",
-    "skill_sha12": "2ddfd4f56421",
-    "skill_lines": 34,
+    "skill_mtime": "2026-08-15 23:13",
+    "skill_sha12": "f1c24629964c",
+    "skill_lines": 50,
     "name": "event-attribution-watch",
     "desc_head": "事件归因验证班：采集上一美股交易日数据→事件日判定→收盘级归因→与注册量级带对准→提案制汇报（剑酒青丘·解释层）",
     "cron": null
    },
    {
+    "taskId": "guanxing-fed-daily",
+    "has_skill": true,
+    "skill_mtime": "2026-08-14 08:34",
+    "skill_sha12": "04ac1fa71745",
+    "skill_lines": 44,
+    "name": "guanxing-fed-daily",
+    "desc_head": "白泽观星 Fed 腿日更：每日跑 fetch_fed_inputs_fred.py --predict 取最新 FRED 读数并出会前读数快照（fed_inputs + fed_prediction 落盘），新鲜度守卫+…",
+    "cron": null
+   },
+   {
     "taskId": "longyu-weekly-dualscorer",
     "has_skill": true,
-    "skill_mtime": "2026-08-01 22:28",
-    "skill_sha12": "840a7a7c574f",
-    "skill_lines": 43,
+    "skill_mtime": "2026-08-12 22:37",
+    "skill_sha12": "79e76877ba7c",
+    "skill_lines": 63,
     "name": "longyu-weekly-dualscorer",
     "desc_head": "龙鱼标的库周更：常更标的每周双scorer打分(deepseek子项+claude top-down)落库+对比校正队列+刷新个股库看板artifact",
     "cron": null
@@ -86,17 +96,27 @@
    {
     "taskId": "market-data-daily-update",
     "has_skill": true,
-    "skill_mtime": "2026-08-01 06:34",
-    "skill_sha12": "b98e2afdacf9",
-    "skill_lines": 62,
+    "skill_mtime": "2026-08-12 18:56",
+    "skill_sha12": "1897e9d46465",
+    "skill_lines": 63,
     "name": "market-data-daily-update",
     "desc_head": "每交易日由句芒增量更新Market-Data行情到最近已收盘交易日=当日(收盘后第一时间;须在上游Tushare当日入库完成之后);去重+防空壳,取空则次日按缺口自动补回;下游白泽哨兵/次日晨报读到当日收盘;沙箱经代理+…",
     "cron": null
    },
    {
+    "taskId": "r7-threshold-recal",
+    "has_skill": true,
+    "skill_mtime": "2026-08-10 21:16",
+    "skill_sha12": "75a8c2736866",
+    "skill_lines": 17,
+    "name": "r7-threshold-recal",
+    "desc_head": "一次性：r7 USDJPY 急动阈值 v0 复校（首个实战🔴或两个月后之约）",
+    "cron": null
+   },
+   {
     "taskId": "recap-kejian-daily-ingest",
     "has_skill": true,
-    "skill_mtime": "2026-07-30 06:02",
+    "skill_mtime": "2026-08-12 18:56",
     "skill_sha12": "4da3a77db942",
     "skill_lines": 30,
     "name": "recap-kejian-daily-ingest",
@@ -106,8 +126,8 @@
    {
     "taskId": "recap-kejian-review",
     "has_skill": true,
-    "skill_mtime": "2026-07-31 23:56",
-    "skill_sha12": "60d437adc0d4",
+    "skill_mtime": "2026-08-12 18:57",
+    "skill_sha12": "ce147c5c1b29",
     "skill_lines": 33,
     "name": "recap-kejian-review",
     "desc_head": "每天09:30由句芒审核九儿课件入库：去重/数据合理性/P2标签/归位，扩审dim3(禁行情倒灌)与dim4仓位(归一/词表/待复核不重不漏)，出审核日志",
@@ -116,17 +136,17 @@
    {
     "taskId": "refresh-asset-dashboard",
     "has_skill": true,
-    "skill_mtime": "2026-08-01 22:31",
-    "skill_sha12": "bf8a87844666",
-    "skill_lines": 48,
+    "skill_mtime": "2026-08-10 21:13",
+    "skill_sha12": "551931302c3d",
+    "skill_lines": 50,
     "name": "refresh-asset-dashboard",
-    "desc_head": "重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact），日更；挂载已收敛为 Projects+Database 两目录，覆盖 13/14 project",
+    "desc_head": "重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact），日更；挂载 Projects+Database+brain 三目录，覆盖 14/15 project + brain 治理计数…",
     "cron": null
    },
    {
     "taskId": "refresh-risk-daily",
     "has_skill": true,
-    "skill_mtime": "2026-07-31 10:03",
+    "skill_mtime": "2026-08-12 18:56",
     "skill_sha12": "2baa154d130d",
     "skill_lines": 21,
     "name": "refresh-risk-daily",
@@ -136,7 +156,7 @@
    {
     "taskId": "repair-finance-chain",
     "has_skill": true,
-    "skill_mtime": "2026-07-05 10:46",
+    "skill_mtime": "2026-08-10 21:16",
     "skill_sha12": "97b9b07f274a",
     "skill_lines": 33,
     "name": "repair-finance-chain",
@@ -146,29 +166,29 @@
    {
     "taskId": "scheduler-weekly-audit",
     "has_skill": true,
-    "skill_mtime": "2026-08-02 01:21",
-    "skill_sha12": "33e8c3ead816",
-    "skill_lines": 64,
+    "skill_mtime": "2026-08-11 09:02",
+    "skill_sha12": "39dc0440467d",
+    "skill_lines": 71,
     "name": "scheduler-weekly-audit",
-    "desc_head": "定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py，exit 0 则完全静默不打扰；exit 1 才把 🔴 异常清单报给 Doctor。绝不自动修、不 commit、不碰调度器",
+    "desc_head": "定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py，exit 0 则完全静默不打扰；exit 1 才把 🔴 异常清单报给 Doctor。绝不自动修、不 commit、不碰调度器。沙箱无法执行时…",
     "cron": null
    },
    {
     "taskId": "touzhijunjun-perspective-refresh",
     "has_skill": true,
-    "skill_mtime": "2026-08-01 22:28",
-    "skill_sha12": "139923b77c15",
+    "skill_mtime": "2026-08-11 09:01",
+    "skill_sha12": "11d11fbca3dc",
     "skill_lines": 63,
     "name": "touzhijunjun-perspective-refresh",
-    "desc_head": "投知君君视角层增量提炼+反共识纠偏+图谱候选核实（自检增量·不自动promote），周三/周六17:00",
+    "desc_head": "投知君君视角层增量提炼+反共识纠偏+图谱候选核实（自检增量·不自动promote），周两更",
     "cron": null
    },
    {
     "taskId": "us-close-backfill",
     "has_skill": true,
-    "skill_mtime": "2026-08-01 09:12",
-    "skill_sha12": "aae001d8f84e",
-    "skill_lines": 118,
+    "skill_mtime": "2026-08-12 21:34",
+    "skill_sha12": "cce5b8eded4c",
+    "skill_lines": 136,
     "name": "us-close-backfill",
     "desc_head": "美股收盘补数班的只读看门狗——写库已迁本机 launchd(com.zhuzhao.usclose 14:00 PT)，本班 14:30 只核对两表水位与新鲜度并出简报，绝不写库(G019)；异常只给 Doctor 终端…",
     "cron": null
@@ -176,7 +196,7 @@
    {
     "taskId": "yuantu-alarm-earnings-season",
     "has_skill": true,
-    "skill_mtime": "2026-08-02 00:20",
+    "skill_mtime": "2026-08-10 21:15",
     "skill_sha12": "e8bcb5aedf35",
     "skill_lines": 16,
     "name": "yuantu-alarm-earnings-season",
@@ -186,8 +206,8 @@
    {
     "taskId": "yuantu-alarm-weekly",
     "has_skill": true,
-    "skill_mtime": "2026-07-22 23:52",
-    "skill_sha12": "2a486321e9fe",
+    "skill_mtime": "2026-08-10 21:15",
+    "skill_sha12": "8cc9ea07b8ba",
     "skill_lines": 16,
     "name": "yuantu-alarm-weekly",
     "desc_head": "渊图警报监控·常态每周核验 AI 科技股未定价危险时点",
@@ -196,9 +216,9 @@
    {
     "taskId": "zhuzhao-market-fetch-daily-report",
     "has_skill": true,
-    "skill_mtime": "2026-08-02 00:59",
-    "skill_sha12": "ff0f5e557188",
-    "skill_lines": 92,
+    "skill_mtime": "2026-08-17 11:46",
+    "skill_sha12": "a8ca6263e4e7",
+    "skill_lines": 97,
     "name": "zhuzhao-market-fetch-daily-report",
     "desc_head": "每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走yahoo chart API默认源·盘中守卫+null …",
     "cron": null
@@ -356,8 +376,13 @@
   "consistency": []
  },
  "crontab": {
-  "entries": [],
-  "note": "为空 ✅"
+  "entries": [
+   "SHELL=/bin/zsh",
+   "TZ=America/Los_Angeles",
+   "30 18 * * 0-4 /usr/bin/env bash \"/Users/lunarabbit/Documents/Codex/After Work/scripts/run-morning-post-cycle.sh\" primary >> \"/Users/lunarabbit/Documents/Codex/After Work/work/ops/morning-post-scheduler.log\" 2>&1",
+   "30 20 * * 0-4 /usr/bin/env bash \"/Users/lunarabbit/Documents/Codex/After Work/scripts/run-morning-post-cycle.sh\" recovery >> \"/Users/lunarabbit/Documents/Codex/After Work/work/ops/morning-post-scheduler.log\" 2>&1"
+  ],
+  "note": "⚠ 非空——第四执行面已启用"
  },
  "mounts": {
   "Database": false,
