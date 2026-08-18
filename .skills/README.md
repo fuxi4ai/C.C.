@@ -8,6 +8,7 @@ type: resource
 ---
 
 > **⚠ canonical 裁定（2026-08-18 Doctor 立 · 本裁定先覆盖 brain-prd）**：`brain/.skills/brain-prd/SKILL.md` 为 brain-prd **唯一内容真源**；`portable/skills/brain-prd/SKILL.md`、`.skill` 包、Cowork/Claude-3p 安装副本及 plugin cache 均为**只读派生消费端，禁止独立编辑**。发布链固定：`Brain canonical → portable → .skill → 运行时安装 → 新会话回读验证`，每层回读 SHA 逐层一致。原「Cowork 账号为主」裁定自本次起 superseded（仅限 brain-prd）。其他 brain skills 的存量漂移另列 TODO 统一收敛。
+> **运行时状态（2026-08-18 十一轮）**：仓内三层（canonical/portable/.skill 包）SHA 一致 ✓；Cowork save_skill 已**重发 v1.5.1**（修复双 frontmatter：content 只传正文）；**Claude-3p plugin cache 回读（单 frontmatter + metadata 核对）与全新会话 `/prd` 路由实测待 Doctor 终端——未回读前不得称运行时发布完成**。
 
 # brain/.skills — 自制 skill 真源
 

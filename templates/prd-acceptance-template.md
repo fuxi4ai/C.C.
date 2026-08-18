@@ -3,16 +3,21 @@ title: PRD · {任务简称}
 tags: [prd, acceptance, {项目名}]
 created: {{YYYY-MM-DD HH:MM}}
 updated: {{YYYY-MM-DD HH:MM}}
-status: draft  # 生命周期：draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled
+status: draft  # 单一生命周期状态：draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled（§四 为 current_status + 变更历史，不再用多 checkbox）
 task_authorization:
   state: verified | unverified  # 任务授权核实状态；新任务无法核实时只能停在 draft
   source_type:  # 会话裁定 / 书面指令 / 待补
   source_ref:   # 来源（日志 / 会话日期）
   quote:        # Doctor 原话；找不到历史授权原话时写「授权来源待补」，不得推断或编造
   scope:        # 授权范围
+roles:
+  implementers: []  # 实施者名单
+  independent_reviewers: []  # 独立审查员名单（未参与实施 · 默认只有背书权）
 acceptance_authority:
-  source_ref:   # 谁指定的（必须由 Doctor 指定）
-  authority:    # 验收方身份（Doctor / Doctor 指定且未参与实施的独立验收方）
+  authority: Doctor  # 验收方身份（Doctor / Doctor 指定且未参与实施的独立验收方）
+  designation_source_ref:  # 指定来源（Doctor 指定记录 / 会话日期）
+  designation_quote:       # 指定原话——独立验收方必须能证明「由 Doctor 明确指定且未参与实施」，不能只写一个名字
+  designated_at:           # 指定时间
 open_decisions:  # 未决事项列表；阻断性歧义暂停对应实施，非阻断问题可继续工作
   - item:                 # 决策事项
     blocking: true/false  # 是否阻断
@@ -33,7 +38,7 @@ template_version: v1.2
 > 3. **PRD checkbox 合同**:实施者只能填 `[?]` 已达成+证据 / `[!]` 未达成+原因 / `[~]` 不确定+判断点。`[✓]` 由 **Doctor 或 Doctor 明确指定、且未参与实施的独立验收方**落。客观 TODO 证据代勾属常驻授权、**仅限 PRD 外的普通 TODO**（G-X136 补钉），不占 PRD checkbox
 > 4. **验收主体 = 功能/需求**:每条标准描述用户可感知的行为、结果或质量约束；文件、Grep、脚本输出只是证据。每项必须**可复核**（机器比对或预先定义的人工验收方法）。**不写"做好了"/"完整"/"修复了"** 等主观陈述 — **写了等于没写**
 > 5. **双向闭环关闭**:全 ✓ 或 Doctor 显式取消(原因+时间)= 两种合法关闭。**禁止 CC 自动关闭**
-> 6. 详见:`brain/permanent/通用教训.md` G-X4 + `brain/references/PRD交付标准主机制_设计提案.md`
+> 6. 详见:`brain/permanent/通用教训.md` G-X4（现行权威）+ 本模板。`brain/references/PRD交付标准主机制_设计提案.md` 为 2026-08-18 superseded 的历史提案，不再作为现行规范引用
 
 ---
 
@@ -105,15 +110,17 @@ template_version: v1.2
 
 ---
 
-## §2.5 · 执行与交付清单（过程项 · 不参与功能交付关闭判定）
+## §2.5 · 执行与交付清单（过程项 · 不参与功能交付关闭判定 · 无 checkbox 表格）
 
-> 文件、Grep、hash、`/save`、git、self-audit 等**过程/交付动作**在此跟踪。**不用 PRD 验收四态**（避免自签后门），用普通 `task_status`（todo / done / blocked），**不决定功能验收是否通过**。
+> 文件、Grep、hash、`/save`、git、self-audit 等**过程/交付动作**在此跟踪。**不用 PRD 验收四态**（避免自签后门），用普通 `task_status`，**不决定功能验收是否通过**。
 
-- [ ] T1 · 文件 X 已建于 {路径}（task_status: todo）
-- [ ] T2 · Grep "oldname" 在 path/ = 0 matches（task_status: todo）
-- [ ] T3 · /save 已触发 + 落到 brain/logs/（task_status: todo）
-- [ ] T4 · git commit 命令已贴给 Doctor（若需 git · 遵守 G-X2）（task_status: todo）
-- [ ] T5 · G-X1 self-audit / checkpoint 已落（若适用）（task_status: todo）
+| task_id | 过程项 | task_status | 证据 |
+|---|---|---|---|
+| T1 | 文件 X 已建于 {路径} | todo / done / blocked | |
+| T2 | Grep "oldname" 在 path/ = 0 matches | todo / done / blocked | |
+| T3 | /save 已触发 + 落到 brain/logs/ | todo / done / blocked | |
+| T4 | git commit 命令已贴给 Doctor（若需 git · 遵守 G-X2） | todo / done / blocked | |
+| T5 | G-X1 self-audit / checkpoint 已落（若适用） | todo / done / blocked | |
 
 ---
 
@@ -127,16 +134,24 @@ template_version: v1.2
 
 ---
 
-## §四 · 状态（单一生命周期 · 2026-08-18 十轮合同）
+## §四 · 状态（current_status + 变更历史 · 不用多 checkbox）
 
-> 生命周期：`draft → in_progress ↔ blocked → awaiting_acceptance → delivered | cancelled`。一次只能在一个状态 · 状态变更必须有时间戳。任务授权、实施者、独立审查员、验收签字权、决策归属分别记录，不混为一人或一份授权。
+> 生命周期：`draft → in_progress ↔ blocked → awaiting_acceptance → delivered | cancelled`。**frontmatter `status` 是唯一 current_status 真源**，本节只记录变更历史（每条带时间戳）。任务授权、实施者、独立审查员、验收签字权、决策归属分别记录（frontmatter `roles` / `acceptance_authority` / `open_decisions`），不混为一人或一份授权。
+> **blocked 语义**：仅当**全部剩余需求**都被阻断时，顶层才设为 `blocked`；部分阻断时保持 `in_progress`，阻断项记 `open_decisions`（blocks_requirement_ids），非阻断项继续。
+> **关闭条件**：每个 requirement 要么被**逐项验收**，要么被**明确覆盖于合法的总签记录**（客观轨总 ✓ + 原则轨逐条 ✓ + 分轨签核背书）——两者之外不存在「关闭」路径。
 
-- [ ] draft（立卷时 · 授权核实中或未决 · 时间: ____）
-- [ ] in_progress（任务已授权且无阻断性歧义 · 直接实施 · 时间: ____）
-- [ ] blocked（存在阻断性歧义 · 暂停对应实施等 Doctor 裁定 · 时间: ____）
-- [ ] awaiting_acceptance（实施者已对所有交付标准填三态 · 时间: ____）
-- [ ] delivered（Doctor 或指定独立验收方已把所有 `[?]` 转为 `[✓]` · 时间: ____）
-- [ ] cancelled（Doctor 显式取消 · 时间: ____ · 原因: ____）
+**current_status**: draft（由 frontmatter `status` 承载）
+
+**状态变更历史**:
+| 时间 | 从 → 到 | 谁 | 依据 |
+|---|---|---|---|
+| {YYYY-MM-DD HH:MM} | — → draft | 实施者 | 立卷 · 授权核实中 |
+| {YYYY-MM-DD HH:MM} | draft → in_progress | 实施者 | 任务已授权且无阻断性歧义 · 直接实施 |
+| {YYYY-MM-DD HH:MM} | in_progress → blocked | 实施者 | 全部剩余需求被阻断（open_decisions 见上） |
+| {YYYY-MM-DD HH:MM} | blocked → in_progress | 实施者 | 阻断裁定解除（open_decisions 状态 resolved） |
+| {YYYY-MM-DD HH:MM} | in_progress → awaiting_acceptance | 实施者 | 全部交付标准已填三态 |
+| {YYYY-MM-DD HH:MM} | awaiting_acceptance → delivered | 验收方 | 全 ✓（逐项或总签覆盖） |
+| {YYYY-MM-DD HH:MM} | * → cancelled | Doctor | 显式取消（原因 + 时间） |
 
 **关闭路径**(回顾铁律):
 - ✓ 全 ✓ 关闭:所有交付标准由 Doctor 或指定独立验收方打 ✓

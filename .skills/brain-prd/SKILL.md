@@ -25,9 +25,9 @@ description: "立 PRD——功能/需求验收基线，不是审批单。任务�
 
 1. **对齐按需**：核心需求 / 开发方向 / 交付验收 三维——Doctor 原始指令已说清时**跳过对齐**；发现模糊/信息不足/范围冲突/验收标准无法落成时用 §5 问清（见 §4 Step 2）。
 2. **文件已落**：`~/Documents/Claude/brain/logs/checkpoints/{YYYY-MM-DD}_{任务简称}_PRD.md` 存在（`ls` 可见），从 `templates/prd-acceptance-template.md` 复制填成。
-3. **§一 目标**：含动机 + 范围 + **Doctor 原始指令逐字引用** + 规模估算；frontmatter 填 `task_authorization`（state/source_type/source_ref/quote/scope）、`acceptance_authority`、`open_decisions`。授权原话找不到时写「授权来源待补」，不得推断或编造；新任务授权无法核实时停在 draft。
+3. **§一 目标**：含动机 + 范围 + **Doctor 原始指令逐字引用** + 规模估算；frontmatter 填 `task_authorization`（state/source_type/source_ref/quote/scope）、`roles`（implementers / independent_reviewers）、`acceptance_authority`（authority/designation_source_ref/designation_quote/designated_at——独立验收方必须能证明「由 Doctor 明确指定且未参与实施」，不能只写一个名字）、`open_decisions`。授权原话找不到时写「授权来源待补」，不得推断或编造；新任务授权无法核实时停在 draft。
 4. **§二 交付标准主体＝功能/需求**：验收主体是**用户可感知的行为/结果**（功能需求区）或**性能/安全/可靠性/兼容性/数据质量**（非功能需求区——文件、路径、Grep、`/save` 不算非功能需求）；每项带 `requirement_id → 预期行为/结果 → 验收方法 → 证据 → 状态`，**每项可复核**（机器比对或预先定义的人工验收方法）；§二全留 `[ ]`（起草阶段不填三态）。**Grep 自检：§二 内无"做好了/完整/修复了/优化了"等主观词。**
-5. **§2.5 执行清单**：文件/Grep/hash//save/git/self-audit 等过程项在此跟踪，用普通 `task_status`（todo/done/blocked），**不用 PRD 验收四态、不参与功能交付关闭判定**。
+5. **§2.5 执行清单**：文件/Grep/hash//save/git/self-audit 等过程项在此跟踪，用**无 checkbox 表格**（task_id | task_status | evidence），**不用 PRD 验收四态、不参与功能交付关闭判定**。
 6. **§三 非交付项**：写明本任务不含什么（用对齐时划定的边界）。
 7. **原则轨只收开发完成后首现的验收裁定**（2026-08-15 Doctor 立）：开发中 Doctor 已拍板的分叉裁定不重复列原则轨——变更记录留痕（时间/方式/结论）即止，验收环节不再重裁一遍。
 
@@ -82,7 +82,7 @@ Doctor 确认 → 进 Step 3。**仍有阻断性歧义 → open_decisions 登记
 ### Step 4 · 复制模板填写
 读 `~/Documents/Claude/brain/templates/prd-acceptance-template.md`，复制到
 `~/Documents/Claude/brain/logs/checkpoints/{YYYY-MM-DD}_{任务简称}_PRD.md`。
-填 §一（动机 + Doctor 原话 + 规模估算 + frontmatter 授权字段）、§二（A 功能需求 R* / B 非功能需求 N* / C 自定义 X*，**验收主体＝功能/需求、全可复核、全留 `[ ]`**）、§2.5（过程项 · task_status）、§三（非交付项）。
+填 §一（动机 + Doctor 原话 + 规模估算 + frontmatter 授权字段）、§二（A 功能需求 R* / B 非功能需求 N* / C 自定义 X*，**验收主体＝功能/需求、全可复核、全留 `[ ]`**）、§2.5（过程项 · 无 checkbox 表格）、§三（非交付项）。
 
 ### Step 5 · 自检（落盘前）
 - `Grep` §二 是否混入主观词 → 改成可复核形式。
@@ -96,7 +96,7 @@ Doctor 确认 → 进 Step 3。**仍有阻断性歧义 → open_decisions 登记
 📁 logs/checkpoints/{YYYY-MM-DD}_{任务简称}_PRD.md
    核心需求：{一句话}
    交付标准：{N} 条（R*/N*/X* 全可复核，已留 [ ] 待执行时填三态）
-   执行清单：{M} 项（task_status 跟踪）
+   执行清单：{M} 项（§2.5 表格 task_status 跟踪）
    分轨（v1.3）：客观轨 {K} 条打包签总 ✓（审查员背书）· 原则轨 {J} 条逐条 ✓
    未决分歧 open_decisions：{L} 条（仅阻断性项列明请 Doctor 裁；非阻断项继续）
 👉 执行完交验收：我逐条填 [?]+证据 → 独立审查背书 → Doctor/指定独立验收方打 ✓。
@@ -104,7 +104,7 @@ Doctor 确认 → 进 Step 3。**仍有阻断性歧义 → open_decisions 登记
 ```
 
 ### Step 7 · 执行（任务已授权时直接实施）
-按 PRD 执行，**每达成一条立即** `[ ]`→`[?]`+证据；达不到 `[!]`+原因；不确定 `[~]`。**仅在既有授权范围内实施**；范围扩大不私自加交付标准 → 请 Doctor 裁定。
+按 PRD 执行，**每达成一条立即** `[ ]`→`[?]`+证据；达不到 `[!]`+原因；不确定 `[~]`。**仅在既有授权范围内实施**；范围扩大不私自加交付标准 → 请 Doctor 裁定。**部分阻断时保持 in_progress**（open_decisions 记阻断项），仅全部剩余需求被阻断才把顶层状态设 blocked。
 执行中遇分叉裁定（方向/口径/处置方式需 Doctor 拍）→ **随时 AskUserQuestion，现行做法不变**；该裁定落 PRD 变更记录（Doctor 原话 + 时间），**不追加进原则轨**（原则轨只收开发后首现的验收裁定 · 2026-08-15 Doctor 立）。
 
 ### Step 7.5 · 独立审查（执行后、交验收前 · ★ 闭环）
@@ -114,7 +114,7 @@ CC 自审填完三态后，**派一个独立审查子 agent**对照 PRD 复核�
 - **审查者人选**：优先 **句芒 `project-review`**（PRD对齐 + 代码/产物质量 + 精神洞察三层）；若句芒此时不是可运行子 agent，则起**一个干净的 Task subagent**——关键是它**未参与本次开发**（"另一颗干净的脑子"，借鉴视频"审查员没写过这代码所以审得准"）。
 - **审什么**：逐条核 §二 交付标准——CC 填的 `[?]`+证据是否真成立（验收方法重跑 / 功能结果实测 / 人工验收记录核对）、有无完成幻觉漏项、产出质量。**只读不写产出物**（职责隔离换客观）。
 - **背书（v1.3 分轨）**：审查通过后 CC 在 PRD §二「分轨签核」小节落**审查员背书记录**——审查者身份 + 验证动作记录（重跑命令 / 实跑输出摘录）。验收方抽查可复核；抽查发现背书失实 → 该场客观轨 ✓ **全部回退**。**审查员默认只有背书权，不自动取得 `[✓]` 权**（指定独立验收方由 Doctor 指定）。
-- **闭环**：审不过 → CC 按审查意见改 → 复审，直到过；审过 → 才把 §四 改"awaiting_acceptance"，触发 /save 贴 PRD 路径，交 Doctor 或指定独立验收方终审。
+- **闭环**：审不过 → CC 按审查意见改 → 复审，直到过；审过 → 才把 §四 current_status 改"awaiting_acceptance"，触发 /save 贴 PRD 路径，交 Doctor 或指定独立验收方终审。
 - **分轨验收（v1.3 · 模板 §六 阶段 2.5）**：客观轨（机器可判事实）Doctor 或指定独立验收方签一个总 ✓；原则轨（结论/裁定类，通常 3-5 条且必须有真裁定含量）验收方逐条 ✓。CC 转录对话裁定落盘时注明原话与时间。
 - **红线**：① 审查者必须是**未参与开发的干净上下文**，不得自审自过；② 审查者**也不打 ✓**——PRD 内 ✓ 只由 Doctor 或 Doctor 明确指定、且未参与实施的独立验收方落（实施者与审查者同属实施侧，不得验收自己的改动）；③ 审查意见与 CC 分歧时如实呈给 Doctor，不替 Doctor 拍板。
 
@@ -162,3 +162,4 @@ CC 自审填完三态后，**派一个独立审查子 agent**对照 PRD 复核�
 - v1.3（2026-08-14）：新增「分轨验收」——客观轨（机器可判事实）打包签总 ✓ + 审查员背书（必附验证动作记录）；原则轨（结论/裁定类）验收方逐条 ✓；✓ 裁定权始终在 Doctor 或指定独立验收方，CC 转录须注明原话时间；抽查背书失实 → 客观轨 ✓ 全部回退（Doctor 裁「A 分轨」· BT-19 首例 · 模板 §六 阶段 2.5 同步）。
 - v1.4（2026-08-15）：回归「功能验收」初衷——① §1 触发条件补功能判断（无功能可验收的清洗/去重/迁移类任务不立 PRD，走任务清单+读盘核验轻流程）；② §2 加第 7 条：原则轨只收开发后首现的验收裁定，开发中已拍板者变更记录留痕即止；③ Step 7 补执行中分叉裁定仍随时 AskUserQuestion、不追加进原则轨（Doctor 2026-08-15 命题+批 · 模板同步 v1.1）。
 - v1.5（2026-08-18 · 十轮合同）：PRD＝功能/需求验收基线、不是审批单——① 触发改「任务已获执行授权+功能或明确非功能需求+达阈值 → 直接立卷」，删除「Doctor 同意才进」「建议立 PRD」审批门；② 多轮对齐改**条件触发**（需求模糊/信息不足/范围冲突/验收标准无法落成），原指令已说清时跳过；③ 「起草≠开工」改为「PRD 不授予任务权限、也不撤销已有权限」；④ §二 验收主体＝功能/需求（用户可感知结果＋NFR 仅指性能/安全/可靠性/兼容性/数据质量），文件/Grep/脚本输出只是证据；⑤ 新增 §2.5 执行清单（task_status·不参与功能交付关闭判定）；⑥ frontmatter doctor_decision → task_authorization/acceptance_authority/open_decisions；⑦ 独立审查员默认只有背书权、指定独立验收方由 Doctor 指定；⑧ 客观 TODO 代勾仅限 PRD 外普通 TODO（G-X136 十轮补钉）。
+- v1.5.1（2026-08-18 · 十一轮）：① §2.5 改无 checkbox 表格（task_id | task_status | evidence）；② frontmatter 补 roles（implementers/independent_reviewers）与 acceptance_authority 三字段（designation_source_ref/designation_quote/designated_at）；③ §四 改 current_status+变更历史（frontmatter status 为唯一真源）；④ blocked 仅全部剩余需求被阻断；⑤ 关闭条件=逐项验收或合法总签覆盖；⑥ 设计提案整体 superseded、模板停止引用为现行规范；⑦ 运行时发布修复（save_skill 双 frontmatter 事故后重发——content 只传正文、metadata 严格取 canonical，见 RISK-20260817-002 追记四）。

@@ -25,7 +25,7 @@ type: permanent
 | ✅ | `brain-save` | `/save [主题]` · "存档" | 落盘会话 + 提供 git 命令（v2.6，per-agent 归位） | `archived/brain/brain-save.skill` |
 | ✅ | `brain-note` | `/note [主题]` · "起一条笔记" | inbox/ 采集态 | `archived/brain/brain-note.skill` |
 | ✅ | `brain-anchors` | 关键词监听（dva·龙鱼五力·渊图·白泽…） | 自动加载项目/数灵上下文 | `archived/brain/brain-anchors.skill` |
-| ✅ | `brain-prd` | `/prd [任务简称]` · "立PRD" | 开工前对齐 + 起草交付标准 PRD | `archived/brain/brain-prd.skill` |
+| ✅ | `brain-prd` | `/prd [任务简称]` · "立PRD" · "起草PRD" · "写交付标准" | 立 PRD——功能/需求验收基线，不是审批单（v1.5.1 · 2026-08-18 十/十一轮合同 · canonical=`brain/.skills/brain-prd/SKILL.md` · portable/.skill 包/Cowork/Claude-3p 为派生消费端） | `archived/brain/brain-prd.skill` |
 | ✅ | `brain-consolidate` | `/consolidate` · "固化记忆" | brain 日志蒸馏入 permanent | `archived/brain/brain-consolidate.skill` |
 
 6 个 2026-07-01 官方环境全部重装到位（从现源重打包、frontmatter 引号合规、`brain/.skills/` 镜像同步刷新）。**已弃用**：`_DEPRECATED_brain-commands`（早期合并版，存档可删）。

@@ -2,8 +2,8 @@
 title: PRD 交付标准主机制 · 设计提案
 tags: [reference, gotchas, 元方法论, 交付标准, acceptance-criteria]
 created: 2026-05-20
-updated: 2026-05-20
-status: active
+updated: 2026-08-18
+status: superseded  # 2026-08-18 十一轮：全文转历史/superseded，现行权威=通用教训 G-X4 + templates/prd-acceptance-template.md v1.2 + brain-prd v1.5
 progress: 已采纳 · 阶段 1 落实完成
 type: reference
 author: CC
@@ -22,6 +22,8 @@ doctor_decisions:
 ---
 
 # PRD 交付标准主机制 · 设计提案
+
+> **⚠ 全文 superseded（2026-08-18 十一轮合同）**：本文件是 2026-05-20 的历史设计提案，正文保留备查、**不再作为现行规范**。文中旧审批流（「Doctor 同意才立」「只审一眼、改、批」）、多 checkbox 生命周期、按规模必立等表述均已被取代。**现行权威**：① [[通用教训]] G-X4（核心规则 1-7 · 十轮重写）与 G-X136（十轮补钉）；② `templates/prd-acceptance-template.md` v1.2（单一 status + 变更历史、§2.5 表格、roles/acceptance_authority/open_decisions）；③ `brain-prd` skill v1.5。模板与 skill 均不再引用本文件为现行规范。
 
 > **Doctor 2026-05-20 命题**:"CC 错误自发现率非常高了 · 但偶尔依然出现需要我发现错误才能自觉的现象。偶尔错误难以避免 · 我们要做的是建立一个错误发现机制。我的建议是 · 开发项目时 · 在 PRD 写交付标准 · 完成后打勾 · 所有交付标准完成后(或用户取消后)才算交付成功。"
 >
