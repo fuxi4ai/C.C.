@@ -11,8 +11,8 @@ type: log
 
 ## 待办
 
-- [ ] **EAL · VV 八轮治理文本修复（2026-08-18 已改 8 文件 20 处 · 已修改自验待独立验收）**：① Settings 新版全文待 Doctor 重贴 + 新会话验证注入（VV 建议旧规则退场后再贴）；② brain 仓治理修复 commit 待 Doctor 跑（命令已贴 · 精确路径暂存）；③ VV 九轮复验待进场；④ 新发现跨项目残留（超 A–F 方案 · 待 Doctor 裁）：9 项目 GOTCHAS 图例与活状态词旧格式（`⏳ 待解决`/`✅` 无归属：O MY HTML/渊图/风险日报/司南/GlobalPercent/烛照九阴含🟧扩展/海螺姑娘/龙鱼五力 + references/brain-对接需求 模板行）——随各项目下次推进顺带或开格式迁移专场；⑤ dry-run 测试 6 项非阻断增强并入 gate 判据集 PRD。
-  依据：VV 八轮终验回执 · `剑酒青丘/GOTCHAS.md` RISK-002 追记 · G-X151
+- [ ] **EAL · VV 九轮治理传播修复（2026-08-18 已改 · 已修改自验待独立验收）**：八轮 commit `894ab9d` 已由 Doctor 完成 ✓（gitcheck 实核：HEAD==origin/main · tracked diff 0）；九轮 BLOCK（治理传播）修复已实施——P0 统一合同落全仓（PRD 模板+设计提案单义合同·状态单一枚举进行中/待验收/已交付/已取消 · 通用教训上游原句替换 6 处 · CLAUDE.md:142 范围限定 · 偏好 17-25 替换+代录范式 · .skills 真源 4 个+portable 导出层+claude-code CLAUDE.md · BUG-003 三合同订正 · G-X150 13 用例 · RISK-002/G-X151 追记九轮）；P1 视频方法论 superseded 指针 + 12 项目 GOTCHAS 图例归属补充 + brain-对接需求 模板历史标注。**待**：① VV 十轮复验；② 九轮修复 commit（命令已贴 · 另起提交 · 禁 git add -A）；③ Settings 等十轮确认后再请 Doctor 重贴（当前勿重贴）；④ skill 多真源双向漂移全量合并专场（brain-resume 导出层比真源新 · brain-todo 反之）；⑤ `⏳` 活状态逐条迁移专场（12 项目）；⑥ Cowork 账号 save_skill + gateway 侧 skill 同步待 Doctor 批；⑦ dry-run 测试 6 项非阻断增强并入 gate 判据集 PRD。
+  依据：VV 九轮终验回执 · `剑酒青丘/GOTCHAS.md` RISK-002 追记二 · G-X151 追记
 
 - [ ] **EAL · v2.3 五项方法 gate（A 阶段七轮整改已修待 VV 八轮终验 · B 阶段另排）**：①④⑤ A 阶段已完成（G1 CAR[0,+3] 两口径对照表·G4 复现包 rev9 SHA 八项·G5 候选梯四规格；五~七轮整改：GOTCHAS 去自签+四项降档/test_failfast 13 用例双模式/授权语义整合/--dry-run 零写入）；② 事件时钟＝B 阶段 G2（涉 db schema·Doctor 终端配合）；③ 价格口径敏感性＝B 阶段 G3（外部取数）。另遗留：慢牛漂移 +12.96 ≈ 0.11298329×115 逐日溯源（未做）。五项全绿前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
   依据：`4AI/Shake hands/to CC/` VV 二~七轮终验 · `logs/2026-08-18-EAL五至七轮整改与授权整合.md`

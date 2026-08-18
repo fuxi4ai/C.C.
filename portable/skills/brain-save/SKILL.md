@@ -1,6 +1,6 @@
 ---
 name: "brain-save"
-description: "Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **写 `permanent/经验库.md` 或 `通用教训.md` 时必须定位到对应 `##` 节插入、禁 append 文件尾；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；CC 只搬运已勾的，永不代打 ✓（G-X4 · v3.1）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。**"
+description: "Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **写 `permanent/经验库.md` 或 `通用教训.md` 时必须定位到对应 `##` 节插入、禁 append 文件尾；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；判断性勾项 CC 只搬运已勾的、不代打 ✓（G-X4 · v3.1），客观 TODO 证据硬按常驻授权代勾留痕（G-X136）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。**"
 ---
 
 # brain-save — 把本次会话存档到 brain
@@ -137,7 +137,7 @@ description: "Persist the current session as a structured log entry in the brain
 
 - **勾掉一条 → 把它整块(标题行 + 其下所有缩进正文)移进 `references/TODO-已完成归档.md` 的 `## 已完成` 段**,按完成日期倒序。`brain/TODO.md` 只留 `- [ ]`。
 - **取消 ≠ 完成**:`~~删除线~~` 或写明「取消」的条目,进归档文件的 `## 已取消` 段单列,别混进完成清单虚增战果。
-- **⚠ 但 CC 永不代打 ✓(G-X4)**:**迁移已勾的条目是搬运,可做;给未勾的条目打勾是判定,绝不做**。核实中发现「疑似已办完但没勾」的,**只列清单报给 Doctor**,由 Doctor 勾。条目自带「CC 不代勾」字样的更是碰都不碰。
+- **⚠ 打勾分轨(G-X4/G-X136)**:客观、机器可验证 TODO(证据硬)**凭盘上可复核证据直接代勾留痕**(常驻授权,不占 PRD checkbox);判断性勾项——迁移已勾条目是搬运可做,给未勾条目打勾是判定,只列清单报给 Doctor 或指定独立验收方。核实中发现「疑似已办完但没勾」的,只列清单报 Doctor,由 Doctor 勾。条目自带「CC 不代勾」字样的,若属客观可验证且证据硬,按常驻授权代勾并留痕;若属判断性,碰都不碰。
 - **写新 TODO 条时想一层**:这件事该进 `brain/TODO.md`(跨项目/需 Doctor 拍板)还是项目自己的 `{项目}/TODO.md`(纯项目内工程)?**两处都写会漂移、只写一处会漏**——实测 DVA 两处各记各的、完全不重叠。落点不确定时问 Doctor,别默认往 brain 塞。
 - **待办必须进 TODO,不能只写在当日日志的「遗留待办」里**。`/resume` 只读最近 3 篇日志 + TODO;写在日志里的待办,一旦滑出 3 篇窗口就永久不可见。活例:抖音口播稿的审稿待办只写在 2026-07-21 日志里,**9 天没被任何一次 resume 拿到**,直到 /consolidate 翻 inbox 才捞出来。
 
@@ -337,7 +337,7 @@ git push
 - **仓库半开(rebase/merge/cherry-pick 进行中)跳过 Step 5 的 commit 命令,但 Step 3+4 落盘照做**(v2.8)
 - **不在 sandbox 跑 git 写命令** = 硬约束 · 不可绕过(参 G-X2)
 - **写 permanent/ 下有分节结构的文件时先定位节、再插入**(v3.0);**编号先探再取**,不心算
-- **勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`**(v3.1);**CC 只搬运已勾的,永不代打 ✓**(G-X4)
+- **勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`**(v3.1);**判断性勾项 CC 只搬运已勾的、不代打 ✓**(G-X4);客观 TODO 证据硬则按常驻授权代勾留痕(G-X136)
 - **Step 4 遇 `architecture/系统概览.md` 不存在 → 明确报告,禁静默跳过、禁自动补建 stub**(v3.2)
 - **引用 Step 4 那张缺口表前先自己跑命令重取差集,别照抄表**(v3.2.1)
 
