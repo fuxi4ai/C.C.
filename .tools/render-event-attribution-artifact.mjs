@@ -9,7 +9,7 @@
  *   本通用 renderer 不再直接发布生产页；cells() 哨兵修复保留（转义管道拆列）。
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, resolve, relative, isAbsolute } from "node:path";
 
 const brain = resolve(import.meta.dirname, "..");
 const source = resolve(brain, "剑酒青丘/frameworks/事件归因台账.md");
@@ -114,7 +114,13 @@ if (write) {
   process.exit(1);
 }
 if (previewPath) {
+  const previewRoot = resolve(brain, ".tools/eal-preview");
   const out = resolve(previewPath);
+  const rel = relative(previewRoot, out);
+  if (rel.startsWith("..") || isAbsolute(rel)) {
+    console.error(`preview 目标必须在固定 previewRoot（${previewRoot}）内，禁止指向正式 artifact 目录：${out}`);
+    process.exit(1);
+  }
   mkdirSync(dirname(out), { recursive: true, mode: 0o700 });
   writeFileSync(out, html, { encoding: "utf8", mode: 0o600 });
 }

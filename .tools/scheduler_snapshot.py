@@ -71,7 +71,8 @@ OPS_DIRS = [                                                   # plist 源文件
 OUT_JSON = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.json"
 OUT_MD = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.md"
 MIRROR_DIR = HOME / "Documents/Claude/brain/references/scheduled-live-mirror/live"  # 第三输出 · live 镜像（2026-08-02 Doctor 批）
-ARTIFACTS_TREE = HOME / "Claude's workspace" / "Artifacts"
+ARTIFACTS_TREE = HOME / "Gateway-workspace" / "Artifacts"   # 2026-08-17 VV 四轮 P0：真源＝Gateway 壳（旧 "Claude's workspace" 树已冻结·EAL 停留 08-01·会回滚 mirror）。沙箱不可读、仅 Mac 原生可扫
+LEGACY_ARTIFACTS_TREE = HOME / "Claude's workspace" / "Artifacts"  # 旧 Cowork 树 · 正常＝冻结不回滚用；再现异常由检测层另报（2026-08-17 留名）
 ART_MIRROR = HOME / "Documents/Claude/brain/references/scheduled-live-mirror/artifacts"  # 第四输出（2026-08-02 Doctor 批）
 ART_CAP = 1_000_000   # index.html >1M 只记 sha 不拷正文（zhuzhao/yuantu 两大件，备份责任在生成器）
 
