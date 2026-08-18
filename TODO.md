@@ -11,14 +11,14 @@ type: log
 
 ## 待办
 
-- [ ] **EAL · v2.3 五项方法 gate（A 阶段十二修已修待 VV 五轮终验 · B 阶段另排）**：①④⑤ A 阶段已完成（G1 CAR[0,+3] 两口径对照表·G4 复现包 rev9 SHA 八项含 test_failfast·G5 候选梯四规格——VV 四轮终验「G1/2-Q/FOMC/G5 数值 PASS·完整 fail-fast/方程区同代/快照可再生链 BLOCK」；十二修已全修：fail-fast 真闭环+方程区整块同代+快照真源 Gateway）；② 事件时钟＝B 阶段 G2（涉 db schema·Doctor 终端配合）；③ 价格口径敏感性＝B 阶段 G3（外部取数）。另遗留：慢牛漂移 +12.96 ≈ 0.11298329×115 逐日溯源（未做）；2-R 全局传播已随十二修完成（versions 为 N−1 轮转·不参与同代判定·VV 三轮裁）。五项全绿前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
-  依据：`4AI/Shake hands/to CC/` VV 二/三/四轮终验 · `logs/2026-08-17-EAL十二修与治理全落.md`
+- [ ] **EAL · v2.3 五项方法 gate（A 阶段七轮整改已修待 VV 八轮终验 · B 阶段另排）**：①④⑤ A 阶段已完成（G1 CAR[0,+3] 两口径对照表·G4 复现包 rev9 SHA 八项·G5 候选梯四规格；五~七轮整改：GOTCHAS 去自签+四项降档/test_failfast 13 用例双模式/授权语义整合/--dry-run 零写入）；② 事件时钟＝B 阶段 G2（涉 db schema·Doctor 终端配合）；③ 价格口径敏感性＝B 阶段 G3（外部取数）。另遗留：慢牛漂移 +12.96 ≈ 0.11298329×115 逐日溯源（未做）。五项全绿前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
+  依据：`4AI/Shake hands/to CC/` VV 二~七轮终验 · `logs/2026-08-18-EAL五至七轮整改与授权整合.md`
 
 - [ ] **EAL · gate 验收脚本 PRD 待批（2026-08-17 起草 · VV 判据机器化）**：eal_gate_check.py + 判据集 json 八项（环境/复现数值/test_failfast/SHA/指纹+denylist/载体一致/快照真源/发布器保险丝）· gate 全绿＝「A 阶段完成」声明的必要不充分条件（VV 终审不变）· 四边界 Doctor 已裁（EAL 专用/渲染器不进/判据集 VV 增补 Doctor 批）。批后开工。
   依据：`logs/checkpoints/2026-08-17_EAL_gate验收脚本_PRD.md`
 
-- [ ] **EAL 收口余尾（Doctor 动作条 · 2026-08-17 /save 挂）**：① Settings 七条「实施与验收硬约束」贴入个人偏好 + 开新会话验证注入；② live/guanxing-fed-daily 与 live/r7-threshold-recal 的 SKILL.md 盘上缺失待核（重建/rsync 环节）；③ 重建产物（snapshot json/md + artifact 镜像 + live SKILL）commit 待裁。
-  依据：`logs/2026-08-17-EAL十二修与治理全落.md`
+- [ ] **EAL 收口余尾（Doctor 动作条 · 2026-08-18 /save 更新）**：① Settings 七轮版已贴 ✓——剩新会话起手核注入（块二存在/无六轮旧措辞）；② live 镜像 21 班同步验证结果知会留档（--dry-run→全量后）；③ 重建产物（snapshot json/md + artifact 镜像 + live SKILL）单独 commit。
+  依据：`logs/2026-08-18-EAL五至七轮整改与授权整合.md`
 
 - [ ] **龙鱼 · 待校正队列两条旧账（2026-08-15 畸形收口场 /resume 补挂 · 源：`logs/2026-08-15-渊图15篇入库与光通信龙鱼重打分.md` 遗留）**：奥比 688322（08-15 现核 Δ+10.5 · ds 80.0 vs claude 69.5）、海光 688041（现核 Δ−10.5 · ds 50.5 vs claude 61.0；昨日日志「+17/−16」口径无法从 records 复现——records 最新 08-08、无校正条目）——随下轮 dualscorer 班或专项校正处理。
 
