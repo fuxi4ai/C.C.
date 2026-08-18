@@ -282,7 +282,6 @@ def mirror_live_tree(dry=False):
     import shutil
     if not LIVE_TREE.exists():
         return "live 树不可读，镜像跳过"
-    MIRROR_DIR.mkdir(parents=True, exist_ok=True)
     live_files = {p.relative_to(LIVE_TREE) for p in LIVE_TREE.rglob("*") if p.is_file()}
     removed, copied = 0, 0
     would_remove, would_copy = [], []
@@ -302,19 +301,21 @@ def mirror_live_tree(dry=False):
                 shutil.copy2(src, dst); copied += 1
     if dry:
         return f"[dry-run] live 镜像：将更新 {len(would_copy)} 件 · 将移除 {len(would_remove)} 件（不落盘）\n  更新: {sorted(would_copy)}\n  移除: {sorted(would_remove)}"
+    MIRROR_DIR.mkdir(parents=True, exist_ok=True)
     return f"镜像已同步：{len(live_files)} 文件（更新 {copied} · 移除 {removed}）"
 
 
-def mirror_artifacts():
+def mirror_artifacts(dry=False):
     """第四输出 · Artifacts 当前态镜像（2026-08-02 Doctor 批）。只收 index.html；
     versions/ 是 Cowork 自管回滚历史（实测占 Artifacts 总量 ~97%）、thumbnail 可再生，均不入。
     超 ART_CAP 只记清单行——变没变靠 sha 进 git diff，正文由生成器兜底。
-    副产品 _artifacts_manifest.txt 使 Artifacts 成为本机制看得见的第六个执行面。"""
+    副产品 _artifacts_manifest.txt 使 Artifacts 成为本机制看得见的第六个执行面。
+    dry=True（2026-08-17 VV 七轮要求）：只算计划，不 mkdir/copy/unlink/写清单。"""
     import shutil
     if not ARTIFACTS_TREE.exists():
         return "Artifacts 树不可读，跳过"
-    ART_MIRROR.mkdir(parents=True, exist_ok=True)
     lines, copied = [], 0
+    would = []
     for d in sorted(ARTIFACTS_TREE.iterdir()):
         f = d / "index.html"
         if not d.is_dir() or not f.exists():
@@ -325,13 +326,22 @@ def mirror_artifacts():
         dst = ART_MIRROR / d.name / "index.html"
         if mode == "copy":
             if (not dst.exists()) or sha(f) != sha(dst):
-                dst.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(f, dst); copied += 1
+                if dry:
+                    would.append(f"copy {d.name}/index.html")
+                else:
+                    dst.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(f, dst); copied += 1
         elif dst.exists():
-            dst.unlink()   # 曾拷过后来超限：清正文，只留清单行
-    (ART_MIRROR / "_artifacts_manifest.txt").write_text(
-        "# name\tbytes\tsha12\tmode\tmtime —— 由 scheduler_snapshot.py 周更；盘上有/清单无的幽灵靠本清单 diff 现形\n"
-        + "\n".join(lines) + "\n", encoding="utf-8")
+            if dry:
+                would.append(f"sha-only 清正文 {d.name}/index.html")
+            else:
+                dst.unlink()   # 曾拷过后来超限：清正文，只留清单行
+    manifest_text = ("# name\tbytes\tsha12\tmode\tmtime —— 由 scheduler_snapshot.py 周更；盘上有/清单无的幽灵靠本清单 diff 现形\n"
+        + "\n".join(lines) + "\n")
+    if dry:
+        return f"[dry-run] Artifacts：{len(lines)} 个（将拷 {len(would)} · 清单将全量重写 {len(lines)} 行）——不落盘\n  {sorted(would)}"
+    ART_MIRROR.mkdir(parents=True, exist_ok=True)
+    (ART_MIRROR / "_artifacts_manifest.txt").write_text(manifest_text, encoding="utf-8")
     return f"Artifacts：{len(lines)} 个（拷 {copied} · 清单全量）"
 
 
@@ -408,8 +418,20 @@ def main():
     ap = argparse.ArgumentParser(description="定时任务四执行面巡检（只读 · 正常静默）")
     ap.add_argument("-v", "--verbose", action="store_true", help="打印四面全摘要")
     ap.add_argument("-a", "--all", action="store_true", help="连 YELLOW 级也报")
-    ap.add_argument("--dry-run", action="store_true", help="镜像只列将更新/移除清单，不落盘（2026-08-17 VV 五轮要求）")
+    ap.add_argument("--dry-run", action="store_true", help="零写入：只打印 live/Artifacts 镜像计划与只读扫描摘要，不写 snapshot/mirror/manifest、不 mkdir/copy/unlink（2026-08-17 VV 七轮要求）")
     args = ap.parse_args()
+
+    if args.dry_run:
+        # 真零写入：先出计划，再退出——不触碰 OUT_JSON/OUT_MD/MIRROR_DIR/ART_MIRROR
+        live_plan = mirror_live_tree(dry=True)
+        art_plan = mirror_artifacts(dry=True)
+        err, cowork = scan_cowork()
+        print("=== scheduler_snapshot --dry-run（零写入）===")
+        print(f"只读扫描：cowork {len(cowork)} 班（path={LIVE_TREE}）")
+        print(live_plan)
+        print(art_plan)
+        print("未写 snapshot/mirror/manifest · 未 mkdir/copy/unlink")
+        return
 
     # 读上次快照（必须在覆盖之前）——用于检测「班消失」
     prev = None
@@ -444,7 +466,7 @@ def main():
     OUT_JSON.write_text(json.dumps(snap, ensure_ascii=False, indent=1, sort_keys=False),
                         encoding="utf-8")
 
-    mirror_note = mirror_live_tree(dry=args.dry_run)
+    mirror_note = mirror_live_tree()
     art_note = mirror_artifacts()
 
     # ── 人读版 ──
