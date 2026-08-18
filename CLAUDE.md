@@ -181,7 +181,7 @@ CC 所有中文输出（对话 / 写作 / 报告 / 技术）默认遵守，全�
 **判断阈值**：排查超过一轮的问题都值得记录；拼写错误等明显笔误不记。
 
 **写入位置**：
-- 有所属项目 → `~/Documents/Claude/Projects/{项目名}/GOTCHAS.md`
+- 有所属项目 → 先定位该项目**现有的 canonical GOTCHAS.md**（常见于 `brain/{项目名}/GOTCHAS.md` 或项目工作目录内），禁止按固定路径猜写（反例：剑酒青丘的 GOTCHAS 在 brain 内、不在 `~/Documents/Claude/Projects/`）
 - 跨项目 / Cowork 环境问题 → `brain/permanent/通用教训.md`
 
 **格式**（沿用司南方法论）：
