@@ -3,6 +3,10 @@
  * Rebuild the Event Attribution Ledger's local HTML mirror from its canonical
  * Markdown source.  It intentionally does not calculate market data or edit
  * the ledger: publishing is a pure, reviewable rendering step.
+ *
+ * ⚠ 非生产渲染器（2026-08-17 VV 二轮终验）：EAL 生产页唯一渲染器＝值守班三时段富版模板
+ *   （剑酒青丘/frameworks/eal-三时段图-渲染器.html · 按 event-attribution-watch SKILL 规范组装）。
+ *   本通用 renderer 不再直接发布生产页；cells() 哨兵修复保留（转义管道拆列）。
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -11,6 +15,8 @@ const brain = resolve(import.meta.dirname, "..");
 const source = resolve(brain, "剑酒青丘/frameworks/事件归因台账.md");
 const destination = resolve(brain, "references/scheduled-live-mirror/artifacts/event-attribution-ledger/index.html");
 const write = process.argv.includes("--write");
+const previewArg = process.argv.indexOf("--preview");
+const previewPath = previewArg >= 0 ? process.argv[previewArg + 1] : null;
 
 function escape(value) {
   return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -104,7 +110,12 @@ const html = `<!doctype html>
 </style></head><body><main><header class="mast"><div class="eyebrow">剑酒青丘 · 解释层 overlay · 非预警器</div><h1>${escape(title)}</h1><div class="meta"><span class="chip">快照 <strong>${escape(snapshot)}</strong></span><span class="chip">规则书更新 <strong>${escape(updated)}</strong></span><span class="chip">本次渲染 ${escape(renderedAt)}</span></div></header>${markdown(body)}<footer>发布器：canonical Markdown → self-contained HTML。此发布不改变规则书、量级带或数据库。</footer></main></body></html>\n`;
 
 if (write) {
-  mkdirSync(dirname(destination), { recursive: true, mode: 0o700 });
-  writeFileSync(destination, html, { encoding: "utf8", mode: 0o600 });
+  console.error("非生产渲染器保险丝（2026-08-17 VV 三轮终验）：--write 已禁用，禁止覆盖正式 mirror。生产页唯一渲染器＝值守班三时段富版模板（剑酒青丘/frameworks/eal-三时段图-渲染器.html）；本地预览请用 --preview <path> 写独立路径。");
+  process.exit(1);
 }
-process.stdout.write(`${JSON.stringify({ source, destination, rendered_at: renderedAt, snapshot, wrote: write, bytes: Buffer.byteLength(html) })}\n`);
+if (previewPath) {
+  const out = resolve(previewPath);
+  mkdirSync(dirname(out), { recursive: true, mode: 0o700 });
+  writeFileSync(out, html, { encoding: "utf8", mode: 0o600 });
+}
+process.stdout.write(`${JSON.stringify({ source, destination, rendered_at: renderedAt, snapshot, wrote: false, preview: previewPath ? resolve(previewPath) : null, bytes: Buffer.byteLength(html) })}\n`);
