@@ -11,13 +11,16 @@ type: log
 
 ## 待办
 
+- [ ] **EAL · VV 八轮治理文本修复（2026-08-18 已改 8 文件 20 处 · 已修改自验待独立验收）**：① Settings 新版全文待 Doctor 重贴 + 新会话验证注入（VV 建议旧规则退场后再贴）；② brain 仓治理修复 commit 待 Doctor 跑（命令已贴 · 精确路径暂存）；③ VV 九轮复验待进场；④ 新发现跨项目残留（超 A–F 方案 · 待 Doctor 裁）：9 项目 GOTCHAS 图例与活状态词旧格式（`⏳ 待解决`/`✅` 无归属：O MY HTML/渊图/风险日报/司南/GlobalPercent/烛照九阴含🟧扩展/海螺姑娘/龙鱼五力 + references/brain-对接需求 模板行）——随各项目下次推进顺带或开格式迁移专场；⑤ dry-run 测试 6 项非阻断增强并入 gate 判据集 PRD。
+  依据：VV 八轮终验回执 · `剑酒青丘/GOTCHAS.md` RISK-002 追记 · G-X151
+
 - [ ] **EAL · v2.3 五项方法 gate（A 阶段七轮整改已修待 VV 八轮终验 · B 阶段另排）**：①④⑤ A 阶段已完成（G1 CAR[0,+3] 两口径对照表·G4 复现包 rev9 SHA 八项·G5 候选梯四规格；五~七轮整改：GOTCHAS 去自签+四项降档/test_failfast 13 用例双模式/授权语义整合/--dry-run 零写入）；② 事件时钟＝B 阶段 G2（涉 db schema·Doctor 终端配合）；③ 价格口径敏感性＝B 阶段 G3（外部取数）。另遗留：慢牛漂移 +12.96 ≈ 0.11298329×115 逐日溯源（未做）。五项全绿前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
   依据：`4AI/Shake hands/to CC/` VV 二~七轮终验 · `logs/2026-08-18-EAL五至七轮整改与授权整合.md`
 
 - [ ] **EAL · gate 验收脚本 PRD 待批（2026-08-17 起草 · VV 判据机器化）**：eal_gate_check.py + 判据集 json 八项（环境/复现数值/test_failfast/SHA/指纹+denylist/载体一致/快照真源/发布器保险丝）· gate 全绿＝「A 阶段完成」声明的必要不充分条件（VV 终审不变）· 四边界 Doctor 已裁（EAL 专用/渲染器不进/判据集 VV 增补 Doctor 批）。批后开工。
   依据：`logs/checkpoints/2026-08-17_EAL_gate验收脚本_PRD.md`
 
-- [ ] **EAL 收口余尾（Doctor 动作条 · 2026-08-18 /save 更新）**：① Settings 七轮版已贴 ✓——剩新会话起手核注入（块二存在/无六轮旧措辞）；② live 镜像 21 班同步验证结果知会留档（--dry-run→全量后）；③ 重建产物（snapshot json/md + artifact 镜像 + live SKILL）单独 commit。
+- [ ] **EAL 收口余尾（Doctor 动作条 · 2026-08-18 /save 更新）**：① Settings 七轮版已贴 ✓ + 新会话注入核验 ✓（08-18 resume 场逐行比对：块二存在·无六轮旧措辞·漂移零）；② live 镜像 21 班同步验证结果知会留档（--dry-run→全量后）；③ 重建产物单独 commit ✓（已核实·gitcheck.py 2026-08-18：commit「brain: 重建产物再落盘」在 HEAD 链 · push 已同步 · worktree 仅 TODO.md 留痕）。
   依据：`logs/2026-08-18-EAL五至七轮整改与授权整合.md`
 
 - [ ] **龙鱼 · 待校正队列两条旧账（2026-08-15 畸形收口场 /resume 补挂 · 源：`logs/2026-08-15-渊图15篇入库与光通信龙鱼重打分.md` 遗留）**：奥比 688322（08-15 现核 Δ+10.5 · ds 80.0 vs claude 69.5）、海光 688041（现核 Δ−10.5 · ds 50.5 vs claude 61.0；昨日日志「+17/−16」口径无法从 records 复现——records 最新 08-08、无校正条目）——随下轮 dualscorer 班或专项校正处理。
