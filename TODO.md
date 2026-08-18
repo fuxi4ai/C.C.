@@ -11,7 +11,7 @@ type: log
 
 ## 待办
 
-- [ ] **EAL · v2.3 五项方法 gate（2026-08-17 VV 六轮验收闭环后剩尾 · 源：VV 补充回执 §3/§4）**：① CAR 三套窗口统一（规则书 [0,+3] / 2-P [+1,+3] / 2-Q calendar+3 并存——需统一口径）；② 事件时钟（event_ts_utc/first_public_ts/effective_trade_date + close-cutoff·07-29 盘后事件映射修正）；③ 价格口径敏感性（Yahoo raw close vs adjusted/roll-adjusted·CL=F 换月跳点排除）；④ 可复现包固化（估计脚本+FRED CSV 原档+vintage/hash+设计矩阵日期+SPY-grid 对齐+HAC 参数——commit 400d203 只有结论无包）；⑤ local-level 完整候选梯（AR-only/local-level-only/combined + expanding one-step log score）。五项完成前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
+- [ ] **EAL · v2.3 五项方法 gate（A 阶段九轮收口待 VV 终验 · B 阶段另排）**：①④⑤ A 阶段已完成（G1 CAR[0,+3] 两口径对照表·G4 复现包 rev9 七项 SHA·G5 候选梯四规格——VV 终验「核心模型 PASS·A 阶段整体 BLOCK」待终验回执）；② 事件时钟（event_ts_utc/first_public_ts/effective_trade_date + close-cutoff·07-29 盘后事件映射修正）＝B 阶段 G2（涉 db schema·Doctor 终端配合）；③ 价格口径敏感性（Yahoo raw close vs adjusted/roll-adjusted·CL=F 换月跳点排除）＝B 阶段 G3（外部取数）。另遗留：慢牛漂移 +12.96 ≈ 0.11298329×115 逐日溯源；2-R 全局传播至 Gateway 版本文件（versions/1786977170792.html 仍 v2.2）。五项全绿前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
   依据：`4AI/Shake hands/to CC/VV补充回执-EAL-v2.3版本错位与实证复核-20260817.md` · `logs/2026-08-15-EAL方法论重构v1.4至v2.2.md`
 
 - [ ] **龙鱼 · 待校正队列两条旧账（2026-08-15 畸形收口场 /resume 补挂 · 源：`logs/2026-08-15-渊图15篇入库与光通信龙鱼重打分.md` 遗留）**：奥比 688322（08-15 现核 Δ+10.5 · ds 80.0 vs claude 69.5）、海光 688041（现核 Δ−10.5 · ds 50.5 vs claude 61.0；昨日日志「+17/−16」口径无法从 records 复现——records 最新 08-08、无校正条目）——随下轮 dualscorer 班或专项校正处理。
