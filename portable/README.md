@@ -25,7 +25,8 @@ related: [数灵转移/architecture/决策记录, 全局偏好-Settings镜像]
 
 ## 更新纪律
 
+- **⚠ brain-prd 单向发布（2026-08-18 Doctor 裁 · supersedes 下条「Cowork 账号为主」· 仅限 brain-prd）**：`brain/.skills/brain-prd/SKILL.md` 为唯一内容真源；本目录 `portable/skills/brain-prd/SKILL.md`、`.skill` 包、Cowork/Claude-3p 安装副本及 plugin cache 均为**只读派生消费端，禁止独立编辑**。发布链：`Brain canonical → portable → .skill → 运行时安装 → 新会话回读验证`，每层回读 SHA 一致。其他 brain skills 仍按下方旧纪律，存量漂移另列 TODO 统一收敛。
 - **Cowork 账号里改了 brain-* skill ⇒ 必须重导出本目录**，否则 dev 侧静默用旧版（G-X118 同族：改动落在不被消费的位置）。导出来源是 Cowork 只读缓存，任一 CC 会话可做，导出后 `diff` 校验逐字一致。
 - 本目录改了 ⇒ dev 侧即时生效（symlink）；Cowork 侧需 `save_skill` 带回账号。
-- 冲突时谁算数：**Cowork 账号为主**（Doctor 2026-08-02 定，双轨声明）。
+- 冲突时谁算数：**~~Cowork 账号为主~~（Doctor 2026-08-02 定 · brain-prd 已由 2026-08-18 canonical 裁定 superseded；其余 skill 仍适用）**。
 - 本快照基线：2026-08-02，6 个 SKILL.md 共 73,496 字节，导出时 diff 6/6 一致。

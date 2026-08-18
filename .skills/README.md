@@ -2,10 +2,12 @@
 title: brain/.skills — 7 个自制 skill（6 brain + gsap-frontend）
 tags: [skill, brain, install]
 created: 2026-05-14
-updated: 2026-06-30
+updated: 2026-08-18
 status: active
 type: resource
 ---
+
+> **⚠ canonical 裁定（2026-08-18 Doctor 立 · 本裁定先覆盖 brain-prd）**：`brain/.skills/brain-prd/SKILL.md` 为 brain-prd **唯一内容真源**；`portable/skills/brain-prd/SKILL.md`、`.skill` 包、Cowork/Claude-3p 安装副本及 plugin cache 均为**只读派生消费端，禁止独立编辑**。发布链固定：`Brain canonical → portable → .skill → 运行时安装 → 新会话回读验证`，每层回读 SHA 逐层一致。原「Cowork 账号为主」裁定自本次起 superseded（仅限 brain-prd）。其他 brain skills 的存量漂移另列 TODO 统一收敛。
 
 # brain/.skills — 自制 skill 真源
 
@@ -21,7 +23,7 @@ type: resource
 | `brain-save` | `/save [主题]` · "存档" | 落盘会话 + 提供 git 命令 |
 | `brain-note` | `/note [主题]` · "起一条笔记" | inbox/ 采集态 |
 | `brain-anchors` | `dva` · `龙鱼五力` · `渊图` · `白泽` · ... | 关键词自动加载项目/数灵上下文 |
-| `brain-prd` | `/prd [任务简称]` · "立 PRD" | 开工前对齐 + 起草 PRD |
+| `brain-prd` | `/prd [任务简称]` · "立 PRD" | 条件对齐 + 立功能/需求验收基线 PRD（十轮合同 2026-08-18） |
 | `brain-consolidate` | `/consolidate` · "固化记忆" | 蒸馏日志入 permanent |
 
 ### 前端工具（1 个）

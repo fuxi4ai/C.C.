@@ -93,11 +93,13 @@ LLM 倾向"积极完成"姿态:写完文件 → 觉得 done。但**done 的定�
 - §一 任务目标(1-2 段)
 - §二 **交付标准**(checkbox 列表 · 每条**可验证**)
 - §三 非交付项(写明"不在本任务范围"避免范围漂移)
-- §四 状态（单一枚举 · 2026-08-18 九轮合同）:
-  - □ 进行中
-  - □ 待验收(全部 CC 评"我认为已达成")
-  - □ 已交付(Doctor 或指定独立验收方全打 ✓)
-  - □ 已取消(原因 + 时间)
+- §四 状态（单一生命周期 · 2026-08-18 十轮合同）:
+  - □ draft（授权核实中）
+  - □ in_progress
+  - □ blocked
+  - □ awaiting_acceptance
+  - □ delivered
+  - □ cancelled
 
 ### 3.2 组件 B · 三态评估纪律
 
@@ -132,8 +134,10 @@ title: PRD · {任务简称}
 tags: [prd, {项目名}, acceptance]
 created: YYYY-MM-DD HH:MM
 updated: YYYY-MM-DD HH:MM
-status: 进行中  # 进行中 / 待验收 / 已交付 / 已取消
-doctor_decision: 待  # 待 / 已审 / 已取消
+status: draft  # 生命周期：draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled（现行字段以 templates/prd-acceptance-template.md 为准）
+task_authorization: { state / source_type / source_ref / quote / scope }
+acceptance_authority: { source_ref / authority }
+open_decisions: []
 type: prd
 ---
 
@@ -263,11 +267,11 @@ Doctor 原始指令:"东方拆分为东方(中国为主,日韩继承变化),和[
 - 不包含:西方哲学家条目里历史命名"双线并进"修改(项目立项原话保留)
 - 不包含:Doctor 凌晨工作的逐字逐句恢复(只恢复结构性结果)
 
-## §四 状态（历史示例 · 2026-05-20 · 现行枚举见 §四 单一枚举节）
-- [✓] 进行中(2026-05-20 14:30 立)
-- [✓] 待验收(2026-05-20 17:45 全部交付标准 CC 填 [?])
-- [ ] 已交付(待 Doctor 或指定独立验收方全 ✓)
-- [ ] 已取消
+## §四 状态（历史示例 · 2026-05-20 · 现行生命周期枚举见上文）
+- [✓] in_progress(2026-05-20 14:30 立)
+- [✓] awaiting_acceptance(2026-05-20 17:45 全部交付标准 CC 填 [?])
+- [ ] delivered(待 Doctor 或指定独立验收方全 ✓)
+- [ ] cancelled
 ```
 
 **反推的价值**:如果今天有 PRD · "git commit 命令贴给 Doctor"会显式列在交付标准里 → CC 看到这条 → 不会去 sandbox 跑 git。**PRD 强制 CC 把"隐含步骤"显式化**。
@@ -353,6 +357,8 @@ Doctor 原始指令:"东方拆分为东方(中国为主,日韩继承变化),和[
 ## §十 · 待 Doctor 裁定的子决策(★ 这是核心)
 
 ### 决策 1 · 立 PRD 的"触发权"归谁
+
+> **现状注（2026-08-18 十轮合同）**：本决策已被 G-X4 规则 2 取代——任务已获执行授权且无阻断性歧义时 CC **直接立卷**（不主动问「是否同意立 PRD」），Doctor 保留「本任务不用立 PRD」覆盖权。下方三选项为 2026-05-20 历史讨论。
 
 - **A · Doctor 主动说**:"这个任务立个 PRD" → CC 立(默认安全)
 - **B · CC 主动提**:CC 判断任务规模超阈值 → CC 提"建议立 PRD" → Doctor 同意
