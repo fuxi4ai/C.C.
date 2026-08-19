@@ -155,7 +155,7 @@ template_version: v1.2
 | | | | |
 
 **关闭路径**(回顾铁律):
-- ✓ 全 ✓ 关闭:所有交付标准由 Doctor 或指定独立验收方打 ✓
+- ✓ 关闭:每个 requirement 逐项 `[✓]`，或被**字段齐全的合法总签明确覆盖**——两者之外不得 delivered
 - ✓ Doctor 取消关闭:Doctor 明示"取消" / "算了"
 - ✗ 不允许实施者自动关闭(commit 即关 / Task 全 completed 即关 / "我觉得做完了"即关)
 
@@ -163,14 +163,14 @@ template_version: v1.2
 
 ## §五 · 变更记录
 
-> 每次 PRD 状态变化都记一条 · 包含时间 / 谁 / 动作
+> 记录内容变化与裁定（改动/分歧/验收动作）。**状态迁移不在此重复记录**——状态统一走「frontmatter `status` 修改 + §四 历史表追加行」。
 
 - {YYYY-MM-DD HH:MM} CC: 立 PRD · 含 N 条交付标准 · task_authorization 已记录
 - {YYYY-MM-DD HH:MM} CC: 第 N 项填 `[?]` + 证据
 - {YYYY-MM-DD HH:MM} CC: 第 M 项填 `[!]` + 原因
 - {YYYY-MM-DD HH:MM} Doctor/指定独立验收方: 第 N 项 ✓ · 第 M 项打回(需补 X)
 - {YYYY-MM-DD HH:MM} CC: 第 M 项重新填 `[?]` + 补证据
-- {YYYY-MM-DD HH:MM} Doctor/指定独立验收方: 全 ✓ → delivered
+- {YYYY-MM-DD HH:MM} Doctor/指定独立验收方: 逐项 ✓ 或总签覆盖（六字段齐全）→ 见 §四 历史行
 
 ---
 
@@ -215,13 +215,13 @@ template_version: v1.2
 - 任务范围扩大 → 不要私自加交付标准 → 请 Doctor 裁定 + 改 §一
 
 ### 任务结束时
-1. 所有交付标准都填了三态之一 → 把 §四 状态从"in_progress"改为"awaiting_acceptance"+ 时间
+1. 所有交付标准都填了三态之一 → **把 frontmatter `status` 改为"awaiting_acceptance" + §四 追加实际历史行**+ 时间
 2. 触发 /save → 在 brain-save 回报里贴 PRD 文件路径 + 状态
 3. 等 Doctor 或指定独立验收方验收
-4. **不能在 §四 自打"delivered"**
+4. **不能在 frontmatter 自打"delivered"**
 
 ### 任务取消时(Doctor 操作)
-- Doctor 写"取消"+ 原因 → §四 状态"cancelled"+ 时间 + 原因
+- Doctor 写"取消"+ 原因 → **frontmatter `status` 改"cancelled" + §四 追加实际历史行**+ 时间 + 原因
 - CC 触发 /save 记录未完成项
 
 ---
@@ -232,9 +232,9 @@ template_version: v1.2
 |---|---|---|---|---|
 | 立 PRD 时 | 可同步立 TaskList | — | — | **立 PRD · 填 §一-§三 · 授权字段** |
 | 任务进行中 | 用(过程任务跟踪) | — | 用(progress 文件) | 改 `[ ]` → `[?]/[!]/[~]` + 填证据 |
-| 任务结束时 | 全 completed | 写 self-audit | 写最终 progress | **§四 状态:in_progress → awaiting_acceptance** |
+| 任务结束时 | 全 completed | 写 self-audit | 写最终 progress | **frontmatter status: in_progress → awaiting_acceptance** |
 | 验收 | (无) | (无) | (无) | **Doctor/指定独立验收方打 ✓ / 退回 / 取消** |
-| 关闭 | (TaskList 不主导关闭) | (无) | (无) | **§四 状态:全 ✓ → delivered · 或 Doctor 取消** |
+| 关闭 | (TaskList 不主导关闭) | (无) | (无) | **frontmatter status: → delivered（每个 requirement 逐项 ✓ 或被字段齐全总签覆盖）· 或 Doctor 取消** |
 | /save 时 | — | 记录到 session-log | 引用 progress 文件 | **贴 PRD 文件路径 + 当前状态到 brain-save 回报** |
 
 ---
