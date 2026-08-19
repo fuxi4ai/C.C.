@@ -46,7 +46,7 @@ project: 渊图
 
 ## [NOTE-20260819-002] 今日帕米尔批 QA 漏跑「半空节点」检查——3 个 desc+props 双空节点过门入图
 
-**状态**: 🔄 已修待独立验收（2026-08-19 具身手术已补 desc/props · 待 VV/Doctor 复核）
+**状态**: 🔄 已修待独立验收（2026-08-19 具身手术已补 desc/props · 待 VV/Doctor 复核）＋ **预防门禁第 13 项已实装**（2026-08-19 Doctor 批 · `kg_promote.py` 新节点 description/props 双空断言 · 自测 5/5：双空硬拦×2 / 半空提示不拦 / 正常通过 / 悬挂回归 · canonical 零误动 · 实装者 CC 不自签，待独立验收）
 **优先级**: 🟡 中
 **触发**: 2026-08-19 帕米尔 3 篇 batch QA 场——CC 沙箱 QA 跑了结构 8 项/数组元素/desc 缩减/span 缺失率，**漏跑第 10 项「半空节点」检查**；今日批 3 个新节点（`concept_SixAxisForceSensorPriceRange`/`concept_MetalStrainGaugeTechRoute`/`concept_MEMSSixAxisForceSensor`）desc 与 props 双空仍通过 promote 门（kg_promote 门本身不含半空检查——半空属 CC 沙箱 QA 清单职责）。
 **根因**: ① kg_promote 一键门与 CC 沙箱 QA 清单职责边界不清——门内 12 项无半空检查，半空检查靠 CC 每次手工记得跑；② CC 本场漏跑（QA 清单执行无 checklist 强制）。
@@ -57,7 +57,7 @@ project: 渊图
 
 ## [NOTE-20260819-001] Boss老白 P2 存量 4 节点 desc 空——本批撞 id 转 update 暴露
 
-**状态**: ⚠️ 已知风险（挂账 · 待自然回填）
+**状态**: 🔄 已销账待确认（2026-08-19 Doctor 令当场核 · CC 读盘实据：全图 4960 节点 description 空 = 0，4 节点均已非空——自然回填已完成 · 待 Doctor 确认销账）
 **优先级**: 🟢 低
 **触发**: 2026-08-19 帕米尔 3 篇入库，胜宏 PCB 篇 LLM 把 4 个存量节点当「新节点」输出（`concept_RubinSwitchTrayMaterialShare` / `product_NvidiaVR200` / `concept_SupernodeSwitchTrayCompetition2026` / `concept_MSAPYieldGapTechnologicalAccumulation`），kg_ingest span 校验警告「缺失 4」→ 合并时 id 撞 canonical 存量转 update（存量豁免，第 12 项实算 0/36 过）。
 **根因**: 4 节点为 Boss老白 P2 批（08-16）产出，desc 层为空（props 有料 2~12 键——信息未丢，仅缺 desc 叙述层）；08-16 批「空壳节点补全」未覆盖 desc 空形态。
