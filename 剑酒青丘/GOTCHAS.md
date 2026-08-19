@@ -122,3 +122,16 @@ project: 剑酒青丘
 **根因**：多份载体 + 多真源，发布链没有固化顺序。
 **修复/纪律**：固化 **canonical→renderer→staging→校验→Gateway active→回读→snapshot/manifest**；禁止手拼历史版本、candidate 留生产目录、preview 绕保险丝。
 **同族/来源**：G-X118 追记（回读消费者+再生不回滚）· RISK-20260817-003 · VV 四轮 P0-1/P1
+
+### [RISK-20260819-001] shadow.7 错误族优先级依赖 runtime statistics 实现——3.10 收件端重跑 34/35（2026-08-19 接包重跑立）
+**状态**：⚠️ 已知风险（包声明 CPython 3.11+ · 3.10 不在支持范围 · **生产候选 Mac CPython 3.13.3 已全套验证全绿 · 部署风险解除 · 测试注入脆弱点残留**）
+**优先级**：🟡 中
+**触发场景**：shadow.7 包收件端验包——沙箱 CPython 3.10.12 重跑 runtime tests 普通/-O 均 34/35：case 24「compound overflow」期望 `EAL_COMPOUND_OVERFLOW`，实际 `EAL_NONFINITE_BASELINE`；migration 19/19、legacy 7/7 双模式全绿。VV 本机 3.14.6 声称 35/35 全绿。
+**硬证据**：sidecar/包内 SHA256SUMS/verify_package 全过（32 payloads/20 requirements/107 SQL objects）；case 24 最小复现 traceback 在案——engine.py L557 捕获 `statistics.stdev` 抛 `OverflowError: integer division result too large for a float` 后转 `EAL_NONFINITE_BASELINE`；3.10 探针脚本在盘。
+**根因**：测试注入 `1e-155`（dates[9]）落在 baseline 窗口内，把 baseline 统计量先打炸；engine 的错误检查顺序 baseline(L557) 先于 compound(L576)；statistics 模块 3.13+ 重写导致同数据在 3.10/3.14 抛不同异常族——测试合同断言单一错误族，跨版本行为不定。
+**影响面**：错误族优先级依赖 runtime statistics 实现；生产候选环境（Mac 原生）Python 版本未确认，若 <3.11 则该用例在目标环境失败；即便 3.11+ 全绿，测试注入方式横跨多个检查层是设计脆弱点。
+**建议修法**：① 测试注入改为只污染事件窗（极端值移出 baseline 窗口）或 baseline 计算先行数值尺度守卫；② 生产候选版本确认（Mac 原生 python3 --version）后按真实版本重跑全套并记录版本+退出码；③ 接包验收必记录收件端 Python/SQLite 版本并与包声明比对。
+**预防门禁**：错误族断言测试的注入数据不得横跨多个检查层；收件端重跑必须记录 runtime 版本三元组（Python/SQLite/operator CLI）。
+**来源**：VV shadow.7 交接（2026-08-19）· CC 沙箱收件端重跑 · CC_APPLY §1
+**状态注**：非 VV 实错（3.14 证据可信）；是否转修待 VV 十六轮或随生产吸收时一并处理，由 Doctor 裁。
+**生产候选验证（2026-08-19）**：Doctor Mac 终端重跑——CPython 3.13.3 全套全绿：runtime 35/35（case 24 PASS）、migration 19/19、legacy 7/7 普通与 `-O` 双模式 exit=0；sidecar/包内 SHA256SUMS（32 项）/verify_package 全过。与沙箱 3.10 的 34/35 对照印证根因（statistics 实现差异）。生产候选 SQLite/operator CLI 版本三元组在 §3 数据迁移阶段补记。
