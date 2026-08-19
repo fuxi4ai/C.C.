@@ -33,7 +33,7 @@ template_version: v1.2
 
 > **使用指南**(CC 立 PRD 时务必读):
 >
-> 1. **触发条件**:任务已获执行授权 + 存在功能或明确非功能需求 + 达复杂度阈值（多文件改 / 跨小时 / 跨项目 / 凌晨自主）→ CC **直接立卷**（不主动问「是否同意立 PRD」）；Doctor 明示「本任务不用立 PRD」时覆盖。问答 / 单文件小改 / 研究讨论 / **无功能交付的事务**（纯清洗/去重/迁移/归档等事实核验类）**不立 PRD**——走客观 TODO。规模只是必要条件、**功能可验收才是判据**（2026-08-15 Doctor 立）
+> 1. **触发条件**:任务已获执行授权 + 存在功能或明确非功能需求 + 达复杂度阈值（多文件改 / 跨小时 / 跨项目 / 凌晨自主）→ CC **直接立卷**（不主动问「是否同意立 PRD」）；Doctor 明示「本任务不用立 PRD」时覆盖。问答 / 单文件小改 / 研究讨论 / **无功能交付的事务**（纯清洗/去重/迁移/归档等事实核验类）**不立 PRD——仍按既有授权工作流执行**（仅原本属于客观普通 TODO 的事项适用 G-X136 常驻授权代勾）。规模只是必要条件、**功能可验收才是判据**（2026-08-15 Doctor 立）
 > 2. **文件位置**:`~/Documents/Claude/brain/logs/checkpoints/{YYYY-MM-DD}_{任务简称}_PRD.md`
 > 3. **PRD checkbox 合同**:实施者只能填 `[?]` 已达成+证据 / `[!]` 未达成+原因 / `[~]` 不确定+判断点。`[✓]` 由 **Doctor 或 Doctor 明确指定、且未参与实施的独立验收方**落。客观 TODO 证据代勾属常驻授权、**仅限 PRD 外的普通 TODO**（G-X136 补钉），不占 PRD checkbox
 > 4. **验收主体 = 功能/需求**:每条标准描述用户可感知的行为、结果或质量约束；文件、Grep、脚本输出只是证据。每项必须**可复核**（机器比对或预先定义的人工验收方法）。**不写"做好了"/"完整"/"修复了"** 等主观陈述 — **写了等于没写**
@@ -103,9 +103,17 @@ template_version: v1.2
   - 验收方法:
   - 证据栏:
 
-### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书）
+### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书 · 总签必须可审计）
 
-- 客观轨（R*/N*/X* 中机器可判项）共 {K} 条：审查员背书记录（身份 + 验证动作）→ 验收方签总 ✓
+> **关闭条件**：每个 requirement 要么被**逐项 `[✓]`**，要么被**有效总签明确覆盖**——总签必须填以下字段证明覆盖了哪些需求：
+
+- 客观轨总签（覆盖 R*/N*/X* 中机器可判项）：
+  - covered_requirement_ids: []  # 本总签明确覆盖的需求 id（必须列全，缺项=未覆盖）
+  - authority:                # 签总 ✓ 的验收方
+  - designation_source_ref:   # 验收方由 Doctor 指定的来源
+  - signed_at:                # 签核时间
+  - result:                   # 通过 / 打回
+  - reviewer_evidence_ref:    # 审查员背书记录引用（身份 + 验证动作）
 - 原则轨（结论/裁定类）共 {J} 条：验收方逐条 ✓
 
 ---
@@ -136,22 +144,15 @@ template_version: v1.2
 
 ## §四 · 状态（current_status + 变更历史 · 不用多 checkbox）
 
-> 生命周期：`draft → in_progress ↔ blocked → awaiting_acceptance → delivered | cancelled`。**frontmatter `status` 是唯一 current_status 真源**，本节只记录变更历史（每条带时间戳）。任务授权、实施者、独立审查员、验收签字权、决策归属分别记录（frontmatter `roles` / `acceptance_authority` / `open_decisions`），不混为一人或一份授权。
+> 生命周期：`draft → in_progress ↔ blocked → awaiting_acceptance → delivered | cancelled`。**frontmatter `status` 是唯一 current_status 真源**——所有状态操作统一为：**修改 frontmatter `status`，并向下方历史表追加一行实际发生的记录**。本节不预填任何未发生的转换。任务授权、实施者、独立审查员、验收签字权、决策归属分别记录（frontmatter `roles` / `acceptance_authority` / `open_decisions`），不混为一人或一份授权。
 > **blocked 语义**：仅当**全部剩余需求**都被阻断时，顶层才设为 `blocked`；部分阻断时保持 `in_progress`，阻断项记 `open_decisions`（blocks_requirement_ids），非阻断项继续。
-> **关闭条件**：每个 requirement 要么被**逐项验收**，要么被**明确覆盖于合法的总签记录**（客观轨总 ✓ + 原则轨逐条 ✓ + 分轨签核背书）——两者之外不存在「关闭」路径。
+> **关闭条件**：每个 requirement 要么被**逐项 `[✓]`**，要么被**有效总签明确覆盖**（分轨签核字段齐全）——两者之外不存在「关闭」路径。
+> **合法转换**：draft→in_progress；in_progress↔blocked；in_progress→awaiting_acceptance；awaiting_acceptance→in_progress（验收打回）；awaiting_acceptance→delivered；任意→cancelled（仅 Doctor）。
 
-**current_status**: draft（由 frontmatter `status` 承载）
-
-**状态变更历史**:
+**状态变更历史**（只追加实际发生的行 · 不得预填）:
 | 时间 | 从 → 到 | 谁 | 依据 |
 |---|---|---|---|
-| {YYYY-MM-DD HH:MM} | — → draft | 实施者 | 立卷 · 授权核实中 |
-| {YYYY-MM-DD HH:MM} | draft → in_progress | 实施者 | 任务已授权且无阻断性歧义 · 直接实施 |
-| {YYYY-MM-DD HH:MM} | in_progress → blocked | 实施者 | 全部剩余需求被阻断（open_decisions 见上） |
-| {YYYY-MM-DD HH:MM} | blocked → in_progress | 实施者 | 阻断裁定解除（open_decisions 状态 resolved） |
-| {YYYY-MM-DD HH:MM} | in_progress → awaiting_acceptance | 实施者 | 全部交付标准已填三态 |
-| {YYYY-MM-DD HH:MM} | awaiting_acceptance → delivered | 验收方 | 全 ✓（逐项或总签覆盖） |
-| {YYYY-MM-DD HH:MM} | * → cancelled | Doctor | 显式取消（原因 + 时间） |
+| | | | |
 
 **关闭路径**(回顾铁律):
 - ✓ 全 ✓ 关闭:所有交付标准由 Doctor 或指定独立验收方打 ✓
@@ -175,7 +176,7 @@ template_version: v1.2
 
 ## §六 · 打勾权分轨现状（2026-08-18 九轮合同 · 取代旧「未来下放」框架）
 
-> Doctor 2026-05-20 曾前瞻「打勾权未来下放给 CC」——**该框架已被 G-X136 分轨取代**：客观 TODO 证据代勾已落地为常驻授权；PRD 判断性 ✓ 无下放计划。此段不是模板字段(填 PRD 时不动)· 是给 CC 的元提醒。
+> Doctor 2026-05-20 曾前瞻「打勾权未来下放给 CC」——**该框架已被 G-X136 分轨取代**：客观 TODO 证据代勾已落地为常驻授权；PRD 内任何 checkbox 的 ✓ 无下放计划。此段不是模板字段(填 PRD 时不动)· 是给 CC 的元提醒。
 
 **PRD checkbox 合同（单义）**:
 - 实施者只能填 `[?]/[!]/[~]`；`[✓]` 只由 **Doctor 或 Doctor 明确指定、且未参与实施的独立验收方**落。
@@ -210,7 +211,7 @@ template_version: v1.2
 - 每达成一条交付标准 → 立即改 `[ ]` → `[?]` + 填证据(不要等任务结束一次填)
 - 中途发现某条达不到 → 改 `[!]` + 原因 + 提 Doctor
 - 中途发现某条不确定 → 改 `[~]` + 列出验收方需判断的具体点
-- 出现阻断性歧义 → §四 改 blocked，open_decisions 登记（事项/是否阻断/决策归属/状态），就该分歧请 Doctor 裁定；非阻断问题继续工作
+- 出现阻断性歧义 → open_decisions 登记（事项/是否阻断/决策归属/状态），就该分歧请 Doctor 裁定；**部分阻断时保持 in_progress**，仅当全部剩余需求都被阻断才把 frontmatter status 改 blocked（非阻断项继续工作）
 - 任务范围扩大 → 不要私自加交付标准 → 请 Doctor 裁定 + 改 §一
 
 ### 任务结束时
@@ -246,11 +247,11 @@ template_version: v1.2
 
 ---
 
-## 删除前的最后检查(CC 在删除 PRD 前确认)
+## 归档前的最后核对（CC 在归档 PRD 前逐项确认 · 不用 checkbox）
 
-- [ ] PRD §四 状态 = "delivered" 或 "cancelled"?
-- [ ] /save 已触发?
-- [ ] 任务期间产出的文件都已落实体盘?
-- [ ] 关键决策 / 浮现洞见已写到 brain/logs/ 或项目 brain/ 子目录?
+> 以下为核对问题，非验收状态；逐项确认后由 Doctor 批准归档到 `~/Documents/Claude/brain/logs/checkpoints/archive/` · **不删除**（保留供未来审计）。
 
-以上全部 ✓(由 Doctor 确认)后,PRD 文件可归档到 `~/Documents/Claude/brain/logs/checkpoints/archive/` · **不删除**(保留供未来审计)。
+1. PRD frontmatter `status` 是否为 "delivered" 或 "cancelled"？
+2. /save 是否已触发？
+3. 任务期间产出的文件是否都已落实体盘？
+4. 关键决策 / 浮现洞见是否已写到 brain/logs/ 或项目 brain/ 子目录？

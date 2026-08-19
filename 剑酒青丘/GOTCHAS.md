@@ -67,6 +67,8 @@ project: 剑酒青丘
 
 **追记四（2026-08-18 · VV 十一轮 · 同根第六次复发——仓内发布通过、运行时发布失败）**：十轮只验了仓内三层 SHA，没回读**真实消费端**——Claude-3p plugin cache 实际 SHA `26828c31…` ≠ canonical `4b77717f…`，且 save_skill 把完整 SKILL.md（含 frontmatter）作 content 传入 → **双 frontmatter** + 外层 description 路由语义漂移（缺触发词）。十一轮修复：save_skill **重发**（content 只传 frontmatter 后正文、name/description 严格取 canonical）；模板双轨状态治理（§2.5 改无 checkbox 表格 task_id|task_status|evidence、§四 改 current_status+变更历史、frontmatter status 唯一真源、blocked 仅全部剩余需求被阻断、关闭条件=逐项验收或合法总签覆盖、roles 与 acceptance_authority 指定三字段）；活跃旧合同替换（通用教训 :108 关键模板示例改功能主体、:162 补指定独立验收方、「PRD 判断性 gate」→「PRD 内任何 checkbox」三处）；设计提案**全文 superseded**（status 改+banner+模板停止引用）。**教训固化（G-X151 同族第六次）**：发布链验证必须到**实际运行时消费端**（plugin cache 回读 + 新会话路由实测），「仓内 SHA 三层一致」≠ 发布完成；save_skill 的 content 只传正文、metadata 走参数，否则双 frontmatter。**待**：VV 十二轮复验 · plugin cache 单 frontmatter 回读 + 全新会话 `/prd` 路由实测（Doctor 终端）。**来源**：VV 十一轮终验回执 · 2026-08-18 修复场。
 
+**追记五（2026-08-18 · VV 十二轮 · 同根第七次复发——metadata 仍不同源）**：十一轮 save_skill 的 description 参数**没有逐字取 canonical**（漏 `/prd [任务简称]`、§2.5 措辞自改、删落盘路径句），runtime raw SHA `2f44b282…` 与 canonical 不一致——「metadata 严格取 canonical」空转一轮。十二轮修复：canonical description 先定稿（§2.5「无 checkbox 表格」+全触发词+落盘路径句）→ 三层重发（SHA `ce8b6503…`）→ save_skill description **逐字复制 canonical frontmatter**。另修模板边缘逻辑（状态历史预填未发生转换、缺打回路径、§七 阻断语义冲突、总签缺 covered_requirement_ids 六字段、尾部过程 checkbox 自签后门）与现行旧句（通用教训 114/122/124、偏好代录段、brain-prd「不立 PRD 改变任务性质」）。**教训升级**：metadata 同步靠「逐字复制 + 回读比对」，不靠「凭印象一致」——人工重打 description 必漂移（G-X111 同族）。**待**：VV 十三轮复验 · Claude-3p 从新 .skill 包重装 + plugin cache 回读 description 逐字核对 + 全新会话路由实测。**来源**：VV 十二轮终验回执 · 2026-08-18 修复场。
+
 ### [BUG-20260817-003] requirements.lock.txt 用 pip freeze 全量 = 错误依赖锁：含系统包、缺核心包
 **状态**：🔄 已修待独立验收（2026-08-17 · 九修 · VV 终验阻断点 1 逮出 · 随 A 阶段待 VV 复核）
 **优先级**：🟡 中
