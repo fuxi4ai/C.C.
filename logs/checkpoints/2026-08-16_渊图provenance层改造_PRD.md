@@ -2,8 +2,8 @@
 title: PRD 2026-08-16 渊图 provenance 层改造
 tags: [prd, 渊图, provenance]
 created: 2026-08-16
-updated: 2026-08-16
-status: 草案待批
+updated: 2026-08-19
+status: delivered  # 已交付（Doctor 2026-08-19 存量PRD处置表①类裁定：正文已批准交付且 VV 接受·仅元数据纠正）
 type: prd
 project: 渊图
 ---
