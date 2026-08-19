@@ -44,6 +44,17 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [NOTE-20260819-001] Boss老白 P2 存量 4 节点 desc 空——本批撞 id 转 update 暴露
+
+**状态**: ⚠️ 已知风险（挂账 · 待自然回填）
+**优先级**: 🟢 低
+**触发**: 2026-08-19 帕米尔 3 篇入库，胜宏 PCB 篇 LLM 把 4 个存量节点当「新节点」输出（`concept_RubinSwitchTrayMaterialShare` / `product_NvidiaVR200` / `concept_SupernodeSwitchTrayCompetition2026` / `concept_MSAPYieldGapTechnologicalAccumulation`），kg_ingest span 校验警告「缺失 4」→ 合并时 id 撞 canonical 存量转 update（存量豁免，第 12 项实算 0/36 过）。
+**根因**: 4 节点为 Boss老白 P2 批（08-16）产出，desc 层为空（props 有料 2~12 键——信息未丢，仅缺 desc 叙述层）；08-16 批「空壳节点补全」未覆盖 desc 空形态。
+**影响面**: 4 节点 desc 为空；不影响结构校验与查询（props/边完整）。
+**建议修法**: 下批 LLM 触及或手工 patch 时补 desc；或并入未来「desc 空节点全图扫描」专项（与 NOTE-20260815-001 desc 质量族同族）。
+**预防门禁**: 第 10 项「半空节点」检查若扩为全图存量扫描可提前暴露；当前只查本批新增。
+**来源**: 2026-08-19 帕米尔 3 篇入库 QA 场。
+
 ## [NOTE-20260815-001] batch LLM 缩写覆盖既有富 desc——QA 第 11 项已固化（`rules/check_desc_shrink.py`）
 
 **状态**: ✅ 已修 + 已配检测脚本（2026-08-15 · 15 节点恢复/合并；`rules/check_desc_shrink.py` 落仓并自测通过——对未修 _v2 报出 15 处、对 canonical 报 0）**优先级**: 🟡 中
