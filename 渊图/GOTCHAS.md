@@ -44,6 +44,17 @@ project: 渊图
 
 <!-- 在下方追加新条目 -->
 
+## [NOTE-20260819-002] 今日帕米尔批 QA 漏跑「半空节点」检查——3 个 desc+props 双空节点过门入图
+
+**状态**: 🔄 已修待独立验收（2026-08-19 具身手术已补 desc/props · 待 VV/Doctor 复核）
+**优先级**: 🟡 中
+**触发**: 2026-08-19 帕米尔 3 篇 batch QA 场——CC 沙箱 QA 跑了结构 8 项/数组元素/desc 缩减/span 缺失率，**漏跑第 10 项「半空节点」检查**；今日批 3 个新节点（`concept_SixAxisForceSensorPriceRange`/`concept_MetalStrainGaugeTechRoute`/`concept_MEMSSixAxisForceSensor`）desc 与 props 双空仍通过 promote 门（kg_promote 门本身不含半空检查——半空属 CC 沙箱 QA 清单职责）。
+**根因**: ① kg_promote 一键门与 CC 沙箱 QA 清单职责边界不清——门内 12 项无半空检查，半空检查靠 CC 每次手工记得跑；② CC 本场漏跑（QA 清单执行无 checklist 强制）。
+**影响面**: 3 个空壳节点入 canonical（数据在 raw 源文件中不丢，图谱侧 desc/props 层缺失）。
+**修复**: 2026-08-19 具身手术内补 desc/props（源=帕米尔 08-19 六维力纪要实读）。
+**预防门禁**: 建议 kg_promote 门内加第 13 项「新节点 desc/props 双空断言」（与第 12 项 span 同位置）——候选，待 Doctor 批；或 CC QA 清单固化为脚本一条命令（qa 脚本化）。
+**同族/来源**: NOTE-20260819-001（desc 空挂账）· Boss老白 P2「空壳节点补全」同族。→ 2026-08-19 具身智能线手术场。
+
 ## [NOTE-20260819-001] Boss老白 P2 存量 4 节点 desc 空——本批撞 id 转 update 暴露
 
 **状态**: ⚠️ 已知风险（挂账 · 待自然回填）
