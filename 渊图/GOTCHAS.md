@@ -51,7 +51,7 @@ project: 渊图
 **触发**: 2026-08-19 帕米尔 3 篇 batch QA 场——CC 沙箱 QA 跑了结构 8 项/数组元素/desc 缩减/span 缺失率，**漏跑第 10 项「半空节点」检查**；今日批 3 个新节点（`concept_SixAxisForceSensorPriceRange`/`concept_MetalStrainGaugeTechRoute`/`concept_MEMSSixAxisForceSensor`）desc 与 props 双空仍通过 promote 门（kg_promote 门本身不含半空检查——半空属 CC 沙箱 QA 清单职责）。
 **根因**: ① kg_promote 一键门与 CC 沙箱 QA 清单职责边界不清——门内 12 项无半空检查，半空检查靠 CC 每次手工记得跑；② CC 本场漏跑（QA 清单执行无 checklist 强制）。
 **影响面**: 3 个空壳节点入 canonical（数据在 raw 源文件中不丢，图谱侧 desc/props 层缺失）。
-**修复**: 2026-08-19 具身手术内补 desc/props（源=帕米尔 08-19 六维力纪要实读）。
+**修复**: 2026-08-19 具身手术内补 desc/props（源=帕米尔 08-19 六维力纪要实读）。**追记（审查员留痕①）**: 补壳首版误写非 schema 键 `desc`——节点描述字段是 **`description`**（消费端读此键），且术前 3 节点 description 已非空（仅 props 空，「双空」判定本身有误）；独立审查发现后已合并补丁（新内容并入 description、删 desc 键，全图 desc 键残留 0）。**教训**: 图谱节点字段名以 schema 为准（description 非 desc），改前先读一个存量节点样例。
 **预防门禁**: 建议 kg_promote 门内加第 13 项「新节点 desc/props 双空断言」（与第 12 项 span 同位置）——候选，待 Doctor 批；或 CC QA 清单固化为脚本一条命令（qa 脚本化）。
 **同族/来源**: NOTE-20260819-001（desc 空挂账）· Boss老白 P2「空壳节点补全」同族。→ 2026-08-19 具身智能线手术场。
 
