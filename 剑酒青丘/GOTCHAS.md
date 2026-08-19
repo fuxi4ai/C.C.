@@ -73,6 +73,8 @@ project: 剑酒青丘
 
 **追记七（2026-08-18 · VV 14轮 · 同根第九次复发——关闭合同仍两句残留）**：十三轮改了 G-X4 规则 5 与模板关闭路径节，但**模板使用指南第 5 条（:40）与 brain-prd §3「不自动关闭」红线**仍写「全 ✓ 或取消」旧句，且已传播到 portable 与 .skill 包内——同一合同三处引用只改了两处（G-X151 判据②影响面矩阵执行仍不完整）。十四轮窄修：两句统一为「每个 requirement 逐项 [✓] 或被字段齐全合法总签明确覆盖；另一路径 Doctor 显式取消」→ 三层重发 SHA `f0437ea5…` → save_skill v1.5.4。**待**：VV 十五轮复验 · 全新会话两次路由触发实测（/prd、写交付标准）。**来源**：VV 十四轮终验回执 · 2026-08-18 修复场。
 
+**追记八（2026-08-18 · VV 十五轮 · 同根第十次复发——commit 已推但 TODO/交付命令仍停待执行 · CC 登记留痕）**：十五轮暴露的新增症状——Doctor 已完成十四轮 commit/push（`bc1e86f`）后，TODO 与已贴交付命令仍停在「待执行」，直到 VV 十五轮点名才勾。**纪律固化（VV 立）**：① 收口前必须重取 `HEAD`、`origin/main`、scoped worktree（gitcheck.py 实跑），已完成事项按 G-X136 客观代勾并**废止旧命令**；② 「grep=0」必须区分 **active hits=0** 与历史/superseded 命中，不得裸报全域清零（G-X151 判据①细化）；③ 发布证据必须分五层：canonical→portable→包内 SKILL→runtime metadata/归一化正文→fresh-session 实际 Skill 调用——skill list 可见或 cache 更新不能替代真实路由。**正例**：十四轮 commit 的客观代勾（gitcheck 实核 HEAD+worktree 后勾）是正确正例；fresh-session 未实测只是 PENDING，不得误记成完成或新故障。**连带三漏项已修**：`.skills/README.md` 与 `permanent/已装skill清单.md` 升 v1.5.4+SHA `f0437ea5…`；Vault 旧包 `Vault/archived/brain/brain-prd.skill`（包内 `065c5f0a…` 含旧合同）已改名 `_DEPRECATED_brain-prd.skill_v1.0_20260818`、清单改指 canonical 包；INFRA-20260817-001 降档注事实更正（live 真源已接 Gateway·保持待独立验收）。BUG-20260817-004 维持「部分修复」（结果对象生成与生产 renderer 未落地前不得升格）。**来源**：VV 十五轮终验回执 · 2026-08-18。
+
 ### [BUG-20260817-003] requirements.lock.txt 用 pip freeze 全量 = 错误依赖锁：含系统包、缺核心包
 **状态**：🔄 已修待独立验收（2026-08-17 · 九修 · VV 终验阻断点 1 逮出 · 随 A 阶段待 VV 复核）
 **优先级**：🟡 中
@@ -114,7 +116,7 @@ project: 剑酒青丘
 **同族/来源**：G-X150（本条跨项目升格）· RISK-20260817-002 · VV 二/三/四轮（fail-fast 三连 BLOCK）
 
 ### [INFRA-20260817-001] EAL 发布链多真源（2026-08-17 VV 四轮立）
-**状态**：🔄 已修待独立验收（2026-08-17 · 十二修 · 发布器保险丝+previewRoot+candidate 移 staging+快照真源改 Gateway；**降档注（VV 五轮）**：live mirror 仍用旧 Cowork Scheduled 真源·系统性降级待修）
+**状态**：🔄 已修待独立验收（2026-08-17 · 十二修 · 发布器保险丝+previewRoot+candidate 移 staging+快照真源改 Gateway；**事实更正（2026-08-18 十五轮）**：live 镜像真源已接 Gateway（08-18 五轮整改完成 · 「仍用旧 Cowork Scheduled 真源」的降档注已不成立——更正事实、保持待独立验收））
 **优先级**：🔴 高
 **触发场景**：artifact 多代拼接（N−1 富版事实错代）、snapshot 脚本指旧真源（会回滚 mirror）、candidate 留生产目录成第二真源、preview 任意路径绕过保险丝。
 **根因**：多份载体 + 多真源，发布链没有固化顺序。
