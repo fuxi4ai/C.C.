@@ -20,10 +20,10 @@ type: log
 
 - [x] **存量 PRD 处置表待 Doctor 批（2026-08-18 生成 · 范围＝`logs/checkpoints/` 根目录当前批次 11 份 · 五类分流 · 只出表未动正文）**：① 已交付元数据纠正：BT-19 观星转正（正文 4 项原则轨逐条 ✓ + 客观轨总签 + 原则轨总签、独立重跑→已交付，frontmatter 陈旧）、provenance 层改造（正文已批准交付且 VV 接受→已交付）；② 待验收继续验收：渊图三轮清洗（保持待验收）、渊图畸形节点（status done 但**原合同要求 Doctor 目验、缺原合同验收方正式闭环**→列待验收，不事后改判缺独立验收）、EAL v2.3 五项 gate（仍待终验·PRD 证据停 SHA 七项/10 用例已落后实际八项/13 用例·先同步再验）；③ 被后续版本取代待裁定：EAL v2.0/v2.1/战争因子/残差分桶（实施审查过但未正式验收、后被新版本实质订正）+ 19 班 Kimi 迁移（核心执行过但验收与 Doctor 动作未闭→裁定继续验收或因 harness 更替取消）；④ 尚未获实施授权：EAL gate 验收脚本（四项边界已获裁定·实施开工未授权·untracked）；⑤ 已交付历史保持不动：无。**注**：`logs/**` 全量共 42 份 PRD，本表仅限根目录批次；处置原则：旧验收标准重构必逐份出新旧 diff；schema 元数据迁移与交付合同变更分两批。**✅ 2026-08-19 Doctor 四题全按推荐裁定并已执行（CC 代记留痕 · frontmatter 实改）**：① BT-19/provenance 2 份 → delivered；② 3 份继续验收——三轮清洗保持待验收、**畸形节点待 Doctor 目验收口**、gate 证据已同步（SHA 八项/13 用例）待 VV 八轮终验；③ EAL v2.0/v2.1/战争因子/残差分桶 4 份 → cancelled+superseded、19 班迁移 → cancelled（harness 更替）；④ gate 验收脚本仍待授权（TODO 独立条挂）。
 
-- [ ] **EAL · v2.3 五项方法 gate（A 阶段七轮整改已修待 VV 八轮终验 · B 阶段另排）**：①④⑤ A 阶段已完成（G1 CAR[0,+3] 两口径对照表·G4 复现包 rev9 SHA 八项·G5 候选梯四规格；五~七轮整改：GOTCHAS 去自签+四项降档/test_failfast 13 用例双模式/授权语义整合/--dry-run 零写入）；② 事件时钟＝B 阶段 G2（涉 db schema·Doctor 终端配合）；③ 价格口径敏感性＝B 阶段 G3（外部取数）。另遗留：慢牛漂移 +12.96 ≈ 0.11298329×115 逐日溯源（未做）。五项全绿前 HY OAS challenger 不升主账、v2.3 不称方法闭环。
+- [x] **EAL · v2.3 五项方法 gate（2026-08-19 Doctor 裁定 v2.3 功成退役 · 本条随退役取消）**：①④⑤ A 阶段已完成（G1 CAR[0,+3] 两口径对照表·G4 复现包 rev9 SHA 八项·G5 候选梯四规格；五~七轮整改：GOTCHAS 去自签+四项降档/test_failfast 13 用例双模式/授权语义整合/--dry-run 零写入）；② 事件时钟＝B 阶段 G2；③ 价格口径敏感性＝B 阶段 G3。**✅ 退役取消（Doctor 2026-08-19：v2.3 意义已兑现·只留 v3）——A 阶段成果与治理纪律由 v3 承接；慢牛漂移溯源不再追踪；B 阶段方案已 cancelled。**
   依据：`4AI/Shake hands/to CC/` VV 二~七轮终验 · `logs/2026-08-18-EAL五至七轮整改与授权整合.md`
 
-- [ ] **EAL · gate 验收脚本 PRD 待批（2026-08-17 起草 · VV 判据机器化）**：eal_gate_check.py + 判据集 json 八项（环境/复现数值/test_failfast/SHA/指纹+denylist/载体一致/快照真源/发布器保险丝）· gate 全绿＝「A 阶段完成」声明的必要不充分条件（VV 终审不变）· 四边界 Doctor 已裁（EAL 专用/渲染器不进/判据集 VV 增补 Doctor 批）。批后开工。
+- [x] **EAL · gate 验收脚本 PRD 待批（2026-08-19 随 v2.3 功成退役取消）**：eal_gate_check.py + 判据集 json 八项——对象（v2.3 五项 gate 验收）已随退役消失，脚本不立项。**✅ 取消（Doctor 2026-08-19 退役裁定）；若 v3 后续需要 gate 判据机器化，另立新案。**
   依据：`logs/checkpoints/2026-08-17_EAL_gate验收脚本_PRD.md`
 
 - [ ] **EAL 收口余尾（Doctor 动作条 · 2026-08-18 /save 更新）**：① Settings 七轮版已贴 ✓ + 新会话注入核验 ✓（08-18 resume 场逐行比对：块二存在·无六轮旧措辞·漂移零）；② live 镜像 21 班同步验证结果知会留档（--dry-run→全量后）；③ 重建产物单独 commit ✓（已核实·gitcheck.py 2026-08-18：commit「brain: 重建产物再落盘」在 HEAD 链 · push 已同步 · worktree 仅 TODO.md 留痕）。
