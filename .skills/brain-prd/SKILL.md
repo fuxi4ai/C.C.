@@ -39,7 +39,7 @@ description: "立 PRD——功能/需求验收基线，不是审批单。任务�
 - ⛔ **禁阿谀奉承**（毒舌纪律）：不附和、不夸"好主意"、不顺着含糊需求往下滑。答案模糊 / 自相矛盾 / 范围膨胀 → **当场指出 + 要明确**。但毒舌＝较真，不是无礼，守 [[Doctor协作偏好]] 的简洁与尊重。
 - ⛔ **不一次轰炸**：一次聚焦一个维度 / 1–2 个问题，优先选择题，别甩一长串问卷。
 - ⛔ **实施者不打 `[✓]`**：PRD 内任何 checkbox（无论客观或判断性）`[✓]` 只由 Doctor 或 Doctor 明确指定、且未参与实施的独立验收方落（实施者身份看本轮角色、不看模型身份）。起草阶段 §二 全留 `[ ]`。看到自己将打 `[✓]` → 立即停。**客观 TODO 证据代勾为常驻授权、仅限 PRD 外的普通 TODO**（G-X136 十轮补钉）——「客观」不是自签 PRD 的后门。
-- ⛔ **不自动关闭**：只"全 ✓（Doctor 或指定独立验收方落）"或"Doctor 显式取消"两条合法路径；不得 commit 即关 / 标完 Task 即关 / "我觉得完了"即关。
+- ⛔ **不自动关闭**：关闭路径只有两条——每个 requirement 逐项 `[✓]`、或被字段齐全的合法总签明确覆盖；或"Doctor 显式取消"；不得 commit 即关 / 标完 Task 即关 / "我觉得完了"即关。
 - ⛔ **交付标准不许主观陈述**：不可复核 = 等于没写（G-X4「验收主体＝功能/需求，证据≠标准」）。
 - ⛔ **不在沙箱跑 git 写命令**（G-X2）：落盘走 Write；要 commit 贴命令给 Doctor。
 - ⛔ **PRD 不授予任务权限，也不撤销已有任务权限**：任务尚未授权时，写出 PRD 不等于获准实施；任务已经授权时，建立 PRD 不得再制造一轮文本审批门。
@@ -165,3 +165,4 @@ CC 自审填完三态后，**派一个独立审查子 agent**对照 PRD 复核�
 - v1.5.1（2026-08-18 · 十一轮）：① §2.5 改无 checkbox 表格（task_id | task_status | evidence）；② frontmatter 补 roles（implementers/independent_reviewers）与 acceptance_authority 三字段（designation_source_ref/designation_quote/designated_at）；③ §四 改 current_status+变更历史（frontmatter status 为唯一真源）；④ blocked 仅全部剩余需求被阻断；⑤ 关闭条件=逐项验收或合法总签覆盖；⑥ 设计提案整体 superseded、模板停止引用为现行规范；⑦ 运行时发布修复（save_skill 双 frontmatter 事故后重发——content 只传正文、metadata 严格取 canonical，见 RISK-20260817-002 追记四）。
 - v1.5.2（2026-08-18 · 十二轮）：① description 逐字同步（§2.5 措辞改「无 checkbox 表格」· 保留 `/prd [任务简称]` 触发词与落盘路径句——十二轮 BLOCK：runtime metadata 与 canonical 不同源）；② §1/Step 1「不立 PRD」改「仍按既有授权工作流执行，仅客观普通 TODO 适用 G-X136」，不错误改变任务性质；③ 模板联动同步（总签六字段/状态历史禁预填+打回路径/归档核对无 checkbox）。
 - v1.5.3（2026-08-18 · 十三轮）：① description 去 6 个纯格式反引号（/prd、/prd [任务简称]、落盘路径句各 2 个）——save_skill 自动剥除反引号，去掉后 runtime parsed description 与 canonical raw 可逐字一致；② Step 7.5 闭环改「frontmatter status 修改 + §四 追加历史行」（状态唯一真源落净）。
+- v1.5.4（2026-08-18 · 十四轮）：§3 红线「不自动关闭」改统一关闭合同——每个 requirement 逐项 [✓] 或被字段齐全合法总签明确覆盖；另一路径 Doctor 显式取消。
