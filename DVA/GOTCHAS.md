@@ -80,7 +80,7 @@ project: DVA
 **状态：** ① 已改 Mac 源（未部署·待 bundle/VV 验）；② 孤儿集中裁决留①稳定后另起。
 
 ### [BUG-20260819-001] Qwen3-ASR 长音频整段转写 CUDA OOM（生产班受波及）
-**状态：** 🔄 已修待验（2026-08-20 adapter 分段修复落地 Mac 源 · 单测 9/9 绿 · 待 bundle→fuxi→VV 端到端验）
+**状态：** 🔄 已修待验（2026-08-20 adapter 分段修复落地 Mac 源 · 单测 9/9 绿 · **bundle→fuxi 已部署**〔`dva-runtime-20260820T150155Z` · sha256 `ae008d4e…` · 旧 runtime→`runtime.bak.20260820-230624` 可回滚〕· **Doctor 快验通过**〔single-20260820-152826Z · 32.5min 视频端到端 exit=0 无 OOM · 10314 字 · 产物 asr_status=success / source=qwen3-asr-1.7b-local-fuxi〕· 待 VV 独立补验后关条〔移交件 `docs/移交VV_ASR长音频分段修复_20260820.md`〕）
 **优先级：** 🟡 中
 **触发：** 2026-08-19 调研情报局单视频任务：32.5min 视频 `single_one.ps1` 转写稳定复现 OOM——torch 报进程内已分配 34.58 GiB（4090 仅 24 GiB）、请求 3.62 GiB 失败。同日 `refill-20260818-210000Z.log`（周三 05:00 班）含多行同款 OOM，班次转写成批失败。
 **根因：** `transcribe.py` 把整段长音频一次传入 `model.transcribe()`，无分段/流式；模型加载（~3.4GB bf16）与 20s 短音频均正常（probe 实证 exit 0），长音频处理阶段内存膨胀至 OOM。
@@ -98,3 +98,21 @@ project: DVA
 **处置**: 现场补 BOM（ReadAllText UTF-8 → WriteAllText UTF8Encoding($true)），验证 EF BB BF 后脚本正常。
 **预防门禁**: fuxi 侧 ps1 脚本 scp 落地后校验首三字节；或脚本写入管线统一 BOM 化。与 BUG-20260819-001 同场发现（同视频任务）。
 **来源**: 2026-08-20 调研情报局单视频任务（字节证据 23 20 73 → EF BB BF）
+
+### [NOTE-20260820-002] runtime 整体换入丢 `dyd\config.yml`——harvest-links 硬编码路径（发布链洞②）
+**状态**: ⚠️ 已知风险
+**优先级**: 🟡 中
+**触发**: 2026-08-20 分段修复部署（bundle `dva-runtime-20260820T150155Z`）：install 整体换 runtime 后 single_one 报「❌ 找不到 DYD 配置：E:\AI\DVA\runtime\dyd\config.yml」（exit=1）。
+**根因**: `harvest-links.js` L221 硬编码 `path.join(__dirname,'dyd','config.yml')`，不读 `DVA_DYD_CONFIG` env（dva.js 读、harvest-links 不读）；bundle 因含秘密刻意排除 config.yml；install 脚本换入后无补件步骤。
+**处置**: 现场从 `config\config.fuxi.yml` 拷贝恢复（旧 runtime.bak 内并无该文件——此前同法放置）。**根治待裁**：a) harvest-links 认 env；b) install 换入后自动补拷；c) 两者都做。
+**预防门禁**: 每次换 runtime 后先跑 single_one/harvest_one 冒烟再离手。
+**来源**: 2026-08-20 部署现场（single-20260820-151105Z exit=1 → 拷贝后复跑通过）
+
+### [NOTE-20260820-003] fuxi runtime 补丁不在 Mac 源——换 runtime 即丢（发布链洞③ · 同族升格）
+**状态**: ⚠️ 已知风险
+**优先级**: 🟡 中
+**触发**: 同场部署连续两坑：① 旧 runtime 的 harvest-links.js 用 `PYTHON_BIN` 变量、新 bundle（Mac 源）硬编码 `python3` → fuxi 无 python3 命令（spawnSync 失败 stderr 空、报「(无输出)」），现场建 venv python3.exe shim + PATH 前置绕过；② 旧 runtime 的 DASHSCOPE_KEY/TOS_AK/TOS_SK 前置检查被 fuxi 侧绕过、Mac 源无条件检查 → local 后端本不需云凭证却被拦，现场塞 dummy 值绕过。
+**根因**: fuxi 生产 runtime 长期积累的运维态补丁从未回流 Mac 源——「修复靠人记、覆盖后无哨兵」的 NOTE-20260820-001 同族**第三次复发**（BOM / config.yml / runtime 补丁）。**应升格通用教训**：异地部署点补丁必须回流源仓，或发布链加换入后 diff 哨兵。
+**处置**: shim + dummy env 属临时措施，**下次换 runtime 会再丢**；根治三选项待 Doctor/VV 裁（回流 Mac 源 / install 脚本内置 / 发布后 diff 哨兵），已写入移交 VV 件。
+**预防门禁**: bundle 构建前 diff fuxi runtime 与 Mac 源关键文件；或部署后跑 single_one 冒烟清单。
+**来源**: 2026-08-20 部署现场（152429Z python3 ENOENT → shim；152204Z DASHSCOPE 拦截 → dummy）
