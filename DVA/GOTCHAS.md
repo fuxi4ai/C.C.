@@ -78,3 +78,14 @@ project: DVA
 **治本①（1a·作者域扫描）：** harvest 第 3 步 import 扫描根改 `path.join(TRANS_DIR, authorName)`（不存在兜底退整根）→ 跨作者孤儿永不被访问。standalone `dva import-transcripts <dir> [sec_uid]` CLI 不改，整根手动导入仍照常告警（回归基线）。
 **排查提示：** 复查「假红/告警洪泛」先看**告警点与过滤点的行序**——过滤在告警之后＝全量误报。改 import 相关逻辑时以此为第一手线索。
 **状态：** ① 已改 Mac 源（未部署·待 bundle/VV 验）；② 孤儿集中裁决留①稳定后另起。
+
+### [BUG-20260819-001] Qwen3-ASR 长音频整段转写 CUDA OOM（生产班受波及）
+**状态：** 🔄 待修复
+**优先级：** 🟡 中
+**触发：** 2026-08-19 调研情报局单视频任务：32.5min 视频 `single_one.ps1` 转写稳定复现 OOM——torch 报进程内已分配 34.58 GiB（4090 仅 24 GiB）、请求 3.62 GiB 失败。同日 `refill-20260818-210000Z.log`（周三 05:00 班）含多行同款 OOM，班次转写成批失败。
+**根因：** `transcribe.py` 把整段长音频一次传入 `model.transcribe()`，无分段/流式；模型加载（~3.4GB bf16）与 20s 短音频均正常（probe 实证 exit 0），长音频处理阶段内存膨胀至 OOM。
+**影响面：** 长视频（估 >15-20min）转写必失败；短视频不受影响。SpaceBlockout server（pythonw 8568）无关联（probe 8GiB 分配正常）。
+**绕过（已验证）：** 450s×5 分段转写（`E:\AI\DVA\ops\tmp\gtj_chunk_asr2.ps1` 范式——ffmpeg segment + 逐段 CLI + 拼接，5/5 成功，产物落 Transcripts/ 规范路径）。
+**建议修法：** transcribe.py 内建分段（whisper 式滑窗或 N 分钟分段+拼接）；或 DVA 管线层对超长音频预分段。修复与部署由 Doctor/VV 裁。
+**预防门禁：** 新音频长度 >15min 先测整段再上；班日志出现 OutOfMemory 即查本条族。
+**来源：** 2026-08-19 调研情报局单视频任务（硬证据：两次整段复现 + 20s 对照 + 班日志 OOM 行）
