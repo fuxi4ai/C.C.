@@ -80,7 +80,7 @@ project: DVA
 **状态：** ① 已改 Mac 源（未部署·待 bundle/VV 验）；② 孤儿集中裁决留①稳定后另起。
 
 ### [BUG-20260819-001] Qwen3-ASR 长音频整段转写 CUDA OOM（生产班受波及）
-**状态：** 🔄 已修待验（2026-08-20 adapter 分段修复落地 Mac 源 · 单测 9/9 绿 · **bundle→fuxi 已部署**〔`dva-runtime-20260820T150155Z` · sha256 `ae008d4e…` · 旧 runtime→`runtime.bak.20260820-230624` 可回滚〕· **Doctor 快验通过**〔single-20260820-152826Z · 32.5min 视频端到端 exit=0 无 OOM · 10314 字 · 产物 asr_status=success / source=qwen3-asr-1.7b-local-fuxi〕· 待 VV 独立补验后关条〔移交件 `docs/移交VV_ASR长音频分段修复_20260820.md`〕）
+**状态：** 🔄 已修待验（2026-08-20 adapter 分段修复落地 Mac 源 · 单测 9/9 绿 · **bundle→fuxi 已部署**〔`dva-runtime-20260820T150155Z` · sha256 `ae008d4e…` · 旧 runtime→`runtime.bak.20260820-230624` 可回滚〕· **Doctor 快验通过**〔single-20260820-152826Z · 32.5min 视频端到端 exit=0 无 OOM · 10314 字 · 产物 asr_status=success / source=qwen3-asr-1.7b-local-fuxi〕· 待 VV 独立补验后关条〔移交件 `docs/移交VV_ASR长音频分段修复_20260820.md`〕· **VV 补验顺延（2026-08-20 额度用尽）**· 周六 08-22 05:00 定时班为自然第二验证点）
 **优先级：** 🟡 中
 **触发：** 2026-08-19 调研情报局单视频任务：32.5min 视频 `single_one.ps1` 转写稳定复现 OOM——torch 报进程内已分配 34.58 GiB（4090 仅 24 GiB）、请求 3.62 GiB 失败。同日 `refill-20260818-210000Z.log`（周三 05:00 班）含多行同款 OOM，班次转写成批失败。
 **根因：** `transcribe.py` 把整段长音频一次传入 `model.transcribe()`，无分段/流式；模型加载（~3.4GB bf16）与 20s 短音频均正常（probe 实证 exit 0），长音频处理阶段内存膨胀至 OOM。

@@ -1,6 +1,6 @@
 ---
 name: "brain-anchors"
-description: "Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — \"dva\" / \"DVA\", \"龙鱼五力\", \"自检\", \"天工开物\", \"渊图\" / \"行业图谱\", \"海螺姑娘\", \"PEC\" / \"政治经济学\", \"司南\", \"O MY HTML\", \"暖色·卡片页\" / \"warm card page\" / \"卡片页\", \"暖色·警示页\" / \"warm warning page\" / \"警示页\" / \"风险日报范式\", \"星空\" / \"Starry Skies\", \"MiroFish\" / \"mirofish\", \"个人图书馆\" / \"knowledge vault\" / \"KV\", \"周日白泽大宗工作流\" / \"白泽大宗工作流\" / \"周报工作流\" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — \"白泽\" / \"小白\", \"烛阴\" / \"九儿\", \"句芒\" / \"芒芒\" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically."
+description: "Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — \"dva\" / \"DVA\", \"龙鱼五力\", \"自检\", \"天工开物\", \"渊图\" / \"行业图谱\", \"海螺姑娘\", \"PEC\" / \"政治经济学\", \"司南\", \"O MY HTML\", \"暖色·卡片页\" / \"warm card page\" / \"卡片页\", \"暖色·警示页\" / \"warm warning page\" / \"警示页\" / \"风险日报范式\", \"星空\" / \"Starry Skies\", \"MiroFish\" / \"mirofish\", \"个人图书馆\" / \"knowledge vault\" / \"KV\", \"周日白泽大宗工作流\" / \"白泽大宗工作流\" / \"周报工作流\" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — \"白泽\" / \"小白\", \"烛阴\" / \"九儿\", \"句芒\" / \"芒芒\" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically. Command codes — Doctor types \"～\" (= 同意/执行/继续: approve the pending proposal and execute directly, no re-confirmation) or \"～！\" (= 同意 + autonomously execute all parts with no directional/manual-decision need until completion; direction decisions still ask). Treat either as full approval."
 ---
 
 # brain-anchors — 锚点触发自动加载
@@ -37,6 +37,21 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 - **人格权威**：一律以 `性格档案` 为准；`source/` 旧设定（含旧"严谨专业"）作废，勿据其行事。
 - **退出**：Doctor 转向别的事或点名别人时，自然切换/退出该灵口吻。
 
+## 命令代码（Doctor 速记 · 2026-08-20 立 · 与关键词一同扫描）
+
+Doctor 单独发 `～` 或 `～！`（全角），或紧跟在对某提议/方案的回复里——即对 **当前 pending 的提议/任务** 的批准，CC 不再二次确认，按下表执行：
+
+| 命令 | 含义 | 行为 |
+|------|------|------|
+| `～` | 同意 / 执行 / 继续 | 按已给出的方案直接执行当前提议，做完回报 |
+| `～！` | 同意 + 非方向性部分自主执行直至结束 | 在 `～` 基础上：凡无方向性、无须人工决策的部分（事务性/文件性/存在最优解的执行步骤）不再逐步请示，连续做完统一回报；方向性/判断性/不可逆事项仍按 [[Doctor协作偏好]] 分工授权请示 Doctor |
+
+判定规则：
+
+- **独立成句才算**：仅含 `～` / `～！` 的一条消息，或对某提案的回复就是 `～` / `～！`；正文夹带的波浪号（如「好哒～」「加油～」）不算命令。
+- **长串优先**：先匹配 `～！` 再匹配 `～`（`～！` 内含 `～`）。
+- **不跨任务扩权**：只对当前 pending 项生效，不构成常驻授权。
+
 ## 行为规则
 
 ### 加载强度分两档
@@ -62,6 +77,8 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 - Doctor 说 "做个暖色·警示页" / "照风险日报范式" → 命中 `暖色·警示页`，读 `warm-warningpage-styleguide.html`（双轴分离/卡色取低/危烈兆/杀伤灯/时间语义/nowcast 免责）
 - Doctor 说 "起一下 MiroFish" / "MiroFish 怎么跑" → 命中 `MiroFish`，读 stub 并**直接贴出启动命令**（`cd ~/Documents/projects/MiroFish && npm run dev`）
 - Doctor 说 "个人图书馆，把这份 PDF 入库" / "knowledge vault 查一下博弈论" → 命中 `个人图书馆`，读 `Database/Knowledge Vault/CLAUDE.md` + 接手指南 → 进图书管理员模式 → 动手前先跑健康检查，再走入库/检索流水线
+- Doctor 说 "～" → 对 CC 刚提出的方案/待批动作表示同意——直接执行，不再确认
+- Doctor 说 "～！" → 同意，且无方向决策需要的部分一口气做到结束再统一回报
 
 ## 不触发的情况
 

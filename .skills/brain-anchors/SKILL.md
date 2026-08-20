@@ -1,6 +1,6 @@
 ---
 name: "brain-anchors"
-description: "Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — \"dva\" / \"DVA\", \"龙鱼五力\", \"自检\", \"天工开物\", \"渊图\" / \"行业图谱\", \"海螺姑娘\", \"PEC\" / \"政治经济学\", \"司南\", \"O MY HTML\", \"暖色·卡片页\" / \"warm card page\" / \"卡片页\", \"星空\" / \"Starry Skies\", \"MiroFish\" / \"mirofish\", \"个人图书馆\" / \"knowledge vault\" / \"KV\", \"周日白泽大宗工作流\" / \"白泽大宗工作流\" / \"周报工作流\" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — \"白泽\" / \"小白\", \"烛阴\" / \"九儿\", \"句芒\" / \"芒芒\" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically."
+description: "Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — \"dva\" / \"DVA\", \"龙鱼五力\", \"自检\", \"天工开物\", \"渊图\" / \"行业图谱\", \"海螺姑娘\", \"PEC\" / \"政治经济学\", \"司南\", \"O MY HTML\", \"暖色·卡片页\" / \"warm card page\" / \"卡片页\", \"暖色·警示页\" / \"warm warning page\" / \"警示页\" / \"风险日报范式\", \"星空\" / \"Starry Skies\", \"MiroFish\" / \"mirofish\", \"个人图书馆\" / \"knowledge vault\" / \"KV\", \"周日白泽大宗工作流\" / \"白泽大宗工作流\" / \"周报工作流\" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — \"白泽\" / \"小白\", \"烛阴\" / \"九儿\", \"句芒\" / \"芒芒\" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically. Command codes — Doctor types \"～\" (= 同意/执行/继续: approve the pending proposal and execute directly, no re-confirmation) or \"～！\" (= 同意 + autonomously execute all parts with no directional/manual-decision need until completion; direction decisions still ask). Treat either as full approval."
 ---
 
 # brain-anchors — 锚点触发自动加载
@@ -21,6 +21,7 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 | `司南` | `brain/司南/architecture/系统概览.md`<br>`brain/司南/方法论概要.md`（若存在）<br>`brain/司南/GOTCHAS.md` |
 | `O MY HTML` / `omy` | `brain/O MY HTML/architecture/系统概览.md`<br>`brain/O MY HTML/GOTCHAS.md`<br>**额外**：可加载 `Vault/taste-skills/` 和 `Vault/emil/`（设计 skills） |
 | `暖色·卡片页` / `warm card page` / `卡片页` | **设计原型锚（属 O MY HTML）**：要做暖色卡片页时，先读 `Projects/O MY HTML/design-system/warm-cardpage-styleguide.html`（范式：玻璃卡 + 双轴发光「色=类别/光=健康」+ 星云星点 + 行布局/连线 + 面板 + 原则）+ `warm-cardpage-boilerplate.html`（去数据起手骨架·改 NODES/EDGES/ROWS 即用）。base tokens 承 `jiuyin-warm-styleguide.html`。Canonical 活范例 = Artifact「Global Asset Inventory · 海螺姑娘」（`~/Documents/Claude/Artifacts/global-asset-inventory/index.html`，取最新视觉以它为准）。仅命中时加载，不主动激活其他设计 skills。 |
+| `暖色·警示页` / `warm warning page` / `警示页` / `风险日报范式` | **设计原型锚（属 O MY HTML · 属九阴·暖原型层）**：要做风险/警示仪表页时，先读 `Projects/O MY HTML/design-system/warm-warningpage-styleguide.html`（范式：双轴分离「杀伤影响×触发概率」+ 卡色取低 `min`（两轴都高才红·不误报）+ 5 段圆角竖条杀伤指示灯 + 左上石刻浮层 危/烈/兆〔危=触发红呼吸·烈=杀伤顶红静·兆=传导橘静·危吞兆·危在前〕+ 右下时间语义独立配色（尚有余量绿/临近黄/已触发红）+ nowcast 非预警免责横幅）。base tokens 承 `jiuyin-warm`、壳/连线承 `warm-cardpage`（**不**用其健康外发光）。Canonical 活范例 = Artifact「风险日报 · Risk Daily」（生成器 `Projects/风险日报/build_risk_daily.py`，取最新视觉以它为准）。第一性：风险 overlay·同步脆弱度仪表·**非预警器**（三轮综合回测证现有价格量能因子无一过严格机制）。仅命中时加载。 |
 | `星空` / `Starry Skies` | **轻量 stub**：`brain/星空/星空.md`（index，含项目定位 + 深读入口）<br>深读触发：Doctor 显式说"深入星空" / "细读星空" / 进入 `Projects/星空/` 实际工作时<br>深读时再加载：`Projects/星空/PRD.md` · `Projects/星空/reference/REF-001-知识星河-design-language.md` · `Projects/星空/GOTCHAS.md`（若存在） |
 | `MiroFish` / `mirofish` | **轻量 stub + 特殊动作**：读 `brain/MiroFish/MiroFish.md`，并**直接把其中的「启动命令」代码块贴给 Doctor**。这是个工具锚（不是知识项目）——命中即给运行命令，无需多问。 |
 | `个人图书馆` / `knowledge vault` / `KV` | **轻量 anchor + 独立项目**：读 `Database/Knowledge Vault/CLAUDE.md`（启动咒语：四层知识模型 + 入库流水线）+ `Database/Knowledge Vault/logs/接手指南-跨对话.md`（现状快照 + 铁律 + 健康检查脚本 + 待办）。这是 Doctor 的个人知识库（Obsidian vault），**仅 call 时加载**，日常不碰、不主动维护。<br>动手触发：Doctor 显式说"入库 / 建卡 / 织簇 / 更新图谱 / 盘点 raw / 查"时，进「图书管理员」模式按 CLAUDE.md 第 4 节流水线工作；**动手前先跑接手指南里的健康检查**（多会话可能并行加卡）。 |
@@ -35,6 +36,21 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 - **真身 vs 分身**：CLI 端若有同名 subagent（`~/.claude/agents/`），优先唤**真身** subagent；Cowork 端无此调用面，用本 anchor 加载性格档案作**分身**应答。
 - **人格权威**：一律以 `性格档案` 为准；`source/` 旧设定（含旧"严谨专业"）作废，勿据其行事。
 - **退出**：Doctor 转向别的事或点名别人时，自然切换/退出该灵口吻。
+
+## 命令代码（Doctor 速记 · 2026-08-20 立 · 与关键词一同扫描）
+
+Doctor 单独发 `～` 或 `～！`（全角），或紧跟在对某提议/方案的回复里——即对 **当前 pending 的提议/任务** 的批准，CC 不再二次确认，按下表执行：
+
+| 命令 | 含义 | 行为 |
+|------|------|------|
+| `～` | 同意 / 执行 / 继续 | 按已给出的方案直接执行当前提议，做完回报 |
+| `～！` | 同意 + 非方向性部分自主执行直至结束 | 在 `～` 基础上：凡无方向性、无须人工决策的部分（事务性/文件性/存在最优解的执行步骤）不再逐步请示，连续做完统一回报；方向性/判断性/不可逆事项仍按 [[Doctor协作偏好]] 分工授权请示 Doctor |
+
+判定规则：
+
+- **独立成句才算**：仅含 `～` / `～！` 的一条消息，或对某提案的回复就是 `～` / `～！`；正文夹带的波浪号（如「好哒～」「加油～」）不算命令。
+- **长串优先**：先匹配 `～！` 再匹配 `～`（`～！` 内含 `～`）。
+- **不跨任务扩权**：只对当前 pending 项生效，不构成常驻授权。
 
 ## 行为规则
 
@@ -58,10 +74,14 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 - Doctor 说 "帮我用龙鱼五力分析一下宁德时代" → 命中 `龙鱼五力`，读 brain/龙鱼五力/ + Projects/龙鱼五力/RULES.md
 - Doctor 说 "需要走一遍自检" → 命中 `自检`，读 Projects/龙鱼五力/RULES.md
 - Doctor 说 "今天画板上画一个 dashboard" → 命中 `天工开物`（隐式）—— 实际上需要 Doctor 显式喊 `天工开物`；不显式则**不**自动激活设计 skills
+- Doctor 说 "做个暖色·警示页" / "照风险日报范式" → 命中 `暖色·警示页`，读 `warm-warningpage-styleguide.html`（双轴分离/卡色取低/危烈兆/杀伤灯/时间语义/nowcast 免责）
 - Doctor 说 "起一下 MiroFish" / "MiroFish 怎么跑" → 命中 `MiroFish`，读 stub 并**直接贴出启动命令**（`cd ~/Documents/projects/MiroFish && npm run dev`）
 - Doctor 说 "个人图书馆，把这份 PDF 入库" / "knowledge vault 查一下博弈论" → 命中 `个人图书馆`，读 `Database/Knowledge Vault/CLAUDE.md` + 接手指南 → 进图书管理员模式 → 动手前先跑健康检查，再走入库/检索流水线
+- Doctor 说 "～" → 对 CC 刚提出的方案/待批动作表示同意——直接执行，不再确认
+- Doctor 说 "～！" → 同意，且无方向决策需要的部分一口气做到结束再统一回报
 
 ## 不触发的情况
 
 - "dvd"、"data"、"DJVU" 等含 d/v 但语义无关的词
 - 在引用历史对话或讨论项目命名时（CC 需要轻判断："Doctor 在询问 vs 在引用"）
+
