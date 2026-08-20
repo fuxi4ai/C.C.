@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-08-15
+updated: 2026-08-20
 status: active
 type: resource
 project: 渊图
@@ -22,7 +22,12 @@ project: 渊图
      12 条 NOTE/认知类实质已闭、因缺标准 **状态** 行（或状态写在「类型」行/关键词不在闭集）被计数误开 → 逐条补状态行（✅ 已沉淀/已根治/已知约束），条目留档不迁；
      NOTE-20260718-002 重号拆分——「重指边去重」改号 NOTE-20260718-004（「研报数字回原报告」保留原号：决策记录×3、日志×3、核实札记×2 共 8 处引用零断链）。
      当前开放 🟥 = 1（ERR-20260801-001）。计数口径提醒：本文件计数器按 `## [` 切块、认行首 `**状态**` 行的 ✅ 系关键词——新条目务必按模板写状态行。
-     2026-08-15 畸形收口：ERR-20260801-001 已还原+核验闭环（08-13 还原 · 08-15 收口）→ 当前开放 🟥/⏳ = 0。 -->
+     2026-08-15 畸形收口：ERR-20260801-001 已还原+核验闭环（08-13 还原 · 08-15 收口）→ 当前开放 🟥/⏳ = 0。
+     2026-08-20 错题本积压复盘（Doctor「审查并修复」批全案 · 看板口径 gotchas=3）：三条消化——
+     NOTE-20260819-002（🔄 已修·CC 独立复核背书·✅ 待 Doctor 落签——第 13 项门禁在盘）；
+     NOTE-20260819-001（✅ 已销账——Doctor 批全案确认 · description 空=0 实读）；
+     NOTE-20260816-002（状态词「已固化流程」不在计数闭集被误开 → 回写 ✅）。
+     另 FIX-20260626-001「待 apply」过时尾巴摘除（canonical _meta 留痕在盘）。当前开放 = 0（NOTE-002 待落签算 1 条待 Doctor 动作）。 -->
 
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
@@ -46,7 +51,7 @@ project: 渊图
 
 ## [NOTE-20260819-002] 今日帕米尔批 QA 漏跑「半空节点」检查——3 个 desc+props 双空节点过门入图
 
-**状态**: 🔄 已修待独立验收（2026-08-19 具身手术已补 desc/props · 待 VV/Doctor 复核）＋ **预防门禁第 13 项已实装**（2026-08-19 Doctor 批 · `kg_promote.py` 新节点 description/props 双空断言 · 自测 5/5：双空硬拦×2 / 半空提示不拦 / 正常通过 / 悬挂回归 · canonical 零误动 · 实装者 CC 不自签，待独立验收）
+**状态**: 🔄 已修待 Doctor 落签（2026-08-20 CC 独立复核背书：`rules/kg_promote.py` L32-42 第 13 项实读在盘 · 自测 5/5 记录核 · canonical 零误动；✅ 归 Doctor 落）＋ **预防门禁第 13 项已实装**（2026-08-19 Doctor 批 · `kg_promote.py` 新节点 description/props 双空断言 · 自测 5/5：双空硬拦×2 / 半空提示不拦 / 正常通过 / 悬挂回归 · canonical 零误动 · 实装者 CC 不自签）
 **优先级**: 🟡 中
 **触发**: 2026-08-19 帕米尔 3 篇 batch QA 场——CC 沙箱 QA 跑了结构 8 项/数组元素/desc 缩减/span 缺失率，**漏跑第 10 项「半空节点」检查**；今日批 3 个新节点（`concept_SixAxisForceSensorPriceRange`/`concept_MetalStrainGaugeTechRoute`/`concept_MEMSSixAxisForceSensor`）desc 与 props 双空仍通过 promote 门（kg_promote 门本身不含半空检查——半空属 CC 沙箱 QA 清单职责）。
 **根因**: ① kg_promote 一键门与 CC 沙箱 QA 清单职责边界不清——门内 12 项无半空检查，半空检查靠 CC 每次手工记得跑；② CC 本场漏跑（QA 清单执行无 checklist 强制）。
@@ -57,7 +62,7 @@ project: 渊图
 
 ## [NOTE-20260819-001] Boss老白 P2 存量 4 节点 desc 空——本批撞 id 转 update 暴露
 
-**状态**: 🔄 已销账待确认（2026-08-19 Doctor 令当场核 · CC 读盘实据：全图 4960 节点 description 空 = 0，4 节点均已非空——自然回填已完成 · 待 Doctor 确认销账）
+**状态**: ✅ 已销账（2026-08-20 Doctor 批全案确认 · 证据：canonical 实读 4977 节点 description 空 = 0，4 节点均已非空——自然回填完成）
 **优先级**: 🟢 低
 **触发**: 2026-08-19 帕米尔 3 篇入库，胜宏 PCB 篇 LLM 把 4 个存量节点当「新节点」输出（`concept_RubinSwitchTrayMaterialShare` / `product_NvidiaVR200` / `concept_SupernodeSwitchTrayCompetition2026` / `concept_MSAPYieldGapTechnologicalAccumulation`），kg_ingest span 校验警告「缺失 4」→ 合并时 id 撞 canonical 存量转 update（存量豁免，第 12 项实算 0/36 过）。
 **根因**: 4 节点为 Boss老白 P2 批（08-16）产出，desc 层为空（props 有料 2~12 键——信息未丢，仅缺 desc 叙述层）；08-16 批「空壳节点补全」未覆盖 desc 空形态。
@@ -399,7 +404,7 @@ project: 渊图
 **预防**: kg_ingest 已校 type↔id 前缀∈允许集（本次把 equipment 纳入唯一真相集）；建公司/技术节点前先 kb 查重 + 核 data_source 主题域，防跨项目（生物/AI硬件）串入。属 ERR-20260602-001 族系的「跨域串入」变体。
 
 ## [FIX-20260626-001] 盛合 CoWoS-L 口径矛盾：节点 prop 与 supplies 边冲突（粒度+时效错配，非真矛盾）
-**状态**: ✅ 已校对落 patch（待 Doctor 终端 apply）**优先级**: 🟡 中
+**状态**: ✅ 已 apply（2026-08-20 读盘复核：canonical `concept_DomesticCoWoSLPackagingLandscape` `_meta.校对_盛合CoWoSL粒度时效_2026_06_26` 留痕在盘——原「待 Doctor 终端 apply」尾巴为过时状态）**优先级**: 🟡 中
 **触发**: Doctor 追问「盛合也部分上混合键合了么」→ CC 核图谱发现 `concept_DomesticCoWoSLPackagingLandscape` prop「盛合承接 CoWoS-S，不涉及 950/960 CoWoS-L」与 `rel_Shenghejingwei_supplies_HiSilicon`（含 950PR）/ `rel_Shenghejingwei_Supplies_Ascend950PR`（封测）冲突。
 **核查**: 非真矛盾。旧口径 P1 = 帕米尔 2025-05-31（一年前·prop 标 undated）；新口径 P1 = 帕米尔 2026-04-27 / 2026-06-22。**950PR = 入门级小尺寸 CoWoS ≠ 950/960 旗舰大尺寸 CoWoS-L**——盛合承接 950PR 入门级，旗舰大尺寸归华为自有产线（Tier1 领先约 3 个月）。混合键合方面：盛合唯一连接是麒麟2026 一单（P2 华泰，2026 秋季未上市），确凿量产仍是 2.5D micro-bump 20μm。
 **解决**: 精修 prop 为分粒度口径 + 加 `_meta.校对_盛合CoWoSL粒度时效_2026_06_26`，保留全部边。patch `mapping/_v3_20260626_盛合校对_manual.json`，纯 update 计数 2702/3254 不变。
@@ -518,7 +523,7 @@ project: 渊图
 **预防/可选根治**: 若日后改名批频繁，可给 kg_promote 加 `--allow-renames` 参数（lost 检查时对出现在任意节点 aliases 里的旧 id 豁免）；当前按直改路径走，不改门。
 
 ## [NOTE-20260816-002] 转录语料断言准确率仅 61%——四类高发错误谱系（普查实证）
-**状态**: 🟢 已固化流程 **优先级**: 🟡 中
+**状态**: ✅ 已固化闭环（2026-08-20 复盘回写 · 117 处订正落图 + CLAUDE.md「转录语料断言核查」节固化在盘 · 原状态词「已固化流程」不在 conch 计数闭集被误计为积压）**优先级**: 🟡 中
 **触发**: Boss老白 131 篇视频转录（972 新节点）全量普查：459 条断言 ✓280（61%）✗65 △114。结构校验（悬挂/自环/type/重复）全部查不出这些——语义层污染。
 **四类错误谱系**（按频率）:
 1. **谐音名转写**（ASR 专有名词系统性弱项）：沛顿/睿力/王宁国/芯源微/盛美/是德/橙科微/哈默纳科/博睿康/北脑一号/鸿擎/星科/富临/舛冈富士雄——30+ 条，占 ✗ 近半
