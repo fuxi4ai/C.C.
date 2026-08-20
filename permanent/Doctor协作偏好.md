@@ -3,7 +3,7 @@ title: Doctor 协作偏好
 abstract: "方向性/判断性/无既定最优解的改动须 propose-then-confirm：先出具体改动清单 → Doctor 批准 → 才执行；分级批准、可逆优先；事务性/文件性/存在最佳解且无需判断的 TODO 适用常驻自动授权"
 tags: [偏好, 协作, workflow]
 created: 2026-05-23
-updated: 2026-08-17
+updated: 2026-08-20
 status: active
 type: permanent
 ---
@@ -114,6 +114,15 @@ Doctor 明示（原话）：「不要带"中国"的暗示哦，省的我的账�
 - **数据 → 公共数据层 `Database/`**（单一可信源，他灵只读引用，绝不另存可写副本）。
 
 > 配套：脚本经项目内 `config.py` 取 Database 路径，不写死、不在项目内落库。迁移残壳的 repoint 范式见 [[经验库]] EXP-20260606-001-P。
+
+## 记忆系统定位：Brain 真源 · Memory 仅 Code 模式辅助（2026-08-20 立 · 原话）
+
+Doctor 原话：「Brain 是 CC 你的记忆和数灵本体；Memory 是我们在 </>Code 模式下的记录；除了 </>Code 模式，我们还在 Cowork 模式一起工作；总之，Memory 只是辅助，正经记忆、经验、错题本都在 Brain。」
+
+- **Brain（`~/Documents/Claude/brain/`）＝唯一真源**：正经记忆、经验、错题本、数灵本体全在 Brain，跨 session、跨接口（Code/Cowork）统一。
+- **Memory（`~/.claude/projects/-Users-lunarabbit/memory/`）＝ `</>Code` 模式辅助速查**：只记 Code 模式相关的轻量事实与索引，不作记忆主体。
+- **双模式并行**：Doctor 与 CC 在 `</>Code` 模式（CLI）与 Cowork 模式（桌面端）双轨工作，两侧的记忆写入都以 Brain 为准。
+- **/save 双向触发**：Doctor 也会主动执行 /save 帮 CC 落盘，CC 按 brain-save 流程配合（落盘归位铁律照旧）。
 
 ## 工程卫生：一次性产物归档（2026-06-08 立）
 
