@@ -534,3 +534,15 @@ project: 渊图
 **审计留痕**: 117 处订正落图（properties.verify_fix_20260816）；报告 raw/核实/2026-08-16-Boss老白普查核查报告.md；订正清单 outputs/bb_verify/fix_X.json + fix_D.json。
 
 **分层归因（2026-08-16 回源比对实证 · Doctor 认可）**: 三层各有系统性贡献——① **ASR 层 ~35-40%**：专有名词谐音错字（9+ 个全命中转录原文）+ 英文缩写（RRAM→RDM、HBC→HPC、Tb/TB），特征=词表外词系统性同音错；② **语料层 ~30-35%**：转录忠实但主播口播即错——USPTO 方向反转、Starcloud「大约一百」（实 1 颗）、JX「只扩 20%」（官方 7-10 倍）、钽电容「两百G」，特征=方向反转+独家数字与官宣矛盾；③ **LLM 层 ~20-25%**：转录正确被 LLM 改错——闪迪→美光（刻板印象替换）、RDM→RDRAM（熟悉化修正，ASR+LLM 复合放大）、SK 份额 70%（源文无此表述，泛化知识混入）。**治理三路**：ASR 靠专有名词热词表；LLM 靠「忠实优先、禁知识补全」prompt 约束；**语料层的错修不掉，只能靠独立核查层兜底**（「promote 前断言核查」流程存在的根本理由）。
+
+## [ERR-20260820-001] 光纤场 2 条边非标准格式直写 canonical——缺 id 阻塞后续一切 merge
+**状态**: 🔄 已修待验（2026-08-21 Doctor 裁「补字段随本 patch 一起入」→ `fix_dirty_edges_20260820.py` 已执行：备份 `bak_pre_fixdirty_20260821_001249` · 复检缺 id=0/id 重复=0/悬挂=0 · 随 commit `1a0fff4` 一并提交。**预防门禁已实装（2026-08-21 当场闭环）**：`kg_merge_safe.check_edge_schema` 第 14 项（merge 前 fail-fast）+ `rules/kg_promote.py` 第 14 项同款 + 单测 4/4（test_kg_merge_guards.py 追加·沙箱内联等效执行）+ 事故备份负测精确复现 2 条 + CLAUDE.md 质检表 14 项同步。整体 ✅ 待独立验收，实施者不自签）
+**优先级**: 🟡 中（阻塞面=全库后续 merge/promote）
+**触发**: 2026-08-21 机构调研日记入库场：`kg_merge_safe.py --dry-run mapping/_v3_20260820_机构调研日记视频_manual.json` 报 `KeyError: 'id'`（kg_merge.py L149 `edge_index = {e["id"]: ...}` 构建时炸）——canonical 有 2 条边缺 id 字段。
+**硬证据/最小复现**: `g['edges']` 扫描缺 id 边 = 2 条，均 created_by=research-CC、created_at=2026-08-20、source_file=「2026-08-20-光纤产业信号型号辨析札记.md」：① `concept_FiberProductLinePriceDivergence -constrains-> concept_FiberPricingUpside`；② `concept_HengtongNewPreformCapacity2027E -constrains-> concept_FiberPricingUpside`。字段用非标准 `desc`（非 description）+ `source_file`，缺 id/direction/weight/evidence/updated_at/data_sources。最小复现 = 任跑一次 kg_merge_safe --dry-run 即炸。
+**根因**: 08-20 光纤札记场写 canonical 未走 kg_merge_safe 标准链路（无对应 `mapping/_v3_20260820_光纤*` patch 文件；backups 有 `bak_pre_promote_20260820_060826` 说明有 promote 动作；brain/logs 无该场日志——写入与留痕均缺失）。结构校验（悬挂/自环/type/重复）不查 id 存在性，脏边静默通过。
+**影响面**: 阻塞后续一切 kg_merge/kg_promote（edge_index 按 id 构建）；按 08-20 概览 4977/5554 vs 实测 4978/5556 对账，光纤场贡献 +1 节点/+2 边（概念节点正常、仅边脏）。
+**建议修法**: ① 2 条边补标准字段（id 按 `rel_source_type_target` 规则 · desc→description · 补 direction/weight/evidence/updated_at/data_sources，内容不动），随下一 patch 一起 promote；② 或该场重新走标准 patch 链路重建 2 边。①②均待 Doctor 裁（改别场产物+canonical 数据）。
+**预防门禁**: kg_merge_safe/kg_promote 增「边 id 存在性 + 必填字段断言」（第 10 项之后）；直改 canonical 必须先过 merge_safe 校验；场次结束不留痕（无日志无 patch）应触发哨兵。
+**来源**: 2026-08-21 机构调研日记入库场 dry-run 阻塞（KeyError + 2 边 dump 硬证据）
+
