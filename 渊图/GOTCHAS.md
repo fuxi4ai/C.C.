@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-08-20
+updated: 2026-08-21
 status: active
 type: resource
 project: 渊图
@@ -543,6 +543,6 @@ project: 渊图
 **根因**: 08-20 光纤札记场写 canonical 未走 kg_merge_safe 标准链路（无对应 `mapping/_v3_20260820_光纤*` patch 文件；backups 有 `bak_pre_promote_20260820_060826` 说明有 promote 动作；brain/logs 无该场日志——写入与留痕均缺失）。结构校验（悬挂/自环/type/重复）不查 id 存在性，脏边静默通过。
 **影响面**: 阻塞后续一切 kg_merge/kg_promote（edge_index 按 id 构建）；按 08-20 概览 4977/5554 vs 实测 4978/5556 对账，光纤场贡献 +1 节点/+2 边（概念节点正常、仅边脏）。
 **建议修法**: ① 2 条边补标准字段（id 按 `rel_source_type_target` 规则 · desc→description · 补 direction/weight/evidence/updated_at/data_sources，内容不动），随下一 patch 一起 promote；② 或该场重新走标准 patch 链路重建 2 边。①②均待 Doctor 裁（改别场产物+canonical 数据）。
-**预防门禁**: kg_merge_safe/kg_promote 增「边 id 存在性 + 必填字段断言」（第 10 项之后）；直改 canonical 必须先过 merge_safe 校验；场次结束不留痕（无日志无 patch）应触发哨兵。
+**预防门禁**: kg_merge_safe/kg_promote 增「边 id 存在性 + 必填字段断言」（第 10 项之后）；直改 canonical 必须先过 merge_safe 校验；场次结束不留痕（无日志无 patch）应触发哨兵。**⇒ 2026-08-21 已落地（当场闭环）**：`kg_merge_safe.check_edge_schema`（L145 · merge 前 fail-fast）+ `kg_promote.py` 第 14 项同款 + CLAUDE.md 质检清单 14 项同步（commit `cb46d6948d`）。**未落地（仍开）**：「无日志无 patch 哨兵」未实装；第 14 项负向单测仅沙箱内联等效执行——tests/ 无持久化用例，待持久化（证据可重放门）。
 **来源**: 2026-08-21 机构调研日记入库场 dry-run 阻塞（KeyError + 2 边 dump 硬证据）
 
