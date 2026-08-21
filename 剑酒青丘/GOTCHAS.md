@@ -76,6 +76,10 @@ project: 剑酒青丘
 
 **追记八（2026-08-18 · VV 十五轮 · 同根第十次复发——commit 已推但 TODO/交付命令仍停待执行 · CC 登记留痕）**：十五轮暴露的新增症状——Doctor 已完成十四轮 commit/push（`bc1e86f`）后，TODO 与已贴交付命令仍停在「待执行」，直到 VV 十五轮点名才勾。**纪律固化（VV 立）**：① 收口前必须重取 `HEAD`、`origin/main`、scoped worktree（gitcheck.py 实跑），已完成事项按 G-X136 客观代勾并**废止旧命令**；② 「grep=0」必须区分 **active hits=0** 与历史/superseded 命中，不得裸报全域清零（G-X151 判据①细化）；③ 发布证据必须分五层：canonical→portable→包内 SKILL→runtime metadata/归一化正文→fresh-session 实际 Skill 调用——skill list 可见或 cache 更新不能替代真实路由。**正例**：十四轮 commit 的客观代勾（gitcheck 实核 HEAD+worktree 后勾）是正确正例；fresh-session 未实测只是 PENDING，不得误记成完成或新故障。**连带三漏项已修**：`.skills/README.md` 与 `permanent/已装skill清单.md` 升 v1.5.4+SHA `f0437ea5…`；Vault 旧包 `Vault/archived/brain/brain-prd.skill`（包内 `065c5f0a…` 含旧合同）已改名 `_DEPRECATED_brain-prd.skill_v1.0_20260818`、清单改指 canonical 包；INFRA-20260817-001 降档注事实更正（live 真源已接 Gateway·保持待独立验收）。BUG-20260817-004 维持「部分修复」（结果对象生成与生产 renderer 未落地前不得升格）。**来源**：VV 十五轮终验回执 · 2026-08-18。
 
+**追记九（2026-08-21 · EAL v3 十六轮技术复核 · 同根第十一次复发——生产文档仍陈述吸收前事实）**：生产消费目录 `backtest/eal_v3/README.md` 与 `MODEL_CARD.md` 仍写“真实 frozen registry、真实 v3 结果、Brain canonical 落位尚未形成”，但现行盘面已有 8 行 frozen registry、pass2 result、candidate2 及 Brain canonical；PRD §2.5 的 T01/T02/T11/T15 也仍保留吸收前过程状态。**影响面**：生产代码/数据已推进而说明层继续冒充现行事实，N4“无双真源”与验收可判性受损。**处置**：不另立新 ID，归入本条同根“局部修全局漏”；本轮只登记、未代 CC 修文，状态保持待实施者修复与独立验收。**预防门禁**：每次吸收/首跑后必须做 canonical、生产 README/MODEL_CARD、PRD 过程态、实际消费端四面回读；旧的“尚未形成”表述须在现行文档清零或明确标成历史快照。**来源**：VV/Codex 2026-08-21 EAL v3 技术复核。
+
+**追记十（2026-08-21 · 已修待独立验收）**：Doctor 授权“帮CC修复完成”后，已同步修正生产 `README.md/MODEL_CARD.md/ABSORPTION_ADAPTATION.md`、Brain canonical PRD 三态/过程态和实际 pass3 消费结果；新增 `CURRENT_SHA256SUMS` 作吸收树 consumer manifest，旧 `SHA256SUMS` 只作 staging provenance。实施者不将本条标为 PASS/CLOSED。
+
 ### [BUG-20260817-003] requirements.lock.txt 用 pip freeze 全量 = 错误依赖锁：含系统包、缺核心包
 **状态**：🔄 已修待独立验收（2026-08-17 · 九修 · VV 终验阻断点 1 逮出 · 随 A 阶段待 VV 复核）
 **优先级**：🟡 中
@@ -136,3 +140,4 @@ project: 剑酒青丘
 **来源**：VV shadow.7 交接（2026-08-19）· CC 沙箱收件端重跑 · CC_APPLY §1
 **状态注**：非 VV 实错（3.14 证据可信）；是否转修待 VV 十六轮或随生产吸收时一并处理，由 Doctor 裁。
 **生产候选验证（2026-08-19）**：Doctor Mac 终端重跑——CPython 3.13.3 全套全绿：runtime 35/35（case 24 PASS）、migration 19/19、legacy 7/7 普通与 `-O` 双模式 exit=0；sidecar/包内 SHA256SUMS（32 项）/verify_package 全过。与沙箱 3.10 的 34/35 对照印证根因（statistics 实现差异）。生产候选 SQLite/operator CLI 版本三元组在 §3 数据迁移阶段补记。
+**修复实施（2026-08-21 · 已修待独立验收）**：最低支持版 CPython 3.11.15 已实跑 runtime 35/35、migration 19/19、legacy 7/7、新验收套件 6/6，ordinary/`-O` 全绿；与已有 3.13.3/3.14.6 证据共同覆盖声明支持边界。3.10 仍明确在支持范围外。本条不由实施者关闭。
