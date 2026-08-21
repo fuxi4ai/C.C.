@@ -11,8 +11,6 @@ type: log
 
 ## 待办
 
-- [ ] **EAL v3 · 发布链收尾（Doctor 总签已落 · 2026-08-21 挂）**：① ✅ PRD 20 R/N 验收——Doctor 2026-08-21 会话总签（「EAL总签」），PRD status=delivered、checkbox 保持 [?] 保留未自签审计链、§五总签记录+§六变更历史落盘；② R14 桌面/窄屏人工视觉目验与截图——总签已覆盖验收，走查留证可并入发布批顺手做；③ Gateway 发布回读——待发布授权（T16 in_progress）。依据：`4AI/Shake hands/to CC/VV回执-CC-EALv3验收缺口修复完成-20260821.md` · `logs/2026-08-21-EALv3-pass3核验与验收推进.md` · 本会话 Doctor 总签指令
-
 - [ ] **EAL · VV 十四轮窄修（2026-08-18 已改 · 十四轮 commit `bc1e86f` 已推送 ✓〔已核实：gitcheck.py 2026-08-18 · HEAD=bc1e86f5c2 · worktree 0 · push 已同步〕· 留痕 commit `2d6bec2` 已推送 ✓〔VV 十五轮核〕· 十五轮追记 commit `1d104f3c` 已推送 ✓〔gitcheck 实核〕）**：八轮 `894ab9d` ✓、十轮 `0367ec2` ✓、十一轮 `ce63f3a` ✓、十二轮 `9857bd0` ✓、十三轮 `bc6bf3c` ✓（均 Doctor 推送 · 旧命令作废勿重跑）；关闭合同两句已统一 · 三层 SHA `f0437ea5…` · runtime cache 已 v1.5.4；十五轮同根追记（RISK-002 追记八）+ 三漏项（README×2 v1.5.4 · Vault 旧包 `065c5f0a…` 标 _DEPRECATED_ · INFRA-001 事实更正）已落。**✓ fresh-session 两次路由实测完成（08-18/19 两个全新会话 · CC 客观代勾 · 证据：会话一 `/prd 路由实测` 命中 brain-prd·关闭合同回答为 v1.5.4 新句·§1「不立≠撒手」口径实弹；会话二「写交付标准」自然语言触发·`2026-08-19_Shakehands清理_PRD.md` 在盘（frontmatter task_authorization 新字段·awaiting_acceptance 未自签·独立审查员背书）·删除实况 find 全树 38 与 PRD 声称一致）**。**待**：① Settings 已重贴（Doctor 2026-08-19 会话「done」· 含 PRD 立卷边界条新版）· 注入验证 ✅ 已核（2026-08-19 /resume 场逐行比对：块二存在 · 含 PRD 立卷边界条 · 无六轮旧措辞 · 漂移零）· 最终运行时签字待 VV；② gateway 侧 /prd 路由是否纳入验收范围（Doctor 定）；③ VV 十六轮复验；④ 存量 PRD 处置表裁定进行中（下条）；⑤ 其他 brain skills 漂移收敛专场；⑥ `⏳` 活状态迁移专场（12 项目）；⑦ dry-run 测试 6 项增强并入 gate 判据集 PRD。
   依据：VV 十五轮终验回执 · `剑酒青丘/GOTCHAS.md` RISK-002 追记八 · 08-18/19 两会话路由实测转录
 

@@ -14,6 +14,7 @@ type: log
 
 ## 已完成
 
+- [x] **EAL v3 · 发布链收尾（2026-08-21 挂 · 2026-08-21 勾销迁档 · Doctor 总签+「～！」发布授权）**：① ✅ PRD 20 R/N 验收——Doctor 2026-08-21 会话总签（「EAL总签」），PRD status=delivered、checkbox 保持 [?] 保留未自签审计链、§五总签记录+§六变更历史落盘；② ✅ R14 视觉目验——总签覆盖验收，结构级复核已过（4 簇/7 筛选器/窄屏 CSS/FOMC 标题在盘），视觉目验可由 Doctor 在 Cowork artifact 直接看；③ ✅ Gateway 发布回读——新 artifact `eal-v3-event-transition`（2026-08-21 17:28Z · 盘上 SHA `94602559…` 与发布副本逐位一致 · v2.3 event-attribution-ledger 原样保留）· manifest 回读 ✓ · T16 关闭。依据：本会话 Doctor 总签指令与「～！」授权 · `logs/2026-08-21-EALv3-pass3核验与验收推进.md`
 - [x] **渊图 · 机构调研日记 08-13 篇核实入库（2026-08-21 挂 · 2026-08-21 勾销迁档 · 证据：commit `cb46d6948d`「首席梳理篇核实入库(Nebius+Lumentum/腾讯capex/Coherent补强) + 第14项边schema断言门禁」· canonical 4979/5559→4980/5560 · patch `mapping/_v3_20260821_机构调研日记首席梳理篇_manual.json` · 札记 `raw/核实/2026-08-21-机构调研日记机构首席最新梳理视频核实札记.md` 在盘）**：开源证券通信首席转述已落 raw（`2026.08.13-机构调研日记-机构首席最新梳理.md`·P2·勘误表·7673346665977253139）。增量候选：CPO 2027H2 高功率激光器放量 / Lumentum 1.6T+ELS 订单 / APO 四大配套（FAU/CW激光器/保偏光纤/棱镜透镜隔离器）/ 光纤供需修复 / 国产超节点链。核实后按 P2 入库；与 08-20 光纤场同域注意去重。
 
 - [x] **EAL v3 吸收与升级实施（2026-08-19 收口迁档）**：shadow.7 验包→吸收（backtest/eal_v3/ 平铺+relocation test+canonical 两件）→§3 数据迁移（sealed `ac00862e…`→candidate→schema 双跑→intake 27/27）→编码 pass2（8 frozen/19 exclusion·共识点值 WebSearch 补全）→DAILY_SHADOW 首跑 4 簇→candidate2 落库 48 结果。生产候选 Mac 3.13.3 全套全绿；PRD 20 R/N 待 VV 验收；additive schema 生产采用待裁。
