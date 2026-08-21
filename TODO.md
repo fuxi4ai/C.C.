@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+- [ ] **EAL v3 · PRD 20 R/N 独立验收（VV pass3 修复已核验 · 2026-08-21 挂）**：① 独立方（或 Doctor 总签）按 PRD 20 项验收——当前全部 [?]、status=awaiting_independent_acceptance、VV 未代签；② R14 桌面/窄屏人工视觉目验与截图；③ 验收通过后 Gateway 发布回读。依据：`4AI/Shake hands/to CC/VV回执-CC-EALv3验收缺口修复完成-20260821.md` · `logs/2026-08-21-EALv3-pass3核验与验收推进.md`
+
 - [ ] **EAL · VV 十四轮窄修（2026-08-18 已改 · 十四轮 commit `bc1e86f` 已推送 ✓〔已核实：gitcheck.py 2026-08-18 · HEAD=bc1e86f5c2 · worktree 0 · push 已同步〕· 留痕 commit `2d6bec2` 已推送 ✓〔VV 十五轮核〕· 十五轮追记 commit `1d104f3c` 已推送 ✓〔gitcheck 实核〕）**：八轮 `894ab9d` ✓、十轮 `0367ec2` ✓、十一轮 `ce63f3a` ✓、十二轮 `9857bd0` ✓、十三轮 `bc6bf3c` ✓（均 Doctor 推送 · 旧命令作废勿重跑）；关闭合同两句已统一 · 三层 SHA `f0437ea5…` · runtime cache 已 v1.5.4；十五轮同根追记（RISK-002 追记八）+ 三漏项（README×2 v1.5.4 · Vault 旧包 `065c5f0a…` 标 _DEPRECATED_ · INFRA-001 事实更正）已落。**✓ fresh-session 两次路由实测完成（08-18/19 两个全新会话 · CC 客观代勾 · 证据：会话一 `/prd 路由实测` 命中 brain-prd·关闭合同回答为 v1.5.4 新句·§1「不立≠撒手」口径实弹；会话二「写交付标准」自然语言触发·`2026-08-19_Shakehands清理_PRD.md` 在盘（frontmatter task_authorization 新字段·awaiting_acceptance 未自签·独立审查员背书）·删除实况 find 全树 38 与 PRD 声称一致）**。**待**：① Settings 已重贴（Doctor 2026-08-19 会话「done」· 含 PRD 立卷边界条新版）· 注入验证 ✅ 已核（2026-08-19 /resume 场逐行比对：块二存在 · 含 PRD 立卷边界条 · 无六轮旧措辞 · 漂移零）· 最终运行时签字待 VV；② gateway 侧 /prd 路由是否纳入验收范围（Doctor 定）；③ VV 十六轮复验；④ 存量 PRD 处置表裁定进行中（下条）；⑤ 其他 brain skills 漂移收敛专场；⑥ `⏳` 活状态迁移专场（12 项目）；⑦ dry-run 测试 6 项增强并入 gate 判据集 PRD。
   依据：VV 十五轮终验回执 · `剑酒青丘/GOTCHAS.md` RISK-002 追记八 · 08-18/19 两会话路由实测转录
 
@@ -27,7 +29,7 @@ type: log
 
 - [ ] **fuxi 冷归档 · 三隔离区期满清算（2026-08-03 挂 · 2026-08-04 迁址完成 · ⇒ 2026-08-20 收窄：第一件已删，剩两件 dated 08-22 + 一件新增待裁）**：`_to_delete_20260721`（3.3GB·窗口至 **08-20**）· `_to_delete_20260723_tts`（9.5MB·窗口至 **08-22**）· `_隔离_20260724`（12K·随 08-22 一并裁）。**① 迁址已完成（2026-08-04）**：三件 tarball 经 scp 至 `fuxi-station:F:\Mac_Quarantine\`、SHA-256 三串逐位回验一致、cmd 侧解包 move 落位、本地源已删（释放 3.45GB · Doctor 批准）。**② ✅ 第一件已删（2026-08-20 · Doctor 亲执行）**：删前只读核查三件全部在盘、尺寸/文件数/时间戳与台账三重吻合（`_to_delete_20260721` 3176.64MB/101,906 文件·`_tts` 9.39MB/32·`_隔离_` 0.01MB/9）；`rmdir /s /q` 后复读确认该目录已消失、另两件完好、F 盘余 715.27GB。**③ 剩余（dated 08-22）**：`_to_delete_20260723_tts` + `_隔离_20260724`。⚠ **中文目录名不可按名删**——远端回显乱码（`_????_20260724`），到期须改用 ASCII 日期串匹配绕开编码：`Get-ChildItem F:\Mac_Quarantine -Directory | Where-Object { $_.Name -match '20260723_tts|20260724' } | Remove-Item -Recurse -Force`。**④ tarball 已验内容、时序已定（2026-08-20 验 · Doctor 同日授「自主执行后续」随 08-22 批最后删）**：`mac_quarantine_20260803.tar.gz`（1011.75MB）——2026-08-20 `tar -tzf` 全量列出 **108,852 条目**，顶层恰好三目录、无杂项：`_to_delete_20260721` 108,805（盘上 101,906 文件 + ≈6,899 目录吻合）· `_tts` 33（32 文件）· `_隔离_` 14（9 文件）。**判定：tarball = 三件的精确压缩副本，可随 08-22 批同批处置**。⚠ 删除顺序建议：两目录先删、复读确认后再删 tarball——它是 08-04 SHA-256 回验的基准，最后删。**⑤ 范围外未动**：`cc_sessions_archive_20260811.tar.gz`(266MB) · `bak_20260808_batch20.tar.gz`(17MB) · 08-13 中文名归档(0.08MB) · 空 `.incoming` —— 属别的批次，本条不含。全清后按 v3.1 迁归档。**⑥ Doctor 常驻授权（2026-08-20 授「自主执行后续」）**：08-22 窗口期满后**无需再询问**，CC 按 ③→④ 预置顺序直接执行——两目录 ASCII 日期串匹配删除 → 复读确认消失 → 最后删 tar 包 → 勾销本条目按 v3.1 迁归档，完成后回报留痕。**执行边界**：仅限本条预置的三个对象（`_to_delete_20260723_tts` + `_隔离_20260724` + `mac_quarantine_20260803.tar.gz`）；⑤ 列的范围外物件不在授权内、仍不动。
 
-- [ ] **DVA · 孤儿字幕②（2026-07-24 挂 · 收窄 2026-08-14 · ⇒ VV 08-14 剩尾 4 件完成 3 件）**：single_one 首跑 ✓（BOM 修复生效·取景框视频转写成功·退出码 0·无残留锁）；AIGC秋雅 Downloaded 落位 ✓；滞留进程安全终止 ✓（0.3s CPU/零网络/零写入僵死·留痕 closure.log）。**机构调研日记件 ✅ 2026-08-21 已销**（Doctor 裁「seed 搜作者+存量篇落 raw」：sec_uid 已取·fuxi harvest_one 后台·08-13 篇落 raw·07-04 篇核实入库 1a0fff4）。**剩 1 件**：TechScopeLab-科境坊 FCC 反转 1 篇（待 Doctor 裁：归档+正文研判 / 归档 / seed 搜作者）。
+- [ ] **DVA · 孤儿字幕②（2026-07-24 挂 · 收窄 2026-08-14 · ⇒ VV 08-14 剩尾 4 件完成 3 件）**：single_one 首跑 ✓（BOM 修复生效·取景框视频转写成功·退出码 0·无残留锁）；AIGC秋雅 Downloaded 落位 ✓；滞留进程安全终止 ✓（0.3s CPU/零网络/零写入僵死·留痕 closure.log）。**机构调研日记件 ✅ 2026-08-21 已销**（Doctor 裁「seed 搜作者+存量篇落 raw」：sec_uid 已取·fuxi harvest_one 后台·08-13 篇落 raw·07-04 篇核实入库 1a0fff4）。**seed 搜作者班后核查待做**（cc-harvest-0821-jgdy 后台产物拉回/分流待核）。**剩 1 件**：TechScopeLab-科境坊 FCC 反转 1 篇（待 Doctor 裁：归档+正文研判 / 归档 / seed 搜作者）。
 
 - [ ] **白泽观星 · CN 腿首跑（2026-08-14 自 BT-19 条拆出 · Fed 腿日更 08-14 已入调度 guanxing-fed-daily）**：CN 腿 tushare --dry 对键→取数（Doctor 终端件）；烛照九阴 fomc_note 对接待 Fed 腿稳定后。
 
@@ -109,6 +111,8 @@ type: log
 - [ ] **龙鱼 · `classify_holdings.py` 一键分态分类器（2026-08-11 由 /todo 漏挂对账补挂 · 源：`logs/2026-08-10-龙鱼持仓板并入个股库与持仓迭代.md` ＋ `logs/2026-08-10-渊图星空常驻与观察点核验.md` · ⇒ Doctor 2026-08-11 裁「暂缓」）**：把持仓分态双轴规则（市值30万×利润率30%）固化成一键脚本免手判。规则已定稿在跑（决策记录 2026-08-10·当日16只按此重判、代码核验0不一致），分类器仅省手判、非阻塞。Doctor 裁暂缓——先不造工具；规则后续若微调再议。
 
 - [ ] **渊图 · kg_ingest 日期漂移 batch 收尾显式汇总（2026-08-11 目标模式漏挂补挂 · 源：`logs/2026-08-05-渊图3篇入库_CCL年份偏移修补.md`）**：batch 收尾把「解析日期≠文件年份」的偏移逐篇显式汇总成一行（07-28 已建议未实装、08-05 第三次复发）；首验=下次 batch。
+
+- [ ] **X-Board · 接管首日遗留（2026-08-21 挂 · 源：`logs/2026-08-21-科技资讯看板接管与X看板进化.md`）**：① X 看板自动重推班（每日刷新场后跑生成器→update_artifact · 待 Doctor 裁）；② 981 条 pending AI 分析（`npm run history:analyze` · 等 Codex 额度恢复）；③ Sites 重发布（公开站点仍 08-19 旧构建 · 归 Doctor/VV）；④ X-BOARD-OPERATIONS.md §9 修正（先 build 再测 · 已记 GOTCHAS NOTE-20260821-006 · 待 Doctor 批）+ `twitter auth status` 命令校正（待 twitter --help 输出）；⑤ 生产版 Next.js 同步两列抖音（需动服务端 schema · 另批）；⑥ 老毛/投知接 DVA 定时采集管线（料止 07-29 · 另立项）。
 
 ---
 
