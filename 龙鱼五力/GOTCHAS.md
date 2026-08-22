@@ -125,3 +125,15 @@ project: 龙鱼五力
 **建议修法**: ds evidence 中的具体数字（产能/订单/营收额/市占率）必须能在 canonical 或 engine_facts 找到同源，找不到则标 P3 降权或不采；机制化 = 08-15 挂的「ds 引用未证实数字检测」TODO。
 **预防门禁**: 校正/销账审计对 ds 腿 evidence 逐句对 canonical；同族第二例已现，按合同登记「应升格通用教训」，升格由 Doctor 裁。
 **来源**: logs/2026-08-15-渊图15篇入库与光通信龙鱼重打分.md（第一例）+ 2026-08-19 专项校正场（第二例·销账留痕）
+
+---
+
+## [ERR-20260822-001] 看板重推误用 08-06 老生成链（build_html.py），覆盖 08-11 定稿星空范式
+**状态**: 🔄 已修待验（2026-08-22 当场切回正确链重推——`_index/build_dark_board.py` + `board_template.html` 星空范式产物已推 artifact updatedAt 08-22T17:53Z · Doctor 目验待回执 · 实施者不自标 ✅）
+**优先级**: 🟡 中
+**触发场景**: 2026-08-22 Doctor 令「常更标的加曦智 + 现在推」——CC 未查看板生成链档案，凭目录里 README 老文档指引跑了 `build_index.py` + `build_html.py`（08-06 玻璃拟态老链）并 update_artifact，看板视觉范式回退（深色玻璃拟态·无星空背景/无 14 组配色），Doctor 目验发现「视觉范式不一样了」。
+**根因**: 龙鱼看板生成链 08-11 已换代（星空背景定稿场：模板 `_index/board_template.html` + 生成器 `_index/build_dark_board.py`），但 ① README.md（06-28 版）仍指向老链命令；② CC 未读 08-11 定稿日志与 memory「龙鱼看板背景定稿」就动手重建。信息沉淀在日志/memory 而执行时未加载 = 单一真源与发布链纪律违规（派生产物必须从 canonical 经正式生成与发布链写入）。
+**影响面**: 看板短暂回退旧范式约 1 小时（无数据损坏——两链均只读 records 生成产物）；曦智常更/分组两真源改动不受影响。
+**解决方案**: 切回正确链 `python3 _index/build_dark_board.py` → 产物 `_index/龙鱼个股库看板_暗.html` → update_artifact。已当场执行并回读验证。
+**预防措施**: ① 看板类「重建/推送」动手前必读 `brain/龙鱼五力/GOTCHAS.md` + 最新龙鱼场次日志确认生成链（本条目即路标）；② README.md 生成链段落待改版（指向 build_dark_board.py 并标注 build_html.py 已退役）——改版属既有资产修改，待 Doctor 批；③ 同族对照：X-Board 有 gen_xboard_artifact.py 单生成器无此坑，龙鱼是双链并存遗留。**⇒ 2026-08-22 执行留痕**：老链产物 `龙鱼标的库.html` 已按 Doctor 裁改名 `_DEPRECATED_龙鱼标的库_20260822.html`（不删·可回退）；老链生成器 `_index/build_html.py` 已按 Doctor 裁「退役直接归档」改名 `_index/_DEPRECATED_build_html_20260822.py`。README.md 生成链段落改版仍待 Doctor 批。
+**来源**: 2026-08-22 本会话（曦智加常更→重推→Doctor 目验发现→修复）；定稿链依据 `logs/2026-08-11-龙鱼看板星空背景定稿.md` L22/L27
