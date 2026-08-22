@@ -1,6 +1,10 @@
 ---
 title: 2026-08-15 Anthropic Q2 财报核实（渊图追新闻）
 tags: [渊图, log]
+created: 2026-08-15
+updated: 2026-08-15
+status: active
+type: log
 date: 2026-08-15
 ---
 

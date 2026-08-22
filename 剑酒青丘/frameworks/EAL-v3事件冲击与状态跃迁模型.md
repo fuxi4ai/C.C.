@@ -1,7 +1,9 @@
 ---
 title: "EAL v3 方法合同 · 事件冲击与状态跃迁"
+tags: [剑酒青丘, EAL, 方法合同]
 created: 2026-08-19
 updated: 2026-08-19
+type: spec
 contract_version: "3.0.0-shadow.7"
 status: draft
 document_role: codex_staging_handoff
