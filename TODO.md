@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+- [ ] **PEC · 9-30 中评首读（2026-08-21 挂 · 源：`logs/2026-08-21-PEC美以伊60天窗与利益透镜复审.md`）**：IR-P3 新基准 / 僵持命题 / 镜像命题 / 行为走廊修订。**IR-P6 净读拍板已销 ✓〔2026-08-21 Doctor 拍「净读回中性」· register 已落 · `logs/2026-08-21-美债解法与财政巩固政治学.md` 场〕**。
+
 - [ ] **EAL · VV 十四轮窄修（2026-08-18 已改 · 十四轮 commit `bc1e86f` 已推送 ✓〔已核实：gitcheck.py 2026-08-18 · HEAD=bc1e86f5c2 · worktree 0 · push 已同步〕· 留痕 commit `2d6bec2` 已推送 ✓〔VV 十五轮核〕· 十五轮追记 commit `1d104f3c` 已推送 ✓〔gitcheck 实核〕）**：八轮 `894ab9d` ✓、十轮 `0367ec2` ✓、十一轮 `ce63f3a` ✓、十二轮 `9857bd0` ✓、十三轮 `bc6bf3c` ✓（均 Doctor 推送 · 旧命令作废勿重跑）；关闭合同两句已统一 · 三层 SHA `f0437ea5…` · runtime cache 已 v1.5.4；十五轮同根追记（RISK-002 追记八）+ 三漏项（README×2 v1.5.4 · Vault 旧包 `065c5f0a…` 标 _DEPRECATED_ · INFRA-001 事实更正）已落。**✓ fresh-session 两次路由实测完成（08-18/19 两个全新会话 · CC 客观代勾 · 证据：会话一 `/prd 路由实测` 命中 brain-prd·关闭合同回答为 v1.5.4 新句·§1「不立≠撒手」口径实弹；会话二「写交付标准」自然语言触发·`2026-08-19_Shakehands清理_PRD.md` 在盘（frontmatter task_authorization 新字段·awaiting_acceptance 未自签·独立审查员背书）·删除实况 find 全树 38 与 PRD 声称一致）**。**待**：① Settings 已重贴（Doctor 2026-08-19 会话「done」· 含 PRD 立卷边界条新版）· 注入验证 ✅ 已核（2026-08-19 /resume 场逐行比对：块二存在 · 含 PRD 立卷边界条 · 无六轮旧措辞 · 漂移零）· 最终运行时签字待 VV；② gateway 侧 /prd 路由是否纳入验收范围（Doctor 定）；③ VV 十六轮复验；④ 存量 PRD 处置表裁定进行中（下条）；⑤ 其他 brain skills 漂移收敛专场；⑥ `⏳` 活状态迁移专场（12 项目）；⑦ dry-run 测试 6 项增强并入 gate 判据集 PRD。
   依据：VV 十五轮终验回执 · `剑酒青丘/GOTCHAS.md` RISK-002 追记八 · 08-18/19 两会话路由实测转录
 
@@ -52,6 +54,8 @@ type: log
 - [ ] **渊图 · bak_20260820_diaoyan 归档（2026-08-20 挂 · dated 08-27）**：调研情报局入库场回滚点（4962/5544）——conch 归档批 P1 延后 7 天（.conchconfig.yml protect 已挡）；08-27 后摘 protect 并归档 archived/。
 
 - [ ] **龙鱼 · ds 腿引用数字检测机制（2026-08-20 补挂 · 源：NOTE-20260819-001 · 原 08-15 挂条已从 TODO 消失）**：ds/LLM 盲打 evidence 中具体数字（产能/订单/营收额/市占率）须能在 canonical/engine_facts 找到同源，找不到标 P3 降权或不采；机制化=校正/销账审计逐句对 canonical。同族两例：08-15 华工「2万样机」P3 当事实、08-19 海光「中芯产能」错链锚（华为链·海光代工实为三星）。
+
+- [x] **渊图 · 德科立同篇测算数字落点核查（2026-08-22 挂 · Doctor 裁方案 A 边界外另起）**：`concept_GoogleOCSProcurement2026`（总量 1.5 万台·Calient 60% / Lumentum 26.7%≈4000台 / Coherent 9.3%≈1400台）与 `concept_GoogleOCSDemandForecast`（2026 需求 30000 vs 供给 15000-18000）同源帕米尔 2026-06-24 L57-59 分配测算段，与谷歌特邀报告口径（外购约 3000 台）差一倍——待交叉核查后按需修正。依据：`raw/核实/2026-08-22-德科立OCS谷歌300台专项核查札记.md` · GOTCHAS NOTE-20260816-002 追记 2026-08-22。**✅ 已收口（2026-08-22 同场闭环 · Doctor 裁方案 A 并确认）**：多源交叉判定「开源证券/Celestica 约 1.2 万 + 外购约 0.3 万」为可信侧、帕米尔侧系「全客户总量错记为谷歌外购 + Calient/Celestica 笔误」双重口径错位；canonical 已修正（三份额键 null + 区间口径键 + superseded 审计），git commit+push 已同步（gitcheck 实核：HEAD 314498254e · worktree 0 · push 已同步）。GoogleOCSDemandForecast 的需求/供给口径注记未改（原挂账范围外·保留原状）。
 
 ## 长期观察
 
