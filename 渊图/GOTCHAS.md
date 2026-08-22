@@ -217,6 +217,8 @@ project: 渊图
 
 **附带查法留痕（可复用）**: 判断某篇 provenance 缺失是不是本次操作造成的，**比对操作前后两版图谱**——「操作前无、操作后也无」＝ 历史孤儿（ERR-20260608-003 族系），与本次无关；「操作前有、操作后无」＝ 本次漏同步。本例 5 篇缺口经此法确认全属前者，改名批五面同步无遗漏。
 
+**追记 2026-08-22（第四实例 · 渊图 08-19 具身智能线手术）**: 手术分两阶段执行——stage1 移出 119 节点/147 边 → 4964/5542；embodied2 patch 续按门禁移启元族 4 节点/3 边 → 终态 **4960/5539**。档案（系统概览/决策记录）只回写 stage1 数字，直到 08-20 调研情报局场实测 base 4960/5539 才暴露 −4/−3。证据链：commit `a58e35c` message 自证「canonical 4960/5539 · 墓碑123节点150边」+ 墓碑文件实测 removed_nodes=123/removed_edges=150 + 双快照（`bak_pre_patch_embodied2_20260819_070307`=4964/5542 vs `bak_pre_gsprops_20260819_084355`=4960/5539）差集恰为启元族 4 节点 3 边。**教训增量**：多阶段手术/批次的档案回写必须以**最终 commit 的计数**为准，不得以中途快照数字回写；commit message 里的计数是自证锚。
+
 ## [ERR-20260709-001] kg_ingest 自动 base 查找不扫 mapping/ → 新终端未设 KG_BASE_JSON 即失败
 **状态**: ✅ 已解决（绕过）**优先级**: 🟡 中
 **要点**: 新登录 shell `python3 kg_ingest.py --batch` 报「未找到知识图谱 JSON」。根因 `find_latest_kg` 只扫 `~/Downloads`+行业研究根、**不扫 `mapping/`**，而 canonical 在 mapping/ 下；历史靠 profile 里 export `KG_BASE_JSON` 才隐性跑通。修：命令默认带 `--base mapping/行业知识图谱_完整数据库.json`（不依赖环境变量）。**详**: `Database/行业研究/渊图_GOTCHAS.md` [ERR-20260709-001]
