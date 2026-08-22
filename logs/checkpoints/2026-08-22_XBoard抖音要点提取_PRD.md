@@ -2,8 +2,8 @@
 title: PRD · XBoard 抖音要点提取
 tags: [prd, acceptance, 科技资讯看板]
 created: 2026-08-22 10:30
-updated: 2026-08-22 10:30
-status: awaiting_acceptance  # draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled
+updated: 2026-08-22 22:44
+status: delivered  # draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled
 task_authorization:
   state: verified
   source_type: 会话裁定
@@ -46,40 +46,40 @@ X-Board 抖音两列（老毛聊交易/投知君君买方视角）的详情页�
 
 ### A. 功能需求（用户可感知的行为 / 结果）
 
-- [?] **R1** · X-Board 抖音详情页：机制上线后新回流的视频，点开详情页显示「要点」块（3-5 条 bullet 列表），不再只显示 260 字开头
+- [✓] **R1** · X-Board 抖音详情页：机制上线后新回流的视频，点开详情页显示「要点」块（3-5 条 bullet 列表），不再只显示 260 字开头
   - 验收方法: 存在 ≥1 篇带要点缓存的视频 → 重建 artifact → 打开详情页目验「要点」块渲染；或机器比对生成的 HTML 含该视频的要点文本
   - 证据栏(实施者填): 样例篇 7676084633146035507（老毛 08-20）真实提取 5 条要点落缓存 → 生成器重建 → items-data 该 item points 字段含 5 条 → HTML 含「要点」容器（id=d-points 与 points-cap 各 1）→ update_artifact 推送 → Gateway 消费端 `Artifacts/x-board/index.html` Grep 命中「连续止损源于更高维度判断」（要点文本逐字在盘）。**渲染路径缺陷已修复（独立审查逮出 · 2026-08-22）**：douyin 分支曾有无条件兜底隐藏致要点块不可见——已删误置两行、X 分支补隐藏；重建后静态核验 JS 顺序（if 分支显示要点 L15-18 → else 回退 L20-23 → open L43 后无任何隐藏）→ 重推 SHA efadbaacb091 → 消费端 Grep 命中 `setHidden("d-points", false)` 显示语句
-- [?] **R2** · 无要点缓存的存量视频详情页保持回退行为（260 字开头摘要）不变
+- [✓] **R2** · 无要点缓存的存量视频详情页保持回退行为（260 字开头摘要）不变
   - 验收方法: 取 1 篇无缓存存量视频 → 详情页显示 260 字开头、无「要点」块；HTML 比对回退分支
   - 证据栏(实施者填): 重建后 items-data 实测——16 篇抖音 item 中 1 篇有 points、15 篇 points 空且 summary 非空（回退样例「做交易，永远别让情绪指挥你！」summary 261 字符=260+省略号）✓ 与「转写」字样 0 同时满足
-- [?] **R3** · 每日班（xboard-daily-repush）自动为当日新回流视频提取要点——先跑 extract_points.py 增量再生成看板
+- [✓] **R3** · 每日班（xboard-daily-repush）自动为当日新回流视频提取要点——先跑 extract_points.py 增量再生成看板
   - 验收方法: 班 prompt 含提取段（update_scheduled_task 落盘）＋ 手动跑一次增量提取 exit 0（当日新篇 0 篇时输出「无新篇」属正常）
   - 证据栏(实施者填): update_scheduled_task 已改（prompt+description·含提取段与「严禁存量回补」边界）· 手动实跑 `extract_points.py --new-only` →「候选 103 篇 · 待提取 0 · 存量跳过 103 · 无新篇可提取 · 退出 0」exit 0
 
 ### B. 非功能需求（仅产品或系统质量属性）
 
-- [?] **N1** · 可靠性：单篇提取失败不阻塞看板生成——提取器失败篇跳过（或写 error 标记），生成器对无缓存篇一律回退 260 字开头
+- [✓] **N1** · 可靠性：单篇提取失败不阻塞看板生成——提取器失败篇跳过（或写 error 标记），生成器对无缓存篇一律回退 260 字开头
   - 验收方法: 人工构造 1 篇坏字幕/超时 → extract 不中断 → 生成器正常产出
   - 证据栏(实施者填): 负向实测已发生——首跑样例因 DeepSeek thinking 模式耗尽输出额度返回 parse_fail（llm-fail），脚本未崩溃、未落缓存、重试后成功；生成器在该状态下正常产出（written 670072 chars · 45 items）
-- [?] **N2** · 数据质量：要点只从该篇字幕提取，不引入外部知识——prompt 硬约束「只从字幕提取、禁脑补数字」
+- [✓] **N2** · 数据质量：要点只从该篇字幕提取，不引入外部知识——prompt 硬约束「只从字幕提取、禁脑补数字」
   - 验收方法: prompt 文本含该约束（可复核）＋ 抽 1 篇人工比对要点与字幕无外源事实
   - 证据栏(实施者填): extract_points.py 的 prompt 含「硬约束：只从字幕内容提取，不得引入字幕以外的知识；数字必须逐字引用字幕原值」· 样例篇 5 条要点逐条比对字幕（1127 字符）全部源自原文（主题/连续止损归因/离场三步/十笔降额）无外源事实
 
 ### C. 任务专属（自定义）
 
-- [?] **X1** · 机制锚日期可配置——`--since` 参数（默认 2026-08-22），存量回补可随时放开
+- [✓] **X1** · 机制锚日期可配置——`--since` 参数（默认 2026-08-22），存量回补可随时放开
   - 验收方法: `--since 2026-08-01 --dry-run` 输出应含存量候选篇（证明开关有效），正式回补仍待 Doctor 裁
   - 证据栏(实施者填): 实跑 `--since 2026-08-01 --dry-run` → 候选 103 篇 · 待提取 15 篇（列出 08-02~08-17 老毛篇标题与日期）· 不调 LLM ✓；班 prompt 已写「严禁 --all 或调早 --since 做存量回补（回补须 Doctor 另行裁定）」
 
 ### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书 · 总签必须可审计）
 
 - 客观轨总签（覆盖 R1/R2/R3/N1/N2/X1）：
-  - covered_requirement_ids: []
-  - authority:
-  - designation_source_ref:
-  - signed_at:
-  - result:
-  - reviewer_evidence_ref:
+  - covered_requirement_ids: [R1, R2, R3, N1, N2, X1]
+  - authority: Doctor
+  - designation_source_ref: PRD frontmatter acceptance_authority（默认验收方）· 本场 AskUserQuestion 总签
+  - signed_at: 2026-08-22 22:44（北京时间 · 07:44 PDT）
+  - result: PASS——六条客观轨全部 [✓]
+  - reviewer_evidence_ref: 独立审查员背书记录（2026-08-22 · subagent a707df93ba7d53e1b · R2/R3/N1/N2/X1 成立 · R1 修复后复验通过）
 - 原则轨（结论/裁定类）共 0 条：开发中 Doctor 已拍板（方案 A/范围修订）均走变更记录，不重复列原则轨
 
 **独立审查员背书记录（2026-08-22 · Task subagent a707df93ba7d53e1b · 未参与开发）**：
@@ -120,6 +120,7 @@ X-Board 抖音两列（老毛聊交易/投知君君买方视角）的详情页�
 |---|---|---|---|
 | 2026-08-22 10:30 | draft → in_progress | CC | 任务已授权（Doctor 本场裁定方案+范围修订）· 立卷后进入执行 |
 | 2026-08-22 13:00 | in_progress → awaiting_acceptance | CC | 六条交付标准全填 [?]+证据 · 全链路实跑验收（提取→生成→Gateway 回读命中） |
+| 2026-08-22 22:44 | awaiting_acceptance → delivered | Doctor | 总签（AskUserQuestion · 六条客观轨全部 [✓] · CC 代记留痕） |
 
 ---
 
@@ -131,3 +132,4 @@ X-Board 抖音两列（老毛聊交易/投知君君买方视角）的详情页�
 - 2026-08-22 CC: 六条全填 [?]+证据 → awaiting_acceptance
 - 2026-08-22 CC: 独立审查（subagent a707df93）逮出 R1 阻断——douyin 分支误置无条件兜底隐藏（Edit old_string 匹配到同型序列误落位置）→ 修复（删误置两行+X 分支补隐藏）→ 重建复验（SHA efadbaacb091）→ update_artifact 重推 → 消费端 Grep 命中显示语句。教训记：同文件多处同型代码块的 Edit 必须带唯一上下文锚（已记 memory）
 - 2026-08-22 CC: 独立审查背书记录落分轨签核小节；附带发现四条（样例参数/计数时点/exit2 区分度/--new-only 装饰性）如实保留
+- 2026-08-22 22:44 Doctor: 总签——六条交付标准全部 [✓]（CC 代记留痕 · 分轨签核已落 · status → delivered）

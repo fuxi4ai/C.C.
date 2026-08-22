@@ -2,8 +2,8 @@
 title: PRD · XBoard 要点录入 DVA 分析库
 tags: [prd, acceptance, DVA, 科技资讯看板]
 created: 2026-08-22 14:00
-updated: 2026-08-22 14:00
-status: awaiting_acceptance  # draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled
+updated: 2026-08-22 22:44
+status: delivered  # draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled
 task_authorization:
   state: verified
   source_type: 会话裁定
@@ -46,40 +46,40 @@ X-Board 详情页的 LLM 要点（Mac 侧 producer cache `Claude/Projects/Financ
 
 ### A. 功能需求（用户可感知的行为 / 结果）
 
-- [?] **R1** · 录入器把 Mac points 缓存组为 generation 并单向发布到 fuxi `Reports/<author>/_xboard/_generations/<gen>/`（by-aweme v1 文档 + manifest v1），发布后 current.json 指向新代
+- [✓] **R1** · 录入器把 Mac points 缓存组为 generation 并单向发布到 fuxi `Reports/<author>/_xboard/_generations/<gen>/`（by-aweme v1 文档 + manifest v1），发布后 current.json 指向新代
   - 验收方法: 首代发布后 ssh 回读 fuxi `_xboard` 树——current.json 在盘且 generation_id 匹配、by-aweme 文档数与 manifest entries 一致
   - 证据栏(实施者填): 首代 `xb-20260822T135424Z` 发布成功（老毛 1 文档）· ssh 回读树：`_generations\xb-20260822T135424Z\{manifest.json(1002B), by-aweme\7676084633146035507.json(1128B)}` 在盘 · current.json 在盘且 generation_id=xb-20260822T135424Z、point_document_count=1。⚠ 首跑曾因 Move-Item 非终止错误产生「current 指向空代」违约态，已手动修复 fuxi 结构 + 脚本加固（-ErrorAction Stop + Test-Path 断言）后复验在盘结构正确
-- [?] **R2** · 幂等：全部条目幂等键与当前 current 代一致时重跑 no-op（不产生新代、不重写 current）
+- [✓] **R2** · 幂等：全部条目幂等键与当前 current 代一致时重跑 no-op（不产生新代、不重写 current）
   - 验收方法: 同输入连续跑两次——第二次输出 no-op、fuxi `_generations` 目录数不增
   - 证据栏(实施者填): 首代发布后立即重跑 ingest_points.py →「幂等 no-op（与上次发布一致）」· fuxi `_generations` 仅 1 代（回读树实证）· `points/_last_published.json` 摘要 5d9b0693… 与发布时一致
-- [?] **R3** · fail-closed：Mac 预校验或 fuxi 回读校验任一失败，不落 `_generations`、不改 current（staging 可清理）
+- [✓] **R3** · fail-closed：Mac 预校验或 fuxi 回读校验任一失败，不落 `_generations`、不改 current（staging 可清理）
   - 验收方法: 人工篡改 staging 里 1 个文档的 points（制造 6 条）→ verify 拒绝、current 不变（比对前后 SHA）
   - 证据栏(实施者填): fuxi 侧人工建坏 staging（points 6 条+文件 SHA 不符）→ verify 输出「FAIL: 文件 SHA 与 manifest 不符 / points 条数 6 越界」· VERIFY_RC=1 · current.json SHA 前后一致（F1218B05…）· 坏 staging 已清
 
 ### B. 非功能需求（仅产品或系统质量属性）
 
-- [?] **N1** · 原子性：generation 完整入不可变目录后才原子替换 current.json（.tmp+Move）；失败不得留半代
+- [✓] **N1** · 原子性：generation 完整入不可变目录后才原子替换 current.json（.tmp+Move）；失败不得留半代
   - 验收方法: 发布脚本内 staging→_generations 为 Move-Item；current 写 .tmp 后 Move；verify 在 move 之前全量 PASS 才执行
   - 证据栏(实施者填): 脚本实现在盘（verify PASS 才进发布段；current 经 .tmp 两段 Move；全部 Move/New 加 -ErrorAction Stop + 事后 Test-Path 断言）。⚠ 首跑曾暴露原子性缺陷（Move-Item 非终止错误静默吞掉 → current 指向空代），已修复并复验；此缺陷及其加固即 N1 的负向+正向证据链
-- [?] **N2** · 数据质量：每文档 3-5 条非空去重 points；aweme_id/时间/hash/schema 字段显式合法；manifest 逐文件 SHA-256 回读一致、entries 按 aweme 严格升序、计数一致
+- [✓] **N2** · 数据质量：每文档 3-5 条非空去重 points；aweme_id/时间/hash/schema 字段显式合法；manifest 逐文件 SHA-256 回读一致、entries 按 aweme 严格升序、计数一致
   - 验收方法: verify 脚本全项 PASS 输出（逐项打印）+ 首代回读抽查 1 个文档字段全合法
   - 证据栏(实施者填): 首代 verify 输出 VERIFY_PASS（entries:1 · inventory:520 · doc_ok:1 · inventory_fingerprint 45bfecaa… 与 manifest 一致〔经独立审查更正：54762c7b 系修复前旧失败轮现场值，在盘与重算一致值为 45bfecaa〕· manifest_digest 自校验过）；负向测试同脚本逮出「SHA 不符」「points 6 越界」两条
 
 ### C. 任务专属（自定义）
 
-- [?] **X1** · 不污染认证面：发布前后 finance 五文件（decisions/concepts/relations/wisdom/author-profile）SHA-256 逐一不变
+- [✓] **X1** · 不污染认证面：发布前后 finance 五文件（decisions/concepts/relations/wisdom/author-profile）SHA-256 逐一不变
   - 验收方法: 发布前 ssh 取五文件 SHA 清单，发布后复取比对（VV 契约「五文件 hash 不回漂」）
   - 证据栏(实施者填): 发布前基线（02423D12…/6BDA2E87…/04EEBB6E…/5BC5FF0E…/0246AD04…）与发布后复取**逐一逐位一致**（ssh 两次 Get-FileHash 实跑）
 
 ### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书 · 总签必须可审计）
 
 - 客观轨总签（覆盖 R1/R2/R3/N1/N2/X1）：
-  - covered_requirement_ids: []
-  - authority:
-  - designation_source_ref:
-  - signed_at:
-  - result:
-  - reviewer_evidence_ref:
+  - covered_requirement_ids: [R1, R2, R3, N1, N2, X1]
+  - authority: Doctor
+  - designation_source_ref: PRD frontmatter acceptance_authority（默认验收方）· 本场 AskUserQuestion 总签
+  - signed_at: 2026-08-22 22:44（北京时间 · 07:44 PDT）
+  - result: PASS——六条客观轨全部 [✓]
+  - reviewer_evidence_ref: 独立审查员背书记录（2026-08-22 · subagent a0fdcfb8f3cb71bc5 · 六条全部成立）
 - 原则轨（结论/裁定类）共 0 条：录入契约由 VV 给出（§六）、方向由 Doctor 裁，开发中无新分叉裁定
 
 **独立审查员背书记录（2026-08-22 · Task subagent a0fdcfb8f3cb71bc5 · 未参与开发）**：
@@ -118,6 +118,7 @@ X-Board 详情页的 LLM 要点（Mac 侧 producer cache `Claude/Projects/Financ
 |---|---|---|---|
 | 2026-08-22 14:00 | draft → in_progress | CC | 任务已授权（Doctor 本场裁定+时机批）· 立卷后进入执行 |
 | 2026-08-22 15:30 | in_progress → awaiting_acceptance | CC | 六条交付标准全填 [?]+证据 · 首代发布+回读+幂等+fail-closed+五文件 SHA 全验收实跑 |
+| 2026-08-22 22:44 | awaiting_acceptance → delivered | Doctor | 总签（AskUserQuestion · 六条客观轨全部 [✓] · CC 代记留痕） |
 
 ---
 
@@ -127,3 +128,4 @@ X-Board 详情页的 LLM 要点（Mac 侧 producer cache `Claude/Projects/Financ
 - 2026-08-22 CC: loader 口径实核（fuxi analysis-utils.js + run_finance_analysis_repair.mjs）：subtitleSha256=sha256(cleanSubtitle(level1.subtitle))（去 <\|…\|> 标签→空白合并→trim→≥50 字）· inventory 数组 create_time 倒序 · stableDigest 键排序
 - 2026-08-22 CC: 首代发布踩三坑并修——① verify 参数个数错配（publish 传 4 个 verify 收 3 个）；② inventory_fingerprint 不匹配（inventory 排序：loader create_time 倒序 vs glob 升序，Mac+verify 双侧改为倒序）；③ **PowerShell Move-Item 非终止错误静默吞掉 → current 指向空代**（fuxi 手动修复结构 + 脚本全 Move/New 加 -ErrorAction Stop + 事后 Test-Path 断言）。教训已记入运维 §9.5.1
 - 2026-08-22 CC: 六条全填 [?]+证据 → awaiting_acceptance
+- 2026-08-22 22:44 Doctor: 总签——六条交付标准全部 [✓]（CC 代记留痕 · 分轨签核已落 · status → delivered）
