@@ -550,3 +550,14 @@ project: 渊图
 **预防门禁**: kg_merge_safe/kg_promote 增「边 id 存在性 + 必填字段断言」（第 10 项之后）；直改 canonical 必须先过 merge_safe 校验；场次结束不留痕（无日志无 patch）应触发哨兵。**⇒ 2026-08-21 已落地（当场闭环）**：`kg_merge_safe.check_edge_schema`（L145 · merge 前 fail-fast）+ `kg_promote.py` 第 14 项同款 + CLAUDE.md 质检清单 14 项同步（commit `cb46d6948d`）。**未落地（仍开）**：「无日志无 patch 哨兵」未实装；第 14 项负向单测仅沙箱内联等效执行——tests/ 无持久化用例，待持久化（证据可重放门）。
 **来源**: 2026-08-21 机构调研日记入库场 dry-run 阻塞（KeyError + 2 边 dump 硬证据）
 
+
+## [ERR-20260823-001] 光迅双节点 + 「HiSilicon Optical」编造别名错并
+**状态**: 🔄 已修待验（2026-08-23 Doctor 裁方案 A「并入 Accelink」→ 手术脚本 `surgery_merge_guangxun_20260823.py` 已执行：删 `company_Guangxun` · 4 边迁入 `company_AccelinkTechnologies`（id 同步改）· 别名合并剔除「HiSilicon Optical」· desc 增量 + 帕米尔两条信源迁入 · 备份 `bak_surgery_guangxun_20260823_010203` · QA 全绿 · wiki 旧卡 `_DEPRECATED_guangxun_20260823.md` 改名。整体待独立验收，实施者不自签）
+**优先级**: 🟡 中（检索/问答歧义 + 华为链「光迅」归属一度存疑）
+**触发**: 2026-08-23 华为 OCS 链入库场：挂「光迅独家光交换模块」边前核 canonical，发现同公司双节点——`company_Guangxun`（2025-10-30 建 · aliases 含「HiSilicon Optical」）与 `company_AccelinkTechnologies`（2026-08-16 建）并存。
+**硬证据/最小复现**: 实读两节点 aliases/desc/created 字段（上文摘录在案）；`grep -r "HiSilicon Optical" raw/` 全树零命中——唯一命中为我方 08-23 札记，即该别名无原文出处（疑 LLM 入库编造或错并）；海思光电子（HiSilicon Optoelectronics，华为海思旗下）≠ 光迅科技（Accelink，中国信科旗下），canonical 无海思光电子独立节点。
+**根因**: 2025-10 帕米尔 OCS 解读篇入库时 LLM 把华为链另一实体名混入光迅 aliases；同公司双节点因两批（2025-10 帕米尔 / 2026-08 Boss老白）各自建节点、无「同名实体查重」门禁而未撞见。
+**影响面**: 同实体信息分裂两处（Guangxun desc 薄 vs Accelink desc 富）；华为链「光迅」边归属悬而未决直至本场核实；下游 wiki/问答按 id 检索会漏一侧。
+**建议修法**: 已按 Doctor 裁方案 A 执行（见状态行）。备选未用：方案 B 并入 Guangxun（id 非官方英文名·desc 薄）；方案 C 仅剔别名不合并（分裂状态残留）。
+**预防门禁**: ① 入库 QA 增「同名实体检测」：company 节点按 name/别名交叉比对，同实体内外文名变体（Accelink/ACCELINK/光迅）归一；② aliases 元素须与节点实体同指（「X Optical」类公司名混入别家公司 aliases 即报）——现有 QA 无此项；③ 与 FIX-20260625-001（张冠李戴·误记归属）族域相近（实体错配）但形态不同（编造别名 vs 误记归属）——若实体错配族第三次出现，按合同升格通用教训（升格由 Doctor 裁，本条不自升）。
+**来源**: 2026-08-23 本会话（华为 OCS 链入库 → 光迅边归属核实 → Doctor 令修正 → 方案 A 执行）
