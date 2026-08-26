@@ -37,7 +37,7 @@ project: 渊图
 
 ```
 ## [ERR-YYYYMMDD-NNN] 简要描述
-**状态**: 🔄 待修复/已修待验 / ⚠️ 已知风险 / ⏳ 待解决（旧状态词 · 逐条迁移专场后退役）；✅ 已修复（**仅由 Doctor 或指定独立验收方落，实施者不得自标**）
+**状态**: 🔄 待修复/已修待验 / ⚠️ 已知风险；✅ 已修复（**仅由 Doctor 或指定独立验收方落，实施者不得自标**）（⏳ 旧状态词 2026-08-26 迁移专场退役）
 **优先级**: 🔴 高 / 🟡 中 / 🟢 低
 **触发场景**:
 **错误信息**:
@@ -51,7 +51,7 @@ project: 渊图
 
 ## [NOTE-20260819-002] 今日帕米尔批 QA 漏跑「半空节点」检查——3 个 desc+props 双空节点过门入图
 
-**状态**: 🔄 已修待 Doctor 落签（2026-08-20 CC 独立复核背书：`rules/kg_promote.py` L32-42 第 13 项实读在盘 · 自测 5/5 记录核 · canonical 零误动；✅ 归 Doctor 落）＋ **预防门禁第 13 项已实装**（2026-08-19 Doctor 批 · `kg_promote.py` 新节点 description/props 双空断言 · 自测 5/5：双空硬拦×2 / 半空提示不拦 / 正常通过 / 悬挂回归 · canonical 零误动 · 实装者 CC 不自签）
+**状态**: ✅ 已修复（Doctor 2026-08-26 /todo 问答板落签「③落签✅销账」· CC 代记留痕 · 证据：`rules/kg_promote.py` L32-42 第 13 项实读在盘 · 自测 5/5 记录核 · canonical 零误动）＋ **预防门禁第 13 项已实装**（2026-08-19 Doctor 批 · `kg_promote.py` 新节点 description/props 双空断言 · 自测 5/5：双空硬拦×2 / 半空提示不拦 / 正常通过 / 悬挂回归 · canonical 零误动）
 **优先级**: 🟡 中
 **触发**: 2026-08-19 帕米尔 3 篇 batch QA 场——CC 沙箱 QA 跑了结构 8 项/数组元素/desc 缩减/span 缺失率，**漏跑第 10 项「半空节点」检查**；今日批 3 个新节点（`concept_SixAxisForceSensorPriceRange`/`concept_MetalStrainGaugeTechRoute`/`concept_MEMSSixAxisForceSensor`）desc 与 props 双空仍通过 promote 门（kg_promote 门本身不含半空检查——半空属 CC 沙箱 QA 清单职责）。
 **根因**: ① kg_promote 一键门与 CC 沙箱 QA 清单职责边界不清——门内 12 项无半空检查，半空检查靠 CC 每次手工记得跑；② CC 本场漏跑（QA 清单执行无 checklist 强制）。

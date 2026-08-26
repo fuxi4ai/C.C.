@@ -17,7 +17,7 @@ project: GlobalPercent
 
 ```
 ## [ERR-YYYYMMDD-NNN] 简要描述
-**状态**: 🔄 待修复/已修待验 / ⚠️ 已知风险 / ⏳ 待解决（旧状态词 · 逐条迁移专场后退役）；✅ 已修复（**仅由 Doctor 或指定独立验收方落，实施者不得自标**）
+**状态**: 🔄 待修复/已修待验 / ⚠️ 已知风险；✅ 已修复（**仅由 Doctor 或指定独立验收方落，实施者不得自标**）（⏳ 旧状态词 2026-08-26 迁移专场退役）
 **优先级**: 🔴 高 / 🟡 中 / 🟢 低
 ```
 
@@ -31,7 +31,7 @@ project: GlobalPercent
 **来源**: Polymarket Documentation — Gamma Markets API（docs.polymarket.com）。
 
 ## [GOTCHA-20260629-002] 一批修复改了未提交，悬在 initial commit 之后
-**状态**: ⏳ 待解决（需 Doctor 终端 git）
+**状态**: ⚠️ 已知风险（需 Doctor 终端 git）（⏳→⚠️ · 2026-08-26 迁移专场 Doctor 裁）
 **优先级**: 🟡 中
 **触发场景**: `git status` 显示 `aggregator.py / publish.py / GOTCHAS.md / requirements.txt / test_publish.py` 已改 + `tests/test_aggregator.py` 新增，全未 commit（initial commit = `beffe24`）。
 **风险**: 一旦 checkout/clone 丢这些修复。
