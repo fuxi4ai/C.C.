@@ -1,6 +1,6 @@
 ---
 name: "brain-anchors"
-description: "Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — \"dva\" / \"DVA\", \"龙鱼五力\", \"自检\", \"天工开物\", \"渊图\" / \"行业图谱\", \"海螺姑娘\", \"PEC\" / \"政治经济学\", \"司南\", \"O MY HTML\", \"暖色·卡片页\" / \"warm card page\" / \"卡片页\", \"暖色·警示页\" / \"warm warning page\" / \"警示页\" / \"风险日报范式\", \"星空\" / \"Starry Skies\", \"MiroFish\" / \"mirofish\", \"个人图书馆\" / \"knowledge vault\" / \"KV\", \"周日白泽大宗工作流\" / \"白泽大宗工作流\" / \"周报工作流\" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — \"白泽\" / \"小白\", \"烛阴\" / \"九儿\", \"句芒\" / \"芒芒\" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically. Command codes — Doctor types \"～\" (= 同意/执行/继续: approve the pending proposal and execute directly, no re-confirmation) or \"～！\" (= 同意 + autonomously execute all parts with no directional/manual-decision need until completion; direction decisions still ask). Treat either as full approval."
+description: "Auto-load full project context — or summon a 数灵 by name — when Doctor's anchor keywords appear in conversation. Project anchors — \"dva\" / \"DVA\", \"龙鱼五力\", \"自检\", \"天工开物\", \"渊图\" / \"行业图谱\", \"海螺姑娘\", \"PEC\" / \"政治经济学\", \"司南\", \"O MY HTML\", \"暖色·卡片页\" / \"warm card page\" / \"卡片页\", \"暖色·警示页\" / \"warm warning page\" / \"警示页\" / \"风险日报范式\", \"星空\" / \"Starry Skies\", \"MiroFish\" / \"mirofish\", \"个人图书馆\" / \"knowledge vault\" / \"KV\", \"周日白泽大宗工作流\" / \"白泽大宗工作流\" / \"周报工作流\" — make Claude read that project's architecture/decisions/gotchas first. 数灵 name anchors — \"白泽\" / \"小白\", \"烛阴\" / \"九儿\", \"句芒\" / \"芒芒\" — make Claude load that agent's 性格档案 (+memory) and respond **in that persona** (唤名出现). Either way Claude stops the current task and grounds the answer rather than replying generically. Command codes — Doctor types \"～\" (= 同意/执行/继续: approve the pending proposal and execute directly, no re-confirmation) or \"～！\" (= 同意 + autonomously execute all parts with no directional/manual-decision need until completion; direction decisions still ask) or \"十站\" (= 按 Projects/PEC/frameworks/思考链完整性清单.md 自走十站再作答，场合分层：快答①+⑩/推演全站/深案+自反台账). Treat either as full approval."
 ---
 
 # brain-anchors — 锚点触发自动加载
@@ -18,6 +18,7 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 | `渊图` / `行业图谱` | `brain/渊图/architecture/系统概览.md`<br>`brain/渊图/architecture/决策记录.md`<br>`brain/渊图/GOTCHAS.md`<br>`Database/行业研究/CLAUDE.md`（若存在） |
 | `海螺姑娘` / `Conch` | `brain/海螺姑娘/architecture/系统概览.md`<br>`brain/海螺姑娘/architecture/项目概要.md`（若存在）<br>`brain/海螺姑娘/GOTCHAS.md` |
 | `PEC` / `政治经济学` | `brain/PEC/architecture/系统概览.md`<br>`brain/PEC/frameworks/认识论框架.md`（若存在）<br>`brain/PEC/GOTCHAS.md`<br>`Projects/PEC/GOTCHAS.md`（若存在） |
+| `十站` | **思考链命令锚（属 PEC · 2026-08-26 立）**：读 `Projects/PEC/frameworks/思考链完整性清单.md`，**先按十站自走一遍再作答**（①事实/②证据/③机制/④双侧/⑤反事实/⑥层次/⑦回路/⑧时间/⑨二阶/⑩终点）。场合分层：快答走 ①+⑩；常规推演全十站；深案全站+自反台账。每站跳过须写明理由；停走判据=下一步不改变方向/量级/可证伪性则停（术本闸 G-12）。 |
 | `司南` | `brain/司南/architecture/系统概览.md`<br>`brain/司南/方法论概要.md`（若存在）<br>`brain/司南/GOTCHAS.md` |
 | `O MY HTML` / `omy` | `brain/O MY HTML/architecture/系统概览.md`<br>`brain/O MY HTML/GOTCHAS.md`<br>**额外**：可加载 `Vault/taste-skills/` 和 `Vault/emil/`（设计 skills） |
 | `暖色·卡片页` / `warm card page` / `卡片页` | **设计原型锚（属 O MY HTML）**：要做暖色卡片页时，先读 `Projects/O MY HTML/design-system/warm-cardpage-styleguide.html`（范式：玻璃卡 + 双轴发光「色=类别/光=健康」+ 星云星点 + 行布局/连线 + 面板 + 原则）+ `warm-cardpage-boilerplate.html`（去数据起手骨架·改 NODES/EDGES/ROWS 即用）。base tokens 承 `jiuyin-warm-styleguide.html`。Canonical 活范例 = Artifact「Global Asset Inventory · 海螺姑娘」（`~/Documents/Claude/Artifacts/global-asset-inventory/index.html`，取最新视觉以它为准）。仅命中时加载，不主动激活其他设计 skills。 |
@@ -79,9 +80,11 @@ Doctor 单独发 `～` 或 `～！`（全角），或紧跟在对某提议/方�
 - Doctor 说 "个人图书馆，把这份 PDF 入库" / "knowledge vault 查一下博弈论" → 命中 `个人图书馆`，读 `Database/Knowledge Vault/CLAUDE.md` + 接手指南 → 进图书管理员模式 → 动手前先跑健康检查，再走入库/检索流水线
 - Doctor 说 "～" → 对 CC 刚提出的方案/待批动作表示同意——直接执行，不再确认
 - Doctor 说 "～！" → 同意，且无方向决策需要的部分一口气做到结束再统一回报
+- Doctor 说 "十站" / "走十站" → 命中，先读 `Projects/PEC/frameworks/思考链完整性清单.md` 自走一遍十站，再带着链式分析作答（不先答后补）
 
 ## 不触发的情况
 
 - "dvd"、"data"、"DJVU" 等含 d/v 但语义无关的词
 - 在引用历史对话或讨论项目命名时（CC 需要轻判断："Doctor 在询问 vs 在引用"）
+- 「十站」出现在非推演语境（如字面讨论十座车站）时不触发——仅当 Doctor 用它指令 CC 走思考链时命中
 
