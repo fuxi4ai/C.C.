@@ -561,3 +561,14 @@ project: 渊图
 **建议修法**: 已按 Doctor 裁方案 A 执行（见状态行）。备选未用：方案 B 并入 Guangxun（id 非官方英文名·desc 薄）；方案 C 仅剔别名不合并（分裂状态残留）。
 **预防门禁**: ① 入库 QA 增「同名实体检测」：company 节点按 name/别名交叉比对，同实体内外文名变体（Accelink/ACCELINK/光迅）归一；② aliases 元素须与节点实体同指（「X Optical」类公司名混入别家公司 aliases 即报）——现有 QA 无此项；③ 与 FIX-20260625-001（张冠李戴·误记归属）族域相近（实体错配）但形态不同（编造别名 vs 误记归属）——若实体错配族第三次出现，按合同升格通用教训（升格由 Doctor 裁，本条不自升）。
 **来源**: 2026-08-23 本会话（华为 OCS 链入库 → 光迅边归属核实 → Doctor 令修正 → 方案 A 执行）
+
+## [ERR-20260825-001] 帕米尔 08-25 批入库产生同三元组重复边——kg_promote 通道无「同三元组」闸
+**状态**: 🔄 已修待验（2026-08-25 Doctor 裁「删旧留新+补闸」→ 删边+补闸已执行，见下；整体待独立验收，实施者不自签）
+**优先级**: 🟡 中（重复边阻塞后续一切 kg_merge_safe 入库）
+**触发**: 2026-08-25 Vera Rubin 实测入库场：`kg_merge_safe.py --dry-run mapping/_v3_20260825_VeraRubin实测_manual.json` 报「合并后全图存在 1 组同三元组重复边」——`constrains concept_InPSingleCrystalFurnaceBottleneck -> concept_InPCapacityExpansion` ×2。
+**硬证据/最小复现**: 两条边 dump 在案——旧边 `rel_InPSingleCrystalFurnaceBottleneck_InPCapacityExpansion`（07-18 建·P2 帕米尔 07-14 源）；新边 `rel_EquipmentShortage_ExpansionBottleneck`（**2026-08-25 建**·P1 帕米尔 08-24 源·created_by=research-帕米尔）——即 08-25 帕米尔 6 篇批入库时 kg_ingest/kg_promote 生成了与 07-18 存量同三元组的重复边。最小复现 = 对 canonical 跑 `check_triple_duplicates` 即见 1 组。
+**根因**: 同三元组检测（check_triple_duplicates·2026-08-15 三轮清洗专场立）只实装在 kg_merge_safe（merge 前全图计数）；**kg_promote 通道（rules/kg_promote.py）没有此闸**——batch 入库走 promote 不经 merge_safe，重复边静默入 canonical。
+**影响面**: 存量清零断言被破坏；后续一切 kg_merge_safe 入库被拦（本场 Rubin patch 即被阻塞）；重复边进入下游 wiki/检索造成双答案。
+**建议修法**: ① 删旧留新（新边 P1 源新·证据全）——Doctor 已裁；② kg_promote.py 补同三元组闸（与第 14 项 check_edge_schema 并列）——已执行。
+**预防门禁**: promote 闸集与 merge_safe 闸集保持一致（至少同三元组+边 schema 两项）；batch 入库后跑一次全图 check_triple_duplicates 冒烟。
+**来源**: 2026-08-25 本会话（Vera Rubin 实测入库 → dry-run 阻塞 → 重复边 dump → Doctor 裁删旧留新+补闸）
