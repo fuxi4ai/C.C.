@@ -552,7 +552,7 @@ project: 渊图
 
 
 ## [ERR-20260823-001] 光迅双节点 + 「HiSilicon Optical」编造别名错并
-**状态**: 🔄 已修待验（2026-08-23 Doctor 裁方案 A「并入 Accelink」→ 手术脚本 `surgery_merge_guangxun_20260823.py` 已执行：删 `company_Guangxun` · 4 边迁入 `company_AccelinkTechnologies`（id 同步改）· 别名合并剔除「HiSilicon Optical」· desc 增量 + 帕米尔两条信源迁入 · 备份 `bak_surgery_guangxun_20260823_010203` · QA 全绿 · wiki 旧卡 `_DEPRECATED_guangxun_20260823.md` 改名。整体待独立验收，实施者不自签）
+**状态**: ✅ 已验收（2026-08-23 Doctor 裁方案 A「并入 Accelink」→ 手术脚本 `surgery_merge_guangxun_20260823.py` 已执行：删 `company_Guangxun` · 4 边迁入 `company_AccelinkTechnologies`（id 同步改）· 别名合并剔除「HiSilicon Optical」· desc 增量 + 帕米尔两条信源迁入 · 备份 `bak_surgery_guangxun_20260823_010203` · QA 全绿 · wiki 旧卡 `_DEPRECATED_guangxun_20260823.md` 改名。**✅ 2026-08-26 Doctor 终签**：四批打包独立验收（Doctor 裁「四批打包+独立 agent 复核」）——机器层十项九过 · 墓碑缺失异议 → Doctor 裁「补墓碑再销账」→ `mapping/_tombstones/2026-08-23_guangxun_merge.json` 已补〔dropped_node 提取自术前备份 · 4 边 id_map 留档〕· 判断层三问全部认可 · CC 代记留痕）
 **优先级**: 🟡 中（检索/问答歧义 + 华为链「光迅」归属一度存疑）
 **触发**: 2026-08-23 华为 OCS 链入库场：挂「光迅独家光交换模块」边前核 canonical，发现同公司双节点——`company_Guangxun`（2025-10-30 建 · aliases 含「HiSilicon Optical」）与 `company_AccelinkTechnologies`（2026-08-16 建）并存。
 **硬证据/最小复现**: 实读两节点 aliases/desc/created 字段（上文摘录在案）；`grep -r "HiSilicon Optical" raw/` 全树零命中——唯一命中为我方 08-23 札记，即该别名无原文出处（疑 LLM 入库编造或错并）；海思光电子（HiSilicon Optoelectronics，华为海思旗下）≠ 光迅科技（Accelink，中国信科旗下），canonical 无海思光电子独立节点。
@@ -563,7 +563,7 @@ project: 渊图
 **来源**: 2026-08-23 本会话（华为 OCS 链入库 → 光迅边归属核实 → Doctor 令修正 → 方案 A 执行）
 
 ## [ERR-20260825-001] 帕米尔 08-25 批入库产生同三元组重复边——kg_promote 通道无「同三元组」闸
-**状态**: 🔄 已修待验（2026-08-25 Doctor 裁「删旧留新+补闸」→ 删边+补闸已执行，见下；整体待独立验收，实施者不自签）
+**状态**: ✅ 已验收（2026-08-25 Doctor 裁「删旧留新+补闸」→ 删边+补闸已执行，见下。**✅ 2026-08-26 Doctor 终签**：四批打包独立验收（机器层九项过 · 第 15 项闸源文在盘实读 · 判断层三问全部认可 · CC 代记留痕））
 **优先级**: 🟡 中（重复边阻塞后续一切 kg_merge_safe 入库）
 **触发**: 2026-08-25 Vera Rubin 实测入库场：`kg_merge_safe.py --dry-run mapping/_v3_20260825_VeraRubin实测_manual.json` 报「合并后全图存在 1 组同三元组重复边」——`constrains concept_InPSingleCrystalFurnaceBottleneck -> concept_InPCapacityExpansion` ×2。
 **硬证据/最小复现**: 两条边 dump 在案——旧边 `rel_InPSingleCrystalFurnaceBottleneck_InPCapacityExpansion`（07-18 建·P2 帕米尔 07-14 源）；新边 `rel_EquipmentShortage_ExpansionBottleneck`（**2026-08-25 建**·P1 帕米尔 08-24 源·created_by=research-帕米尔）——即 08-25 帕米尔 6 篇批入库时 kg_ingest/kg_promote 生成了与 07-18 存量同三元组的重复边。最小复现 = 对 canonical 跑 `check_triple_duplicates` 即见 1 组。
@@ -572,3 +572,14 @@ project: 渊图
 **建议修法**: ① 删旧留新（新边 P1 源新·证据全）——Doctor 已裁；② kg_promote.py 补同三元组闸（与第 14 项 check_edge_schema 并列）——已执行。
 **预防门禁**: promote 闸集与 merge_safe 闸集保持一致（至少同三元组+边 schema 两项）；batch 入库后跑一次全图 check_triple_duplicates 冒烟。
 **来源**: 2026-08-25 本会话（Vera Rubin 实测入库 → dry-run 阻塞 → 重复边 dump → Doctor 裁删旧留新+补闸）
+
+## [NOTE-20260826-001] 独立复核发现结构瑕疵三观察（08-26 四批验收附知 · 非四批引入）
+**状态**: ⚠️ 已知风险（观察中 · 修复方案待 Doctor 裁）
+**优先级**: 🟢 低（不影响结构完整性——QA 八项全绿；影响面=下游过滤/检索/治理精度）
+**触发**: 2026-08-26 渊图四批独立验收（Doctor 裁「四批打包+独立 agent 复核」）机器层 C 项全图 QA 时附报。
+**硬证据/最小复现**: canonical 实读（复现命令见下）——① 全图 2 节点缺 type 且缺 created_at：`concept_HuaweiAscend`、`concept_AlibabaCloudMaaSBusinessModel`（独立复核按备份链差集定位为 08-25 promote 批产物）；② 5 个 `hospital_` 前缀节点 type=concept、created_at=2026-08-16（Boss老白批存量）：hospital_Huashan/Xuanwu/Xiangya/JiangxiProvincial/WannanTiantan——id 前缀语义与 type 字段双轨不齐；③ 存量边 `rel_NorthAmerica_SOE_Constrains_Guangxun`（2026-06-08 建 · concept_NorthAmericaSOEBackgroundBarrier -constrains-> company_NewPhotonics）id 残留「Guangxun」字样，source/target 均与 Guangxun 无关。
+**根因**: ① 08-25 promote 批 2 节点 type/created_at 字段漏填（kg_promote 门禁无「type 必填」断言）；② 08-16 批节点 id 前缀与 type 命名双轨（前缀治理归 id、type 归 schema，两套规范未对齐）；③ 08-23 光迅手术脚本断言只拦「company_Guangxun」子串，未覆盖其他 id 形态中的 Guangxun 字样（该边先于手术存在且无需改动，属断言覆盖面观察非手术漏改）。
+**影响面**: ① 下游按 type 过滤会漏读 2 节点；② hospital_ 前缀语义漂移影响按前缀治理的准确性；③ 边 id 语义残留致按 Guangxun 检索时误命中无关边。
+**建议修法**: ① 2 节点补 type=concept + created_at（事务性 · 走 kg_merge_safe update 或一次性小 patch）；② 5 节点归入既有「畸形节点 id/name 注记」挂账（TODO 渊图挂账批发④）不动；③ 边 id 不动（id 不可改 · 可逆性优先），手术脚本断言由子串改 id 全集比对。
+**预防门禁**: kg_promote 增「节点 type 必填」断言（第 16 项候选，与第 15 项同三元组闸同款）；手术脚本删除断言用 id 全集而非子串。
+**来源**: 独立复核 agent 报告（2026-08-26 · 四批验收 C 项附报）+ CC 独立复验（type/created_at/前缀/边四类实读全部坐实）
