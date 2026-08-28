@@ -387,3 +387,23 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 新 scripts 上架前查「import config 前有无 bootstrap」；班内跑新脚本先 `python3 -c "import config; print(config.MARKET_DB)"` 确认指向副本根再放行。同族复发（另一脚本 fallback 直写 live）追记本条。
 
 **来源**: 2026-08-27 zhuzhao 定时班实测 · agents/烛阴/logs/2026-08-27-行情拉取与日报.md · live 残留证据 `market_data.db-journal.STALE-20260827-zhuzhao-parked`
+
+---
+
+## [ERR-20260828-001] SA 应急通道 QQQ 值写 code='NASDAQ'——与主路 ^NDX 同主键互覆风险（口径差 ~40 倍）
+
+**状态**: 🔄 已修待验（2026-08-28 Doctor 裁「另立 code」（推荐项）→ 已改：`fetch_intl_index.py` SA 写入映射 `SA_WRITE_CODE={"NASDAQ":"NASDAQ_QQQ"}` + `gen_daily_report.py` 两处 QQQ fallback（主路 ^NDX 缺当日行时顶替并标注「主路^NDX缺·应急代理」）· 自验：py_compile 两文件 ✓ · /tmp 库副本跑真实 stockanalysis 分支 → 20260827 两列并存（NASDAQ=^NDX 29641.56 保留 + NASDAQ_QQQ=QQQ 530.5 独立写入）✓ · 实施者不自签）
+
+**优先级**: 🟡 中（触发即污染：同主键 (trade_date,code) INSERT OR REPLACE → ETF 价混入指数点位列 → pct 链全废 + F1 外盘传导/展示栏读错量级）
+
+**触发**: 2026-08-26 /todo 时发现 QQQ 值写入覆盖 ^NDX 行风险，Doctor 裁「并入 08-28 核验场一起裁」；2026-08-28 胜宏半年报核验场同场裁「另立 code」。
+
+**硬证据/最小复现**: `scripts/fetch_intl_index.py` SA_SOURCES `"NASDAQ": ("QQQ", ...)` 写入 `code="NASDAQ"`（L~176 写分支）· 表 PK=(trade_date,code)（L67）· 主路 INDICES `"NASDAQ": ("^NDX", ...)` 同 code——SA 应急与 yfinance 主路同日同 code 即 REPLACE 互覆。两口径量级差：^NDX 指数点位 ~29,000 vs QQQ ETF 价 ~530（~55 倍）。DB 现状实读（2026-08-28）：最近 10 行全 ^NDX/source=yahoo，污染未兑现，属预防性根治。
+
+**根因**: 08-25「QQQ ETF 代理退役·改指数本身」裁定只改了 yfinance 主路 symbol，SA 应急路（生产沙箱 yahoo 403 常态主路）仍以 QQQ 写同 code——两路同键不同口径的设计缺陷。
+
+**修复**: 另立 code（输入契约不动：九儿班 JSON 键仍 "NASDAQ"）→ 库内 NASDAQ 主列永为指数口径、NASDAQ_QQQ 应急列独立；消费端 fallback 保应急可用性（gen_daily_report L512/L540 两处，INTL_US_INDEX/F1 semi_codes/_EP_SYM 三消费点键不变零改动）。
+
+**预防门禁**: ① 代理/口径替代类取数（ETF 代理指数、期货代理）写库前必核「同 code 是否已有不同口径写入方」，口径不同即另立 code 或显式合并策略；② 同一 code 下 symbol/kind 语义变更时走 Doctor 裁定并在 note 记版本。
+
+**来源**: 2026-08-28 胜宏半年报核验场（Doctor 裁「另立 code」）· fetch_intl_index.py L147-156/L203-218 · gen_daily_report.py L512/L540 · 自验脚本 outputs 级命令（/tmp 副本 · 20260827 两列并存断言）

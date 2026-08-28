@@ -585,3 +585,21 @@ project: 渊图
 **预防门禁**: kg_promote 增「节点 type 必填」断言（第 16 项候选，与第 15 项同三元组闸同款）；手术脚本删除断言用 id 全集而非子串。
 **追记 2026-08-27（同根复发 · 第 2 次 · 五篇批）**: 同型再发 2 例且更重——LLM 把新建节点误放 **update 槽**，产出 `concept_400mWCPOExternalLaser`/`concept_NvidiaCPOSwitchVendorLandscape` **name/type/created_at/aliases/span 五字段全缺**（仅 desc+props+ds 有料）。批内 QA 当场补全（原文定位 span 实句）。观察①存量 2 节点（HuaweiAscend/AlibabaCloudMaaS）修复方案仍待 Doctor 裁。**预防门禁第 16 项候选（kg_promote 节点 name/type/created_at 必填断言）仍未实装**——同族第二次复发，按 GOTCHAS 合同应登记「应升格通用教训」（升格由 Doctor 裁，本条不自升）。
 **来源**: 独立复核 agent 报告（2026-08-26 · 四批验收 C 项附报）+ CC 独立复验（type/created_at/前缀/边四类实读全部坐实）
+
+## [NOTE-20260828-001] 胜宏双节点合并手术漏迁 props——Shenghong 6 业务键随节点删除丢失（已从墓碑当场回填）
+
+**状态**: 🔄 已修待验（2026-08-28 当场修复：propsfix 脚本从墓碑 dropped_node 回填 6 业务键入 VictoryGiant + 补 `h1_2026_claim_verification_note` · 读盘核验 22 props 键·计数守恒 5174/5796 · 备份 `bak_shenghong_propsfix_20260828_002902` · 实施者不自签）
+
+**优先级**: 🟡 中（数据层静默丢失——结构 QA 全绿查不出 props 缺失，desc/边/别名均正常迁移，只有并集对比能发现）
+
+**触发**: 2026-08-28 胜宏双节点手术（Doctor 裁「现在并」）——主手术脚本迁移了 8 边/aliases/desc，**漏迁源节点 6 个业务 props**（rubin_compute_tray_share_2026_pct=75 等）；读盘核验步对比 wiki 旧卡发现缺失。
+
+**根因**: 手术脚本模板缺「props 并集断言」——历次手术惯例（08-15 dedup「props 取并集」/08-23 光迅「desc 增量+信源迁入」）未固化为模板断言，本轮手写脚本遗漏。
+
+**影响面**: 若未发现：Rubin 份额/谷歌 TPUv8 份额/产能 props 永久丢失（仅存于 wiki 旧卡与墓碑），下游份额查询失真。
+
+**修复**: 墓碑回填（墓碑含完整 dropped_node——可逆性设计兜底生效）；补丁键名撞名断言 fail-fast。
+
+**预防门禁**: 手术脚本模板固定三步：① aliases 并集 ② desc 合并 ③ **props 并集断言**（源节点业务键全部迁入·撞名即 exit 1）；术后读盘核验清单加「props 键数 = 术前两节点并集数」。
+
+**来源**: 2026-08-28 胜宏双节点合并手术场（outputs/surgery_merge_shenghong_20260828.py + propsfix 脚本）
