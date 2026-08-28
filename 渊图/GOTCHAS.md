@@ -273,7 +273,7 @@ project: 渊图
 **核查/解决**: 张冠李戴**禁按边数自动选 survivor**（会把对的边并进错实体）；必**逐边读边描述定归属 + 联网坐实英文名↔实体**，再决定改名/拆/并。本轮：Eoptolink→新易盛＋拆易飞扬建 Gigalight＋1017 布归旭创；IluvatarCoreX 8 边并入既有 `company_Tianshu`、伟测 FT 归燧原；生益电子拆出胜宏 `company_VictoryGiant`。
 **预防**: ① 建公司节点前 kb 查重（同实体异 id）；② 入库后跑 `name_code_consistency_check`；③ 易混中文公司 id 用「4 字简称全拼」（见通用教训 G-X22）；④ 登记易混英文名对照表（Eoptolink=新易盛 / IluvatarCoreX=天数智芯 / Enflame=燧原 / NewPhotonics=以色列 / Taiyo=太阳诱电 / 光库=Advanced Fiber Resources / 光迅=Accelink）。
 
-**追记 2026-08-28（景旺↔鹏鼎混标 · 同族第 N 次复发 · C 档手术修复）**: 3 条边 `rel_Jingwang_*` id 带景旺、source 却挂 `company_Pengding`（鹏鼎）、desc 全系景旺（08-20 景旺调研真源）——LLM 把景旺信息挂到另一 PCB 厂鹏鼎节点上；连带 `rel_Jingwang_RubinMidplane` 把 Rubin Midplane 挂到人形机器人 `product_Midplane`（同名歧义）。C 档手术已修（重指+歧义重指+去重合并+删 2 污染边，墓碑可逆）。同族复发已满足升格条件（海光/海思/生益/胜宏/光迅/鹏鼎-景旺…），**升格通用教训由 Doctor 裁，本条不自升**。
+**追记 2026-08-28（景旺↔鹏鼎混标 · 同族第 N 次复发 · C 档手术修复）**: 3 条边 `rel_Jingwang_*` id 带景旺、source 却挂 `company_Pengding`（鹏鼎）、desc 全系景旺（08-20 景旺调研真源）——LLM 把景旺信息挂到另一 PCB 厂鹏鼎节点上；连带 `rel_Jingwang_RubinMidplane` 把 Rubin Midplane 挂到人形机器人 `product_Midplane`（同名歧义）。C 档手术已修（重指+歧义重指+去重合并+删 2 污染边，墓碑可逆）。同族复发已满足升格条件（海光/海思/生益/胜宏/光迅/鹏鼎-景旺…），**✅ 2026-08-28 Doctor 裁「升格通用教训」→ 已登记 [[通用教训]] G-X161（CC 执行留痕）**。
 
 ## [NOTE-20260617-001] kg_merge_safe --apply 日志"Δ+0/skipped"是幂等噪音，须读盘核验
 **状态**: ✅ 已沉淀（认知澄清 2026-06-17 · 2026-08-08 复盘补标）
