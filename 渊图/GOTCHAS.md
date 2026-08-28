@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-08-21
+updated: 2026-08-27
 status: active
 type: resource
 project: 渊图
@@ -571,6 +571,7 @@ project: 渊图
 **影响面**: 存量清零断言被破坏；后续一切 kg_merge_safe 入库被拦（本场 Rubin patch 即被阻塞）；重复边进入下游 wiki/检索造成双答案。
 **建议修法**: ① 删旧留新（新边 P1 源新·证据全）——Doctor 已裁；② kg_promote.py 补同三元组闸（与第 14 项 check_edge_schema 并列）——已执行。
 **预防门禁**: promote 闸集与 merge_safe 闸集保持一致（至少同三元组+边 schema 两项）；batch 入库后跑一次全图 check_triple_duplicates 冒烟。
+**追记 2026-08-27（同根复发 · 五篇批）**: 东材科技→台光电材 supplies 同三元组再发（旧边 07-18 PPO 树脂篇 vs 新边 08-26 覆铜板树脂篇）。第 15 项闸本次**拦住并成功预防**（promote 首跑被拒·canonical 未动）。新流程教训：**promote 门语义＝只增不改**（lost 检查管删），批内 QA 带「删边」语义时门必拒——两条路（还原旧边→第 15 项拦 / 删旧边→lost 拦）都走不通。正确路径＝删边手术脚本**前置**（备份 + 手术记录留档 + 补偿校验：candidate 新边带 merged_from 注记+ds 并集才放行删除），promote 纯增量两闸全过。处置：bak_surgery_dedup_20260827_233904 + `mapping/_v3_20260827_重复边去重_手术记录.json`。
 **来源**: 2026-08-25 本会话（Vera Rubin 实测入库 → dry-run 阻塞 → 重复边 dump → Doctor 裁删旧留新+补闸）
 
 ## [NOTE-20260826-001] 独立复核发现结构瑕疵三观察（08-26 四批验收附知 · 非四批引入）
@@ -582,4 +583,5 @@ project: 渊图
 **影响面**: ① 下游按 type 过滤会漏读 2 节点；② hospital_ 前缀语义漂移影响按前缀治理的准确性；③ 边 id 语义残留致按 Guangxun 检索时误命中无关边。
 **建议修法**: ① 2 节点补 type=concept + created_at（事务性 · 走 kg_merge_safe update 或一次性小 patch）；② 5 节点归入既有「畸形节点 id/name 注记」挂账（TODO 渊图挂账批发④）不动；③ 边 id 不动（id 不可改 · 可逆性优先），手术脚本断言由子串改 id 全集比对。
 **预防门禁**: kg_promote 增「节点 type 必填」断言（第 16 项候选，与第 15 项同三元组闸同款）；手术脚本删除断言用 id 全集而非子串。
+**追记 2026-08-27（同根复发 · 第 2 次 · 五篇批）**: 同型再发 2 例且更重——LLM 把新建节点误放 **update 槽**，产出 `concept_400mWCPOExternalLaser`/`concept_NvidiaCPOSwitchVendorLandscape` **name/type/created_at/aliases/span 五字段全缺**（仅 desc+props+ds 有料）。批内 QA 当场补全（原文定位 span 实句）。观察①存量 2 节点（HuaweiAscend/AlibabaCloudMaaS）修复方案仍待 Doctor 裁。**预防门禁第 16 项候选（kg_promote 节点 name/type/created_at 必填断言）仍未实装**——同族第二次复发，按 GOTCHAS 合同应登记「应升格通用教训」（升格由 Doctor 裁，本条不自升）。
 **来源**: 独立复核 agent 报告（2026-08-26 · 四批验收 C 项附报）+ CC 独立复验（type/created_at/前缀/边四类实读全部坐实）
