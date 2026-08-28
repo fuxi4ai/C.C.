@@ -142,3 +142,23 @@ project: 剑酒青丘
 **生产候选验证（2026-08-19）**：Doctor Mac 终端重跑——CPython 3.13.3 全套全绿：runtime 35/35（case 24 PASS）、migration 19/19、legacy 7/7 普通与 `-O` 双模式 exit=0；sidecar/包内 SHA256SUMS（32 项）/verify_package 全过。与沙箱 3.10 的 34/35 对照印证根因（statistics 实现差异）。生产候选 SQLite/operator CLI 版本三元组在 §3 数据迁移阶段补记。
 **修复实施（2026-08-21 · 已修待独立验收）**：最低支持版 CPython 3.11.15 已实跑 runtime 35/35、migration 19/19、legacy 7/7、新验收套件 6/6，ordinary/`-O` 全绿；与已有 3.13.3/3.14.6 证据共同覆盖声明支持边界。3.10 仍明确在支持范围外。本条不由实施者关闭。
 **独立验收落签（2026-08-21）**：Doctor 会话总签 EAL v3 PRD 20 R/N（「EAL总签」）——「已修待验」侧（最低支持版验证补齐 · N1 证据）就此落签；测试注入脆弱点（建议修法①）仍在范围外未修，本条整体维持 ⚠️ 已知风险，转修时机随 VV 十六轮/生产吸收裁定。
+
+### [ERR-20260828-001] delivery_index.v6 与盘面漂移——索引构建后被审计资产并发修改，回读 mismatch=1（2026-08-28 CC 独立验收立）
+**状态**：🔄 已确认待修复（索引失效非数据丢失 · 修复＝VV 重生成 v6 或 Doctor 裁处置 · 实施者不自标 ✅）
+**优先级**：🟡 中
+**硬证据/最小复现**：v6（SHA 91c9f7ad · 00:55 PT 构建）内嵌 `_vv_staging/test_final_verification.py` = 11765 B / 1cb02337…；该文件 01:24 PT（索引构建后 29 分钟）被并发修改为 12936 B / 06828db5…。`verify_post_promotion_acceptance` 全量回读 mismatch=1（EAL_CURRENT_DELIVERY_INDEX_DRIFT）；--require-system-closure blockers=2 而非声称的 1。CC 首轮归一重建曾精确复现 v6 SHA/digest（当时文件仍 11765 B）→ 漂移发生在验收进行中。
+**根因**：create-only 索引与文件系统之间无「索引后文件变更」哨兵；索引构建与后续编辑（同批迭代）之间无冻结窗。资产在验收窗口内被并发修改。
+**影响面**：v6 全量回读 mismatch=0 的声称不再成立；system-closure 验收多出一个 blocker；索引对盘面身份的背书暂时失效。
+**建议修法**：① VV 对当前盘面重新生成 delivery index（v7 或 v6 重建，走 create-only）；② 发布/验收开始前冻结被索引文件（拒写或哨兵报警）。
+**预防门禁**：索引类 create-only 产物落盘后，被索引文件的变更应触发显式告警（构建脚本输出「indexed_files_digest」并由验收器比对当前盘面）。
+**来源**：CC 独立机械验收（2026-08-28 · Doctor 指定）· 重放脚本 /tmp/runshim3.py（路径前缀翻译 shim·不改逻辑）
+
+### [ERR-20260828-002] execute_registry_promotion --execute 重放：已存在目标被误报为 EAL_PROMOTION_COMMITTED_POSTCHECK_FAILURE（exit 5）（2026-08-28 CC 独立验收立）
+**状态**：🔄 已确认待修复（仅误报·无写入发生·目标字节经前后 SHA 比对零变化）
+**优先级**：🟡 中
+**硬证据/最小复现**：对已存在且与 APPROVED_SHA256 逐位一致的生产目标跑 `--execute` 重放 → preflight 正确抛 `EAL_PROMOTION_TARGET_EXISTS`，但 main() 的 except 分支按「目标存在且 hash=批准值」判 committed=True → 改写为 exit 5 `EAL_PROMOTION_COMMITTED_POSTCHECK_FAILURE`。preflight-only（不带 --execute）重放则为声称的 exit 2 + `EAL_PROMOTION_TARGET_EXISTS`（双模式实测 ✓）。
+**根因**：committed 判定无法区分「本次运行刚写入」与「此前已存在」——只凭目标存在+hash 匹配判 committed，误伤拒绝路径。
+**影响面**：重放审计时 --execute 形式的拒绝语义失真（安全无损失：写入发生在 preflight 之后，拒绝先于任何写）；可能掩盖真实的 post-commit 失败区分。
+**建议修法**：committed 判定加「本次运行确实执行过 write_create_only」标志（如 target_warning/receipt 已生成），而非仅凭目标存在+hash。
+**预防门禁**：create-only 重放负测须覆盖 --execute 与 preflight-only 两种形式并断言错误码。
+**来源**：CC 独立机械验收（2026-08-28 · Doctor 指定）· 实测 exit 5 vs 声称 exit 2
