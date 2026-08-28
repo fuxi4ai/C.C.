@@ -369,3 +369,21 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: agents/句芒/logs/2026-08-26-课件入库审核.md（二次触发复核段）· 本条目 2026-08-26 句芒课件入库审核班发现并修复
 
+
+---
+
+## [ERR-20260827-001] fetch_fred_ust.py 缺项目根 bootstrap——沙箱内 import config 失败 fallback 直写 live market_data.db（G019 同族·留热 journal）
+
+**状态**: 🔄 待修复（脚本未改 · 本班以 `PYTHONPATH=…:项目根` 绕行 · 待 Doctor 批修或裁）
+
+**现象**: 2026-08-27 10:00 定时班跑 `python3 scripts/fetch_fred_ust.py`（已 source env · ZZJY_DATABASE_ROOT=/tmp 副本根），FRED 取数两序列 [ok]（DFII10 +32 行 / THREEFYTP10 +30 行）但 `con.commit()` 抛 `sqlite3.OperationalError: disk I/O error`；随后 live `market_data.db` 出现 12824 字节热 journal、主文件 mtime 被改，任何只读打开 live 的进程报「attempt to write a readonly database」（热 journal recovery 需写权限，挂载盘写被 FUSE 拒）。
+
+**根因**: 本脚本（2026-08-27 Doctor 令新增）顶部**无** `sys.path.insert(0, 项目根)` bootstrap（对照 `scripts/fetch_limit_list.py` L14 有）。`python3 scripts/xxx.py` 运行时 sys.path[0]=scripts/ 目录，`import config` ModuleNotFoundError → 被 `_db_path()` 的 `except Exception` 吞掉 → fallback `_docroot()` 沿父目录找到 `Database/.env` → 返回 **live 真盘** `market_data.db` → 挂载盘直写（GOTCHAS G019 同族）commit 必报 disk I/O error → 未提交事务 + 热 journal 残留。
+
+**影响面**: ① live 库被未提交 REPLACE 事务部分写入（FRED 表 62 行无新观测，数据零损失）；② 热 journal 残留致后续任何打开 live 者（含本班放回前只读校验、句芒班、Mac 班）recovery 失败；③ 本班处置：先备份 live main+journal（`.bak_zhuzhao_20260827_prewrite` + `-journal`），staging 校验后原子 mv 换新 main，旧 journal park 为 `.STALE-20260827-zhuzhao-parked`，副本上以 `PYTHONPATH="$…/pylib-linux:$项目根"` 重跑 FRED 成功（exit 0）。
+
+**建议修法**: `fetch_fred_ust.py` 顶部加同款 bootstrap（`sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))`）再 `import config`；并考虑把「import config 失败即 abort」改为不静默 fallback（或 fallback 前检查路径含 /sessions//mnt/ 即拒写，复用 connect_write 护栏）。
+
+**预防门禁**: 新 scripts 上架前查「import config 前有无 bootstrap」；班内跑新脚本先 `python3 -c "import config; print(config.MARKET_DB)"` 确认指向副本根再放行。同族复发（另一脚本 fallback 直写 live）追记本条。
+
+**来源**: 2026-08-27 zhuzhao 定时班实测 · agents/烛阴/logs/2026-08-27-行情拉取与日报.md · live 残留证据 `market_data.db-journal.STALE-20260827-zhuzhao-parked`
