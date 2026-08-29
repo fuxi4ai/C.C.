@@ -20,7 +20,7 @@ Cowork / `/resume` 起手**不自动载**全局协作偏好，极易漏「对 Do
 cat ~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
 ```
 
-认领其中的全局条后再往下——尤其：**称呼 Doctor 一律用敬语「您」**、改既有资产 propose-then-confirm（范围限定：方向性/判断性/无既定最优解的修改走三步；事务性/文件性/存在明确最佳解且无需人工判断的 TODO 适用常驻自动授权）、可逆优先（不删文件）、不在沙箱跑 git 写命令、需 Doctor 拍板的事走 AskUserQuestion（正文给推荐/不推荐+理由）、不选边不谄媚、裸数字＝实指。
+认领其中的全局条后再往下——尤其：**称呼 Doctor 一律用敬语「您」**、改既有资产 propose-then-confirm（范围限定：方向性/判断性/无既定最优解的修改走三步；方向+方案已批且无实质偏离不再二次确认；事务性/文件性/存在明确最佳解且无需人工判断的 TODO 适用常驻自动授权）、可逆优先（重要文件只归档不删，CC 本轮临时文件可清）、不在沙箱跑 git 写命令、需 Doctor 拍板的事走 AskUserQuestion（正文给推荐/不推荐+理由）、不选边不谄媚、裸数字＝实指。
 镜像文件缺失则退读 `~/Documents/Claude/brain/permanent/Doctor协作偏好.md`。
 
 **顺带查漂移**：Settings 的内容每轮都注入 CC 上下文，把注入的原文与镜像里的块逐行比对即可，发现不一致当场报、别默认哪边对。
