@@ -407,3 +407,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: ① 代理/口径替代类取数（ETF 代理指数、期货代理）写库前必核「同 code 是否已有不同口径写入方」，口径不同即另立 code 或显式合并策略；② 同一 code 下 symbol/kind 语义变更时走 Doctor 裁定并在 note 记版本。
 
 **来源**: 2026-08-28 胜宏半年报核验场（Doctor 裁「另立 code」）· fetch_intl_index.py L147-156/L203-218 · gen_daily_report.py L512/L540 · 自验脚本 outputs 级命令（/tmp 副本 · 20260827 两列并存断言）
+
+**追记 2026-08-28（同根第二次复发 · 应升格通用教训）**: 2026-08-28 10:00 zhuzhao 定时班再次触发——`fetch_fred_ust.py` 直写 live market_data.db，commit 报 disk I/O error，live 留下 12824 字节热 journal（与 08-27 完全同尺寸同模式）。处置同昨日：恢复副本验证（live main+journal 拷贝 /tmp 打开自动回滚 → integrity ok → 全表行数与班前基线逐一相同 → 证明失败事务未污染主库），journal park 为 `.STALE-20260828-zhuzhao-parked`，`PYTHONPATH=$pylib-linux:$项目根` 绕行重跑成功（DFII10 +32 行至 20260826=2.34、THREEFYTP10 +29 行至 20260821=0.8682）。同族二犯，按治理合同应升格通用教训：任何 scripts/ 下直接 `import config` 的脚本在 `python3 scripts/x.py` 形态运行时 sys.path[0]=scripts/，无 bootstrap 必 fallback 直写真盘——建议 Doctor 批一次扫修（grep 无 bootstrap 的脚本）或加 commit 前写路径护栏。条目状态维持 🔄 待修复，不自行闭环。
+
+**来源（追记）**: 2026-08-28 zhuzhao 定时班实测 · agents/烛阴/logs/2026-08-28-行情拉取与日报.md · live 残留 `market_data.db-journal.STALE-20260828-zhuzhao-parked`
