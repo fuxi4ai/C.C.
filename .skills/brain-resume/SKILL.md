@@ -30,7 +30,11 @@ cat ~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
 载完全局偏好后，若 ElevenLabs 桥接可用：**先**按音色 C.C.（voice_id `C7iLuTwlT58pHXVmnmWe` · `eleven_v3` · zh · stability 0.5 · speed 1.0）出一段 ≤150 字口语短版（「已恢复上下文」之类），落 `~/Documents/Claude/.tts-scratch`，再往下做 resume。链路不可用则静默跳过。
 语音无后台自动触发器、须每轮主动调 TTS——**起手这一下最易漏**（注意力全在 resume 正文），故在流程里显式固化。
 
-### Step 0.6 · 定时任务巡检新鲜度（2026-08-02 立 · 巡检悖论的第二层）
+### Step 0.6 · 巡检新鲜度与修复审计（2026-08-02 立 · 2026-08-29 自愈循环 v2 升级）
+
+**先读修复审计**：`~/Documents/Claude/brain/permanent/_repair_audit.md` 尾段——存在状态 🔄/⚠️ 的行，在摘要里列出（未验修复不得静默；文件不存在＝尚无修复动作，正常）。
+
+再查快照新鲜度（含 triggered_by）：
 
 ```bash
 python3 - <<'PY'
@@ -40,12 +44,17 @@ if not p.exists():
     print("⚠ 定时任务快照不存在——巡检机制可能从未跑过")
 else:
     d = json.load(open(p, encoding="utf-8"))
-    ts = (d.get("_meta") or {}).get("generated_at", "")
+    meta = d.get("_meta") or {}
+    ts = meta.get("generated_at", "")
+    tb = meta.get("triggered_by")
     try:
         dt = datetime.datetime.fromisoformat(ts)
         gap = (datetime.datetime.now(dt.tzinfo) - dt).days
-        print(f"定时任务快照：{ts[:10]}（{gap} 天前）"
-              + ("   ⚠ 超期 —— 周班 scheduler-weekly-audit 可能已停摆" if gap > 8 else "   ✅"))
+        print(f"定时任务快照：{ts[:10]}（{gap} 天前）· triggered_by={tb or '旧快照无此字段'}")
+        if gap > 8:
+            print(f"⚠ 快照超期 {gap} 天 → 按自愈循环 F1 分臂：本场实核 scheduler-weekly-audit 的 lastRunAt——")
+            print("   若也超 8 天 = F1a 周班停摆（只报告，由 Doctor 定）；")
+            print("   若新鲜     = F1b 班内落盘失效（贴 S1 重跑命令恢复基线；S3 未装则提示装 S3）")
     except Exception:
         print(f"⚠ 快照时间戳解析不了：{ts!r}")
 PY
@@ -57,9 +66,9 @@ PY
 
 巡检脚本内置了第一层自证（读上次快照，>8 天则报「巡检中断过 N 天」），但那**只在「有下一次跑」时才发得出声**。若周班彻底停摆，第一层永远不会被执行 —— 完全静默，正是它要消灭的病。
 
-⇒ **定时的东西必须用不定时的东西兜底。** `/resume` 是唯一天然不定时、又必然会发生的检查点。
+⇒ **定时的东西必须用不定时的东西兜底。** `/resume` 是唯一天然不定时、又必然会发生的检查点。同一处还顺带读修复审计（上段）——修复器越界与否的「人读通道」挂在这里。
 
-**超期时怎么办**：只报告，别自作主张去跑或去修。告诉 Doctor「快照 N 天前、周班可能停摆」，由他定。
+**超期时怎么办（F1 分臂 · 白名单外一律只报告）**：按 `brain/permanent/巡检自愈循环-loop-engineering.md` §2 L2 执行——F1a（周班停摆）只报告，不代跑不代修，由 Doctor 定；F1b（班内落盘失效）贴 S1 重跑命令（Doctor 终端）+ 提示 S3 装否。其余任何修复动作必须落在自愈循环白名单内并写 audit 留痕，白名单外 fail-closed 只报告。
 
 ### Step 1 · 读最近 3 篇会话日志
 
@@ -117,11 +126,12 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 - 所有路径用绝对 `~/Documents/Claude/brain/...`
 - Step 0 全局偏好每次起手必载，不因"上次读过"跳过（会话间不延续）
 - resume 起手第一轮默认开声（语音链路可用时）；不可用静默跳过
-- **Step 0.6 只报告、不动手**：不代跑巡检脚本、不代修、不代 commit
+- **Step 0.6 按自愈循环 F1 分臂**：F1a 只报告不动手；F1b 贴 S1 命令（Doctor 终端）——不代跑巡检脚本（沙箱读不到 live 树，跑不了）、不代 commit；白名单外修复动作一律只报告（白名单与 audit 要求见 `permanent/巡检自愈循环-loop-engineering.md`）
 
 ## 相关
 
 - `permanent/定时任务巡检机制.md`（Step 0.6 的完整设计与那个悖论）
+- `permanent/巡检自愈循环-loop-engineering.md`（F1 分臂/白名单/audit——超期处置的现行条文）
 - `.tools/scheduler_snapshot.py` · `permanent/_scheduler_snapshot.{json,md}`
 - 周班 `scheduler-weekly-audit`（周日 20:00 PDT · 静默运行 · 异常才弹系统通知）
 

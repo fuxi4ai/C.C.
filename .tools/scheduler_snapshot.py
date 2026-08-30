@@ -277,6 +277,8 @@ def scan_mounts():
 def mirror_live_tree(dry=False):
     """第三输出 · live 树镜像 → brain（2026-08-02 Doctor 批 a 案）。
     章程不变：只读 live、只写 brain 内自有输出目录，不修、不 commit、不碰调度器。
+    （本条只约束本脚本自身；「修」的权利与边界在巡检自愈循环设计里，
+      见 brain/permanent/巡检自愈循环-loop-engineering.md —— 脚本 docstring 的「不修」不约束循环。）
     --delete 语义（镜像里删 live 已不存在的）不违反「不删文件」——镜像在 git 里，删除可见可回溯。
     dry=True（2026-08-17 VV 五轮要求）：只列将更新/移除清单，不落盘。"""
     import shutil
@@ -364,7 +366,8 @@ def detect_anomalies(snap, prev):
                 prev_dt = datetime.fromisoformat(ts)
                 gap = (datetime.now(prev_dt.tzinfo) - prev_dt).days
                 if gap > 8:                      # 周班间隔 7 天，留 1 天余量
-                    red.append(f"**巡检中断过 {gap} 天**（上次快照 {ts[:10]}）——周班停摆？")
+                    prev_tb = (prev.get("_meta") or {}).get("triggered_by")
+                    red.append(f"**巡检中断过 {gap} 天**（上次快照 {ts[:10]}·triggered_by={prev_tb or '旧快照无此字段'}）——周班停摆？")
             except Exception:
                 red.append(f"上次快照的 generated_at 解析不了：{ts!r}")
 
@@ -419,6 +422,8 @@ def main():
     ap.add_argument("-v", "--verbose", action="store_true", help="打印四面全摘要")
     ap.add_argument("-a", "--all", action="store_true", help="连 YELLOW 级也报")
     ap.add_argument("--dry-run", action="store_true", help="零写入：只打印 live/Artifacts 镜像计划与只读扫描摘要，不写 snapshot/mirror/manifest、不 mkdir/copy/unlink（2026-08-17 VV 七轮要求）")
+    ap.add_argument("--triggered-by", choices=["scheduled", "manual"], default="manual",
+                    help="触发来源：周班跑必须传 --triggered-by scheduled；手动跑默认 manual——新鲜度判据凭此区分「周班在跑」与「手动刷新」（2026-08-29 自愈循环 S2）")
     args = ap.parse_args()
 
     if args.dry_run:
@@ -446,6 +451,7 @@ def main():
     snap = {
         "_meta": {
             "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+            "triggered_by": args.triggered_by,
             "host": os.uname().nodename,
             "generator": "brain/.tools/scheduler_snapshot.py",
             "readonly": True,
@@ -473,7 +479,7 @@ def main():
     L = []
     L.append(f"# 定时任务 · 四执行面现状快照\n")
     L.append(f"> 由 `brain/.tools/scheduler_snapshot.py` 生成于 "
-             f"{snap['_meta']['generated_at']}，**只读**。\n")
+             f"{snap['_meta']['generated_at']}（triggered_by={snap['_meta']['triggered_by']}），**只读**。\n")
     L.append("> **本文件纳入 git；跑完 `git diff` 即知自上次快照以来什么变了** —— "
              "无论改动来自 Doctor、别的会话还是 CC 自己。\n")
     L.append(f"> 镜像步：{mirror_note} · {art_note}\n")
