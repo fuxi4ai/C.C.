@@ -328,6 +328,8 @@ project: 渊图
 **预防**: 易混公司登记校验表;修正走dry-run+防误伤断言(禁动生益科技/真胜宏)
 **详**: Database/行业研究/渊图_GOTCHAS.md
 
+**⇒ 2026-08-31 同族新实例追记（CC 实读 canonical · Doctor 中微提问场）——中微公司三节点并存**：`company_Zhongwei`（度 9 · 04-03 建 · aliases AMEC/688012.SH · 富节点）/ `company_AMEC`（**度 0 孤岛** · 08-16 建 · desc「国产半导体设备龙头，受益于长鑫扩产」）/ `company_AMEC_TSV`（度 1 · 08-16 建 · HBM TSV 深硅刻蚀语境）——三节点 name 同为「中微公司」、aliases 均含 AMEC、无墓碑无合并记录。**根因**：08-16 Boss老白 198 篇批入库时 LLM 建公司节点前查重不充分（同批已有 HBF 伪公司 5 节点、长江存储双胞胎先例，均已并入本体）。**影响面**：中微的边分散三 id（9+0+1），kb 检索/聚合/wik 卡按 id 漏记；度 0 孤岛节点零引用。**建议修法**：并三为一（度高者 company_Zhongwei 主 · desc 并入 · 旧 id 入 aliases · 边重指 · 墓碑）——沿 08-28 C 档手术范式，手术动作归 Doctor 令。**预防门禁候选**：kg_ingest 新建公司节点时 aliases ∩ 存量 aliases 非空即判撞存量转 update（现仅 LLM 自行查重，AMEC 对 Zhongwei 未认出）。状态：🔄 待修复。
+
 ## [ERR-20260608-001] 价格层并发写竞态：price_extract 与 kg_ingest 钩子不可同时跑
 **状态**: ✅ 已知约束 **优先级**: 🔴 高
 **触发**: 两者都向 `prices/commodity_prices.jsonl` append；并发时各自读 pre-state 再写 → 撞键/丢点（本次 kg_ingest 价格钩子与源码编辑赶在一起，致 53 条混入 + 部分预测点被吞）
