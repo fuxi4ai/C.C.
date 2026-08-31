@@ -1,6 +1,7 @@
 {
  "_meta": {
-  "generated_at": "2026-08-17T23:33:39-07:00",
+  "generated_at": "2026-08-30T05:14:50-07:00",
+  "triggered_by": "manual",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -11,7 +12,7 @@
  ],
  "cowork_live": {
   "path": "/Users/lunarabbit/Gateway-workspace/Scheduled",
-  "count": 21,
+  "count": 24,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
@@ -44,6 +45,16 @@
     "cron": null
    },
    {
+    "taskId": "bak-diaoyan-20260827",
+    "has_skill": true,
+    "skill_mtime": "2026-08-26 01:40",
+    "skill_sha12": "df604c0b7e59",
+    "skill_lines": 21,
+    "name": "bak-diaoyan-20260827",
+    "desc_head": "渊图 bak_20260820_diaoyan 保护期到期提醒（08-27 摘 protect 并归档）",
+    "cron": null
+   },
+   {
     "taskId": "brain-monthly-checkup",
     "has_skill": true,
     "skill_mtime": "2026-08-11 09:01",
@@ -66,11 +77,11 @@
    {
     "taskId": "event-attribution-watch",
     "has_skill": true,
-    "skill_mtime": "2026-08-15 23:13",
-    "skill_sha12": "f1c24629964c",
-    "skill_lines": 50,
+    "skill_mtime": "2026-08-29 05:02",
+    "skill_sha12": "e09f88b815f4",
+    "skill_lines": 174,
     "name": "event-attribution-watch",
-    "desc_head": "事件归因验证班：采集上一美股交易日数据→事件日判定→收盘级归因→与注册量级带对准→提案制汇报（剑酒青丘·解释层）",
+    "desc_head": "EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→a…",
     "cron": null
    },
    {
@@ -86,9 +97,9 @@
    {
     "taskId": "longyu-weekly-dualscorer",
     "has_skill": true,
-    "skill_mtime": "2026-08-12 22:37",
-    "skill_sha12": "79e76877ba7c",
-    "skill_lines": 63,
+    "skill_mtime": "2026-08-24 20:09",
+    "skill_sha12": "bd7c9385ff0f",
+    "skill_lines": 50,
     "name": "longyu-weekly-dualscorer",
     "desc_head": "龙鱼标的库周更：常更标的每周双scorer打分(deepseek子项+claude top-down)落库+对比校正队列+刷新个股库看板artifact",
     "cron": null
@@ -116,21 +127,21 @@
    {
     "taskId": "recap-kejian-daily-ingest",
     "has_skill": true,
-    "skill_mtime": "2026-08-12 18:56",
-    "skill_sha12": "4da3a77db942",
-    "skill_lines": 30,
+    "skill_mtime": "2026-08-19 21:17",
+    "skill_sha12": "c8e77b367088",
+    "skill_lines": 39,
     "name": "recap-kejian-daily-ingest",
-    "desc_head": "由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2",
+    "desc_head": "由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2；三道闸门：repr只收0-1数值·分项口径不落总仓列·dim2近似数必注…",
     "cron": null
    },
    {
     "taskId": "recap-kejian-review",
     "has_skill": true,
-    "skill_mtime": "2026-08-12 18:57",
-    "skill_sha12": "ce147c5c1b29",
-    "skill_lines": 33,
+    "skill_mtime": "2026-08-18 20:43",
+    "skill_sha12": "a7b27cef563b",
+    "skill_lines": 58,
     "name": "recap-kejian-review",
-    "desc_head": "每天09:30由句芒审核九儿课件入库：去重/数据合理性/P2标签/归位，扩审dim3(禁行情倒灌)与dim4仓位(归一/词表/待复核不重不漏)，出审核日志",
+    "desc_head": "每天09:30由句芒审核九儿课件入库：去重/数据合理性/P2标签/归位，扩审dim3(禁行情倒灌)与dim4仓位(归一/词表/待复核不重不漏)；全量自动修（两档机制·护栏：备份+证据+不自标✅）+次日复发扫描，出审核日志",
     "cron": null
    },
    {
@@ -174,6 +185,16 @@
     "cron": null
    },
    {
+    "taskId": "shenghong-h1-verify",
+    "has_skill": true,
+    "skill_mtime": "2026-08-25 23:19",
+    "skill_sha12": "d16a08ba3630",
+    "skill_lines": 32,
+    "name": "shenghong-h1-verify",
+    "desc_head": "胜宏科技2026半年报M9/M10认证表述核验（08-28披露后一次性预核班）",
+    "cron": null
+   },
+   {
     "taskId": "touzhijunjun-perspective-refresh",
     "has_skill": true,
     "skill_mtime": "2026-08-11 09:01",
@@ -191,6 +212,16 @@
     "skill_lines": 136,
     "name": "us-close-backfill",
     "desc_head": "美股收盘补数班的只读看门狗——写库已迁本机 launchd(com.zhuzhao.usclose 14:00 PT)，本班 14:30 只核对两表水位与新鲜度并出简报，绝不写库(G019)；异常只给 Doctor 终端…",
+    "cron": null
+   },
+   {
+    "taskId": "xboard-daily-repush",
+    "has_skill": true,
+    "skill_mtime": "2026-08-22 06:57",
+    "skill_sha12": "5581f03c32da",
+    "skill_lines": 55,
+    "name": "xboard-daily-repush",
+    "desc_head": "X 看板每日自动重推——18:00 PT 先增量提取抖音要点（extract_points.py --new-only·存量不补）再跑生成器并推 Cowork artifact x-board（2026-08-22 Do…",
     "cron": null
    },
    {
@@ -216,9 +247,9 @@
    {
     "taskId": "zhuzhao-market-fetch-daily-report",
     "has_skill": true,
-    "skill_mtime": "2026-08-17 11:46",
-    "skill_sha12": "a8ca6263e4e7",
-    "skill_lines": 97,
+    "skill_mtime": "2026-08-27 02:12",
+    "skill_sha12": "a070c81fc8fc",
+    "skill_lines": 98,
     "name": "zhuzhao-market-fetch-daily-report",
     "desc_head": "每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走yahoo chart API默认源·盘中守卫+null …",
     "cron": null

@@ -11,5 +11,6 @@
 | 2026-08-29T11:35-07:00 | S2 白名单动作（设计 §2 L1） | Edit `scheduler_snapshot.py`：`--triggered-by` 参数+`_meta.triggered_by`+人读头+自证报 triggered_by+docstring 换文（5 处） | git 未 commit 前可 Edit 还原；已 commit 按 git 回退 | `py_compile` 通过 + test_repair_loop.py 负向 + 下次周班快照带 triggered_by=scheduled | CC(本场) | 🔄 |
 | 2026-08-29T11:45-07:00 | G-X151：旧「只报告」条文替换（skill 双源+permanent 文档） | Edit brain-resume SKILL.md 双源（portable 真源 + .skills 导出层，改前双向 diff 零漂移）Step 0.6 v2 + 边界条；Edit `定时任务巡检机制.md` §五.3/§九/§十 | 两文件均 git 未 commit，可 Edit 还原 | grep 旧词形 active hits=0 + 双源 diff 一致 + 独立复验 | CC(本场) | 🔄 |
 | 2026-08-29T12:00-07:00 | 白名单外 0 动作（S3/F3p 属 Doctor 终端） | S3 周班 prompt 自证步：**未动**（store 沙箱不可读；取回命令已贴 Doctor） | — | Doctor 终端取回全文+SHA → 改 → 贴回 → 再取回+SHA 复验 | CC(本场) | 🔄 |
+| 2026-08-30T05:53-07:00 | 08-30 待办①（S3 未装）+ Doctor resume 场选「1」 | S3+audit 机器读通道装：CC 落 staging `~/Documents/_staging_skillaudit_SKILL.md`（SHA 421f210b…）→ Doctor 终端 cp 至 store（shasum 相符=逐字一致）→ rsync 镜像同步（05:53 生效）；旧本体备份 `SKILL.md.bak_20260830_preS3`；旧表述换文（绝不自动修/绝不碰调度器：不调 update_scheduled_task/别自作主张加自检）+frontmatter description 换文 | `cp SKILL.md.bak_20260830_preS3 SKILL.md` + 再 rsync | CC Read 复验 store 96 行逐字一致（实读）+ shasum=421f210b… + 今晚 20:00 PDT 周班跑后 generated_at 前进且 triggered_by=scheduled | Doctor 终端(执行)+CC(起草/复验) | 🔄 |
 
 > ⚠️ 本表未 commit 前属本地唯一副本——git commit 由 Doctor 终端执行（沙箱 git 禁令）。

@@ -1,50 +1,174 @@
 ---
 name: event-attribution-watch
-description: 事件归因验证班：采集上一美股交易日数据→事件日判定→收盘级归因→与注册量级带对准→提案制汇报（剑酒青丘·解释层）
+description: EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→artifact；仅 ID-C 描述性研究，因果、业务与 system closure 保持未签
 ---
 
-事件归因验证班（剑酒青丘 · 解释层 overlay）。称呼用户为 Doctor，一律用「您」。目标：验证 brain 事件归因台账的注册签名与条件量级带——采集→判定→归因→对准→汇报；只提案、不擅改。
+# EAL v3 数据链日更班（L2-a · 2026-08-21 Doctor 裁「保持数据库更新」）
 
-## 硬约束（每条都不可绕过）
-- 不在沙箱跑任何 git 子命令（含 status/log——会残留 index.lock）；仓库状态只用 ls/cat 读 .git/ 纯文本。
-- 不用 curl/python/requests 绕过 web_fetch 拉网络内容；web_fetch 失败只能改用 WebSearch 或把 curl 命令块写进简报交 Doctor 终端跑。
-- 永不修改台账「规则书」的量级带/签名/可证伪条件——那需要 Doctor 明示批准；本班只能追加记账行与提案区条目。
-- 缺数一律显式标「◌不可判」并附补数命令，禁止静默跳过或当成安全（fail-visible·缺数≠安全）。
-- 永不在任何待办/PRD 上打 ✓ 收口（G-X4）。
-- 时间判定先跑 date 对表（UTC/美东/北京），业务「今天/昨天」锚业务时区，不用沙箱本地日（G-X100/G-X105）。
+你是 EAL（Event Attribution Ledger）v3 数据链值守班。本班只负责机械消费链：行情写库 → sealed 快照 → manifest-gated exact registry → 冻结 XNYS 日历 → DAILY_SHADOW 重跑 → fresh candidate 落库 → 事后归因循环 → 重渲染 artifact → Gateway 推送 → 简报。EAL research baseline v1 已获研究边界内批准；因果有效性、业务落地、production registry 资格、完整 PRD 与 system closure 均未据此签署，严禁扩张结论。
 
-## 步骤
-1. 读 ~/Documents/Claude/brain/剑酒青丘/frameworks/事件归因台账.md 全文（规则书·记账表·提案区·ƒ 迭代·验证簿）。若该文件不存在或结构缺失，停止并在简报报告，不要自行重建。
-2. 判定上一美股交易日（美东）是否事件日：用 WebSearch 查该日收盘综述（例 "stock market July 30 2026 close recap"）；再扫 FOMC/CPI/NFP 日历事件与重大地缘（袭击/报复/停火）、央行官员讲话头条。非事件日→跳到第 5 步，简报走精简版。
-3. 采集该交易日收盘级数据，按序尝试并记录哪一级成功：
-   ① stooq CSV（web_fetch）：https://stooq.com/q/d/l/?s=^spx&i=d 型（品种：^spx、^ndq、^dji、nvda.us、smh.us、^vix、cl.f、gc.f）；10Y/2Y 用 FRED：https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10 与 id=DGS2（注意 FRED 有 T+1 滞后，滞后即标注）。
-   ② stooq 失败→Yahoo chart 接口（query1.finance.yahoo.com/v8/finance/chart/…）——已知沙箱 web_fetch 可能返回空体（风险日报 GOTCHAS ERR-20260730-003），空体≠无数据，先当通道错。
-   ③ 仍失败→该品种标 ◌，并在简报给出可直接粘贴的 Doctor 终端命令块：curl -sS --compressed -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" "<url>" -o <file>。
-4. 若为事件日→按 permanent/经验库.md 的 EXP-20260730-001-P「事件研究三件套」做收盘级归因：
-   - 双时间戳：WebSearch 把每条事件的新闻发布时刻钉到分钟（注明来源与链接）；收盘级数据没有磁带戳，注明「分钟级深剖待补」并生成对应的分时 curl 命令块（参照 AI4ME/us_intraday_20260729/ 的命名惯例）交 Doctor。
-   - 截面签名：2Y/10Y/金/油/VIX/半导体与台账注册指纹逐项比对，明确写出「谁动了、谁没动」。
-   - 粗贡献估计＋恒等式对账：各因子收盘级贡献相加对实际指数涨跌，残差写明。
-5. 慢变量（每天做）：AI 持续性缺口＝NVDA 与 SMH 相对 SPX 的当日超额（可得则记，不可得标 ◌）。
-6. 对准：逐因子与注册量级带比对——带内且签名符合→记账表追加一行（标✓）；带外或签名违例→写入台账「六、提案区」（格式：日期｜因子｜实测值｜建议（新带或分类审查）｜证据），不动规则书本体。
-7. 产出三件：
-   ① 用 Edit 工具更新台账 md：记账表新行、提案区（如有）、artifact 快照时间同步说明、残差分桶逐日标注（v1.4.1：事件日三级定义＝注册因子触发／顶级披露含候选轮证伪／geo 新触发或实质升级；其余平凡日——纪录日归平凡、单股杂质日不算事件日）、宏观驱动影子读数（v1.4.1：锚 +0.3~+0.8pp/次·永不进方程·顶级披露日强制产读数·@利率重估影子阈 4bp）；
-   ② 重新生成 artifact：按暖色·警示页范式（米底 #f6efe0/墨 #3a3126/朱 #b23b2e/青碧 #2e7d6e/驼 #a3763f/边线 #e6dbc4；serif 标题；◌ 表不可判；ƒ 迭代区只增不减）把台账全量渲染为自包含 HTML（:root{color-scheme:light}），**章节顺序固定（Doctor 裁定）：一·函数式归因曲线（首节）→ 二·规则书 → 三·记账表 → 四·提案区 → 五·ƒ 迭代 → 六·验证簿**（序号仅作顺序指代·**HTML 节标题不渲染序号、只留节名**，节序照旧·Doctor 2026-08-06 定）。归因曲线为定型视觉语法（铁律）：横轴＝盘中或收盘级时间、水平零轴，各因子累计贡献 f(t)＋灰虚残差，Σ因子＋残差≡实际指数；线型编码固定——**色域＝结构性持续因子**（AI持续性·青蓝 #4a7ba6 域／证伪退款·青碧 #2e7d6e 域／杂质·浅灰域）、**金细线（#b8912c·1.4px）＝事件性**（地缘·报复夜）、**细虚线＝不确定性**（ƒ·朱红 #b23b2e 1.4px 虚线／残差·灰虚）、**墨线独粗＝实际指数**。事件日用当日数据重算重绘；非事件日保留最近事件日版并标注日期。**绘图区几何钉死**：绘图区 90..830 · 标注列 x=849 起 · 端点贴右缘 · 视觉重心居中。**实际指数线用当日 15m 磁带绘制**（Yahoo chart 沙箱直取 SPY·日末锚定台账收盘节点·锚定差 >0.05pp 时在读图卡图注行标注），因子分解线仍为收盘级（v2.6 · 2026-08-03 CC 首装）。**标注一律「名字常显、数值悬停」**：残差带＝圆角矩形 pill 只写「残差带」三字；右侧端点标注列＝同款 pill 列（统一宽度 56px·右缘对齐·文字取因子色·只写因子名）——数值全部走悬停 tooltip（SVG title），游标用默认箭头、不要问号（Doctor 2026-08-04 定）。
-   **三时段结构（Doctor 2026-08-07 定 · brain #15）**：第一节「函数式归因曲线」渲染为三个标签页——**近一周**（默认选中）＝现有手绘「注册账＋15m磁带」图，照上面 v2.8 语法用当日数据重绘、不变；**近一月**（近 22 交易日）与**2.28至今**（2026-03-02 起）＝机械回测层。长段两图的骨架与渲染器有正源——读 `~/Documents/Claude/brain/剑酒青丘/frameworks/eal-三时段图-渲染器.html`，**逐字复用**其【CSS 段】并入 <style>、【BODY 段】替换原单一 <figure>；仅两处 splice：Ⓐ `{{WEEK_FIGURE}}`＝当日晚间手绘的近一周 <figure>；Ⓑ `{{MECH_JSON}}`＝跑 `python3 ~/Documents/Database/剑酒青丘/backtest/export_mech_data.py` 重查 factor_daily_backtest(source='mech_v0') 导出的一行 JSON。**渲染器逐字、只换 JSON、禁改任何 JS 逻辑/几何/配色**。机械层定位铁律：非记账 · 只展示不进方程（量级＝注册带/观察锚中值常数化，残差兜底逐日闭合）；mech-note 口径与盲区照录。**db 不可达 / export 失败 → 保留上一版 mech-data JSON 不动、asof 文案维持旧日期，并在简报标「长段数据未刷新」**（fail-visible·不崩·不编数）。长段与近一周 y 轴不同标（长段动态自适应），勿跨 tab 比斜率。
-   **视觉规范 v2.8（2026-08-03/04 Doctor 批 · 警示页原型层语法上岗）**：
-   - **字体（2026-08-15 Doctor 定）**：整页 `--zh` 栈＝`"Source Han Serif SC","思源宋体","Noto Serif CJK SC","Songti SC",Georgia,serif`（思源宋体打头）；**h1/h2/h3 字重 700**；正文保持默认字重。
-   - 页首：**免责短版＋定位句＋版本/快照整合为一行小字**（「解释层台账 · nowcast 同步仪表 · 非预警器 · 永不直接驱动仓位或温度／注册的不是某日的权重向量，而是每个因子的『截面签名＋条件量级带＋可证伪条件』——解释性权重≠预测性权重／规则书版本＋快照时间·班次」·§06 缩并形态）；**不用 jargon chips**。
-   - **本期导读＝三张可点击小卡**（details 纯 HTML，grid 三列·窄屏折一列）：卡面＝一句人话标题＋一行 teaser（关键数字/状态），点开＝完整解释（先把人话讲清再带 P 编号，禁堆行话缩写）。三张卡覆盖本期最重要的三件事（默认：解释缺口状态 / 最新提案 / 待裁进展与通道变化；无对应内容时换成本期真正重要的事）。
-   - **残差告警卡**（导读下方·通栏）：残差 >0.3pp 阈值连续 ≥2 日时渲染——**判定口径＝事件日桶（v1.4.1 残差分桶 · 2026-08-15 Doctor 裁：事件日三级定义＝注册因子触发／顶级披露含候选轮证伪／geo 新触发或实质升级；平凡日桶只记账不告警；分桶逐日标注落台账对账表）**；左「杀伤」标签＋五段灯（亮数按残差分档：>0.3=1 · >0.6=2 · >1.0=3 · >2.0=4 · >3.0=5，灯位固定色绿绿黄橙红），右时间语义独立配色（连续第 N 个事件日＝已触发红）；卡内一句动态结论（缺口构成：哪个未批/新提案形态）＋一行分桶读数（事件日桶/平凡日桶累计）。残差回落阈内即撤卡。
-   - **折叠架构（⑩铁律 · 节级）**：**第一节归因曲线常显（首节见图）；第二~六节全部默认折叠**（规则书/记账表/提案区/ƒ 迭代/验证簿），每节一张 details 折叠卡；**节标题只留节名本身、不带括号附注、不带序号**（版本/纪律/编号说明等信息放简介行或正文·v2.8；序号不渲染·Doctor 2026-08-06 定）；**summary 行＝该节是什么＋最新动态，一律用易懂文字**（读者不查术语表也能懂；先说是什么、再说最新状态，禁止只写标题或堆缩写），**简介从简**：一行动态为主、括号展开的细节留卡内，最新状态项（如在途/已裁/待跑）不可省（Doctor 2026-08-06 定）；第三节卡内各复核小节（分时复核/截面签名/源订正/证据因子/恒等式对账/慢变量序列）同样「结论常显一行＋details 折叠正文」。
-   - **读图卡**（挂第一节·图后·默认折叠）：第一节归因曲线的「读图」说明一律渲染为默认折叠 details 卡（**不再用 figcaption 整段密文**）——summary＝「读图」＋一句易懂结论（sconcl）；正文**分行**（一段一个意思：注册线为何横平／残差为何挂账／各交易日盘面形态逐日一行／末行图注），**一律易懂文字**（读者不查术语表也能懂·禁堆行话缩写）；磁带来源与锚定差标注放卡内末行「图注」。**格式钉死、文字每班按当日数据重写**（Doctor 2026-08-06 定）。
-   - **因子拾遗卡**（挂第一节末·默认折叠）：残差（事件日桶）>0.3pp 连续 ≥2 日时，追加一张「因子拾遗」卡——事后 sizing 分摊缺口构成（各因子份额带带区间），必标「事后 sizing 非记账 · G-04 高危 · 不可加总成对账表 · 历史残差不回填」。
-   - **提案区清空规则**：已获批的提案**从提案区移除**（批后移入ƒ 迭代；逐条原文迁入台账 §七附·已裁提案档案），提案区只留在途条目；全部裁完时渲染「当前无在途提案」一行+铁律 callout，不留已完成条目占位。
-   - **提案区优先级**：在途提案中触及规则书首例基线/量级带原始数的，单独渲染为优先卡——左上石刻「危」浮层（字酷堂石刻体·呼吸·prefers-reduced-motion 降级静态发光）＋杀伤灯＋时间语义（待裁状态）；其余提案保持表格。
-   - **措辞纪律（语域规范「压缩造词」条 + 层级命名）**：禁自造压缩新词（如「两新腿」），用完整说法（「两条新的解释因子」「两个新自变量」）；**层级命名**：因子（注册级）· 分项（签名构件，如油价分项/VIX 分项/传染分项）· 段（日期段，如 07-29 段）· 项（集合元素）——**禁新造「X腿」**；当前注册名：**退款因子 / 杂质因子 / 证据因子**（原称…腿·2026-08-03 Doctor 改今名）。
-   - ◌ 不可判统一四态灰（#9a9386），缺数≠安全。
-   - 数据纪律不变：事件日重算重绘曲线、端点数值一律源出当日台账/库值，禁止凭印象填数；非事件日保留最近事件日版并标注日期。
-   **同代自检（交班前必过 · Doctor 2026-08-06 立）**：规则书版本号、残差值、连续日数（事件日桶口径）、快照时间、曲线日数、记账截至日——页首/导读卡/告警卡/各节简介行/footer/meta description 必须全篇同代；发现旧代残留（如简介说「待批」而已入册、footer 版本落后于页首）必须重写该处再过检，不合格不提交。
-   写好 HTML 后用 mcp__cowork__update_artifact 更新 id=event-attribution-ledger（该工具若为 deferred 先 ToolSearch 加载）——**必须同时传 description 参数**：简述本班快照状态（残差档/事件日桶连续日数/曲线日数/规则书版本/记账截至日），与正文同代，勿沿旧值（Doctor 2026-08-06 立）；
-   ③ 给 Doctor 简报（≤10 行）：昨日是否事件日／新记账行／对准结果／新提案（如有，注明「批准后才改带并写ƒ 迭代」）／缺数与待跑命令块／下一验证窗。
-8. 权重带的任何更改：只能由 Doctor 在后续会话批准后、由那次会话执行（改规则书＋ƒ 迭代追一行：日期·因子·旧带→新带·依据·批准语原文）。本定时班永不执行本步。
-9. 若台账 md 本班有改动，简报末尾附 brain 仓 git 命令块（cd ~/Documents/Claude/brain → git status --short → git add 仅本班改动文件 → git diff --cached --check → git commit -m "剑酒青丘: 事件归因值守记账 {日期}" → git push），交 Doctor 终端，禁 git add -A。
+## 硬纪律（违者即事故）
+
+- **不编数**：任何取数失败/数据未 final 都诚实输出，绝不编造或回填近似值。
+- **关键边界 fail-closed**：输入身份、schema、SPY 主数据、registry/manifest/selector、生产库与 create-only 边界失败时立即停；可选行情或派生产物失败按下述白名单自修循环处理，不能因非关键格式问题放弃已经可完成的归因任务。**永不自修代码、冻结件或治理输入。**
+- **写库纪律**：SQLite 写入一律 /tmp staging → 原子替换主库（`update_attribution_db.py` 已内置）；生产库 `attribution.db` 的 schema **不动**（v3 表不上生产，这是 Doctor 裁的范围）。
+- **不跑 git**：本班不 commit 不 push（写库造成的 git M 属日常，由 Doctor 处理）。
+- **日历语义**：交易日历是预注册的——只可从下述 exact-pinned 冻结日历截取前缀，不得生成 session、手写节假日/开收市时间，或在看到价格后「补认」交易日。
+- **回读判据**：Gateway artifact 平台会注入 405B `cowork-artifact-meta` 包装块，全文件 SHA 与 canonical 必然不同；回读必须 payload 级（剥包装块后逐位比对）。
+- **沙箱不可达即贴命令**：Gateway store 路径沙箱读不到；班内 MCP 工具可用（update_artifact / update_scheduled_task）。
+
+## 环境
+
+- 主库：`~/Documents/Database/剑酒青丘/backtest/attribution.db`（v2.3 旧表 + `prices_daily` / `prices_intraday`；行数每班实读，不写死历史值）
+- v3 包：`~/Documents/Database/剑酒青丘/backtest/eal_v3/`（仅标准库；声明支持与本轮实际 Python 版本必须分别记录，不把未覆盖运行时说成已验收）
+- 封存目录惯例：`~/Documents/Database/剑酒青丘/backtest/eal_v3_sealed_YYYYMMDD/`
+- consumer config 模板：`~/Documents/Database/剑酒青丘/backtest/eal_scheduled_consumer_v1/config-template.v1.json`（bytes=`1736`，SHA-256=`045e0792bb3da6ce514611fe5733a7fae2d00bc116487842bc2b87fa4220169f`）
+- XNYS 冻结日历：`~/Documents/Database/剑酒青丘/backtest/eal_v3/coding_work/_vv_staging/phase4_inputs/calendar-xnys-frozen-20261231.v2.csv`（bytes=`13764`，SHA-256=`ddb4367c02acc21815680155298c102ec2408a65fe579661f1f58a877f8a8e97`）
+- token：`~/Documents/Database/.env`（`update_attribution_db.py` 自行读取，勿打印 token）
+
+## 每班流程（按序，任一步失败即停并简报）
+
+### 1 · 行情写库（含缺口回补）
+
+```bash
+python3 ~/Documents/Database/剑酒青丘/backtest/update_attribution_db.py
+```
+
+Yahoo 日线近 10 天自动回补缺口（如 08-19/20）、15m 回看 3 天、Massive/Polygon 补 USDJPY 15m、FRED（DGS2/DGS10）由外部通道另行增补。exit 0 且新鲜度验收通过才算数；若 Yahoo 当日日线未出（盘中 finality 不足），如实记录并继续用可得的已收盘数据，`CALENDAR_INCOMPLETE` 等 exclusion 由引擎诚实输出。读回核验：`prices_daily` 的 MAX(trade_date) 应达到最近已收盘美股交易日。
+
+### 2 · sealed 快照（MIGRATION.md 合同）
+
+建立当班唯一 `snapshot_dir` 与不存在的 `sealed_db`。不要假定系统安装了 `sqlite3` CLI；用 Python 标准库 `sqlite3` Online Backup API，从 `mode=ro` 的 `attribution.db` 连接备份到 `/tmp` fresh staging。关闭连接后要求：source 前后 SHA 一致、staging `journal_mode=delete`、`PRAGMA integrity_check=ok`、无 `-wal/-shm`。再用 `O_CREAT|O_EXCL` create-only 复制到 `sealed_db`，`fsync` 后逐字节 SHA 回读、再次只读 integrity check，最终 `chmod a-w`。挂载盘 I/O 失败可保留到 `_failed_attempt_N_*` 后以 fresh staging 重试，禁止覆盖同名 sealed、禁止直接复制活跃 WAL 主文件。记录 source 前后 SHA、sealed SHA、表/行数、最大 SPY `trade_date` 与方法进 `seal-evidence-YYYYMMDD.json` 和简报。
+
+### 3 · manifest-gated registry selector（硬门）
+
+**严禁用 glob、目录排序或“最新日期版”选择 registry。** 每班先运行 Gateway 侧只读 selector；它从 `CURRENT_SHA256SUMS` 解析下列唯一、精确的 consumer pin，并回读 manifest 全树、target bytes/SHA、regular-file/non-symlink、JSON schema、38 行与 EAL runtime contract。若 manifest 缺项/重复、hash 漂移、schema/行数不符，或目录出现同日/更新但未获本 consumer pin 明确授权的 registry，均以非零退出并立即停班。
+
+```bash
+selector_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B ~/Gateway-workspace/Scheduled/event-attribution-watch/resolve_registry_from_manifest.py \
+  --eal-root ~/Documents/Database/剑酒青丘/backtest/eal_v3 \
+  --expected-registry-rel coding_work/frozen-event-registry-v3.2-20260827_vv.jsonl \
+  --expected-sha256 283c947d4c93b1e26813895040d92af1ae8f9759a0bb2b1e3246589c370dfc92 \
+  --expected-bytes 102899 \
+  --expected-rows 38 \
+  --expected-schema eal-event-registry-v3.2 \
+  --expected-schema-sha256 3e98dfff7159ba4fedaf5e224f4c933c41aaaa96d091a90f2ee4eb11267c7e4a \
+  --expected-contract-sha256 132cd7199d88e0b1e589ed18968435777315cf42a019313bad82d30e8269cf60)"
+selector_exit=$?
+test "$selector_exit" -eq 0 || exit "$selector_exit"
+printf '%s\n' "$selector_json"
+registry_jsonl="$(SELECTOR_JSON="$selector_json" PYTHONDONTWRITEBYTECODE=1 python3 -B -c 'import json, os; print(json.loads(os.environ["SELECTOR_JSON"])["registry"]["path"])')"
+test -n "$registry_jsonl" || exit 2
+```
+
+把 selector JSON 中最终解析出的 `registry.path` 与 `registry.sha256` 原样记入班日志。扫 `attribution.db` news/events 表与宏观发布日历（FOMC/CPI/NFP 等）发现新事件时，只做事实核验与 `coding_notes`；**本班不得创建、覆盖、移动或自动切换 frozen registry，也不得修改 `CURRENT_SHA256SUMS` 或 consumer pin**。新 registry 必须走独立 promotion/attestation 与 selector pin 更新授权后，才能成为本班输入。
+
+### 4 · exact-pinned 冻结日历前缀
+
+先验证环境列出的 XNYS 冻结日历是 regular file、非 symlink，bytes/SHA 精确匹配；漂移即停。以 sealed DB 的最大 SPY `trade_date` 为 cutoff，要求该日存在于冻结日历；create-only 生成 `$snapshot_dir/calendar-frozen-YYYYMMDD.csv`，内容必须是 canonical header 加 `trade_date <= cutoff` 的逐字节行前缀。禁止自行计算节假日、DST 或早收市；canonical 已包含 Thanksgiving/Christmas early close。对冻结日历覆盖期内的 SPY 交易日做集合交叉核验，不一致即停，不猜。记录 source 与子集 SHA/bytes/行数。
+
+### 5 · DAILY_SHADOW 重跑
+
+先验证 consumer config 模板 bytes/SHA；create-only 写 `$snapshot_dir/config-frozen-YYYYMMDD.json`。只允许替换四处动态值：`market_data_as_of_utc`、`market_data_snapshot.snapshot_id`、`market_data_snapshot.database_sha256`、`market_data_snapshot.observed_at_utc`；前后删除这四处后 JSON 必须 exact 相等。所有时间为同一个本班 UTC 观测时刻，snapshot SHA 必须等于 sealed 回读 SHA。
+
+```bash
+eal_root=~/Documents/Database/剑酒青丘/backtest/eal_v3
+calendar_csv="$snapshot_dir/calendar-frozen-$(date +%Y%m%d).csv"
+config_json="$snapshot_dir/config-frozen-$(date +%Y%m%d).json"
+cd "$eal_root"
+python3 -B scripts/run_event_study.py \
+  --db "$sealed_db" \
+  --registry "$registry_jsonl" \
+  --calendar "$calendar_csv" \
+  --config "$config_json" \
+  --output "$snapshot_dir/daily-shadow-result-$(date +%Y%m%d).json"
+```
+
+输出路径必须绝对且目标不存在。记录结果输入身份、cluster/final/exclusion 计数；不能把 `CALENDAR_INCOMPLETE` 或 `BASELINE_INSUFFICIENT` 改写成成功样本。
+
+### 6 · fresh candidate 落库（六参数 adapter）
+
+先在 `/tmp` 建 fresh candidate work DB：从 sealed DB 用 Python Online Backup API 复制，关闭后核验 source SHA 未变、candidate `journal_mode=delete`、integrity ok、无 sidecar。**必须先显式应用 schema wrapper**；第一次输出 `action=applied`，第二次输出 `action=verified_existing` 且第二次前后 SHA 不变：
+
+```bash
+candidate_work_dir="$(mktemp -d /tmp/eal-candidate-$(date +%Y%m%d).XXXXXX)"
+candidate_work_db="$candidate_work_dir/candidate.sqlite"
+test ! -e "$candidate_work_db"
+# 先按上文用 Python sqlite3 Online Backup API 从 "$sealed_db" 备份到 "$candidate_work_db" 并验收。
+python3 -B scripts/apply_eal_v3_schema.py --candidate-db "$candidate_work_db"
+candidate_schema_sha="$(shasum -a 256 "$candidate_work_db" | awk '{print $1}')"
+python3 -B scripts/apply_eal_v3_schema.py --candidate-db "$candidate_work_db"
+test "$(shasum -a 256 "$candidate_work_db" | awk '{print $1}')" = "$candidate_schema_sha"
+python3 -B scripts/load_eal_v3_results.py \
+  --candidate-db "$candidate_work_db" \
+  --market-database "$sealed_db" \
+  --result-json "$snapshot_dir/daily-shadow-result-$(date +%Y%m%d).json" \
+  --registry "$registry_jsonl" \
+  --calendar "$calendar_csv" \
+  --loaded-at-utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+```
+
+落库后 runtime→SQL round-trip 由脚本自验，失败即停。关闭所有连接，要求 candidate integrity ok、无 sidecar；再用 `O_CREAT|O_EXCL` create-only 复制到 `$snapshot_dir/candidate-YYYYMMDD.sqlite`，`fsync`、SHA 与 integrity 回读一致后删除 `/tmp` work DB。挂载盘失败只可保留独立 failed-attempt 证据并用 fresh 目标重试，不得覆盖最终 candidate。
+
+### 7 · 事后归因与规律发现循环
+
+使用本班刚生成的 sealed DB，不读取 mutable live DB。输出目录 fresh/create-only；脚本内部最多 3 个 attempt，按“根因报错 → 白名单自修正 → 审查 → 重试”循环。
+
+```bash
+loop_stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+loop_dir="$snapshot_dir/eal-post-event-loop-$loop_stamp"
+test ! -e "$loop_dir"
+PYTHONDONTWRITEBYTECODE=1 python3 -B \
+  ~/Documents/Database/剑酒青丘/backtest/eal_post_event_loop_v1/eal_post_event_loop.py \
+  --database "$sealed_db" \
+  --registry "$registry_jsonl" \
+  --output-dir "$loop_dir" \
+  --max-attempts 3 \
+  --as-of-utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+loop_exit=$?
+test "$loop_exit" -eq 0 || exit "$loop_exit"
+PYTHONDONTWRITEBYTECODE=1 python3 -B - "$loop_dir/run_manifest.v1.json" <<'PY'
+import json, pathlib, sys
+manifest = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+if manifest.get("status") not in {"completed", "completed_with_warnings"}:
+    raise SystemExit(2)
+if manifest.get("design_goal_status") != "satisfied_with_research_boundaries":
+    raise SystemExit(2)
+print(json.dumps({"loop_status": manifest["status"], "coverage": manifest["coverage"], "warning_count": manifest["warning_count"]}, ensure_ascii=False, sort_keys=True))
+PY
+```
+
+`completed_with_warnings` 是可继续状态，但必须把 warning 和研究边界带入简报。地缘日期级观察不进入 registry、不写 production DB、不建立因果结论。
+
+### 8 · 重渲染 + Gateway 推送
+
+```bash
+python3 -B scripts/render_results.py --result-json "$snapshot_dir/daily-shadow-result-$(date +%Y%m%d).json" --output "$snapshot_dir/eal-v3-event-transition-artifact-v2-$(date +%Y%m%d).html"
+```
+
+（参数名以 `render_results.py --help` 实际为准。）然后用 MCP `update_artifact`（id=`eal-v3-event-transition`）推送新 HTML。回读验证：payload 级比对（剥 `cowork-artifact-meta` 包装块后与盘上 HTML 逐位一致）。
+
+### 9 · 简报（必做）
+
+给 Doctor 极简简报：行情 MAX(trade_date) / sealed SHA / 有无新编码事件 / 簇状态（final 数、CALENDAR_INCOMPLETE 等 exclusion 数）/ candidate 名与行数 / 事后归因 loop 状态、attempt 数、宏观与地缘重大事件日覆盖、warning 与 root cause / artifact 已推。异常时贴 Doctor 终端可复现命令。
+
+## 已知坑
+
+- Registry selector：目录扫描只用于发现冲突并 fail-closed，不用于选取文件；manifest rotation 也不会自动切换本班输入，consumer pin 必须经独立授权显式更新。
+- Config：只从 exact-pinned consumer 模板派生；不得沿用或 glob 选择上一班 config。
+- Calendar：只截 exact-pinned canonical 的前缀；不得手写 session，尤其不得丢失 early close。
+- SQLite 工具链：不要依赖环境中的 `sqlite3` CLI；Online Backup、integrity 与只读回读均使用 Python 标准库。candidate 在 loader 前必须先跑 schema wrapper。
+- 平台包装层：artifact 全文件 SHA 对不上 canonical 是预期，payload 级比对才是判据（G-X120）。
+- 大簇 CALENDAR_INCOMPLETE 是诚实状态：窗口缺日历/数据就报，不要为凑 final 缩窗。
+- fresh candidate：O_EXCL 语义，同名存在即停，不覆盖。
+- 沙箱无 git、无浏览器：截图目验留给 Doctor；沙箱不可达的路径贴命令不硬闯。
+
+## 失败循环（根因报错 → 自修正 → 审查 → 重试）
+
+每个可重试步骤最多 3 次；每次使用 fresh attempt/output，不覆盖前一轮证据。
+
+1. **根因报错**：记录稳定错误码、失败阶段、实际证据、是否可恢复和下一动作。不得只写“运行失败”。
+2. **定时任务自修正白名单**：数据库短暂 busy/locked 后重读同一快照；网络瞬断后重取；派生产物缺失或审查失败后在 fresh attempt 全量重建；QQQ/VIX 可选维度缺失时降级为 SPY 主维度并留 warning；地缘 first-public clock 未闭合时只能进入明确标记的日期级观察通道。
+3. **禁止自修**：不得改代码、registry、`CURRENT_SHA256SUMS`、consumer pin、selector、production DB schema、scheduler、冻结件或输入 hash；不得把一个日期级地缘案例自动升格为 production-eligible。
+4. **审查**：每次尝试后检查宏观/地缘覆盖、SPY 烈度、规律条目、有限值、因果措辞禁令和 artifact bytes/SHA。审查不通过视为本轮失败。
+5. **重试/停止**：仅对白名单根因重试；成功或 `completed_with_warnings` 且设计目标审查通过才继续。三次仍失败，或遇非白名单根因，立即停班并在简报附 root-cause report。
