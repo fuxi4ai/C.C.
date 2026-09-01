@@ -330,7 +330,7 @@ project: 渊图
 **预防**: 易混公司登记校验表;修正走dry-run+防误伤断言(禁动生益科技/真胜宏)
 **详**: Database/行业研究/渊图_GOTCHAS.md
 
-**⇒ 2026-08-31 同族新实例追记（CC 实读 canonical · Doctor 中微提问场）——中微公司三节点并存**：`company_Zhongwei`（度 9 · 04-03 建 · aliases AMEC/688012.SH · 富节点）/ `company_AMEC`（**度 0 孤岛** · 08-16 建 · desc「国产半导体设备龙头，受益于长鑫扩产」）/ `company_AMEC_TSV`（度 1 · 08-16 建 · HBM TSV 深硅刻蚀语境）——三节点 name 同为「中微公司」、aliases 均含 AMEC、无墓碑无合并记录。**根因**：08-16 Boss老白 198 篇批入库时 LLM 建公司节点前查重不充分（同批已有 HBF 伪公司 5 节点、长江存储双胞胎先例，均已并入本体）。**影响面**：中微的边分散三 id（9+0+1），kb 检索/聚合/wik 卡按 id 漏记；度 0 孤岛节点零引用。**建议修法**：并三为一（度高者 company_Zhongwei 主 · desc 并入 · 旧 id 入 aliases · 边重指 · 墓碑）——沿 08-28 C 档手术范式，手术动作归 Doctor 令。**预防门禁候选**：kg_ingest 新建公司节点时 aliases ∩ 存量 aliases 非空即判撞存量转 update（现仅 LLM 自行查重，AMEC 对 Zhongwei 未认出）。状态：🔄 待修复。
+**⇒ 2026-08-31 同族新实例追记（CC 实读 canonical · Doctor 中微提问场）——中微公司三节点并存**：`company_Zhongwei`（度 9 · 04-03 建 · aliases AMEC/688012.SH · 富节点）/ `company_AMEC`（**度 0 孤岛** · 08-16 建 · desc「国产半导体设备龙头，受益于长鑫扩产」）/ `company_AMEC_TSV`（度 1 · 08-16 建 · HBM TSV 深硅刻蚀语境）——三节点 name 同为「中微公司」、aliases 均含 AMEC、无墓碑无合并记录。**根因**：08-16 Boss老白 198 篇批入库时 LLM 建公司节点前查重不充分（同批已有 HBF 伪公司 5 节点、长江存储双胞胎先例，均已并入本体）。**影响面**：中微的边分散三 id（9+0+1），kb 检索/聚合/wik 卡按 id 漏记；度 0 孤岛节点零引用。**建议修法**：并三为一（度高者 company_Zhongwei 主 · desc 并入 · 旧 id 入 aliases · 边重指 · 墓碑）——沿 08-28 C 档手术范式，手术动作归 Doctor 令。**预防门禁候选**：kg_ingest 新建公司节点时 aliases ∩ 存量 aliases 非空即判撞存量转 update（现仅 LLM 自行查重，AMEC 对 Zhongwei 未认出）。**⇒ 2026-09-01 /todo Doctor 裁「中微手术现在做」→ 已执行**：并 company_AMEC（度0）+company_AMEC_TSV（度1）入 company_Zhongwei（度 9→10）· desc/aliases/data_sources 并集（aliases 增「中微半导体」）· 1 边重指（rel_company_AMEC_TSV_process_HBM_TSV source→Zhongwei）· 墓碑 `_tombstones/2026-09-01_zhongwei_merge.json` · 手术记录 `mapping/_v3_20260901_中微三节点合并_手术记录.json` · 备份 bak_surgery_zhongwei_20260901_034342 · props 并集断言逮 _region_src 冲突（治理元键·保主节点 code）· 复检全绿（5191/5823·悬挂0/自环0/非法type0/旧id零残留）。状态：🔄 已修待验（实施者不自标 ✅）。
 
 ## [ERR-20260608-001] 价格层并发写竞态：price_extract 与 kg_ingest 钩子不可同时跑
 **状态**: ✅ 已知约束 **优先级**: 🔴 高
@@ -609,3 +609,5 @@ project: 渊图
 **预防门禁**: 手术脚本模板固定三步：① aliases 并集 ② desc 合并 ③ **props 并集断言**（源节点业务键全部迁入·撞名即 exit 1）；术后读盘核验清单加「props 键数 = 术前两节点并集数」。
 
 **来源**: 2026-08-28 胜宏双节点合并手术场（outputs/surgery_merge_shenghong_20260828.py + propsfix 脚本）
+
+**追记 2026-09-01（中微三节点并一手术 · 新变体实例）**: props 并集断言实弹逮住**治理元键冲突**——company_AMEC 的 `_region_src`="默认" vs 主节点 company_Zhongwei 的 `_region_src`="code"（同值不同源）。处置判据（新增）：**键名属治理元键（`_region_src` 等 `_` 前缀治理键）→ 保主节点值不覆盖；业务键冲突 → 仍 exit 1**。手术模板判据从「同值跳过」升级为「同值跳过 / 治理元键保主 / 业务键冲突拦死」三级。
