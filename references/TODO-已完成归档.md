@@ -478,3 +478,5 @@ type: log
 
 - [x] **REQ-G2** 备份策略（references/备份策略.md + `backup-icloud.sh`）
 
+- [x] **白泽 · .bak_20260831_pre_source_fix 入库裁定（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-白泽库例行自查与VVgit桥研究.md`）** ✅ 2026-09-01 Doctor 裁「挪 data/archived/（推荐）」（AskUserQuestion）→ CC 已执行：`data/stocks_fundamentals.json.bak_20260831_pre_source_fix`（33145 B）+ 连带件 `data/commodity_prices_live.json.bak_20260901_pre_w_quarantine`（钨价隔离备份 4354 B·TODO 未挂）一并 mv 至 `data/archived/` · 原位无残留 · 大小守恒 · gitignore 拦 .bak 语义保持（git 历史 `667f2a50` 父提交已存改动前等效内容，无需 -f 强入）。
+
