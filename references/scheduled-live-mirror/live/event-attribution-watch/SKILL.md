@@ -127,18 +127,30 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B \
   --as-of-utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 loop_exit=$?
 test "$loop_exit" -eq 0 || exit "$loop_exit"
-PYTHONDONTWRITEBYTECODE=1 python3 -B - "$loop_dir/run_manifest.v1.json" <<'PY'
-import json, pathlib, sys
-manifest = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
-if manifest.get("status") not in {"completed", "completed_with_warnings"}:
-    raise SystemExit(2)
-if manifest.get("design_goal_status") != "satisfied_with_research_boundaries":
-    raise SystemExit(2)
-print(json.dumps({"loop_status": manifest["status"], "coverage": manifest["coverage"], "warning_count": manifest["warning_count"]}, ensure_ascii=False, sort_keys=True))
-PY
+verifier_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B \
+  ~/Documents/Database/剑酒青丘/backtest/eal_post_event_loop_v1/verify_run_manifest.py \
+  --output-dir "$loop_dir")"
+verifier_exit=$?
+test "$verifier_exit" -eq 0 || exit "$verifier_exit"
+global_report="$loop_dir/vv-loop-run-report.v1.json"
+global_adapter_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B \
+  ~/Documents/Codex/Infrastructure/loop-engineering/adapters/eal_post_event.py \
+  --output-dir "$loop_dir" \
+  --report "$global_report")"
+global_adapter_exit=$?
+test "$global_adapter_exit" -eq 0 || exit "$global_adapter_exit"
+global_verifier_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B \
+  ~/Documents/Codex/Infrastructure/loop-engineering/scripts/verify_run_report.py \
+  --report "$global_report" \
+  --recheck-current)"
+global_verifier_exit=$?
+test "$global_verifier_exit" -eq 0 || exit "$global_verifier_exit"
+printf '%s\n' "$verifier_json"
+printf '%s\n' "$global_adapter_json"
+printf '%s\n' "$global_verifier_json"
 ```
 
-`completed_with_warnings` 是可继续状态，但必须把 warning 和研究边界带入简报。地缘日期级观察不进入 registry、不写 production DB、不建立因果结论。
+`completed_with_warnings` 是可继续状态，但必须把 warning 和研究边界带入简报。全局 report 的 `accepted` 表示本班符合跨项目证据协议；legacy application 若发生过内部重试但未在修复前发出 canonical lesson retrieval，只能标 `observed` 并在简报写明迁移缺口，不因此覆盖本次已通过 domain verifier 的业务结果，也不得把 `observed` 冒充全局闭环。地缘日期级观察不进入 registry、不写 production DB、不建立因果结论。
 
 ### 8 · 重渲染 + Gateway 推送
 

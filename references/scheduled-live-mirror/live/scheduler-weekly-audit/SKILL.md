@@ -24,13 +24,15 @@ python3 -c "import json,pathlib;d=json.load(open(pathlib.Path.home()/'Documents/
 然后跑巡检脚本：
 
 ```
-python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
+python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py --triggered-by scheduled
 ```
+
+⚠️ 必须带 `--triggered-by scheduled`——脚本默认 manual，不带则快照写 manual，验收判据「generated_at 前进且 triggered_by=scheduled」永远不满足（2026-08-31 首验教训）。
 
 ⚠️ 该脚本必须在 Mac 原生跑——沙箱只挂 `~/Documents`，读不到 `~/Claude's workspace/`（Cowork live 树）与 `~/Library/LaunchAgents/`（launchd 装机位）。若你在沙箱环境且跑不了，**不要**改用别的方式凑合、**不要**猜测结果，报「本班无法在当前环境执行」——**但退出前把下面两段命令原样贴给 Doctor 终端**（2026-08-11 Doctor 裁定并班：巡检与镜像刷新同车）再干净退出：
 
 ```
-python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
+python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py --triggered-by scheduled
 rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/references/scheduled-live-mirror/live/
 ```
 
