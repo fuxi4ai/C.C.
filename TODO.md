@@ -54,9 +54,10 @@ type: log
 
 - [ ] **EAL · ERR-20260828-001/002 落签（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-28-EAL验收链与消费治理.md` · 剑酒 GOTCHAS 实读 🔄 已确认待修复）**：001 索引 v6 与盘面漂移（修复＝VV 重生成 v6 或 Doctor 裁处置）·002 重放误报（无写入发生·前后 SHA 零变化）——落签归 Doctor。
 
-- [ ] **烛照九阴 · 班②d 步首跑验证（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-27-渊图四批验收与美债10Y详情页.md`）**：FRED 段日志 + live 详情页 as_of 刷新——首跑后核。
 
 - [ ] **PEC · 十站清单实战首验（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-26-PEC专项学习与十站命令.md`）**：下次命题推演走一遍，检验场合分层执行一致性。
+
+- [ ] **DVA · dev/19 关闭裁定（2026-09-01 挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：审计 verdict=FAIL（历史回执 `CC-to-VV-dev19-盲审对账回执-20260814.md` 经盘面实查不存在 · RECEIPT_NOT_FOUND）· 08-28 替代回执已签发（三分结论：historical FAIL / mechanical PASS / blind NOT_FULLY_EVIDENCED · SHA `9006a228…`）· 两处档案引用已修正（outbox README + 对比校正 L141）。**待 Doctor/VV 裁定**：是否允许以替代回执关闭 dev/19 → 裁定后由 VV/Codex 侧更新 DVA README 未关闭状态（CC 不代勾）。
 
 ## 长期观察
 
