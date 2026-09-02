@@ -568,6 +568,24 @@ project: 渊图
 **预防门禁**: ① 入库 QA 增「同名实体检测」：company 节点按 name/别名交叉比对，同实体内外文名变体（Accelink/ACCELINK/光迅）归一；② aliases 元素须与节点实体同指（「X Optical」类公司名混入别家公司 aliases 即报）——现有 QA 无此项；③ 与 FIX-20260625-001（张冠李戴·误记归属）族域相近（实体错配）但形态不同（编造别名 vs 误记归属）——若实体错配族第三次出现，按合同升格通用教训（升格由 Doctor 裁，本条不自升）。
 **来源**: 2026-08-23 本会话（华为 OCS 链入库 → 光迅边归属核实 → Doctor 令修正 → 方案 A 执行）
 **追记 2026-09-01（同根复发 · 第 2 次 · 帕米尔 9 篇批）**: 同族再发 3 例——LLM 新建重复公司 `company_Jingzhida`（精智达 vs 存量 `company_JingZhiDa`）/`company_WeiceTechnology`（伟测 vs 存量 `company_Microtest`）/`company_LuxsharePrecision`（立讯 vs 存量 `company_Luxshare`）。**形态差异**：非编造别名，而是 node_reference 主题过滤窗口（120/5195）漏掉既有公司 → LLM 当新实体建节点。批内 QA 已并（边重指 11 · desc/props/aliases 并集 · dup 删除 · 备份 `.bak_ccfix_20260901` · 脚本 `outputs/cc_qa_fix_20260901.py`）→ promote 落盘 5298/5919 · 读盘核验 keeper 度 2/20/11 · 重复零残留。**预防门禁强化建议**：批内 QA「同名实体检测」此前仅靠 CC 手工（本次 3 例即手工逮到）——候选=固化进 QA 脚本（新 company 节点 name/aliases ∩ 存量 name/aliases 非空即报），与 ERR-20260602-001「aliases∩存量非空即判撞存量」门禁候选合并推进。**应升格通用教训**：实体错配族第三次出现（06-25 张冠李戴 / 08-23 编造别名 / 09-01 重复建节点）——按合同登记「应升格通用教训」（升格由 Doctor 裁，本条不自升）。
+**追记 2026-09-01 深夜（同根复发 · 第 4 例 · 存量产品双节点 · 51.2T 问答场实读逮到）**: `product_Centec51dot2T`（2026-07-16 建 · 帕米尔 07-16 源 · 三星流片·双25.6T拼合·阿里 Q3/Q4 测试·2027Q1 应用）与 `product_Shengke51p2TSwitchChip`（2026-08-07 建 · 西部证券 08-07 源 · 2026-06 tapeout·双25.6T拼合·阿里 Q3/Q4 测试·2027Q1E 商用）为**同一产品（盛科 51.2T 双拼合方案）双节点**——硬证据：architecture 字段同为「双25.6T拼合」+ 测试/商用时间线三处一致 + desc 指同一实体。两批不同来源（帕米尔/西部证券）各自建节点未撞。**形态**：与批内 3 例同族（LLM 未查重新建），但发生在存量（07-16/08-07 两批），跨度 22 天未被任何 QA 发现。**处置**：本追记登记（预授权治理留痕）；合并手术归 Doctor 令（沿 08-28 C 档手术范式：度高者主·desc 并入·旧 id 入 aliases·边重指·墓碑）。**⇒ 2026-09-01 深夜整合手术已执行（Doctor 令）**：`product_Centec51dot2T` 并入 `product_Shengke51p2TSwitchChip`（边重指 6·三元组冲突 0·desc 合并 382 字含「双 25.6T 拼合 ≠ TH5 Ultra 原生 scale-up 单芯片」disambiguation + 回片时间线双口径注记·墓碑 `_tombstones/2026-09-01_centec51dot2t_merge.json`·备份+手术记录在盘·复检全绿 5297/5920）· 状态：🔄 已修待验（实施者不自标 ✅）。**关联**：两节点 desc 的口径差异（三星流片 vs 2026-06 tapeout；PFC 流控 vs OSA 生态定位）也是「拼合方案 vs 原生 scale-up 单芯片」概念混淆的图内表现——合并 desc 已写清 disambiguation。
+
+## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
+
+**状态**: 🔄 已修待验（2026-09-01 整合手术已执行：`concept_ScaleUpSwitchProtocolOSA` → `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases·name/desc 重写·边端点同步·边 id 留旧）+ `product_Shengke51p2TSwitchChip` desc「OSA→OISA」· 备份 `bak_surgery_centec_oisa_20260901_*` · 手术记录 `mapping/_v3_20260901_盛科曦智OISA整合_手术记录.json` · 复检全绿·实施者不自标 ✅）
+
+**优先级**: 🟡 中（术语错误→按「OSA」检索/对齐漏掉 OISA 官宣与生态信息；下游消费端引用会传播错误术语）
+
+**触发**: Doctor 裁「西部证券（郑宏达）为 P2 信源·独立核实」→ 核实发现中国移动协议实名 **OISA（智算开放互联协议）**；西部证券原文写「OSA」；图内 `concept_ScaleUpSwitchProtocolOSA` 节点（id/name/desc）+ 2 条边 desc（OSA 生态边×2）+ `product_Shengke51p2TSwitchChip` desc「基于 OSA 协议」均继承笔误。
+
+**硬证据**: 中国移动 2025-08-25 中国算力大会 OISA 2.0 发布官宣 + 生态共建签约名单（盛科/燧原/壁仞/摩尔线程/昆仑芯/浪潮 · P1）+ 2026 移动云大会 OISA 卡间互联原型验证平台（C114 · P1）；西部证券 raw 原文在盘（2026.08.07 行 19/32/76 均写「OSA」）。核实札记 `raw/核实/2026-09-01-盛科51.2T与超节点交换芯片独立核实札记.md`。
+
+**影响面**: 术语层失真——实体存在（OISA 协议真实），但按错误名检索会漏官宣信息；与盛科 51.2T 回片时间线冲突（西部证券「Q3 回片」vs 主流纪要「年底回片·2027H2 收入」）同源同场，札记 §四已列修复项。
+
+**建议修法**: 节点 id 改 `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases · 沿 FIX-20260625-001）+ name/desc 同步 + 2 边 desc 同步 + `product_Shengke51p2TSwitchChip` desc「OSA→OISA」；与盛科双节点合并手术（ERR-20260823-001 第 4 例）打包成一个手术批，归 Doctor 令。
+
+**来源**: 2026-09-01 盛科 51.2T 独立核实场（Doctor 裁 P2 核实 → 札记落盘 → 本条目登记）。
+
 
 ## [ERR-20260825-001] 帕米尔 08-25 批入库产生同三元组重复边——kg_promote 通道无「同三元组」闸
 **状态**: ✅ 已验收（2026-08-25 Doctor 裁「删旧留新+补闸」→ 删边+补闸已执行，见下。**✅ 2026-08-26 Doctor 终签**：四批打包独立验收（机器层九项过 · 第 15 项闸源文在盘实读 · 判断层三问全部认可 · CC 代记留痕））
