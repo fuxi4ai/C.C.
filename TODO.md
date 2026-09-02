@@ -59,6 +59,8 @@ type: log
 
 - [ ] **DVA · dev/19 关闭裁定（2026-09-01 挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：审计 verdict=FAIL（历史回执 `CC-to-VV-dev19-盲审对账回执-20260814.md` 经盘面实查不存在 · RECEIPT_NOT_FOUND）· 08-28 替代回执已签发（三分结论：historical FAIL / mechanical PASS / blind NOT_FULLY_EVIDENCED · SHA `9006a228…`）· 两处档案引用已修正（outbox README + 对比校正 L141）。**✅ 裁定已落（Doctor 2026-09-01「同意」以 08-28 替代回执关闭 dev/19 · 历史完整性 FAIL 为终态事实）** → 剩 VV/Codex 侧更新 DVA README 关闭状态（CC 不代勾 · 知会件 `4AI/Shake hands/to VV/CC-to-VV-dev19-关闭裁定知会-2026-09-01.md` 已备 · 经 Doctor 转交）。
 
+- [ ] **渊图 · 华勤节点「总营收」口径注记（2026-09-01 挂 · 源：`logs/2026-09-01-渊图融资批与盛科51.2T深挖手术.md` 毛利分析场）**：`concept_HuaqinSupernodeRevenueTarget` 的 total_revenue_target_2026e（72）/2027e（90-98）系**数据中心板块口径**（2025 该板块实为 754.75 亿 · 公司总营收 1714 亿）——props 加口径注记防下游误读。小修 · 下次 /todo 或顺手修。
+
 ## 长期观察
 
 > 纯等待 / 观察 / 暂缓 / 数据积累中——**不删、仍跟踪、不占「待办」计数**；触发条件成熟即回捞进待办。（2026-08-11 目标模式 Doctor 裁定建区 · 13 条自待办移入 + 1 条漏挂新挂 · 2026-08-26 /todo 归位：08-22 批发 5 条活跃待办移回待办段，观察 23 条随标题归位）
