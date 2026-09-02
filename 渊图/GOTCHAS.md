@@ -567,6 +567,7 @@ project: 渊图
 **建议修法**: 已按 Doctor 裁方案 A 执行（见状态行）。备选未用：方案 B 并入 Guangxun（id 非官方英文名·desc 薄）；方案 C 仅剔别名不合并（分裂状态残留）。
 **预防门禁**: ① 入库 QA 增「同名实体检测」：company 节点按 name/别名交叉比对，同实体内外文名变体（Accelink/ACCELINK/光迅）归一；② aliases 元素须与节点实体同指（「X Optical」类公司名混入别家公司 aliases 即报）——现有 QA 无此项；③ 与 FIX-20260625-001（张冠李戴·误记归属）族域相近（实体错配）但形态不同（编造别名 vs 误记归属）——若实体错配族第三次出现，按合同升格通用教训（升格由 Doctor 裁，本条不自升）。
 **来源**: 2026-08-23 本会话（华为 OCS 链入库 → 光迅边归属核实 → Doctor 令修正 → 方案 A 执行）
+**追记 2026-09-01（同根复发 · 第 2 次 · 帕米尔 9 篇批）**: 同族再发 3 例——LLM 新建重复公司 `company_Jingzhida`（精智达 vs 存量 `company_JingZhiDa`）/`company_WeiceTechnology`（伟测 vs 存量 `company_Microtest`）/`company_LuxsharePrecision`（立讯 vs 存量 `company_Luxshare`）。**形态差异**：非编造别名，而是 node_reference 主题过滤窗口（120/5195）漏掉既有公司 → LLM 当新实体建节点。批内 QA 已并（边重指 11 · desc/props/aliases 并集 · dup 删除 · 备份 `.bak_ccfix_20260901` · 脚本 `outputs/cc_qa_fix_20260901.py`）→ promote 落盘 5298/5919 · 读盘核验 keeper 度 2/20/11 · 重复零残留。**预防门禁强化建议**：批内 QA「同名实体检测」此前仅靠 CC 手工（本次 3 例即手工逮到）——候选=固化进 QA 脚本（新 company 节点 name/aliases ∩ 存量 name/aliases 非空即报），与 ERR-20260602-001「aliases∩存量非空即判撞存量」门禁候选合并推进。**应升格通用教训**：实体错配族第三次出现（06-25 张冠李戴 / 08-23 编造别名 / 09-01 重复建节点）——按合同登记「应升格通用教训」（升格由 Doctor 裁，本条不自升）。
 
 ## [ERR-20260825-001] 帕米尔 08-25 批入库产生同三元组重复边——kg_promote 通道无「同三元组」闸
 **状态**: ✅ 已验收（2026-08-25 Doctor 裁「删旧留新+补闸」→ 删边+补闸已执行，见下。**✅ 2026-08-26 Doctor 终签**：四批打包独立验收（机器层九项过 · 第 15 项闸源文在盘实读 · 判断层三问全部认可 · CC 代记留痕））
@@ -611,3 +612,26 @@ project: 渊图
 **来源**: 2026-08-28 胜宏双节点合并手术场（outputs/surgery_merge_shenghong_20260828.py + propsfix 脚本）
 
 **追记 2026-09-01（中微三节点并一手术 · 新变体实例）**: props 并集断言实弹逮住**治理元键冲突**——company_AMEC 的 `_region_src`="默认" vs 主节点 company_Zhongwei 的 `_region_src`="code"（同值不同源）。处置判据（新增）：**键名属治理元键（`_region_src` 等 `_` 前缀治理键）→ 保主节点值不覆盖；业务键冲突 → 仍 exit 1**。手术模板判据从「同值跳过」升级为「同值跳过 / 治理元键保主 / 业务键冲突拦死」三级。
+
+## [NOTE-20260901-001] kg_ingest --batch 自动发现图谱失败——find_latest_kg 只扫根目录，canonical 在 mapping/ 子目录
+
+**状态**: 🔄 已修待验（2026-09-01 当场修复：`find_latest_kg` 增加 `d/mapping` 级 glob（kg_ingest.py L1185-1192）· py_compile OK · 独立复刻测试 2/2 PASS〔mapping 级发现+canonical 优先压过 _v2 历史件 / 根级发现回归〕· 实施者不自标 ✅）
+
+**优先级**: 🟡 中（batch 起跑即挂·零数据影响·但新 shell 必踩）
+
+**触发**: 2026-09-01 21:48+ 渊图 9 篇帕米尔 batch 场——Doctor 终端 `python3 kg_ingest.py --batch`（无 --base/KG_BASE_JSON）→ exit「未找到知识图谱 JSON，请用 --base 指定路径」。
+
+**错误信息**: 未找到知识图谱 JSON，请用 --base 指定路径
+
+**根因**: `find_latest_kg` 只 glob 搜索目录**根级**的 `行业知识图谱_*.json`（~/Downloads + ~/Documents/Database/行业研究 根）；canonical 现居 `mapping/行业知识图谱_完整数据库.json` 子目录、根级无副本 → 发现失败。此前 batch 能跑，推测当时根级/Downloads 有历史副本（后被清理——机制依赖的隐性前置条件消失）。
+
+**影响面**: batch 起跑即挂（本次显式 --base 绕过+代码修复双保险）；若 Downloads 有陈旧副本，自动发现会静默挑错 base（Downloads 目录本轮未核，风险仍开）。
+
+**修复**: `find_latest_kg` 每个搜索目录加 `d/"mapping"` 级 glob；排序保证「完整数据库」压过 `_v2` 历史件（「完」>「v」lexicographic）。
+
+**预防门禁**: 本轮已修代码；Downloads 陈旧副本检查（`ls ~/Downloads/行业知识图谱_*.json`）待 Doctor 顺手核——有则移走/归档。
+
+**来源**: 2026-09-01 渊图 9 篇帕米尔 batch 场（CC 实读 kg_ingest.py L1185-1190/L1221-1233 定位根因）。
+
+**追记 2026-09-01 22:18（同根第二次 · v1 修复排序假设翻车）**: v1 修复（mapping 级 glob）生效后首次真实 batch 仍选错 base——「空」(U+7A7A) 码点 >「完」(U+5B8C)，`行业知识图谱_空白模板.json` 字典序压过 canonical，batch 以 **15 节点模板**为 base 跑完全批 9 篇（node_reference 仅 0-17/15·LLM 查重失效·_v2 产物 125 节点不含 canonical 存量）。**处置**：canonical 零触碰（mtime/counts 5195/5829 不变·实核）；副作用已回滚（prices 截断 990→964〔断言行 964＝px_BT树脂_08-26 末行〕·price_processed 9 标记移除·index kg_processed 9 篇回退 false·latest.json 重建 947 条·三备份 `*.bak_pre_rerun_20260901` 在盘）；v2 修复＝显式排除模板＋显式优先「完整数据库」＋mtime 兜底（py_compile OK·测试 3/3 PASS 含真目录）；run1 两个 _v2 文件（`221406_5篇`/`221842_9篇`）**废弃·勿 promote**。**应升格通用教训候选**：字典序/隐式排序不得承载业务语义——与「日期格式先归一」（YYYYMMDD vs YYYY-MM-DD 整年错位）同族，本坑为该族第三次变体。
+
