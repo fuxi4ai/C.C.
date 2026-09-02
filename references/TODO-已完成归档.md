@@ -480,3 +480,5 @@ type: log
 
 - [x] **白泽 · .bak_20260831_pre_source_fix 入库裁定（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-白泽库例行自查与VVgit桥研究.md`）** ✅ 2026-09-01 Doctor 裁「挪 data/archived/（推荐）」（AskUserQuestion）→ CC 已执行：`data/stocks_fundamentals.json.bak_20260831_pre_source_fix`（33145 B）+ 连带件 `data/commodity_prices_live.json.bak_20260901_pre_w_quarantine`（钨价隔离备份 4354 B·TODO 未挂）一并 mv 至 `data/archived/` · 原位无残留 · 大小守恒 · gitignore 拦 .bak 语义保持（git 历史 `667f2a50` 父提交已存改动前等效内容，无需 -f 强入）。
 
+- [x] **烛照九阴 · 班②d 步首跑验证（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-27-渊图四批验收与美债10Y详情页.md`）** ✅ 2026-09-01 CC 实核代勾（客观证据硬勾）：`fred_ust_daily` 表 65 行 · updated_at=09-01 10:07:35（今天班实际写入）· DFII10 最新 08-28=2.42 与 FRED 官方 CSV 逐位一致 · THREEFYTP10 08-21=0.8682 同源一致 · 日报 HTML as_of 同步。②d 已双落且班内正常运行；H.15 发布时点（16:15 ET）晚于班跑时点（13:07 ET）致「滞后 2 交易日」属结构性正常，非故障。
+

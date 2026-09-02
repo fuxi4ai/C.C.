@@ -369,6 +369,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: agents/句芒/logs/2026-08-26-课件入库审核.md（二次触发复核段）· 本条目 2026-08-26 句芒课件入库审核班发现并修复
 
+**追记 2026-09-01（同族新暴露·非复发 · 挂单待裁）**: 2026-09-01 句芒审核班将 GROUP BY date 扫描扩到 dim2_sector_themes 时新暴露历史残留——`2026-05-05`（id 158/184）与 `2026-05-06`（id 157/185）各两行。与 08-26 修掉的全同重复行**不同**：两行各含独有数据——05-11 批行（id 157/158）main_line/sub_themes/sectors_* 为 NULL 但 sector_logic/price_catalyst 带 KB-P2 知识库来源内容（电新周报/光刻机行业深度）；06-03 批行（id 184/185）为课件维度完整实体行。删任一行都会丢独有信息，合并方案（并入实体行保留 KB-P2 字段？按日期双行并存是否有下游依赖？）属判断性+不可逆，**本班未动库、挂单请 Doctor 裁**。已知下游 `scripts/enhance_with_jumang.py` L61 用 `WHERE main_line IS NOT NULL` 读取（仅命中实体行、不受双行影响）；其他下游未逐一排查（未核）。本班日志：`agents/句芒/logs/2026-09-01-课件入库审核.md`。
+
 
 ---
 
@@ -387,6 +389,14 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 新 scripts 上架前查「import config 前有无 bootstrap」；班内跑新脚本先 `python3 -c "import config; print(config.MARKET_DB)"` 确认指向副本根再放行。同族复发（另一脚本 fallback 直写 live）追记本条。
 
 **来源**: 2026-08-27 zhuzhao 定时班实测 · agents/烛阴/logs/2026-08-27-行情拉取与日报.md · live 残留证据 `market_data.db-journal.STALE-20260827-zhuzhao-parked`
+
+**追记 2026-08-31（同根第三次复发 · 通用教训坐实）**: 2026-08-31 zhuzhao 定时班第三次触发——`fetch_fred_ust.py` 无 bootstrap 直写 live market_data.db。与前两次不同：本次直写**成功**（未报 disk I/O error、未留热 journal，live integrity ok，fred_ust_daily 63→65 行）——挂载盘直写小事务可侥幸成功，比「报错留 journal」更隐蔽：若本班未察觉而用旧副本放回，live 的 FRED 新行会被回退 2 行（20260826→20260828 丢失）。本班处置：察觉后以 `PYTHONPATH="$pylib-linux:$项目根"` 在副本重跑 FRED 对齐（副本 20260828/65 行 = live 同值），放回无回退。三次复发坐实 2026-08-28 追记提出的通用教训升格：**任何无 bootstrap 直 `import config` 的脚本在班内必 fallback 直写真盘**——建议 Doctor 批一次扫修（grep 含 `import config` 且无 `sys.path.insert` 的 scripts）或 `_db_path()` 加写前路径护栏（含 `/sessions/` 即 abort，复用 connect_write）。条目状态维持 🔄 待修复，不自行闭环。
+
+**来源（追记）**: 2026-08-31 zhuzhao 定时班实测 · agents/烛阴/logs/2026-08-31-行情拉取与日报.md · live fred_ust_daily 20260828/65 行（updated_at 2026-08-31 21:30 沙箱钟）
+
+**追记 2026-09-01（同根第四次复发）**: 2026-09-01 zhuzhao 定时班第四次触发，模式回到初犯形态——`python3 scripts/fetch_fred_ust.py` 直写 live，`con.commit()` 报 `sqlite3.OperationalError: disk I/O error`（FRED 两序列 [ok] 打印后崩，exit 非 2 的优雅跳过而是事务崩溃），live 留 12824 字节热 journal（与 08-27/08-28 完全同尺寸同模式）。处置同 08-27 初犯：恢复验证（live main+journal 拷贝 /tmp 打开自动回滚 → integrity ok → 全表行数 vs 班前基线逐一相同 → 失败事务未污染主库，且真盘 main 指纹 md5 6d7432ff… 与快照时刻一致）→ journal park 为 `.STALE-20260901-zhuzhao-parked` → `PYTHONPATH="$pylib-linux:$项目根"` 绕行重跑副本成功（DFII10 +30 行至 20260828=2.42、THREEFYTP10 +25 行至 20260821=0.8682，净增 0 行=幂等重写）。**四次复发、两种病征（报错留 journal / 静默直写成功）全齐**：通用教训已从「应升格」到「坐实」再到「第四犯」，靠班内绕行只能止血不能断根——请 Doctor 裁一次根治（批扫修「import config 无 bootstrap」的 scripts，或 `_db_path()` 加写前路径护栏：路径含 `/sessions/` 或 `mnt/` 即 abort）。条目状态维持 🔄 待修复，不自行闭环。
+
+**来源（追记）**: 2026-09-01 zhuzhao 定时班实测 · agents/烛阴/logs/2026-09-01-行情拉取与日报.md · live 残留证据 `market_data.db-journal.STALE-20260901-zhuzhao-parked`
 
 ---
 
@@ -411,3 +421,35 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **追记 2026-08-28（同根第二次复发 · 应升格通用教训）**: 2026-08-28 10:00 zhuzhao 定时班再次触发——`fetch_fred_ust.py` 直写 live market_data.db，commit 报 disk I/O error，live 留下 12824 字节热 journal（与 08-27 完全同尺寸同模式）。处置同昨日：恢复副本验证（live main+journal 拷贝 /tmp 打开自动回滚 → integrity ok → 全表行数与班前基线逐一相同 → 证明失败事务未污染主库），journal park 为 `.STALE-20260828-zhuzhao-parked`，`PYTHONPATH=$pylib-linux:$项目根` 绕行重跑成功（DFII10 +32 行至 20260826=2.34、THREEFYTP10 +29 行至 20260821=0.8682）。同族二犯，按治理合同应升格通用教训：任何 scripts/ 下直接 `import config` 的脚本在 `python3 scripts/x.py` 形态运行时 sys.path[0]=scripts/，无 bootstrap 必 fallback 直写真盘——建议 Doctor 批一次扫修（grep 无 bootstrap 的脚本）或加 commit 前写路径护栏。条目状态维持 🔄 待修复，不自行闭环。
 
 **来源（追记）**: 2026-08-28 zhuzhao 定时班实测 · agents/烛阴/logs/2026-08-28-行情拉取与日报.md · live 残留 `market_data.db-journal.STALE-20260828-zhuzhao-parked`
+
+## [ERR-20260830-001] config.py 的 RAW_RECAP_DIR 从 DATABASE_ROOT 派生——误设 env 时漂移，record --all-new 静默扫空返回 0
+
+**状态**: ⚠️ 已知风险（正常路径 Mac 原生不设 env、照旧向上找 Documents，不触发；仅人为设 `ZZJY_DATABASE_ROOT=/tmp/…` 时踩 · 待 Doctor 批修或裁定「输入目录独立 env」方案）
+**优先级**: 🟡 中
+**触发场景**: ingest 工作流设 `ZZJY_DATABASE_ROOT=/tmp/dbroot` 做隔离操作时，config.py 的 RAW_RECAP_DIR 随 DATABASE_ROOT 派生漂移至 /tmp 下不存在路径 → scan 扫空 → `record --all-new` 返回 0，误判「无新课件」。
+**硬证据/最小复现**: 九儿 2026-08-30 ingest 日志（`agents/烛阴/logs/2026-08-30-课件入库.md`「过程备注」）：`ZZJY_DATABASE_ROOT=/tmp/dbroot` 后 record --all-new 首次返回 0；解法为 `ln -s` 真 Raw-Recap 至 /tmp/dbroot/烛照九阴/Raw-Recap 后 record 成功（260830 入库 17 条）。
+**根因**: config.py 中 RAW_RECAP_DIR 系从 DATABASE_ROOT 派生（输入目录与输出目录未解耦）——输入侧（Raw-Recap 源文件）本应固定指真实库目录，不应随输出侧 env 漂移。
+**影响面**: 只影响「误设 env」场景；不损坏数据（scan 扫空只是少处理，processed_kejian 未登记 → 下一班会补）。危险点在于**静默**：返回 0 无报错，若不看日志会漏判为当日无课件。
+**修复/建议修法**: ① config.py 支持独立 env（如 `ZZJY_RAW_RECAP_DIR`）或 RAW_RECAP_DIR 默认值不依赖 DATABASE_ROOT；② record 命令在 scan 0 文件且 Raw-Recap 目录非空时告警（fail-loud）。
+**预防门禁**: 任何「设 env 做隔离」的操作前，先确认输入路径是否随该 env 派生；scan 结果为 0 时对照目录 ls 再下「无新课件」结论。
+**来源**: 2026-08-30 句芒审核班（转记自九儿 2026-08-30 课件入库日志「过程备注」· 九儿已建议登记，本班代登记，状态不自标 ✅）
+
+## [ERR-20260901-001] 大盘涨跌幅用 510300 ETF 代理——连续三日与沪深300指数偏离 0.2pp+ + 显示 1 位小数抹平微跌
+
+**状态**: 🔄 已修待验（2026-09-01 Doctor 裁「换指数真身」→ 实施：`scripts/fetch_index_daily.py` 新建（tushare index_daily 000300.SH → `cn_index_daily` 表）+ 内嵌进 `fetch_theme_etf.py`（同批原子拉取·班 prompt 零改动）+ `gen_daily_report.py` 快照/大盘曲线改读指数表（`IDX`）+ bench_note「沪深300指数」+ `pct_span` .1f→.2f。验证：负向（无表→「待取数」fail-closed·exit 0）+ 正向（/tmp 镜像灌真实值→快照 -0.30%·产物零「代理/510300」残留）。**实施者不自签**——待独立验收；回填与重生成命令已贴 Doctor 终端）
+
+**优先级**: 🔴 高（日报首页市场快照直接误导：-0.0% 显示 vs 大盘真实 -0.16%~-0.30%；主线超额/板块图同源失真）
+
+**触发**: 2026-09-01 Doctor 发现日报「大盘涨跌幅 -0.0% 沪深300代理」存疑。
+
+**硬证据/最小复现**: 20260901 收盘——`theme_etf_daily` 510300.SH pct_chg=-0.02（tushare fund_daily 实拉复验一致·腾讯行情接口复验 close 4.684 无误）vs tushare index_daily 000300.SH pct_chg=-0.2951（华尔街见闻/汇通财经多源一致：沪深300 -0.30%·上证 -0.16%）。连续三日偏离：08-28 0.20pp / 08-31 0.21pp / 09-01 0.28pp。显示层：`pct_span` `{v:+.1f}` 把 -0.02 抹成「-0.0%」。
+
+**根因**: ① 快照与大盘曲线用 ETF 市价代理指数——ETF 二级市场折溢价波动致代理失真（偏离根因未完全查明·疑似 510300 折溢价波动，如实标未核）；② 显示 1 位小数对 ±0.05 内的小幅波动产生「-0.0%」负零误导。
+
+**影响面**: 日报首页「市场快照」与板块卡「大盘」曲线；主线超额基准（BENCHMARK ETF）口径未动——超额是「板块 ETF vs 大盘 ETF」同口径横向比较，保留 ETF 属有意设计（改动注释已写明）。
+
+**修复**: 见状态行。回填：`python3 scripts/fetch_index_daily.py --from 20240101`（Doctor 终端·供曲线 20 日窗口）；此后每日班随 fetch_theme_etf 自动增量。
+
+**预防门禁**: ① 代理/替代口径类取数（ETF 代理指数）上岗前必做真值偏离校验（如 |代理 pct − 真值 pct| > 0.1pp 即告警）——与 ERR-20260828-001 预防门禁同族（代理口径类二犯，应升格通用教训由 Doctor 裁）；② 展示层百分比禁 1 位小数（小值抹平/负零）；③ 快照与同页曲线必须同源同口径（防「-0.30% vs 曲线末点 -0.02%」自相矛盾）。
+
+**来源**: 2026-09-01 本场（Doctor 提问 → 实拉 tushare fund_daily/index_daily + 腾讯行情 + 外部多源核对 → Doctor 裁「换指数真身」→ 实施+双向测试）
