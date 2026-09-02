@@ -376,7 +376,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260827-001] fetch_fred_ust.py 缺项目根 bootstrap——沙箱内 import config 失败 fallback 直写 live market_data.db（G019 同族·留热 journal）
 
-**状态**: 🔄 待修复（脚本未改 · 本班以 `PYTHONPATH=…:项目根` 绕行 · 待 Doctor 批修或裁）
+**状态**: 🔄 已修待验（**2026-09-01 Doctor 裁「根治」→ CC 实施三层防线**：① 顶部 `sys.path.insert(0, 项目根)` bootstrap——保证班域内 import config 成功、`config.MARKET_DB` 随 `ZZJY_DATABASE_ROOT` 指向 /tmp 副本根（主因消除）；② `_db_path()` 删 `except Exception` 静默 fallback——不再回退直写 live（fail-loud）；③ 写连接改走 `config.connect_write` 中央护栏——沙箱挂载盘（含 /sessions//mnt/）直写被拒（G019 兜底）。**全 scripts/ 扫查：唯本脚本缺 bootstrap**（其余 15 件均有）——四次复发同源收敛单文件。验证：py_compile ✓ · 班域模拟 `ZZJY_DATABASE_ROOT=/tmp/zzdbroot` → `_db_path=/tmp/zzdbroot/Market-Data/market_data.db` ✓ · 负向无 env 沙箱域 → connect_write 抛 RuntimeError 拒绝 live ✓。**实施者不自签**——待独立验收）
 
 **现象**: 2026-08-27 10:00 定时班跑 `python3 scripts/fetch_fred_ust.py`（已 source env · ZZJY_DATABASE_ROOT=/tmp 副本根），FRED 取数两序列 [ok]（DFII10 +32 行 / THREEFYTP10 +30 行）但 `con.commit()` 抛 `sqlite3.OperationalError: disk I/O error`；随后 live `market_data.db` 出现 12824 字节热 journal、主文件 mtime 被改，任何只读打开 live 的进程报「attempt to write a readonly database」（热 journal recovery 需写权限，挂载盘写被 FUSE 拒）。
 
