@@ -118,6 +118,8 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 
 **若 Step 0.6 报了超期或异常，摘要开头单列一行**，别埋进正文——它是机制级问题，比任何单个待办都优先。
 
+**git 待办直接贴命令块（2026-09-02 Doctor 立）**：摘要「建议下一步」凡涉及 git commit/push 待办——先实读 `.git` 纯文本核仓况（`.git/logs/HEAD` 尾部看末次 commit · `.git/refs/heads/` 与 `refs/remotes/` 对拍判 push · 工作区 `find -newermt <末次 commit 时间>` 扫未提交新文件）；已同步的**不再提**；确有待提交的**直接构造命令块贴出**（≥2 仓合并一个 code block 分段连发），不问「要不要贴」。
+
 ## 边界
 
 - `logs/` 为空 → "brain 还没有会话日志。要不要我读 `permanent/项目总览.md` 给您看 8 个项目的整体状态？"
@@ -127,6 +129,7 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 - Step 0 全局偏好每次起手必载，不因"上次读过"跳过（会话间不延续）
 - resume 起手第一轮默认开声（语音链路可用时）；不可用静默跳过
 - **Step 0.6 按自愈循环 F1 分臂**：F1a 只报告不动手；F1b 贴 S1 命令（Doctor 终端）——不代跑巡检脚本（沙箱读不到 live 树，跑不了）、不代 commit；白名单外修复动作一律只报告（白名单与 audit 要求见 `permanent/巡检自愈循环-loop-engineering.md`）
+- **git 待办先核后贴、直接贴不问**（2026-09-02 Doctor 立）：先实读 .git 纯文本核仓况，已同步不提；有待提交直接贴命令块（多仓合一 code block 分段连发），不问「要不要贴」
 
 ## 相关
 
