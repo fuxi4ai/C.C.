@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-08-22
+updated: 2026-09-03
 status: active
 type: log
 ---
@@ -24,7 +24,7 @@ type: log
 
 - [ ] **渊图 · bak_20260820_diaoyan 归档（2026-08-20 挂 · dated 08-27）**：调研情报局入库场回滚点（4962/5544）——conch 归档批 P1 延后 7 天（.conchconfig.yml protect 已挡）；08-27 后摘 protect 并归档 archived/。（2026-08-27 到期提醒班现核：文件仍在 mapping/（12,672,205 B · mtime 08-19 08:43）、protect 第 9 行仍含该条，均未处置；归档命令已贴 Doctor 终端待执行，未跑任何 git/conch 命令）
 
-- [ ] **龙鱼 · ds 腿引用数字检测机制（2026-08-20 补挂 · 源：NOTE-20260819-001 · 原 08-15 挂条已从 TODO 消失）**：ds/LLM 盲打 evidence 中具体数字（产能/订单/营收额/市占率）须能在 canonical/engine_facts 找到同源，找不到标 P3 降权或不采；机制化=校正/销账审计逐句对 canonical。同族两例：08-15 华工「2万样机」P3 当事实、08-19 海光「中芯产能」错链锚（华为链·海光代工实为三星）。**⇒ 2026-08-26 /todo Doctor 裁「暂缓」**：等校正/销账审计自然推进时顺带机制化（非阻塞项）。**⇒ 2026-08-30 裁定场「暂缓」前提被第三次复发推翻 · 机制化部分已实装（CC 实施 · 08-31 日志实据）**：check_ds_evidence.py 三档（无锚/P3当事实/旧锚）+ 持久化负向测试 5/5 PASS（当场逮 3 真 bug 已修）+ 实跑 08-29 ds 条目 ⚠67 提示级（真信号+泛短语噪声·附锚出处可人核）。另「错链」定性被 canonical 旧锚推翻：rel_Haiguang_SMIC_South（04-29 P1 未退役·desc 与 ds 引用逐字吻合）。**残余挂裁（归 Doctor）**：① 检测脚本是否挂进周更班（班 prompt 改动走 Doctor 终端 SHA 往返）；② canonical 海光代工叙事时序冲突（中芯旧边 vs 05-16 起三星代工叙事·旧边退役或标时效）。
+- [ ] **龙鱼 · ds 腿引用数字检测机制（2026-08-20 补挂 · 源：NOTE-20260819-001 · 原 08-15 挂条已从 TODO 消失）**：ds/LLM 盲打 evidence 中具体数字（产能/订单/营收额/市占率）须能在 canonical/engine_facts 找到同源，找不到标 P3 降权或不采；机制化=校正/销账审计逐句对 canonical。同族两例：08-15 华工「2万样机」P3 当事实、08-19 海光「中芯产能」错链锚（华为链·海光代工实为三星）。**⇒ 2026-08-26 /todo Doctor 裁「暂缓」**：等校正/销账审计自然推进时顺带机制化（非阻塞项）。**⇒ 2026-08-30 裁定场「暂缓」前提被第三次复发推翻 · 机制化部分已实装（CC 实施 · 08-31 日志实据）**：check_ds_evidence.py 三档（无锚/P3当事实/旧锚）+ 持久化负向测试 5/5 PASS（当场逮 3 真 bug 已修）+ 实跑 08-29 ds 条目 ⚠67 提示级（真信号+泛短语噪声·附锚出处可人核）。另「错链」定性被 canonical 旧锚推翻：rel_Haiguang_SMIC_South（04-29 P1 未退役·desc 与 ds 引用逐字吻合）。**残余挂裁（归 Doctor）**：① 检测脚本是否挂进周更班（班 prompt 改动走 Doctor 终端 SHA 往返）；② ~~canonical 海光代工叙事时序冲突（中芯旧边 vs 05-16 起三星代工叙事·旧边退役或标时效）~~ ✅ 已闭环（09-01 海光旧边标时效已执行：desc 加 [04-29 口径·已过时] 前缀+_meta 注记 · commit `95d1fb0` 在链 · 2026-09-03 Doctor 裁确认标时效路线 · CC 代记留痕）。
 
 
 - [ ] **X-Board · VV 知会数据侧 shape 统一（2026-08-24 挂）**：08-22 DVA refill 班镜像 ASR 管线切换（backend=local-qwen3/Qwen3-ASR-1.7B），老毛 16 篇转写变新 shape（顶层 text·无 sentences）——消费端已兼容（CC 08-24 改提取器+生成器），但数据侧 contract 未归位。知会 VV：镜像 shape 统一回 sentences 或正式发布新 contract；触发=VV 回执或镜像下次 shape 再变（若再变，兼容层会成新坑——见 08-24 问答板裁定记录）。
@@ -39,11 +39,10 @@ type: log
 
 - [ ] **杂项 D 批发（2026-08-22 /todo 漏挂对账补挂 · Doctor 问答板全选 · 源：`logs/2026-08-15-龙鱼双scorer周更.md` ＋ `logs/2026-08-15-华工Rubin板载NPO定点传闻核实.md` ＋ `logs/2026-08-20-龙鱼销账与调研情报局视频入库.md` ＋ `logs/2026-08-21-烛照九阴风险竖条与逾期信号处置.md`）**：① ~~CPO 3 只升常更勾选（常更标的.json 未加 · 清单由常更标的审核.html 维护）~~（✅ 2026-08-26 Doctor /todo 裁「升常更」已执行：`Database/龙鱼-标的分析库/常更标的.json` 加 688313.SH 仕佳光子 + 300620.SZ 光库科技（天孚 300394.SZ 已在）· count 23→25 · updated 08-26 · 备份 .bak_20260826_add_cpo3 · 常更标的审核.html 清单同步待您目验 · CC 代记留痕）；② 华工 3.2T 官宣触发器 + 9 月底-10 月观察窗（备案通知书/PHIP）+ 招股书「直接对接北美客户」原文直读；③ DVA transcribe 长音频分段根治（BUG-20260819-001 · 待 Doctor/VV 裁修复方案 · ⇒ 2026-08-26 问答板 9A 裁：继续等 VV/您裁方案）；④ 烛照竖条灯 + 黄条 56→27 目验（08-21 班产物已推 ✓ · zhuzhao-jiuyin-daily updatedAt 08-21T17:23Z · 目验归 Doctor）。
 
-- [ ] **渊图 · PTFE 树脂端 A/B 档补丁待裁（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-27-渊图-VeraRubin-PTFE材料核实.md`）**：A 档（PTFE 树脂端缺口：东岳/中英科技/Rogers/Chemours/Daikin/巨化/昊华补中昊晨光身份 + 2 概念节点）+ B 档（CCL 涨价 prop/M10 测试口径/IEC 标准/联瑞募投 props）——方向性补丁，待 Doctor 裁。
+- [ ] **渊图 · PTFE 树脂端 A/B 档补丁待裁（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-27-渊图-VeraRubin-PTFE材料核实.md`）**：A 档（PTFE 树脂端缺口：东岳/中英科技/Rogers/Chemours/Daikin/巨化/昊华补中昊晨光身份 + 2 概念节点）+ B 档（CCL 涨价 prop/M10 测试口径/IEC 标准/联瑞募投 props）——方向性补丁，待 Doctor 裁。**⇒ 2026-09-03 Doctor 裁「A/B 档全入」→ patch 已备（`mapping/_v3_20260903_PTFE树脂端AB档补丁_manual.json` · dry-run 全绿：8 新节点/5 update/6 边）· promote 命令已贴 Doctor 终端**
 
-- [ ] **龙鱼 · ds 供需端兑现锚点维度正交漂移订正候选（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-29-龙鱼双scorer周更.md`）**：deepseek 供需端兑现疑似维度正交漂移（仕佳年度 +98%/+473% 仍给供需 14「部分兑现」·海光「DCU 落后」混进供需端）——候选修法＝供需端兑现改公司级营收/订单/份额落地即算，新品类进度归技术端/新赛道维；批准则改 ANCHORS+重跑+趋势标口径跳变。归 Doctor 裁。
+- [ ] **龙鱼 · ds 供需端兑现锚点维度正交漂移订正候选（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-29-龙鱼双scorer周更.md`）**：deepseek 供需端兑现疑似维度正交漂移（仕佳年度 +98%/+473% 仍给供需 14「部分兑现」·海光「DCU 落后」混进供需端）——候选修法＝供需端兑现改公司级营收/订单/份额落地即算，新品类进度归技术端/新赛道维；批准则改 ANCHORS+重跑+趋势标口径跳变。归 Doctor 裁。**⇒ 2026-09-03 Doctor 裁「ds 供需订正」（修法批准）→ 实施=改 ANCHORS+重跑 23 只+趋势标口径跳变 · 大活待开专场**
 
-- [ ] **渊图 · 中微三节点并一手术（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-内存墙存算与设备三杰对比.md` · GOTCHAS ERR-20260602-001 追记 🔄）**：company_Zhongwei（度 9）/company_AMEC（度 0）/company_AMEC_TSV（度 1）并存——手术归 Doctor 令。**⇒ 2026-09-01 /todo Doctor 裁「中微手术现在做」→ 本场执行（见手术记录 `mapping/_v3_20260901_中微三节点合并_手术记录.json`）**。
 
 - [ ] **龙鱼 · 中微是否拉入常更清单（2026-09-01 /todo 漏挂对账补挂 · 源：同上）**：对比场提案未获回应 · 现仅芯碁在列——归 Doctor 裁。
 
@@ -59,7 +58,25 @@ type: log
 
 - [ ] **DVA · dev/19 关闭裁定（2026-09-01 挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：审计 verdict=FAIL（历史回执 `CC-to-VV-dev19-盲审对账回执-20260814.md` 经盘面实查不存在 · RECEIPT_NOT_FOUND）· 08-28 替代回执已签发（三分结论：historical FAIL / mechanical PASS / blind NOT_FULLY_EVIDENCED · SHA `9006a228…`）· 两处档案引用已修正（outbox README + 对比校正 L141）。**✅ 裁定已落（Doctor 2026-09-01「同意」以 08-28 替代回执关闭 dev/19 · 历史完整性 FAIL 为终态事实）** → 剩 VV/Codex 侧更新 DVA README 关闭状态（CC 不代勾 · 知会件 `4AI/Shake hands/to VV/CC-to-VV-dev19-关闭裁定知会-2026-09-01.md` 已备 · 经 Doctor 转交）。
 
-- [ ] **渊图 · 华勤节点「总营收」口径注记（2026-09-01 挂 · 源：`logs/2026-09-01-渊图融资批与盛科51.2T深挖手术.md` 毛利分析场）**：`concept_HuaqinSupernodeRevenueTarget` 的 total_revenue_target_2026e（72）/2027e（90-98）系**数据中心板块口径**（2025 该板块实为 754.75 亿 · 公司总营收 1714 亿）——props 加口径注记防下游误读。小修 · 下次 /todo 或顺手修。
+- [ ] **渊图 · 华勤节点「总营收」口径注记（2026-09-01 挂 · 源：`logs/2026-09-01-渊图融资批与盛科51.2T深挖手术.md` 毛利分析场）**：`concept_HuaqinSupernodeRevenueTarget` 的 total_revenue_target_2026e（72）/2027e（90-98）系**数据中心板块口径**（2025 该板块实为 754.75 亿 · 公司总营收 1714 亿）——props 加口径注记防下游误读。小修 · 下次 /todo 或顺手修。**⇒ 2026-09-03 /todo 统一授权执行：patch `mapping/_v3_20260903_华勤口径注记_manual.json` 已备（dry-run 绿·1 update took_patch）· promote 命令已贴 Doctor 终端**
+
+- [ ] **白泽 · `.bak_20260831_pre_source_fix` 入库与否（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-31-白泽库例行自查与VVgit桥研究.md`）**：备份件被 .gitignore 拦截未入库——如要入库需 -f 或挪 data/archived/（Doctor 定）。
+
+- [ ] **龙鱼 · GOTCHAS NOTE-20260830-001 独立验收（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-31-龙鱼ds供需四补v3与检测机制.md`）**：🔄 已修待验（ANCHORS 四补+23 只重跑+检测机制实装 · 实施者不自标 ✅）——待未参与实施的 subagent 独立验收或 Doctor 指定验收方。
+
+- [ ] **剑酒青丘 · 数据仓 877 untracked 耐久化（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：含 eal_scheduled_consumer_v1 四件验收资产 · 无 upstream 本地-only 仓——commit 或另裁处置。
+
+- [ ] **调度 UI 无保留签署缺口（2026-09-03 /todo 漏挂补挂 · 源：同上）**：独立验收方 Claude UI 回读超时——需一次只读回读或下一真实班历史补证。
+
+- [ ] **EAL · 班新 prompt（SHA `2547c761`）首个真实 scheduled run 简报核（2026-09-03 /todo 漏挂补挂 · 源：同上）**：现核班在跑（lastRunAt 09-02 17:47 PT ✓）· 简报内容未核——班后核行情水位/selector 解析/loop 状态/artifact 回读。
+
+- [ ] **PEC · 财政主导现象族框架落盘候选（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-09-01-G08修订与美财政主导十问.md`）**：久期争夺/关税通胀税/Fed 十问三侧面——待 Doctor 勾选落盘。
+
+- [ ] **X-Board · 两条新条目上板销账（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-30-XBoard老毛停更诊断与外发授权.md`）**：回读 artifact 确认两条新条目上板即销账——重推班每日 18:01 PT 在跑 · artifact 目验归 Doctor。
+
+- [ ] **白泽仓 · 既存积压清理（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-31-白泽库例行自查与VVgit桥研究.md`）**：weekly 产物/旧报告删除/3 个旧备份迁移——非上轮范围，留给 09-06 周日班或 Doctor 处置。
+
+- [ ] **渊图 · NOTE-20260826-001 三条观察修复方案待裁（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-27-渊图四批验收与美债10Y详情页.md`）**：①补 type 事务性可顺手 ②③挂账观察——待 Doctor 裁。
 
 ## 长期观察
 

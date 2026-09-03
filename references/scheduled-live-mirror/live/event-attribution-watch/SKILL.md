@@ -117,14 +117,25 @@ python3 -B scripts/load_eal_v3_results.py \
 ```bash
 loop_stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 loop_dir="$snapshot_dir/eal-post-event-loop-$loop_stamp"
+production_db=~/Documents/Database/剑酒青丘/backtest/attribution.db
+production_zero_write_evidence="$loop_dir/production-zero-write-evidence.v2.json"
 test ! -e "$loop_dir"
 PYTHONDONTWRITEBYTECODE=1 python3 -B \
-  ~/Documents/Database/剑酒青丘/backtest/eal_post_event_loop_v1/eal_post_event_loop.py \
-  --database "$sealed_db" \
-  --registry "$registry_jsonl" \
-  --output-dir "$loop_dir" \
-  --max-attempts 3 \
-  --as-of-utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  ~/Documents/Codex/Infrastructure/loop-engineering/scripts/run_with_sqlite_zero_write_guard.py \
+  --database "$production_db" \
+  --evidence "$production_zero_write_evidence" \
+  --output-root "$loop_dir" \
+  --command-file ~/Documents/Database/剑酒青丘/backtest/eal_post_event_loop_v1/eal_post_event_loop.py \
+  --label eal-post-event-loop \
+  --interval-ms 10 \
+  --settle-ms 500 \
+  -- \
+  python3 -B ~/Documents/Database/剑酒青丘/backtest/eal_post_event_loop_v1/eal_post_event_loop.py \
+    --database "$sealed_db" \
+    --registry "$registry_jsonl" \
+    --output-dir "$loop_dir" \
+    --max-attempts 3 \
+    --as-of-utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 loop_exit=$?
 test "$loop_exit" -eq 0 || exit "$loop_exit"
 verifier_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B \
@@ -136,7 +147,9 @@ global_report="$loop_dir/vv-loop-run-report.v1.json"
 global_adapter_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B \
   ~/Documents/Codex/Infrastructure/loop-engineering/adapters/eal_post_event.py \
   --output-dir "$loop_dir" \
-  --report "$global_report")"
+  --report "$global_report" \
+  --production-database "$production_db" \
+  --production-zero-write-evidence "$production_zero_write_evidence")"
 global_adapter_exit=$?
 test "$global_adapter_exit" -eq 0 || exit "$global_adapter_exit"
 global_verifier_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B \
@@ -150,7 +163,7 @@ printf '%s\n' "$global_adapter_json"
 printf '%s\n' "$global_verifier_json"
 ```
 
-`completed_with_warnings` 是可继续状态，但必须把 warning 和研究边界带入简报。全局 report 的 `accepted` 表示本班符合跨项目证据协议；legacy application 若发生过内部重试但未在修复前发出 canonical lesson retrieval，只能标 `observed` 并在简报写明迁移缺口，不因此覆盖本次已通过 domain verifier 的业务结果，也不得把 `observed` 冒充全局闭环。地缘日期级观察不进入 registry、不写 production DB、不建立因果结论。
+`completed_with_warnings` 是可继续状态，但必须把 warning 和研究边界带入简报。production zero-write evidence 必须覆盖真实 loop 子进程，回读为 `status=verified`、目标 exact 等于 `attribution.db`、`journal_mode=delete`、read transaction/权限 guard 成立、主文件身份全等且全窗未见 WAL/SHM/journal；否则停班。全局 report 的 `accepted` 表示本班符合跨项目证据协议；legacy application 若发生过内部重试但未在修复前发出 canonical lesson retrieval，只能标 `observed` 并在简报写明迁移缺口，不因此覆盖本次已通过 domain verifier 的业务结果，也不得把 `observed` 冒充全局闭环。地缘日期级观察不进入 registry、不写 production DB、不建立因果结论。
 
 ### 8 · 重渲染 + Gateway 推送
 

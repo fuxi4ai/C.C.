@@ -14,6 +14,8 @@ type: log
 
 ## 已完成
 
+- [x] **渊图 · 中微三节点并一手术（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-内存墙存算与设备三杰对比.md` · GOTCHAS ERR-20260602-001 追记 🔄）**：company_Zhongwei（度 9）/company_AMEC（度 0）/company_AMEC_TSV（度 1）并存——手术归 Doctor 令。**⇒ 2026-09-01 /todo Doctor 裁「中微手术现在做」→ 本场执行（见手术记录 `mapping/_v3_20260901_中微三节点合并_手术记录.json`）**。（2026-09-03 /todo 统一授权勾销迁档 · CC 代勾 · 证据：canonical 实读 AMEC/AMEC_TSV 已消失·Zhongwei 度 10·墓碑 `_tombstones/2026-09-01_zhongwei_merge.json` 在盘·commit 7458b76 在链 push 已同步）
+
 - [x] **EAL 收口余尾（Doctor 动作条 · 2026-08-18 /save 更新）**：① Settings 七轮版已贴 ✓ + 新会话注入核验 ✓（08-18 resume 场逐行比对：块二存在·无六轮旧措辞·漂移零）；② ~~live 镜像 21 班同步验证结果知会留档（--dry-run→全量后）~~（✅ 2026-08-26 问答板 3A 裁销账：数据链班已实证闭环（08-25 shadow frozen_events=11 · artifact updatedAt 08-26T04:45Z），不再补知会 · CC 代记留痕）；③ 重建产物单独 commit ✓（已核实·gitcheck.py 2026-08-18：commit「brain: 重建产物再落盘」在 HEAD 链 · push 已同步 · worktree 仅 TODO.md 留痕）。
   依据：`logs/2026-08-18-EAL五至七轮整改与授权整合.md`（2026-09-01 /todo 全勾统一授权 · Doctor 勾定 · CC 代记留痕并迁档）
 

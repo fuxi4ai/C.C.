@@ -2,9 +2,9 @@
 baize-weekly-dashboard	88410	d596214f1854	copy	2026-08-30 05:14
 eal-v3-event-transition	47651	fde2f307d491	copy	2026-08-28 18:09
 event-attribution-ledger	178304	32b5ec422fd3	copy	2026-08-18 20:31
-global-asset-inventory	71905	667d84049115	copy	2026-08-29 11:47
+global-asset-inventory	71801	08e30353d484	copy	2026-08-30 11:49
 longyu-stock-library	833574	b5e092b1699f	copy	2026-08-29 22:25
-risk-daily	77390	287f5d7eb92e	copy	2026-08-29 09:10
-x-board	681082	0baec43fd5c4	copy	2026-08-29 18:03
+risk-daily	77388	98f7582019b1	copy	2026-08-30 09:09
+x-board	671776	012582df3bc9	copy	2026-08-30 18:04
 yuantu-starry-skies	2319593	e134c36ee4d1	sha-only	2026-08-13 20:46
-zhuzhao-jiuyin-daily	2156948	a3cf0f2841de	sha-only	2026-08-29 04:46
+zhuzhao-jiuyin-daily	2156848	22080c53674e	sha-only	2026-08-30 18:03

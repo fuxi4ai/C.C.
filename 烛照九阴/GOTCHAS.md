@@ -422,6 +422,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源（追记）**: 2026-08-28 zhuzhao 定时班实测 · agents/烛阴/logs/2026-08-28-行情拉取与日报.md · live 残留 `market_data.db-journal.STALE-20260828-zhuzhao-parked`
 
+**追记 2026-09-02（历史口径混合 · 复发扫描新发现 · ⚠️ 已知风险）**: 句芒 09-02 审核班复发扫描扩查发现 `intl_index_daily` code='NASDAQ' 序列为**历史口径混合**——`20240102→20260812` 共 655 行 QQQ ETF 尺度（close 396.28~724 · source=yahoo · 系 08-25 裁定前「QQQ 代理」设计遗留），`20260813→20260901` 共 14 行 ^NDX 指数尺度（~29,000+）。**断点 20260813**：跨断点的任何时间序列/分位/回测研究将遭 ~40-70 倍跳变污染。本条「污染未兑现」仅对 08-28 修复后的新增行成立，对历史序列不成立。历史处置（重标口径/另立 code/归档旧段/加版本注记）属 Doctor 裁定——本班只读观测、不动库。另注：数据断点 20260813 早于 GOTCHAS 所记裁定日 08-25，切换实际执行日待核。
+
 ## [ERR-20260830-001] config.py 的 RAW_RECAP_DIR 从 DATABASE_ROOT 派生——误设 env 时漂移，record --all-new 静默扫空返回 0
 
 **状态**: ⚠️ 已知风险（正常路径 Mac 原生不设 env、照旧向上找 Documents，不触发；仅人为设 `ZZJY_DATABASE_ROOT=/tmp/…` 时踩 · 待 Doctor 批修或裁定「输入目录独立 env」方案）
