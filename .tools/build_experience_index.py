@@ -8,7 +8,7 @@ v2（2026-09-03 独立审查修复）：①覆盖 4 种条目格式（H2/H3/列�
 产物: brain/permanent/经验索引.md + brain/permanent/_exchange_index.md
 原则: 索引只含指针与状态摘要，正文真源=各项目 GOTCHAS.md / 通用教训.md / 经验库.md；索引可随时重建。
 """
-import os, re, hashlib, datetime
+import os, re, hashlib, datetime, json
 
 DOCS = os.environ.get("DOCS_DIR") or os.path.expanduser("~/Documents")
 BRAIN = os.path.join(DOCS, "Claude/brain")
@@ -104,6 +104,8 @@ if os.path.isfile(gl):
     gl_txt = open(gl, encoding="utf-8").read()
     for m in re.finditer(r"^\*\*(G-X\d+)\s+(.*?)\*\*", gl_txt, re.M):
         add("通用教训", m.group(1), m.group(2).strip(), gl_txt[m.end():m.end()+1500], "permanent/通用教训.md")
+    for m in re.finditer(r"^## \[(G-X\d+)\]\s*(.*)$", gl_txt, re.M):
+        add("通用教训", m.group(1), m.group(2).strip(), seg_until(gl_txt, m.end(), r"^## \[|^## "), "permanent/通用教训.md")
 
 # 3) 经验库 EXP（H3 · cases/patterns 分节）
 exp = os.path.join(PERM, "经验库.md")
@@ -121,12 +123,31 @@ by_proj = {}
 for e in entries:
     by_proj.setdefault(e["proj"], []).append(e)
 
+# 对侧状态 sidecar（手写回填不被重建冲掉 · 2026-09-03 立）：permanent/_exchange_status.jsonl
+# 行 schema: {"proj": "...", "id": "...", "xside": "⚑已预警|✓已复验", "ts": "...", "evidence": "..."}
+XSIDE = {}
+xpath = os.path.join(PERM, "_exchange_status.jsonl")
+if os.path.isfile(xpath):
+    for line in open(xpath, encoding="utf-8"):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            d = json.loads(line)
+            XSIDE[(d["proj"], d["id"])] = d
+        except Exception:
+            pass
+for e in entries:
+    d = XSIDE.get((e["proj"], e["id"]))
+    if d:
+        e["xside"] = f"{d['xside']}@{d['ts'][:10]}"
+
 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 lines = [
     "# 经验索引（薄索引 · 非事实源 · 可重建 · v2）",
     "",
     f"> 生成：{now} · 生成器 brain/.tools/build_experience_index.py（v2）· 重跑幂等",
-    "> 字段 9 项：条目ID · 类型 · 日期 · 状态 · 机器化 · 标题 · 证据指针 · 来源主体（节头） · 对侧状态（- 未见 / ⚑已预警 / ✓已复验）。",
+    "> 字段 9 项：条目ID · 类型 · 日期 · 状态 · 机器化 · 标题 · 证据指针 · 来源主体（节头） · 对侧状态（- 未见 / 👁已扫描未命中 / ⚑已预警 / ✓已复验）。",
     "> 状态闭集：✅已修复/已沉淀 · 🔄待修复/已修待验 · ⚠已知风险 · ⏳旧状态词 · —未标。触发条件=标题摘要；正文按指针取。",
     "> 覆盖：各项目 GOTCHAS（H2/H3/列表粗体/表格四格式）+ 通用教训 + 经验库 EXP。",
     "",
@@ -199,9 +220,21 @@ for g in GATES_META:
 ex += [
     "",
     "## 对侧状态约定",
-    "- 未见（默认 -） / ⚑已预警 / ✓已复验",
+    "- 未见（默认 -） / 👁已扫描未命中 / ⚑已预警 / ✓已复验（复验=实读或实跑该条目内容本身，扫描索引不算复验）",
     "- 复验须带：命令 + 关键输出摘录 + 复验日期，回填至本地索引对应条目行（对侧列）。",
+    "",
+    "## 对侧消费记录（sidecar permanent/_exchange_status.jsonl · 手写不被重建冲掉）",
+    "",
 ]
+for line in open(xpath, encoding="utf-8") if os.path.isfile(xpath) else []:
+    line = line.strip()
+    if not line:
+        continue
+    try:
+        d = json.loads(line)
+        ex.append(f"- {d['ts']} · {d['proj']}/{d['id']} · {d['xside']} · {d['evidence']}")
+    except Exception:
+        pass
 open(EXCH, "w", encoding="utf-8").write("\n".join(ex) + "\n")
 
 print(f"本地索引：{OUT}（{len(entries)} 条）")

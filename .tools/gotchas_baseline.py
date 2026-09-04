@@ -109,7 +109,7 @@ L += [
     "## 跨系统样本（交换层第一批数据）",
     "",
     "- `CC-机器闸-7件` · 来源=CC · 路径/SHA/可见性/重放命令/预期通过/最近运行 → `permanent/_exchange_index.md` · 对侧状态=待 VV 复验",
-    "- `VV-resume召回缺口` · 来源=VV（2026-09-03 自检实况复现：/resume 未检索经验库/通用教训/核心 Gotchas）· 类型=流程规则样本 · 状态=待 VV 侧实施 · CC 侧对应修复已发布（brain-resume Step 1.5/3.5 · 待消费端回读验证）",
+    "- `VV-resume召回缺口` · 来源=VV（2026-09-03 自检实况复现：/resume 未检索经验库/通用教训/核心 Gotchas）· 类型=流程规则样本 · 状态=✅ VV 侧已闭环（2026-09-04 最终 active-runtime 盲测+对侧索引扫描+consumer_verified · PRD R1-R7 独立验收 accepted · 经 Doctor 转达）· CC 侧对应修复已发布（brain-resume Step 1.5/3.5 · CC 侧 consumer_verified 待下一场真实 /resume）",
     "",
     "## 待验年龄 TOP 10（🔄 已修待验 · 按条目 ID 日期算龄）",
     "",
