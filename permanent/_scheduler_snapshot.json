@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-08-30T05:14:50-07:00",
+  "generated_at": "2026-08-30T20:05:28-07:00",
   "triggered_by": "manual",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
@@ -12,7 +12,7 @@
  ],
  "cowork_live": {
   "path": "/Users/lunarabbit/Gateway-workspace/Scheduled",
-  "count": 24,
+  "count": 22,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
@@ -45,16 +45,6 @@
     "cron": null
    },
    {
-    "taskId": "bak-diaoyan-20260827",
-    "has_skill": true,
-    "skill_mtime": "2026-08-26 01:40",
-    "skill_sha12": "df604c0b7e59",
-    "skill_lines": 21,
-    "name": "bak-diaoyan-20260827",
-    "desc_head": "渊图 bak_20260820_diaoyan 保护期到期提醒（08-27 摘 protect 并归档）",
-    "cron": null
-   },
-   {
     "taskId": "brain-monthly-checkup",
     "has_skill": true,
     "skill_mtime": "2026-08-11 09:01",
@@ -77,9 +67,9 @@
    {
     "taskId": "event-attribution-watch",
     "has_skill": true,
-    "skill_mtime": "2026-08-29 05:02",
-    "skill_sha12": "e09f88b815f4",
-    "skill_lines": 174,
+    "skill_mtime": "2026-08-30 06:59",
+    "skill_sha12": "e92a99f0fcfe",
+    "skill_lines": 186,
     "name": "event-attribution-watch",
     "desc_head": "EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→a…",
     "cron": null
@@ -177,21 +167,11 @@
    {
     "taskId": "scheduler-weekly-audit",
     "has_skill": true,
-    "skill_mtime": "2026-08-11 09:02",
-    "skill_sha12": "39dc0440467d",
-    "skill_lines": 71,
+    "skill_mtime": "2026-08-30 05:53",
+    "skill_sha12": "421f210b0304",
+    "skill_lines": 96,
     "name": "scheduler-weekly-audit",
-    "desc_head": "定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py，exit 0 则完全静默不打扰；exit 1 才把 🔴 异常清单报给 Doctor。绝不自动修、不 commit、不碰调度器。沙箱无法执行时…",
-    "cron": null
-   },
-   {
-    "taskId": "shenghong-h1-verify",
-    "has_skill": true,
-    "skill_mtime": "2026-08-25 23:19",
-    "skill_sha12": "d16a08ba3630",
-    "skill_lines": 32,
-    "name": "shenghong-h1-verify",
-    "desc_head": "胜宏科技2026半年报M9/M10认证表述核验（08-28披露后一次性预核班）",
+    "desc_head": "定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给…",
     "cron": null
    },
    {

@@ -62,7 +62,7 @@ type: log
 
 - [ ] **白泽 · `.bak_20260831_pre_source_fix` 入库与否（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-31-白泽库例行自查与VVgit桥研究.md`）**：备份件被 .gitignore 拦截未入库——如要入库需 -f 或挪 data/archived/（Doctor 定）。
 
-- [ ] **龙鱼 · GOTCHAS NOTE-20260830-001 独立验收（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-31-龙鱼ds供需四补v3与检测机制.md`）**：🔄 已修待验（ANCHORS 四补+23 只重跑+检测机制实装 · 实施者不自标 ✅）——待未参与实施的 subagent 独立验收或 Doctor 指定验收方。
+- [x] **龙鱼 · GOTCHAS NOTE-20260830-001 独立验收（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-31-龙鱼ds供需四补v3与检测机制.md`）**：~~🔄 已修待验（ANCHORS 四补+23 只重跑+检测机制实装 · 实施者不自标 ✅）——待未参与实施的 subagent 独立验收或 Doctor 指定验收方。~~ **✅ 2026-09-04 闭环销账**：09-03 独立验收 PASS_WITH_LIMITS 报告已出 → 09-04 Doctor「落签」→ GOTCHAS 状态行改 ✅（CC 代笔 · Doctor 署名）。
 
 - [ ] **剑酒青丘 · 数据仓 877 untracked 耐久化（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：含 eal_scheduled_consumer_v1 四件验收资产 · 无 upstream 本地-only 仓——commit 或另裁处置。
 
