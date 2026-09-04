@@ -64,7 +64,7 @@ type: log
 
 - [x] **龙鱼 · GOTCHAS NOTE-20260830-001 独立验收（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-31-龙鱼ds供需四补v3与检测机制.md`）**：~~🔄 已修待验（ANCHORS 四补+23 只重跑+检测机制实装 · 实施者不自标 ✅）——待未参与实施的 subagent 独立验收或 Doctor 指定验收方。~~ **✅ 2026-09-04 闭环销账**：09-03 独立验收 PASS_WITH_LIMITS 报告已出 → 09-04 Doctor「落签」→ GOTCHAS 状态行改 ✅（CC 代笔 · Doctor 署名）。
 
-- [ ] **剑酒青丘 · 数据仓 877 untracked 耐久化（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：含 eal_scheduled_consumer_v1 四件验收资产 · 无 upstream 本地-only 仓——commit 或另裁处置。
+- [x] **剑酒青丘 · 数据仓 877 untracked 耐久化（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：含 eal_scheduled_consumer_v1 四件验收资产 · 无 upstream 本地-only 仓——commit 或另裁处置。**⇒ ✅ 2026-09-04 Doctor 裁「全量建基线 commit」（AskUserQuestion 推荐项）→ 已执行（Doctor 终端）**：commit `60afe1c0`（验收资产四件+宿主侧补跑产物）+ `32474cd2`（全量建基线 877 untracked 一次入库 · 09-04 09:29 PDT）· .git/logs/HEAD 实读 · refs/heads/master=32474cd2 对齐 · 本仓无 upstream 不 push · CC 代勾留痕
 
 - [ ] **调度 UI 无保留签署缺口（2026-09-03 /todo 漏挂补挂 · 源：同上）**：独立验收方 Claude UI 回读超时——需一次只读回读或下一真实班历史补证。
 
