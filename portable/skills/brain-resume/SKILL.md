@@ -80,6 +80,17 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 
 > ⚠ **必须带上 `logs/YYYY-MM/` 子目录**：`meditation.fold_logs` 每月 1 号把上月日志折进子目录，月初根目录可能不足 3 篇——只扫根目录会在**每月 1 号前后静默读不满 3 篇**。刻意不用 `find` 全递归：那会把 `checkpoints/`（PRD）和 `checkups/`（体检报告）混进"最近会话日志"。
 
+### Step 1.5 · 读经验索引定向检索（2026-09-03 经验系统改造第一阶段立 · 堵召回断点）
+
+```bash
+cat ~/Documents/Claude/brain/permanent/经验索引.md
+```
+- 按 Step 2 识别的活跃项目，取该项目索引条目：**开放状态（🔄/⚠/⏳）优先**，列前 3-5 条（ID+标题一行），相关则按证据指针进 GOTCHAS 正文只读。
+- 通用教训栏若含与当前任务类型相关的 G-X → 摘要提示一行。
+- 摘要加一行「**经验召回**：{项目} 开放 {N} 条 · 已载 {M} 条」。
+- 索引缺失 → 提示「⚠ 经验索引不存在（运行 brain/.tools/build_experience_index.py 重建）」，不阻塞。
+- 本场采用任何经验/Gotchas 条目 → 结束前按五阶段回执 append `permanent/_consumption_receipts.jsonl`（见 Step 3.5）。
+
 ### Step 2 · 识别活跃项目
 
 从日志的 `project:` frontmatter、文件名主题、或正文中提取最近活跃的项目名（DVA / 龙鱼五力 / 渊图 / O MY HTML / PEC / 海螺姑娘 / 司南 / 烛照九阴 / 白泽大宗 / 剑酒青丘）。
@@ -97,10 +108,20 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 
 读 `~/Documents/Claude/brain/TODO.md` 的"待办"段。
 
+### Step 3.5 · 五阶段消费回执检查（2026-09-03 经验系统改造第一阶段立）
+
+```bash
+tail -5 ~/Documents/Claude/brain/permanent/_consumption_receipts.jsonl
+```
+- 有未闭回执（有 retrieved/selected 但无 consumer_verified/outcome_observed，且超 3 天）→ 摘要单列一行「⚠ 未闭回执 {N} 条」。
+- 本场采用的每条经验，结束时按实际 append 一行（五态：retrieved→selected→encoded→consumer_verified→outcome_observed，填到实际到达的态；consumer_verified 必须来自消费端回读证据，不凭「写了就算」）。
+
 ### Step 4 · 输出结构化摘要
 
 ```
 **上次工作**：{项目名} · {日期}
+
+**经验召回**：{项目} 开放 {N} 条 · 已载 {M} 条（Step 1.5）
 
 **关键决策**（最多 3 条）：
 - ...
