@@ -162,3 +162,13 @@ project: 剑酒青丘
 **建议修法**：committed 判定加「本次运行确实执行过 write_create_only」标志（如 target_warning/receipt 已生成），而非仅凭目标存在+hash。
 **预防门禁**：create-only 重放负测须覆盖 --execute 与 preflight-only 两种形式并断言错误码。
 **来源**：CC 独立机械验收（2026-08-28 · Doctor 指定）· 实测 exit 5 vs 声称 exit 2
+
+### [NOTE-20260905-001] eal_v3 生产目录防写锁——授权部署须走「解锁→改→锁回」（2026-09-05 SOX 部署立）
+**状态**：⚠️ 已知风险（08-19 部署纪律 · 非缺陷）
+**优先级**：🟡 中
+**硬证据/最小复现**：`ls -la eal_v3/` → 目录 `dr-xr-xr-x`（555）· engine.py `-r--r--r--`（444）。沙箱 Edit EACCES、Doctor 终端 cp Permission denied（2026-09-05 SOX 响应轨部署实测双拒）。
+**根因**：08-19 EAL v3 包部署时对生产代码目录上的防写保护（单一真源+发布链纪律）；owner 仍 lunarabbit，chmod 可解。
+**影响面**：任何 eal_v3 代码授权改动（沙箱/终端）都会被拒；不知情者可能误判为挂载或权限事故。
+**建议修法**：授权部署流程 = `chmod u+w . <file>` → 备份 → cp staging → SHA 复验 → `chmod u-w` 锁回（解锁是授权部署不是解除纪律）。
+**预防门禁**：改 eal_v3 代码前先 `ls -la` 查目录位；部署后必验 SHA 与 staging 逐字一致再锁回。
+**来源**：2026-09-05 凌晨场 · logs/2026-09-05-EAL加SOX响应轨实施.md
