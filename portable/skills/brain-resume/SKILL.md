@@ -114,7 +114,10 @@ cat ~/Documents/Claude/brain/permanent/经验索引.md
 tail -5 ~/Documents/Claude/brain/permanent/_consumption_receipts.jsonl
 ```
 - 有未闭回执（有 retrieved/selected 但无 consumer_verified/outcome_observed，且超 3 天）→ 摘要单列一行「⚠ 未闭回执 {N} 条」。
-- 本场采用的每条经验，结束时按实际 append 一行（五态：retrieved→selected→encoded→consumer_verified→outcome_observed，填到实际到达的态；consumer_verified 必须来自消费端回读证据，不凭「写了就算」）。
+- 本场采用的每条经验，结束时按实际 append 一行（五态：retrieved→selected→encoded→consumer_verified→outcome_observed）——**只记录实际证明到的阶段，可以停在中间阶段**（jsonl append-only，不回头改旧行）。
+- **consumer_verified 绑定要求（2026-09-04 Doctor 立）**：必须绑定**实际 consumer + canonical reads + 绝对路径 + SHA-256**；日志、索引生成成功或实施者声明不能代替消费端回读。
+- **outcome_observed 绑定要求（2026-09-04 Doctor 立）**：必须绑定**后续真实任务结果**；一次同环境成功、文件存在或正常路径通过，不能直接升格为长期有效经验。
+- 适度工程：低风险、可逆的普通整理不强制制造回执；新增门禁必须对应已有失败或高风险边界（G-X166）。
 
 ### Step 4 · 输出结构化摘要
 

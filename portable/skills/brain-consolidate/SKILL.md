@@ -1,6 +1,6 @@
 ---
 name: "brain-consolidate"
-description: "brain 原生记忆固化——把只增不减的会话日志蒸馏进 permanent，去重合并、修过期日期、修剪索引。触发：用户说 `/consolidate` 或 `/固化记忆` 或「固化记忆」「整理记忆」「记忆固化」「蒸馏日志」。双重门控：本 skill 只定义流程，绝不自动跑；每次运行先产出『拟改动 diff』给 Doctor 过目，批准后才落盘。Step 1 盘点须递归数 logs、先 date 对表、查编号漂移。取代通用 consolidate-memory（那个针对 MEMORY.md，与 brain 的 logs/permanent/inbox 结构不符）。"
+description: "brain 原生记忆固化——把只增不减的会话日志蒸馏进 permanent，去重合并、修过期日期、修剪索引。触发：用户说 `/consolidate` 或 `/固化记忆` 或「固化记忆」「整理记忆」「记忆固化」「蒸馏日志」。三类门禁：structural 先只读盘点+proposed diff 待 Doctor 批；permanent 长期记忆候选须 Doctor 质量确认；gotcha 定位 canonical 查重后直接登记。本 skill 只定义流程，绝不自动跑；提案前定向检索经验索引（最多开 3 条 canonical）。Step 1 盘点须递归数 logs、先 date 对表、查编号漂移。取代通用 consolidate-memory（那个针对 MEMORY.md，与 brain 的 logs/permanent/inbox 结构不符）。"
 ---
 
 # brain-consolidate — brain 原生记忆固化
@@ -13,13 +13,19 @@ description: "brain 原生记忆固化——把只增不减的会话日志蒸馏
 - `/consolidate` / `/固化记忆`
 - "固化记忆" / "整理记忆" / "记忆固化" / "蒸馏日志"
 
-## ⛔ 双重门控（最重要，不可绕过）
+## ⛔ 三类门禁（最重要，不可绕过 · 2026-09-04 Doctor 立「经验治理闭环」）
 
-1. 本 skill 只**定义流程**，**绝不**在被加载时自动执行整理。
-2. 每次真正运行,必须先产出**「拟改动 diff」清单**(改哪些文件、新增/归档/合并了什么)给 Doctor 过目;**Doctor 批准后才落盘**。
-3. 因为它会动到大量既有笔记,这是 brain 维护动作里唯一会**大面积改写历史**的,务必最谨慎。
+本 skill 只**定义流程**，**绝不**在被加载时自动执行整理。因为它会动到大量既有笔记，是 brain 维护动作里唯一会**大面积改写历史**的，务必最谨慎。按操作类型走三类门禁：
+
+1. **structural（结构性改动）**：先**只读盘点** → 提交**「拟改动 diff」清单**（改哪些文件、新增/归档/合并了什么）→ **等 Doctor 批准后才落盘**。大面积项（日志归档、巨型文件分片、格式统一）分批分场做。
+2. **permanent（长期记忆候选）**：蒸馏进 `permanent/` 的长期记忆候选须经 **Doctor 质量确认**——批准 diff 即质量背书，不是只批流程；质量存疑的条目不得借 gotcha 通道夹带。
+3. **gotcha（实错/坑登记）**：定位项目 canonical GOTCHAS 并**查重后直接登记**（GOTCHAS 自动登记合同），不受 permanent 门禁限制——consolidate 中发现实错，不得因「diff 未批」而不登记。
 
 ## 执行步骤
+
+### Step 0 · 定向检索经验（提案前必做 · 2026-09-04 立）
+
+按「项目、记忆对象、拟执行操作、失败类型」定向检索 `permanent/经验索引.md`；最多打开 **3 条**相关 canonical 正文（按证据指针取）。对侧薄索引 `_exchange_index.md` 只作预警——**scan ≠ verify**：禁止把「已扫描/未命中」当「已复验」（EXP-20260904-001-P）。
 
 ### Step 1 · 盘点（只读，不改）
 
@@ -57,6 +63,7 @@ description: "brain 原生记忆固化——把只增不减的会话日志蒸馏
 - 重跑 `build-backlinks.py --orphans`(刷新反链/孤儿/悬空链接)——**这一步本就要写,用它正确**
 - 必要时更新 `permanent/项目总览.md`(移除指向已归档内容的指针、补新增重要笔记)
 - 让 `项目总览.md` 一行一条、控制在可一屏扫完
+- **经验索引 / `_exchange_index.md` / `_rules_baseline` 均为生成器可重建视图，不是事实源**（2026-09-04 立）：canonical 改动获批并落盘后，重跑 `python3 ~/Documents/Claude/brain/.tools/build_experience_index.py` 重建——**禁止手改派生视图制造状态**。
 
 ### Step 5 · git(贴命令给 Doctor,不在 sandbox 跑)
 
@@ -71,6 +78,9 @@ git commit -m "consolidate: 记忆固化 {date}"
 git push
 ```
 
+- **commit 只暂存本任务路径**：`git add <本次 consolidate 明确改动的文件列表>`，保留其他工作区改动；已推远端的失真 commit 不改写历史（G-X138）。
+- **若本场改到 skill（2026-09-04 立）**：走发布链 **canonical → package/install → runtime consumer → readback**——先改 portable 真源 + `.skills/` 导出层并保持双源 SHA 一致，再 `save_skill` 发布；发布后回读实际远端提交 ID（`.git/logs/HEAD` 纯文本核）；runtime 层最终证据＝下一场 fresh-session 实际触发（EXP-20260819-001-T）。
+
 ### Step 6 · 回报
 
 ```
@@ -80,6 +90,13 @@ git push
    修引用漂移 X 处 · 索引已重建(孤儿 a / 悬空 b)
 📋 请在 macOS 终端跑:(见 Step 5 先探后加模板)
 ```
+
+### Step 6.5 · 经验消费回执（本场采用的经验条目 · 2026-09-04 立）
+
+按 `retrieved → selected → encoded → consumer_verified → outcome_observed` 推进并 append `permanent/_consumption_receipts.jsonl`——**只记录实际证明到的阶段，可以停在中间阶段**（jsonl append-only，不回头改旧行）。绑定要求：
+- **consumer_verified** 必须绑定**实际 consumer + canonical reads + 绝对路径 + SHA-256**；日志、索引生成成功或实施者声明不能代替消费端回读。
+- **outcome_observed** 必须绑定**后续真实任务结果**；一次同环境成功、文件存在或正常路径通过，不能直接升格为长期有效经验。
+- **适度工程**：低风险、可逆的普通整理不强制制造回执；新增门禁必须对应已有失败或高风险边界（G-X166：治理服务于任务完成）。
 
 ## 边界 / 区别
 
@@ -97,3 +114,4 @@ git push
   3. **盘点前先 `date` 对表** —— consolidate 多发生在长会话尾部,跨日风险最高;本次实跑即在此翻车(整场按 07-29 算,实为 07-30),而 G-X100 讲的正是这条
   4. **新增「查编号漂移」** —— 并发会话重编 `G-X`/`EXP-` 编号会让历史引用**静默指错**(写时是对的、被引用方事后变了)。本次实跑即发现 G-X100 被重编为 G-X106、两处历史引用漂移。G-X101「引用前先核原文」防不住这类,**正需 consolidate 这种跨库回顾兜底**
   另补:Step 2 加「分批建议」(大面积项别在长会话尾部推)、Step 3 加「批量替换前先分四类」、Step 5 同步 brain-save 的先探后加与禁跑 git 子命令口径
+- **v1.2**(2026-09-04):吸收 Doctor「经验治理闭环」八条——①Step 0 提案前定向检索经验索引(≤3 canonical·scan≠verify)②双重门控升三类门禁(structural/permanent/gotcha)③Step 4 派生视图纪律(索引/交换索引/基线=可重建视图不手改)④Step 5 发布链与只暂存本任务路径⑤Step 6.5 五阶段回执绑定要求(consumer_verified 绑 consumer+SHA-256·outcome_observed 绑后续真实任务)⑥适度工程护栏
