@@ -87,6 +87,8 @@ project: 渊图
 - 或 kg_merge 对 description 做「patch 短于 base 则保 base」保护——触入库主链，另议；
 - 与 ERR-20260719-001 同族：LLM 逐节点自由裁量、部分对部分错，混合污染难查。本批沃尔德篇 120 个 update 里只有少数出问题，若无阈值扫描极易整批漏过。
 
+**追记 2026-09-05（同族第 4 次复发 · 六篇批 · 形态升级：整段替换而非缩写）**: 98 个 update 中 **16 个 desc 被 LLM 整段重写**（15 处需合并 + 1 处语义等价）——如 `company_Yingliu` 身份句（西门子 H 级叶片中国独家/卡脖子补位）被「更新：…」数据句整段顶掉；`concept_LuxshareGoogleOpticalCooperation` 旧口径（2026 入 AVL·LPO 独家·月 12 万只）与新口径（审厂验证中·2027Q2 批量）并存才完整。**`check_desc_shrink.py` 只命中 1/16**——它只查「变短」（<90%×base 且 >30 字），不查「替换且变长」。CC 以「base/v2 互含审计」（互不为子串即列）全量扫出，base 主+增量合并修复（`outputs/cc_qa_fix_20260905.py`）。**预防门禁候选**：check_desc_shrink 增「整段替换检测」模式（互不含即报·人工甄别增量追加），属工具功能新增——待 Doctor 批。**应升格**：同族第 4 次（08-15/08-27/08-30/09-05），按合同登记「应升格通用教训」（LLM 对 update 节点逐节点自由重写事实载体族），升格由 Doctor 裁。**来源**：2026-09-05 帕米尔六篇批入库 QA 场。
+
 ## [NOTE-20260814-001] 手工 patch update_nodes 的 `updated_at` 必须放条目顶层（放 properties 里会被静默 kept_base）
 
 **状态**: ✅ 已实证修复 **优先级**: 🟡 中
@@ -172,6 +174,8 @@ project: 渊图
 **预防**:
 - 这是 **ERR-20260624-001 族系（LLM 结构缺陷）的又一次复发**——沙箱 8 项 QA 是 promote 前最后一道拦网，**不可跳过**；
 - 与 ERR-20260721-001 **配套才闭环**：QA 拦得住的前提，是 promote 门真的会因断言失败而中断——门若漏（ERR-001），QA 逮到也白逮。
+
+**追记 2026-09-05（同族复发 · 六篇批 · 三型全犯）**: ① **孤儿目标边 6 条**——4 条 id 错形（`company_TFC`→`company_TFCOptical` · `company_Mellanox`→`company_NvidiaMellanox` · `concept_1p6TOpticalModulePowerRange` 误造×2→`product_1dot6TOpticalModule`）+ 2 条引用未建节点（`company_AAOI` 被 3 条边引用却未建节点→QA 补建公司节点）；② **方向反置 3 条（新形态）**——「A 委托 B 代工」被写成 A -supplies-> B（Coherent→天孚、AAOI→汇绿、AAOI→德科立 全反），**desc 里写着正确关系、8 项结构 QA 查不出**，须语义核（本场凭 desc-方向矛盾逮到）；③ 半成品节点 1 个（`concept_NvidiaRubinOrthogonalBackplane` type/name 双空·无 span·与存量 `concept_NVOrthogonalBackplane` 重复·NOTE-20260826-001 同族）→ 删节点+事实并入存量。全部拦在 promote 前修复。**预防门禁候选**：supplies 边 desc 含「委托/代工/下达订单」时校验 desc 主语==source（方向语义核并入 QA 清单）——待 Doctor 批。**来源**：2026-09-05 帕米尔六篇批入库 QA 场。
 
 ## [ERR-20260719-001] 二次生成摘要的相对年份系统性偏移 → 入库 LLM 不做统一裁决、逐节点各自猜 → 同篇内**混合污染**
 **状态**: ✅ 已归正（2026-07-19，7 节点 / 3 边，canonical 3384/3903 守恒）**优先级**: 🔴 高
@@ -569,6 +573,7 @@ project: 渊图
 **来源**: 2026-08-23 本会话（华为 OCS 链入库 → 光迅边归属核实 → Doctor 令修正 → 方案 A 执行）
 **追记 2026-09-01（同根复发 · 第 2 次 · 帕米尔 9 篇批）**: 同族再发 3 例——LLM 新建重复公司 `company_Jingzhida`（精智达 vs 存量 `company_JingZhiDa`）/`company_WeiceTechnology`（伟测 vs 存量 `company_Microtest`）/`company_LuxsharePrecision`（立讯 vs 存量 `company_Luxshare`）。**形态差异**：非编造别名，而是 node_reference 主题过滤窗口（120/5195）漏掉既有公司 → LLM 当新实体建节点。批内 QA 已并（边重指 11 · desc/props/aliases 并集 · dup 删除 · 备份 `.bak_ccfix_20260901` · 脚本 `outputs/cc_qa_fix_20260901.py`）→ promote 落盘 5298/5919 · 读盘核验 keeper 度 2/20/11 · 重复零残留。**预防门禁强化建议**：批内 QA「同名实体检测」此前仅靠 CC 手工（本次 3 例即手工逮到）——候选=固化进 QA 脚本（新 company 节点 name/aliases ∩ 存量 name/aliases 非空即报），与 ERR-20260602-001「aliases∩存量非空即判撞存量」门禁候选合并推进。**应升格通用教训**：实体错配族第三次出现（06-25 张冠李戴 / 08-23 编造别名 / 09-01 重复建节点）——按合同登记「应升格通用教训」（升格由 Doctor 裁，本条不自升）。
 **追记 2026-09-01 深夜（同根复发 · 第 4 例 · 存量产品双节点 · 51.2T 问答场实读逮到）**: `product_Centec51dot2T`（2026-07-16 建 · 帕米尔 07-16 源 · 三星流片·双25.6T拼合·阿里 Q3/Q4 测试·2027Q1 应用）与 `product_Shengke51p2TSwitchChip`（2026-08-07 建 · 西部证券 08-07 源 · 2026-06 tapeout·双25.6T拼合·阿里 Q3/Q4 测试·2027Q1E 商用）为**同一产品（盛科 51.2T 双拼合方案）双节点**——硬证据：architecture 字段同为「双25.6T拼合」+ 测试/商用时间线三处一致 + desc 指同一实体。两批不同来源（帕米尔/西部证券）各自建节点未撞。**形态**：与批内 3 例同族（LLM 未查重新建），但发生在存量（07-16/08-07 两批），跨度 22 天未被任何 QA 发现。**处置**：本追记登记（预授权治理留痕）；合并手术归 Doctor 令（沿 08-28 C 档手术范式：度高者主·desc 并入·旧 id 入 aliases·边重指·墓碑）。**⇒ 2026-09-01 深夜整合手术已执行（Doctor 令）**：`product_Centec51dot2T` 并入 `product_Shengke51p2TSwitchChip`（边重指 6·三元组冲突 0·desc 合并 382 字含「双 25.6T 拼合 ≠ TH5 Ultra 原生 scale-up 单芯片」disambiguation + 回片时间线双口径注记·墓碑 `_tombstones/2026-09-01_centec51dot2t_merge.json`·备份+手术记录在盘·复检全绿 5297/5920）· 状态：🔄 已修待验（实施者不自标 ✅）。**关联**：两节点 desc 的口径差异（三星流片 vs 2026-06 tapeout；PFC 流控 vs OSA 生态定位）也是「拼合方案 vs 原生 scale-up 单芯片」概念混淆的图内表现——合并 desc 已写清 disambiguation。
+**追记 2026-09-05（同根复发 · 第 5/6 例 · 六篇批）**: LLM 新建重复公司 2 例——`company_XiamenJinlu`（厦门金鹭 vs 存量 `company_XiamenGoldenEgret`）/`company_DingtaiGaoke`（鼎泰高科 vs 存量 `company_Dingtai`）。批内 QA 已并（各 1 边重指 · DingtaiGaoke 产能/结构 props 迁入 keeper · dup 删除 · 同批未 promote 无需墓碑）。另 `company_ZhongwuGaoxin`（中钨高新·株硬/金洲打包建节点）归正为株硬主体：金洲产能 props+50 倍供给边迁至存量 `company_JinzhouPrecision`，补 part_of 边（金洲精工→中钨高新）。修复脚本 `outputs/cc_qa_fix_20260905.py` · promote 落盘 5375/5996 · 复检全绿。**预防门禁**：批内 QA「新 company 节点 name/aliases ∩ 存量 name/aliases 非空即报」仍靠 CC 手工（09-01 已登记候选·本次再实证）——固化进 QA 脚本待 Doctor 批（与 ERR-20260602-001 候选合并推进）。**来源**：2026-09-05 帕米尔六篇批入库 QA 场。
 
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 
