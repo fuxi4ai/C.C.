@@ -17,4 +17,8 @@
 | 2026-09-07T01:00-07:00 | 09-06 周日周班已跑（lastRunAt 2026-09-06T20:04 PDT · 调度器实读）但快照未刷——generated_at 仍 08-30T20:05 manual · 文件 mtime=08-30 20:05（班未碰快照）· 08-31 验收判据「generated_at 前进且 triggered_by=scheduled」未满足 · 准 F1b（快照 7.2 天未破 8 天线，判定函数暂未正式触发） | 诊断留痕 + 贴 S1 恢复基线（Doctor 终端 `python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py`——手动跑默认 manual，恢复基线用；scheduled 标记待 09-13 周班）· 白名单外 0 动作 | 快照旧文件在盘，脚本重跑幂等 | S1 重跑后 generated_at 前进（manual）+ 09-13 周班 triggered_by=scheduled | CC(本场·实读) | 🔄 |
 | 2026-09-07T06:30-07:00 | 快照已刷新：generated_at=2026-09-07T06:25:00-07:00 且 **triggered_by=scheduled**（文件 mtime 同刻）——08-31 验收判据「generated_at 前进且 triggered_by=scheduled」**机器证据已满足**。疑点：周班 lastRunAt=09-06T20:04 PDT，快照生成晚 10 小时——执行实体待核（班延迟完成 / 另次调度执行 / Doctor 终端带参数跑），不掩盖判据满足的事实 | 诊断留痕（无新动作）· S1 恢复基线不再需要 | — | Doctor 落签 ✅（判据满足 + 实体归因二选一：班延迟 vs 另次执行） | CC(本场·实读) | 🔄 |
 
+| 2026-09-07T06:40-07:00 | 会话列表实读（06:38 PT）：「Scheduler weekly audit」会话 running——快照 06:25 落盘带 scheduled 标记，实体归因=周班延迟完成（09-06 20:04 派发·今晨补执行），非另次调度、非 Doctor 终端带参跑 | 归因证据留痕（无新动作）· 为 06:30 行「执行实体待核」补证据 | — | Doctor 落签 ✅（08-31 判据机器证据满足 + 实体归因=周班延迟完成） | CC(本场·实读) | 🔄 |
+
 > ⚠️ 本表未 commit 前属本地唯一副本——git commit 由 Doctor 终端执行（沙箱 git 禁令）。
+
+> 📦 2026-09-07 staging 件归档（Doctor 裁「staging 归档、创意件留原地」）：`~/Documents/_staging_engine_sox_2026-09-05.py`、`_staging_sox_backfill_2026-09-04.py`、`_staging_skillaudit_flagfix_2026-08-31_SKILL.md` → `brain/archived/staging_2026-09-07/`（移动后大小 65270/2107/7247 与原地一致）。本表第 14-16 行及各日志中的旧路径引用，以此注记为准。
