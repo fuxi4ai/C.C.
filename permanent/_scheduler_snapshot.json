@@ -1,7 +1,7 @@
 {
  "_meta": {
-  "generated_at": "2026-08-30T20:05:28-07:00",
-  "triggered_by": "manual",
+  "generated_at": "2026-09-07T06:25:00-07:00",
+  "triggered_by": "scheduled",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -67,9 +67,9 @@
    {
     "taskId": "event-attribution-watch",
     "has_skill": true,
-    "skill_mtime": "2026-08-30 06:59",
-    "skill_sha12": "e92a99f0fcfe",
-    "skill_lines": 186,
+    "skill_mtime": "2026-09-01 10:20",
+    "skill_sha12": "2547c761da18",
+    "skill_lines": 199,
     "name": "event-attribution-watch",
     "desc_head": "EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→a…",
     "cron": null
@@ -167,9 +167,9 @@
    {
     "taskId": "scheduler-weekly-audit",
     "has_skill": true,
-    "skill_mtime": "2026-08-30 05:53",
-    "skill_sha12": "421f210b0304",
-    "skill_lines": 96,
+    "skill_mtime": "2026-09-01 00:23",
+    "skill_sha12": "77b0be1a427c",
+    "skill_lines": 98,
     "name": "scheduler-weekly-audit",
     "desc_head": "定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给…",
     "cron": null
@@ -329,7 +329,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "1"
     }
    },
    "com.zhuzhao.usclose": {
