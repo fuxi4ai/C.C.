@@ -74,6 +74,8 @@ type: log
 
 - [ ] **治理机制 · VV 知会 codex-brain-* skill 分叉（2026-09-05 /save 挂 · 源：本场经验治理闭环对齐）**：CC 只改了 Claude 侧 canonical/skill/runtime（Doctor 授权范围），`Codex Runtime Kit/skills/codex-brain-consolidate|resume` 副本未动——两侧分叉是授权结果、非漂移；是否知会 VV（时机/措辞）归 Doctor 裁。
 
+- [ ] **PEC · 图谱 v1.1 候选（2026-09-08 挂 · 源：图谱化方案实施场 · PRD open_decisions）**：①macro-facts 结构性事实入图（schema 12 类无 fact 类型 · 需 v0.2 schema 提案：fact 节点类+挂靠边语义）；②facts/ 高时效时序旁路层（对标渊图 prices/）。触发=Doctor 提或 v0.2 schema 提案获批。
+
 ## 长期观察
 
 > 纯等待 / 观察 / 暂缓 / 数据积累中——**不删、仍跟踪、不占「待办」计数**；触发条件成熟即回捞进待办。（2026-08-11 目标模式 Doctor 裁定建区 · 13 条自待办移入 + 1 条漏挂新挂 · 2026-08-26 /todo 归位：08-22 批发 5 条活跃待办移回待办段，观察 23 条随标题归位）
