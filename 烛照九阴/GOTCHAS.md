@@ -455,3 +455,25 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: ① 代理/替代口径类取数（ETF 代理指数）上岗前必做真值偏离校验（如 |代理 pct − 真值 pct| > 0.1pp 即告警）——与 ERR-20260828-001 预防门禁同族（代理口径类二犯，应升格通用教训由 Doctor 裁）；② 展示层百分比禁 1 位小数（小值抹平/负零）；③ 快照与同页曲线必须同源同口径（防「-0.30% vs 曲线末点 -0.02%」自相矛盾）。
 
 **来源**: 2026-09-01 本场（Doctor 提问 → 实拉 tushare fund_daily/index_daily + 腾讯行情 + 外部多源核对 → Doctor 裁「换指数真身」→ 实施+双向测试）
+
+---
+
+## [ERR-20260907-001] industry_signals 当日 9 行 viewpoint_owner 漏标（NULL）——九儿 ingest 打标惯例中断
+
+**状态**: 🔄 已修待验（2026-09-07 句芒档1 当场补标修复完成 · 待 Doctor 或指定独立验收方验；实施者不自签 ✅）
+
+**优先级**: 🟡 中（打标溯源链断裂——viewpoint_owner 是 industry_signals 的惯例来源列；同库下游与九儿幂等重跑 DELETE 均依赖它）
+
+**触发场景**: 2026-09-07 句芒课件入库审核班六项审查第 3 项「打标合规」——扫描今日 industry_signals 9 行（id 1691-1699）viewpoint_owner 全 NULL，而 09-01~09-06 连续多日全为「小鲍老师」（09-06 的 9 行亦全填）。
+
+**硬证据/最小复现**: `SELECT id, viewpoint_owner FROM industry_signals WHERE date='2026-09-07'` → 9 行全 NULL；对照 `WHERE date='2026-09-06'` → 9 行全「小鲍老师」。全表 NULL 共 61 行，其余 52 行为 2026-06-04~08-11 早期批次（工具链尚未统一填列的时期），近期（08-12 起）惯例已稳定为「小鲍老师」/「小鲍」。
+
+**根因**: 九儿今日落 industry_signals 时 INSERT 语句漏了 viewpoint_owner 列（非 ingest 工具硬编码路径——工具 `tools/_ingest_九儿_2026-07-29.py` L112 硬编码「小鲍老师」，今日行系九儿现场 SQL 直插、未带该列）。
+
+**影响面**: ① 打标溯源链断裂：依赖 viewpoint_owner 区分「小鲍老师观点」的下游（复盘引用/加权）会漏掉今日 9 条；② 九儿幂等重跑保护 `DELETE ... WHERE date=? AND viewpoint_owner='小鲍老师'` 无法命中今日行，若重跑将产生同日重复行。
+
+**修复/建议修法**（2026-09-07 句芒已执行）: 档1 当场修——`UPDATE industry_signals SET viewpoint_owner='小鲍老师' WHERE date='2026-09-07' AND viewpoint_owner IS NULL`（rowcount=9）；备份 `recap.db.bak_20260907_prefix句芒`（md5 1d2f59b16ed4c53d079b55879d553e29 = 修前真库）；/tmp 副本往返（副本 integrity ok → 34 表只增不减零差异 → cp→原子 mv 放回 → 真库复验 integrity ok、9 行已补标）。证据四件套见 `agents/句芒/logs/2026-09-07-课件入库审核.md`「修复记录」。未触碰 gap 跟踪列与 5.x 派生列。**建议**：九儿 ingest 落库断言加「viewpoint_owner 非空」自检（本次 fail-fast 断言清单未覆盖该列）——若再犯（同根复发），按跨班联动挂单请哥哥批九儿改 ingest。
+
+**预防门禁**: 审查班第 3 项「打标合规」扫描范围扩至 viewpoint_owner（有该列的表：industry_signals 今日行非空 + 与近周惯例一致）；九儿 ingest 侧建议同步加断言。
+
+**来源**: agents/句芒/logs/2026-09-07-课件入库审核.md · 本条目 2026-09-07 句芒课件入库审核班发现并修复
