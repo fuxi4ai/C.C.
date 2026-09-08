@@ -177,6 +177,8 @@ project: 渊图
 
 **追记 2026-09-05（同族复发 · 六篇批 · 三型全犯）**: ① **孤儿目标边 6 条**——4 条 id 错形（`company_TFC`→`company_TFCOptical` · `company_Mellanox`→`company_NvidiaMellanox` · `concept_1p6TOpticalModulePowerRange` 误造×2→`product_1dot6TOpticalModule`）+ 2 条引用未建节点（`company_AAOI` 被 3 条边引用却未建节点→QA 补建公司节点）；② **方向反置 3 条（新形态）**——「A 委托 B 代工」被写成 A -supplies-> B（Coherent→天孚、AAOI→汇绿、AAOI→德科立 全反），**desc 里写着正确关系、8 项结构 QA 查不出**，须语义核（本场凭 desc-方向矛盾逮到）；③ 半成品节点 1 个（`concept_NvidiaRubinOrthogonalBackplane` type/name 双空·无 span·与存量 `concept_NVOrthogonalBackplane` 重复·NOTE-20260826-001 同族）→ 删节点+事实并入存量。全部拦在 promote 前修复。**预防门禁候选**：supplies 边 desc 含「委托/代工/下达订单」时校验 desc 主语==source（方向语义核并入 QA 清单）——待 Doctor 批。**来源**：2026-09-05 帕米尔六篇批入库 QA 场。
 
+**追记 2026-09-07（同族复发 · 三篇帕米尔批后读盘 QA · 08-25 批带入 · 连过三场）**: canonical 读盘逮 **2 个 type/name/created_at 全 None 空壳**——`concept_AlibabaCloudMaaSBusinessModel`（08-24 阿里云篇 · 与既有 `concept_AlibabaMaaSBusinessModel` 同名重复 · 1 边 part_of 重指 · props 7 键迁入 · 旧 id 入 aliases）+ `concept_HuaweiAscend`（08-24 超节点篇 · 与既有 `company_HuaweiAscend` 撞车 · 0 边 · shipment_2026e/2027e props 迁入）。修补 `outputs/cc_qa_fix_20260907.py`（备份 `bak_cc_qa_20260907` + 墓碑 `_tombstones/2026-09-07_qa_typefix_merge.json`）→ **5411/6033 → 5409/6033**（-2 节点 · 边守恒 · 复检 type None=0）。**根因（实读坐实）**：`kg_promote.py` L21 只校验**边** type（`e.get("type") not in VALID`），**无节点 type 断言**——type=None 节点畅通无阻，08-25/09-01/09-05 三场门全绿放行。**预防门禁候选**：kg_promote 加节点 type 断言（None 或非法值硬拦 · 与 QA 第 8 项「非法点 type」对齐）——待 Doctor 批。**来源**：2026-09-07 三篇帕米尔批入库 QA 场。
+
 ## [ERR-20260719-001] 二次生成摘要的相对年份系统性偏移 → 入库 LLM 不做统一裁决、逐节点各自猜 → 同篇内**混合污染**
 **状态**: ✅ 已归正（2026-07-19，7 节点 / 3 边，canonical 3384/3903 守恒）**优先级**: 🔴 高
 
