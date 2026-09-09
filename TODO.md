@@ -78,6 +78,8 @@ type: log
 
 - [ ] **PEC · 星空 git 化与备份件处置（2026-09-09 /save 补挂 · 源：`logs/2026-09-09-PEC星空选中加亮与放射线迭代.md`）**：① Projects/星空/ 无 git 仓——模板 starscape-template-pec.html 无版本控制（方案待 Doctor 裁）；② 备份件 `Projects/PEC/pec-starry-skies.html.bak_20260909_preSelLift` 归档/删除（Doctor 裁）。
 
+- [ ] **风险日报 · Alarm 今晨班重推后回读 + PRD 落签（2026-09-09 挂 · 源：`logs/2026-09-09-Alarm迭代与渊图三批及CPO测试设备.md`）**：渲染器多形态挂载路径修复已落——09-09 09:08 PT refresh-risk-daily 班重推后回读 artifact：顶部卡片恢复（非降级）+ AI-Tech-Alarm 标签页新内容在场，回读通过即销账。另：Alarm PRD（`logs/checkpoints/2026-09-07_AI-Tech-Alarm迭代_PRD.md`）客观轨落签归 Doctor。
+
 ## 长期观察
 
 > 纯等待 / 观察 / 暂缓 / 数据积累中——**不删、仍跟踪、不占「待办」计数**；触发条件成熟即回捞进待办。（2026-08-11 目标模式 Doctor 裁定建区 · 13 条自待办移入 + 1 条漏挂新挂 · 2026-08-26 /todo 归位：08-22 批发 5 条活跃待办移回待办段，观察 23 条随标题归位）
