@@ -3,7 +3,7 @@ title: PRD · PEC 图谱升级与星空 Artifact
 tags: [prd, acceptance, PEC]
 created: 2026-09-08 07:45
 updated: 2026-09-08 07:45
-status: awaiting_acceptance
+status: delivered
 task_authorization:
   state: verified
   source_type: 会话裁定
@@ -109,12 +109,12 @@ PEC 的知识图谱停在 05-21 的手工可视化层（graph-data.js 8 节点�
 ### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书 · 总签必须可审计）
 
 - 客观轨总签（覆盖 R1/R2/R3/R4/R6/N1/N2/X1/X2 机器可判项；R5 的 manifest 注册亦为机器可判，视觉目验归 Doctor 人工）：
-  - covered_requirement_ids: []
-  - authority:
-  - designation_source_ref:
-  - signed_at:
-  - result:
-  - reviewer_evidence_ref:
+  - covered_requirement_ids: [R1, R2, R3, R4, R5, R6, R7, N1, N2, X1, X2]
+  - authority: Doctor
+  - designation_source_ref: 2026-09-08 会话（Doctor 自任验收方）
+  - signed_at: 2026-09-08
+  - result: 通过
+  - reviewer_evidence_ref: 独立复验背书见本卷（学者批 a33510eb8265a0729 PASS_WITH_LIMITS + 哲学家批 a9ad8b529c27031b4 PASS_WITH_LIMITS · 复验后修复项均已闭环）；Doctor 目验通过（「很好了」「验收通过」）
 - 审查员背书（2026-09-08 · 未参与实施的 general-purpose subagent · agentId a21bf9bf7f111c034）：
   - 身份：独立 Task subagent（干净上下文 · 全程未改任何文件 · 复验后构建前后 SHA 零变动）
   - 验证动作（28 tool uses 实跑实读）：① QA 正路 exit 0/负向注入 exit 1 重跑；② 构建三连跑 SHA 全同 ce0db243… 且报告 diff 逐字节一致；③ 对拍抽查 6 组（IR-P3 概率链/IR-P5.b 四拆件/H-15+mir 边/旧图 desc 逐字/埋点-05 归位/源文件 mtime）；④ 映射表 20/20；⑤ artifact JSON 解析 262/281+色键四枚+占位符清零+JS 语法；⑥ 结构卫生断言（id 唯一/端点可达/边闭集/guards 纯 verdict）
@@ -163,6 +163,7 @@ PEC 的知识图谱停在 05-21 的手工可视化层（graph-data.js 8 节点�
 |---|---|---|---|
 | 2026-09-08 07:45 | draft → in_progress | CC | 立卷即开工 · Doctor 本场指令已授权 |
 | 2026-09-08 08:30 | in_progress → awaiting_acceptance | CC | 全部交付标准已填 [?]+证据 · 独立审查员背书 PASS（见分轨签核）· 交 Doctor/指定独立验收方终审 |
+| 2026-09-08 18:30 | awaiting_acceptance → delivered | CC 转录 | Doctor 总签「验收通过」（2026-09-08 会话原话）· 覆盖全部 requirement（分轨签核六字段齐）· checkbox 保持 [?] 保留实施者未自签审计链 |
 
 ---
 
