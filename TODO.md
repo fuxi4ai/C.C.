@@ -80,6 +80,8 @@ type: log
 
 - [ ] **风险日报 · Alarm 今晨班重推后回读 + PRD 落签（2026-09-09 挂 · 源：`logs/2026-09-09-Alarm迭代与渊图三批及CPO测试设备.md`）**：渲染器多形态挂载路径修复已落——09-09 09:08 PT refresh-risk-daily 班重推后回读 artifact：顶部卡片恢复（非降级）+ AI-Tech-Alarm 标签页新内容在场，回读通过即销账。另：Alarm PRD（`logs/checkpoints/2026-09-07_AI-Tech-Alarm迭代_PRD.md`）客观轨落签归 Doctor。
 
+- [ ] **DVA · bundle EXCLUDE_SUFFIXES 加 `.bak`（2026-09-09 挂 · 源：`logs/2026-09-09-DVA finance臂空数组回退全链部署与resume收尾.md`）**：09-09 bundle 构建把备份件 `semantic-parser.js.bak_20260909_preEmptyArrayFallback` 捎进包（26KB 无害）——`tools/fuxi/build_runtime_bundle.py` EXCLUDE_SUFFIXES 加 `.bak` 一行，待 Doctor 裁。
+
 ## 长期观察
 
 > 纯等待 / 观察 / 暂缓 / 数据积累中——**不删、仍跟踪、不占「待办」计数**；触发条件成熟即回捞进待办。（2026-08-11 目标模式 Doctor 裁定建区 · 13 条自待办移入 + 1 条漏挂新挂 · 2026-08-26 /todo 归位：08-22 批发 5 条活跃待办移回待办段，观察 23 条随标题归位）
