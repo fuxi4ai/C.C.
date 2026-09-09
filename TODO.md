@@ -76,6 +76,8 @@ type: log
 
 - [ ] **PEC · 图谱 v1.1 候选（2026-09-08 挂 · 源：图谱化方案实施场 · PRD open_decisions）**：①macro-facts 结构性事实入图（schema 12 类无 fact 类型 · 需 v0.2 schema 提案：fact 节点类+挂靠边语义）；②facts/ 高时效时序旁路层（对标渊图 prices/）。触发=Doctor 提或 v0.2 schema 提案获批。
 
+- [ ] **PEC · 星空 git 化与备份件处置（2026-09-09 /save 补挂 · 源：`logs/2026-09-09-PEC星空选中加亮与放射线迭代.md`）**：① Projects/星空/ 无 git 仓——模板 starscape-template-pec.html 无版本控制（方案待 Doctor 裁）；② 备份件 `Projects/PEC/pec-starry-skies.html.bak_20260909_preSelLift` 归档/删除（Doctor 裁）。
+
 ## 长期观察
 
 > 纯等待 / 观察 / 暂缓 / 数据积累中——**不删、仍跟踪、不占「待办」计数**；触发条件成熟即回捞进待办。（2026-08-11 目标模式 Doctor 裁定建区 · 13 条自待办移入 + 1 条漏挂新挂 · 2026-08-26 /todo 归位：08-22 批发 5 条活跃待办移回待办段，观察 23 条随标题归位）
