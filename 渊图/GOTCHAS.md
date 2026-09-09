@@ -89,6 +89,8 @@ project: 渊图
 
 **追记 2026-09-05（同族第 4 次复发 · 六篇批 · 形态升级：整段替换而非缩写）**: 98 个 update 中 **16 个 desc 被 LLM 整段重写**（15 处需合并 + 1 处语义等价）——如 `company_Yingliu` 身份句（西门子 H 级叶片中国独家/卡脖子补位）被「更新：…」数据句整段顶掉；`concept_LuxshareGoogleOpticalCooperation` 旧口径（2026 入 AVL·LPO 独家·月 12 万只）与新口径（审厂验证中·2027Q2 批量）并存才完整。**`check_desc_shrink.py` 只命中 1/16**——它只查「变短」（<90%×base 且 >30 字），不查「替换且变长」。CC 以「base/v2 互含审计」（互不为子串即列）全量扫出，base 主+增量合并修复（`outputs/cc_qa_fix_20260905.py`）。**预防门禁候选**：check_desc_shrink 增「整段替换检测」模式（互不含即报·人工甄别增量追加），属工具功能新增——待 Doctor 批。**应升格**：同族第 4 次（08-15/08-27/08-30/09-05），按合同登记「应升格通用教训」（LLM 对 update 节点逐节点自由重写事实载体族），升格由 Doctor 裁。**来源**：2026-09-05 帕米尔六篇批入库 QA 场。
 
+**追记 2026-09-09（同族第 5 次复发 · Boss老白 16 条转写批 · merge_safe 路径）**: 262 个 update 中 **6 个 desc 缩写覆盖**——`concept_CXL4_0` 361→92、`concept_PCBFundamentalLogic` 228→24 最重，另有 SKHynix/NVLinkBandwidthEvolution/HBM4/YMTC。extract 单篇模式 + `kg_merge_safe` 增量合并同样触发（非 batch 特有）——LLM 对 update 节点写缩写 desc 是跨路径系统性行为。base 主+增量合并修复（`outputs/cc_qa_desc_restore_bb_20260909.py` · 备份 bak_cc_desc_restore_20260909）。**同族第 5 次 · 升格通用教训候补已 2 连**。**来源**：2026-09-09 Boss老白 16 条转录批 QA 场。
+
 ## [NOTE-20260814-001] 手工 patch update_nodes 的 `updated_at` 必须放条目顶层（放 properties 里会被静默 kept_base）
 
 **状态**: ✅ 已实证修复 **优先级**: 🟡 中
