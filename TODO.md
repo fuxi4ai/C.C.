@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-09-03
+updated: 2026-09-11
 status: active
 type: log
 ---
@@ -10,6 +10,8 @@ type: log
 # TODO
 
 ## 待办
+
+- [ ] **风险日报 · fomc_market_exp.json 手更（2026-09-11 挂 · 源：`logs/2026-09-11-TACO与地缘手工层更新.md`）**：CME FedWatch 读数 08-13 陈旧（卡面已带⚠标注 fail-visible）· 9/15-16 FOMC 会前需 Doctor 浏览器核新读数更新手填槽（FedWatch 无免费 API · 每会前手更惯例）· 更新后全报 data_cutoff.value 再前移。
 
 - [ ] **PEC · 9-30 中评首读（2026-08-21 挂 · 源：`logs/2026-08-21-PEC美以伊60天窗与利益透镜复审.md`）**：IR-P3 新基准 / 僵持命题 / 镜像命题 / 行为走廊修订。**IR-P6 净读拍板已销 ✓〔2026-08-21 Doctor 拍「净读回中性」· register 已落 · `logs/2026-08-21-美债解法与财政巩固政治学.md` 场〕**。
 
