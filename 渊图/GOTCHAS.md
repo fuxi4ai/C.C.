@@ -699,6 +699,7 @@ project: 渊图
 **预防门禁**: 价格层 ingest 门禁加「as_of 日期格式」断言；入库后 grep `"as_of":"[^0-9]` 抽检。
 
 **来源**: 2026-09-11 全金融审计（jsonl L595/L815 实读 · latest.json grep 实跑）
+**追记（2026-09-11 晚间 · VV 交叉复核补充 · CC 实核确认）**: ① 消费侧现状补充——两条畸形点均 horizon=预测，白泽 `fetch_yuantu_prices.py` 对 horizon=预测 与 `_parse_asof=None` 均直接 continue（实读 L79-95），**白泽消费已排除、未污染弹性**（原判「渗入快照」指 latest.json 快照层含畸形行，非指消费端受影响）；② 真实缺陷补充——渊图通用接口 `price_query._stale` L33-34 `except Exception: return False`：**无法解析的日期返回「不陈旧」**，fail-open；通用接口消费者（非白泽定制脚本）会踩。修法在原 kg_ingest 日期格式门禁之外，②补 price_query 解析失败返回「陈旧/unknown」而非 False。
 
 ## [NOTE-20260911-002] yuantu_scoring 无向化+度+一次性缓存参与公司结构评分——研究覆盖可反哺投资排序（2026-09-11 VV 独立审计发现 · CC 实读确认）
 

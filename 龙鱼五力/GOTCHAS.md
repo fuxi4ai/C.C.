@@ -156,3 +156,15 @@ project: 龙鱼五力
 **预防门禁**: 校正/销账审计对 ds 供需端 evidence 逐句比对 ANCHORS 条文；evidence 出现「产能受限」即自查方向是否判反。
 **⇒ 2026-08-30 实施留痕（Doctor 裁「四补全修+全23只重跑+检测同批实装」）**: ① ANCHORS 四补（铁律行+毛利率归位；供需端=公司级兑现/新品类归位/盈利指标归位/产能方向）· caliber 升 v3·score_subitems CLI +`--asof`；② 备份 `artifact_backups/records_backup_20260830_pre_v3.tar.gz`（122 文件）→ rerun_ds_v3.py 23/23 实跑覆写 08-29 同日 ds 条目（claude 条目零动·同日数据口径）；③ 对比重建：四只 Δ 收窄 仕佳-14→-9/源杰-14→-11/海光-11→-8/光库-13→-14（光库主因转技术端尺度）·队列 0；④ 趋势脚本 v3 口径支持（同口径≥2点才可信·序列标 [v3] 跳变可见）；⑤ 看板重建+update_artifact 已推（updatedAt 08-31T06:32Z）；⑥ 检测机制 check_ds_evidence.py 三档（无锚/P3当事实/旧锚）+ 持久化负向测试 5/5 PASS + 实跑 08-29 ds 条目 ⚠67 条（提示级·含旧锚真信号：海光中芯锚 04-29 旧边/盛合 125 天旧锚等+泛短语噪声·附锚出处可人核）；⑦ 下周班自然继承新锚点与脚本。
 **来源**: 2026-08-30 裁定场（records 四只实读 · 对比校正/全库_对比_20260829.md · ANCHORS v2 原文）
+
+---
+
+## [NOTE-20260911-001] claude 腿 engine_facts 全 null——pack 缺失致客观事实快照丢失（09-10 周更 23 份）（2026-09-11 VV 独立审计发现 · CC 实读定位）
+**状态**: 🔄 待修复（根因已定位 · 修法明确 · 待 Doctor 批）
+**优先级**: 🟡 中（事实快照丢失·不改变判分结论——engine_facts 是证据快照层，claude 腿维度级判分不依赖它；但看板「引擎实测」侧栏与事实锚校验链缺了 claude 腿一侧）
+**触发**: 2026-09-10 手动周更场 write_claude_score.py 落库 23 条，engine_facts 19 键全空（records 实读：688630.SH/300308.SZ 等）；09-11 全金融审计（CC 报告十大#5）+ VV 交叉复核「龙鱼事实包缺失」确认。
+**根因**: `write_claude_score.py` `_facts_from_pack` L37——`if not pack_path or not os.path.exists(pack_path): return {}`；09-10 手动场未生成/未传 pack → 空 pack 静默落 `engine_facts: {}`。「盲打包与写库器结构不匹配」＝pack 产出链（score_subitems --save-pack）与 claude 腿写库调用之间无强制校验（pack 缺失不报错、不告警）。
+**影响面**: ① 看板「引擎实测」侧栏（FACT_KEYS 读 engine_facts）对 claude 腿条目全空——读者误以为「无引擎数据」；② 不构成评分错误——claude 腿判分不依赖 engine_facts 数值（维度级整体判分）；③ 与 NOTE-20260819-001 检测机制无关（claude 腿无 evidence 字段）。
+**建议修法**: ① pack 缺失时 fail-loud（告警/标记 `engine_facts_missing=true`）而非静默 {}；② 09-10 批次 23 条用当周 ds 腿 pack 回填 engine_facts（同源同刻）；③ **不强制 claude 腿与 ds 腿统一 caliber**（VV 意见采纳——两套独立评分口径差异是设计，趋势层显式标注即可）。
+**预防门禁**: 写库器对「可选但应存在」的字段加存在性断言；周更班收尾核对 engine_facts 填充率。
+**来源**: 2026-09-11 VV 独立审计 · CC 实读 write_claude_score.py L31-39 + records 23 条实读
