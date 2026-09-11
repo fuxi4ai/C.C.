@@ -173,13 +173,13 @@ project: 剑酒青丘
 **预防门禁**：改 eal_v3 代码前先 `ls -la` 查目录位；部署后必验 SHA 与 staging 逐字一致再锁回。
 **来源**：2026-09-05 凌晨场 · logs/2026-09-05-EAL加SOX响应轨实施.md
 
-### [NOTE-20260911-001] EAL v3 班 adapter 守卫 FUSE fchmod 不落地——LOOP_SQLITE_GUARD_REJECTED 同根 3+ 连败致 artifact 停更 6 天（2026-09-11 全金融审计立）
+### [NOTE-20260911-001] EAL v3 班 adapter 守卫 FUSE fchmod 不落地——LOOP_SQLITE_GUARD_REJECTED 同根六连致 artifact 停更 6 天（2026-09-11 全金融审计立 · 同日 VV 交叉复核纠错后改写）
 **状态**：🔄 待修复（修复方案属方向性·待 Doctor/VV 裁）
 **优先级**：🔴 高（消费端 artifact eal-v3-event-transition 自 09-04 起停更——用户可见）
-**硬证据/最小复现**：shift-report-20260910.json 实读——`7_adapter: REJECTED LOOP_SQLITE_GUARD_REJECTED — permission_guard_completed=false (FUSE fchmod 不落地，mode 恒 0o600)，同 09-04/09-09 班次；fail-closed 停班`；`8_artifact: 未推送`；warnings 同款「sealed chmod a-w 受 FUSE 限制呈现 0o600」。09-08 班另有 Step 1 锁 PermissionError（/tmp 残留锁 nobody 属主）。Steps 1-7 全绿（行情写库 attempt 2/3 · sealed SHA ae642b01… · registry pin 283c947d · shadow EXIT=0 · candidate 38.2MB · loop completed_with_warnings）——单点卡在 adapter 权限位。
-**根因**：zero-write guard 的权限位组件要求 chmod a-w 持久生效，Cowork 沙箱 FUSE 挂载盘 fchmod 不落地（mode 恒 0o600）——守卫按设计 fail-closed 正确，但当前运行环境结构性无法通过该组件＝「正确守卫 × 错误环境」。同族：烛照 GOTCHAS（FUSE 大写入不 durable）、巡检自愈循环 warnings（chmod a-w 受 FUSE 限制）——**应升格通用教训候选**：「FUSE 挂载面 POSIX 语义不完整（chmod/写入持久性），守卫设计必须环境感知」。
-**影响面**：日更班每天白跑 Step 1-7 后停于 adapter；artifact 停更；R4 首个完整新交易日验收（水位 09-10 · SPY 757.83）虽达成但用户不可见。
-**建议修法（三选·方向性待裁）**: ① 守卫加环境识别——FUSE 挂载下权限位组件降级为「SHA 前后比对 + read-lock 持有 + identity_stable」证据链（zero_write_guard.status 已显示这三项全 true）；② adapter 步骤移出沙箱（Mac 原生执行，权限语义完整）；③ 班改推 fresh candidate 不经 adapter（破坏发布链纪律·不推荐）。
+**硬证据/最小复现**：各班失败分布（09-04 shift-root-cause + 09-10 shift-report 实读）——**adapter guard 同根六连**：09-01、09-03 一班、09-03 二班、09-04（root-cause 原话「与 09-01/09-03×2 同根同签，第四次复发」）、09-09、09-10；另 09-07/09-08 两班**第一步即失败**（09-08 为 /tmp 残留锁 PermissionError·nobody 属主）——**并非每天 Steps 1-7 全绿卡最后一步**。09-10 班细节：Steps 1-7 全绿（行情写库 attempt 2/3 · sealed SHA ae642b01… · registry pin 283c947d · shadow EXIT=0 · candidate 38.2MB · loop completed_with_warnings）→ `7_adapter: REJECTED LOOP_SQLITE_GUARD_REJECTED — permission_guard_completed=false (FUSE fchmod 不落地，mode 恒 0o600)；fail-closed 停班`；`8_artifact: 未推送`。
+**根因**：zero-write guard 的权限位组件要求 chmod a-w 持久生效，Cowork 沙箱 FUSE 挂载盘 fchmod 不落地（mode 恒 0o600；09-04 班 58/58 采样全部 permission_deviation）——守卫按设计 fail-closed 正确，但当前运行环境结构性无法通过该组件＝「正确守卫 × 错误环境」。同族：烛照 GOTCHAS（FUSE 大写入不 durable）、巡检自愈循环 warnings（chmod a-w 受 FUSE 限制）——**应升格通用教训候选**：「FUSE 挂载面 POSIX 语义不完整（chmod/写入持久性），守卫设计必须环境感知」。
+**影响面**：adapter 复发班次 Step 1-7 白跑后停班，另有两班 Step 1 即败；artifact 停更；R4 首个完整新交易日验收（水位 09-10 · SPY 757.83）虽达成但用户不可见。
+**建议修法（三选·方向性待裁·排序已按 VV 意见调整）**: ① **原生环境路线（第一推荐）**——adapter 步骤移出沙箱至 Mac 原生执行，权限语义完整、守卫零弱化；② 守卫加 FUSE 环境识别（权限位组件降级为「SHA 前后比对 + read-lock 持有 + identity_stable」证据链）——**过渡候选·未经等价验证**：SHA 相同只证终态一致、不能证受保护窗口内从未发生写，采纳前须 Doctor 明示接受语义弱化；③ 班改推 fresh candidate 不经 adapter（破坏发布链纪律·不推荐）。
 **预防门禁**: 新增任何 POSIX 权限位守卫先跑「沙箱 FUSE 环境冒烟」（chmod 持久性 probe）；班 shift-report 连续两日同根 REJECTED 应主动告警（当前仅 warnings 静默）。
 **来源**: 2026-09-11 全金融审计（shift-report-20260910.json 实读 · artifact updatedAt=09-04 实读 · 09-09 班同根对比）
 **追记（2026-09-11 晚间 · VV 交叉复核纠错 · CC 实核 09-04 root-cause 报告后修正）**: ① 同根次数补全——09-04 shift-root-cause 实读：「与 2026-09-01 班、09-03 一班、09-03 二班同根同签，**第四次复发**」→ 加 09-09/09-10 共**第六次**；② 班失败分布修正——并非每天 Steps 1-7 全绿卡最后一步：09-07/09-08 班**第一步即失败**（09-08 为 /tmp 残留锁 PermissionError），Steps 1-7 全绿仅对 09-09/09-10 成立；③ 推荐方案排序调整（VV 理由采纳）——**原生环境路线（adapter 移 Mac 执行）升为第一推荐**：FUSE 下跳过权限组件不能称「零损失」，前后 SHA 相同只证终态一致、不能证受保护窗口内从未发生写——守卫的语义价值正在于「写机会都不给」；原方案①（守卫 FUSE 分支降级）降为过渡候选，采纳前须 Doctor 明示接受语义弱化。

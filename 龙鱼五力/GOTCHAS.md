@@ -163,8 +163,8 @@ project: 龙鱼五力
 **状态**: 🔄 待修复（根因已定位 · 修法明确 · 待 Doctor 批）
 **优先级**: 🟡 中（事实快照丢失·不改变判分结论——engine_facts 是证据快照层，claude 腿维度级判分不依赖它；但看板「引擎实测」侧栏与事实锚校验链缺了 claude 腿一侧）
 **触发**: 2026-09-10 手动周更场 write_claude_score.py 落库 23 条，engine_facts 19 键全空（records 实读：688630.SH/300308.SZ 等）；09-11 全金融审计（CC 报告十大#5）+ VV 交叉复核「龙鱼事实包缺失」确认。
-**根因**: `write_claude_score.py` `_facts_from_pack` L37——`if not pack_path or not os.path.exists(pack_path): return {}`；09-10 手动场未生成/未传 pack → 空 pack 静默落 `engine_facts: {}`。「盲打包与写库器结构不匹配」＝pack 产出链（score_subitems --save-pack）与 claude 腿写库调用之间无强制校验（pack 缺失不报错、不告警）。
+**根因（2026-09-11 VV 第三轮更正 · CC 实读坐实）**: **pack 存在且含有效 engine_facts，但结构不匹配被丢数**——`_packs_claude/*.json` 顶层键实读为 `{ts_code, name, …, engine_facts{pe_ttm/pb/…}, kg_context, _blind, _extracted_at}`（engine_facts 已提取且非空）；`write_claude_score.py` `_facts_from_pack` L39 却把**整个 pack** 传给 `score_subitems._facts(pkg)`，而 `_facts` 期待**原始引擎包结构**（`valuation_data.latest` / `financial_score.key_metrics` / `financial_data`）——pack 无这些键 → 返回 19 键全 None 的 dict 被写入 records（09-10 claude 条目实读全 None）。空 pack 返回 `{}`（L37）只是另一条防御路径，**不是本次根因**；只加空包检查修不好这条路径。
 **影响面**: ① 看板「引擎实测」侧栏（FACT_KEYS 读 engine_facts）对 claude 腿条目全空——读者误以为「无引擎数据」；② 不构成评分错误——claude 腿判分不依赖 engine_facts 数值（维度级整体判分）；③ 与 NOTE-20260819-001 检测机制无关（claude 腿无 evidence 字段）。
-**建议修法**: ① pack 缺失时 fail-loud（告警/标记 `engine_facts_missing=true`）而非静默 {}；② 09-10 批次 23 条用当周 ds 腿 pack 回填 engine_facts（同源同刻）；③ **不强制 claude 腿与 ds 腿统一 caliber**（VV 意见采纳——两套独立评分口径差异是设计，趋势层显式标注即可）。
+**建议修法**: ① `_facts_from_pack` 改读 `pack['engine_facts']`（已提取结构）或给 `_ss._facts` 加 pack 结构适配分支——**修接口、不修版本号**（VV 共识：不按版本号强行统一两腿评分）；② 09-10 批次 23 条用当周 pack 的 engine_facts 回填（同源同刻）；③ caliber 差异（claude v2 / ds v4）保留，趋势层显式标注即可。
 **预防门禁**: 写库器对「可选但应存在」的字段加存在性断言；周更班收尾核对 engine_facts 填充率。
 **来源**: 2026-09-11 VV 独立审计 · CC 实读 write_claude_score.py L31-39 + records 23 条实读
