@@ -1,0 +1,6 @@
+interface:
+  display_name: "个股定性研究"
+  short_description: "深挖边际信息、计价与叙事状态，选出胜出动作和下一观察点，并给出风险概率"
+  default_prompt: "请用 $equity-thesis 深挖目标公司近一周关键事项，说明边际信息、市场计价程度、当前叙事和下一观察点，结合经营、估值与龙鱼对照，先给胜出观点和首选动作，再给执行条件、备选排序及带概率的反向风险，并回答尾部三问。"
+policy:
+  allow_implicit_invocation: true
