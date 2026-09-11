@@ -172,3 +172,22 @@ project: 剑酒青丘
 **建议修法**：授权部署流程 = `chmod u+w . <file>` → 备份 → cp staging → SHA 复验 → `chmod u-w` 锁回（解锁是授权部署不是解除纪律）。
 **预防门禁**：改 eal_v3 代码前先 `ls -la` 查目录位；部署后必验 SHA 与 staging 逐字一致再锁回。
 **来源**：2026-09-05 凌晨场 · logs/2026-09-05-EAL加SOX响应轨实施.md
+
+### [NOTE-20260911-001] EAL v3 班 adapter 守卫 FUSE fchmod 不落地——LOOP_SQLITE_GUARD_REJECTED 同根 3+ 连败致 artifact 停更 6 天（2026-09-11 全金融审计立）
+**状态**：🔄 待修复（修复方案属方向性·待 Doctor/VV 裁）
+**优先级**：🔴 高（消费端 artifact eal-v3-event-transition 自 09-04 起停更——用户可见）
+**硬证据/最小复现**：shift-report-20260910.json 实读——`7_adapter: REJECTED LOOP_SQLITE_GUARD_REJECTED — permission_guard_completed=false (FUSE fchmod 不落地，mode 恒 0o600)，同 09-04/09-09 班次；fail-closed 停班`；`8_artifact: 未推送`；warnings 同款「sealed chmod a-w 受 FUSE 限制呈现 0o600」。09-08 班另有 Step 1 锁 PermissionError（/tmp 残留锁 nobody 属主）。Steps 1-7 全绿（行情写库 attempt 2/3 · sealed SHA ae642b01… · registry pin 283c947d · shadow EXIT=0 · candidate 38.2MB · loop completed_with_warnings）——单点卡在 adapter 权限位。
+**根因**：zero-write guard 的权限位组件要求 chmod a-w 持久生效，Cowork 沙箱 FUSE 挂载盘 fchmod 不落地（mode 恒 0o600）——守卫按设计 fail-closed 正确，但当前运行环境结构性无法通过该组件＝「正确守卫 × 错误环境」。同族：烛照 GOTCHAS（FUSE 大写入不 durable）、巡检自愈循环 warnings（chmod a-w 受 FUSE 限制）——**应升格通用教训候选**：「FUSE 挂载面 POSIX 语义不完整（chmod/写入持久性），守卫设计必须环境感知」。
+**影响面**：日更班每天白跑 Step 1-7 后停于 adapter；artifact 停更；R4 首个完整新交易日验收（水位 09-10 · SPY 757.83）虽达成但用户不可见。
+**建议修法（三选·方向性待裁）**: ① 守卫加环境识别——FUSE 挂载下权限位组件降级为「SHA 前后比对 + read-lock 持有 + identity_stable」证据链（zero_write_guard.status 已显示这三项全 true）；② adapter 步骤移出沙箱（Mac 原生执行，权限语义完整）；③ 班改推 fresh candidate 不经 adapter（破坏发布链纪律·不推荐）。
+**预防门禁**: 新增任何 POSIX 权限位守卫先跑「沙箱 FUSE 环境冒烟」（chmod 持久性 probe）；班 shift-report 连续两日同根 REJECTED 应主动告警（当前仅 warnings 静默）。
+**来源**: 2026-09-11 全金融审计（shift-report-20260910.json 实读 · artifact updatedAt=09-04 实读 · 09-09 班同根对比）
+
+### [NOTE-20260911-002] risk.py 仓位函数赢面门排除低胜率高赔率机会（2026-09-11 VV 独立审计发现 · CC 实读确认）
+**状态**：🔄 待修复（改法属判断性·待 Doctor 裁）
+**优先级**：🟡 中
+**硬证据/最小复现**：`infrastructure/risk.py` L53-58——`wf = winface if winface is not None else p`；`if wf < min_winface(0.60): return 0.0`。假设演示（VV）：40% 概率赚 30%、60% 概率亏 10%，期望 +6%，仅因 winface 40%<60% 判 0 仓。
+**根因**：缺省 winface=p 把「胜率」当「赢面」门槛，未考虑赔率与期望；min_winface 0.60 硬门槛无回测锚。
+**建议修法（候选）**: ① 门槛从胜率改为期望口径（p×b 加权）或对 p、赔率、损失做扰动后看动作是否仍胜出；② 半凯利输入应为所选持有期的收益概率/赔率，不能拿事件概率/六维分/来源置信度代入；③ 保留单票与账户风险预算（止损约束/单票上限/养家档仍有价值）。另注：止损价位不保证成交价（跳空/流动性），一般止损情景与无法按止损成交的压力情景应分开。
+**预防门禁**: 仓位函数新增门槛参数必须附回测锚或扰动稳健性检验。
+**来源**: 2026-09-11 VV 独立审计 4.3 节 · CC 实读 risk.py L53-62 一致

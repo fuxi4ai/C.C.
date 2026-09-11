@@ -1,9 +1,9 @@
 # CC 侧经验对侧索引（薄 · 供 VV 只读 · 可重建 · 非事实源）
 
-> 生成：2026-09-04 05:43 · 生成器 brain/.tools/build_experience_index.py（v2）
+> 生成：2026-09-09 04:25 · 生成器 brain/.tools/build_experience_index.py（v2）
 > 正文真源在 CC 侧 canonical（brain/ 各项目 GOTCHAS.md + permanent/通用教训.md + permanent/经验库.md），本文件只含定位指针，供跨系统预警与复验。
 
-## 摘要（733 条）
+## 摘要（750 条）
 结构与 permanent/经验索引.md 相同（对侧对 brain 只读可直取）。
 
 ## 机器闸清单（六字段：路径/SHA/可见性/重放命令/预期通过/最近运行）
