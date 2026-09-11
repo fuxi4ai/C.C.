@@ -91,6 +91,8 @@ project: 渊图
 
 **追记 2026-09-09（同族第 5 次复发 · Boss老白 16 条转写批 · merge_safe 路径）**: 262 个 update 中 **6 个 desc 缩写覆盖**——`concept_CXL4_0` 361→92、`concept_PCBFundamentalLogic` 228→24 最重，另有 SKHynix/NVLinkBandwidthEvolution/HBM4/YMTC。extract 单篇模式 + `kg_merge_safe` 增量合并同样触发（非 batch 特有）——LLM 对 update 节点写缩写 desc 是跨路径系统性行为。base 主+增量合并修复（`outputs/cc_qa_desc_restore_bb_20260909.py` · 备份 bak_cc_desc_restore_20260909）。**同族第 5 次 · 升格通用教训候补已 2 连**。**来源**：2026-09-09 Boss老白 16 条转录批 QA 场。
 
+**追记 2026-09-11（同族第 6 次复发 · 帕米尔 5 篇批 · batch 路径）**: 68 个 update 中 **4 个 desc 缩写覆盖**——`company_Innolight` 66→18（旭创核心公司！）、`company_QingheJingyuan` 177→53、`concept_TIM2GapPad` 202→61、`concept_TIM1PhaseChange` 216→85。base 主+增量合并恢复（`outputs/cc_qa_fix_20260911.py` · 带「2026-09-11 帕米尔批增量」批次戳）。**同族第 6 次 · 升格通用教训候补已 3 连**——check_desc_shrink 的「整段替换检测」模式（09-05 提案）仍未实装，本次 4 例均为纯缩写、被第 11 项命中 4/4（形态未升级）。**来源**：2026-09-11 帕米尔 5 篇批入库 QA 场。
+
 ## [NOTE-20260814-001] 手工 patch update_nodes 的 `updated_at` 必须放条目顶层（放 properties 里会被静默 kept_base）
 
 **状态**: ✅ 已实证修复 **优先级**: 🟡 中
@@ -206,6 +208,8 @@ project: 渊图
 
 **Q10 标题特例（Doctor 2026-07-19 裁定改）**: Q&A 段唯一的绝对年份出现在 **Q10 标题**「是否会卡住 2026 年的交付」，而 A10 答的是「**明年**…」。值得留意的是，这处**表面上是支持「今年=2025」的反向证据**（若今年=2025，问 2026 而答「明年」恰好自洽）。判为偏移残留的理由：① 四项外部锚是硬事实，Q10 标题是软推断，不能用软的推翻硬的；② Q 标题带脚注编号、系二次归纳而非专家原话；③ 16 段 A 正文一个绝对年份都没有，唯独 Q 标题冒出一个，形态上更像转换产物。**已改为 2027 年**。
 **方法论留痕**: 遇到与主结论相冲的单点证据，**先分清它是硬锚还是软推断**再决定权重，不要因为「有反例」就动摇整条证据链，也不要因为结论已定就把反例藏起来不报。
+
+**追记 2026-09-11（同根复发 · 价格层形态）**: TIM 界面材料篇价格钩子产出「Rubin用石墨烯垫片TIM」价格点 **as_of=2025-09-09**（文件日期 2026-09-09）——年份偏移从图谱节点蔓延到**价格层 as_of**（batch 日志哨兵已亮「as_of 漂移 1 种 ['2025-09-09']」）。已归正 1 条（备份 `commodity_prices.jsonl.bak_pre_qafix_20260911`）。预防 ②（id 带年份比对文件名年份）对价格层条目同样适用：**价格点 as_of 与文件名年份差 ≠ 0 即复核**。
 
 ## [NOTE-20260719-001] 档案把「已完成」记成「未决」——待办清单的过时方向与 ERR-20260718-002 相反，同样危险
 **状态**: ✅ 已沉淀（规则已立 2026-07-19 · 2026-08-08 复盘补标）
@@ -581,6 +585,8 @@ project: 渊图
 
 **追记 2026-09-09（同根复发 · 第 7 例 · Boss老白 16 条转写批）**: LLM 新建重复公司 `company_HuafengTestControl`（华峰测控 vs 存量 `company_HuaFeng`——同 name「华峰测控」逐字一致、aliases 含「华峰测控」变体，仍被当新实体建节点）。**硬证据**：两节点 name 完全相同、desc 均为华峰测控业务（SOC 测试机 8600 系列 vs 模拟光/CPO 测试布局——实为同一公司两个业务面）。形态与 09-01 批 3 例同型：extract 的 node_reference 主题过滤窗口漏掉存量公司 → LLM 当新实体建。**处置**：合并手术 `outputs/cc_qa_merge_huafeng_20260909.py`——desc 增量并入（CPO 测试布局句入 keeper）· aliases 补「Huafeng Test Control」· 1 边重指（competes_with Advantest → company_HuaFeng）· 墓碑 `_tombstones/2026-09-09_huafeng_merge.json` · 备份 bak_cc_huafeng_merge_20260909 → **5537/6151 → 5536/6151**（-1 节点 · 边守恒 · 复检全绿）。**第 7 例 · 预防门禁候选已 3 连**（同名实体检测固化进 QA 脚本）——按合同应升格，归 Doctor 裁。**来源**：2026-09-09 Boss老白 16 条转录批 QA 场。
 
+**追记 2026-09-11（同根复发 · 第 8 例 · 帕米尔 5 篇批 · 单批 6 组新高）**: LLM 新建重复公司 **6 组**——`company_ThreeCircle`（潮州三环 vs 存量 `company_Sanhuanjituan`）/`company_XinqinWeizhuang`（芯碁微装 vs `company_Xinjimi`）/`company_HuazhengNewMaterial`（华正新材 vs `company_Huazheng`）/`company_NYFS`（纽菲斯 vs `company_Newforce`）/`company_ShengyiTechnology`（生益科技 vs `company_Shengyikeji` · **0 边空壳**）/`company_JinanJingzheng`（济南晶正 vs `company_JinanJingzhengElectronics`）。批内 QA 已并（`outputs/cc_qa_fix_20260911.py`——边重指 13 · 重指后 2 组同三元组 dup 删新留旧（晶正→TFLNWafer、纽菲斯→国产ABF膜替代·沿「留先入者」判例 desc 并入 properties）· desc/props/aliases 并集 · 墓碑 `_tombstones/2026-09-11_5pian_merge.json`）→ 5582/6212 · promote 待 Doctor · 复检全绿。**第 8 例 · 预防门禁候选已 4 连**（同名实体检测固化进 QA 脚本，与 ERR-20260602-001 候选合并推进）——按合同应升格，归 Doctor 裁。**来源**：2026-09-11 帕米尔 5 篇批入库 QA 场。
+
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 
 **状态**: 🔄 已修待验（2026-09-01 整合手术已执行：`concept_ScaleUpSwitchProtocolOSA` → `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases·name/desc 重写·边端点同步·边 id 留旧）+ `product_Shengke51p2TSwitchChip` desc「OSA→OISA」· 备份 `bak_surgery_centec_oisa_20260901_*` · 手术记录 `mapping/_v3_20260901_盛科曦智OISA整合_手术记录.json` · 复检全绿·实施者不自标 ✅）
@@ -620,6 +626,7 @@ project: 渊图
 **建议修法**: ① 2 节点补 type=concept + created_at（事务性 · 走 kg_merge_safe update 或一次性小 patch）；② 5 节点归入既有「畸形节点 id/name 注记」挂账（TODO 渊图挂账批发④）不动；③ 边 id 不动（id 不可改 · 可逆性优先），手术脚本断言由子串改 id 全集比对。
 **预防门禁**: kg_promote 增「节点 type 必填」断言（第 16 项候选，与第 15 项同三元组闸同款）；手术脚本删除断言用 id 全集而非子串。
 **追记 2026-08-27（同根复发 · 第 2 次 · 五篇批）**: 同型再发 2 例且更重——LLM 把新建节点误放 **update 槽**，产出 `concept_400mWCPOExternalLaser`/`concept_NvidiaCPOSwitchVendorLandscape` **name/type/created_at/aliases/span 五字段全缺**（仅 desc+props+ds 有料）。批内 QA 当场补全（原文定位 span 实句）。观察①存量 2 节点（HuaweiAscend/AlibabaCloudMaaS）修复方案仍待 Doctor 裁。**预防门禁第 16 项候选（kg_promote 节点 name/type/created_at 必填断言）仍未实装**——同族第二次复发，按 GOTCHAS 合同应登记「应升格通用教训」（升格由 Doctor 裁，本条不自升）。
+**追记 2026-09-11（同根复发 · 第 3 次 · 帕米尔 5 篇批）**: 再发 1 例且为**空壳**——`product_HenkelHiFlowTHF5000UT` type/name 双空 + **0 边 + 原文无据**（TIM 篇全文 grep 汉高/Henkel 零命中·原文相变材料代表是霍尼韦尔 PM7950）。形态升级：不再是「有料缺字段」可补全，而是 LLM 幻觉造节点——批内 QA **删除**（canonical 未 promote 无需墓碑 · 修补脚本 `outputs/cc_qa_fix_20260911.py` 留痕）。**第 16 项候选（name/type/created_at 必填断言）仍缺 3 连**——若实装，空壳会在 promote 前被拦。**来源**：2026-09-11 帕米尔 5 篇批入库 QA 场。
 **来源**: 独立复核 agent 报告（2026-08-26 · 四批验收 C 项附报）+ CC 独立复验（type/created_at/前缀/边四类实读全部坐实）
 
 ## [NOTE-20260828-001] 胜宏双节点合并手术漏迁 props——Shenghong 6 业务键随节点删除丢失（已从墓碑当场回填）
