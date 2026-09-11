@@ -664,3 +664,21 @@ project: 渊图
 
 **追记 2026-09-01 22:18（同根第二次 · v1 修复排序假设翻车）**: v1 修复（mapping 级 glob）生效后首次真实 batch 仍选错 base——「空」(U+7A7A) 码点 >「完」(U+5B8C)，`行业知识图谱_空白模板.json` 字典序压过 canonical，batch 以 **15 节点模板**为 base 跑完全批 9 篇（node_reference 仅 0-17/15·LLM 查重失效·_v2 产物 125 节点不含 canonical 存量）。**处置**：canonical 零触碰（mtime/counts 5195/5829 不变·实核）；副作用已回滚（prices 截断 990→964〔断言行 964＝px_BT树脂_08-26 末行〕·price_processed 9 标记移除·index kg_processed 9 篇回退 false·latest.json 重建 947 条·三备份 `*.bak_pre_rerun_20260901` 在盘）；v2 修复＝显式排除模板＋显式优先「完整数据库」＋mtime 兜底（py_compile OK·测试 3/3 PASS 含真目录）；run1 两个 _v2 文件（`221406_5篇`/`221842_9篇`）**废弃·勿 promote**。**应升格通用教训候选**：字典序/隐式排序不得承载业务语义——与「日期格式先归一」（YYYYMMDD vs YYYY-MM-DD 整年错位）同族，本坑为该族第三次变体。
 
+## [NOTE-20260910-001] wiki 层落后于主图——合并/清理手术不联动 wiki 卡 · 生成器只增不删 + props 键名直出
+
+**状态**: 🔄 已修待验（2026-09-10 Doctor 令「检查并修复」· 修复已执行：859 卡 --force 重生成 + 29 旧卡改名 `_DEPRECATED_{slug}_20260910.md` 归档 + wiki_autogen.prop_table 键名→中文标签映射〔product_* 五键〕+ 5 张写通道失效卡经 Edit 工具补改 · 终扫 图谱ID 落后 0 / 键名残留 0 · 实施者不自标 ✅）
+
+**优先级**: 🟡 中（不影响主图与消费端 · 但 wiki 层 42 文件 67 处引用悬空 2 个月无人察觉）
+
+**触发**: 2026-09-10 Doctor 令「渊图存在 wiki 落后于主图、旧节点已合并的情况，检查并修复」——差集扫描（wiki 卡图谱ID vs canonical 合法 id 集）：67 处落后（42 文件）。
+
+**根因（三层）**: ① **手术不联动 wiki**——08-12 深南/08-15 宇树/08-19 具身智能线清理/08-23 光迅/08-28 胜宏+胜宏漏迁/09-01 中微+盛科 51.2T/09-09 华峰 等历次合并与清理，只动主图+墓碑，wiki 卡原地滞留（id 改名类 13 张 + 整线清理孤儿 15 张 + 旧 slug 冗余 1 张）；② **生成器只增不删**——wiki_autogen 无 orphan 清理，slug 由旧 id 派生、新 id 生成新 slug 卡，旧卡永不消失；③ **props 键名直出**——canonical 产品线键名不统一（product_undated/current/line/lines/pillars 五种），prop_table 把内部键名当属性名渲染进卡（8 卡）。
+
+**影响面**: wiki 层读者（人类/AI 检索）看到旧 id 卡与主图矛盾；合并后的实体在 wiki 里同时存在新旧两张卡。
+
+**修复**: ① `wiki_autogen.py --force` 重生成 859 卡（mtime 抽查 6/6 更新）；② 29 张旧卡改名 `_DEPRECATED_{slug}_20260910.md`（可逆优先不删 · 同 08-23/08-28 先例）；③ `prop_table` 加 key_labels 映射（product_* → 产品线类中文标签）；④ 5 张 per-文件写通道失效卡（caikang/lanfeiwei/qianyuanchipdiamond/worldia/product_huaweidc908 · mtime 停 08-22 未受 --force 覆盖）经 Edit 工具通道补改。
+
+**预防门禁候选**: ① 主图合并/清理手术清单加「wiki 差集扫描」一步（脚本化：canonical ids vs wiki 卡图谱ID）；② wiki_autogen 加 orphan 清理（--prune 或自动 _DEPRECATED_）；③ 批量写卡后 per-文件 mtime 验证（同 08-22 wiki 写卡静默失效族）。①②③ 均待 Doctor 裁。
+
+**来源**: 2026-09-10 wiki 落后修复场 · 差集扫描脚本（bash 内联）· logs/2026-09-10-DVA发布链洞第6次修复与曦智放量深挖.md
+
