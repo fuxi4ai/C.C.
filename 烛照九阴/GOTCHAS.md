@@ -508,3 +508,5 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **正确做法**: 事件记录与「本次查询成功覆盖到哪一天」分开维护——有成功覆盖且无事件才是 0，无覆盖则为 unknown；仅把依赖 IPO 的风险卡标不可判，其他独立指标继续判断；验证 unknown 能穿透复合卡/F4/总览文字而非只留在小字。IPO 覆盖可直接补入现有健康摘要。
 
 **来源**: 2026-09-11 VV 独立审计 1.3 节 · CC 实读风险日报 HTML（ipo 卡「平静·0.0000·ipo数据至20260722」）与 gen_daily_report.py F4 段
+
+**追记（2026-09-11 深夜 · VV 两轮验收后修复 · 状态 🔄 已修待验·第三轮）**: 覆盖证明机制重做——① `fetch_ipo.py` 新增 `ipo_coverage` 表（scan_start/scan_end/complete/funds_missing/fetched_at·零事件也落行·区间绑定事件版本）+ 金额缺失计数（None/不可转换计入 funds_missing 而非静默 0.0）；② 双端 covered 改读覆盖证明（区间必须完整包含目标窗口 [cutoff,today]），`MAX(event_date)` 仅展示；③ **修复 CC 自己引入的 IndexError**（risk_daily `q()` 返回行列表·单行覆盖时 `_ipo_cov[1]` 越界 → 先取行再解包）；④ 金额缺失 → value=None + trig=unknown（TRIG_NAME 新增「◌不可判」）+ 烛照 st4=pending（不能 quiet）；⑤ risk_daily 窗口加上界 `<= bj_today`（未来事件不混入）。**判定式复验**：完整覆盖有/零事件=可评 · 部分/无覆盖=不可判 · 金额缺失=下限不可评 · 未来事件不混入 · 单行解包不炸——五态全过 + py_compile 双端 ✓。**边界**：当前库无 ipo_coverage 表 → 双端 fail-closed 显示不可判（预期）；覆盖行落库需采集班下一轮实跑。
