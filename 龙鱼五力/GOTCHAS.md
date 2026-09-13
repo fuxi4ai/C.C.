@@ -159,7 +159,7 @@ project: 龙鱼五力
 
 ---
 
-## [NOTE-20260911-001] claude 腿 engine_facts 全 null——pack 缺失致客观事实快照丢失（09-10 周更 23 份）（2026-09-11 VV 独立审计发现 · CC 实读定位）
+## [NOTE-20260911-001] claude 腿 engine_facts 丢失——已提取 pack 结构不匹配（09-10 周更 23 份）（2026-09-11 VV 独立审计发现 · CC 实读定位）
 **状态**: 🔄 待修复（根因已定位 · 修法明确 · 待 Doctor 批）
 **优先级**: 🟡 中（事实快照丢失·不改变判分结论——engine_facts 是证据快照层，claude 腿维度级判分不依赖它；但看板「引擎实测」侧栏与事实锚校验链缺了 claude 腿一侧）
 **触发**: 2026-09-10 手动周更场 write_claude_score.py 落库 23 条，engine_facts 19 键全空（records 实读：688630.SH/300308.SZ 等）；09-11 全金融审计（CC 报告十大#5）+ VV 交叉复核「龙鱼事实包缺失」确认。**精确表述（VV 验收更正·2026-09-11）**：原函数体对真实 pack（`_packs_claude/000063.SZ.json` 17 键 17 非空）重放得 19 键 = **18 个 None + 1 个 `fin_score="None/5"`（字符串）**；「19 键全 None」不准确，缺包分支才返回 `{}`。
@@ -168,3 +168,6 @@ project: 龙鱼五力
 **建议修法**: ① `_facts_from_pack` 改读 `pack['engine_facts']`（已提取结构）或给 `_ss._facts` 加 pack 结构适配分支——**修接口、不修版本号**（VV 共识：不按版本号强行统一两腿评分）；② 09-10 批次 23 条用当周 pack 的 engine_facts 回填（同源同刻）；③ caliber 差异（claude v2 / ds v4）保留，趋势层显式标注即可。
 **预防门禁**: 写库器对「可选但应存在」的字段加存在性断言；周更班收尾核对 engine_facts 填充率。
 **来源**: 2026-09-11 VV 独立审计 · CC 实读 write_claude_score.py L31-39 + records 23 条实读
+
+**2026-09-12 VV 本次快照复验与现行口径**：完整 `_facts_from_pack` 委托 `_facts`，原始引擎结构正控保留 0/空串/False；含非空 engine_facts 的已提取包输出 18 个 None + `fin_score="None/5"`。本条标题已纠正；上文历史叙述中的「19 全 None」「空 pack 返回 {}」以此为准：L37 仅在未提供路径或路径不存在时返回 {}，不能概括空文件或空对象。本轮未读 records，未重新确认历史 23 条，也未证明六维分受影响。建议按明确 schema 分流原始/已提取包，未知结构拒绝，逐字段保留合法空值；是否回补须先绑定同股同刻原包。证据 `/Users/lunarabbit/Documents/AI4ME/Financial-Audit-outputs/harness-rollout/五项目注册与自检_20260912/business-replays.json` longyu_pack；独立重放一致。代码未修，仍待 Doctor 审批。
+
