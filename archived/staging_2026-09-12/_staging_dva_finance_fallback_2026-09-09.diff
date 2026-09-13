@@ -1,0 +1,16 @@
+--- a/3-文本分析/semantic-understanding/semantic-parser.js
++++ b/3-文本分析/semantic-understanding/semantic-parser.js
+@@ -223,9 +223,10 @@
+       return null;
+     }
+     if (result.length === 0) {
+-      const error = new Error('synonym merge returned an empty array; expected one entry per canonical concept');
+-      if (ledgerBatchId) batchLedger.recordFailure(ledgerBatchId, error);
+-      else console.warn(`\n   ⚠️  [${cat}] 批次合并失败：${error.message}`);
++      // 空数组＝LLM 正常响应但本批无可合并项：记 ok_empty（不触发 required 失败门），
++      // 概念由调用方按未合并原样保留——2026-09-09 Doctor 裁「空数组回退」（finance 臂三连败根因）。
++      console.warn(`\n   ⚠️  [${cat}] 批次合并返回空数组：跳过本批合并，概念原样保留`);
++      if (ledgerBatchId) batchLedger.recordSuccess(ledgerBatchId, { result: [], resultCount: 0 });
+       return null;
+     }
+     if (ledgerBatchId) {
