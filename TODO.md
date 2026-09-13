@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-09-11
+updated: 2026-09-12
 status: active
 type: log
 ---
@@ -11,7 +11,7 @@ type: log
 
 ## 待办
 
-- [ ] **安全 · Gangtise 本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。① 服务端撤销/轮换 → **已取消（2026-09-12 Doctor 裁：「取消，不用轮换，Gangtise 已基本弃用」）**；② 本地历史明文清理仍挂——凭据已弃用、风险降级为低（Claude 本地配置在 Library 下·沙箱不可达·清理命令 CC 可构造·具体路径以 VV 定位为准）。
+- [x] **安全 · Gangtise 本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。① 服务端撤销/轮换 → **已取消（2026-09-12 Doctor 裁：「取消，不用轮换，Gangtise 已基本弃用」）**；② 本地明文清理 → **✅ 已闭环（2026-09-13 CC 代勾·机器证据）**：VV W6 交付报告实读「`~/.claude/settings.local.json` 原 /permissions/allow/88、89、90、91、93、95、96 共 7 条含 bearer 的权限命令已精确移除·JSON 回读有效」+ Doctor 终端两轮实跑——残留 12 条 gangtise 相关 allow 条目全部为无凭据安装/卸载命令（mkdir /tmp、curl 下载 zip、cp skills、rm 卸载），凭据形状正则（Bearer/sk-/token 长串）检测 0 命中。剩卫生项：12 条无凭据命令是否从 allow 清除（推荐清·待 Doctor 裁）。
 
 - [x] **风险日报 · fomc_market_exp.json 手更（2026-09-11 挂 · 源：`logs/2026-09-11-TACO与地缘手工层更新.md`）**：✅ 2026-09-12 CC 联网多源核验写入（Doctor 批「写入（推荐）」）——as_of=2026-09-11（8 月 CPI 公布后）· hike 88.8 / hold 11.2 / cut 0（格隆汇/金十/证券之星/九方智投/同花顺 5+ 独立源收敛·CME 官方页 JS 渲染沙箱不可直读、转述源已在 source/note 标注）。证据：JSON 回读实核（p 合计 100.0 · 字段全对）。data_cutoff.value 前移随次早 build 自然带出；决议 09-16 落地后 outcome 回填走 JSON 自身机制；周日 18:00 ET 期货开盘后若读数大动可补手更（note 已留提示）。
 
@@ -149,6 +149,12 @@ type: log
 
 - [ ] **巡检脚本/镜像适配 Gateway store（2026-08-02 迁移副产 · 观察条 · 同日数据根迁出后改写）**：19 班 store 已迁 `~/Gateway-workspace/Scheduled/`（D14），`scheduler_snapshot.py` 的 `LIVE_TREE` 仍指 `~/Claude's workspace/Scheduled/`（Cowork store，19 班 disable 后冻结）。**新机制事实（2026-08-02 实测，改写本条的关键）**：保护**跟随 store**——`~/Gateway-workspace/Scheduled` 沙箱挂载同样被拒，故原设想「镜像脚本加第二源、沙箱自动化」**此路不通**；gateway 树的读取只有两条路：Mac 原生（`scheduler_snapshot.py` 已备 `GATEWAY_TREE` 常量、未接线）或 Doctor 终端 rsync 进镜像。**现状**：① `scheduler-weekly-audit` 已于 08-02 20:00:59 PDT 在本壳首点火（lastRunAt 实据），其产出/噪音表现待核——它在本壳跑脚本必报「live 树读不到」（`~/Claude's workspace` 沙箱不可达），每周一次的噪音 or 有价值告警，观察；② 巡检的 git diff 变更检测只见 Cowork 侧（冻结），**Kimi 侧班 prompt 变更无人盯**（如本次 longyu sed 修正即属此类）；③ `_DEPRECATED_Scheduled_20260802` 与新 live store 并存，`DEAD_ARCHIVED_GLOB` 语义待重估；④ `DEAD_TREE`（`~/Documents/Claude/Scheduled`）语义已改注释为「正常=不存在、再现=异常」。触发点：下次周巡检（08-09）后据实际表现定改法。**⇒ 2026-08-10 /todo 实测**：08-09 20:00 周巡检班在 Kimi 壳干净退出并贴 Doctor 终端命令（每周一次轻噪音，有「巡检中断自证」兜底、断档不被静默吞掉）；Doctor 20:18 原生跑 exit 0 无异常——但脚本 LIVE_TREE 扫的仍是冻结 Cowork 树，**Kimi 侧 gateway store 的班 prompt 变更依旧无人盯**（GATEWAY_TREE 常量备而未接线）。~~改法仍待 Doctor 定~~ **⇒ 2026-08-11 Doctor 定案：镜像 diff 线覆盖**——rsync 刷新并进周巡检班提醒（班 prompt 已改 · update_scheduled_task 落），镜像进 git 则 Kimi 侧班 prompt 变更一条 diff 可见；脚本不接 GATEWAY_TREE、零改动。08-16 周巡检班首验并班。
   依据：`logs/checkpoints/2026-08-02_19班迁Kimi壳与三级司法_PRD.md` §三 非交付项 · D13/D14 遗留
+
+- [ ] **龙鱼 · claude 写库器口径标签升级裁定（2026-09-12 挂 · 源：`logs/2026-09-12-龙鱼五力双scorer周更.md`）**：write_claude_score.py 的 `_meta` caliber 仍写死「v2·维度正交+议价毛利率(2026-07-06锁)」，而判分纪律已演化至 v3（08-30 供需四补）/v4（09-03 公司级兑现口径）——本周 CC 判分实际按 v4 纪律执行但记录标签仍 v2（趋势工具按记录口径标，v2 序列连续性保住、标签语义失真）。待 Doctor 裁：升级写库器标签（会打断既有 v2 趋势序列连续读数）或维持 v2 标签+显式注记。
+
+- [ ] **龙鱼 · 看板模板 meta 页头同步（2026-09-12 挂 · 源：`logs/2026-09-12-龙鱼五力双scorer周更.md`）**：board_template.html 的 meta description 仍写 95 标的/20 常更/10 持仓，实际 120/25/11（模板只由 Mac 就地运行 build_dark_board.py 时更新，沙箱只刷数据不碰版式）。Doctor Mac 跑一次 build_dark_board.py 即同步，非阻塞。
+
+- [ ] **龙鱼 · 电科蓝天 Δ−19 真分歧共存观察（2026-09-12 挂 · 源：`logs/2026-09-12-龙鱼五力双scorer周更.md`）**：claude 62.5/ds 43.5，最大分歧维技术供需−10，诊断=真分歧共存（ds 小TAM折价 vs claude 垄断+航天认证壁垒）；申菱环境 Δ+35 属 63 天跨期不入队。触发回捞：未来 2-3 周若「小市场垄断型」（军品/宇航）标的反复出现 ds 供需端系统性低估 → 提修供需锚点（小TAM≠弱需求）。
 
 ---
 
