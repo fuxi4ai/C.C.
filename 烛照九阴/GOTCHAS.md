@@ -516,3 +516,5 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 
 **追记（2026-09-12 深夜 · VV 第四轮复验后修复 · 状态 🔄 已修待验·第五轮）**: 读数与显示合同收口——① **真零可评**：缺失/金额 NULL 计数改用 `COUNT(CASE…)`（空集返回 0，SUM 返回 NULL 曾致真零误拒）；② **覆盖下界差一天**：窗口 `(D-10,D]` 首个包含日=`D-9`，覆盖判断/查询/提示统一从 `win_start` 派生（恰好覆盖 `[09-02,09-11]` 不再被误拒）；③ **单事务快照读**：risk_daily 改单连接 `BEGIN` 显式只读事务（金额/覆盖/hash/质量/分母同一版本——VV 竞态反例 10亿→400亿不再混读）；烛照 md 连接 IPO 段同款 BEGIN/COMMIT+ROLLBACK；④ **候选先验后选**：coverage 候选遍历（区间含窗口+complete+hash 一致才可用），未来无关扫描不再遮住有效覆盖；⑤ **首屏三态统一**：状态仅从 F4/F5 派生（pending/na 均属未知），徽标（blabel/emoji）与正文共用同一状态「部分不可评」，F3 等信息层缺失只在明细；⑥ **旧 schema 迁移**：ensure_table 改 PRAGMA 检查补列（events_hash/funds_missing），旧行无法认证保持未验证、不做破坏性迁移。**判定式复验**：空窗口聚合=0（真零可评）/win_start 边界/候选选择三反例全过 + py_compile 4 文件 ✓。
+
+**追记（2026-09-12 深夜 · VV 第五轮复验后修复 · 状态 🔄 已修待验·第六轮）**: ① 候选覆盖 SQL 双端改**窗口过滤下推**（`WHERE scan_start<=? AND scan_end>=? AND complete=1 AND events_hash IS NOT NULL`），无关未来扫描不再靠 LIMIT 5 侥幸；② 最老版 schema（scan_end 主键）迁移改 **rename 留档 + 重建新表**（旧行无法认证保留在 `ipo_coverage_legacy_*`），不再只警告。判定式复验（最老表迁移实跑）+ py_compile 双端 ✓。
