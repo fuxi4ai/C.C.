@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+- [ ] **安全 · Gangtise bearer 轮换与本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。未测试凭据有效性、未执行轮换。**待 Doctor**：① Gangtise 服务端撤销/轮换该凭据；② 本地历史明文清理（Claude 本地配置在 Library 下·沙箱不可达·清理命令 CC 可构造·具体路径以 VV 定位为准）。
+
 - [ ] **风险日报 · fomc_market_exp.json 手更（2026-09-11 挂 · 源：`logs/2026-09-11-TACO与地缘手工层更新.md`）**：CME FedWatch 读数 08-13 陈旧（卡面已带⚠标注 fail-visible）· 9/15-16 FOMC 会前需 Doctor 浏览器核新读数更新手填槽（FedWatch 无免费 API · 每会前手更惯例）· 更新后全报 data_cutoff.value 再前移。
 
 - [ ] **PEC · 9-30 中评首读（2026-08-21 挂 · 源：`logs/2026-08-21-PEC美以伊60天窗与利益透镜复审.md`）**：IR-P3 新基准 / 僵持命题 / 镜像命题 / 行为走廊修订。**IR-P6 净读拍板已销 ✓〔2026-08-21 Doctor 拍「净读回中性」· register 已落 · `logs/2026-08-21-美债解法与财政巩固政治学.md` 场〕**。
