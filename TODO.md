@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-09-12
+updated: 2026-09-13
 status: active
 type: log
 ---
@@ -10,6 +10,8 @@ type: log
 # TODO
 
 ## 待办
+
+- [ ] **渊图按需更新组核实批 · 续跑（2026-09-13 挂 · 源：`raw/核实/2026-09-13-渊图按需更新组核实札记.md` · Doctor 裁「暂停，等新会话配额」）**：① wave3 未核 105 条重跑 + 3 条 needs_correction QC 落盘；② 剩余 38 视频 + 6 非视频（wave4+）；③ wave-2 3 条 unchecked_quota 补核；④ P2 阶段复用 210 篇与 08-16 普查/09-09 十六条批去重口径；⑤ 入库候选清单三桶（坐实/存疑/未核）。执行资产：`outputs/verify-20260913/`（assignments/ledgers/QC）+ PRD `brain/logs/checkpoints/2026-09-13_渊图按需更新组核实批_PRD.md`。已完成：wave1-2 共 48 篇/268 断言/35 处订正落盘（ledger 在组 `_evidence/2026-09-13/`）。续跑流程：生成 assignment → 4 subagent 批 → 独立 QC → CC applier 落盘。
 
 - [x] **安全 · Gangtise 本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。① 服务端撤销/轮换 → **已取消（2026-09-12 Doctor 裁：「取消，不用轮换，Gangtise 已基本弃用」）**；② 本地明文清理 → **✅ 已闭环（2026-09-13 CC 代勾·机器证据）**：VV W6 交付报告实读「`~/.claude/settings.local.json` 原 /permissions/allow/88、89、90、91、93、95、96 共 7 条含 bearer 的权限命令已精确移除·JSON 回读有效」+ Doctor 终端两轮实跑——残留 12 条 gangtise 相关 allow 条目全部为无凭据安装/卸载命令（mkdir /tmp、curl 下载 zip、cp skills、rm 卸载），凭据形状正则（Bearer/sk-/token 长串）检测 0 命中。剩卫生项：12 条无凭据命令是否从 allow 清除 → **2026-09-13 Doctor 裁「Gangtise 已明确退役，安全删除或归档 fuxi」** → CC 构造清理命令已交付（备份 `.bak_20260913_pre_gangtise_cleanup` + 过滤 12 条 + JSON 回读验证 + home 区 skills 残留核删）· 执行留痕待 Doctor 回执。
 
