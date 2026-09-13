@@ -169,5 +169,5 @@ project: 龙鱼五力
 **预防门禁**: 写库器对「可选但应存在」的字段加存在性断言；周更班收尾核对 engine_facts 填充率。
 **来源**: 2026-09-11 VV 独立审计 · CC 实读 write_claude_score.py L31-39 + records 23 条实读
 
-**2026-09-12 VV 本次快照复验与现行口径**：完整 `_facts_from_pack` 委托 `_facts`，原始引擎结构正控保留 0/空串/False；含非空 engine_facts 的已提取包输出 18 个 None + `fin_score="None/5"`。本条标题已纠正；上文历史叙述中的「19 全 None」「空 pack 返回 {}」以此为准：L37 仅在未提供路径或路径不存在时返回 {}，不能概括空文件或空对象。本轮未读 records，未重新确认历史 23 条，也未证明六维分受影响。建议按明确 schema 分流原始/已提取包，未知结构拒绝，逐字段保留合法空值；是否回补须先绑定同股同刻原包。证据 `/Users/lunarabbit/Documents/AI4ME/Financial-Audit-outputs/harness-rollout/五项目注册与自检_20260912/business-replays.json` longyu_pack；独立重放一致。代码未修，仍待 Doctor 审批。
+**2026-09-12 实施（Doctor 问答板批「VV 建议修法」）**：`_facts_from_pack` 已改 pack 结构分流——①顶层含 engine_facts（已提取包）→ 直取并保留合法空值（0/""/False）；②无 engine_facts 但有原始引擎段 → 委托 `_ss._facts`；③未知结构 → raise 拒绝（不静默写全 None）。冒烟 5/5 实跑通过（已提取包取真值 / 原始包 fin_score=3.2/5 / 未知结构 raise / 不存在包 {} / 非对象 raise）。**09-10 批次 23 条回填**：同股同刻原包绑定（`_packs_claude/{ts}.json`·`_extracted_at=2026-09-10`）23/23 成功 · 备份 `records_backup_20260912_pre_backfill.tar.gz`（23 文件）· 复验 broken 残留 0 · 抽样 300308 pe_ttm=51.26 全 19 键非空 + `_meta.engine_facts_backfill` 标记。回填脚本 `outputs/cc_backfill_engine_facts_20260912.py`（fail-closed：路径错/空扫即拒）。状态 🔄 已修待验（实施者不自标 ✅）· 独立验收归未参与实施的 subagent/Doctor。
 

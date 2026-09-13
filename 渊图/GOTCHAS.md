@@ -589,6 +589,8 @@ project: 渊图
 
 **追记 2026-09-12（同根复发 · 第 9 例 · 存量双节点 · Doctor 批「同意」合并手术）**: `company_Lanqi`（澜起科技·度1·desc 薄「国信证券推荐」·估值 props 5 键：net_profit_2026e 28.84 亿/pe_2026e 54/market_cap_2026apr 1555 亿）与 `company_MontageTechnology`（澜起科技·度5·desc 富 DDR RCD 龙头）为同一公司双节点——两批不同来源各自建节点未撞（形态同 09-01 第 4 例存量双节点）。**处置**：合并手术 `outputs/surgery_lanqi_merge_20260912.py`（Doctor 批）——度高者主 · props 5 键迁入（冲突 0）· aliases 并入「688008.SH」+旧 id · desc 增量句并入 · 1 边重指（concept_AnalogChipCycleUpturn2026 → survivor · 边 id 留旧）· 墓碑 `_tombstones/2026-09-12_lanqi_merge.json` · 备份 `bak_surgery_lanqi_20260912_203905` · 手术记录 `_v3_20260912_澜起双节点合并_手术记录.json` → **5584/6220 → 5583/6220** · QA 全闸绿（悬挂0/自环0/非法type0/同三元组0/双id重复0/双空0）+ 独立读盘复验（survivor 度 6·props 13 键·aliases 8）· 状态 🔄 已修待验（实施者不自标 ✅）。**第 9 例 · 预防门禁候选已 5 连**（同名实体检测固化进 QA 脚本）——按合同应升格，归 Doctor 裁。**来源**：2026-09-12 resume 场（四件批执行）。
 
+**追记 2026-09-12 深夜（第 9 例处置同日 · Doctor 问答板批「固化进 QA」）**：预防门禁第 16 项实装——`rules/kg_promote.py` 增「同名实体检测」闸：新 company 节点 name/aliases ∩ 存量 name/aliases（大小写/空白归一·精确整串匹配）非空即拦，批内新节点互撞同拦；只查 company 类（product/概念类跨公司通用名多、误报风险高，不纳入）；存量豁免（与第 12/13 项同口径）。持久化负向测试 `rules/test_kg_promote_gate16.py` **8/8 PASS**（撞存量 name / 撞存量 aliases 归一 / 批内互撞 / 唯一名过闸并在临时沙箱 canonical promote 成功 · 全程断言真实 canonical SHA 不变）。状态 🔄 已修待验（实施者不自标 ✅）· 独立验收归未参与实施的 subagent/Doctor。**注**：实体错配族「应升格通用教训」已 3 次登记，升格仍归 Doctor 裁。
+
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 
 **状态**: 🔄 已修待验（2026-09-01 整合手术已执行：`concept_ScaleUpSwitchProtocolOSA` → `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases·name/desc 重写·边端点同步·边 id 留旧）+ `product_Shengke51p2TSwitchChip` desc「OSA→OISA」· 备份 `bak_surgery_centec_oisa_20260901_*` · 手术记录 `mapping/_v3_20260901_盛科曦智OISA整合_手术记录.json` · 复检全绿·实施者不自标 ✅）
