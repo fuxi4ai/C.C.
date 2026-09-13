@@ -11,7 +11,7 @@ type: log
 
 ## 待办
 
-- [x] **安全 · Gangtise 本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。① 服务端撤销/轮换 → **已取消（2026-09-12 Doctor 裁：「取消，不用轮换，Gangtise 已基本弃用」）**；② 本地明文清理 → **✅ 已闭环（2026-09-13 CC 代勾·机器证据）**：VV W6 交付报告实读「`~/.claude/settings.local.json` 原 /permissions/allow/88、89、90、91、93、95、96 共 7 条含 bearer 的权限命令已精确移除·JSON 回读有效」+ Doctor 终端两轮实跑——残留 12 条 gangtise 相关 allow 条目全部为无凭据安装/卸载命令（mkdir /tmp、curl 下载 zip、cp skills、rm 卸载），凭据形状正则（Bearer/sk-/token 长串）检测 0 命中。剩卫生项：12 条无凭据命令是否从 allow 清除（推荐清·待 Doctor 裁）。
+- [x] **安全 · Gangtise 本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。① 服务端撤销/轮换 → **已取消（2026-09-12 Doctor 裁：「取消，不用轮换，Gangtise 已基本弃用」）**；② 本地明文清理 → **✅ 已闭环（2026-09-13 CC 代勾·机器证据）**：VV W6 交付报告实读「`~/.claude/settings.local.json` 原 /permissions/allow/88、89、90、91、93、95、96 共 7 条含 bearer 的权限命令已精确移除·JSON 回读有效」+ Doctor 终端两轮实跑——残留 12 条 gangtise 相关 allow 条目全部为无凭据安装/卸载命令（mkdir /tmp、curl 下载 zip、cp skills、rm 卸载），凭据形状正则（Bearer/sk-/token 长串）检测 0 命中。剩卫生项：12 条无凭据命令是否从 allow 清除 → **2026-09-13 Doctor 裁「Gangtise 已明确退役，安全删除或归档 fuxi」** → CC 构造清理命令已交付（备份 `.bak_20260913_pre_gangtise_cleanup` + 过滤 12 条 + JSON 回读验证 + home 区 skills 残留核删）· 执行留痕待 Doctor 回执。
 
 - [x] **风险日报 · fomc_market_exp.json 手更（2026-09-11 挂 · 源：`logs/2026-09-11-TACO与地缘手工层更新.md`）**：✅ 2026-09-12 CC 联网多源核验写入（Doctor 批「写入（推荐）」）——as_of=2026-09-11（8 月 CPI 公布后）· hike 88.8 / hold 11.2 / cut 0（格隆汇/金十/证券之星/九方智投/同花顺 5+ 独立源收敛·CME 官方页 JS 渲染沙箱不可直读、转述源已在 source/note 标注）。证据：JSON 回读实核（p 合计 100.0 · 字段全对）。data_cutoff.value 前移随次早 build 自然带出；决议 09-16 落地后 outcome 回填走 JSON 自身机制；周日 18:00 ET 期货开盘后若读数大动可补手更（note 已留提示）。
 
