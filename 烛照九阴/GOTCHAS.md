@@ -518,3 +518,27 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **追记（2026-09-12 深夜 · VV 第四轮复验后修复 · 状态 🔄 已修待验·第五轮）**: 读数与显示合同收口——① **真零可评**：缺失/金额 NULL 计数改用 `COUNT(CASE…)`（空集返回 0，SUM 返回 NULL 曾致真零误拒）；② **覆盖下界差一天**：窗口 `(D-10,D]` 首个包含日=`D-9`，覆盖判断/查询/提示统一从 `win_start` 派生（恰好覆盖 `[09-02,09-11]` 不再被误拒）；③ **单事务快照读**：risk_daily 改单连接 `BEGIN` 显式只读事务（金额/覆盖/hash/质量/分母同一版本——VV 竞态反例 10亿→400亿不再混读）；烛照 md 连接 IPO 段同款 BEGIN/COMMIT+ROLLBACK；④ **候选先验后选**：coverage 候选遍历（区间含窗口+complete+hash 一致才可用），未来无关扫描不再遮住有效覆盖；⑤ **首屏三态统一**：状态仅从 F4/F5 派生（pending/na 均属未知），徽标（blabel/emoji）与正文共用同一状态「部分不可评」，F3 等信息层缺失只在明细；⑥ **旧 schema 迁移**：ensure_table 改 PRAGMA 检查补列（events_hash/funds_missing），旧行无法认证保持未验证、不做破坏性迁移。**判定式复验**：空窗口聚合=0（真零可评）/win_start 边界/候选选择三反例全过 + py_compile 4 文件 ✓。
 
 **追记（2026-09-12 深夜 · VV 第五轮复验后修复 · 状态 🔄 已修待验·第六轮）**: ① 候选覆盖 SQL 双端改**窗口过滤下推**（`WHERE scan_start<=? AND scan_end>=? AND complete=1 AND events_hash IS NOT NULL`），无关未来扫描不再靠 LIMIT 5 侥幸；② 最老版 schema（scan_end 主键）迁移改 **rename 留档 + 重建新表**（旧行无法认证保留在 `ipo_coverage_legacy_*`），不再只警告。判定式复验（最老表迁移实跑）+ py_compile 双端 ✓。
+
+**追记（2026-09-13 · VV 复核撤回 1.5 挂班方案 · 状态 🔄 已修待验·第七轮）**: CC 提出的「refresh-risk-daily 班生成前续采」方案被 VV 三点证伪后撤回——① **分段续采恢复不了可评**：消费合同要求单条覆盖完整包含十日窗，续采窄条 `[09-13,09-13]` scan_start 晚于窗口起点、旧条 scan_end 落后北京日，两条皆不满足（判定式复验复现）；② **结束日未绑北京日**：fetch_ipo 默认 --to 取主机 PT 日，落后消费者一天；③ **整库放回丢他人写入**：/tmp 副本覆写回 live 会覆盖同库其他写入方的新行（VV 小库实测 integrity ok 但行丢失）——错峰只是概率非机制。**转向（VV 定案）**：停用班内 1.5（SKILL 回滚）；采集改 **Mac 原生滚动窗口 `[D-29, D]`**（北京日 D 显式 --to），直写 ipo_daily/ipo_coverage 两表不做整库放回（SQLite 行级锁并发安全）；失败保持不可判、日报照常。落地件：`scripts/fetch_ipo_rolling.sh`（已建·bash -n ✓·判定式复验三案全过）。执行面（launchd 挂载/手动惯例）归 Doctor 裁。
+
+**追记（2026-09-13 · VV 复核常驻模板两处调整 · 状态 🔄 已修待验·第八轮）**: ① **改时间**：15:00 PT = 北京次日 06:00（夏令时）/07:00（冬令时），到 09:08 PT 日报班时证明仍落后一天——改为**每日 09:00 PT（覆盖周末）**，仅 8 分钟提前量（VV 标残余风险：休眠/网络/后台权限需一次实际作业验收）；② **固定解释器**：`/bin/bash → python3` 依赖环境 PATH，系统 python3 缺 tushare——改为 **`fetch_ipo_rolling.py`**（`#!/usr/bin/env python3.13`·zoneinfo 算北京日·import 同目录 fetch_ipo），launchd ProgramArguments 用 python3.13 绝对路径+脚本路径；③ 窗口写法勘误认领：十日窗应为 **(09-03, 09-13]**（D-10 起），09-04 无事件故当期数值未受影响。旧 `fetch_ipo_rolling.sh` 由 Doctor 终端删除（本轮临时产物）。
+
+**追记（2026-09-13 · launchd 运行时切换完成 · 状态 🔄 已修待验·第九轮）**: VV 差异复验四例（北京午夜前后/冬令时/采集异常）通过后，Doctor 部署 VV 无占位符 plist（python3.13 框架绝对路径 `/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13`·每日 09:00 PT·HOME/PATH 显式）并 kickstart 试跑——`launchctl list` LastExitStatus=0 · 日志「IPO 滚动采集 [20260815,20260913]·写入 14 申购日 18 只 207 亿」· 同日幂等实核：覆盖行 REPLACE 同键、events_hash 不变（9fe74bae…）、窗口 23.832 亿/4 家未变、消费判定可评 ✓ · 旧 `fetch_ipo_rolling.sh` 已删（先切后清·VV 顺序）。**残余边界（照录 VV）**：后台权限与真实作业长期行为、正式产物更新（明晨 09:08 PT 班后回读）仍未核。
+
+## [NOTE-20260914-001] launchd 有装机无源——com.zhuzhao.ipo-rolling plist 源未落 ops/（2026-09-14 周巡检发现 · CC 实核确认）
+
+**状态**: 🔄 已修待验（2026-09-14 CC 修复：plist 归位 + README 三班登记 · 实施者不自签 ✅）
+
+**现象**: 2026-09-14 周巡检 🔴「com.zhuzhao.ipo-rolling ⚠ 有装机无源——在跑但项目里没有可维护的源文件」（装机 mtime 2026-09-12 23:40 · 已加载 · last exit 0）。
+
+**根因**: 09-12/13 IPO 常驻上线时，无占位符 plist 由 VV 在复验证据目录（AI4ME/Financial-Audit-outputs/…/python_entry_diff/）生成、Doctor 直接部署到 ~/Library/LaunchAgents——**装机与源分离**：源唯一副本留在审计输出位而非项目维护位 ops/，README_launchd.md 亦未登记第三班（仍写「两个 job」）。
+
+**影响面**: 重装/误删无法从仓内恢复；plist 改动无法走仓内 review 与 git 审计；文档与实装不一致；巡检每周报 🔴 直到修复。
+
+**修复（2026-09-14 CC）**: ① plist 副本归位 `ops/com.zhuzhao.ipo-rolling.plist`（与证据目录 SHA 双端一致 0303ae4e…）；② README_launchd.md 登记第三班（标题/三班表/落地状态/安装段/历史段五处）；③ 本条目留痕。git commit 走 Doctor 终端。
+
+**验收判据**: 下周日 20:00 周班重跑后，`_scheduler_snapshot.md` 面③ 不再报「有装机无源」。
+
+**⚠ 应升格通用教训**：装机与源分离＝发布链洞同族——DVA NOTE-20260820-001/002/003（换 runtime 丢 fuxi 侧文件三连）后第 4 例跨项目出现；升格由通用教训维护侧裁。
+
+**来源**: 2026-09-14 周巡检快照（Doctor 终端实跑）· CC 实核：ops/ 无 plist + VV 证据目录有源 + .git/index 明文核 fetch_ipo_rolling.py 已跟踪

@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-09-07T06:25:00-07:00",
+  "generated_at": "2026-09-14T01:17:15-07:00",
   "triggered_by": "scheduled",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
@@ -12,7 +12,7 @@
  ],
  "cowork_live": {
   "path": "/Users/lunarabbit/Gateway-workspace/Scheduled",
-  "count": 22,
+  "count": 24,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
@@ -37,9 +37,9 @@
    {
     "taskId": "baize-weekly-report",
     "has_skill": true,
-    "skill_mtime": "2026-08-11 09:01",
-    "skill_sha12": "e00689cd613a",
-    "skill_lines": 120,
+    "skill_mtime": "2026-09-11 07:05",
+    "skill_sha12": "ceb38eb5b8ad",
+    "skill_lines": 118,
     "name": "baize-weekly-report",
     "desc_head": "白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周更）",
     "cron": null
@@ -65,11 +65,21 @@
     "cron": null
    },
    {
+    "taskId": "eal-starfield-rebuild",
+    "has_skill": true,
+    "skill_mtime": "2026-09-13 19:29",
+    "skill_sha12": "10c2e219deb3",
+    "skill_lines": 14,
+    "name": "eal-starfield-rebuild",
+    "desc_head": "EAL·SOX 事件星空快照日更重建（risk-daily 第三标签源）：行情守卫→沙箱标准链 build→对表验证；防快照冻结致「星星在、流线空」（2026-09-13 根因）",
+    "cron": null
+   },
+   {
     "taskId": "event-attribution-watch",
     "has_skill": true,
-    "skill_mtime": "2026-09-01 10:20",
-    "skill_sha12": "2547c761da18",
-    "skill_lines": 199,
+    "skill_mtime": "2026-09-07 07:51",
+    "skill_sha12": "83363c6f631f",
+    "skill_lines": 6,
     "name": "event-attribution-watch",
     "desc_head": "EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→a…",
     "cron": null
@@ -82,6 +92,16 @@
     "skill_lines": 44,
     "name": "guanxing-fed-daily",
     "desc_head": "白泽观星 Fed 腿日更：每日跑 fetch_fed_inputs_fred.py --predict 取最新 FRED 读数并出会前读数快照（fed_inputs + fed_prediction 落盘），新鲜度守卫+…",
+    "cron": null
+   },
+   {
+    "taskId": "longyu-equity-thesis-weekly",
+    "has_skill": true,
+    "skill_mtime": "2026-09-11 05:53",
+    "skill_sha12": "3fc4f3607996",
+    "skill_lines": 29,
+    "name": "longyu-equity-thesis-weekly",
+    "desc_head": "每周六 14:00 PT 用 equity-thesis 技能对龙鱼持仓标的逐个做个股定性研究并落盘 equity-thesis/，22:00 双 scorer 周更班重建看板时自动带出",
     "cron": null
    },
    {
@@ -107,8 +127,8 @@
    {
     "taskId": "r7-threshold-recal",
     "has_skill": true,
-    "skill_mtime": "2026-08-10 21:16",
-    "skill_sha12": "75a8c2736866",
+    "skill_mtime": "2026-09-07 08:16",
+    "skill_sha12": "b5f804200b2b",
     "skill_lines": 17,
     "name": "r7-threshold-recal",
     "desc_head": "一次性：r7 USDJPY 急动阈值 v0 复校（首个实战🔴或两个月后之约）",
@@ -137,21 +157,21 @@
    {
     "taskId": "refresh-asset-dashboard",
     "has_skill": true,
-    "skill_mtime": "2026-08-10 21:13",
-    "skill_sha12": "551931302c3d",
-    "skill_lines": 50,
+    "skill_mtime": "2026-09-13 00:31",
+    "skill_sha12": "2e5dedf48bbe",
+    "skill_lines": 58,
     "name": "refresh-asset-dashboard",
-    "desc_head": "重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact），日更；挂载 Projects+Database+brain 三目录，覆盖 14/15 project + brain 治理计数…",
+    "desc_head": "重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact→conch清空盘点），日更；挂载 Projects+Database+brain+4AI 四目录，覆盖 14/15 projec…",
     "cron": null
    },
    {
     "taskId": "refresh-risk-daily",
     "has_skill": true,
-    "skill_mtime": "2026-08-12 18:56",
-    "skill_sha12": "2baa154d130d",
-    "skill_lines": 21,
+    "skill_mtime": "2026-09-12 22:59",
+    "skill_sha12": "08daf3e059b6",
+    "skill_lines": 28,
     "name": "refresh-risk-daily",
-    "desc_head": "每日刷新「风险日报」artifact（fetch TACO 外部分项·禁代理 → build_risk_daily.py → update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写）",
+    "desc_head": "每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → build_risk_daily.py → update_artifact；挂载盘 SQLite 一…",
     "cron": null
    },
    {
@@ -238,10 +258,8 @@
  },
  "documents_dead_tree": {
   "exists": false,
-  "archived_as": [
-   "_DEPRECATED_Scheduled_20260802"
-  ],
-  "note": "✅ 已归档（改名不删）"
+  "archived_as": null,
+  "note": "✅ 不存在"
  },
  "launchd": {
   "sources": {
@@ -257,6 +275,19 @@
    }
   },
   "installed": {
+   "com.fuxi4ai.audit-harness.dispatch": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.fuxi4ai.audit-harness.dispatch.plist",
+    "installed_sha12": "5073310dd55b",
+    "installed_mtime": "2026-09-12 02:18",
+    "program": "/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/.venv-audit/bin/python",
+    "schedule": null,
+    "run_at_load": true,
+    "runtime": {
+     "loaded": true,
+     "state": "not running",
+     "last_exit_code": "0"
+    }
+   },
    "com.google.GoogleUpdater.wake": {
     "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.google.GoogleUpdater.wake.plist",
     "installed_sha12": "588a78258152",
@@ -291,6 +322,22 @@
     "runtime": {
      "loaded": false,
      "detail": "未加载（launchctl print 非 0）"
+    }
+   },
+   "com.zhuzhao.ipo-rolling": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.zhuzhao.ipo-rolling.plist",
+    "installed_sha12": "322645406d67",
+    "installed_mtime": "2026-09-12 23:40",
+    "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
+    "schedule": {
+     "Hour": 9,
+     "Minute": 0
+    },
+    "run_at_load": null,
+    "runtime": {
+     "loaded": true,
+     "state": "not running",
+     "last_exit_code": "0"
     }
    },
    "com.zhuzhao.marketdata": {
@@ -329,7 +376,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "1"
+     "last_exit_code": "0"
     }
    },
    "com.zhuzhao.usclose": {
@@ -384,7 +431,12 @@
     }
    }
   },
-  "consistency": []
+  "consistency": [
+   {
+    "label": "com.zhuzhao.ipo-rolling",
+    "issue": "⚠ 有装机无源——在跑但项目里没有可维护的源文件"
+   }
+  ]
  },
  "crontab": {
   "entries": [

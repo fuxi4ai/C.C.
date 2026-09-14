@@ -24,3 +24,4 @@
 > 📦 2026-09-07 staging 件归档（Doctor 裁「staging 归档、创意件留原地」）：`~/Documents/_staging_engine_sox_2026-09-05.py`、`_staging_sox_backfill_2026-09-04.py`、`_staging_skillaudit_flagfix_2026-08-31_SKILL.md` → `brain/archived/staging_2026-09-07/`（移动后大小 65270/2107/7247 与原地一致）。本表第 14-16 行及各日志中的旧路径引用，以此注记为准。
 
 > ✅ 2026-09-09 Doctor 落签（AskUserQuestion 裁「两行一起 ✅」）：09-07T06:30 判据满足行 + 06:40 实体归因行——快照 generated_at 前进且 triggered_by=scheduled 机器证据 + 周班会话 running 实读归因，08-31 起挂账的验收判据闭环。
+| 2026-09-14T01:35-07:00 | 09-13 周班沙箱零效用（贴两命令）→ Doctor 终端实跑巡检 exit 1：🔴 com.zhuzhao.ipo-rolling「有装机无源」 | S1 恢复基线（快照 generated_at=09-14T01:17 前进 · triggered_by=scheduled ✓）+ 修复：plist 源归位 `烛照九阴/ops/com.zhuzhao.ipo-rolling.plist`（与 VV 证据目录 SHA 双端一致 0303ae4e）+ README_launchd.md 三班登记 + 烛照 GOTCHAS NOTE-20260914-001（标应升格通用教训） | plist/README/GOTCHAS 均在 git 内，可回退 | 下周日 20:00 周班重跑后快照面③ 不再报「有装机无源」+ Doctor 落签 ✅ | CC(本场) | 🔄 |
