@@ -194,7 +194,7 @@ project: 剑酒青丘
 **来源**: 2026-09-11 VV 独立审计 4.3 节 · CC 实读 risk.py L53-62 一致
 
 ### [NOTE-20260913-001] EAL 星空快照冻结×页面按日重锚 → 风险日报第三标签「星星在、流线空」5 天（2026-09-13 Doctor 报修 · 当日重建+挂班）
-**状态**：🔄 已修待验（当晚沙箱标准链重建：candles 137→141·market_as_of 09-11·SHA ad81933b…；build_risk_daily.py 重跑+update_artifact 已推；新建日更重建班 eal-starfield-rebuild〔工作日 18:15 PT·行情守卫 skip 机制〕；待 Doctor 目验 + 班首跑自然验证）
+**状态**：✅ 已修复（2026-09-13 Doctor 目验通过落签 · CC 代记留痕；视觉层验收闭环）；eal-starfield-rebuild 班首跑待周一晚自然验证（机制层）
 **优先级**：🟡 中（用户可见·不涉数据损坏）
 **硬证据/最小复现**：旧快照内嵌 JSON candles 末根=2026-09-04；`starfield_view.js` `viewForDate` 每次打开按「美东今天」把 default/expected_session 重锚为最近已收盘交易日（`current=sessions.filter(d=>d<today).at(-1)`）；`render()` 中 `if(g.base!==null)` 守卫 K 线绘制，中心日收盘价缺失即「零轴与 K 线暂停绘制」、仅事件星渲染。机器复算：2026-09-13 打开锚定 09-11（旧快照无此日 candle）→ base=null → 空线，与 Doctor 症状一致；09-08 当天锚定 09-04（有 K 线）→ 当日视觉迭代正常，自洽。
 **根因**：① 快照无任何重建机制（09-08 构建后冻结，refresh-risk-daily 班每日原样嵌入）；② 页面按日重锚 + 数据冻结 = 中心日必然缺 K 线。两因相乘；与 NOTE-20260911-001（数据链班 adapter 守卫停更）是**两个独立故障**，本故障不依赖那条修复。
