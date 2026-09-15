@@ -34,7 +34,7 @@ project: 渊图
      NOTE-20260826-001（结构瑕疵三观察 · ⚠️ 待裁 · 检查清单已提炼）。
      另 5 条已修待验（ERR-20260820-001/NOTE-20260901-002/NOTE-20260828-001/NOTE-20260901-001/NOTE-20260910-001）
      证据实读核过（边完整性/OISA/胜宏 props/find_latest_kg/wiki 2285 卡差集+prop_table 映射）· ✅ 落签归 Doctor；
-     NOTE-20260816-001 状态词归一 ⚠️。消化后计数：仍开 🟥/⏳ = 0 · 🔄 待修复 = 2 · ⚠️ 待裁 = 2 · 待 Doctor 落签 ✅ = 5。 -->
+     NOTE-20260816-001 状态词归一 ⚠️。消化后计数：仍开 🟥/⏳ = 0 · 🔄 待修复 = 2 · ⚠️ 待裁 = 2 · ✅ 2026-09-14 晚 Doctor 批「批准收取」→ 5 条已落签（CC 代记）。 -->
 
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
@@ -565,7 +565,7 @@ project: 渊图
 **追记 2026-08-22（德科立「谷歌300台」案例 · 同族新变体：调研测算语境→「已交付」事实）**：帕米尔 2026-06-24 硅光波导 OCS 调研 L59「德科立主攻硅光波导OCS，32端口产品**已交付谷歌300台**」被 research-帕米尔 2026-06-28 按事实入库（`metric_DekeliOCS32PortOrders2026` props google=300/delivered=300 + `company_Dekeli` desc），并与图内 `event_OCSVolumeOrder`（2026-06-09·「谷歌10台样品+英伟达10台」口径）**图内互斥**。Doctor 专项核查三步：① **时间窗比对**——官方 2026-04-03 异动公告（「样品交付与客户验证阶段·尚未取得批量订单」）与 2026-08-21 投资者关系记录（「尚未直接向谷歌供货·通过合作伙伴推进验证及未来小批量供应·2027 年内才可能有部分收入」）两次澄清均与「已交付300台」冲突，官方最新口径晚于纪要两个月仍持否认立场，**非时序窗口、属正面冲突**；② **原文追溯**——raw 原文确有此句、非入库转译变形，但位于「谷歌2026年采购量测算」段落（与 Lumentum 4000台/Coherent 1400台并列的**分配测算语境**），且该段测算与谷歌特邀报告口径（约1.5万台总量·自研系9000-12000台·外购约3000台）整体对不上；③ **交叉信源**——全部外部信源仅见「谷歌10台样机」（雪球/韭研公社多帖），300台无任何独立印证。**判定**：300台＝单一调研纪要的测算语境数字，与官方公告正面冲突，图谱侧应标存疑待修（修复方案待 Doctor 裁：A 修正为10台样品口径 / B 保留原文并标注调研口径未证实 / C 该篇纪要整体降级）。**当前状态**：🔄 图谱节点未动（被审资产只读），本追记为治理留痕。**变体要点（2026-08-22 Doctor 纠错订正）**：原文即「已交付」陈述句、入库忠实无变形——**错在语料层，不是入库层**：纪要撰写者把「测算/分配语境」写成「已发生事实」陈述（本条第②层「语料层的错修不掉」的新案例：非主播口播错，系纪要原文错）。入库层无从识别（原文无时态标记可辨），唯一可拦防线＝断言级数字与法定披露交叉核查（本次靠官方两次公告对撞发现）。原「信源定级缺『语境时态』校验维度」表述收回——语境在原文中不可辨识，该建议不可落地。
 
 ## [ERR-20260820-001] 光纤场 2 条边非标准格式直写 canonical——缺 id 阻塞后续一切 merge
-**状态**: 🔄 已修待验（2026-08-21 Doctor 裁「补字段随本 patch 一起入」→ `fix_dirty_edges_20260820.py` 已执行：备份 `bak_pre_fixdirty_20260821_001249` · 复检缺 id=0/id 重复=0/悬挂=0 · 随 commit `1a0fff4` 一并提交。**预防门禁已实装（2026-08-21 当场闭环）**：`kg_merge_safe.check_edge_schema` 第 14 项（merge 前 fail-fast）+ `rules/kg_promote.py` 第 14 项同款 + 单测 4/4（test_kg_merge_guards.py 追加·沙箱内联等效执行）+ 事故备份负测精确复现 2 条 + CLAUDE.md 质检表 14 项同步。整体 ✅ 待独立验收，实施者不自签 · 2026-09-14 复盘：canonical 边完整性复检 6893 边缺id=0/重复=0/悬挂=0 ✓ 待 Doctor 落签）
+**状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-08-21 Doctor 裁「补字段随本 patch 一起入」→ `fix_dirty_edges_20260820.py` 已执行：备份 `bak_pre_fixdirty_20260821_001249` · 复检缺 id=0/id 重复=0/悬挂=0 · 随 commit `1a0fff4` 一并提交。**预防门禁已实装（2026-08-21 当场闭环）**：`kg_merge_safe.check_edge_schema` 第 14 项（merge 前 fail-fast）+ `rules/kg_promote.py` 第 14 项同款 + 单测 4/4（test_kg_merge_guards.py 追加·沙箱内联等效执行）+ 事故备份负测精确复现 2 条 + CLAUDE.md 质检表 14 项同步。整体 ✅ 待独立验收，实施者不自签 · 2026-09-14 复盘：canonical 边完整性复检 6893 边缺id=0/重复=0/悬挂=0 ✓ · ✅ 已落签）
 **优先级**: 🟡 中（阻塞面=全库后续 merge/promote）
 **触发**: 2026-08-21 机构调研日记入库场：`kg_merge_safe.py --dry-run mapping/_v3_20260820_机构调研日记视频_manual.json` 报 `KeyError: 'id'`（kg_merge.py L149 `edge_index = {e["id"]: ...}` 构建时炸）——canonical 有 2 条边缺 id 字段。
 **硬证据/最小复现**: `g['edges']` 扫描缺 id 边 = 2 条，均 created_by=research-CC、created_at=2026-08-20、source_file=「2026-08-20-光纤产业信号型号辨析札记.md」：① `concept_FiberProductLinePriceDivergence -constrains-> concept_FiberPricingUpside`；② `concept_HengtongNewPreformCapacity2027E -constrains-> concept_FiberPricingUpside`。字段用非标准 `desc`（非 description）+ `source_file`，缺 id/direction/weight/evidence/updated_at/data_sources。最小复现 = 任跑一次 kg_merge_safe --dry-run 即炸。
@@ -600,7 +600,7 @@ project: 渊图
 
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 
-**状态**: 🔄 已修待验（2026-09-01 整合手术已执行：`concept_ScaleUpSwitchProtocolOSA` → `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases·name/desc 重写·边端点同步·边 id 留旧）+ `product_Shengke51p2TSwitchChip` desc「OSA→OISA」· 备份 `bak_surgery_centec_oisa_20260901_*` · 手术记录 `mapping/_v3_20260901_盛科曦智OISA整合_手术记录.json` · 复检全绿·实施者不自标 ✅ · 2026-09-14 复盘：OISA 新节点在盘/旧 id 已消/aliases 保留 ✓ 待 Doctor 落签）
+**状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-09-01 整合手术已执行：`concept_ScaleUpSwitchProtocolOSA` → `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases·name/desc 重写·边端点同步·边 id 留旧）+ `product_Shengke51p2TSwitchChip` desc「OSA→OISA」· 备份 `bak_surgery_centec_oisa_20260901_*` · 手术记录 `mapping/_v3_20260901_盛科曦智OISA整合_手术记录.json` · 复检全绿·实施者不自标 ✅ · 2026-09-14 复盘：OISA 新节点在盘/旧 id 已消/aliases 保留 ✓ · ✅ 已落签）
 
 **优先级**: 🟡 中（术语错误→按「OSA」检索/对齐漏掉 OISA 官宣与生态信息；下游消费端引用会传播错误术语）
 
@@ -642,7 +642,7 @@ project: 渊图
 
 ## [NOTE-20260828-001] 胜宏双节点合并手术漏迁 props——Shenghong 6 业务键随节点删除丢失（已从墓碑当场回填）
 
-**状态**: 🔄 已修待验（2026-08-28 当场修复：propsfix 脚本从墓碑 dropped_node 回填 6 业务键入 VictoryGiant + 补 `h1_2026_claim_verification_note` · 读盘核验 22 props 键·计数守恒 5174/5796 · 备份 `bak_shenghong_propsfix_20260828_002902` · 实施者不自签 · 2026-09-14 复盘：company_VictoryGiant properties 22 键复读 ✓ 待 Doctor 落签）
+**状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-08-28 当场修复：propsfix 脚本从墓碑 dropped_node 回填 6 业务键入 VictoryGiant + 补 `h1_2026_claim_verification_note` · 读盘核验 22 props 键·计数守恒 5174/5796 · 备份 `bak_shenghong_propsfix_20260828_002902` · 实施者不自签 · 2026-09-14 复盘：company_VictoryGiant properties 22 键复读 ✓ · ✅ 已落签）
 
 **优先级**: 🟡 中（数据层静默丢失——结构 QA 全绿查不出 props 缺失，desc/边/别名均正常迁移，只有并集对比能发现）
 
@@ -662,7 +662,7 @@ project: 渊图
 
 ## [NOTE-20260901-001] kg_ingest --batch 自动发现图谱失败——find_latest_kg 只扫根目录，canonical 在 mapping/ 子目录
 
-**状态**: 🔄 已修待验（2026-09-01 当场修复：`find_latest_kg` 增加 `d/mapping` 级 glob（kg_ingest.py L1185-1192）· py_compile OK · 独立复刻测试 2/2 PASS〔mapping 级发现+canonical 优先压过 _v2 历史件 / 根级发现回归〕· 实施者不自标 ✅ · 2026-09-14 复盘：find_latest_kg d/mapping glob 实读在盘（L1189-1191）✓ 待 Doctor 落签）
+**状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-09-01 当场修复：`find_latest_kg` 增加 `d/mapping` 级 glob（kg_ingest.py L1185-1192）· py_compile OK · 独立复刻测试 2/2 PASS〔mapping 级发现+canonical 优先压过 _v2 历史件 / 根级发现回归〕· 实施者不自标 ✅ · 2026-09-14 复盘：find_latest_kg d/mapping glob 实读在盘（L1189-1191）✓ · ✅ 已落签）
 
 **优先级**: 🟡 中（batch 起跑即挂·零数据影响·但新 shell 必踩）
 
@@ -684,7 +684,7 @@ project: 渊图
 
 ## [NOTE-20260910-001] wiki 层落后于主图——合并/清理手术不联动 wiki 卡 · 生成器只增不删 + props 键名直出
 
-**状态**: 🔄 已修待验（2026-09-10 Doctor 令「检查并修复」· 修复已执行：859 卡 --force 重生成 + 29 旧卡改名 `_DEPRECATED_{slug}_20260910.md` 归档 + wiki_autogen.prop_table 键名→中文标签映射〔product_* 五键〕+ 5 张写通道失效卡经 Edit 工具补改 · 终扫 图谱ID 落后 0 / 键名残留 0 · 实施者不自标 ✅ · 2026-09-14 复盘：wiki 2285 卡图谱ID 落后复检=0 + prop_table 中文标签映射实读在盘 ✓ 待 Doctor 落签）
+**状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-09-10 Doctor 令「检查并修复」· 修复已执行：859 卡 --force 重生成 + 29 旧卡改名 `_DEPRECATED_{slug}_20260910.md` 归档 + wiki_autogen.prop_table 键名→中文标签映射〔product_* 五键〕+ 5 张写通道失效卡经 Edit 工具补改 · 终扫 图谱ID 落后 0 / 键名残留 0 · 实施者不自标 ✅ · 2026-09-14 复盘：wiki 2285 卡图谱ID 落后复检=0 + prop_table 中文标签映射实读在盘 ✓ · ✅ 已落签）
 
 **优先级**: 🟡 中（不影响主图与消费端 · 但 wiki 层 42 文件 67 处引用悬空 2 个月无人察觉）
 
