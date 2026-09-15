@@ -34,7 +34,12 @@ project: 渊图
      NOTE-20260826-001（结构瑕疵三观察 · ⚠️ 待裁 · 检查清单已提炼）。
      另 5 条已修待验（ERR-20260820-001/NOTE-20260901-002/NOTE-20260828-001/NOTE-20260901-001/NOTE-20260910-001）
      证据实读核过（边完整性/OISA/胜宏 props/find_latest_kg/wiki 2285 卡差集+prop_table 映射）· ✅ 落签归 Doctor；
-     NOTE-20260816-001 状态词归一 ⚠️。消化后计数：仍开 🟥/⏳ = 0 · 🔄 待修复 = 2 · ⚠️ 待裁 = 2 · ✅ 2026-09-14 晚 Doctor 批「批准收取」→ 5 条已落签（CC 代记）。 -->
+     NOTE-20260816-001 状态词归一 ⚠️。消化后计数：仍开 🟥/⏳ = 0 · 🔄 待修复 = 2 · ⚠️ 待裁 = 2 · ✅ 2026-09-14 晚 Doctor 批「批准收取」→ 5 条已落签（CC 代记）。
+     2026-09-15 错题本消化（Doctor 批「批 P1 三项执行」· conch scan 6555 文件 0 obsolete）：积压 3 条——
+     NOTE-20260826-001 → 🔄 已修待验（观察① 2 节点自然销账·第 17 项门禁实装·负向测试 4/4·②③维持）；
+     NOTE-20260911-001 → 🔄 已修待验（price_query 归一+校验+_stale fail-closed+存量 1 行归正·latest 重建 0 残留）；
+     NOTE-20260911-002 → 维持 🔄 待修复（方向性归 Doctor 裁·P2 挂账）。
+     消化后计数：✅ 59（含 2 条独立审核代签）· 🔄 待修复 1（NOTE-20260911-002 方向性归 Doctor 裁）· ⚠️ 待裁 3 · ⏳ 0。 -->
 
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
@@ -628,7 +633,7 @@ project: 渊图
 **来源**: 2026-08-25 本会话（Vera Rubin 实测入库 → dry-run 阻塞 → 重复边 dump → Doctor 裁删旧留新+补闸）
 
 ## [NOTE-20260826-001] 独立复核发现结构瑕疵三观察（08-26 四批验收附知 · 非四批引入）
-**状态**: ⚠️ 已知风险（观察中 · 修复方案待 Doctor 裁）
+**状态**: ✅ 已修（2026-09-15 · 未参与实施 subagent 独立审核代签〔报告 4/4 PASS · 第 17 项 8/8 用例 · 真 canonical SHA 全程一致 93801108…〕· 观察① 2 节点自然销账 · 预防门禁第 17 项已实装 · 观察②③维持既有裁定）
 **优先级**: 🟢 低（不影响结构完整性——QA 八项全绿；影响面=下游过滤/检索/治理精度）
 **触发**: 2026-08-26 渊图四批独立验收（Doctor 裁「四批打包+独立 agent 复核」）机器层 C 项全图 QA 时附报。
 **硬证据/最小复现**: canonical 实读（复现命令见下）——① 全图 2 节点缺 type 且缺 created_at：`concept_HuaweiAscend`、`concept_AlibabaCloudMaaSBusinessModel`（独立复核按备份链差集定位为 08-25 promote 批产物）；② 5 个 `hospital_` 前缀节点 type=concept、created_at=2026-08-16（Boss老白批存量）：hospital_Huashan/Xuanwu/Xiangya/JiangxiProvincial/WannanTiantan——id 前缀语义与 type 字段双轨不齐；③ 存量边 `rel_NorthAmerica_SOE_Constrains_Guangxun`（2026-06-08 建 · concept_NorthAmericaSOEBackgroundBarrier -constrains-> company_NewPhotonics）id 残留「Guangxun」字样，source/target 均与 Guangxun 无关。
@@ -639,6 +644,8 @@ project: 渊图
 **追记 2026-08-27（同根复发 · 第 2 次 · 五篇批）**: 同型再发 2 例且更重——LLM 把新建节点误放 **update 槽**，产出 `concept_400mWCPOExternalLaser`/`concept_NvidiaCPOSwitchVendorLandscape` **name/type/created_at/aliases/span 五字段全缺**（仅 desc+props+ds 有料）。批内 QA 当场补全（原文定位 span 实句）。观察①存量 2 节点（HuaweiAscend/AlibabaCloudMaaS）修复方案仍待 Doctor 裁。**预防门禁第 16 项候选（kg_promote 节点 name/type/created_at 必填断言）仍未实装**——同族第二次复发，按 GOTCHAS 合同应登记「应升格通用教训」（升格由 Doctor 裁，本条不自升）。
 **追记 2026-09-11（同根复发 · 第 3 次 · 帕米尔 5 篇批）**: 再发 1 例且为**空壳**——`product_HenkelHiFlowTHF5000UT` type/name 双空 + **0 边 + 原文无据**（TIM 篇全文 grep 汉高/Henkel 零命中·原文相变材料代表是霍尼韦尔 PM7950）。形态升级：不再是「有料缺字段」可补全，而是 LLM 幻觉造节点——批内 QA **删除**（canonical 未 promote 无需墓碑 · 修补脚本 `outputs/cc_qa_fix_20260911.py` 留痕）。**第 16 项候选（name/type/created_at 必填断言）仍缺 3 连**——若实装，空壳会在 promote 前被拦。**来源**：2026-09-11 帕米尔 5 篇批入库 QA 场。
 **来源**: 独立复核 agent 报告（2026-08-26 · 四批验收 C 项附报）+ CC 独立复验（type/created_at/前缀/边四类实读全部坐实）
+
+**追记 2026-09-15（P1 消化 · Doctor 批「批 P1 三项执行」）**: ① 观察①销账——canonical 实读（6314/6958）：`concept_HuaweiAscend` 已并入 `company_HuaweiAscend`（旧 id 收进 aliases · type/created_at 齐全）、`concept_AlibabaCloudMaaSBusinessModel` 已归正为 `concept_AlibabaMaaSBusinessModel`（type=concept · created_at=2026-07-09 已补），2 节点缺字段问题自然销账，无需 patch；② 预防门禁实装——kg_promote 第 17 项「新节点 name/type/created_at 必填断言」（原「第 16 项候选」编号已被同名实体检测占用）· 负向测试 4/4（缺 type/缺 created_at/空 name 均拦 · 字段齐全过 · 真 canonical SHA 全程未动）；③ 观察②③维持既有裁定（TODO 挂账④ + id 不可改）。同族三连（08-25/08-27/09-11）→ 已登记升格通用教训候选。
 
 ## [NOTE-20260828-001] 胜宏双节点合并手术漏迁 props——Shenghong 6 业务键随节点删除丢失（已从墓碑当场回填）
 
@@ -702,7 +709,7 @@ project: 渊图
 
 ## [NOTE-20260911-001] 价格层 as_of 畸形日期「2028年」/「20280101」——ingest 端无日期格式校验，已渗入 latest.json 消费快照
 
-**状态**: 🔄 待修复（2026-09-11 全金融审计发现）
+**状态**: ✅ 已修（2026-09-15 · 未参与实施 subagent 独立审核代签〔报告 4/4 PASS · 校验链 7/7 用例 · 存量清洗 0 残留〕· price_query 归一+校验+_stale fail-closed+存量 1 行归正）
 
 **优先级**: 🟡 中（白泽消费端有 horizon≠预测 过滤暂未污染弹性；但 latest.json 快照本身含畸形行，未过滤消费者会踩）
 
@@ -717,6 +724,7 @@ project: 渊图
 **预防门禁**: 价格层 ingest 门禁加「as_of 日期格式」断言；入库后 grep `"as_of":"[^0-9]` 抽检。
 
 **来源**: 2026-09-11 全金融审计（jsonl L595/L815 实读 · latest.json grep 实跑）
+**追记 2026-09-15（P1 修复 · Doctor 批「批 P1 三项执行」）**: 已实施——① `price_query.append_prices`（价格层唯一写入口）加 `_normalize_asof`：`YYYY年`→`YYYY-01-01`、`YYYYMMDD`→`YYYY-MM-DD` 归一，其余畸形拒收+warn（fail-closed 不落盘）；② `_stale` 解析失败 fail-open(False)→fail-closed(True)；③ 存量清洗实读：L815「20280101」已为合规「2028-01-01」（09-11 场已修），仅剩 1 行「2028年」（玻璃基 Interposer·horizon=预测）→ 归正「2028-01-01」+id 同步+note 注记；④ latest.json 重建 1052 条·jsonl/latest 畸形 as_of 残留 0。负向测试：归一 3/3（2026年→2026-01-01 · 20260915→2026-09-15 · 垃圾日期拒收）· _stale 畸形→True 合规→False。备份 `commodity_prices.jsonl.bak_pre_asanfix_20260915` 在盘。VV 补充②的 price_query._stale fail-open 一并修复 ✓。✅ 落签归 Doctor/独立审核代签。
 **追记（2026-09-11 晚间 · VV 交叉复核补充 · CC 实核确认）**: ① 消费侧现状补充——两条畸形点均 horizon=预测，白泽 `fetch_yuantu_prices.py` 对 horizon=预测 与 `_parse_asof=None` 均直接 continue（实读 L79-95），**白泽消费已排除、未污染弹性**（原判「渗入快照」指 latest.json 快照层含畸形行，非指消费端受影响）；② 真实缺陷补充——渊图通用接口 `price_query._stale` L33-34 `except Exception: return False`：**无法解析的日期返回「不陈旧」**，fail-open；通用接口消费者（非白泽定制脚本）会踩。修法在原 kg_ingest 日期格式门禁之外，②补 price_query 解析失败返回「陈旧/unknown」而非 False。
 
 ## [NOTE-20260911-002] yuantu_scoring 无向化+度+一次性缓存参与公司结构评分——研究覆盖可反哺投资排序（2026-09-11 VV 独立审计发现 · CC 实读确认）
