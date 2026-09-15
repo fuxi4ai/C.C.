@@ -735,3 +735,62 @@ project: 渊图
 
 **来源**: 2026-09-11 VV 独立审计 2.3 节 · CC 实读 yuantu_scoring.py L29-44 一致
 
+## [NOTE-20260915-001] 节点 desc 新旧结论并存致消费者误读——Feynman 外层 OCS 被 09 月调研「全 CPO」推翻，只读节点名/首段拿到过时结论（G-X163 同族二次·应升格）
+
+**状态**: 🔄 待修（改法=desc 时效分层/拆节点·方向性归 Doctor 裁·canonical 未经授权不动）
+
+**优先级**: 🟡 中
+
+**触发**: 2026-09-15 AI 景气度报告场——德科立评分把「波导 OCS 被英伟达 Feynman 采用」当证据（引用 `concept_NvidiaFeynmanOCSCPOArchitecture` 节点名「内层 CPO+外层 OCS 双层」+首段），Doctor 两连追问「今天结论不是大概率不走波导么」。实读 desc 全文：**节点尾部 2026-09 帕米尔调研段写「Feynman 架构下 Scale-up 与 Scale-out 都将使用 CPO，CPO 延后至 2028 年随 Feynman 正式落地」**——外层 OCS 的位置被 CPO 挤压。另有 `event_OCSVolumeOrder`（波导 64 端口良率 <30% 量产门+德科立样品级 10+10 台）、`concept_SiPhOCS`（插损 5dB 需 SOA 补偿）、谷歌/华为双主线锁 MEMS（Palomar 136×136 已量产 · OCS800 256 口）——合成结论=波导大概率不走。
+
+**根因**: ① 节点 desc 是「旧文+【批增量】」叠加式结构，最新结论在尾部，节点名与 props 仍保留旧结论（本节点名「OCS+CPO 双层」即旧结论）；② 消费侧截断读取（提取脚本 desc[:110-150]）恰停在旧结论上；③ 需求侧约束（波导 6ns 唯一满足推理时延·`concept_OCSInferenceLatencyConstraint`）被误读为采用信号——**达标≠采用**，采用看量产门+主线锁定+架构演进（`concept_OCSArchitecture`：训练场景毫秒级即够=MEMS 满足，ns 级约束只绑定未来推理/动态路由）。
+
+**影响面**: 下游引用方向反转（本场评分把路线期权当主线敞口·德科立 77→62）；本场 33 家评分均用截断 desc，同类误读风险不限于本节点。
+
+**建议修法（待 Doctor 裁）**: ① 本节点 desc 首句改最新结论+旧结论标 vintage，或拆「Feynman OCS 双层（旧）」/「Feynman 全 CPO（2026-09 调研）」两节点；② 消费纪律已写入 AI 景气度报告 §5.6（引用前必读全 desc 至尾部批增量段）。
+
+**预防门禁**: 提取/摘要脚本对 desc 截断须显式标注「截断读取·结论以全 desc 为准」；评估口径加「达标路线≠采用路线」。
+
+**同族**: [[通用教训]] G-X163（旧叙事锚不标时效——下游引用被判「编造」）**同族二次复发·应升格通用教训**（消费端误读实锤第二例）。
+
+**来源**: 2026-09-15 AI 景气度报告场 · canonical 实读（五节点 desc 全文+props）· 报告 §7 变更记录
+
+**追记（2026-09-15 · Doctor 令「修正渊图潜在错误+标签更新」）**: 修复已实施（未 promote）——patch `mapping/_v3_20260915_产业逻辑标签_manual.json`：本节点 desc 时效分层（最新 09 调研结论前置+旧案标 vintage）+ 29 节点客观标签（interconnect_role/ocs_route/inference_latency_fit/mass_production/main_adopter/cpo_ocs_relation）；沙箱干跑 29/29 took_patch·desc 只增不减。promote 命令已贴 Doctor，落地回读+✅ 归 Doctor。
+**追记②（2026-09-15 11:30）**: promote 已落地（Doctor 终端 · 备份 bak.20260915_113008）· CC 消费端回读：本节点 desc 最新结论前置 ✓ · 全图标签覆盖 interconnect_role 23/ocs_route 16/inference_latency_fit 8/mass_production 17/main_adopter 8/cpo_ocs_relation 4 · 计数 6314/6958 不变 · 悬挂 0 重复 0。✅ 落签归 Doctor。
+
+## [NOTE-20260915-002] 生益电子 desc 首句「高端高频覆铜板供应商」系拆分残留张冠李戴——归正随标签批 + 华工 800G 同比转述丢限定词
+
+**状态**: 🔄 已修待验（2026-09-15 11:30 promote 落地 · CC 回读 desc 归正+注记在盘 · ✅ 落签归 Doctor）
+
+**优先级**: 🟡 中
+
+**触发**: 2026-09-15 AI 景气度报告场——给 33 家公司评分时发现 company_Shengyidianzi desc 首句「高端高频覆铜板供应商，产品接近 M6/M7」与主业口径冲突（公司同时有「客户覆盖国内主流服务器和 PCB 厂商」的 PCB 口吻）。
+
+**根因**: 06-19「生益电子拆胜宏」手术把 CCL 边归了生益科技，但 desc 的覆铜板表述残留未清（拆分残留）；web 多源坐实：生益电子（688183）=PCB 厂商（A拆A 上市·生益科技持股 62.5%·上下游不同业竞争），生益科技=CCL 厂商。
+
+**影响面**: 下游消费者把 PCB 厂当 CCL 厂引用（本次评分已规避并标疑）。
+
+**建议修法**: desc 首句归正为 PCB 表述（patch 已含·prop `desc_corrected_20260915` 留痕）。同批另修：company_HGTech 增 prop `note_800g_yoy_base`（+13974% 口径=销售额·无绝对值·基数近零畸高——原转述丢限定词，NOTE-20260718-002 族）。
+
+**预防门禁**: 拆分/合并手术清单加「desc 表述归正」检查项（手术迁移边时同步核 desc 主体口吻）。
+
+**来源**: 2026-09-15 AI 景气度报告场 · WebSearch 多源坐实 · patch `mapping/_v3_20260915_产业逻辑标签_manual.json`
+
+## [NOTE-20260915-003] SiPhOCS 与 WaveguideOCS 同路线双节点并存——合并待 Doctor 裁
+
+**状态**: ⚠️ 已知风险（合并属方向性·待 Doctor 裁·已互挂 `same_route_dup_ref` 标签缓解）
+
+**优先级**: 🟡 中
+
+**触发**: 2026-09-15 标签批发现：concept_SiPhOCS（硅光子型）与 concept_WaveguideOCS（波导型）描述同一路线（硅光波导 OCS），关键事实重叠（64 端口成熟、6ns 时延、德科立小批量），两节点间无边（is_a/evolves_from 均无）。
+
+**根因**: 不同批次不同语料各自建节点（SiPhOCS 源自 OCS 行业交流纪要 2026-05-03；WaveguideOCS 源自内部学习材料 2026-03-29），入库时未做路线级 dedup（ERR-20260614-001 TPU 双分量同族）。
+
+**影响面**: 路线级检索/评分双源计数；消费者引用任一节点都可能漏另一半事实（如 SiPhOCS 无良率数据、WaveguideOCS 无 SOA 补偿表述）。
+
+**建议修法**: 合并（度高者主 + 墓碑 + props 并集）或建 is_a/同义边——归 Doctor 裁；未裁前两节点已互挂 `same_route_dup_ref` 标签。
+
+**预防门禁**: 路线/技术类节点入库前按「技术路线归一表」查重。
+
+**来源**: 2026-09-15 标签批实读 · canonical 两节点 desc/props/边
+
