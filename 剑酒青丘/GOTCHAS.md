@@ -174,7 +174,7 @@ project: 剑酒青丘
 **来源**：2026-09-05 凌晨场 · logs/2026-09-05-EAL加SOX响应轨实施.md
 
 ### [NOTE-20260911-001] EAL v3 班 adapter 守卫 FUSE fchmod 不落地——LOOP_SQLITE_GUARD_REJECTED 同根六连致 artifact 停更 6 天（2026-09-11 全金融审计立 · 同日 VV 交叉复核纠错后改写）
-**状态**：🔄 待修复（修复方案属方向性·待 Doctor/VV 裁）
+**状态**：🔄 已修待验（2026-09-15 Doctor 裁方案①「adapter 移 Mac 原生」· CC 实施中·待 09-15 班自然验证；✅ 归 Doctor）
 **优先级**：🔴 高（消费端 artifact eal-v3-event-transition 自 09-04 起停更——用户可见）
 **硬证据/最小复现**：各班失败分布（09-04 shift-root-cause + 09-10 shift-report 实读）——**adapter guard 同根六连**：09-01、09-03 一班、09-03 二班、09-04（root-cause 原话「与 09-01/09-03×2 同根同签，第四次复发」）、09-09、09-10；另 09-07/09-08 两班**第一步即失败**（09-08 为 /tmp 残留锁 PermissionError·nobody 属主）——**并非每天 Steps 1-7 全绿卡最后一步**。09-10 班细节：Steps 1-7 全绿（行情写库 attempt 2/3 · sealed SHA ae642b01… · registry pin 283c947d · shadow EXIT=0 · candidate 38.2MB · loop completed_with_warnings）→ `7_adapter: REJECTED LOOP_SQLITE_GUARD_REJECTED — permission_guard_completed=false (FUSE fchmod 不落地，mode 恒 0o600)；fail-closed 停班`；`8_artifact: 未推送`。
 **根因**：zero-write guard 的权限位组件要求 chmod a-w 持久生效，Cowork 沙箱 FUSE 挂载盘 fchmod 不落地（mode 恒 0o600；09-04 班 58/58 采样全部 permission_deviation）——守卫按设计 fail-closed 正确，但当前运行环境结构性无法通过该组件＝「正确守卫 × 错误环境」。同族：烛照 GOTCHAS（FUSE 大写入不 durable）、巡检自愈循环 warnings（chmod a-w 受 FUSE 限制）——**应升格通用教训候选**：「FUSE 挂载面 POSIX 语义不完整（chmod/写入持久性），守卫设计必须环境感知」。
@@ -183,6 +183,8 @@ project: 剑酒青丘
 **预防门禁**: 新增任何 POSIX 权限位守卫先跑「沙箱 FUSE 环境冒烟」（chmod 持久性 probe）；班 shift-report 连续两日同根 REJECTED 应主动告警（当前仅 warnings 静默）。
 **来源**: 2026-09-11 全金融审计（shift-report-20260910.json 实读 · artifact updatedAt=09-04 实读 · 09-09 班同根对比）
 **追记（2026-09-11 晚间 · VV 交叉复核纠错 · CC 实核 09-04 root-cause 报告后修正）**: ① 同根次数补全——09-04 shift-root-cause 实读：「与 2026-09-01 班、09-03 一班、09-03 二班同根同签，**第四次复发**」→ 加 09-09/09-10 共**第六次**；② 班失败分布修正——并非每天 Steps 1-7 全绿卡最后一步：09-07/09-08 班**第一步即失败**（09-08 为 /tmp 残留锁 PermissionError），Steps 1-7 全绿仅对 09-09/09-10 成立；③ 推荐方案排序调整（VV 理由采纳）——**原生环境路线（adapter 移 Mac 执行）升为第一推荐**：FUSE 下跳过权限组件不能称「零损失」，前后 SHA 相同只证终态一致、不能证受保护窗口内从未发生写——守卫的语义价值正在于「写机会都不给」；原方案①（守卫 FUSE 分支降级）降为过渡候选，采纳前须 Doctor 明示接受语义弱化。
+
+**追记（2026-09-15 凌晨 · 方案①实施）**: Doctor 经 AskUserQuestion 裁「方案①移 Mac 原生（推荐）」→ CC 立 PRD `2026-09-15_EAL数据链班adapter迁Mac原生_PRD.md` 并实施沙箱侧：① 新增 Mac 原生执行体 `调度/eal-post-event-native/run_step7_native.py`（读交接清单→SHA 对拍→原参数跑 Step 7 三段→evidence 硬校验 status=verified+permission_guard_completed=true→原子写结果留痕；幂等；失败重试 3×180s 避开 usdjpy-15 心跳 18:30 PT 写窗）+ `com.eal.postevent-native.plist`（launchd 每日 18:35 PT）+ `FORMAT.md`；② 班 SKILL Step 7 段改「7a 落交接清单（O_EXCL+shasum 现算）→7b 轮询 result（60 分钟超时）→7c fail-closed 停班」，Step 8 推送留沙箱班；守卫/eal_v3 生产代码/registry/selector 零改动。负向测试 3 组全绿。**待**：Doctor 终端装 launchd+store SKILL 同步 → 09-15 17:44 PT 班+18:35 Mac 班自然验证（shift-log 守卫全过+artifact updatedAt 前进）。
 
 ### [NOTE-20260911-002] risk.py 仓位函数赢面门排除低胜率高赔率机会（2026-09-11 VV 独立审计发现 · CC 实读确认）
 **状态**：🔄 待修复（改法属判断性·待 Doctor 裁）
