@@ -115,7 +115,7 @@ template_version: v1.2
 | T5 | Gateway store SKILL 同步（Doctor 终端 SHA 往返） | done | store SHA=cacf0b6f…=staging=真源（Doctor 终端 shasum 输出） |
 | T6 | 独立审查（未参与实施 subagent·只读重放） | todo | |
 | T7 | 剑酒 GOTCHAS NOTE-20260911-001 状态行更新（修复已实施·🔄 已修待验） | done | 状态行已改 + 追记（2026-09-15 凌晨·方案①实施）已落 |
-| T8 | git commit 命令贴 Doctor（宏观研究体系仓+Database 仓） | todo | |
+| T8 | git commit 命令贴 Doctor（宏观研究体系仓+Database 仓） | done | Doctor 终端实跑：brain f4b1e35 已 push（f2e35d8..f4b1e35）；宏观研究体系 9f1dc70 本地 commit（5 文件·无 remote 即止） |
 | T9 | 次班（09-15 17:44 PT）验证 R1/R2 证据采集 | todo | |
 
 ---
