@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-09-14T01:17:15-07:00",
+  "generated_at": "2026-09-14T04:49:07-07:00",
   "triggered_by": "scheduled",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
@@ -263,6 +263,11 @@
  },
  "launchd": {
   "sources": {
+   "com.zhuzhao.ipo-rolling": {
+    "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.ipo-rolling.plist",
+    "src_sha12": "322645406d67",
+    "src_mtime": "2026-09-14 01:20"
+   },
    "com.zhuzhao.marketdata": {
     "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.marketdata.plist",
     "src_sha12": "74d1af18a30e",
@@ -431,12 +436,7 @@
     }
    }
   },
-  "consistency": [
-   {
-    "label": "com.zhuzhao.ipo-rolling",
-    "issue": "⚠ 有装机无源——在跑但项目里没有可维护的源文件"
-   }
-  ]
+  "consistency": []
  },
  "crontab": {
   "entries": [
