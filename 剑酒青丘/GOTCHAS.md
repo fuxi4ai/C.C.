@@ -202,3 +202,5 @@ project: 剑酒青丘
 **建议修法**：已执行——EXP-20260908-001-T 标准链重建（EAL_DOCUMENTS_ROOT 覆盖 + build 后对表：node test_starfield_view.js 26/0 + 锚定断言 + mtime 序）+ 新建 eal-starfield-rebuild 班（前置行情守卫 fail-visible：库内 MAX(trade_date)≠最近已收盘交易日即 skip 不重建；build 后单测+锚定断言对表）。
 **预防门禁**：「按日重锚」类快照页面必须与数据更新同频（挂重建班）；重建班前置行情守卫，防数据链失败时产出坏快照。
 **来源**：2026-09-13 会话（Doctor 报修 → CC 诊断+修复）· 旧件备份 EAL_STARFIELD.html.bak_20260913_pre_rebuild 已归档 Database/宏观研究体系/EAL/archive/
+
+**追记（2026-09-14 · 班首跑核）**：eal-starfield-rebuild 首跑（18:16 PT）——exit 0 · verified · 单测 26/26 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14）。**首跑暴露残留缺陷**：构建器截止日取「严格早于美东今天」，班 18:15 PT（=21:15 ET）运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口（00:00 ET 至重建前）+ 09:08 risk-daily 嵌入落后快照。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改 0 21 * * 1-5（调度器回读生效）**；班 SKILL 无写死钟点、零漂移面。今晚 21:00 班首跑带当日收盘、明早 risk-daily 嵌入即自然验证（机制层验收）。
