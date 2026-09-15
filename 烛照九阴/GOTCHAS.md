@@ -545,7 +545,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [NOTE-20260914-002] 日报「渊图信号源停更」横幅话术与判据错配——指向 KG 链路、实为信号层低频（2026-09-14 Doctor 报「渊图最近有更新」· CC 实核）
 
-**状态**: 🔄 已修待验（2026-09-14 Doctor 裁「话术分诊+阈值分级」· CC 实施：yuantu_client.kg_health_meta + sync 落 yuantu_kg_health 表 + gen 分诊横幅 · 沙箱 /tmp 副本正负向测试全绿 · 实施者不自签 ✅ · 生效=明日 10:03 班自然带出）
+**状态**: 🔄 已修待验（2026-09-14 Doctor 裁「话术分诊+阈值分级」· CC 实施+当日重推：yuantu_client.kg_health_meta + sync 落 yuantu_kg_health 表 + gen 分诊横幅 · 正负向测试全绿 · live recap.db 已带新表（备份 recap.db.bak_20260914_predaily）· zhuzhao-jiuyin-daily 已重推、Gateway 回读黄横幅命中 · 实施者不自签 ✅ · 目验归 Doctor）
 
 **现象**: 2026-09-14 日报 GAP 栏横幅「⚠ 渊图信号源已停更 5 天（最新信号日 2026-09-09）——…请核渊图采集链路（KG _health 戳）」；Doctor 报「渊图最近是有更新的」——报警与事实矛盾。
 
