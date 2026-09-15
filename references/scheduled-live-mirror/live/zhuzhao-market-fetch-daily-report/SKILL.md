@@ -79,6 +79,7 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
   4. `python3 tools/closure_engine.py --apply`（**自动落库 gap_status**；确定性公式＝Doctor 2026-06-10 拍板口径，非 CC 判断，不违「不自动打✓」铁律；引擎自带 `.bak`，另有 5b predaily 锚兜底）
   5. `python3 tools/populate_signal_targets.py`（recap.stock_tracking 标的池；被 G030 守卫拦=先查副本根 tushare-cache 软链在不在，在则按 GOTCHAS 排查，**勿轻用 --force**）
   6. `python3 scripts/fetch_fx_cnh.py`（拉离岸 USD/CNH 存 recap.fx_cnh_daily，为日报「美元兑（离岸）人民币汇率」栏供当前值+近7交易日曲线；Tushare fx_daily 同 stock_daily 源；无 token/拉不到→留缺、绝不编。**首次**另需手动跑一次 `--backfill-dim1`，用 dim1 已录真实离岸点种子）
+7. `python3 tools/signal_winrate_backtest.py`（标的级胜率回写 · ERR-20260911-001 闭环 · 2026-09-14 Doctor 授权入链）：读 stock_tracking + 句芒 Market-Data（只读）算前向 1/3/5/10 日超额与 hit_3d，回写 excess_1d/3d/5d/10d/hit_3d/bench_code/current_status——全量幂等、按持有窗到点即写、unresolved 也回写收益列（池胜率分母仍只收 resolved）；跑在 5c 副本上、随 5d 放回一起上盘。
 - **5d 防空壳 + 放回**：recap 关键表（emotion_cycle / yuantu_buy_signals / industry_signals / stock_tracking）放回前**只增不减**校验；副本 integrity ok；句芒表未就绪或任一步报错则**保留原 recap.db、不放回**、日志标明。通过则 journal 截 0 + cp 覆盖放回 + 重新 integrity + 行数复核。
 - **5e closure 留痕审计（apply-then-audit）**：apply 后，把当日 gap_status 与 5b 的 predaily 锚逐条 diff，凡**已变更**的信号（chain + 旧状态→新状态）写到 `~/Documents/Claude/Projects/Financial/烛照九阴/docs/兑现变更_{今日}.md`，文末附**回滚命令**（`cp ~/Documents/Database/烛照九阴/recap.db.bak_{今日}_predaily 覆盖回 recap.db`）。**尽力**发 macOS 通知（`osascript -e 'display notification "兑现状态变更 N 条"'`；无桌面会话则静默失败，不阻塞）——留痕 md 是事后抽查钩子，错了可回滚。
 - **5f recap 库当日终检（2026-07-31 立 · 2026-08-01 并入本班 · 根因修：与 5.5 同一条原则，recap 线当时漏改）**：5d 放回且 integrity ok 后——**即当日最后一次写 `recap.db` 之后**——跑：

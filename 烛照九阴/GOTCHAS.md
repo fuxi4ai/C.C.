@@ -487,7 +487,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260911-001] stock_tracking 结果回写列 0/3986——信号收益闭环断裂 7 周未修（07-28 审计 P0-3 同根确认）
 
-**状态**: 🔄 已确认待修复（修法已明：回写脚本入调度链 · 待 Doctor 授权）
+**状态**: 🔄 已修待验（2026-09-14 Doctor 授权「授权」→ CC 实施三件：① signal_winrate_backtest 放开 unresolved 回写（VV 修正·池分母仍只收 resolved）+ 存量全量回写（excess 0→1569 行·5/5 抽样手算对账 ✓·备份 recap.db.bak_20260914_pre_winrate）；② 日报胜率引用改滚动窗口（静态 84.5%/181 → 滚动 50.0%/1023·样本至 09-09·口径标注）；③ 入链 staging 待 Doctor 终端部署（SHA 4cf1b972…）· 实施者不自签 ✅）
 
 **现象**: `stock_tracking` 3986 行中 `excess_1d/3d/5d/10d/hit_3d` 五列 **0 行非空**（2026-09-11 只读探针实跑）；`resolve_status` 3986/3986 已填（2708 resolved / 1278 unresolved）——兑现状态机在跑，但「结果 vs 基准」的收益测量列全空。
 
