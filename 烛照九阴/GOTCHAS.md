@@ -542,3 +542,20 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **⚠ 应升格通用教训**：装机与源分离＝发布链洞同族——DVA NOTE-20260820-001/002/003（换 runtime 丢 fuxi 侧文件三连）后第 4 例跨项目出现；升格由通用教训维护侧裁。
 
 **来源**: 2026-09-14 周巡检快照（Doctor 终端实跑）· CC 实核：ops/ 无 plist + VV 证据目录有源 + .git/index 明文核 fetch_ipo_rolling.py 已跟踪
+
+## [NOTE-20260914-002] 日报「渊图信号源停更」横幅话术与判据错配——指向 KG 链路、实为信号层低频（2026-09-14 Doctor 报「渊图最近有更新」· CC 实核）
+
+**状态**: 🔄 已修待验（2026-09-14 Doctor 裁「话术分诊+阈值分级」· CC 实施：yuantu_client.kg_health_meta + sync 落 yuantu_kg_health 表 + gen 分诊横幅 · 沙箱 /tmp 副本正负向测试全绿 · 实施者不自签 ✅ · 生效=明日 10:03 班自然带出）
+
+**现象**: 2026-09-14 日报 GAP 栏横幅「⚠ 渊图信号源已停更 5 天（最新信号日 2026-09-09）——…请核渊图采集链路（KG _health 戳）」；Doctor 报「渊图最近是有更新的」——报警与事实矛盾。
+
+**根因（三层实核）**:
+1. **判据层**：`gen_daily_report.py` L2607 判据＝`yt_stale_days > 3`（yuantu_buy_signals MAX(date) 距今天数）→ 挂红色冷冻横幅。信号表 MAX(date)=09-09 属实（recap.db 实读）。
+2. **话术层（错配·缺陷）**：横幅文案硬编码「请核渊图采集链路（KG _health 戳）」——但 KG 采集链路**健康**：`_health.json` overall=ok（09-12 戳）、canonical 09-13 已大更新（6259/6893 · +676/+673）。**「信号层没新货」被话术说成「KG 链路断」**，把 Doctor 引向错误排查方向。
+3. **信号层（低频真相）**：信号＝KG 节点 `_meta.market_signal`（yuantu_client.get_signals）。104 个信号节点**全部 tagged_at=2026-05-17**（一次 LLM 批标），此后无新信号节点；信号 date 前进靠老信号节点**追加新 data_sources**（场次驱动）。09-13 大入图 95 篇＝存量 P1 事实核实，节点不带 market_signal、也不给老信号补源；09-13 有 2 个信号节点 updated_at 变化＝promote 门 48 同名并入手术的副作用（非新信号）。故信号日期停在 09-09 是「信号层 5 天无新标注」，不是采集断。
+
+**影响面**: 日报第三栏与 P0·GAP 卡确有冷冻警示需求（信号 5 天未动属实），但话术误导排查；且 >3 天阈值对「事件驱动低频信号」过紧——05-17 后从未有新信号节点，补源节奏本就以周计。
+
+**建议修法**（待 Doctor 裁）: ① 话术分诊——横幅先对 KG _health/图谱更新日，健康则说「信号层 N 天无新标注（KG 图谱健康·最新图 X）」、不健康才说「核采集链路」；② 阈值分级——>3 天黄提示（低频非断链）、>7 天红冷冻警示；③（可选）信号打标机制本身 05-17 起无新标，是否需重开事件打标归 Doctor/VV 另裁。
+
+**来源**: 2026-09-14 Doctor 报 · CC 实核（recap.db 只读 · KG canonical 实读 · yuantu_client signals CLI 实跑 · gen_daily_report.py L2607 实读）
