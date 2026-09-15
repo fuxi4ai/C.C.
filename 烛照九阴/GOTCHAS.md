@@ -21,6 +21,13 @@ project: 烛照九阴
 **现象** / **根因** / **判别信号** / **正确做法** / **来源**
 ```
 
+<!-- 2026-09-14 错题本积压复盘（Doctor「审查并修复」批全案 · 未闭环 11 条=已修待验 9 + 真待修复 1 + ⚠️ 1）：
+     9 条已修待验证据实读核过（gen L1040 升维注释 / dim1·dim3 按 date 重复=0 / fetch_fred_ust bootstrap 三防线 L22-26 /
+     SA_WRITE_CODE L160+L218 / cn_index_daily 655 行 / industry_signals 09-07 viewpoint_owner 空=0 /
+     ipo_coverage 覆盖 20260817-20260915 complete=1 / plist SHA 双端一致 / 黄横幅 Gateway 回读命中）· ✅ 落签归 Doctor。
+     真积压 2 条防再犯已提炼 README（stock_tracking 回写入链待授权 · RAW_RECAP_DIR 派生风险观察）。
+     消化后计数：🔄 待修复 = 1（ERR-20260911-001）· ⚠️ = 1（ERR-20260830-001）· 已修待验待落签 = 9。 -->
+
 ---
 
 ## [ERR-20260722-002] 生成器「已部署到 Cowork artifact」日志误导——写的是非规范本地镜像，非 live 真身
@@ -327,7 +334,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260820-001] 日报风险区「逾期未启动信号」把条目级负状态升维成板块级——热门已启动板块被列进「等轮动」名单
 
-**状态**: 已修待验（2026-08-20 实施完成 · 待 Doctor 或指定独立验收方验；实施者不自签 ✅）
+**状态**: 已修待验（2026-08-20 实施完成 · 待 Doctor 或指定独立验收方验；实施者不自签 ✅ · 2026-09-14 复盘：gen L1040「不得升维成板块名单」在盘 ✓ 待 Doctor 落签）
 
 **实施留痕**（2026-08-20 · Doctor 裁 C 案后执行）：`gen_daily_report.py` L963-967 改——① 文案精确化：「逾期未兑现锚点信号 N 条——单条信号锚存疑，板块整体启动状态见兑现状态区」；② 聚合过滤：只列该锚逾期未兑现条目占比 ≥30% 的锚（HAVING 子查询），列表空则走「分散于各板块（无板块占比超 30%）」分支。自验证据：py_compile 通过 · live DB 只读复算（原口径 56 条/15 锚 vs 新口径过滤后空列表·最高占比券商 22.2%）· `--output /tmp` 试跑 exit=0 渲染出新文案、旧文案零残留。**生产生效路径**：正式产物已重生成（AI4ME·旧报快照 _pre-snapshots/）+ live artifact 已推（updatedAt 08-20T17:27Z·SHA 02bbc425… 三层一致）；git 收口已核实（Doctor 终端跑·gitcheck.py 实核：brain `b625d488` / 烛照九阴 `9af7fbcb` 两 commit 在 HEAD 链·push 已同步）。**待验项**：Doctor/独立验收方目验 live 卡片风险区文案（实施者不自签 ✅）。
 
@@ -351,7 +358,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260826-001] dim1/dim3 同 kejian_date 重复入库——2025-10-19 与 2026-03-08 三对重复行（05-06/05-09 双轮回填无去重）
 
-**状态**: 🔄 已修待验（2026-08-26 句芒档1 修复完成 · 待 Doctor 或指定独立验收方验；实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-08-26 句芒档1 修复完成 · 待 Doctor 或指定独立验收方验；实施者不自签 ✅ · 2026-09-14 复盘：dim1/dim3 按 date 同日重复=0 ✓ 待 Doctor 落签）
 
 **优先级**: 🟡 中（同内容双行 → 按日 COUNT/聚合类下游统计双重计数，dim3 情绪序列两日被重复加权）
 
@@ -376,7 +383,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260827-001] fetch_fred_ust.py 缺项目根 bootstrap——沙箱内 import config 失败 fallback 直写 live market_data.db（G019 同族·留热 journal）
 
-**状态**: 🔄 已修待验（**2026-09-01 Doctor 裁「根治」→ CC 实施三层防线**：① 顶部 `sys.path.insert(0, 项目根)` bootstrap——保证班域内 import config 成功、`config.MARKET_DB` 随 `ZZJY_DATABASE_ROOT` 指向 /tmp 副本根（主因消除）；② `_db_path()` 删 `except Exception` 静默 fallback——不再回退直写 live（fail-loud）；③ 写连接改走 `config.connect_write` 中央护栏——沙箱挂载盘（含 /sessions//mnt/）直写被拒（G019 兜底）。**全 scripts/ 扫查：唯本脚本缺 bootstrap**（其余 15 件均有）——四次复发同源收敛单文件。验证：py_compile ✓ · 班域模拟 `ZZJY_DATABASE_ROOT=/tmp/zzdbroot` → `_db_path=/tmp/zzdbroot/Market-Data/market_data.db` ✓ · 负向无 env 沙箱域 → connect_write 抛 RuntimeError 拒绝 live ✓。**实施者不自签**——待独立验收）
+**状态**: 🔄 已修待验（**2026-09-01 Doctor 裁「根治」→ CC 实施三层防线**：① 顶部 `sys.path.insert(0, 项目根)` bootstrap——保证班域内 import config 成功、`config.MARKET_DB` 随 `ZZJY_DATABASE_ROOT` 指向 /tmp 副本根（主因消除）；② `_db_path()` 删 `except Exception` 静默 fallback——不再回退直写 live（2026-09-14 复盘：bootstrap 三防线实读在盘 L22-26 ✓ 待 Doctor 落签）fail-loud）；③ 写连接改走 `config.connect_write` 中央护栏——沙箱挂载盘（含 /sessions//mnt/）直写被拒（G019 兜底）。**全 scripts/ 扫查：唯本脚本缺 bootstrap**（其余 15 件均有）——四次复发同源收敛单文件。验证：py_compile ✓ · 班域模拟 `ZZJY_DATABASE_ROOT=/tmp/zzdbroot` → `_db_path=/tmp/zzdbroot/Market-Data/market_data.db` ✓ · 负向无 env 沙箱域 → connect_write 抛 RuntimeError 拒绝 live ✓。**实施者不自签**——待独立验收）
 
 **现象**: 2026-08-27 10:00 定时班跑 `python3 scripts/fetch_fred_ust.py`（已 source env · ZZJY_DATABASE_ROOT=/tmp 副本根），FRED 取数两序列 [ok]（DFII10 +32 行 / THREEFYTP10 +30 行）但 `con.commit()` 抛 `sqlite3.OperationalError: disk I/O error`；随后 live `market_data.db` 出现 12824 字节热 journal、主文件 mtime 被改，任何只读打开 live 的进程报「attempt to write a readonly database」（热 journal recovery 需写权限，挂载盘写被 FUSE 拒）。
 
@@ -402,7 +409,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260828-001] SA 应急通道 QQQ 值写 code='NASDAQ'——与主路 ^NDX 同主键互覆风险（口径差 ~40 倍）
 
-**状态**: 🔄 已修待验（2026-08-28 Doctor 裁「另立 code」（推荐项）→ 已改：`fetch_intl_index.py` SA 写入映射 `SA_WRITE_CODE={"NASDAQ":"NASDAQ_QQQ"}` + `gen_daily_report.py` 两处 QQQ fallback（主路 ^NDX 缺当日行时顶替并标注「主路^NDX缺·应急代理」）· 自验：py_compile 两文件 ✓ · /tmp 库副本跑真实 stockanalysis 分支 → 20260827 两列并存（NASDAQ=^NDX 29641.56 保留 + NASDAQ_QQQ=QQQ 530.5 独立写入）✓ · 实施者不自签）
+**状态**: 🔄 已修待验（2026-08-28 Doctor 裁「另立 code」（推荐项）→ 已改：`fetch_intl_index.py` SA 写入映射 `SA_WRITE_CODE={"NASDAQ":"NASDAQ_QQQ"}`（2026-09-14 复盘：L160 映射+L218 调用实读在盘 ✓ 待 Doctor 落签） + `gen_daily_report.py` 两处 QQQ fallback（主路 ^NDX 缺当日行时顶替并标注「主路^NDX缺·应急代理」）· 自验：py_compile 两文件 ✓ · /tmp 库副本跑真实 stockanalysis 分支 → 20260827 两列并存（NASDAQ=^NDX 29641.56 保留 + NASDAQ_QQQ=QQQ 530.5 独立写入）✓ · 实施者不自签）
 
 **优先级**: 🟡 中（触发即污染：同主键 (trade_date,code) INSERT OR REPLACE → ETF 价混入指数点位列 → pct 链全废 + F1 外盘传导/展示栏读错量级）
 
@@ -438,7 +445,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260901-001] 大盘涨跌幅用 510300 ETF 代理——连续三日与沪深300指数偏离 0.2pp+ + 显示 1 位小数抹平微跌
 
-**状态**: 🔄 已修待验（2026-09-01 Doctor 裁「换指数真身」→ 实施：`scripts/fetch_index_daily.py` 新建（tushare index_daily 000300.SH → `cn_index_daily` 表）+ 内嵌进 `fetch_theme_etf.py`（同批原子拉取·班 prompt 零改动）+ `gen_daily_report.py` 快照/大盘曲线改读指数表（`IDX`）+ bench_note「沪深300指数」+ `pct_span` .1f→.2f。验证：负向（无表→「待取数」fail-closed·exit 0）+ 正向（/tmp 镜像灌真实值→快照 -0.30%·产物零「代理/510300」残留）。**实施者不自签**——待独立验收；回填与重生成命令已贴 Doctor 终端）
+**状态**: 🔄 已修待验（2026-09-01 Doctor 裁「换指数真身」→ 实施：`scripts/fetch_index_daily.py` 新建（tushare index_daily 000300.SH → `cn_index_daily` 表）+ 内嵌进 `fetch_theme_etf.py`（同批原子拉取·班 prompt 零改动）+ `gen_daily_report.py` 快照/大盘曲线改读指数表（`IDX`）（2026-09-14 复盘：cn_index_daily 表 655 行在库 ✓ 待 Doctor 落签）+ bench_note「沪深300指数」+ `pct_span` .1f→.2f。验证：负向（无表→「待取数」fail-closed·exit 0）+ 正向（/tmp 镜像灌真实值→快照 -0.30%·产物零「代理/510300」残留）。**实施者不自签**——待独立验收；回填与重生成命令已贴 Doctor 终端）
 
 **优先级**: 🔴 高（日报首页市场快照直接误导：-0.0% 显示 vs 大盘真实 -0.16%~-0.30%；主线超额/板块图同源失真）
 
@@ -460,7 +467,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260907-001] industry_signals 当日 9 行 viewpoint_owner 漏标（NULL）——九儿 ingest 打标惯例中断
 
-**状态**: 🔄 已修待验（2026-09-07 句芒档1 当场补标修复完成 · 待 Doctor 或指定独立验收方验；实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-09-07 句芒档1 当场补标修复完成 · 待 Doctor 或指定独立验收方验；实施者不自签 ✅ · 2026-09-14 复盘：09-07 九行 viewpoint_owner 空=0 ✓ 待 Doctor 落签）
 
 **优先级**: 🟡 中（打标溯源链断裂——viewpoint_owner 是 industry_signals 的惯例来源列；同库下游与九儿幂等重跑 DELETE 均依赖它）
 
@@ -495,7 +502,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260911-002] IPO 事件表无新行被算成「0 募资=平静」——覆盖判断缺位，双消费端同根（2026-09-11 VV 独立审计发现 · CC 实读产物确认）
 
-**状态**: 🔄 已修待验（2026-09-11 Doctor 批「三项全开工」· CC 实施双端修复 · 实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-09-11 Doctor 批「三项全开工」· CC 实施双端修复 · 实施者不自签 ✅ · 2026-09-14 复盘：ipo_coverage 覆盖 20260817-20260915 complete=1 ✓ 待 Doctor 落签）
 
 **实施留痕（2026-09-11 晚间）**: ① `build_risk_daily.py` 分子·新股虹吸段——新增 `_ipo_covered = _ipo_data_max >= cutoff`（窗口起点）判定；未覆盖 → raise10/ratio/temperature 全 None，detail/summary 显「◌不可判 · 事件表覆盖不足：数据截止 X 早于窗口起点 Y——『无新股』与『采集未覆盖』无法区分」（走既有 None 渲染路径，复合卡 `_ipo_r is not None` 判定自动降级）；② `gen_daily_report.py` F4——`ipo["covered"] = latest >= _cut` + 渲染段新增覆盖不足分支（◌不可判·数据至 latest）；③ 负向分支验证（内联复刻判定式：07-22 截止→不可判 / 09-10→正常 / 无记录→不可判）✓ + py_compile 双端 ✓。**待验**：09-12 班自然运行后回读风险日报卡片与烛照 F4 文案；✅ 归 Doctor/VV 独立验收。
 
@@ -527,7 +534,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [NOTE-20260914-001] launchd 有装机无源——com.zhuzhao.ipo-rolling plist 源未落 ops/（2026-09-14 周巡检发现 · CC 实核确认）
 
-**状态**: 🔄 已修待验（2026-09-14 CC 修复：plist 归位 + README 三班登记 · 实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-09-14 CC 修复：plist 归位 + README 三班登记 · 实施者不自签 ✅ · 09-14 复盘：plist SHA 双端一致 ✓ 待 Doctor 落签）
 
 **现象**: 2026-09-14 周巡检 🔴「com.zhuzhao.ipo-rolling ⚠ 有装机无源——在跑但项目里没有可维护的源文件」（装机 mtime 2026-09-12 23:40 · 已加载 · last exit 0）。
 
