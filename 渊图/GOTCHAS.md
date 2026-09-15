@@ -737,7 +737,8 @@ project: 渊图
 
 ## [NOTE-20260915-001] 节点 desc 新旧结论并存致消费者误读——Feynman 外层 OCS 被 09 月调研「全 CPO」推翻，只读节点名/首段拿到过时结论（G-X163 同族二次·应升格）
 
-**状态**: 🔄 待修（改法=desc 时效分层/拆节点·方向性归 Doctor 裁·canonical 未经授权不动）
+**状态**: ✅ 已修（2026-09-15 标签批+二修 promote 落地 · 未参与实施 subagent 独立审核代签 · desc 时效分层已生效；SiPhOCS/WaveguideOCS 拆节点方向仍归 Doctor 裁）
+**代签证据（独立审核）**: canonical 实读六处二修全部落地 · 计数 6314/6958 · 悬挂 0 · 备份 bak.20260915_115449 · raw 三原文逐字核对一致（09-14 OCS 调研 / 09-03 光互联调研 / 06-28 华工札记）
 
 **优先级**: 🟡 中
 
@@ -757,10 +758,12 @@ project: 渊图
 
 **追记（2026-09-15 · Doctor 令「修正渊图潜在错误+标签更新」）**: 修复已实施（未 promote）——patch `mapping/_v3_20260915_产业逻辑标签_manual.json`：本节点 desc 时效分层（最新 09 调研结论前置+旧案标 vintage）+ 29 节点客观标签（interconnect_role/ocs_route/inference_latency_fit/mass_production/main_adopter/cpo_ocs_relation）；沙箱干跑 29/29 took_patch·desc 只增不减。promote 命令已贴 Doctor，落地回读+✅ 归 Doctor。
 **追记②（2026-09-15 11:30）**: promote 已落地（Doctor 终端 · 备份 bak.20260915_113008）· CC 消费端回读：本节点 desc 最新结论前置 ✓ · 全图标签覆盖 interconnect_role 23/ocs_route 16/inference_latency_fit 8/mass_production 17/main_adopter 8/cpo_ocs_relation 4 · 计数 6314/6958 不变 · 悬挂 0 重复 0。✅ 落签归 Doctor。
+**追记③（2026-09-15 · 独立审核二修）**: 未参与实施 subagent 独立审核标签批 PASS_WITH_LIMITS——五异议中两条坐实本批实错：①Feynman desc「外层 OCS 被全 CPO 替代」系过度推断——09-14 帕米尔 OCS 调研原文「英伟达 scale-up 将采用 CPO 加 OCS 组合·机柜内并存·大流量走 OCS」推翻替代说；②LCoS 量产状态「测试研发」与图内 P1 订单节点（Coherent→谷歌 3000 台）相悖。二修 patch `_v3_20260915_产业逻辑标签_二修_manual.json`（6 节点·脚本 --dry-run 全绿）已贴 Doctor，promote 后复审代签。教训：本条目首修由同一实施者自查通过后仍带 2 处实错——**实施者自验不可替代独立审核**（EXP-20260613-001-P 再证）。
 
 ## [NOTE-20260915-002] 生益电子 desc 首句「高端高频覆铜板供应商」系拆分残留张冠李戴——归正随标签批 + 华工 800G 同比转述丢限定词
 
-**状态**: 🔄 已修待验（2026-09-15 11:30 promote 落地 · CC 回读 desc 归正+注记在盘 · ✅ 落签归 Doctor）
+**状态**: ✅ 已修（2026-09-15 标签批+二修 promote 落地 · 未参与实施 subagent 独立审核代签 2026-09-15 · 回读证据：desc 归正 0 残留+华工注记 2026-06-28 口径在盘）
+**代签证据（独立审核）**: canonical 实读六处二修全部落地 · 计数 6314/6958 · 悬挂 0 · 备份 bak.20260915_115449 · raw 三原文逐字核对一致（09-14 OCS 调研 / 09-03 光互联调研 / 06-28 华工札记）
 
 **优先级**: 🟡 中
 
