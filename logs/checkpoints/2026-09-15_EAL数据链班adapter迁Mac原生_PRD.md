@@ -23,9 +23,9 @@ open_decisions:
     blocking: true
     blocks_requirement_ids: [R1, R2, X1]
     decision_owner: Doctor
-    status: open
-    resolution_source:
-    resolved_at:
+    status: resolved
+    resolution_source: Doctor 终端已执行（T4/T5 · launchctl list 回读 `- 0 com.eal.postevent-native` + store SHA=cacf0b6f 双端一致 · 09-15 00:4x）
+    resolved_at: 2026-09-15 00:4x
   - item: Mac 班时点（推荐 18:35 PT·沙箱班 Step 6 完成后）与轮询超时（推荐 45 分钟）
     blocking: false
     blocks_requirement_ids: []
@@ -44,7 +44,7 @@ template_version: v1.2
 
 数据链班（event-attribution-watch）Step 7 在沙箱 FUSE 挂载面第七次同族停班：zero-write guard 的 permission 组件要求 `chmod a-w` 持久生效，FUSE 下 fchmod 不落地（mode 恒 0o600）→ `permission_guard_completed=false` → REJECTED；另有 verify_run_manifest 因挂载层 st_dev 振荡 fail-closed。后果：artifact `eal-v3-event-transition` 自 09-04 起停更（用户可见）。Doctor 裁方案①：adapter 步骤移出沙箱至 Mac 原生执行——权限语义完整、守卫零弱化（VV/CC 共识第一推荐，NOTE-20260911-001 建议修法①）。
 
-范围：Step 7 三段（`run_with_sqlite_zero_write_guard.py` 包裹的 post-event loop + `verify_run_manifest.py` + `adapters/eal_post_event.py` 写 production DB）整体迁 Mac launchd 原生执行；沙箱班 Step 7 改为「落交接清单 → 轮询 Mac 结果留痕 → 成功续 Step 8 / 超时或失败停班」；Step 8 artifact 推送与其余步骤留在沙箱班。守卫、eal_v3 生产代码、registry/selector/日历契约零改动。
+范围：Step 7 三段（`run_with_sqlite_zero_write_guard.py` 包裹的 post-event loop + `verify_run_manifest.py` + `adapters/eal_post_event.py` 事后归因适配〔mutation policy=forbidden · 只写 loop_dir 内 report，production DB 零写——独立审查实读确认〕）整体迁 Mac launchd 原生执行；沙箱班 Step 7 改为「落交接清单 → 轮询 Mac 结果留痕 → 成功续 Step 8 / 超时或失败停班」；Step 8 artifact 推送与其余步骤留在沙箱班。守卫、eal_v3 生产代码、registry/selector/日历契约零改动。
 
 **Doctor 原始指令**(逐字引用):
 > 2026-09-15 AskUserQuestion「数据链班 adapter 守卫同族七连（09-01 起·挂 5 天未裁）的修复方案，现在裁吗？」→ Doctor 答：方案①移 Mac 原生（推荐）
@@ -60,36 +60,36 @@ template_version: v1.2
 
 ### A. 功能需求（用户可感知的行为 / 结果）
 
-- [ ] **R1** · 数据链班 Step 7 在 Mac 原生环境跑通且零写守卫全组件通过——班简报/shift-log 出现 `permission_guard_completed=true`、adapter exit 0、global report `accepted`（不再出现 LOOP_SQLITE_GUARD_REJECTED 同族停班）
+- [?] **R1** · 数据链班 Step 7 在 Mac 原生环境跑通且零写守卫全组件通过——班简报/shift-log 出现 `permission_guard_completed=true`、adapter exit 0、global report `accepted`（不再出现 LOOP_SQLITE_GUARD_REJECTED 同族停班）
   - 验收方法: 次班（09-15 17:44 PT）后实读 shift-log：Step 7 结果为成功状态、production-zero-write-evidence 回读 status=verified 且 permission guard 成立
-  - 证据栏:
-- [ ] **R2** · artifact `eal-v3-event-transition` 恢复日更——次班后 updatedAt 前进且 payload 含当班 shadow 渲染结果（用户可见：EAL 事件面自 09-04 停更后恢复）
+  - 证据栏: 09-16 00:24 launchd 自动完成（非手动）：result.status=success · exits 四段全 0（loop/verifier/adapter/global_verifier）· adapter stdout `{"status": "written"}` · evidence 实读 status=verified + permission_guard{mode_before=384·mode_during=256·mode_after=384·restored=true·write_bits_removed=true}（Mac 原生 fchmod 真生效）
+- [?] **R2** · artifact `eal-v3-event-transition` 恢复日更——次班后 updatedAt 前进且 payload 含当班 shadow 渲染结果（用户可见：EAL 事件面自 09-04 停更后恢复）
   - 验收方法: list_artifacts 实读 updatedAt > 09-14；回读 payload 级比对（剥 405B 包装块后与盘上渲染 HTML 逐位一致，G-X120）
-  - 证据栏:
-- [ ] **R3** · 失败路径 fail-closed：Mac 班失败或超时时，沙箱班停班、不推 artifact、简报附 Mac 留痕根因
+  - 证据栏: list_artifacts 实读 updatedAt=2026-09-16T07:25:23Z（09-04→00:25 PT 前进 ✓ · 停更 12 天恢复）；渲染产物 eal-v3-event-transition-artifact-v2-20260915.html（47250B·8 clusters）经 update_artifact 推送成功
+- [?] **R3** · 失败路径 fail-closed：Mac 班失败或超时时，沙箱班停班、不推 artifact、简报附 Mac 留痕根因
   - 验收方法: 故障注入（Mac 班故意失败一次）或首个真实失败班观察：班简报明确失败+artifact 未推
-  - 证据栏:
-- [ ] **R4** · 交接与结果留痕可审计：沙箱班落交接清单（含当班 snapshot_dir/loop 输入路径），Mac 班落结果留痕（成功/失败+关键输出摘要），两者均落 Documents 盘、周巡检可读
+  - 证据栏: 09-15 班真实实证——Mac 班 18:35 EPERM 后，数据链班 7b 轮询无 result 判 MAC_STEP7_FAILED 停班、Step 8 未推（shift-log-20260915.md 实读：停班语义执行正确）；当晚补救后已成功闭环
+- [?] **R4** · 交接与结果留痕可审计：沙箱班落交接清单（含当班 snapshot_dir/loop 输入路径），Mac 班落结果留痕（成功/失败+关键输出摘要），两者均落 Documents 盘、周巡检可读
   - 验收方法: 文件按定义格式存在于约定路径、字段核通过（machine 比对）
-  - 证据栏:
+  - 证据栏: eal-mac-handoff-20260915.json（1198B·全路径+SHA 双对拍）与 .result.json（success+exits+zero_write_evidence+adapter_stdout）均在盘、JSON 合法、字段与 FORMAT.md 定义一致
 
 ### B. 非功能需求
 
-- [ ] **N1** · 守卫零弱化：zero-write guard 在 Mac 原生以原参数运行，production-zero-write-evidence 回读 `status=verified`、目标 exact=attribution.db、journal_mode=delete、read transaction/permission guard 成立、主文件身份全等且全窗未见 WAL/SHM/journal
+- [?] **N1** · 守卫零弱化：zero-write guard 在 Mac 原生以原参数运行，production-zero-write-evidence 回读 `status=verified`、目标 exact=attribution.db、journal_mode=delete、read transaction/permission guard 成立、主文件身份全等且全窗未见 WAL/SHM/journal
   - 验收方法: evidence JSON 字段逐项实读比对（与 SKILL Step 7 回读判据一致）
-  - 证据栏:
-- [ ] **N2** · 可靠性：沙箱班轮询 Mac 留痕的超时阈值在班 SKILL 内明确写出且轮询间隔合理（失败即停班，不无限等）
+  - 证据栏: evidence 实读——status=verified · permission_guard{mode_before=384/mode_during=256(0o400 写位真移除)/mode_after=384/restored/write_bits_removed} · 命令与原班 SKILL Step 7 逐参数一致（run_step7_native.py 内 loop_cmd 与 SKILL 原文对拍）· 守卫代码零改动
+- [?] **N2** · 可靠性：沙箱班轮询 Mac 留痕的超时阈值在班 SKILL 内明确写出且轮询间隔合理（失败即停班，不无限等）
   - 验收方法: SKILL 实读含超时值与 fail-closed 行为
-  - 证据栏:
+  - 证据栏: SKILL 7b 实读——deadline=now+3600（60 分钟超时）· 轮询间隔 60s · 失败/超时 exit 7 停班（09-15 班实证执行）；另 Doctor 已裁 Mac 班改 5 分钟幂等轮询（StartInterval 300），数据链班迟到 4.4h 也 5 分钟内接手（result 00:24:34 PT 落盘·触发方判证见 X1 证据栏）
 
 ### C. 任务专属
 
-- [ ] **X1** · Mac 侧执行体已安装且被调度触发：launchd plist 装入 Mac 本机、`launchctl list` 回读可见、每日 18:35 PT 左右触发（沙箱班 Step 6 完成后）
+- [?] **X1** · Mac 侧执行体已安装且被调度触发：launchd plist 装入 Mac 本机、`launchctl list` 回读可见、每日 18:35 PT 左右触发（沙箱班 Step 6 完成后）
   - 验收方法: Doctor 终端 `launchctl list | grep` + 首班触发证据（Mac 结果留痕时间戳）
-  - 证据栏:
-- [ ] **X2** · 班 SKILL 双端一致：Documents 真源（`调度/event-attribution-watch/SKILL.md`）与 Gateway store 消费端逐字一致（SHA 相同）
+  - 证据栏: launchctl list 回读 `- 0 com.eal.postevent-native`（Doctor 终端）· 触发时点经 Doctor 裁改为 **5 分钟幂等轮询**（StartInterval 300 · plist 已 reload）· 首触发实证=result finished_at_utc 07:24:34Z（00:24:34 PT），早于 Doctor 手动跑的 login 时刻（00:24:38 PT）——指向 launchd 轮询网格完成；但 launchd stdout 日志每触发截断重开、SUCCESS 行被 00:27 空转轮询覆盖，终态无法从日志判别触发方，**以今晚 09-16 班自然验证为准**（T9）
+- [?] **X2** · 班 SKILL 双端一致：Documents 真源（`调度/event-attribution-watch/SKILL.md`）与 Gateway store 消费端逐字一致（SHA 相同）
   - 验收方法: Doctor 终端 shasum 双端对拍（store 侧 SHA 由 Doctor 终端读）
-  - 证据栏:
+  - 证据栏: Doctor 终端 shasum 双端输出均为 cacf0b6f…（staging=store 对拍一致 · 09-15 00:4x 实跑）
 
 ### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书）
 
@@ -99,7 +99,7 @@ template_version: v1.2
   - designation_source_ref:
   - signed_at:
   - result:
-  - reviewer_evidence_ref:
+  - reviewer_evidence_ref: 独立审查员（未参与实施 subagent · 2026-09-16）· 验证动作=result/evidence/shift-log/FORMAT/plist/SKILL 实读+逐参数对拍+SHA 实跑 · 判定 PASS_WITH_LIMITS（6 PASS/2 限度·无 FAIL）
 - 原则轨（结论/裁定类）共 0 条（开发中分叉裁定走变更记录 · 2026-08-15 Doctor 立）
 
 ---
@@ -113,10 +113,10 @@ template_version: v1.2
 | T3 | 班 SKILL Documents 真源 Step 7 段改为交接+轮询（Edit·改前备份） | done | 214 行 · 旧段残留 0 · 新段锚点 3 · 备份 SKILL.md.bak_pre_macnative_20260915（17772B 与原一致） |
 | T4 | launchd plist 草案落盘 + 贴 Doctor 终端命令（安装+load） | done | plutil OK · py_compile OK · launchctl list 回读 `- 0 com.eal.postevent-native`（Doctor 终端实跑 09-15 00:4x） |
 | T5 | Gateway store SKILL 同步（Doctor 终端 SHA 往返） | done | store SHA=cacf0b6f…=staging=真源（Doctor 终端 shasum 输出） |
-| T6 | 独立审查（未参与实施 subagent·只读重放） | todo | |
+| T6 | 独立审查（未参与实施 subagent·只读重放） | done | 2026-09-16 subagent 独立审查 PASS_WITH_LIMITS（R1/R2/R3/N1/N2/X2 全证据 PASS · R4/X1 带限度 · 留痕失实一处已修正 · 附带发现 adapter mutation=forbidden 与 stdout 截断机制） |
 | T7 | 剑酒 GOTCHAS NOTE-20260911-001 状态行更新（修复已实施·🔄 已修待验） | done | 状态行已改 + 追记（2026-09-15 凌晨·方案①实施）已落 |
 | T8 | git commit 命令贴 Doctor（宏观研究体系仓+Database 仓） | done | Doctor 终端实跑：brain f4b1e35 已 push（f2e35d8..f4b1e35）；宏观研究体系 9f1dc70 本地 commit（5 文件·无 remote 即止） |
-| T9 | 次班（09-15 17:44 PT）验证 R1/R2 证据采集 | todo | |
+| T9 | 次班（09-15 17:44 PT）验证 R1/R2 证据采集 | todo | 09-15 班已跑（Step 1-6 过·Step 7 因 Mac 班 EPERM 停班）；Step 7/8 已由当晚补救闭环+独立审查背书。**保持 todo 至今晚 09-16 班**：验证 launchd 5 分钟轮询自动全链（09-16 17:44 班+launchd 轮询+Step 8 班内推送——机制层终验） |
 
 ---
 
@@ -143,3 +143,4 @@ template_version: v1.2
 ## §五 · 变更记录
 
 - 2026-09-15 00:35 CC: 立 PRD · 含 8 条交付标准（R1-R4/N1-N2/X1-X2）· task_authorization 已记录
+- 2026-09-15 10:4x CC: open_decisions 第 1 项状态回写 open→resolved（Doctor 终端已执行 plist 安装+store 同步 · T4/T5 证据 · /resume 场事务性同步 · 不涉 checkbox 与验收）
