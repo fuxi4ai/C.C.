@@ -2,15 +2,13 @@
 title: 巡检诊断卡模板
 tags: [巡检, 自愈循环, 模板, brain]
 created: 2026-08-29
-updated: 2026-09-17
+updated: 2026-08-29
 status: archived
 type: reference
 related: [巡检自愈循环-loop-engineering, 定时任务巡检机制]
 ---
 
 # 巡检诊断卡模板（L0 · 每次诊断照此落卡）
-
-> ⚠️ **2026-09-17 已合并**入 [[巡检自愈循环-loop-engineering]] 附录 A（巡检治理四合一现状版）。本文件只作历史底稿（status: archived），诊断卡模板以现状版附录为准。
 
 > 自愈循环 L0：一切修复前必有诊断卡。诊断卡 append 进本文件尾段（Edit 追加，不 Write 覆写）。
 > 判语只允许「确诊/未确诊」二分——未确诊不进 L2（G-X141）。

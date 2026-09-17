@@ -68,7 +68,7 @@ PY
 
 ⇒ **定时的东西必须用不定时的东西兜底。** `/resume` 是唯一天然不定时、又必然会发生的检查点。同一处还顺带读修复审计（上段）——修复器越界与否的「人读通道」挂在这里。
 
-**超期时怎么办（F1 分臂 · 白名单外一律只报告）**：按 `brain/permanent/巡检自愈循环-loop-engineering.md` §2 L2 执行——F1a（周班停摆）只报告，不代跑不代修，由 Doctor 定；F1b（班内落盘失效）贴 S1 重跑命令（Doctor 终端）+ 提示 S3 装否。其余任何修复动作必须落在自愈循环白名单内并写 audit 留痕，白名单外 fail-closed 只报告。
+**超期时怎么办（F1 分臂 · 白名单外一律只报告）**：按 `brain/permanent/巡检自愈循环-loop-engineering.md` §5.3 L2 修复表执行——F1a（周班停摆）只报告，不代跑不代修，由 Doctor 定；F1b（班内落盘失效）贴 S1 重跑命令（Doctor 终端）。其余任何修复动作必须落在自愈循环白名单内并写 audit 留痕，白名单外 fail-closed 只报告。
 
 ### Step 1 · 读最近 3 篇会话日志
 
@@ -157,8 +157,8 @@ tail -5 ~/Documents/Claude/brain/permanent/_consumption_receipts.jsonl
 
 ## 相关
 
-- `permanent/定时任务巡检机制.md`（Step 0.6 的完整设计与那个悖论）
-- `permanent/巡检自愈循环-loop-engineering.md`（F1 分臂/白名单/audit——超期处置的现行条文）
+- `permanent/巡检自愈循环-loop-engineering.md`（巡检治理四合一现状版 · 2026-09-17 合并：快照机制 §2/悖论两层解法 §4/白名单 F1-F5 §5.3/audit §5.4/永不自动清单 §6）
+- `permanent/定时任务巡检机制.md`（archived 底稿 · 已并入现状版）
 - `.tools/scheduler_snapshot.py` · `permanent/_scheduler_snapshot.{json,md}`
 - 周班 `scheduler-weekly-audit`（周日 20:00 PDT · 静默运行 · 异常才弹系统通知）
 

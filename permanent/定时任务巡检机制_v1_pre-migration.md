@@ -3,15 +3,13 @@ title: 定时任务巡检机制
 abstract: "**Mac 侧**四执行面现状快照 ＋ git diff 变更检测；解决「CC 的定时任务认知靠拼日志、隔天即错」这个元问题。⚠ 不覆盖 DVA/fuxi Windows 侧（第五执行面）。2026-08-02 立"
 tags: [定时任务, 巡检, 机制, brain]
 created: 2026-08-02
-updated: 2026-09-17
+updated: 2026-08-29
 status: archived
 type: permanent
 related: [定时任务清单, 通用教训]
 ---
 
 # 定时任务巡检机制
-
-> ⚠️ **2026-09-17 已合并**入 [[巡检自愈循环-loop-engineering]]（巡检治理四合一现状版）。本文件只作历史底稿（status: archived），新改动请落现状版。
 
 > **一句话**：把「定时任务现状」从**靠记忆和日志拼**，改成**一条命令拉**；把「谁改了什么」交给 `git diff`，不再需要任何人记得。
 

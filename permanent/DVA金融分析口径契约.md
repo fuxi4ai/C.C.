@@ -11,6 +11,8 @@ related: [科技资讯看板, DVA]
 
 # DVA 金融分析口径契约
 
+> 相关：[[DVA]] · [[科技资讯看板]]
+
 > 源：2026-08-22 从 fuxi 侧实读 `E:\AI\DVA\runtime\基础模块\analysis-utils.js` + `runtime\tools\fuxi\run_finance_analysis_repair.mjs` 并交叉验证。Mac 侧复现实现：`Claude/Projects/Financial/X-Board/{extract_points.py, ingest_points.py, verify_xboard.py}`。
 
 ## 1. 字幕清洗 cleanSubtitle（三步 · 顺序不可变）

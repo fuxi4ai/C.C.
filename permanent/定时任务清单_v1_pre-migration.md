@@ -2,7 +2,7 @@
 title: 定时任务清单
 tags: [scheduled, cron, 自动化, index, 维护, gateway迁移]
 created: 2026-06-30
-updated: 2026-09-17
+updated: 2026-07-30
 status: archived
 type: permanent
 ---
@@ -10,8 +10,6 @@ type: permanent
 > **2026-07-01 切回官方工作区**：订阅恢复后切回桌面官方版，该环境注册表为空（`list`=0，印证「切环境不带过来」），照本清单 `create_scheduled_task` **重建 10 个任务全部就绪**（9 定时 + repair-finance-chain 手动）；cron 逐条 `list` 核对无误。方案 B 的 `handshake-consumer-daily` 已搁置、**不重建**；`_archived/dva-update-all-reminder` 废弃、不重建。⚠️ 官方沙箱走**默认拒绝+逐域名加白**（非 gateway 开放出网），取数任务首跑前须确认白名单在位（G-X44）。
 
 # 定时任务清单
-
-> ⚠️ **2026-09-17 已合并**入 [[巡检自愈循环-loop-engineering]] §9（巡检治理四合一现状版）。本文件只作历史底稿（status: archived）——「会变的」清单数字以 `_scheduler_snapshot.md` 快照为准，「不变的」架构与铁律来由见现状版 §9。
 
 > 巡检：[[定时任务巡检机制]]（四执行面快照＋live 镜像 · 周日 20:00 静默班）——「会变的」交快照与镜像，本清单只留架构/依赖次序/铁律来由（分工提议见该文档 §六，待 Doctor 定）。
 

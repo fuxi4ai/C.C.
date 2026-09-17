@@ -6,14 +6,14 @@ created: 2026-08-02
 updated: 2026-08-08
 status: active
 type: reference
-related: [定时任务巡检机制, portable/README]
+related: [巡检自愈循环-loop-engineering, portable/README]
 ---
 
 # scheduled-live-mirror — gateway live 定时任务的只读镜像（原 Cowork）
 
 **真源**：`~/Gateway-workspace/Scheduled/`（2026-08-02 自 `/Users/lunarabbit/Claude's workspace/Scheduled/` 迁入，D14；保护跟随 store——开发者模式与沙箱都够不到，沙箱挂载根被管理员限制在 `~/Documents`）。
 
-**本目录** = rsync 单向镜像（live → `live/` 子目录），git 跟踪 ⇒ 「哪个班的 prompt 变了」一条 `git diff` 可见——与快照巡检机制（`permanent/定时任务巡检机制.md`）的「git 当变更检测器」同一思路。
+**本目录** = rsync 单向镜像（live → `live/` 子目录），git 跟踪 ⇒ 「哪个班的 prompt 变了」一条 `git diff` 可见——与巡检治理机制（`permanent/巡检自愈循环-loop-engineering.md` §2）的「git 当变更检测器」同一思路。
 
 ## 刷新（只能 Doctor 终端跑）
 
