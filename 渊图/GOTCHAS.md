@@ -792,7 +792,7 @@ project: 渊图
 **来源**: 2026-09-15 AI 景气度报告场 · WebSearch 多源坐实 · patch `mapping/_v3_20260915_产业逻辑标签_manual.json`
 
 ## [NOTE-20260915-003] SiPhOCS 与 WaveguideOCS 同路线双节点并存——合并待 Doctor 裁
-**状态**: 🔄 已修待验（2026-09-16 问答板 6A Doctor 裁「合并（度高者主+墓碑+props并集）」· 手术脚本+墓碑备好·沙箱复刻验证全绿·promote 命令已贴 Doctor 终端待执行）
+**状态**: 🔄 已修待验（2026-09-16 22:23 Doctor 终端 promote 已执行 · CC 沙箱实读复核：canonical 6313/6956 · loser 移除 · aliases/props 并集 · same_route_dup_ref 清 · 悬挂 0 自环 0 · 墓碑+备份在盘 · latest.json 软链直指 canonical · siphocs 卡 18 度）——✅ 落签归 Doctor（CC 不自标）
 
 **优先级**: 🟡 中
 
@@ -809,6 +809,8 @@ project: 渊图
 **追记（2026-09-16 晚场 · 6A 实施备好）**: 问答板 6A Doctor 裁合并 → CC 手术脚本 `mapping/_merge_ocs_route_20260916.py`（度高者主=SiPhOCS 11:9 运行时断言 · props 并集冲突键幸存者优先 · aliases/data_sources 并集去重 · 7 边重定向 · 2 边同三元组折叠描述〔rel_WaveguideOCS_Dekeli→rel_Dekeli_SiPhOCS · rel_ocsgate_04→rel_ocsgate_11〕 · loser 节点移除 · 墓碑 `mapping/_tombstones/2026-09-16_ocs_route_merge.json` · 自动备份+前置/后置计数断言+QA 同 promote 门口径）。**沙箱复刻验证全绿**（6313/6956 · 悬挂/自环/三元组重复 0 · 折叠与重定向逐条实读）——promote 命令已贴 Doctor 终端（脚本+wiki 刷新+git 三件）。promote 后 canonical 实读复核+✅ 落签归 Doctor。
 
 **追记②（2026-09-16 深夜 · 独立复验）**: 未参与实施 subagent 在 /tmp 复刻目录实跑复验 **PASS_WITH_LIMITS**——exit 0 · 6313/6956 精确 · 备份 sha256 与原 canonical 字节一致（回滚可靠）· 防重跑四层前置断言实证（已合并后重跑 exit 1 拦）· QA 独立自跑 0 违例。限度项已修：写回 indent 1→2（与 canonical 现行格式一致·git diff 可审）。真实 canonical 维持 6314/6958 未动，执行归 Doctor 终端。
+
+**追记③（2026-09-16 深夜 · promote 已执行）**: Doctor 终端 22:23:40 跑 `_merge_ocs_route_20260916.py` + `wiki_autogen.py --force`——备份 `bak_pre_ocs_route_merge_20260916_222340` 落盘 · 合并 6313/6956（-1/-2）· 墓碑 `_tombstones/2026-09-16_ocs_route_merge.json` 落盘 · wiki 961 卡重建（siphocs 18 度）。CC 沙箱实读复核全绿（上列状态行证据）。孤儿卡 `wiki/waveguideocs.md`（图谱 ID 已消失）git rm 命令已贴。git commit 命令已贴（canonical+墓碑+siphocs 卡）。
 
 **来源**: 2026-09-15 标签批实读 · canonical 两节点 desc/props/边
 
