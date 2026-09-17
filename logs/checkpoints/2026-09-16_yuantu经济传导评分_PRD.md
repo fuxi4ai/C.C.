@@ -2,8 +2,8 @@
 title: PRD · yuantu_scoring 经济传导评分改造
 tags: [prd, acceptance, 渊图, 龙鱼五力]
 created: 2026-09-16 21:30
-updated: 2026-09-16 21:30
-status: awaiting_acceptance
+updated: 2026-09-17
+status: delivered
 task_authorization:
   state: verified
   source_type: 问答板
@@ -35,19 +35,19 @@ template_version: v1.2
 
 ## §二 · 交付标准
 
-- [?] **R1** · 经济传导维度接入：dimensions 新增 economic_transmission（score/benefit_raw/customers/constraints_in/realization_gates/alternative_pressure），weighted_total 加 ET×1.0，scoring_version=v1.2
+- [✓] **R1** · 经济传导维度接入：dimensions 新增 economic_transmission（score/benefit_raw/customers/constraints_in/realization_gates/alternative_pressure），weighted_total 加 ET×1.0，scoring_version=v1.2
   - 证据: 真图实跑 14 家评分库全接通 · get_company_score 回读字段齐
-- [?] **R2** · 验证用例（候选定式）：新增非经济边（is_a 等同义词/引用）→ ET 不跳变；新增经济边（supplies）→ ET 响应上升
+- [✓] **R2** · 验证用例（候选定式）：新增非经济边（is_a 等同义词/引用）→ ET 不跳变；新增经济边（supplies）→ ET 响应上升
   - 证据: test A1/A2 断言过（6.3 vs 6.3 · 6.3→7.1）
-- [?] **R3** · 缓存失效门禁：图谱文件改写后 _load_graph 重载（指纹变化即失效），不拿旧图评新司
+- [✓] **R3** · 缓存失效门禁：图谱文件改写后 _load_graph 重载（指纹变化即失效），不拿旧图评新司
   - 证据: test B1a（同指纹命中）/B1b（改写后重载）断言过
-- [?] **R4** · ET 语义完整：无经济信号=0 · 正项加权+cap · 负项扣分 · clamp[0,10]
+- [✓] **R4** · ET 语义完整：无经济信号=0 · 正项加权+cap · 负项扣分 · clamp[0,10]
   - 证据: test C1-C4 断言过
-- [?] **R5** · 共享维度回归：tau_key/scarcity/replacement/maturity/graph_degree/integrity 与原公式逐位一致，weighted_total 差=ET 且仅=ET
+- [✓] **R5** · 共享维度回归：tau_key/scarcity/replacement/maturity/graph_degree/integrity 与原公式逐位一致，weighted_total 差=ET 且仅=ET
   - 证据: test D1 真图抽样 13 家全一致（实跑）
-- [?] **N1** · 兼容性：消费端 five_forces_engine_v3 只读 weighted_total/tier/wuli 字段（实读 1309 行）——加法维度零破坏；wuli_consumable_fields/contract 字段不动
+- [✓] **N1** · 兼容性：消费端 five_forces_engine_v3 只读 weighted_total/tier/wuli 字段（实读 1309 行）——加法维度零破坏；wuli_consumable_fields/contract 字段不动
   - 证据: 消费端源码实读 + healthcheck ok 回读
-- [?] **X1** · 测试与语法：py_compile 过 + test_yuantu_scoring.py 全过
+- [✓] **X1** · 测试与语法：py_compile 过 + test_yuantu_scoring.py 全过
   - 证据: 实跑 9 断言 0 失败（exit 0）
 
 ## §2.5 · 执行清单
@@ -70,8 +70,10 @@ template_version: v1.2
 |---|---|---|---|
 | 2026-09-16 21:30 | draft → in_progress | CC | 问答板 4A 已裁方向·直接立卷实施 |
 | 2026-09-16 22:10 | in_progress → awaiting_acceptance | CC | 独立复验（未参与实施 subagent）PASS：R1-R5/N1/X1 七条全绿 · competes_with 去重疑点排除（双向双边=1 实跑）· 真图 3 家抽查 total 差=ET 精确 |
+| 2026-09-17 | awaiting_acceptance → delivered | Doctor | 会话令「落签批」（CC 代记）· R1-R5/N1/X1 七条全 [✓] |
 
 ## §五 · 变更记录
 
 - 2026-09-16 21:30 CC: 立 PRD（问答板 4A 授权）· 消费端 1309 行实读（只读 total/tier/wuli·加法零破坏）
 - 2026-09-16 22:10 CC: 独立复验 PASS 落卷——建议项两条已评估：C4 clamp 上限测试弱覆盖（真图英维克 ET=10.0 实证补齐·测试留待后续增厚）、海光 node 不在图谱属存量数据缺口（非本改造引入）
+- 2026-09-17 Doctor 落签（会话令「落签批」·CC 代记）：R1-R5/N1/X1 七条全 [✓] · authority=Doctor

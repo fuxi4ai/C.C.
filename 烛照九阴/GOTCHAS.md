@@ -487,7 +487,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260911-001] stock_tracking 结果回写列 0/3986——信号收益闭环断裂 7 周未修（07-28 审计 P0-3 同根确认）
 
-**状态**: 🔄 已修待验（2026-09-14 Doctor 授权「授权」→ CC 实施三件：① signal_winrate_backtest 放开 unresolved 回写（VV 修正·池分母仍只收 resolved）+ 存量全量回写（excess 0→1569 行·5/5 抽样手算对账 ✓·备份 recap.db.bak_20260914_pre_winrate）；② 日报胜率引用改滚动窗口（静态 84.5%/181 → 滚动 50.0%/1023·样本至 09-09·口径标注）；③ 入链 staging 待 Doctor 终端部署（SHA 4cf1b972…）· 实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-09-14 Doctor 授权「授权」→ CC 实施三件：① signal_winrate_backtest 放开 unresolved 回写（VV 修正·池分母仍只收 resolved）+ 存量全量回写（excess 0→1569 行·5/5 抽样手算对账 ✓·备份 recap.db.bak_20260914_pre_winrate）；② 日报胜率引用改滚动窗口（静态 84.5%/181 → 滚动 50.0%/1023·样本至 09-09·口径标注）；③ 入链 staging 已部署（brain live 镜像 zhuzhao-market-fetch-daily-report SKILL 26986B·mtime 09-14 22:17 与 staging 逐字节吻合 · 2026-09-16 CC 实读核实）· 实施者不自签 ✅）
 
 **现象**: `stock_tracking` 3986 行中 `excess_1d/3d/5d/10d/hit_3d` 五列 **0 行非空**（2026-09-11 只读探针实跑）；`resolve_status` 3986/3986 已填（2708 resolved / 1278 unresolved）——兑现状态机在跑，但「结果 vs 基准」的收益测量列全空。
 
@@ -566,3 +566,47 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **建议修法**（待 Doctor 裁）: ① 话术分诊——横幅先对 KG _health/图谱更新日，健康则说「信号层 N 天无新标注（KG 图谱健康·最新图 X）」、不健康才说「核采集链路」；② 阈值分级——>3 天黄提示（低频非断链）、>7 天红冷冻警示；③（可选）信号打标机制本身 05-17 起无新标，是否需重开事件打标归 Doctor/VV 另裁。
 
 **来源**: 2026-09-14 Doctor 报 · CC 实核（recap.db 只读 · KG canonical 实读 · yuantu_client signals CLI 实跑 · gen_daily_report.py L2607 实读）
+
+---
+
+## [ERR-20260915-001] dim4_trade_plan.plan_window 日期括注笔误——「周四（9-18）」应为「周四（9-17）」（2026-09-18 是周五）
+
+**状态**: 🔄 已修待验（2026-09-15 句芒课件入库审核班档1 当场修 · 待独立验收 · 实施者不自签 ✅）
+
+**优先级**: 🟢 低（单行文本括注错一天；数值列/结构化列不受影响）
+
+**触发场景**: 六项审查「数据合理性」——dim4_trade_plan date=2026-09-15 行与课件原文（pdftotext 抽 260915四维度训练营-总结_完整版.pdf）逐条对账时发现 plan_window 写「明日（9-16）至周四（9-18）变盘窗口」，而 2026-09-18 是**周五**（python calendar 验证：09-15=周二/09-16=周三/09-17=周四/09-18=周五）。
+
+**硬证据/最小复现**: 同表 prediction 字段写「僵持状态可能在周四（9-17）结束」——同一行内 plan_window 与 prediction 括注自相矛盾（9-18 vs 9-17）；课件原文「这种僵持状态可能在周四结束」「重点关注周三至周四的市场表现」；`python3 -c "import datetime; print(datetime.date(2026,9,17).strftime('%A'))"` → Thursday。
+
+**根因**: 九儿 ingest 时手工做「星期→日期」括注换算，未用程序验证（周四落成周五日期）。同日 prediction 字段换算正确，说明非系统性、系单点笔误。
+
+**影响面**: dim4_trade_plan.plan_window 文本进入下游四维度复盘/报告引用时，「变盘窗口」终点日期被读成周五 9-18、错一天；不影响 position_pct 数值列与 stance/conf 结构化列。
+
+**修复/建议修法**（2026-09-15 句芒已执行）: 档1 当场修——`UPDATE dim4_trade_plan SET plan_window = REPLACE(plan_window, '周四（9-18）', '周四（9-17）') WHERE date='2026-09-15' AND plan_window LIKE '%周四（9-18）%'`（影响 1 行）；备份 `recap.db.bak_20260915_prefix句芒`（md5 44f21afb7a3d50271cd940992c0ceee2）；/tmp 副本往返、副本 integrity=ok、34 表只增不减全一致、放回后真库 integrity=ok、复验「周四（9-17）」在库且「周四（9-18）」零残留。证据四件套见 `agents/句芒/logs/2026-09-15-课件入库审核.md`「修复记录」。
+
+**预防门禁**: ① 建议九儿 ingest 侧所有「星期→日期」括注用 python `datetime.date` 推导（或省略日期括注只留星期）；② 审查班「数据合理性」保留对 plan_window/prediction 内日期括注的逐条对账。若同款再犯，追记本条、不新增。
+
+**来源**: 2026-09-15 句芒课件入库审核班 · 课件原文 pdftotext 实抽 · recap.db 实读
+
+## [ERR-20260916-001] 情绪周期引擎「报错撤回」触发器致冬跳夏+取消冬后变更（Doctor 报修 · 当日修复）
+
+**状态**: ✅ 已修复（Doctor 2026-09-17 落签 · CC 代记——修复已实施+负向测试 4/4 · DB 已 apply〔2026-09-16 深夜场·406 交易日 0 反向跳变·13 处残余 v1 遗留非交易日噪声定性保留〕）
+
+**优先级**: 🟡 中（消费端可见：复盘日报季节序列出现反向跳变与历史改写）
+
+**触发场景**: Doctor 2026-09-16 晚场报「复盘日报情绪周期存在冬跳夏、且把冬取消的后变更现象」。
+
+**硬证据/最小复现**: `tools/emotion_engine_v2.py` 单向状态机含两个「报错撤回」触发器——① `S in (秋,冬) and s > summer_peak` → 把段内已落标日全部改写为夏；② `S in (春,夏) and s < winter_trough` → 段改写为冬。实跑 dry-run：406 日历史「修正 9 次」；DB `emotion_cycle` 现序列 20 处反向跳变（秋→夏 ×9、夏→冬→夏 往返 ×2、冬→秋 ×2、春→秋/秋→春 ×2 等）；被取消的冬段 3 处（20250325-0403 9 日、20260309-0323 11 日〔含 20260323 极寒日——极寒日被标成夏〕、20260910-0916 7 日〔最近段·Doctor 所见〕）。季节分布失真：夏 180 天（修复后 124）。
+
+**根因**: 撤回触发器是**后向**状态迁移（夏←秋/冬、冬←春/夏），违反 Doctor 2026-06-10 立的单向模式「春夏秋冬单向前进」；且整段改写使历史标签依赖未来数据（非因果），每次 --apply 全史重算都可能翻改过去。
+
+**修复（2026-09-16 已实施）**: 移除两处撤回触发器（及 summer_peak/winter_trough/trans_idx/corrections 配套变量）——状态机严格单向；每日期 label 仅依赖当日及之前数据（因果稳定）。`corrected` 字段保留恒 False 兼容。持久化负向测试 `tools/test_emotion_oneway.py` 4 组全过：A 无反向跳变（406 日 0 处）· B corrected 恒 False · C 因果稳定（6 日截断重算逐日一致）· D 极寒必在冬。修复后：周期 14→19 · 夏 180→124 · 冬 89→126 · 极寒 6→7 天 · DB 需变更 70 日（含 20260910-16 夏→冬）。
+
+**影响面**: `emotion_cycle` 表 70 日 season 与现库不一致，apply 后复盘日报季节序列回归单向；下游 dim3 情绪序列/四维度复盘读 emotion_season 的消费端随 apply 自然修正。
+
+**建议修法**: 已修（如上）。apply 已于 2026-09-16 深夜场完成（406 交易日 0 反向跳变·13 处残余 v1 遗留非交易日噪声定性保留·日报已重建+update_artifact 已推）——✅ 已落签（Doctor 2026-09-17 · CC 代记）。
+
+**预防门禁**: 状态机任何新触发器只允许前向迁移或当日判定；「撤回/改写历史」类机制必须先过「不反向跳跃+无后变更」负向测试（test_emotion_oneway.py 常驻回归）。差异样本积累走人工标注层（docs/情绪周期_人工标注.tsv），引擎不做回溯裁决。
+
+**来源**: 2026-09-16 Doctor 报修 · CC 实读引擎源码+DB 实读+dry-run 复现

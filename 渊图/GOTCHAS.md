@@ -729,7 +729,7 @@ project: 渊图
 
 ## [NOTE-20260911-002] yuantu_scoring 无向化+度+一次性缓存参与公司结构评分——研究覆盖可反哺投资排序（2026-09-11 VV 独立审计发现 · CC 实读确认）
 
-**状态**: 🔄 已修待验（2026-09-16 问答板 4A Doctor 裁「按候选改」→ 已实施：economic_transmission 经济传导维度〔受益方向/下游采用方为正·约束/兑现门槛/替代压力为负·只让有经济含义的有向路径影响受益判断〕+ 验证用例固化〔新增同义词不跳变〕+ 缓存键含文件指纹〔realpath+mtime+size〕；测试 9 断言全过含真图 13 家回归；独立复验待派 · ✅ 归 Doctor）
+**状态**: ✅ 已修复（Doctor 2026-09-17 落签 · CC 代记——2026-09-16 问答板 4A Doctor 裁「按候选改」→ 已实施：economic_transmission 经济传导维度〔受益方向/下游采用方为正·约束/兑现门槛/替代压力为负·只让有经济含义的有向路径影响受益判断〕+ 验证用例固化〔新增同义词不跳变〕+ 缓存键含文件指纹〔realpath+mtime+size〕；测试 9 断言全过含真图 13 家回归；独立复验 PASS〔未参与实施 subagent·R1-R5/N1/X1 七条全绿〕）
 
 **优先级**: 🟡 中
 
@@ -792,7 +792,7 @@ project: 渊图
 **来源**: 2026-09-15 AI 景气度报告场 · WebSearch 多源坐实 · patch `mapping/_v3_20260915_产业逻辑标签_manual.json`
 
 ## [NOTE-20260915-003] SiPhOCS 与 WaveguideOCS 同路线双节点并存——合并待 Doctor 裁
-**状态**: 🔄 已修待验（2026-09-16 22:23 Doctor 终端 promote 已执行 · CC 沙箱实读复核：canonical 6313/6956 · loser 移除 · aliases/props 并集 · same_route_dup_ref 清 · 悬挂 0 自环 0 · 墓碑+备份在盘 · latest.json 软链直指 canonical · siphocs 卡 18 度）——✅ 落签归 Doctor（CC 不自标）
+**状态**: ✅ 已修复（Doctor 2026-09-17 落签 · CC 代记——2026-09-16 22:23 Doctor 终端 promote 已执行 · CC 沙箱实读复核：canonical 6313/6956 · loser 移除 · aliases/props 并集 · same_route_dup_ref 清 · 悬挂 0 自环 0 · 墓碑+备份在盘 · latest.json 软链直指 canonical · siphocs 卡 18 度）
 
 **优先级**: 🟡 中
 

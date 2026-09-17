@@ -189,7 +189,7 @@ project: 剑酒青丘
 **追记②（2026-09-16 凌晨 · 首跑验证与三修复闭环）**: 09-15 班首跑暴露三缺陷并当晚闭环——① launchd EPERM（CommandLineTools python3 无 FDA→换已授 FDA 的 python3.13 + HOME/PATH env，usclose 班先例）；② 执行体预建 loop_dir 触发 guard LOOP_SQLITE_GUARD_OUTPUT_PREEXISTING（exit 91·根因=执行体实现 bug，非守卫误报）；③ 午夜翻日丢交接（改跨日期扫描）+evidence 校验字段名错（改读 permission_guard.restored/write_bits_removed/mode 实值）。Mac 班改 5 分钟幂等轮询（Doctor 裁）。**最终验证**：09-16 00:24:34 PT Step 7 全链 success 落盘——四段全 0 · evidence status=verified · permission_guard mode 384→256(0o400)→384 restored（**守卫零弱化在 Mac 原生实证成立**）· report accepted · artifact updatedAt 09-04→09-16T07:25Z 停更 12 天恢复（Step 8 由 CC 场外补推）。触发方判证：result 落盘早于 Doctor 手动跑 login 4 秒指向 launchd 轮询，但 launchd stdout 每触发截断、终态不可判别——**机制层以今晚 09-16 班自然验证为准**。PRD 8 条已填 [?]+证据，独立审查 PASS_WITH_LIMITS（留痕失实一处已修正），✅ 归 Doctor。
 
 ### [NOTE-20260911-002] risk.py 仓位函数赢面门排除低胜率高赔率机会（2026-09-11 VV 独立审计发现 · CC 实读确认）
-**状态**：🔄 已修待验（2026-09-16 问答板 5A Doctor 裁「①②③全采纳」→ 已实施：期望口径门 EV=p·b−(1−p) + 扰动稳健门（p±.05/b±20% 四角）+ 输入口径固化（p/b=持有期收益概率/赔率）+ 保留③（单票硬顶/止损上限/养家档）；测试 14/14 含旧版权威对拍（5 用例决策逐位一致）；独立复验待派 · ✅ 归 Doctor）
+**状态**：✅ 已修复（Doctor 2026-09-17 落签 · CC 代记——2026-09-16 问答板 5A Doctor 裁「①②③全采纳」→ 已实施：期望口径门 EV=p·b−(1−p) + 扰动稳健门（p±.05/b±20% 四角）+ 输入口径固化（p/b=持有期收益概率/赔率）+ 保留③（单票硬顶/止损上限/养家档）；测试 15/15 含旧版权威对拍（5 用例决策逐位一致）；独立复验 PASS_WITH_LIMITS〔缺陷 1 已修·B5 断言固化〕）
 **优先级**：🟡 中
 **硬证据/最小复现**：`infrastructure/risk.py` L53-58——`wf = winface if winface is not None else p`；`if wf < min_winface(0.60): return 0.0`。假设演示（VV）：40% 概率赚 30%、60% 概率亏 10%，期望 +6%，仅因 winface 40%<60% 判 0 仓。
 **根因**：缺省 winface=p 把「胜率」当「赢面」门槛，未考虑赔率与期望；min_winface 0.60 硬门槛无回测锚。
