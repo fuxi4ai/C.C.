@@ -729,7 +729,7 @@ project: 渊图
 
 ## [NOTE-20260911-002] yuantu_scoring 无向化+度+一次性缓存参与公司结构评分——研究覆盖可反哺投资排序（2026-09-11 VV 独立审计发现 · CC 实读确认）
 
-**状态**: 🔄 待修复（改法属方向性·待 Doctor 裁）
+**状态**: 🔄 已修待验（2026-09-16 问答板 4A Doctor 裁「按候选改」→ 已实施：economic_transmission 经济传导维度〔受益方向/下游采用方为正·约束/兑现门槛/替代压力为负·只让有经济含义的有向路径影响受益判断〕+ 验证用例固化〔新增同义词不跳变〕+ 缓存键含文件指纹〔realpath+mtime+size〕；测试 9 断言全过含真图 13 家回归；独立复验待派 · ✅ 归 Doctor）
 
 **优先级**: 🟡 中
 
@@ -742,6 +742,10 @@ project: 渊图
 **预防门禁**: 图谱类评分上线前必答「这条边为什么改变受益」；缓存键必含输入文件版本/哈希。
 
 **来源**: 2026-09-11 VV 独立审计 2.3 节 · CC 实读 yuantu_scoring.py L29-44 一致
+
+**追记（2026-09-16 晚场 · 4A 实施）**: 问答板 4A Doctor 裁「按候选改」→ CC 实施（PRD `2026-09-16_yuantu经济传导评分_PRD.md`）：① 保留相关度/覆盖六维（逐位不变·真图 13 家回归锚）；② 新增 `economic_transmission`（0-10）：正项=受益方向（supplies 2.0/used_in 1.5/enables 1.5/part_of 1.0/causes 1.0 加权有向出边）+下游采用方（supplies/used_in 出边去重目标×1.5 cap3）；负项=外部约束（constrains 入边）/兑现门槛（constrains 出边→event_）/替代压力（competes_with 去重）；归一 log2(1+pos)×2.5−负项·clamp[0,10]·无经济信号=0；③ 验证用例固化（新增非经济边 ET 不跳变 6.3 vs 6.3 · 新增经济边 6.3→7.1）；④ 缓存键改文件指纹（realpath+mtime_ns+size·改写即失效）。weighted_total += ET×1.0 · scoring_version v1.2 · 消费端（five_forces_engine_v3 L1309）只读 total/tier/wuli 加法零破坏。测试 9 断言全过（2 处测试预期订正：单槽缓存按设计顶替/下游采用方含技术路线目标）。git 命令贴 Doctor 终端（收尾合并块）。
+
+**追记②（2026-09-16 深夜 · 独立复验）**: 未参与实施 subagent 独立复验 **PASS**（R1-R5/N1/X1 七条全绿 · competes_with 双向去重疑点排除〔双边=1 实跑〕· 真图 3 家 total 差=ET 精确 · 缓存失效/验证用例实跑重放）。建议项两条评估：C4 上限由真图英维克 ET=10.0 实证补齐；海光 node 不在图谱属存量数据缺口。✅ 归 Doctor。
 
 ## [NOTE-20260915-001] 节点 desc 新旧结论并存致消费者误读——Feynman 外层 OCS 被 09 月调研「全 CPO」推翻，只读节点名/首段拿到过时结论（G-X163 同族二次·应升格）
 
@@ -788,8 +792,7 @@ project: 渊图
 **来源**: 2026-09-15 AI 景气度报告场 · WebSearch 多源坐实 · patch `mapping/_v3_20260915_产业逻辑标签_manual.json`
 
 ## [NOTE-20260915-003] SiPhOCS 与 WaveguideOCS 同路线双节点并存——合并待 Doctor 裁
-
-**状态**: ⚠️ 已知风险（合并属方向性·待 Doctor 裁·已互挂 `same_route_dup_ref` 标签缓解）
+**状态**: 🔄 已修待验（2026-09-16 问答板 6A Doctor 裁「合并（度高者主+墓碑+props并集）」· 手术脚本+墓碑备好·沙箱复刻验证全绿·promote 命令已贴 Doctor 终端待执行）
 
 **优先级**: 🟡 中
 
@@ -802,6 +805,10 @@ project: 渊图
 **建议修法**: 合并（度高者主 + 墓碑 + props 并集）或建 is_a/同义边——归 Doctor 裁；未裁前两节点已互挂 `same_route_dup_ref` 标签。
 
 **预防门禁**: 路线/技术类节点入库前按「技术路线归一表」查重。
+
+**追记（2026-09-16 晚场 · 6A 实施备好）**: 问答板 6A Doctor 裁合并 → CC 手术脚本 `mapping/_merge_ocs_route_20260916.py`（度高者主=SiPhOCS 11:9 运行时断言 · props 并集冲突键幸存者优先 · aliases/data_sources 并集去重 · 7 边重定向 · 2 边同三元组折叠描述〔rel_WaveguideOCS_Dekeli→rel_Dekeli_SiPhOCS · rel_ocsgate_04→rel_ocsgate_11〕 · loser 节点移除 · 墓碑 `mapping/_tombstones/2026-09-16_ocs_route_merge.json` · 自动备份+前置/后置计数断言+QA 同 promote 门口径）。**沙箱复刻验证全绿**（6313/6956 · 悬挂/自环/三元组重复 0 · 折叠与重定向逐条实读）——promote 命令已贴 Doctor 终端（脚本+wiki 刷新+git 三件）。promote 后 canonical 实读复核+✅ 落签归 Doctor。
+
+**追记②（2026-09-16 深夜 · 独立复验）**: 未参与实施 subagent 在 /tmp 复刻目录实跑复验 **PASS_WITH_LIMITS**——exit 0 · 6313/6956 精确 · 备份 sha256 与原 canonical 字节一致（回滚可靠）· 防重跑四层前置断言实证（已合并后重跑 exit 1 拦）· QA 独立自跑 0 违例。限度项已修：写回 indent 1→2（与 canonical 现行格式一致·git diff 可审）。真实 canonical 维持 6314/6958 未动，执行归 Doctor 终端。
 
 **来源**: 2026-09-15 标签批实读 · canonical 两节点 desc/props/边
 

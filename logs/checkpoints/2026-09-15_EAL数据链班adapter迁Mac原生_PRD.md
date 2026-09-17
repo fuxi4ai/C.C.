@@ -2,8 +2,8 @@
 title: PRD · EAL 数据链班 adapter 迁 Mac 原生
 tags: [prd, acceptance, 剑酒青丘]
 created: 2026-09-15 00:35
-updated: 2026-09-15 00:35
-status: in_progress  # draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled
+updated: 2026-09-16 20:30
+status: awaiting_acceptance  # draft / in_progress / blocked / awaiting_acceptance / delivered / cancelled
 task_authorization:
   state: verified
   source_type: 会话裁定
@@ -116,7 +116,7 @@ template_version: v1.2
 | T6 | 独立审查（未参与实施 subagent·只读重放） | done | 2026-09-16 subagent 独立审查 PASS_WITH_LIMITS（R1/R2/R3/N1/N2/X2 全证据 PASS · R4/X1 带限度 · 留痕失实一处已修正 · 附带发现 adapter mutation=forbidden 与 stdout 截断机制） |
 | T7 | 剑酒 GOTCHAS NOTE-20260911-001 状态行更新（修复已实施·🔄 已修待验） | done | 状态行已改 + 追记（2026-09-15 凌晨·方案①实施）已落 |
 | T8 | git commit 命令贴 Doctor（宏观研究体系仓+Database 仓） | done | Doctor 终端实跑：brain f4b1e35 已 push（f2e35d8..f4b1e35）；宏观研究体系 9f1dc70 本地 commit（5 文件·无 remote 即止） |
-| T9 | 次班（09-15 17:44 PT）验证 R1/R2 证据采集 | todo | 09-15 班已跑（Step 1-6 过·Step 7 因 Mac 班 EPERM 停班）；Step 7/8 已由当晚补救闭环+独立审查背书。**保持 todo 至今晚 09-16 班**：验证 launchd 5 分钟轮询自动全链（09-16 17:44 班+launchd 轮询+Step 8 班内推送——机制层终验） |
+| T9 | 次班（09-15 17:44 PT）验证 R1/R2 证据采集 | todo | 09-15 班已跑（Step 1-6 过·Step 7 因 Mac 班 EPERM 停班）；Step 7/8 已由当晚补救闭环+独立审查背书。**保持 todo 至今晚 09-16 班**：验证 launchd 5 分钟轮询自动全链（09-16 17:44 班+launchd 轮询+Step 8 班内推送——机制层终验）。**09-16 更新**：17:44 班 Step 1 挂载瞬断+删除授权卡死停摆（无交接·launchd 空转·artifact 未推）→ 残留已清（Doctor 裁）→ **顺延 09-17 班自然验证** |
 
 ---
 
@@ -135,6 +135,7 @@ template_version: v1.2
 | 时间 | 从 → 到 | 谁 | 依据 |
 |---|---|---|---|
 | 2026-09-15 00:35 | draft → in_progress | CC | 立卷·Doctor 已裁方案①（AskUserQuestion 答） |
+| 2026-09-16 20:30 | in_progress → awaiting_acceptance | CC | 八条 [?]+证据齐（独立审查 PASS_WITH_LIMITS）· 问答板 2A Doctor 裁「今晚班后签」· X1 待班自然验证（09-16 班停摆顺延） |
 
 **关闭路径**: 每个 requirement 逐项 `[✓]` 或被字段齐全总签覆盖；或 Doctor 显式取消。
 
@@ -144,3 +145,4 @@ template_version: v1.2
 
 - 2026-09-15 00:35 CC: 立 PRD · 含 8 条交付标准（R1-R4/N1-N2/X1-X2）· task_authorization 已记录
 - 2026-09-15 10:4x CC: open_decisions 第 1 项状态回写 open→resolved（Doctor 终端已执行 plist 安装+store 同步 · T4/T5 证据 · /resume 场事务性同步 · 不涉 checkbox 与验收）
+- 2026-09-16 20:30 CC: 问答板 2A Doctor 裁「今晚班后签」→ 班后实核 09-16 班证据——**班停摆**（Step 1 挂载瞬断〔白名单根因·与昨日同款〕→ 班自验主库完好 → 清理 staging 残留时卡在删除授权待批、会话 idle；无 sealed/交接清单 → launchd 整晚「no unconsumed handoff」空转；DB 行情经 usdjpy-15 heartbeat 18:31:57 全量采集仍有今日数据〔fetched_at 实读〕，但 EAL v3 链今日未推进）。Doctor 裁「CC 清残留·明晚班自然验证」→ 残留两件已清〔删除授权+rm 实跑·主库 integrity ok 复验〕· **X1 机制层终验顺延 09-17 班** · 落签维持待班

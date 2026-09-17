@@ -38,7 +38,7 @@ project: 剑酒青丘 / 渊图 / 风险日报
 
 ## 遗留问题 / 待办
 
-- [ ] 今晚 09-16 班自然验证（launchd 5 分钟轮询自动全链=机制层终验 · PRD T9）
+- [ ] 今晚 09-16 班自然验证（launchd 5 分钟轮询自动全链=机制层终验 · PRD T9）——**09-16 晚场核：班停摆**（Step 1 挂载瞬断→删除授权卡死 idle·无交接·launchd 空转·artifact 未推；DB 行情经 heartbeat 18:31 仍有今日）· 残留已清（Doctor 裁）· **顺延 09-17 班**
 - [ ] NOTE-20260911-002（yuantu_scoring 评分改法）方向性仍归 Doctor 裁
 - [ ] NOTE-20260915-003（SiPhOCS/WaveguideOCS 合并）归 Doctor 裁
 - [ ] PRD 8 条 [?] 待 Doctor 验收落 ✓

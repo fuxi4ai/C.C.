@@ -189,13 +189,17 @@ project: 剑酒青丘
 **追记②（2026-09-16 凌晨 · 首跑验证与三修复闭环）**: 09-15 班首跑暴露三缺陷并当晚闭环——① launchd EPERM（CommandLineTools python3 无 FDA→换已授 FDA 的 python3.13 + HOME/PATH env，usclose 班先例）；② 执行体预建 loop_dir 触发 guard LOOP_SQLITE_GUARD_OUTPUT_PREEXISTING（exit 91·根因=执行体实现 bug，非守卫误报）；③ 午夜翻日丢交接（改跨日期扫描）+evidence 校验字段名错（改读 permission_guard.restored/write_bits_removed/mode 实值）。Mac 班改 5 分钟幂等轮询（Doctor 裁）。**最终验证**：09-16 00:24:34 PT Step 7 全链 success 落盘——四段全 0 · evidence status=verified · permission_guard mode 384→256(0o400)→384 restored（**守卫零弱化在 Mac 原生实证成立**）· report accepted · artifact updatedAt 09-04→09-16T07:25Z 停更 12 天恢复（Step 8 由 CC 场外补推）。触发方判证：result 落盘早于 Doctor 手动跑 login 4 秒指向 launchd 轮询，但 launchd stdout 每触发截断、终态不可判别——**机制层以今晚 09-16 班自然验证为准**。PRD 8 条已填 [?]+证据，独立审查 PASS_WITH_LIMITS（留痕失实一处已修正），✅ 归 Doctor。
 
 ### [NOTE-20260911-002] risk.py 仓位函数赢面门排除低胜率高赔率机会（2026-09-11 VV 独立审计发现 · CC 实读确认）
-**状态**：🔄 待修复（改法属判断性·待 Doctor 裁）
+**状态**：🔄 已修待验（2026-09-16 问答板 5A Doctor 裁「①②③全采纳」→ 已实施：期望口径门 EV=p·b−(1−p) + 扰动稳健门（p±.05/b±20% 四角）+ 输入口径固化（p/b=持有期收益概率/赔率）+ 保留③（单票硬顶/止损上限/养家档）；测试 14/14 含旧版权威对拍（5 用例决策逐位一致）；独立复验待派 · ✅ 归 Doctor）
 **优先级**：🟡 中
 **硬证据/最小复现**：`infrastructure/risk.py` L53-58——`wf = winface if winface is not None else p`；`if wf < min_winface(0.60): return 0.0`。假设演示（VV）：40% 概率赚 30%、60% 概率亏 10%，期望 +6%，仅因 winface 40%<60% 判 0 仓。
 **根因**：缺省 winface=p 把「胜率」当「赢面」门槛，未考虑赔率与期望；min_winface 0.60 硬门槛无回测锚。
 **建议修法（候选）**: ① 门槛从胜率改为期望口径（p×b 加权）或对 p、赔率、损失做扰动后看动作是否仍胜出；② 半凯利输入应为所选持有期的收益概率/赔率，不能拿事件概率/六维分/来源置信度代入；③ 保留单票与账户风险预算（止损约束/单票上限/养家档仍有价值）。另注：止损价位不保证成交价（跳空/流动性），一般止损情景与无法按止损成交的压力情景应分开。
 **预防门禁**: 仓位函数新增门槛参数必须附回测锚或扰动稳健性检验。
 **来源**: 2026-09-11 VV 独立审计 4.3 节 · CC 实读 risk.py L53-62 一致
+
+**追记（2026-09-16 晚场 · 5A 实施）**: 问答板 5A Doctor 裁「①②③全采纳」→ CC 实施（PRD `2026-09-16_risk赢面门改造_PRD.md`）：① 旧「winface<0.60 硬门槛」替换为期望口径门（EV≤0 → 0 仓）+ 扰动稳健门（四角 EV>0，fail-closed）；② docstring 固化 p/b=持有期收益概率/赔率口径 + p∈(0,1)/b>0 输入校验；③ 单票硬顶/止损上限/养家档全保留（显式 winface 仍经养家档，<0.60 → 观望 0 仓）。min_winface 参数保留接受但 superseded。全仓调用面 grep 0 命中（无消费者）。测试 `infrastructure/test_risk_position.py` 14/14：VV 反例 p=.4/b=3 → 10% 仓（旧 0）· 扰动不稳健/EV≤0/非法输入负向全拦 · 旧版权威对拍（/tmp 旧版函数实跑）5 用例决策逐位一致。git 命令贴 Doctor 终端（收尾合并块）。
+
+**追记②（2026-09-16 深夜 · 独立复验）**: 未参与实施 subagent 独立复验 **PASS_WITH_LIMITS**（实跑重放：旧版公式独立重构对拍 5/5 逐位一致 · 测试 14/14）。缺陷 1（LOW·扰动门越界角静默排除）已修——p≤pert_p 时最不利角按不成立 fail-closed（B5 断言固化·复验后 15/15）；缺陷 2（早期返回无 binding 键·无消费方）维持现状留痕。✅ 归 Doctor。
 
 ### [NOTE-20260913-001] EAL 星空快照冻结×页面按日重锚 → 风险日报第三标签「星星在、流线空」5 天（2026-09-13 Doctor 报修 · 当日重建+挂班）
 **状态**：✅ 已修复（2026-09-13 Doctor 目验通过落签 · CC 代记留痕；视觉层验收闭环）；eal-starfield-rebuild 班首跑待周一晚自然验证（机制层）
@@ -208,3 +212,16 @@ project: 剑酒青丘
 **来源**：2026-09-13 会话（Doctor 报修 → CC 诊断+修复）· 旧件备份 EAL_STARFIELD.html.bak_20260913_pre_rebuild 已归档 Database/宏观研究体系/EAL/archive/
 
 **追记（2026-09-14 · 班首跑核）**：eal-starfield-rebuild 首跑（18:16 PT）——exit 0 · verified · 单测 26/26 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14）。**首跑暴露残留缺陷**：构建器截止日取「严格早于美东今天」，班 18:15 PT（=21:15 ET）运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口（00:00 ET 至重建前）+ 09:08 risk-daily 嵌入落后快照。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改 0 21 * * 1-5（调度器回读生效）**；班 SKILL 无写死钟点、零漂移面。今晚 21:00 班首跑带当日收盘、明早 risk-daily 嵌入即自然验证（机制层验收）。
+
+**追记②（2026-09-16 深夜 · 机制层闭环）**：21:00 时点班连续第二晚实跑——09-16 21:03 重建完成（generated_at 04:02:53Z · market_as_of=09-16 实读 · candle 含 09-16 OHLC · 视觉迭代新源码首跑：hover-info 15/tag-above 2/star-label 0/旧方向定位 0 残留）——「当日收盘进当晚快照」机制层验收闭环；明早 09:08 refresh-risk-daily 班嵌入即端到端（消费端自然验证）。
+
+### [NOTE-20260916-001] 班会话卡死文件删除授权待批 → 整班停摆（后台班无人值守死锁）
+**状态**: ⚠️ 已知风险（修复方案待 Doctor 裁 · CC 已清残留解堵当日）
+**优先级**: 🟡 中
+**硬证据/最小复现**: 2026-09-16 17:44 班 Step 1 行情写库 attempt 1 命中挂载瞬断（commit disk I/O error · 与 09-15 同款 · 挂载瞬断第二次复发）→ 班自验主库完好（SHA 不变·integrity ok）→ 计划「清理两件本轮 staging 残留后重试」→ 调用 `allow_cowork_file_delete` 申请删除授权 → **无人在场批准、会话 idle 卡死** → Step 2-8 全未执行（无 sealed/交接清单/shift-log/artifact 推送）。launchd Mac 轮询整晚「no unconsumed handoff」空转（launchd-stdout 实读）。班会话转录实读（local_225aa4c9）末条=删除授权调用、无结果返回。
+**根因**: ① 挂载瞬断（白名单根因 · 09-15/09-16 连续复发）；② 班清理 staging 残留依赖「删除授权」交互——后台班无人在场即死锁，无超时降级路径。
+**影响面**: EAL v3 artifact 今日未更新（updatedAt 仍 09-16T07:25Z 昨晨补救版）；X1 机制层终验顺延；班会话残留 idle 待批态。DB 行情缺口被 usdjpy-15 heartbeat 18:31:57 全量采集掩盖（SPY/QQQ 等 fetched_at 实读=18:31:57 · trade_date=09-16 已在库）——**数据在、链没走**。
+**建议修法（候选·待裁）**: ① 班 SKILL 白名单加「staging 残留不清除、直接重试」或残留清理改走 /tmp 规避挂载删除授权（prompt 改动走 Doctor 终端 SHA 往返）；② 挂载层删除授权常驻化（allow_cowork_file_delete 会话内生效——调度班每场新会话是否失效待核）；③ 班失败自动重跑机制。
+**预防门禁**: 调度班流程凡含「需交互授权」步骤，必须有无人值守降级路径（跳过/超时/改道），否则上调度前算阻塞缺陷。
+**来源**: 2026-09-16 晚场 CC 实读（班会话转录 · launchd-stdout · DB fetched_at）· 残留清理经 Doctor 裁
+**追记（2026-09-16 晚场）**: Doctor 裁「CC 清残留·明晚班自然验证」——残留两件已清（删除授权+rm 实跑 · 主库 integrity ok 复验）；PRD adapter 迁 Mac X1 机制层终验顺延 09-17 班；本条目修复方案待 Doctor 裁。
