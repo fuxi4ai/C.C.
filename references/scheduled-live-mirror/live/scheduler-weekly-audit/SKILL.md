@@ -38,14 +38,14 @@ rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/refere
 
 镜像 rsync 只能 Doctor 终端跑（gateway store 沙箱不可读）；镜像进 git ⇒ 哪个班的 prompt 变了一条 diff 可见——这是 Kimi 侧班 prompt 变更监控的承载线（巡检脚本本体不接 GATEWAY_TREE，Doctor 2026-08-11 定）。rsync 后镜像 diff 的 commit 由 Doctor 定，你别碰。
 
-**2. 快照写后自证（S3 · 自愈循环设计 §2）**
+**2. 快照写后自证（S3 · 自愈循环设计 §5.2）**
 
 脚本跑完后，重新回读 `generated_at`（同一行 python 命令），与跑前记下的值比对：
 
 - **前进**（新值比旧值新；快照文件从不存在变存在也算前进）→ 自证通过，继续第 3 步。
 - **不前进** → 「班内落盘失效」🔴（脚本 exit 0 但快照没写进——G-X118 同款静默失败）。**不要因为 exit 0 就静默退出**：进第 5 步告警，简报单列「S3 写后自证失败：generated_at 未前进（跑前 X → 跑后 Y）」。
 
-**3. 读修复审计尾段（机器读通道 · 自愈循环设计 §1(c)）**
+**3. 读修复审计尾段（机器读通道 · 自愈循环设计 §5(c)）**
 
 读 `~/Documents/Claude/brain/permanent/_repair_audit.md` 尾部表行：
 
@@ -81,7 +81,7 @@ osascript -e 'display notification "定时任务巡检发现 N 项异常" with t
 
 **6. 铁律（违反则本班失败）**
 
-- **本班不执行修复**。发现问题只报告；修复动作由 CC 在 /resume 场按自愈循环设计（`~/Documents/Claude/brain/permanent/巡检自愈循环-loop-engineering.md` §2）预注册白名单执行，白名单外一律只报告。修什么、怎么修，由 Doctor 定。
+- **本班不执行修复**。发现问题只报告；修复动作由 CC 在 /resume 场按自愈循环设计（`~/Documents/Claude/brain/permanent/巡检自愈循环-loop-engineering.md` §5.2-5.3 白名单）预注册执行，白名单外一律只报告。修什么、怎么修，由 Doctor 定。
 - **绝不跑任何 git 子命令**（含 status/log——会留 index.lock 且沙箱无权删除）。快照文件的 commit 由 Doctor 在终端做。
 - **本班不碰调度器**：不调 `create_scheduled_task` / `update_scheduled_task` / `delete_scheduled_task`。
   - 理由：巡检器一旦获得写权限，它自己就成了需要被巡检的东西。
@@ -95,4 +95,4 @@ osascript -e 'display notification "定时任务巡检发现 N 项异常" with t
 
 但这挡不住「永远停摆」。第二层兜底在 /resume（Doctor 开工时检查快照新鲜度），不归本班管。2026-08-29 自愈循环设计又加了两道本班自己的防护：步骤 2 写后自证（防「跑成功但没写进」的静默失败）与步骤 3 audit 机器读通道（修复器留痕每周被读一次）。按步骤做即可，不要在本文件范围外自行加自检。
 
-依据：`~/Documents/Claude/brain/permanent/定时任务巡检机制.md`（悖论与两层解法）· `~/Documents/Claude/brain/permanent/巡检自愈循环-loop-engineering.md`（S3/audit 步 · 2026-08-29 Doctor 批准）
+依据：`~/Documents/Claude/brain/permanent/巡检自愈循环-loop-engineering.md`（巡检治理四合一现状版 · 2026-09-17 合并：悖论与两层解法 §4 · 白名单/audit §5 · 永不自动清单 §6）
