@@ -139,7 +139,7 @@ def main(argv=None):
             if pos_fail:
                 ev.append(f"{os.path.basename(ledger)} 正向缺失: " + " / ".join(pos_fail[:5]))
             if denylist_hits:
-                ev.append("denylist 命中: " + " / ".join(denylist_hits[:5]))
+                ev.append(f"{os.path.basename(ledger)} denylist 命中: " + " / ".join(denylist_hits[:5]))
             results.append((5, "canonical 指纹", "FAIL", " | ".join(ev)))
 
     # ---- 6. 载体一致（mirror 黑盒同套指纹 + manifest 对拍）----
@@ -174,9 +174,9 @@ def main(argv=None):
             else:
                 ev = []
                 if not m_ok:
-                    ev.append(f"manifest 失配: 盘 {mbytes}/{sha12} vs 行 {row[1] if len(row)>1 else '?'}/{row[2] if len(row)>2 else '?'}")
+                    ev.append(f"{os.path.basename(manifest)} 失配: 盘 {mbytes}/{sha12} vs 行 {row[1] if len(row)>1 else '?'}/{row[2] if len(row)>2 else '?'}")
                 if pos_fail:
-                    ev.append(f"指纹缺失: {pos_fail[:5]}")
+                    ev.append(f"{os.path.basename(mirror)} 指纹缺失: {pos_fail[:5]}")
                 results.append((6, "载体一致", "FAIL", " | ".join(ev)))
         else:
             results.append((6, "载体一致", "FAIL", f"manifest 无 {key!r} 行"))

@@ -28,9 +28,9 @@ template_version: v1.0
 
 ### A. 产物
 
-- [ ] `brain/.tools/eal_gate_check.py`（Python 3 标准库 + 已装依赖·无新依赖）
-- [ ] `brain/.tools/eal_gate_checks.json`（判据集 v1·外置：fingerprints / denylist / 数值期望 / 豁免清单）
-- [ ] `backtest/repro_v23/test_failfast.py` 由 gate 直接调用（已是产物·gate 集成而已）
+- [~] `brain/.tools/eal_gate_check.py`（Python 3 标准库 + 已装依赖·无新依赖）——已落盘·沙箱实跑·独立复验 PASS_WITH_LIMITS
+- [~] `brain/.tools/eal_gate_checks.json`（判据集 v1·外置：fingerprints / denylist / 数值期望 / 豁免清单）——已落盘·含两级豁免（段级/行级）
+- [~] `backtest/repro_v23/test_failfast.py` 由 gate 直接调用（已是产物·gate 集成而已）——gate 判据 3 实跑普通与 -O 双模式 exit 0
 
 ### B. gate 检查项（判据集 v1·全部源自 VV 四轮终验原文）
 
@@ -63,11 +63,12 @@ template_version: v1.0
 
 ## §四 · 验收方式
 
-- [ ] 沙箱实跑 gate：8/8 PASS、退出 0；`test_gate_self.py` 3/3 绿（注入破坏全部被抓）
-- [ ] Doctor Mac 原生跑同脚本 exit 0（含沙箱层一致结论）
-- [ ] VV 审阅判据集 v1 完整性并终验签字（gate 全绿是必要不充分条件的第一次实战）
-- [ ] 判据集增补流程首演：VV 下一轮任一新判据 → CC 代收落 json+PRD 变更记录 → Doctor 批
+- [~] 沙箱实跑 gate：8/8 PASS、退出 0；`test_gate_self.py` 3/3 绿（注入破坏全部被抓）——gate 实跑 5 PASS/1 WARN/2 FAIL（判据漂移·exit 1·如实不可声明完成）；self 3/3 绿 ✓；8/8 待判据修订后复跑
+- [ ] Doctor Mac 原生跑同脚本 exit 0（含沙箱层一致结论）——未跑，待判据漂移裁定后一并执行
+- [ ] VV 审阅判据集 v1 完整性并终验签字（gate 全绿是必要不充分条件的第一次实战）——判据集 v1 待 VV 审阅
+- [~] 判据集增补流程首演：VV 下一轮任一新判据 → CC 代收落 json+PRD 变更记录 → Doctor 批——本场两处漂移+判据 8 形态变迁即首演素材（报 Doctor 裁中）
 
 ## §五 · 变更记录
 
 - 2026-08-17 CC: 立 PRD · 四边界按 Doctor 裁定（EAL 专用·必要不充分·渲染器不进·VV 增补 Doctor 批）
+- 2026-09-18 CC: 专场实施（Doctor /todo 批+「就在这另开专场」）——三产物落盘（eal_gate_check.py + eal_gate_checks.json 判据集 v1 + test_gate_self.py）· 路径适配 v2.3 资产新址（宏观研究体系/EAL 三层全迁后）· 沙箱实跑 5 PASS/1 WARN/2 FAIL：**两 FAIL=判据 v1 与台账现文漂移**（'156.538' 现文仅 156.5 四舍五入·'双截止日' 字面不在——台账为 v2.3 冻结真源不改，判据修订归 Doctor 裁）；WARN=判据 8 字面（--write 禁用分支/previewRoot）随 v2.3 退役形态消失，v3 发布链 fail-safe 已由「默认 preflight-only+授权 token」实现，判据 8 待增补流程更新。追加项①渊图 promote 第 15 项负向单测持久化已落（tests/test_kg_promote_gate15.py·一次通过·canonical 字节不变）；追加项② EAL dry-run 6 项增强——VV 十四轮报告原文不在盘（4AI/brain 双树 grep 零命中），转「判据集增补流程首演」报 Doctor。独立复验（未参与实施 subagent）初验 FAIL→7 缺陷修复→复验 PASS_WITH_LIMITS（残留两处已清）。status=blocked（判据漂移待裁）。
