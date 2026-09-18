@@ -98,6 +98,8 @@ type: log
 
 - [ ] **DVA · 09-10 班自然验证读 summary + 两个新疑点（2026-09-10 挂 · ERR-20260907-001 验证进展追记）**：① ~~09-10 班验证~~ 被 exit 79 挡停——**✅ 根因已修（09-10 07:19 PT 从 `runtime.bak.20260909-204409` 拷回 `dva_data_gate.py`+`rebuild_global_index.py` · `-DryRun` 全绿实读 · NOTE-20260820-003 第 6 次）· 验证顺延 09-11 17:00 CST 班**——判 finance 臂 exit 0 不再因空数组 FAIL，通过则 ERR-20260907-001 ✅ 归 Doctor 落签；② cold_dedup audit 未认证 SUCCESS（healthcheck 唯一 blocker · 与 finance 无关）待查；③ Mac `DVA-Database/_health.json` 消失——**✅ 09-10 07:03 PDT 已恢复**（根因=自检脚本手动跑·refresh 替换目录冲掉产物未重跑；CC 沙箱重跑 dva_health.py exit 0 · overall=ok · 8/8 authors · gap 2d · 541B 落盘）；**治本待裁**：refresh 流程末尾嵌入自检（docstring 已预留此意）或挂定时——归 Doctor。
 
+- [ ] **2026-10-02 到期**：确认 Claude Code CLI 无异常后清空 `~/.Trash/claude-versions-20260917/2.1.223`（260M · 旧版本回滚副本）。观察期自 2026-09-17 起 15 天（Doctor 定）。撤回：`mv` 回 `~/.local/share/claude/versions/`。另见 `~/.claude/projects/-Users-lunarabbit/memory/pending-maintenance.md`
+
 ## 长期观察
 
 > 纯等待 / 观察 / 暂缓 / 数据积累中——**不删、仍跟踪、不占「待办」计数**；触发条件成熟即回捞进待办。（2026-08-11 目标模式 Doctor 裁定建区 · 13 条自待办移入 + 1 条漏挂新挂 · 2026-08-26 /todo 归位：08-22 批发 5 条活跃待办移回待办段，观察 23 条随标题归位）
