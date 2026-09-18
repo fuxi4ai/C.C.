@@ -2,8 +2,8 @@
 title: PRD · EAL gate 验收脚本（VV 判据机器化）
 tags: [prd, acceptance, 剑酒青丘]
 created: 2026-08-17
-updated: 2026-08-17
-status: 进行中
+updated: 2026-09-18
+status: blocked
 doctor_decision: 待
 type: prd
 project: 剑酒青丘（EAL）

@@ -3,11 +3,6 @@ name: baize-weekly-report
 description: 白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周更）
 ---
 
----
-name: baize-weekly-report
-description: 白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周日01:00，留足本地cron缓冲）
----
-
 你是白泽大宗自动化周报的执行者。本任务每周自动运行，**无对话记忆**，全程遵守"数据真实性铁律"：缺数留空标『待核验』，绝不用占位/样本/编造值；每个数带 source+asof+信源等级(P0/P1/P2)；同比(change_yoy)为准驱动弹性、环比(change_mom)仅参考；检索顺序铁律=先渊图(P1先验)→官方权威站(P1)→一般web(P2)。
 
 项目根：/Users/lunarabbit/Documents/Claude/Projects/Financial/白泽大宗（下称 PROJ）。
@@ -42,19 +37,22 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
 > **⚡ 六维并行加速（2026-06-25 实测·Doctor 同意）**：六维 LLM 走 DeepSeek、**不占 Tushare IP slot**，故可**一片多只并行**（同一 bash 调用内 `... --save >/tmp/llm_$c.log 2>&1 &` 后台多只 + `wait`）。实测 **10 并发、单片 ~24s 全成**，把 28 只六维从 ~28 次调用压到 ~3 片。各 `score_with_llm` 写独立 `llm_score_<ts>_<时间戳>.json` 并各自落龙鱼库，无写冲突。**注意：仅六维腿可并行**——[3] 引擎腿（batch_score→Tushare）**必须串行**（TushareClient 单 IP slot，并行多连接会被拒）。引擎腿提速只能加大单片只数（实测 4-5 只/片 ~35-43s 安全）。
 读 local_prep_health.json 仍照旧——过渡期 Mac cron 双轨，谁的产物新用谁的（reports/ 按时间戳自然取最新）。
 
-【Stage 0 · 渊图先验】用 bash 读 /Users/lunarabbit/Documents/Database/行业研究/mapping/行业知识图谱_完整数据库.json，对 13 种商品(碳酸锂/稀土/黄金/铜/原油/氦气/钨/六氟化钨/光模块-800G/光模块-1.6T/高多层板/HVLP铜箔/液冷服务器)检索相关节点的结构判断(供给收紧/供需缺口/见顶约束等)与其 data_sources[].confidence_level + data_vintage。记下每商品结构先验(P1)，用于判 persistence_type/dimensions 与交叉验证。
+【Stage 0 · 渊图先验】用 bash 读 /Users/lunarabbit/Documents/Database/行业研究/mapping/行业知识图谱_完整数据库.json，对 13 种商品(碳酸锂/稀土/黄金/铜/原油/氦气/钨/六氟化钨/光模块-800G/光模块-1.6T/高多层板/HVLP铜箔/液冷服务器)检索相关节点的结构判断(供给收紧/供需缺口/见顶约束等)与其 data_sources[].confidence_level + data_vintage。记下每商品结构先验(P1)，用于判 persistence_type/dimensions 与交叉验证。**若写入 data/weekly/yuantu_priors_YYYY-MM-DD.json，structure 字段必须每商品非空（2026-09-11 修：09-06 曾全空致全品种挂「待判(渊图)」）**。
 
 【Stage 1 · 补价 + 定位受益公司】
 1) 读 PROJ/data/commodity_prices_live.json，看本地 cron 已写入哪些新鲜价（含 [1]期货 [2]SMM 钨/稀土）。读 data/weekly/local_prep_health.json 看各步是否跑成。
    注：SMM h5(钨/稀土)应已由 Stage 0.5 步骤[2]（或过渡期 Mac cron）merge 进 live store；若 [2] 自检失败且 health 显示 cron 侧也失败，则把钨/稀土并入下条 web 补价。
 2) 对 cron(期货[1]/SMM[2]) 仍未覆盖、仍缺价的商品，按检索顺序(渊图无现货数→官方权威站 SGE/广期所/SMM/Mysteel/生意社/百川/卓创(特气)/中钨在线(钨)/包头所=P1，否则一般web=P2)用 WebSearch 找当前现货价+同比+环比；只填查得到、可引用的，写 CSV 到 PROJ/data/weekly/web_fill_本周.csv，再运行：
    cd PROJ && python3 scripts/data_collection/refresh_commodity_prices.py --from-csv data/weekly/web_fill_本周.csv
-   **CSV 列（含新增两列）**：name,change_yoy,change_mom,price,unit,persistence_type,dimensions_passed,credibility,source,**confidence,asof**。
+   **CSV 列（含新增三列）**：name,change_yoy,change_mom,price,unit,persistence_type,dimensions_passed,credibility,source,**confidence,asof,yoy_comparable**。
+   - **persistence_type（2026-09-11 修·必填）**：每个写 CSV 的品种都要按 Stage 0 渊图先验给出维度判断（structural/趋势性→「trend」/周期性→「cyclical」等，或直接写「结构性/趋势性/周期性」中文词）——勿留空；留空会被渲染层标「待判(渊图)」。
    - **confidence（必填·0-100）**：你(LLM)对该价/同比可靠性的判断——源权威性×时效×口径一致性×与多源是否吻合。清洁近月权威价→70-90；偏旧或锚算→40-60；口径冲突/勉强→<40。渲染层据此显置信徽（绿≥70/黄45-69/红<45）。
    - **asof（必填）**：填真实源采集日(如 2026-05-21)，**勿冒充今天**。现货/特气 web 价新鲜度阈值已放宽至 90 天(期货 P0 仍 30 天)，故近两月权威价可入；超期或同比无法洁净核验的，**不写 CSV**，改走下条 probe。
+   - **yoy_comparable（2026-09-11 修·必填）**：同比的分子/基线**同源同频同单位同品级**才填 `1/yes`；点价vs月均、跨源、跨频一律 `0/no`（Tushare 期货品种脚本自动标 yes，勿手填）。`no` 者仅作『跨口径参考变化』展示，**退出弹性分与动态门槛样本**（ERR-20260719-002 追记·VV 2026-09-11 共识）。
    该脚本 **MERGE 语义**：保留本地 cron 的 Tushare 期货 P0 价，只新增/覆盖你 CSV 里的商品。缺价商品留空——绝不编。
    **指定源两条（2026-08-11 Doctor 定）**：① **氦气固定源＝卓创资讯氦气监测页「全国主流市场均价」**（https://www.sci99.com/monitor-114779214-0.html）——优先 `mcp__workspace__web_fetch` 抓头条均价；该页数字走 AJAX、抓不到时改 WebSearch「卓创 氦气价格」取搜索快照里的头条均价与日期；都拿不到就跳过、绝不编数。口径＝全国混合均价（2026-08-11 起切换，原「管束高纯氦」口径已弃用·与历史序列不可比），source 必带「卓创全国均价」字样并注口径切换。② **六氟化钨＝事件驱动品种**：仅当查到 45 天内有新公开报价（TrendForce/财联社/权威机构研报）才更新条目、标清 source 与采集日，否则原样不动——它的鲜价阈值在 weekly_health.py 的 EVENT_DRIVEN 单列 45 天；**绝不要为消 warn 拿旧价改 asof 充新鲜**。
 2b) **web_probe.json（待核验商品的探价注记）**：对查不到洁净同比/无公开现货报价者(如钨口径冲突、光模块属组件ASP、液冷/铜箔/高多层板无现货指数)，**不要硬填 CSV**；改写 PROJ/data/weekly/web_probe.json：{"generated","probes":[{"name","price_hint","yoy_hint","confidence","tier","asof","source","note"}]}。这些只作参考注记进报告「数据缺口」区(带置信徽)，**不进弹性测算**。铁律：宁标低置信留待核验，绝不让勉强数冒充真值驱动受益榜。
+2c) **渊图价格层取数（2026-09-11 Doctor 裁「方案A」·AI硬件无信源回退）**：`cd PROJ && python3 scripts/data_collection/fetch_yuantu_prices.py`——按白泽消费契约（price-coupling-v1 · `Database/行业研究/prices/PRICE_LAYER.md`）读价格层 `latest.json`（路径经 `BAIZE_DATABASE_ROOT` 或脚本内 Documents 祖先解析）：仅取 scope=commodity、horizon≠预测、ttl 时效内点位，产出 `data/weekly/yuantu_price_layer.json`（fresh 标记；品种映射表在脚本内 BAIZE_TO_YUANTU）。渲染由 build_weekly_report 自动带出（MD 三·附2 + 看板「渊图价格层取数」折叠条·P1 参考不入弹性）。**铁律**：取不到/源缺失写空 items+注明，绝不编数；本步失败仅警告不阻塞。
 3) 运行 cd PROJ && python3 scripts/analysis/run_full_analysis_v4_1.py 生成当日分析报告(确认 live 模式、受益榜正确)。
 
 【Stage 1.6 · 持续性度量 + 实测β（2026-07-09 回测重构·中长趋势发现器定位·失败不阻塞）】
@@ -92,7 +90,7 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
 产出（2026-06-10 对齐脚本实际行为）：看板 HTML（dated + 定名版『白泽周报看板_最新.html』）落 /Users/lunarabbit/Documents/AI4ME/白泽大宗-outputs/（沙箱设了 BAIZE_OUTPUT_ROOT 即直写挂载点对应目录——见前置·G-X45）；周报 MD **单份滚动**落 PROJ/周报/白泽周报_最新.md（项目层每周覆盖，outputs 目录不再放 MD）。
 注：local_prep_health.json 若为空 `{}`（未写成/被覆盖），按"健康未知"处理——以 live store 实际新鲜度为准，不臆断本地 cron 成败。
 渲染层确定性，沙箱无人值守可跑；看板模板已对接 O MY HTML 设计语汇（米白纸底·墨黑·印章红/暖金/翠绿配色预算·Noto Serif SC 题款·浮雕卡片·同比/弹性条形可视化），无需另装设计工具。
-报告含**七节 / 四维分析**：①本周价格 ②受益公司榜 Top 20（弹性条 + 龙鱼六维·财务·PE/PB分位 + 量价背离裁决一体）③**商品维度归因**（每鲜价商品涨价/环比/持续性/受益传导 Top + 风险旗标）④双面交叉验证逐家 ⑤**风险与配置建议**（按商品风险旗标 + 通用纪律，附「非投资建议」声明）⑥数据缺口 ⑦P0/个股库升级清单。六维/估值缺位一律『待跑分』，未满 20 家时榜尾如实说明原因。
+报告含**七节 / 四维分析**：①本周价格 ②受益公司榜 Top 20（弹性条 + 龙鱼六维·财务·PE/PB分位 + 量价背离裁决一体）③**商品维度归因**（每鲜价商品涨价/环比/持续性/受益传导 Top + 风险旗标）④双面交叉验证逐家 ⑤**风险与配置建议**（按商品风险旗标 + 通用纪律，附「非投资建议」声明）⑥数据缺口 ⑦P0/个股库升级清单。六维/估值缺位一律『待跑分』，未满 20 家时榜尾如实说明原因。**2026-09-11 起含「三·附2 渊图价格层取数」（AI 硬件 P1 参考·不入弹性·自动带出，无需手工）**。
 若 live 模式为 empty(本地 cron 未跑成)，看板自动呈"待核验态"——明确提示"本地预备未生效"，并附 P0 升级命令(scripts/automation/weekly_local_prep.sh 或手动三步)。
 
 【Stage 3.5 · 端到端健康自检（2026-06-24 新增·必跑）】出报告后跑：`cd PROJ && python3 scripts/reports/weekly_health.py`。只读自检本轮关键产物（鲜价 commodity_prices_live / **龙鱼库 records 在位**（沙箱设 BAIZE_DATABASE_ROOT 才找得到，见前置）/ 周报 MD / 双面 crossval）存在性 + 新鲜度（周更 >8 天=过期；**事件驱动品种按 EVENT_DRIVEN 单列阈值**，如六氟化钨 45 天·2026-08-11 增）+ crossval 合格性 → 写 `data/weekly/_health.json`（overall ok/stale/fail · 含 target_date 字段·A·sub1 · 2026-07-01 补）。缺关键产物=fail、过期=stale。产物供海螺姑娘资产看板 conch survey 读取 →「白泽产出库·business_breakdown.db」节点按健康发光告警（无需主动推送）。收尾摘要附 overall 与缺/过期产物。

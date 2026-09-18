@@ -1,9 +1,9 @@
 ---
 name: refresh-asset-dashboard
-description: 重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact），日更；挂载 Projects+Database+brain 三目录，覆盖 14/15 project + brain 治理计数/项目活跃度回写
+description: 重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact→conch清空盘点），日更；挂载 Projects+Database+brain+4AI 四目录，覆盖 14/15 project + brain 治理计数/项目活跃度回写
 ---
 
-刷新「海螺姑娘 · 全局资产管理」看板（global-asset-inventory）。这是"真正的重新扫描"，依次执行三步，全程只读项目、只写 manifest 与看板 HTML，**不在 sandbox 跑任何 git 写命令**：
+刷新「海螺姑娘 · 全局资产管理」看板（global-asset-inventory）。这是"真正的重新扫描"，依次执行四步，全程只读项目、只写 manifest 与看板 HTML，**不在 sandbox 跑任何 git 写命令**：
 
 **前置：挂载 + 路径 env（gateway 平铺挂载 · 见通用教训 G-X45 第三批 + 海螺 GOTCHA-20260708-001）**
 - 用 `mcp__cowork__request_cowork_directory` 挂这**三个**目录（`~/Documents` 整挂会被 `Claude/Scheduled` 保护拦截，必须分开挂）：
@@ -45,6 +45,14 @@ description: 重扫并刷新海螺姑娘全局资产看板（survey→重建HTML
 
 3. **推送到 artifact**：用 `update_artifact` 工具，id=`global-asset-inventory`，html_path 指向 `Claude/Projects/海螺姑娘/dashboard/asset-dashboard.html`，update_summary 写「重扫刷新 · {今天日期}」。
 
-完成后用一两句话回报：各状态分布（healthy / stale / needs_repair / broken 各几个）、有没有节点 overall=fail（即真出问题的库/管线）、有没有节点因自检超期被降 stale（附 age/expect）、本轮未扫描项数、**brain 摘要（todos/gotchas 非零项目数 + 错题本告警≥3 名单 + 活跃度回写了几项）**。若某步失败，如实说明哪步、什么错，不要假装成功。
+4. **conch 清空/盘点（4AI 两纪律目录 · 2026-09-12 Doctor 立）**：用 `mcp__cowork__request_cowork_directory` 挂 `~/Documents/4AI`（第四个挂载·单目录挂载可行，勿整挂 Documents），记下挂载路径（`ls /sessions/*/mnt/` 现场查）。
+   - **清空 `4AI/临时文件/`**（纪律=落时即确认可删 · 随 conch 周期清空 · 不需逐件审批）：先 `ls -A` 记下件数；然后
+     `find "<4AI挂载路径>/临时文件" -mindepth 1 ! -name 'README.md' -exec rm -rf {} +`
+     （README.md 是纪律正文，保留；rm 若报 Operation not permitted，先调 `mcp__cowork__allow_cowork_file_delete` 传该目录路径，再重删）
+     删后 `ls -A` 复验：应只剩 README.md 或为空。
+   - **盘点 `4AI/散落归档文件/`**（纪律=只进不出 · 只归档不删）：只读——`ls -A` 记录件数与最旧 mtime，**不移动、不删除、不送 fuxi**（送 fuxi 的归档批次机制待 Doctor 立；本班只盘点并在回报中列件数）。
+   - 回报：临时文件清空前 N 件 → 清空后残留 M 件（应 0 或仅 README）；散落归档现积压 K 件。
+
+完成后用一两句话回报：各状态分布（healthy / stale / needs_repair / broken 各几个）、有没有节点 overall=fail（即真出问题的库/管线）、有没有节点因自检超期被降 stale（附 age/expect）、本轮未扫描项数、**brain 摘要（todos/gotchas 非零项目数 + 错题本告警≥3 名单 + 活跃度回写了几项）**、**conch 摘要（临时文件清空件数/残留、散落归档积压件数）**。若某步失败，如实说明哪步、什么错，不要假装成功。
 
 注：本任务每天自动跑一次，也会被看板上的「🔄 重新扫描」按钮按需触发——两种触发执行内容相同。

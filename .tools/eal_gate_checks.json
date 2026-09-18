@@ -1,0 +1,57 @@
+{
+  "_usage": "EAL gate 判据集 v1（外置·PRD 2026-08-17 §二 B 原文机器化·2026-09-18 专场落盘）。判据集增补=VV 提新判据→CC 代收落本文件+PRD 变更记录→Doctor 批后生效；CC 不得自主增补（PRD 边界裁定 4）。",
+  "version": "v1",
+  "updated": "2026-09-18",
+  "paths": {
+    "repro_dir": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/repro_v23",
+    "ledger_md": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/frameworks/事件归因台账.md",
+    "mirror_index": "Documents/Claude/brain/references/scheduled-live-mirror/artifacts/event-attribution-ledger/index.html",
+    "manifest": "Documents/Claude/brain/references/scheduled-live-mirror/artifacts/_artifacts_manifest.txt",
+    "snapshot_script": "Documents/Claude/brain/.tools/scheduler_snapshot.py",
+    "publisher": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_v3/coding_work/_vv_staging/registry_promotion_dry_run/execute_registry_promotion.py",
+    "manifest_key": "event-attribution-ledger"
+  },
+  "environment": {
+    "python_prefix": "Python 3.10",
+    "statsmodels": "0.14.6"
+  },
+  "repro": {
+    "cmd": ["python3", "estimate_m4.py"],
+    "timeout_s": 600,
+    "expected": [
+      "n=115", "0.747183", "0.737989", "156.538",
+      "190.116", "191.996", "194.667", "198.225",
+      "0.0327", "0.6946",
+      "0.123814", "0.101065", "0.082497", "0.069569",
+      "full: 4/4 converged, retry=0",
+      "rolling: expected=61, common=61",
+      "retry/failure/exception=0/0/0"
+    ]
+  },
+  "failfast": {
+    "cmd": ["python3", "test_failfast.py"],
+    "cmd_o": ["python3", "-O", "test_failfast.py"],
+    "timeout_s": 300
+  },
+  "sha": {
+    "cmd": ["shasum", "-a", "256", "-c", "SHA256SUMS"],
+    "expect_lines_ok": 8
+  },
+  "ledger_fingerprints": {
+    "positive": [
+      ["+0.1774", 1], ["−2.7087", 1], ["开放簇", 1], ["0 净（2 raw）", 1],
+      ["190.116", 1], ["191.996", 1], ["194.667", 1], ["198.225", 1],
+      ["121 个似然贡献", 1], ["冻结环境独立复得", 1], ["仅机械描述", 1],
+      ["constructed-regressor", 1], ["CAR [0,+3]", 1],
+      ["0.123814", 1], ["0.101065", 1], ["0.082497", 1], ["0.069569", 1],
+      ["156.538", 1], ["双截止日", 1]
+    ],
+    "denylist": ["−4.92", "+2.39", "建议上修", "与 VV 逐位一致", "190.115", "rev8 未限定", "唯一持续类"],
+    "exempt_section_keywords": ["勘误注", "修复注", "superseded"],
+    "exempt_line_keywords": ["勘误", "修复注", "superseded"]
+  },
+  "publisher_static": {
+    "expected_markers": ["--write 禁用分支", "previewRoot"],
+    "v3_semantics_marker": "preflight only"
+  }
+}
