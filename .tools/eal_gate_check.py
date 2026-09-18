@@ -166,8 +166,9 @@ def main(argv=None):
         if row is not None:
             m_ok = (len(row) >= 3 and int(row[1]) == mbytes and row[2] == sha12)
             mtext = open(mirror, encoding="utf-8", errors="replace").read()
+            ovr = cfg["ledger_fingerprints"].get("mirror_positive_overrides", {})
             pos_fail = [s for s, minc in cfg["ledger_fingerprints"]["positive"]
-                        if mtext.count(s) < minc]
+                        if mtext.count(ovr.get(s, s)) < minc]
             if m_ok and not pos_fail:
                 results.append((6, "载体一致", "PASS",
                                 f"manifest 行对拍（{mbytes} B · {sha12}）· 指纹同套全在"))
@@ -204,18 +205,14 @@ def main(argv=None):
         results.append((8, "发布器保险丝", "FAIL", f"发布器不可读: {e}"))
         ptext = ""
     if ptext:
-        literal = [m for m in cfg["publisher_static"]["expected_markers"] if m in ptext]
-        v3sem = cfg["publisher_static"]["v3_semantics_marker"] in ptext
-        if literal:
+        missing = [m for m in cfg["publisher_static"]["expected_markers"] if m not in ptext]
+        if not missing:
             results.append((8, "发布器保险丝", "PASS",
-                            f"静态标记在: {literal}"))
-        elif v3sem:
-            results.append((8, "发布器保险丝", "WARN",
-                            f"判据 v1 字面（--write 禁用分支/previewRoot）已随 v2.3 退役不在盘；"
-                            f"v3 发布链 fail-safe 语义已由「默认 preflight-only+授权 token」实现"
-                            f"（{pub.split(os.sep)[-1]} 含 'preflight only'）——判据 8 待判据集增补流程更新后复跑"))
+                            f"v3 形态静态标记全在: {cfg['publisher_static']['expected_markers']}"
+                            f"（判据 8 经 2026-09-18 Doctor 裁改写为 v3 形态：默认 preflight-only+授权 token）"))
         else:
-            results.append((8, "发布器保险丝", "FAIL", "静态标记与 v3 语义标记均不在盘"))
+            results.append((8, "发布器保险丝", "FAIL",
+                            f"静态标记缺失: {missing}（{os.path.basename(pub)}）"))
 
     # ---- 汇总 ----
     n_pass = sum(1 for r in results if r[2] == "PASS")

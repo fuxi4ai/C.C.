@@ -3,7 +3,7 @@ title: PRD · EAL gate 验收脚本（VV 判据机器化）
 tags: [prd, acceptance, 剑酒青丘]
 created: 2026-08-17
 updated: 2026-09-18
-status: blocked
+status: awaiting_acceptance
 doctor_decision: 待
 type: prd
 project: 剑酒青丘（EAL）
@@ -63,12 +63,13 @@ template_version: v1.0
 
 ## §四 · 验收方式
 
-- [~] 沙箱实跑 gate：8/8 PASS、退出 0；`test_gate_self.py` 3/3 绿（注入破坏全部被抓）——gate 实跑 5 PASS/1 WARN/2 FAIL（判据漂移·exit 1·如实不可声明完成）；self 3/3 绿 ✓；8/8 待判据修订后复跑
-- [ ] Doctor Mac 原生跑同脚本 exit 0（含沙箱层一致结论）——未跑，待判据漂移裁定后一并执行
+- [~] 沙箱实跑 gate：8/8 PASS、退出 0；`test_gate_self.py` 3/3 绿（注入破坏全部被抓）——✅ 2026-09-18 达成：gate 8/8 PASS exit 0 · self 3/3 绿（判据漂移经 Doctor 裁修订后复跑全绿）
+- [ ] Doctor Mac 原生跑同脚本 exit 0（含沙箱层一致结论）——未跑，命令已备（`python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py`）
 - [ ] VV 审阅判据集 v1 完整性并终验签字（gate 全绿是必要不充分条件的第一次实战）——判据集 v1 待 VV 审阅
-- [~] 判据集增补流程首演：VV 下一轮任一新判据 → CC 代收落 json+PRD 变更记录 → Doctor 批——本场两处漂移+判据 8 形态变迁即首演素材（报 Doctor 裁中）
+- [~] 判据集增补流程首演：VV 下一轮任一新判据 → CC 代收落 json+PRD 变更记录 → Doctor 批——本场两处漂移+判据 8 形态变迁即首演素材（Doctor 2026-09-18 已裁：判据按现文修订〔156.538→156.5·删双截止日·mirror 侧 156.4 冻结口径适配〕+判据 8 改 v3 形态〔默认 preflight-only+授权 token〕）
 
 ## §五 · 变更记录
 
 - 2026-08-17 CC: 立 PRD · 四边界按 Doctor 裁定（EAL 专用·必要不充分·渲染器不进·VV 增补 Doctor 批）
 - 2026-09-18 CC: 专场实施（Doctor /todo 批+「就在这另开专场」）——三产物落盘（eal_gate_check.py + eal_gate_checks.json 判据集 v1 + test_gate_self.py）· 路径适配 v2.3 资产新址（宏观研究体系/EAL 三层全迁后）· 沙箱实跑 5 PASS/1 WARN/2 FAIL：**两 FAIL=判据 v1 与台账现文漂移**（'156.538' 现文仅 156.5 四舍五入·'双截止日' 字面不在——台账为 v2.3 冻结真源不改，判据修订归 Doctor 裁）；WARN=判据 8 字面（--write 禁用分支/previewRoot）随 v2.3 退役形态消失，v3 发布链 fail-safe 已由「默认 preflight-only+授权 token」实现，判据 8 待增补流程更新。追加项①渊图 promote 第 15 项负向单测持久化已落（tests/test_kg_promote_gate15.py·一次通过·canonical 字节不变）；追加项② EAL dry-run 6 项增强——VV 十四轮报告原文不在盘（4AI/brain 双树 grep 零命中），转「判据集增补流程首演」报 Doctor。独立复验（未参与实施 subagent）初验 FAIL→7 缺陷修复→复验 PASS_WITH_LIMITS（残留两处已清）。status=blocked（判据漂移待裁）。
+- 2026-09-18 CC: 判据修订裁定落地（Doctor 勾「判据按现文修订」+「判据 8 改 v3 形态」）——① 正向指纹 156.538→156.5、删「双截止日」；mirror 侧适配冻结快照口径（156.4 覆盖）；② 判据 8 改写为 v3 形态静态检查（preflight only + --authorization-token）→ WARN 消。复跑 **gate 8/8 PASS · exit 0** · self 3/3 绿。status=awaiting_acceptance（剩 Doctor Mac 原生同脚本跑 + VV 判据集审阅）。

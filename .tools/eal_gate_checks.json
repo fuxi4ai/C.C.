@@ -48,7 +48,8 @@
     ],
     "denylist": ["−4.92", "+2.39", "建议上修", "与 VV 逐位一致", "190.115", "rev8 未限定", "唯一持续类"],
     "exempt_section_keywords": ["勘误注", "修复注", "superseded"],
-    "exempt_line_keywords": ["勘误", "修复注", "superseded"]
+    "exempt_line_keywords": ["勘误", "修复注", "superseded"],
+    "mirror_positive_overrides": {"156.5": "156.4"}
   },
   "publisher_static": {
     "expected_markers": ["preflight only", "--authorization-token"]
