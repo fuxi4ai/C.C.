@@ -603,6 +603,10 @@ project: 渊图
 
 **追记 2026-09-12 深夜（第 9 例处置同日 · Doctor 问答板批「固化进 QA」）**：预防门禁第 16 项实装——`rules/kg_promote.py` 增「同名实体检测」闸：新 company 节点 name/aliases ∩ 存量 name/aliases（大小写/空白归一·精确整串匹配）非空即拦，批内新节点互撞同拦；只查 company 类（product/概念类跨公司通用名多、误报风险高，不纳入）；存量豁免（与第 12/13 项同口径）。持久化负向测试 `rules/test_kg_promote_gate16.py` **8/8 PASS**（撞存量 name / 撞存量 aliases 归一 / 批内互撞 / 唯一名过闸并在临时沙箱 canonical promote 成功 · 全程断言真实 canonical SHA 不变）。状态 🔄 已修待验（实施者不自标 ✅）· 独立验收归未参与实施的 subagent/Doctor。**注**：实体错配族「应升格通用教训」已 3 次登记，升格仍归 Doctor 裁。
 
+**追记 2026-09-18（独立验收 · subagent 实跑实读）**：未参与实施的独立验收员出具 **PASS**——代码实读（函数+两调用点）/单测 5/5 实跑/mutation 负向验证（桩死检测器→回归测试立即炸·fail-fast 成立）/canonical+批前备份双 base 全量回放 3/3 命中+0 误报/py_compile exit 0/治理留痕核对无夸大。轻微发现 4 条（装饰性 docstring 已修/字面歧义注记/_nrm 冗余字符无害/变异测试顺序巧合 fail-fast）均不构成 FAIL。✅ 落签仍归 Doctor。
+
+**追记 2026-09-18（同根复发 · 第 10 例批次 · 帕米尔 7 篇批 · 3 例）**: LLM 新建重复公司 3 例——`company_AisenSemiconductor`/`company_SJMicroelectronics`（盛合晶微）/`company_TongfuMicroelectronics`（通富微电）。**漏拦根因**：本批 promote 用自写硬闸断言块（超集/悬挂/自环/三元组）**未走 `rules/kg_promote.py` 一键门**，第 16 项同名实体检测闸被绕过——撞名在 batch 日志零报警、靠 QA 人工撞见。**根修已实装（Doctor 2026-09-18 批「同意根修」）**：① `kg_ingest.py` 增管道内确定性撞名闸 `check_new_node_collisions`（新节点 name/aliases 归一与**全量**存量精确匹配·batch 当场红字逐条+末行汇总计数——比第 16 项 promote 闸更早反馈）；② 持久化负向测试 `tests/test_kg_ingest_collision.py` **5/5 PASS**（本批 3 例回归金丝雀 3/3 命中·真新公司 0 误报·裸别名不误报·归一化命中·自身豁免）+ canonical 全量回放 3/3 命中/0 误报；③ **promote 纪律修正**：batch promote 必走 `rules/kg_promote.py` 一键门（第 12-16 项全查），自写断言块不得绕过。本批 3 例已 QA 合并（墓碑 `_tombstones/2026-09-18_7pian_company_merges.json`）→ 6401/7031 干净落盘。状态 🔄 已修待验（实施者不自标 ✅）· 独立验收归 Doctor/未参与实施方。**第 10 例批次 · 应升格通用教训已多次登记**——升格仍归 Doctor 裁。
+
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 
 **状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-09-01 整合手术已执行：`concept_ScaleUpSwitchProtocolOSA` → `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases·name/desc 重写·边端点同步·边 id 留旧）+ `product_Shengke51p2TSwitchChip` desc「OSA→OISA」· 备份 `bak_surgery_centec_oisa_20260901_*` · 手术记录 `mapping/_v3_20260901_盛科曦智OISA整合_手术记录.json` · 复检全绿·实施者不自标 ✅ · 2026-09-14 复盘：OISA 新节点在盘/旧 id 已消/aliases 保留 ✓ · ✅ 已落签）
