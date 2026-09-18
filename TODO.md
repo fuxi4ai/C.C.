@@ -11,6 +11,12 @@ type: log
 
 ## 待办
 
+- [ ] **渊图 · 长芯博创节点补强待批（2026-09-18 /save 挂 · 源：`logs/2026-09-18-渊图口径治理与960受益链.md`）**：`company_ChangXinBoChuang` desc 现仅一句「谷歌800G AOC二供」——CC 两度提议补强（更名 2025-07-02 自博创科技·300548/年报产品结构〔数通消费工业互联 20.39 亿占 80.5%〕/谷歌 MPO 13.5 亿≈总营收 53%/长芯盛 60.45% 母子 part_of 边/客户集中度风险），归 Doctor 批。
+
+- [ ] **龙鱼 · 四只补分推板待裁（2026-09-18 /save 挂）**：华丰 69.0/太辰 59.0/帝尔 53.5/罗博 51.5 已落 records·不进常更；看板 artifact 是否重建推送归 Doctor 裁。
+
+- [ ] **行业研究仓 · 工作区残余待裁（2026-09-18 /save 挂）**：watch/ 09-05 alarm_store 五件（alarm_store.py+test+history/+revisions/+lock）、docs/PROPOSAL-投知君君图谱候选.md（09-16 改）、index.json.bak_2026-08-24 与 bak_20260821_pre_refill 两删除——归属他场，提交/搁置归 Doctor 裁。
+
 - [ ] **DVA · 09-18 自然周期首验三项新契约（2026-09-17 /save 挂 · dated 09-18 09:00Z Refill → Healthcheck → mirror · 源：`logs/2026-09-17-DVA失败班次恢复收尾与Mac栅栏根因.md`）**：Mac 持久化身份去 `st_dev`、`MIRROR_MAC_DISPATCH_LOST` + 链式退役、`Get-DvaWriterRole` 入口识别——Codex 观察；若 mirror 再 unknown 且 Mac 无 intent，先离线跑 `_require_prior_actions_settled` 再动。
 
 - [x] **EAL 星空重建班首跑核（2026-09-13 挂 · dated 周一 09-14 18:15 PT 班后 · 源：剑酒青丘 GOTCHAS NOTE-20260913-001）**：✅ 2026-09-14 首跑已核——exit 0 · build status=verified · node 单测 26/26 fail=0 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14 领先）。⚠️ 首跑发现结构隐患：构建器截止日取「严格早于美东今天」，18:15 PT 运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改（0 21 * * 1-5 · 调度器回读 09:01 PM 生效）**；SKILL 无写死钟点、零漂移面。今晚 21:00 班将首次带当日收盘（09-14），明早 risk-daily 嵌入即验证。Doctor 目验已过（09-13），本条机制层自然验证完成。
