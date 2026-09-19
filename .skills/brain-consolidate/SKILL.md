@@ -132,7 +132,9 @@ git push
 ```
 
 - **commit 只暂存本任务路径**：`git add <本次 consolidate 明确改动的文件列表>`，保留其他工作区改动；已推远端的失真 commit 不改写历史（G-X138）。
-- **若本场改到 skill（2026-09-04 立 · 2026-09-19 按新裁定订正动线）**：走发布链 **canonical → portable → package → runtime consumer → readback**——**canonical = `brain/.skills/{名}/SKILL.md`**（2026-08-18 立 · 2026-09-19 扩至全部 brain-\*），先改 canonical → 同步 `portable/skills/{名}/SKILL.md` → 重打 `brain/.skills/{名}.skill` → `save_skill` 发布；**四端 SHA 一致**（canonical / portable / 包内 / 运行时缓存差 1B EOF 空行属已知归一化）。发布后回读实际远端提交 ID（`.git/logs/HEAD` 纯文本核）；runtime 层最终证据＝下一场 fresh-session 实际触发（EXP-20260819-001-T）。~~「先改 portable 真源」为旧方向措辞，已废~~
+- **若本场改到 skill（2026-09-04 立 · 2026-09-19 按新裁定订正动线 · 2026-09-19 补通道配方）**：走发布链 **canonical → portable → package → runtime consumer → readback**——**canonical = `brain/.skills/{名}/SKILL.md`**（2026-08-18 立 · 2026-09-19 扩至全部 brain-\*），先改 canonical → 同步 `portable/skills/{名}/SKILL.md` → 重打 `brain/.skills/{名}.skill` → `save_skill` 发布；**四端 SHA 一致**（canonical / portable / 包内 / 运行时缓存差 1B EOF 空行属已知归一化）。发布后回读实际远端提交 ID（`.git/logs/HEAD` 纯文本核）；runtime 层最终证据＝下一场 fresh-session 实际触发（EXP-20260819-001-T）。~~「先改 portable 真源」为旧方向措辞，已废~~
+  - **⛔ `save_skill` 调用配方（2026-09-19 三发实测立 · 不照做必出「双 frontmatter」）**：该通道**自己生成 frontmatter**，且行为不对称——`description` 参数**由工具转义**、`content` 则**逐字写不转义**，另会补末端空行。故：**`description` 传 frontmatter 里 description 的「原文」（纯引号、无反斜杠，即解析后的值）；`content` 只传正文、从标题行起，绝不带 frontmatter**。content 带 frontmatter ⇒ 产出**两块 frontmatter**（`brain-anchors` 2026-09-19 前即此误用、`audit` runtime 同病）；description 传已转义形 ⇒ 引号/反斜杠**再加倍**。
+  - **验收判据（必做 · 不得只看「调用成功」）**：发完回读 `…/.claude/skills/{名}/SKILL.md`，与 canonical 做 `diff` + `yaml.safe_load` **双侧对拍**——允许差异仅剩末端 1 个空行；frontmatter 解析不过＝不可发布（G-X187）。一键核检：`python3 brain/.tools/check_skill_parity.py`（负向测试 `.tools/test_check_skill_parity.py`）。
 
 ### Step 6 · 回报
 
@@ -192,3 +194,4 @@ git push
   11. **影响面 · 新裁定落地缺口**（中）：`.skills/brain-save/` **根本不存在** ⇒ 「canonical = `.skills/{名}/SKILL.md`，7 个全体」对 brain-save 不可执行 → **已补建 canonical 目录**（canonical/portable/包内三端 40,647 B 一致）。另三处已对齐：`references/备份策略-20260514.md`（「portable 真源」措辞）· `剑酒青丘/GOTCHAS.md`（「仅限 brain-prd」射程已作废）· `permanent/文件健康要素集合.md`（未随 v1.2/v1.3 更新）。
   **未修（如实保留）**：① `数灵转移/architecture/决策记录.md:57`（2026-08-02 D11 历史条目）未逐条加 superseded 追记——属历史层，按 Step 1.5 判据会被判「陈旧」；② `~/Library/…/Claude/skills/` 与 Gateway store 未挂载不可达，**fresh-session 真实注入仍待下一场实证**；③ 词族扫描的同义改写未穷尽（「活体真源已迁…」等变体只覆盖了一部分）。
   **复验方自身留的观察（不计缺陷，待另议）**：`.skills/brain-resume.skill` 包内夹带 `__pycache__/gitcheck.cpython-310.pyc`（分发件含字节码缓存）。
+- **v1.3.2**（2026-09-19 · 接手会话 · 四端对拍后）：**Step 5 补 `save_skill` 通道配方与验收判据**。起因——同日做全家族四端对拍时逮到两处：① `brain-anchors` 的 runtime 带**重复 frontmatter 块**（`save_skill` 的 `content` 连 frontmatter 一起传 ⇒ 工具自产一块 + content 自带一块）；② `brain-todo` 仓内三端 frontmatter **严格 YAML 解析失败**（双引号标量里裸反斜杠，已立通用教训 G-X187），而 runtime 那份因反斜杠加倍反而合法——**下游把上游修好了**，缺陷在三端沉默潜伏。两处均同日修复。Step 5 由「只写结果要求（四端 SHA 一致）」补成「**写清怎么调 + 发完怎么验**」，配套落 `.tools/check_skill_parity.py`（四端对拍只读核检器，默认射程 7 个 brain-\*）+ `.tools/test_check_skill_parity.py`（9 例持久化负向测试）。
