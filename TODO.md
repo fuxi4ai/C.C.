@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-09-18
+updated: 2026-09-19
 status: active
 type: log
 ---
@@ -10,6 +10,8 @@ type: log
 # TODO
 
 ## 待办
+
+- [ ] **渊图 · 大摩 VR200 BOM 回填余项待裁（2026-09-19 /save 挂 · 源：`logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`）**：promote 已闭环（三节点 10 处精确值 + 原报告 provenance · commit `5829b3f3` · 回读全绿），余四项归 Doctor——① 表内 **6 个未记录行项是否扩 props 键**（NVLink Switch chip / Other networking chips / Power supply / ABF Substrate / Others / Rack assembly value add，合计 1,468,418 美元；涉 schema 层）；② **`data_vintage` 语义是否增设「底层报告日期」字段**（本次只做到节点级，全库回填属另议）；③ `brain/渊图/GOTCHAS.md` `NOTE-20260718-002` 追记状态行推进（**不代签 ✅**）；④ 本场**两仓 push 未跑**（`Database/行业研究` `5829b3f3` · `Claude/Projects/Financial/烛照九阴` `5bc78ade`）——命令已贴，待您终端。
 
 - [ ] **渊图 · 长芯博创节点补强待批（2026-09-18 /save 挂 · 源：`logs/2026-09-18-渊图口径治理与960受益链.md`）**：`company_ChangXinBoChuang` desc 现仅一句「谷歌800G AOC二供」——CC 两度提议补强（更名 2025-07-02 自博创科技·300548/年报产品结构〔数通消费工业互联 20.39 亿占 80.5%〕/谷歌 MPO 13.5 亿≈总营收 53%/长芯盛 60.45% 母子 part_of 边/客户集中度风险），归 Doctor 批。
 
