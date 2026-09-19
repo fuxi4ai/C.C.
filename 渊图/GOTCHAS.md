@@ -532,6 +532,8 @@ project: 渊图
 **待议（方向性·归 Doctor）**: ① `data_vintage` 语义是否应在「源文件 vintage」之外增记「底层报告日期」字段（改动触及 schema 与全库回填，非实施者自决）；② 三个节点是否按 MS 2026-05-20 原文回填精确值 + 补原报告 provenance。
 **证据**: `Database/行业研究/raw/核实/2026-09-19-大摩VR200机柜BOM核实札记.md` · 节点 props 实读（canonical 6401/7031）· 未参与实施的 subagent 独立复核（PASS_WITH_LIMITS，推翻本场一处行方误标：Rubin Ultra $21M 系美银 BofA 非大摩）。
 
+**验收（2026-09-19 · 独立审核者 A）**: PASS —— 独立实读 canonical 逐字段核：声称 10 处值全中、三节点各 +1 条 provenance（摩根士丹利, 2026-05-20 · P2 · cite · vintage 2026-05-20）；备份件 SHA-256 复算 = 回填前值 `64d725da…` 逐字节相符（真回滚点），备份↔现文件全树 deep-diff 变更集合**恰为**该 10 处（另仅 `metadata.updated_at` + 三节点 `updated_at` 时间戳、三处 `data_sources` 长度 +1，无其他差异）；nodes/edges 6401/7031 不变；补丁无 `_audit` 夹带、props 与 canonical 现值全等；`_health.json` overall=ok；commit `5829b3f3`（2026-09-19 03:32:54 -0700）于 `.git/logs/HEAD` 实读在场。本签仅对事实性回填落签；段落内「待议（方向性·归 Doctor）」所列各项未裁、不在本次落签范围。
+
 ## [ERR-20260718-002] 并发会话覆盖：CC 改 brain 文件后被另一会话的 git 提交无痕回退
 **状态**: ✅ 已复现并定位 **优先级**: 🔴 高
 **触发**: 2026-07-18 本会话用 Edit 工具改 `渊图/GOTCHAS.md`（加 NOTE）+ `渊图/architecture/决策记录.md`（加决策条）+ 两处 frontmatter `updated`，工具均报成功。Doctor 终端 `git add/commit` 却报 **`nothing to commit, working tree clean`**。
@@ -827,4 +829,16 @@ project: 渊图
 **追记③（2026-09-16 深夜 · promote 已执行）**: Doctor 终端 22:23:40 跑 `_merge_ocs_route_20260916.py` + `wiki_autogen.py --force`——备份 `bak_pre_ocs_route_merge_20260916_222340` 落盘 · 合并 6313/6956（-1/-2）· 墓碑 `_tombstones/2026-09-16_ocs_route_merge.json` 落盘 · wiki 961 卡重建（siphocs 18 度）。CC 沙箱实读复核全绿（上列状态行证据）。孤儿卡 `wiki/waveguideocs.md`（图谱 ID 已消失）git rm 命令已贴。git commit 命令已贴（canonical+墓碑+siphocs 卡）。
 
 **来源**: 2026-09-15 标签批实读 · canonical 两节点 desc/props/边
+
+## [NOTE-20260919-001] kg_merge 的 add 分支返回图与 patch 共享 node 对象（aliasing）——事后改 patch 会改到图里
+
+**状态**: ⚠️ 已知风险（2026-09-19 立 · 由未参与实施的复验者 C 实读源码 + 最小复现确认 · **当前生产路径未受害** · 修法归 Doctor 裁）
+**优先级**: 🟡 中
+**触发**: 2026-09-19 大摩 VR200 机柜 BOM 扩键场——复验者 C 在核「合并语义」时顺带扫出（非本场踩到）。
+**硬证据（最小复现，脚本在 /tmp，未动真文件）**: `kg_merge.merge(base, patch, dry_run=False)` 走 add 分支时执行 `result["nodes"].append(node)`（L169-171）——**`node` 未经 deepcopy**，故返回图里那个节点与传入 `patch` 里的是**同一对象**（`is` 为 True）。复现输出：`返回图 node is patch node ? True`；随后在 `patch` 侧改一个键，返回图读到即已变（`{'x': 999}`）。
+**对照（无此问题）**: update 分支走 `_merge_node`——`kept_base` 用 `deepcopy(base_node)`、`took_patch` 用 `deepcopy(patch_node)`、props 走深合并，均产生新对象。
+**现状影响面**: canonical promote 走 `kg_merge_safe.py`，调用序列是 `merge()` → `save_json()` 一次落盘，**中间不再改 patch**，故当前生产路径安全。风险在**复用**：任何「merge 完再改 patch 对象」或「拿返回图当长期句柄」的新调用方会踩。
+**建议修法（待裁）**: ① add 分支补 `deepcopy(node)`（一行）；或 ② 至少在 `merge()` docstring 明写「add 分支返回图与入参 patch 共享对象，调用方不得复用 patch」。
+**同族**: 与 `EXP-20260919-001-T` 所记「`merge()` 就地改写传入 patch（`type.lower()` 在 dry_run 判断之前）」是**同一枚硬币的两面**——都是 `merge()` 入参/出参的别名问题。
+**来源**: 2026-09-19 大摩 BOM 回填场 · 复验者 C 独立实读 + 最小复现 · 日志 `logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`
 
