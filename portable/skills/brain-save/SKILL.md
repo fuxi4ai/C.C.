@@ -1,6 +1,6 @@
 ---
 name: "brain-save"
-description: "Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **写 `permanent/经验库.md` 或 `通用教训.md` 时必须定位到对应 `##` 节插入、禁 append 文件尾；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；判断性勾项 CC 只搬运已勾的、不代打 ✓（G-X4 · v3.1），客观 TODO 证据硬按常驻授权代勾留痕（G-X136）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。宏观研究体系会话且本场有新材料时，条件增量更新研究材料 机构方法论提炼.md（v3.4）。**"
+description: "Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **写 `permanent/经验库.md` 或 `通用教训.md` 时必须定位到对应 `##` 节插入、禁 append 文件尾；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；判断性勾项 CC 只搬运已勾的、不代打 ✓（G-X4 · v3.1），客观 TODO 证据硬按常驻授权代勾留痕（G-X136）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。宏观研究体系会话且本场有新材料时，条件增量更新研究材料 机构方法论提炼.md（v3.4）。Step 5 列 add 清单前先探目标仓 .gitignore，命中即从清单剔除、禁 -f 强带（v3.5）。**"
 ---
 
 # brain-save — 把本次会话存档到 brain
@@ -273,7 +273,16 @@ cd ~/Documents/Claude/brain && \
    - 存在 → 进入第 2 步
    - 不存在 → 跳过整个 Step 5,不报错
 
-2. **生成命令字符串**(贴在 Step 6 回报里给 Doctor)——**默认「先探后加」,禁用 `git add -A`**(v2.9):
+2. **★ ignore 前置探测**(v3.5 新增 · 硬闸 · **早于**生成 add 清单)：本仓 `raw/`、`outputs/` 这类目录**常常是仓主有意 ignore 的**（渊图 `Database/行业研究` 即如此：`.gitignore` 明写「研报源文件（版权敏感 + 体积大）**raw/**」，`outputs/` 整目录亦忽略）。把 ignore 路径列进 `git add`，后果不是"报个错"那么简单——**git 会拒绝该条，整条命令链随之静默走偏**：`add` 报 `The following paths are ignored by one of your .gitignore files`，`commit` 因暂存区为空而**根本不生成 commit**，`push` 空转打印 `Everything up-to-date`——**看回执很容易误以为成功了**。
+
+   **做法**：生成 add 清单**之前**，对**清单里每一个路径**先过一遍目标仓的 ignore 判据——
+   - 读目标仓 `.gitignore`（+ `.git/info/exclude`），**并读该仓 `CLAUDE.md` / README 里的 git 段**（惯例常写在那儿，如「⚠ outputs/ 整目录被 gitignore——别列进 add 清单」）；
+   - 有 git 环境者跑 `git check-ignore -v <paths>`；沙箱内则读 `.gitignore` 手判，或读 `.git/index` 看该路径是否**曾被跟踪**（被 .gitignore 命中且从未跟踪 ⇒ 按仓规 local-only）；
+   - **命中 → 从清单剔除**，并在 Step 6 回报里明写一行：「该产物按本仓规 local-only（`.gitignore` 命中），不入版本控制」。**不要改用 `-f` 强带**——那是绕过仓主的设计意图，须 Doctor 明批。
+
+> **活体教训(2026-09-18)**：/save 场 CC 给 `行业研究` 仓的命令，把 `raw/核实/…札记.md` 与 `outputs/gs/*.json` 列进 `git add`。Doctor 终端实跑 → git 拒绝 → 该仓 **commit 未生成、push 空转**。**根因不是不知道这个坑**：渊图 GOTCHAS `FIX-20260617-001` 早在 2026-06-17 就登记过「raw/ 被 .gitignore 忽略」，该仓 `CLAUDE.md` 也写着「别列进 add 清单」——**规矩停在「文档 + 人脑」两层，而 CC 起草命令时既不读目标仓 `.gitignore`，也不回读该仓 CLAUDE.md 的 git 段**。形态比首次更重：首次是**自动流程撞墙**，这次是 **CC 主动把 ignore 路径写成了命令**。见渊图 GOTCHAS `FIX-20260617-001` 追记（同根复发第 2 次）。
+
+3. **生成命令字符串**(贴在 Step 6 回报里给 Doctor)——**默认「先探后加」,禁用 `git add -A`**(v2.9):
 
 ```bash
 cd ~/Documents/Claude/brain
@@ -285,7 +294,7 @@ git push
 ```
 > **为什么禁 `git add -A`**(v2.9·2026-07-23 挂 TODO·G-X83 / DVA GOTCHAS GIT-20260723-001)：工作树常积压**本次 /save 范围之外**的未提交改动（别的会话/定时班遗留），`-A` 会把它们**一并混入**这次 commit，造成范围不明、难回溯。CC 在 Step 3/4 已知道本次动了哪些文件 → 直接列进 `git add`；**只有确认工作树全部改动都属本次保存范围**，才允许 `git add -A`。
 
-3. **若 brain/.git/ 上次 sandbox 跑过 git 留下污染**(.git/HEAD.lock 等),命令前加清理(仍先探后加):
+4. **若 brain/.git/ 上次 sandbox 跑过 git 留下污染**(.git/HEAD.lock 等),命令前加清理(仍先探后加):
 
 ```bash
 cd ~/Documents/Claude/brain
@@ -298,7 +307,7 @@ git commit -m "session: {主题} {date}"
 git push
 ```
 
-4. **如果 Step 4 同步了项目状态**,且该项目有独立 git repo(如 `Projects/海螺姑娘/`),把那个仓库的 commit 命令也贴上(同样先探后加):
+5. **如果 Step 4 同步了项目状态**,且该项目有独立 git repo(如 `Projects/海螺姑娘/`),把那个仓库的 commit 命令也贴上(同样先探后加):
 
 ```bash
 cd ~/Documents/Claude/Projects/{项目名}
@@ -309,7 +318,7 @@ git commit -m "{项目名}: {主题} {date}"
 git push
 ```
 
-5. **给验证命令时,盯内容标识、别盯会变的计数**(v2.8)。
+6. **给验证命令时,盯内容标识、别盯会变的计数**(v2.8)。
    形如 `grep -c "^## 追加" file` 这类**计数**只在当下成立,后续 commit 继续追加就会变,Doctor 照着核会误判"出问题了"。
    验证一律用**内容标识**(某关键短句在不在、某文件存不存在),它跨 commit 稳定。
 
@@ -365,6 +374,7 @@ git push
 - **Step 4 遇 `architecture/系统概览.md` 不存在 → 明确报告,禁静默跳过、禁自动补建 stub**(v3.2)
 - **引用 Step 4 那张缺口表前先自己跑命令重取差集,别照抄表**(v3.2.1)
 - **Step 4.5 宏观方法论增量=条件式:有新材料才追加、无则跳过,只追加不修改正文**(v3.4)
+- **列 `git add` 清单前必先过目标仓的 ignore 判据**(v3.5)——读该仓 `.gitignore` + 该仓 `CLAUDE.md`/README 的 git 段;命中即从清单剔除并在回报里明写「按本仓规 local-only」;**禁 `-f` 强带**(绕过仓主设计意图,须 Doctor 明批)。**任何目标仓都适用**——不止 brain,项目仓同样(渊图 `行业研究` 的 `raw/`+`outputs/` 即实例)
 
 ## v 历史
 
@@ -387,4 +397,5 @@ git push
 - **v3.2.1**(2026-07-31 · 当日订正):**v3.2 初稿的缺口名单是错的,已按 `项目总览.md` 逐项对表重列**。初稿写「15 个注册项目里 7 个缺(烛照九阴/风险日报/白泽大宗/剑酒青丘/MiroFish/星空/称象)」——**总数碰巧对、成员错一个**:「风险日报」有目录 stub 但**不在总览 15 行内**,而已注册的「**数灵转移**」被漏掉(它有 `architecture/` 三份文档、独独没有系统概览)。订正后:注册 15 个里缺 **7** 个(MiroFish/剑酒青丘/**数灵转移**/星空/烛照九阴/白泽大宗/称象),**另加未注册的风险日报,实际无系统概览的目录共 8 个**。**错因**:直接照抄 `brain/TODO.md` 里那份二手名单,没自己跑 `ls -d */architecture/系统概览.md` 与总览取差集——**G-X111 在同一件事上连栽第三次**。故本版在表下增一条硬规:**引用该表前先自己重取差集,别照抄表**。与金融线「4.70 错在日期 / 4.66 错在时点 / US10Y 错在语义」同病根:**二手数字/名单在用之前必须重取一次对照**。
 - **v3.3**(2026-08-02):**（推荐/不推荐）标签位置钉死为「选项 label 尾部」**。v2.7 只说「label 或 description 显式写」,实测 /save 分拣把控件 description 当载体——而 description 在控件里不显眼/可能被截,「默认值一眼可分」的设计落空;Doctor 当场明示「把是否推荐写在问题选项后面」。规则不变、位置钉死(选项文字后面直接跟（推荐）/（不推荐）,不许只放 description);「不限 /save、适用一切待裁选择题」的申明照旧。同步:portable/skills 与账号 save_skill 同版更新(D11 更新纪律)。
 - **v3.4**(2026-09-16):**新增 Step 4.5「宏观研究体系方法论笔记条件增量」**——/save 遇宏观研究体系/EAL 会话且有新材料(新 raw 落位/新解读稿/新回测结论/Doctor 明示)时,在 `研究材料/机构方法论提炼.md` 末尾「增量(时间线)」节追加一条(方法论 2-4 点·不写方向结论);无则跳过不写(条件式 · Doctor 2026-09-16 AskUserQuestion 裁)。配套:该笔记改名去日期(机构方法论提炼-2026-09-16.md → 机构方法论提炼.md,09-11 单文件规矩)+ 新增量区结构;首条增量=当日市场有效性回测结论。发布:portable 真源 + .skill 包 + save_skill 三层(Claude-3p 壳 plugin cache 由 Doctor 终端重装·fresh-session 路由实测)。
+- **v3.5**(2026-09-18):**Step 5 新增第 2 步「ignore 前置探测」硬闸——列 `git add` 清单前，先判清单里每个路径是否被目标仓 ignore**。触发案：/save 场 CC 给 `Database/行业研究` 仓的命令把 `raw/核实/…札记.md` 与 `outputs/gs/*.json` 列进 `git add`；Doctor 终端实跑 → git 拒绝 → **该仓 commit 未生成、push 空转打印 `Everything up-to-date`**（回执看起来像成了）。**根因不是不知道坑**：渊图 GOTCHAS `FIX-20260617-001`（2026-06-17）早登记过「raw/ 被 .gitignore 忽略」，该仓 `CLAUDE.md` 也写着「别列进 add 清单」——**规矩停在「文档 + 人脑」两层，而 CC 起草命令时既不读目标仓 `.gitignore`，也不回读该仓 CLAUDE.md 的 git 段**；形态比首次更重（首次是自动流程撞墙，这次是 CC 主动把 ignore 路径写成命令）。配套改动：Step 5 原第 2~5 步顺延为第 3~6 步；「边界」节加同款一条（**任何目标仓适用**，不止 brain）；渊图 GOTCHAS `FIX-20260617-001` 追记同根复发第 2 次。发布：portable 真源 + .skill 包 + save_skill 三层。
 
