@@ -1,6 +1,6 @@
 ---
 name: "brain-todo"
-description: "一键处理待办——对 brain/TODO.md 做「漏挂对账 + 逐条现核 + 六类分流 + 勾完才落盘」。触发：`/todo` 或「处理待办」「一键待办」「清 TODO」「待办分流」「TODO 大扫除」。v2.0 目标模式（2026-08-09 Doctor 立）：`/todo 目标 …` 或带明确结束条件的目标句式触发——多轮自动循环（默认 3 轮上限）+ 双 subagent 全量批量对照审查（异议即快照回退）+ 全程留档可回退 + 大文件（>50MB 或批次清理）tar+scp 至 fuxi-station；自动圈含 A 类证据硬代勾（客观 TODO 常驻授权 · 两种模式通用 · 通用教训 G-X136）、C 类小快灵、目标范围漏挂补挂；D 类/大活/异议项攒末批一道打包题。标准模式 = v1.2.1 原流程：C 类小快灵默认批准直接消；D 类开问题问（给推荐）；判断性打勾合并一道统一授权题（G-X4）；大活单列批专场。核心纪律：不凭印象（G-X111）、诊断不是结论、落盘前重读+Edit 不 Write（G-X107）、计数现读现数、引用条目先看状态行（G-X12）、时钟先对表（G-X100）、动手前先快照（M8）、双审不过即回退（M9）。"
+description: "一键处理待办——对 brain/TODO.md 做「漏挂对账 + 逐条现核 + 六类分流 + 勾完才落盘」。触发：`/todo` 或「处理待办」「一键待办」「清 TODO」「待办分流」「TODO 大扫除」。v2.0 目标模式（2026-08-09 Doctor 立）：`/todo 目标 …` 或带明确结束条件的目标句式触发——多轮自动循环（默认 3 轮上限）+ 双 subagent 全量批量对照审查（异议即快照回退）+ 全程留档可回退 + 大文件（>50MB 或批次清理）tar+scp 至 fuxi-station **`F:\Mac_Backup\{项目}\`**（v2.1 · 2026-09-18 改口径，旧址 `Mac_Quarantine\todo-auto\` 已废）；自动圈含 A 类证据硬代勾（客观 TODO 常驻授权 · 两种模式通用 · 通用教训 G-X136）、C 类小快灵、目标范围漏挂补挂；D 类/大活/异议项攒末批一道打包题。标准模式 = v1.2.1 原流程：C 类小快灵默认批准直接消；D 类开问题问（给推荐）；判断性打勾合并一道统一授权题（G-X4）；大活单列批专场。核心纪律：不凭印象（G-X111）、诊断不是结论、落盘前重读+Edit 不 Write（G-X107）、计数现读现数、引用条目先看状态行（G-X12）、时钟先对表（G-X100）、动手前先快照（M8）、双审不过即回退（M9）。"
 ---
 
 # brain-todo — 一键处理待办（双模式：标准分流 / 目标模式多轮自动）
@@ -230,18 +230,20 @@ cp ~/Documents/Claude/brain/references/TODO-已完成归档.md ~/Documents/Claud
 ## fuxi-station 大文件备份（v2.0 · Doctor 2026-08-09 立）
 
 - **触发阈值**：单次备份产物 **>50MB**，或「**批次清理**」类动作（.bak 批次 / cache 批 / 大目录迁移，不论大小）。阈值 Doctor 可当场改。
-- **落位目录**：fuxi-station `F:\Mac_Quarantine\todo-auto\`（新子目录，与三隔离区冷归档分居）。
+- **落位目录**：fuxi-station **`F:\Mac_Backup\{项目}\`**（**2026-09-18 Doctor 定口径：「长期备份落 F:\Mac_Backup」**；跨项目批次落 `misc\`；全 ASCII 小写子目录名以避开远端 cmd 中文乱码）。
+  ⚠️ 旧址 `F:\Mac_Quarantine\todo-auto\` **已废**——该目录名实不符（名义「隔离区」、实为 Mac 外移物总落点，且历史上装过**带删除窗口**的待删件），且 `todo-auto\` 子目录**从未建立**。同日已把其中 8 件长期备份迁入 `Mac_Backup`（逐件 SHA 搬前搬后一致）并补 `README.md` + `INDEX.md`。详见 `brain/references/备份策略-20260514.md`。
 - **流程**（沿用 2026-07 三隔离区冷归档范式）：
   1. **CC 沙箱侧**：tar 打包落 `brain/backups/todo-auto/staging/` + `sha256sum` 记本地串；
   2. **构造命令贴 Doctor 终端**（G-X134：全具体路径、零尖括号占位符）——沙箱网络到不了 fuxi，scp 是 D 类 Doctor 终端动作：
      ```bash
-     # 命令模板（{花括号} 交付时替成具体值）：
-     scp {tar包路径} fuxi-station:F:/Mac_Quarantine/todo-auto/
+     # 命令模板（{花括号} 交付时替成具体值；{项目} 用 ASCII 小写，如 yuantu / zhuzhao / misc）：
+     scp {tar包路径} fuxi-station:F:/Mac_Backup/{项目}/
      # Windows 侧校验（cmd）：
-     certutil -hashfile F:\Mac_Quarantine\todo-auto\{包名} SHA256
+     certutil -hashfile F:\Mac_Backup\{项目}\{包名} SHA256
      ```
   3. **双串逐位比对**：Doctor 贴回远端串 → CC 逐位对，一致才算备份完成，回退清单记「fuxi 已备份 · 双串一致」；
-  4. **处置权不下放**：本地源删/留永远 Doctor 批；fuxi 远端删除永远不归 CC。
+  4. **登记 index**（2026-09-18 增）：在 `F:\Mac_Backup\INDEX.md` 追加一行（子目录 · 文件名 · 字节 · SHA-256 · 说明）——**不登记＝该目录的清单即过时**，下次来人无从判断这是哪来的包；
+  5. **处置权不下放**：本地源删/留永远 Doctor 批；fuxi 远端删除永远不归 CC。
 - **小件不上 fuxi**：TODO.md / 台账 md 等文本快照一律本地 `backups/todo-auto/`。
 
 ## 边界
@@ -261,3 +263,4 @@ cp ~/Documents/Claude/brain/references/TODO-已完成归档.md ~/Documents/Claud
 - **v1.0**（2026-07-27）：初版「漏挂对账 + 逐条现核 + 六类分流 + 勾完才落盘」。
 - **v1.1 / v1.2 / v1.2.1**（2026-08-03 同日三连）：长期授权（小快灵直接消、大活单列批）→ D 类开问题问（给推荐）→ 打勾合并一道统一授权题。
 - **v2.0**（2026-08-09）：Doctor 六项升级命题落地——① 新增**目标模式**（显式触发）：目标驱动多轮自动循环（默认 3 轮上限、fixpoint 自停），人在环节收敛为「开头给目标 + 末批一道打包题」；② 自动执行圈含 **A 类证据硬代勾**（G-X4 演进路径首落地，限定 brain-todo 目标模式，通用教训立 G-X136）+ C 类小快灵 + 目标范围漏挂补挂；③ **双 subagent 全量批量对照审查**（证据真实性 × 安全可逆，两路独立不喂结论，异议即快照回退 + 降级待裁）；④ **留档可回退**（开工快照 + 逐文件快照 + logs/checkpoints 回退清单，零删除）；⑤ **fuxi-station 为大文件备份目录**（>50MB 或批次清理 → tar + scp `F:\Mac_Quarantine\todo-auto\` + SHA-256 双端逐位回验，沿用 2026-07 冷归档范式；scp 走 Doctor 终端）；⑥ 军规增 M8（先快照后动手）/ M9（双审不过即回退）。标准模式 = v1.2.1 原流程一字不改。四项裁定（AskUserQuestion · 全照推荐项）：代勾限定放宽 / 全量批量双审 / 显式触发 / fuxi 新子目录。
+- **v2.1**（2026-09-18）：**fuxi 落位改 `F:\Mac_Backup\{项目}\`**（Doctor 定口径「长期备份落 F:\Mac_Backup」）。触发：核实发现旧址 `F:\Mac_Quarantine\todo-auto\` **名实不符**——`Mac_Quarantine` 名义是隔离区、实为 Mac 外移物总落点且装过带删除窗口的待删件；且 `todo-auto\` 子目录**从未建立**，本条自 2026-08-09 立起即为空头条文。同批：8 件长期备份由 `Mac_Quarantine` 迁入 `Mac_Backup`（逐件 SHA 搬前搬后一致）· 该目录补 `README.md` + `INDEX.md` · `brain/references/备份策略-20260514.md` 补全域总纲并订正旧路径。本条另增流程第 4 步「**登记 `Mac_Backup\INDEX.md`**」（不登记则该目录清单即过时）。**发布**：portable 真源 + `.skill` 包 + `save_skill` 三层。

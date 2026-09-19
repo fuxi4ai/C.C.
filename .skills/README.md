@@ -7,7 +7,8 @@ status: active
 type: resource
 ---
 
-> **⚠ canonical 裁定（2026-08-18 Doctor 立 · 本裁定先覆盖 brain-prd）**：`brain/.skills/brain-prd/SKILL.md` 为 brain-prd **唯一内容真源**；`portable/skills/brain-prd/SKILL.md`、`.skill` 包、Cowork/Claude-3p 安装副本及 plugin cache 均为**只读派生消费端，禁止独立编辑**。发布链固定：`Brain canonical → portable → .skill → 运行时安装 → 新会话回读验证`，每层回读 SHA 逐层一致。原「Cowork 账号为主」裁定自本次起 superseded（仅限 brain-prd）。其他 brain skills 的存量漂移另列 TODO 统一收敛。
+> **⚠ canonical 裁定（2026-08-18 Doctor 立 · 2026-09-19 Doctor 扩程至全部 7 个 brain-\*）**：**本目录 `brain/.skills/{名}/SKILL.md` 为 7 个 brain-\* skill 的唯一内容真源**；`portable/skills/{名}/SKILL.md`、`.skill` 包、Cowork/Claude-3p 安装副本及 plugin cache 均为**只读派生消费端，禁止独立编辑**。发布链固定：`Brain canonical → portable → .skill → save_skill → 新会话回读验证`，每层回读 SHA 逐层一致。原「Cowork 账号为主」裁定（2026-08-02）**自此对 7 个 brain-\* skill 全部退休**；2026-09-19 前该退休仅覆盖 brain-prd。
+> **⚠ 同层两个东西别混淆**：`brain/.skills/{名}/SKILL.md` 是**源**；`brain/.skills/{名}.skill` 是**它的 zip 打包件**（Settings 复装入口）。改源后必须重打包。
 > **运行时状态（2026-08-18 十五轮）**：仓内三层（canonical/portable/.skill 包）SHA `f0437ea5…` 一致 ✓；Cowork save_skill 已重发 **v1.5.4**；Claude-3p runtime cache 已 v1.5.4（单 frontmatter · metadata 逐字一致 · 正文仅多 EOF 空行 · VV 十五轮读核 · **无需重装**）；**全新会话 `/prd` 与「写交付标准」两次路由触发实测仍 PENDING（Doctor 终端）——skill list 可见/cache 更新不能替代真实路由证据**。**Vault 旧包已禁用**：`Vault/archived/brain/brain-prd.skill`（包内 SHA `065c5f0a…`·含旧「Doctor 审/改/批、全✓或取消」合同）已改名 `_DEPRECATED_brain-prd.skill_v1.0_20260818`，重装一律取本目录 canonical 包。
 
 # brain/.skills — 自制 skill 真源
@@ -16,7 +17,7 @@ type: resource
 
 ## 清单
 
-### brain vault 配套（6 个）
+### brain vault 配套（7 个）
 
 | Skill | 触发 | 用途 |
 |-------|------|------|
@@ -26,12 +27,22 @@ type: resource
 | `brain-anchors` | `dva` · `龙鱼五力` · `渊图` · `白泽` · ... | 关键词自动加载项目/数灵上下文 |
 | `brain-prd` | `/prd [任务简称]` · "立 PRD" | 条件对齐 + 立功能/需求验收基线 PRD（十轮合同 2026-08-18） |
 | `brain-consolidate` | `/consolidate` · "固化记忆" | 蒸馏日志入 permanent |
+| `brain-todo` | `/todo` · "处理待办" | 漏挂对账 + 逐条现核 + 六类分流 + 勾完才落盘（v2.1 · 目标模式多轮自动） |
 
 ### 前端工具（1 个）
 
 | Skill | 触发 | 用途 |
 |-------|------|------|
 | `gsap-frontend` | `GSAP` · `GreenSock` · `useGSAP` · `ScrollTrigger` 等专名 | GSAP 动画综合 skill（v2，2026-06-30 重做）。粘性生效——触发后整轮默认 GSAP 模式 |
+
+### 其他（2 个）
+
+> 2026-09-19 补登记（清单此前停在 7 个，实际 10 个）。此两件**不在 portable 发布链上**（真源各在别处），故不适用上表的三面同步纪律。
+
+| Skill | 触发 | 用途 |
+|-------|------|------|
+| `handshake-consumer` | 每日 09:00 定时任务 · "消费握手" | 消费 Shake Hands 机器握手通道（方案 B）：扫 `to CC/scheduled/*.latest.json` → 幂等校验 → 路由落盘 → 写 ack |
+| `问答板` | 「问答板」/ `/qa` | 多裁定项收成单文件暖色 HTML 对齐页（机器名 `wenda-ban`） |
 
 ## 设计哲学
 

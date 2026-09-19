@@ -2,10 +2,12 @@
 title: 已装 skill 清单
 tags: [skill, index, 维护, 真源镜像, 重装手册]
 created: 2026-06-30
-updated: 2026-07-01
+updated: 2026-09-19
 status: active
 type: permanent
 ---
+
+> **2026-09-19 更新**：A/B 段对齐——补 `brain-todo`、`问答板` 两行（此前漏记）；备份列由已禁用的 `Vault/archived/brain/*.skill` 改指 `brain/.skills/{名}.skill`；canonical 口径扩至全部 7 个 brain-\*（见 A 段首注）。
 
 # 已装 skill 清单（真源镜像 + 重装手册 · 唯一真源）
 
@@ -17,16 +19,21 @@ type: permanent
 
 ---
 
-## A · 自制 brain skills（源 `brain/.skills/`，备份 `Vault/archived/brain/`）
+## A · 自制 brain skills（源 `brain/.skills/{名}/SKILL.md` ＝ **canonical**，备份/重装取 `brain/.skills/{名}.skill`）
+
+> **⚠ 口径（2026-09-19 Doctor 扩充）**：7 个 brain-\* skill 的 canonical 全部 = `brain/.skills/{名}/SKILL.md`；`portable/skills/`、`.skill` 包、各环境安装副本、plugin cache 均为**只读派生**。原「Cowork 账号为主」裁定对 7 个全部退休。
+> **⚠ Vault 旧包已禁用**：`Vault/archived/brain/*.skill`（5 件 · 2026-06-30 一批）**不得用于重装**——照旧清单装过会得到六月版。重装一律取本目录 `.skills/{名}.skill`。
+> **⚠ 本表 2026-09-19 对齐**：补 `brain-todo`（此前漏记）；各「用途」列括注的版本号可能落后于现行版（如 brain-save 已 v3.5），**以 canonical 文件 frontmatter/正文为准**。
 
 | 装机 | Skill | 触发 | 用途 | 备份 `.skill` |
 |:---:|-------|------|------|-----------|
-| ✅ | `brain-resume` | `/resume` · "恢复上下文" | 跨 session 拉回工作状态 | `archived/brain/brain-resume.skill` |
-| ✅ | `brain-save` | `/save [主题]` · "存档" | 落盘会话 + 提供 git 命令（v2.6，per-agent 归位） | `archived/brain/brain-save.skill` |
-| ✅ | `brain-note` | `/note [主题]` · "起一条笔记" | inbox/ 采集态 | `archived/brain/brain-note.skill` |
-| ✅ | `brain-anchors` | 关键词监听（dva·龙鱼五力·渊图·白泽…） | 自动加载项目/数灵上下文 | `archived/brain/brain-anchors.skill` |
-| ✅ | `brain-prd` | `/prd [任务简称]` · "立PRD" · "起草PRD" · "写交付标准" | 立 PRD——功能/需求验收基线，不是审批单（v1.5.4 · 2026-08-18 十~十四轮合同 · canonical=`brain/.skills/brain-prd/SKILL.md` · portable/.skill 包/Cowork/Claude-3p 为派生消费端） | `brain/.skills/brain-prd.skill`（**改指 canonical 包 · 2026-08-18 十五轮**） |
-| ✅ | `brain-consolidate` | `/consolidate` · "固化记忆" | brain 日志蒸馏入 permanent | `archived/brain/brain-consolidate.skill` |
+| ✅ | `brain-resume` | `/resume` · "恢复上下文" | 跨 session 拉回工作状态 | `brain/.skills/brain-resume.skill` |
+| ✅ | `brain-save` | `/save [主题]` · "存档" | 落盘会话 + 提供 git 命令（per-agent 归位） | `brain/.skills/brain-save.skill` |
+| ✅ | `brain-note` | `/note [主题]` · "起一条笔记" | inbox/ 采集态 | `brain/.skills/brain-note.skill` |
+| ✅ | `brain-anchors` | 关键词监听（dva·龙鱼五力·渊图·白泽…） | 自动加载项目/数灵上下文 | `brain/.skills/brain-anchors.skill` |
+| ✅ | `brain-prd` | `/prd [任务简称]` · "立PRD" · "起草PRD" · "写交付标准" | 立 PRD——功能/需求验收基线，不是审批单 | `brain/.skills/brain-prd.skill` |
+| ✅ | `brain-consolidate` | `/consolidate` · "固化记忆" | brain 日志蒸馏入 permanent | `brain/.skills/brain-consolidate.skill` |
+| ✅ | `brain-todo` | `/todo` · "处理待办" · "清 TODO" | 漏挂对账 + 逐条现核 + 六类分流 + 勾完才落盘（v2.1 目标模式） | `brain/.skills/brain-todo.skill` |
 
 6 个 2026-07-01 官方环境全部重装到位（从现源重打包、frontmatter 引号合规、`brain/.skills/` 镜像同步刷新）。**已弃用**：`_DEPRECATED_brain-commands`（早期合并版，存档可删）。
 
@@ -38,6 +45,15 @@ type: permanent
 |:---:|-------|------|------|-----------|
 | ✅ | `gsap-frontend` | 硬专名 "GSAP/gsap/GreenSock" | GSAP 前端动画（主干 + 5 references；粘性生效） | `brain/.skills/gsap-frontend.skill` |
 | ⏸ | `handshake-consumer` | 定时/手动 | 方案 B 跨 AI 握手消费端——**方案 B 搁置，暂不装** | `brain/.skills/handshake-consumer.skill` |
+| ✅ | `问答板`（机器名 `wenda-ban`） | 「问答板」· `/qa` | 多裁定项收成单文件暖色 HTML 对齐页（**2026-09-19 补记**；真源即 `brain/.skills/问答板/`，不在 portable 链上） | `brain/.skills/问答板.skill` |
+
+> **⏸ 另有一个不在本链的已装技能（2026-09-19 补记）**：**`equity-thesis`**（个股定性研究）——
+> **canonical 在 Codex 侧**：`Codex/Infrastructure/skills/equity-thesis/`（**VV 维护**，CC 不覆写）；
+> CC 侧 `brain/portable/skills/equity-thesis/` 是**单向接收的落盘副本**（与交接包 + Codex canonical sha256 三方一致），**无 `.skill` 包**；桌面侧经 `save_skill` 注册为 `equity-thesis`。
+> 2026-09-11 经 Doctor 投递交接包装毕（来源提交 `bf21616`）；后续版本从 Codex canonical **单向重新交接**。
+> ⚠ **别把「portable 是派生」的通则套到它身上反推上游**——它的上游是 Codex，不是 `.skills/`。
+
+> **⚠ 三族 skill 的「portable 是什么」各不同（2026-09-19 立）**：① **brain-\* 7 个** → portable 是 `.skills/{名}/SKILL.md` 的派生；② **equity-thesis** → portable 是 **Codex canonical** 的派生；③ **gsap-frontend / 问答板 / handshake-consumer** → 不在 portable 链上。**别用一条通则套三族。**
 
 `gsap-frontend` 2026-07-01 官方重装（v2.1，基于 greensock/gsap-skills 蒸馏）。
 
