@@ -8,10 +8,17 @@
   ② 本脚本用 Python 的 sqlite3.backup() 出一致性快照，连 sqlite3 CLI 都不依赖；
   ③ 与 fetch_*.py 同源，将来挂 launchd 或并进日更链都顺手。整条链只需 `pip3 install tos`。
 
-备份范围（~118MB，只收「不可再生」的）：
-  1. recap.db                 ~4.5MB  几个月课件沉淀（industry_signals/dim1-4/emotion_cycle），API 拉不回
-  2. Raw-Recap/              ~112MB  235 份原始课件 = recap.db 的上游来源，比 recap.db 更根本
-  3. business_breakdown.db   ~0.6MB
+备份范围（2026-09-18 修订 · 只收「不可再生」的；**TOS 有费用 → 仅收「极重要＋小型＋需冗余」**）：
+  1. recap.db                 6.8MB  几个月课件沉淀（industry_signals/dim1-4/emotion_cycle），API 拉不回
+  2. business_breakdown.db    2.0MB
+  ⛔ Raw-Recap/（135MB · 463 件）**2026-09-18 摘出** —— Doctor 定「**TOS 现在的课件，归 fuxi**」：
+     135MB 属**资源类大文件**，按备份策略总纲走 fuxi-station，不占 TOS 付费额度。
+     fuxi 副本：`F:\Mac_Quarantine\zhuzhao_rawrecap_20260918.tar.gz`
+     （123,879,707 B · SHA256 `27bfd4b4…b30497` · 与本地双端对拍一致 · 463/463 零丢失）。
+     **TOS 侧原 412 件 / 110.74 MB 已于同日删除**——删前逐件核对为本地子集（411 件同名同大小、
+     1 件 `11.16总结.pdf` 为改名前的 `251116四维度训练营-总结.pdf`，「同名尺寸不一致」0 件）；
+     删后回读 `zzjy-data/` 仅存 `db/` 两件（recap.db 4,726,784 B · business_breakdown.db 589,824 B）完好。
+     `collect_raw_recap()` 保留备用，暂不调用。
 不收：Douyin(66G)/YouTube（可重下）｜Market-Data(2.4G)（tushare 可重拉）｜*.bak(2.0G)（本地回滚锚）
       ｜龙鱼-标的分析库/（自身是 git 仓且有远端 fuxi4ai/longyu-analysis-lib）
 
@@ -153,7 +160,11 @@ def main():
 
     log("── SQLite 一致性快照 ──")
     db_items, db_failed = snapshot_dbs()
-    raw_items = collect_raw_recap()
+    # 2026-09-18 Doctor 定：「TOS 现在的课件，归 fuxi」——Raw-Recap 135MB 属资源类大文件，
+    #   走 fuxi-station（F:\Mac_Quarantine\zhuzhao_rawrecap_20260918.tar.gz · 双端 SHA 已对拍），
+    #   不再上行 TOS（TOS 有费用 → 仅收「极重要＋小型＋需冗余」）。collect_raw_recap() 保留备用。
+    # raw_items = collect_raw_recap()
+    raw_items = []
     items = db_items + raw_items
     total_mb = sum(os.path.getsize(p) for p, _ in items) / 1048576
     log(f"  待处理 {len(items)} 个对象，共 {total_mb:.1f} MB"
