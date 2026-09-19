@@ -27,7 +27,8 @@ cat ~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
 
 ### Step 0.5 · 起手开声（语音链路可用则先出一段 · 堵起手哑口盲区）
 
-载完全局偏好后，若 ElevenLabs 桥接可用：**先**按音色 C.C.（voice_id `C7iLuTwlT58pHXVmnmWe` · `eleven_v3` · zh · stability 0.5 · speed 1.0）出一段 ≤150 字口语短版（「已恢复上下文」之类），落 `~/Documents/Claude/.tts-scratch`，再往下做 resume。链路不可用则静默跳过。
+载完全局偏好后，若 ElevenLabs 桥接可用：**先**按音色 C.C.（voice_id `C7iLuTwlT58pHXVmnmWe` · `eleven_v3` · zh · stability 0.5 · speed 1.0）出一段 ≤150 字口语短版（「已恢复上下文」之类），`output_directory` 传 `.`（落 MCP 的 BASE＝`~/Documents/Claude/临时文件/`——2026-09-19 目录并轨后的落点），再往下做 resume。
+**BASE 与播放白名单是同一个 env**（`ELEVENLABS_MCP_BASE_PATH`，见 `permanent/经验库.md` 源码实读）：BASE 改成新落点后，生成与 play_audio 同时切换。若播放报 `outside of allowed directory` ＝ 该 env 还没跟上落点——此时**先核 BASE 真值**（以报错里给出的允许目录为准），按其落点生成播放；**不要**为绕过它去重建已废弃的旧目录。链路不可用则静默跳过。播完即删（`rm` 被拦时走 `allow_cowork_file_delete` 申请，一次申请本会话内生效）。
 语音无后台自动触发器、须每轮主动调 TTS——**起手这一下最易漏**（注意力全在 resume 正文），故在流程里显式固化。
 
 ### Step 0.6 · 巡检新鲜度与修复审计（2026-08-02 立 · 2026-08-29 自愈循环 v2 升级）
