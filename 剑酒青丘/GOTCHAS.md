@@ -225,3 +225,24 @@ project: 剑酒青丘
 **预防门禁**: 调度班流程凡含「需交互授权」步骤，必须有无人值守降级路径（跳过/超时/改道），否则上调度前算阻塞缺陷。
 **来源**: 2026-09-16 晚场 CC 实读（班会话转录 · launchd-stdout · DB fetched_at）· 残留清理经 Doctor 裁
 **追记（2026-09-16 晚场）**: Doctor 裁「CC 清残留·明晚班自然验证」——残留两件已清（删除授权+rm 实跑 · 主库 integrity ok 复验）；PRD adapter 迁 Mac X1 机制层终验顺延 09-17 班；本条目修复方案待 Doctor 裁。
+
+### [NOTE-20260918-001] launchd Mac agent 打不开带 `com.apple.macl` 的日志文件 → spawn 前被拒（EX_CONFIG 78）→ 数据链班 Step 7 交接停摆 2 天（2026-09-18 CC 诊断 · Doctor 终端执行 · 应升格通用教训）
+**状态**: 🔄 已修待验（重命名两个 macl 日志件 → `last exit code = 0` · handoff 一次消费成功 · result JSON 落盘；端到端待今晚 17:43 班 Step 8 推 artifact 自然验证）
+**优先级**: 🔴 高
+**硬证据/最小复现**:
+- 09-17 17:44 班 Steps 1–6 全过、Step 7 轮询 60 分钟未取到 result → artifact 未推（fail-closed）；`eal-v3-event-transition` artifact updatedAt 停 `2026-09-16T07:25:23Z`。
+- `launchctl print gui/501/com.eal.postevent-native`：`state = not running` · `runs = 421`（12:52）→ **422**（12:59）· `last exit code = 78: EX_CONFIG` · `properties = inferred program | managed LWCR | has LWCR` → **每 300 秒被点火，却无进程、零 stdout、零 stderr**。
+- 时间分界：Mac `kern.boottime` = **2026-09-17 01:46:15**；stdout 末行 = **01:43:30**。
+- A/B 四探针：P1（stdio→/tmp）退出 0 · P2（stdio 同名目录**新文件**）退出 0 · **P4（stdio→两个已存在的旧文件）→ `Bootstrap failed: 5: Input/output error`**。
+- xattr 体检：`launchd-stdout.log` / `launchd-stderr.log` 各带 **`com.apple.macl` 72B**；同目录 plist/FORMAT.md 只带 `com.apple.provenance`（该 plist 加载正常 → provenance 无害）。
+- 修复实况：两件改名留档 → bootout/bootstrap + kickstart → `last exit code = 0` · stdout `SUCCESS on attempt 1; loop_dir=…20260918T201403Z` · `eal-mac-handoff-20260917.result.json`（878B · 四段 exits 全 0 · permission_guard restored）。
+**根因（机制层推断）**: 两个日志文件被走过 TCC 授权的进程碰过 → 挂上 `com.apple.macl`（记录「哪些进程可访问该文件」）→ 09-17 01:46 重启令 TCC 重评、launchd 不在名单内 → launchd 在 spawn 前 open 这两个路径失败（**append 到旧文件 ≠ 创建新文件，两条代码路径**）→ 直接拒绝启动，只留 EX_CONFIG(78)。
+**排除项（均为实测）**: 解释器签名有效（PSF Developer ID · valid on disk · satisfies its Designated Requirement）；非 `launchctl` disabled（`print-disabled` 无记录）；系统日志无 TCC 拒绝；脚本自身只返回 0/2（`run_step7_native.py` L81 `return 2`，全文无 78 / `os.EX_CONFIG`）；**单纯 bootout/bootstrap 重挂不能修复**（已实测仍 78）；亦非"GUI 未登录"（烛照仓 09-17 02:37 仍有 Mac 侧 git 写入）。
+**影响面**: EAL v3 数据链 2 日 artifact 未更新 · Step 7 Mac 交接停摆约 35 小时；**同族 `com.zhuzhao.usclose` / `com.zhuzhao.marketdata` 最后退出码同为 78**（usclose 09-17 14:00 班未跑；09-17 14:35 补数看门狗班曾独立报警但未进 Doctor 视野）。
+**建议修法**: ① 已执行——两个 macl 日志件改名让 launchd 重建（`.bak_20260918_macl` 留档）；② **治本提案**：stdio 路径迁出 `~/Documents`（TCC 保护区）至 `~/Library/Logs/eal/`（P1 已证类 /tmp 路径可用）——但班自身诊断在读该路径，迁路径须同步改班 SKILL（Doctor 终端 SHA 往返），**未动**；③ 同族两件按同法处置（跨项目，待 Doctor 授权）。
+**预防门禁**: ① launchd job 的 stdio 路径**不得放在 TCC 保护目录**（Documents/Desktop/Downloads），放 TCC 外；② 增设「Mac 侧班停摆」超时告警——本次停摆 ~18 小时才被班发现、~35 小时才被人看到；③ 班诊断必须能读**本体**证据：本轮实测 session transcript 与 launchd stdout 均可达，「沙箱读不到班会话转录」的旧判断是错的。
+**来源**: 2026-09-18 /resume 起手（Doctor 插话点名）→ CC 四轮现场诊断 + Doctor Mac 终端执行；旧日志留档 `launchd-{stdout,stderr}.log.bak_20260918_macl`
+**升格建议**: **应升格通用教训**——跨项目复发面明确（三件同解释器 launchd job 同病）；且属「silent stall」族，与 NOTE-20260916-001 同属 Mac 边界静默停摆，两日两起。
+**追记（2026-09-18 13:20 PT · 300 秒心跳复核 · CC 实读）**: 修复后循环成立——首次运行 `13:14:04.419`（kickstart 强制）→ 第二次 `13:19:04.562`（**整 +300.1 秒**），新 stdout 2 行 / 199B，第二行 `[20260918] no unconsumed handoff; nothing to do`（无事可做时干净退出、非空转错误）。**机制层闭环**；端到端仍待今晚 17:43 班 Step 8 推 artifact（updatedAt 应由 `2026-09-16T07:25:23Z` 前进）。
+**追记②（2026-09-18 22:28 PT · 端到端闭环 · CC 实读）**: 首次真实班次全链无人值守跑通——22:19–22:21 Steps 2–6（封存→日历→config→shadow）→ **22:22 落 `eal-mac-handoff-20260918.json`（1191B）** → **22:24:23 Mac agent 消费成功**（`attempt 1` · 四段 exits 全 0 · `zero_write_evidence.permission_guard` restored=true / write_bits_removed=true · loop_dir `eal-post-event-loop-20260919T052421Z`）→ **22:26:29 artifact 已推**：`eal-v3-event-transition` updatedAt `2026-09-16T07:25:23.496Z` → **`2026-09-19T05:26:29.911Z`**（+2 日停更终止）。Mac agent 心跳自 13:19 起 9 小时零中断（stdout 110 行）。同批处置同族两件：`com.zhuzhao.usclose`（14:00 班 `全部完成 · 无 ❌` · us_anchor_daily 20260918 推进 **19/19** · intl_index 美股腿 **5/5** · 落后 0 天）· `com.zhuzhao.marketdata`（待 09-19 02:30 自然验）。**遗留未核**：今晚班前置段较 09-17 慢 3 小时 12 分（Step 2 封存 22:19 vs 19:07），待 shift-log 落盘追因。
+**追记③（2026-09-18 22:52 PT · 治本迁移已部署 · CC 起草 + Doctor 终端执行）**: stdio 治本迁移完成——源件 `com.eal.postevent-native.plist` 两条 stdio 路径由调度目录（`~/Documents` TCC 区内）迁至 **`~/Library/Logs/eal-postevent-native-{stdout,stderr}.log`**（新 SHA `235e84d0258520f5263a880ed16a9024f7fb7dd4585dae8f3ccc7c314404f295` · `plutil -lint` OK）；装机件同步（双端 SHA 一致）+ bootout/bootstrap + kickstart。**验收四条全中**：`print` 两路径变更 · `last exit code=0` · 新日志文件生成（stdout 48B @22:52）· **`xattr -l` 无输出、`ls -la` 无 `@`（旧件为 `-rw-r--r--@` + `com.apple.macl 72`，一正一反即治本成立的直接证据）** · tail 为正常轮询行。配套：`FORMAT.md` 补新址段并订正自相矛盾的「每日 18:35 PT」（实为 StartInterval 300）· `.gitignore` 旧行转 legacy 块并**补上一直漏 ignore 的 stderr** · `shift-root-cause-20260917.md` 顶部加迁移指针。**残余暴露面（本批未堵）**：脚本自身对 `~/Documents/.../EAL/` 的文件访问仍依赖 FDA 解释器，同属「授权随系统更新失效」族——但其失败会写 stderr、可诊断，非静默 78。**回退点**：四个 `*.bak_20260918_pre_logmove`。
