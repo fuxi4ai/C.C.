@@ -17,7 +17,7 @@ type: log
 
 - [ ] **行业研究仓 · 工作区残余待裁（2026-09-18 /save 挂）**：watch/ 09-05 alarm_store 五件（alarm_store.py+test+history/+revisions/+lock）、docs/PROPOSAL-投知君君图谱候选.md（09-16 改）、index.json.bak_2026-08-24 与 bak_20260821_pre_refill 两删除——归属他场，提交/搁置归 Doctor 裁。
 
-- [ ] **DVA · 09-18 自然周期首验三项新契约（2026-09-17 /save 挂 · dated 09-18 09:00Z Refill → Healthcheck → mirror · 源：`logs/2026-09-17-DVA失败班次恢复收尾与Mac栅栏根因.md`）**：Mac 持久化身份去 `st_dev`、`MIRROR_MAC_DISPATCH_LOST` + 链式退役、`Get-DvaWriterRole` 入口识别——Codex 观察；若 mirror 再 unknown 且 Mac 无 intent，先离线跑 `_require_prior_actions_settled` 再动。
+- [ ] **DVA · 三项新契约验证顺延 + 下一班自愈观察（2026-09-18 更新 · 源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md`）**：09-18 自然班 `refill-cycle-20260918T090001614Z` FAILED/76（浪浪路由覆盖·未走到 mirror）→ Mac 去 `st_dev`／`MIRROR_MAC_DISPATCH_LOST`+链式退役／`Get-DvaWriterRole` 三契约**顺延至下一个走到 mirror 的班**（若 mirror 再 unknown 且 Mac 无 intent，先离线跑 `_require_prior_actions_settled`）；当日恢复闭环已完成并 CC 实核（新原则 `finance_resume→finance_publish→collection_resume`）。**待观察：09-19 17:00 北京班 → 18:15 自动自愈能否无人干预完成同款隔离恢复。**
 
 - [x] **EAL 星空重建班首跑核（2026-09-13 挂 · dated 周一 09-14 18:15 PT 班后 · 源：剑酒青丘 GOTCHAS NOTE-20260913-001）**：✅ 2026-09-14 首跑已核——exit 0 · build status=verified · node 单测 26/26 fail=0 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14 领先）。⚠️ 首跑发现结构隐患：构建器截止日取「严格早于美东今天」，18:15 PT 运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改（0 21 * * 1-5 · 调度器回读 09:01 PM 生效）**；SKILL 无写死钟点、零漂移面。今晚 21:00 班将首次带当日收盘（09-14），明早 risk-daily 嵌入即验证。Doctor 目验已过（09-13），本条机制层自然验证完成。
 
@@ -54,7 +54,7 @@ type: log
 
 
 
-- [ ] **龙鱼 · 中微是否拉入常更清单（2026-09-01 /todo 漏挂对账补挂 · 源：同上）**：对比场提案未获回应 · 现仅芯碁在列——归 Doctor 裁。
+- [ ] **龙鱼 · 中微/长芯博创/中际旭创H 是否拉入常更清单（2026-09-01 挂 · 2026-09-18 扩面）**：原提案=中微（对比场未获回应·现仅芯碁在列）；09-18 持仓新增 长芯博创 300548.SZ（首评 68.0 观察）与 中际旭创H 03308.HK（首评 84.0 可配置）——均不在常更 25 只内、不会被周更双 scorer 覆盖；三只中哪些入常更归 Doctor 裁。源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md`。
 
 - [ ] **DVA · health 产物新落点确认 + 回流写入者排查（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-氦气鲜价喂入与DVA库审计定案.md` · INFRA-20260901-001 观察项②③）**：fuxi 侧 health 落点确认后改 GAI manifest 指向；回流写入者疑 launchd——均需 fuxi 侧核。
 
