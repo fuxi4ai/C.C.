@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-09-13
+updated: 2026-09-18
 status: active
 type: log
 ---
@@ -95,9 +95,11 @@ type: log
 
 - [ ] **ClaudeCode 体检遗留三件（2026-09-17 /todo 漏挂对账补挂 · 源：`logs/2026-09-17-ClaudeCode体检与自动更新报警消除.md`）**：① `~/CLAUDE.md` 的 `## Session Log Checklist` 与 Brain 两份开工清单分处两文件，是否合并归 Doctor 定；② `memory/environment.md` 可能抄了过期的 `Darwin 24.6.0`（~/.claude 下沙箱不可达·未核）；③ `DISABLE_AUTOUPDATER` 对 Cowork 桌面端是否生效未核（桌面端共用 ~/.claude，自更新失败会重写 state 文件、横幅复现）。
 
-- [ ] **EAL · 今晚 17:44 班疑似二次停摆核 + 修复方案裁（2026-09-17 /todo 挂 · dated 09-18 早 · Doctor 裁「明早核完今晚班再裁方案」）**：今晚班零产物（find 全空）+ eal-v3 artifact updatedAt 停 09-16T07:25Z 未推——明早 CC 实读班会话转录/launchd-stdout 拿直接证据 → 报修复方案选项（NOTE-20260916-001 待裁方案）；X1 顺延。
+- [x] **EAL · 班停摆核与修复（2026-09-17 /todo 挂 · 2026-09-18 晚场 CC 核销 · 机器证据）**：根因**不是二次停摆**，是 **launchd Mac agent 打不开带 `com.apple.macl` 的日志文件 → spawn 前 `EX_CONFIG 78`**（`launchctl print`：`state = not running` · runs 421→422 每 300 秒被点火 · `last exit code = 78` · 零 stdout；时间分界 = `kern.boottime` 09-17 01:46:15 vs stdout 末行 01:43:30；A/B 四探针 P4 复现 `Bootstrap failed: 5`）。Doctor 终端重命名两个 macl 日志件后：**22:22 落 `eal-mac-handoff-20260918.json` → 22:24:23 Mac 消费 attempt 1 成功 → 22:26:29 artifact updatedAt `09-16T07:25:23Z` → `09-19T05:26:29.911Z`（+2 日停更终止）**。**本轮亲核（实读，非转述）**：`launchd-stdout.log` 尾「SUCCESS on attempt 1; loop_dir=…/eal-post-event-loop-20260919T052421Z」· loop_dir 五件产物 22:24 · `eal_v3_sealed_20260918/` 全链产物 22:19–22:31（sealed db / candidate / daily-shadow / artifact-v2 html）· `shift-log-20260918.md` §4（09-17 handoff 亦已今晨消费）。X1 机制层终验随之闭环。详见 剑酒 GOTCHAS NOTE-20260918-001（应升格通用教训候选）。
 
-- [ ] **EAL · gate 验收脚本 PRD 已批待专场（2026-09-17 /todo Doctor 勾「批」· 2026-08-17 立卷 status 进行中）**：含渊图 promote 第 15 项同三元组闸负向单测持久化 + EAL dry-run 测试 6 项增强——开专场实施，排期待定。
+- [ ] **EAL · 删除授权死锁修法①已应用·待自然验证（承 NOTE-20260916-001 · 2026-09-18 晚场裁①并当晚应用）**：Doctor 2026-09-18 裁修法①（改班 SKILL 去交互）+ 范围「普查 24 班并修同族」——**已应用并核过**（Doctor 终端 23:09 实跑：store 对拍未滞后 → 备份+cp → 复验 store SHA = staging SHA `88018f86…`/`4b900c32…` → rsync 镜像刷新 → 终封 24 班全 OK；全库 `allow_cowork_file_delete` 实际调用点归零，仅存两句禁令）。staging 归档 `brain/archived/staging_2026-09-18/`。**唯一未闭项＝终验判据**：下一次真实挂载盘 I/O 失败时班应以 fresh attempt 重跑、保留残留、不再卡死（在此之前只算「已改」，不算验过）。同批顺带补回流 `refresh-risk-daily` 镜像（store 侧 09-17 更新漏回流，方向正确无覆盖损失）。预防门禁已登记应升格候选（调度班不动点＝班内零交互，升格归 Doctor）。背景：挂载瞬断 09-15/09-16 连续复发、尚未治。
+
+- [ ] **EAL · gate 验收脚本 PRD 待终验（2026-09-17 /todo Doctor 勾「批」· **2026-09-18 专场已开完**）**：专场已实施——三产物落盘（`eal_gate_check.py` + 判据集 v1 + `test_gate_self.py`）· 判据两处漂移经 Doctor 裁修订后**沙箱实跑 gate 8/8 PASS · exit 0 · self 3/3 绿**；含渊图 promote 第 15 项负向单测持久化（`tests/test_kg_promote_gate15.py` 一次通过 · canonical 字节不变）。PRD `logs/2026-08/checkpoints/2026-08-17_EAL_gate验收脚本_PRD.md` **status=awaiting_acceptance**（§四已核文件本体）。**剩两项归 Doctor/VV**：① Doctor Mac 原生跑同脚本 exit 0（`python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py`）；② VV 审阅判据集 v1 完整性并终验签字。判据集增补流程「首演」素材已由本次两处漂移 + 判据 8 形态变迁提供。
 
 ## 长期观察
 

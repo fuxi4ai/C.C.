@@ -3,7 +3,7 @@ title: scheduled-live-mirror — Cowork live 定时任务只读镜像
 abstract: "live Scheduled 树（gateway 调度器私有目录，2026-08-02 自 Cowork 旧根迁入）的 rsync 单向镜像，git 跟踪，供开发者模式与审计读取"
 tags: [定时任务, 镜像, portable]
 created: 2026-08-02
-updated: 2026-08-08
+updated: 2026-09-18
 status: active
 type: reference
 related: [巡检自愈循环-loop-engineering, portable/README]
@@ -32,5 +32,6 @@ rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/refere
 ## 纪律
 
 - 本目录**只读参考**。改班走 Cowork 侧（`update_scheduled_task` 或侧栏），改完重刷镜像。
-- 刷新时机：改任何班之后；或随 `/save` 顺手。**暂无自动机制**（2026-08-02 立此目录时明示：常态化刷新是否并进周巡检班，待 Doctor 另议——巡检器现为只读设计，给它加写权限违反其自身章程）。
+- 刷新时机：改任何班之后；或随 `/save` 顺手；**常态化刷新已并入周巡检班**（2026-08-11 Doctor 裁「巡检＋镜像 rsync 刷新」并班——巡检班只产出 rsync 命令、由 Doctor 终端实跑，巡检器本身仍只读、章程未破；2026-08-02 立此目录时挂的「待 Doctor 另议」由此决议关闭）。
+- ⇒ **镜像最多可滞后 store 约 7 天**（2026-09-18 实测实例：`refresh-risk-daily/SKILL.md` 的 store 侧 09-17 更新，直到 09-18 手动刷镜像才回流）。**任何一方读镜像下判断（含 CC 场、审计、staging 起草）前，先按上文命令与 store 对拍 SHA**；对拍不过即镜像滞后，先刷新再动手——否则判断建立在旧文上。
 - 与 `~/Documents/Claude/Scheduled/`（07-31 查明的死树，Doctor 定先标死不动）无关系；那棵树不因本镜像的存在而获得豁免。
