@@ -55,7 +55,7 @@ import plistlib
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 HOME = Path.home()
@@ -186,6 +186,47 @@ def launchctl_loaded(label):
         return {"loaded": None, "detail": f"{type(e).__name__}: {e}"}
 
 
+def expected_last_fire(sched, now):
+    """按 StartCalendarInterval 推算 <= now 的最近一次**应点火**时刻（2026-09-22 加）。
+
+    sched 可为 dict 或 dict 列表（launchd 两种写法都合法）。支持 Minute/Hour/Weekday/Day/Month，
+    未出现的键＝通配。**Hour 与 Minute 必须齐备**，否则返回 None——判不了就不判，不猜。
+
+    launchd 的 Weekday 语义：0 或 7＝周日、1＝周一 … 6＝周六；Python 的 weekday()：0＝周一 … 6＝周日。
+    故映射为 (wd - 1) % 7。这条映射错了会在周末静默误报，故单列注释。
+    """
+    if not sched:
+        return None
+    entries = sched if isinstance(sched, list) else [sched]
+    best = None
+    for e in entries:
+        if not isinstance(e, dict) or "Hour" not in e or "Minute" not in e:
+            return None
+        # launchd 允许这些键写成**数组**（如 {"Weekday":[1,5]}、{"Hour":[2,14]}）。本函数只处理
+        # 标量形态；遇到数组一律返回 None（判不了就不判），**绝不能 int() 强转**——那会抛
+        # TypeError，而 scan_launchd() 在 main() 的字典字面量里被调用、无 try/except，
+        # 会把整个快照脚本打断（2026-09-22 独立复验逮到的潜伏崩溃面）。
+        vals = [e["Hour"], e["Minute"], e.get("Weekday"), e.get("Day"), e.get("Month")]
+        if any(isinstance(v, (list, tuple, dict)) for v in vals):
+            return None
+        h, mi = int(e["Hour"]), int(e["Minute"])
+        wd, dom, mon = e.get("Weekday"), e.get("Day"), e.get("Month")
+        for back in range(0, 70):          # 向后找 70 天，足够覆盖月级/周级排期
+            d = (now - timedelta(days=back)).replace(hour=h, minute=mi, second=0, microsecond=0)
+            if d > now:
+                continue
+            if wd is not None and d.weekday() != (int(wd) - 1) % 7:
+                continue
+            if dom is not None and d.day != int(dom):
+                continue
+            if mon is not None and d.month != int(mon):
+                continue
+            if best is None or d > best:
+                best = d
+            break
+    return best
+
+
 def scan_launchd():
     # 源 plist（项目里维护的）
     sources = {}
@@ -216,6 +257,7 @@ def scan_launchd():
                 "program": (d.get("ProgramArguments") or [d.get("Program", "?")])[0],
                 "schedule": sched,
                 "run_at_load": d.get("RunAtLoad"),
+                "stdout_path": d.get("StandardOutPath"),   # 应跑未跑判据（2026-09-22 加）
                 "runtime": launchctl_loaded(label),
             }
 
@@ -236,7 +278,53 @@ def scan_launchd():
             findings.append({"label": label,
                              "issue": f"❌ 源↔装机不一致（src {s['src_sha12']} vs installed {i['installed_sha12']}）"
                                       f"——改了源没重装，等同死树分叉"})
-    return {"sources": sources, "installed": installed, "consistency": findings}
+    # ── 应跑未跑（2026-09-22 加）────────────────────────────────────────────
+    # 动机：本面原来只看 `last exit code`，**看不出「排期到了却根本没点火」**。
+    #   实撞 2026-09-22：com.zhuzhao.marketdata 的脚本自管日志在 09-17/09-18/09-21
+    #   三个交易日**完全没有文件**（＝脚本从未被启动），而快照只显示 `last exit = 1`，
+    #   连漏三天这件事在本面上零可见度，是「快照漏报」而非「快照报错」。
+    # 判据：由 StartCalendarInterval 推出最近应点火时刻，与该 job 的 StandardOutPath
+    #   （launchd 在 spawn 前**自己** open 的文件）mtime 比对——这是不带任何项目耦合的通用面。
+    # 防误报（G-X122「一条误报就能让真信号没人看」）四道闸：
+    #   ① 未过 grace 窗不判（刚点火/正在跑）；② state=running 不判；
+    #   ③ 未声明 StandardOutPath → 只记「无法判定」，不判红；
+    #   ④ 日志落 /tmp → 只记「无法判定」（macOS 会清理 /tmp，mtime 不可信）。
+    STALE_GRACE_MIN = 45
+    staleness = []
+    _now = datetime.now()
+    for label, i in sorted(installed.items()):
+        if not label.startswith(OURS):
+            continue
+        if (i.get("runtime") or {}).get("state") == "running":
+            continue
+        exp = expected_last_fire(i.get("schedule"), _now)
+        if exp is None:
+            continue
+        if _now < exp + timedelta(minutes=STALE_GRACE_MIN):
+            continue
+        out = i.get("stdout_path")
+        if not out:
+            staleness.append({"label": label, "level": "yellow", "expected": exp.isoformat(),
+                              "issue": "未声明 StandardOutPath——无法判定是否点火"})
+            continue
+        if str(out).startswith("/tmp"):
+            staleness.append({"label": label, "level": "yellow", "expected": exp.isoformat(),
+                              "issue": f"日志落 /tmp（系统会清理），mtime 不足以判定是否点火（{out}）"})
+            continue
+        p = Path(out)
+        if not p.exists():
+            staleness.append({"label": label, "level": "red", "expected": exp.isoformat(),
+                              "issue": f"**应跑未跑**——最近应点火 {exp:%Y-%m-%d %H:%M}，"
+                                       f"但 stdout 文件不存在（{out}）"})
+            continue
+        mt = datetime.fromtimestamp(p.stat().st_mtime)
+        if mt < exp:
+            staleness.append({"label": label, "level": "red", "expected": exp.isoformat(),
+                              "issue": f"**应跑未跑**——最近应点火 {exp:%Y-%m-%d %H:%M}，"
+                                       f"stdout mtime 停在 {mt:%Y-%m-%d %H:%M}（{out}）"})
+
+    return {"sources": sources, "installed": installed, "consistency": findings,
+            "staleness": staleness}
 
 
 # ───────────────────── 面 ④ crontab ─────────────────────
@@ -407,6 +495,10 @@ def detect_anomalies(snap, prev):
         if ec not in (None, "0"):
             red.append(f"launchd `{label}` 上次退出码 **{ec}**（非 0）")
 
+    for f in lg.get("staleness", []):
+        (red if f.get("level") == "red" else yellow).append(
+            f"launchd `{f['label']}`：{f['issue']}")
+
     if snap["crontab"].get("entries"):
         yellow.append(f"crontab 非空（{len(snap['crontab']['entries'])} 条）"
                       "——第四执行面已启用，需入账")
@@ -522,6 +614,11 @@ def main():
             L.append(f"- `{f['label']}` — {f['issue']}")
     else:
         L.append("\n✅ 源与装机全部一致")
+
+    if lg.get("staleness"):
+        L.append("\n**⏱ 应跑未跑 / 无法判定（按排期推算最近应点火时刻 × stdout mtime）：**")
+        for f in lg["staleness"]:
+            L.append(f"- {'🔴' if f.get('level') == 'red' else '⚠'} `{f['label']}` — {f['issue']}")
 
     cr = snap["crontab"]
     L.append(f"\n## 面④ crontab\n\n{cr['note']}")
