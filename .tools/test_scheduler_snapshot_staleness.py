@@ -117,7 +117,7 @@ def test_scan_launchd(tmproot: Path):
     (tmproot / "fresh.log").write_text("x")
     os.utime(tmproot / "fresh.log", (recent, recent))
 
-    make_plist(la, "com.zhuzhao.missed", {"Hour": 0, "Minute": 1}, str(tmproot / "missed.log"))
+    make_plist(la, "com.zhuzhao.missed", {"Hour": 10, "Minute": 1}, str(tmproot / "missed.log"))
     (tmproot / "missed.log").write_text("x")
     os.utime(tmproot / "missed.log", (old, old))
 
@@ -128,6 +128,9 @@ def test_scan_launchd(tmproot: Path):
     SS.LAUNCH_AGENTS = la
     SS.OPS_DIRS = [ops]
     SS.launchctl_loaded = lambda label: {"loaded": True, "state": "not running", "last_exit_code": "0"}
+    # 判定窗先开到全时段，把「闸⑤ 夜间不判」隔离开——否则凌晨跑本测试时，
+    # 闸①-④ 的夹具会全部落进窗外的 yellow 分支，断言失真。窗规则另用专门段落验。
+    SS.STALE_WINDOW = (0, 24)
 
     res = SS.scan_launchd()
     stal = {f["label"]: f for f in res["staleness"]}
@@ -162,8 +165,31 @@ def test_scan_launchd(tmproot: Path):
     res4 = SS.scan_launchd()
     check("com.google.* 被排除", "com.google.something" not in {f["label"] for f in res4["staleness"]})
 
-    print("  兼容性：旧快照无 staleness 键时，消费端不炸")
-    check("consistency 键仍在（未破坏既有结构）", "consistency" in res)
+    print("  闸⑤ 判定窗：凌晨类排期不判（2026-09-22 Doctor 裁定）")
+    # 复现实撞形状：02:30 的排期落空，真因是机器整夜关机——这种不该当故障报。
+    # （旧版曾用 `_boot > exp` 降级，已废：那会把「机器开着但 job 没跑」也一起掩盖。）
+    make_plist(la, "com.zhuzhao.night", {"Hour": 2, "Minute": 30}, str(tmproot / "night.log"))
+    (tmproot / "night.log").write_text("x")
+    os.utime(tmproot / "night.log", (old, old))          # mtime 明显落后，若在窗内必判红
+    SS.STALE_WINDOW = (8, 23)
+    res5 = SS.scan_launchd()
+    st5 = {f["label"]: f for f in res5["staleness"]}
+    chk = st5.get("com.zhuzhao.night", {})
+    check("02:30 排期 → yellow 而非红", chk.get("level") == "yellow", f"level={chk.get('level')}")
+    check("判词写明是「判定窗外」", "判定窗外" in chk.get("issue", ""),
+          chk.get("issue", "")[:70])
+    check("夜间 job 本身不在红单里",
+          "com.zhuzhao.night" not in {f["label"] for f in res5["staleness"] if f["level"] == "red"})
+    # ★ 关键反向断言：窗内排期（10:01，mtime 落后）必须**仍然判红**——闸不能把真漏跑也放过
+    check("窗内排期仍判红（闸不可过宽）",
+          any(f["label"] == "com.zhuzhao.missed" and f["level"] == "red"
+              for f in res5["staleness"]),
+          f"reds={[f['label'] for f in res5['staleness'] if f['level'] == 'red']}")
+    SS.STALE_WINDOW = (0, 24)
+
+    print("  兼容性：结构键齐备（真断言：四个键一个都不能少）")
+    check("返回 {sources, installed, consistency, staleness} 四键齐全",
+          set(res) == {"sources", "installed", "consistency", "staleness"}, f"keys={sorted(res)}")
 
 
 def main():

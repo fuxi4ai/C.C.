@@ -227,6 +227,31 @@ def expected_last_fire(sched, now):
     return best
 
 
+# 「应跑未跑」的判定窗（2026-09-22 Doctor 裁定）：只对落在窗内的排期做判定。
+# 理由＝凌晨类排期与机器作息天然冲突（实撞：com.zhuzhao.marketdata 09-21 02:30 的排期落空，
+# 真因是 Mac 整夜关机 boottime 09-21 06:50:09，不是 launchd 故障）。裁定＝承认 launchd 这一路
+# 是 best-effort（真保障在沙箱班），故凌晨类不做判定——否则每次周末关机都误报一次（G-X122）。
+STALE_WINDOW = (8, 23)
+
+
+def boot_time():
+    """本机开机时刻（kern.boottime）。用于区分「应跑未跑」与「机器当时没开」。
+
+    2026-09-22 实撞：com.zhuzhao.marketdata 在 09-21 02:30 的排期落空，真因是 Mac
+    整夜关机（boottime = 09-21 06:50:09），而排期是 02:30——机器当时不具备点火条件。
+    不加这道闸，新检查会在每次「周末关机」后误报一次（G-X122）。
+    """
+    try:
+        out = subprocess.run(["sysctl", "-n", "kern.boottime"],
+                             capture_output=True, text=True, timeout=5).stdout
+        # 正则收紧（2026-09-22 二轮复验指出）：原 `sec\s*=\s*(\d+)` 是**次序依赖**的——
+        # 若输出把 usec 排在前面会抓到 usec。锚定 `{ sec = N , usec` 形态。
+        m = re.search(r"\{\s*sec\s*=\s*(\d+)\s*,\s*usec", out)
+        return datetime.fromtimestamp(int(m.group(1))) if m else None
+    except Exception:
+        return None
+
+
 def scan_launchd():
     # 源 plist（项目里维护的）
     sources = {}
@@ -292,6 +317,7 @@ def scan_launchd():
     STALE_GRACE_MIN = 45
     staleness = []
     _now = datetime.now()
+    _boot = boot_time()
     for label, i in sorted(installed.items()):
         if not label.startswith(OURS):
             continue
@@ -302,6 +328,18 @@ def scan_launchd():
             continue
         if _now < exp + timedelta(minutes=STALE_GRACE_MIN):
             continue
+        # 闸⑤「夜间排期不判」（2026-09-22 Doctor 裁定）——见文件头 STALE_WINDOW 注。
+        #   ⚠ 曾有一版用 `_boot > exp` 降级，**已废**：kern.boottime 只证「最近一次开机」，
+        #   若 exp 之后机器重启过，会把「机器开着但 job 真没跑」误判成「机器没开」从而
+        #   **掩盖真漏跑**（2026-09-22 二轮复验给出可复现负例）。故闸改为「按排期时段」
+        #   而非「按事后事实推断」；boottime 退为判红时的**上下文标注**，不参与判级。
+        if not (STALE_WINDOW[0] <= exp.hour < STALE_WINDOW[1]):
+            staleness.append({"label": label, "level": "yellow", "expected": exp.isoformat(),
+                              "issue": f"排期 {exp:%H:%M} 落在判定窗外"
+                                       f"（{STALE_WINDOW[0]}:00–{STALE_WINDOW[1]}:00）——"
+                                       f"按 2026-09-22 裁定不做应跑未跑判定（凌晨类 best-effort）"})
+            continue
+        _bootnote = f"（本机开机于 {_boot:%Y-%m-%d %H:%M}）" if _boot else ""
         out = i.get("stdout_path")
         if not out:
             staleness.append({"label": label, "level": "yellow", "expected": exp.isoformat(),
@@ -315,13 +353,13 @@ def scan_launchd():
         if not p.exists():
             staleness.append({"label": label, "level": "red", "expected": exp.isoformat(),
                               "issue": f"**应跑未跑**——最近应点火 {exp:%Y-%m-%d %H:%M}，"
-                                       f"但 stdout 文件不存在（{out}）"})
+                                       f"但 stdout 文件不存在（{out}）{_bootnote}"})
             continue
         mt = datetime.fromtimestamp(p.stat().st_mtime)
         if mt < exp:
             staleness.append({"label": label, "level": "red", "expected": exp.isoformat(),
                               "issue": f"**应跑未跑**——最近应点火 {exp:%Y-%m-%d %H:%M}，"
-                                       f"stdout mtime 停在 {mt:%Y-%m-%d %H:%M}（{out}）"})
+                                       f"stdout mtime 停在 {mt:%Y-%m-%d %H:%M}（{out}）{_bootnote}"})
 
     return {"sources": sources, "installed": installed, "consistency": findings,
             "staleness": staleness}
