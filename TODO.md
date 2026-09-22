@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-09-19
+updated: 2026-09-22
 status: active
 type: log
 ---
@@ -23,7 +23,13 @@ type: log
 
 - [ ] **行业研究仓 · 工作区残余待裁（2026-09-18 /save 挂）**：watch/ 09-05 alarm_store 五件（alarm_store.py+test+history/+revisions/+lock）、docs/PROPOSAL-投知君君图谱候选.md（09-16 改）、index.json.bak_2026-08-24 与 bak_20260821_pre_refill 两删除——归属他场，提交/搁置归 Doctor 裁。
 
-- [ ] **DVA · 三项新契约验证顺延 + 下一班自愈观察（2026-09-18 更新 · 源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md`）**：09-18 自然班 `refill-cycle-20260918T090001614Z` FAILED/76（浪浪路由覆盖·未走到 mirror）→ Mac 去 `st_dev`／`MIRROR_MAC_DISPATCH_LOST`+链式退役／`Get-DvaWriterRole` 三契约**顺延至下一个走到 mirror 的班**（若 mirror 再 unknown 且 Mac 无 intent，先离线跑 `_require_prior_actions_settled`）；当日恢复闭环已完成并 CC 实核（新原则 `finance_resume→finance_publish→collection_resume`）。**待观察：09-19 17:00 北京班 → 18:15 自动自愈能否无人干预完成同款隔离恢复。**
+- [ ] **DVA · 自愈链两真根因已诊断未执行 + 终验顺延至 fuxi 回线（2026-09-22 更新 · 源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md` ＋ Mac 侧 `Codex/Project Mirror/DVA/ops/state/dva-codex-supervision/`）**
+  **① 三项新契约仍顺延**——Mac 去 `st_dev`／`MIRROR_MAC_DISPATCH_LOST`+链式退役／`Get-DvaWriterRole`，等「下一个走到 mirror 的班」（若 mirror 再 unknown 且 Mac 无 intent，先离线跑 `_require_prior_actions_settled`）。
+  **② 18:15 自愈首验：跑起来了，但卡住**——09-19 班 `refill-cycle-20260919T090001620Z` FAILED/**75**（`FINANCE_PENDING_HANDOFF`，设计内退出码 · 非硬故障），17:08 留 `.pending` 票据无人认领。原 rrule 写法 `DTSTART;TZID=Asia/Shanghai:…` **未生效**（与在跑的四个 heartbeat 写法不同形）→ VV 09-19 改型为 `FREQ=DAILY;BYHOUR=3;BYMINUTE=15`（PT 03:15 ＝ 北京 18:15）→ **09-20 首验触发成功**（PT 03:59 落 plan ＝ 北京 18:59；`lastBusinessProgressAt` ＝ 北京 09-20 18:54）。⚠ 冬令时后固定 PT 03:15 会漂成北京 19:15（在跑的四家同病，本轮不改）。
+  **③ 两个真根因（VV 均已诊断，两 plan 皆 `executionAuthorized=false`·`businessRuns=0`，未执行）**：㈠ **policy 时间戳比较 bug**——inspect 在自身 terminal journal 更新*前*捕获快照，policy 却拿 `observed_at` 比 inspect 的 `recordedAt`，不可能的次序 ⇒ 递归的无副作用检查链，**一个合法 writer 但永不产生业务动作**（修法：inspect 只比 `issuedAt`，业务动作保留 `recordedAt` 边界）；㈡ **enrollment 错配**——bootstrap 仍批准更旧的 release transaction，与已装 policy 不匹配 ⇒ 新 cycle 拿不到 coordinator enrollment（修法：certification-only core transaction ＋ bootstrap 升级，明文不动业务代码/数据/调度/原 FAILED/journal）。
+  **④ 阻断面**：fuxi-station **出游离线至 09-26**；Mac 消费镜像停在 09-18 代次（`dva-mirror-20260918T191145Z-047034d0`·published 09-18T19:16:11Z）未再前进。09-20 班 fuxi 本地自主跑出 attempt 1 exit 0 **SUCCESS**（不依赖 Mac）；09-20 北京 08:30 healthcheck FAILED/exit 2/blockerCount 3 **属离线所致、非班次实错**——勿据此判 09-19 恢复失败。
+  **⑤ 09-26 回线后补核清单**：票据兑现（`ops/state/dva-refill-handoff-latest.json`）＋ coordinator 终态 ＋ Mac 镜像新代次 ＋ 消费端回读——**四项齐了才谈落签**。
+  **⑥ 验收性质提示**：Mac 侧 runtime 在 09-19 后有代码变更（`dva_self_heal_journal.py`·`freeze_dva_self_heal_release.py`·`dva_healthcheck_recovered.py`·`dva_mac_mirror_contract.py` ＋ 一批 tests）⇒ **该部分含功能性成分，归 Doctor 或 Doctor 指定且未参与实施的验收方**；纯事实部分（班次终态／镜像代次／消费端）可由未参与实施的 subagent 落签。
 
 - [x] **EAL 星空重建班首跑核（2026-09-13 挂 · dated 周一 09-14 18:15 PT 班后 · 源：剑酒青丘 GOTCHAS NOTE-20260913-001）**：✅ 2026-09-14 首跑已核——exit 0 · build status=verified · node 单测 26/26 fail=0 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14 领先）。⚠️ 首跑发现结构隐患：构建器截止日取「严格早于美东今天」，18:15 PT 运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改（0 21 * * 1-5 · 调度器回读 09:01 PM 生效）**；SKILL 无写死钟点、零漂移面。今晚 21:00 班将首次带当日收盘（09-14），明早 risk-daily 嵌入即验证。Doctor 目验已过（09-13），本条机制层自然验证完成。
 
