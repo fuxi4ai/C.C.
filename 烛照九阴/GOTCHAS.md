@@ -330,6 +330,9 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **应升格通用教训**（同族第二次复发·07-08→08-02/03/05）: 已升格 **G-X152**（`brain/permanent/通用教训.md`，2026-08-19 哥哥「你来决定」授权九儿执笔）——「数值列不得落定性文本与分项口径，入库侧落类型+口径双闸」。✅ 已于 2026-08-19 由 Doctor 落签（哥哥「同意」）。
 
+**追记 2026-09-19（同族新暴露·档2 已修待验 · 入库侧闸门覆盖不全挂单）**: 2026-09-19 句芒课件入库审核班把「数值列 typeof 污染」扫描从 dim4 扩到全课件线表 REAL/INTEGER 列，新暴露 **4 处 26 行历史存量**：① `dim1_external_pricing.usd_cny`（REAL）×1（2026-06-14「6.79附近(掉期口径)」）；② `dim1_external_pricing.forex_swap`（INTEGER）×2（2026-06-10/06-14 区间描述文本）；③ `dim2_sector_themes.main_line_sustainability`（INTEGER·语义「持续性天数」见 docs/复盘数据要素提炼.md L93）×19（2026-07-05~09-17 定性分析文本）；④ `dim3_sentiment_tech.ma60`（REAL「MA60 均线」）×4（2026-07-16/08-27/09-16/09-17 趋势描述文本）。**与 08-19 repr 案同根**（数值列落定性文本）；**非复发**——四列不在三道闸门覆盖内（闸门只护 dim4 仓位列与 dim2 涨跌停），九儿持续落文本（ma60 最近 09-17 仍在落）。
+处置（**档2 保守默认修·哥哥可一句话推翻重裁**）：26 行全清空为 NULL——依据 ERR-20260819-001 先例（repr 清空）+ G-X152 + 数据真实性铁律（宁缺勿假）。原文备份 `Database/烛照九阴/_bak_archive/dim_text_rows_backup_20260919.json`（26 行完整原文）；备份 `recap.db.bak_20260919_prefix句芒`（md5 96455395…），/tmp 副本往返（G-X33）：副本 UPDATE 26 行（4 条 SQL·rowcount 1/2/19/4）→ 副本 integrity ok → 35 表行数全一致 → 逐行内容比对仅目标 4 列差异（dim1 2 行/dim2 19 行/dim3 4 行）→ cp→原子 mv 放回 → 真库复验 integrity ok、残留 0（修后 md5 6ce37851…）。消费端零影响：ma60/main_line_sustainability/forex_swap 无脚本消费（仅 demo.py 打印）；usd_cny 消费方 `fetch_fx_cnh.backfill_dim1` 有 try/except float 防护、文本行原本即被跳过。未触碰 gap 跟踪列与 10:00 zhuzhao 班域。**挂单请哥哥批**：九儿 ingest 闸门扩到全课件线表数值列（dim1 usd_cny/forex_swap、dim2 main_line_sustainability/limit_up_count/limit_down_count、dim3 ma60 等 REAL/INTEGER 列只接受数值，定性描述归对应 TEXT 列）——不擅改九儿 SKILL。
+
 ---
 
 ## [ERR-20260820-001] 日报风险区「逾期未启动信号」把条目级负状态升维成板块级——热门已启动板块被列进「等轮动」名单
@@ -610,3 +613,68 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 状态机任何新触发器只允许前向迁移或当日判定；「撤回/改写历史」类机制必须先过「不反向跳跃+无后变更」负向测试（test_emotion_oneway.py 常驻回归）。差异样本积累走人工标注层（docs/情绪周期_人工标注.tsv），引擎不做回溯裁决。
 
 **来源**: 2026-09-16 Doctor 报修 · CC 实读引擎源码+DB 实读+dry-run 复现
+
+## [ERR-20260921-001] dim3.volume_trillion 老区段(2025-10~2026-03) 101 行错值/无出处值——59 行与课件原文对不上、42 行无任何课件依据
+
+**状态**: 🔄 已修待验（2026-09-21 句芒课件入库审核班档1 当场修 · 待独立验收 · 实施者不自签 ✅）
+
+**优先级**: 🔴 高（假数进库·数据真实性铁律级；dim3.volume_trillion 系复盘引用消费列）
+
+**触发场景**: 2026-09-21 审核班六项审查第 2 项「数据合理性」全表量级 sanity——`dim3_sentiment_tech.volume_trillion` 最大值 9.0 超常识区间（A股两市成交额 9 万亿不可能）；追查发现老区段整数 3.0~9.0 成片分布，而近期（2026-05+）全部 1.6~3.6 正常。
+
+**硬证据/最小复现**: pdftotext 逐日抽 Raw-Recap 课件原文比对——59 行与课件原文矛盾（如 2025-10-26 库 9.0 vs 课件「上周五大盘成交额达 1.99 万亿」、2025-10-29 库 9.0 vs 课件「成交额达 2.29 万亿」、2026-01-13 库 9.0 vs 课件「全天成交额达 3.69 万亿」、2026-03-08 库 1.0 vs 课件「当日成交金额 2.21 万亿」）；42 行（含 19 个 Raw-Recap 无该日课件文件的日期、23 个课件未提及成交额的日期）无任何课件依据。同区段 consecutive_boards / limit_up / limit_down 数值正常、dim2 老区段正常、近期行抽验可回原文（05-14「约3.3万亿」✓ / 09-14「1.64万亿」✓）——病仅此一列、仅老区段。全项目代码 grep 确认消费方仅 `recap_cli.py` 展示与复盘引用，无脚本计算消费该列。
+
+**根因**: 老区段系早期回填批次数据，来源不明（非现 ingest 工具链——dedup_kejian 固化于 2026-06-24；现九儿工具含「课件明说才落、绝不倒灌」纪律，2026-05+ 行全部可溯源）。疑似早期回填混入非课件口径数。九儿现行 ingest 无同款问题——**不挂单**。
+
+**影响面**: ① 59 行假数（9.0/8.0/7.0 万亿等）进库，复盘引用会引用假成交额；② 42 行无出处值同样污染。P2 语料层、展示级消费，但违反数据真实性铁律（假数进库）。
+
+**修复/建议修法**（2026-09-21 句芒已执行 · 档1）: 59 行按课件原文修正（如 9.0→1.99/3.69）、42 行清 NULL（宁缺勿假）；17 行经原文核验保留（其中 11 个无课件文件日期经相邻课件「上周五/昨日」引文核验一致）。备份 `recap.db.bak_20260921_prefix句芒`（修前 md5 6ce37851…，与 09-19 修后真库一致，佐证周末零写入）；/tmp 副本往返（G-X33）：副本 UPDATE 59+42 → integrity ok → 35 表行数全一致 → 逐行复核 101 行全对 → cp→原子 mv 放回 → 真库复验 integrity ok、md5 与副本一致、残留 journal 无。证据四件套 + 修前/修后逐行值见 `agents/句芒/logs/2026-09-21-课件入库审核.md`「修复记录」。未触碰 gap 跟踪列与 10:00 zhuzhao 班域。
+
+**预防门禁**: ① 审查班 dim3 检查从「近 N 日」扩到「全表 volume_trillion 量级 sanity（0~5 万亿）+ 抽查回原文」（纳入复发扫描）；② 日后重建老区段数据一律走课件原文逐日抽取、不得复用旧值；③ 早期回填批次若还有其他列同款病，发现即按本条追记。
+
+**来源**: 2026-09-21 句芒课件入库审核班 · pdftotext 实抽 Raw-Recap 逐日原文 · recap.db 实读
+
+## [ERR-20260922-001] Mac 原生路径 DNS 解析间歇失效——两个国内域同时 `Errno 8`，同刻境外域正常（2026-09-22 /resume 场实读）
+
+**状态**: ⚠️ 已知风险（**根因未定 · 会复发**）
+
+**现象**: 09-22 02:30 的 `com.zhuzhao.marketdata` 班三项 ❌（`stock_daily` / `market_amount` / `guarantee_ratio`）；09-21 09:00 的 IPO 班栈底报错——两处**同一域名** `api.waditu.com`：`Failed to resolve 'api.waditu.com' ([Errno 8] nodename nor servname provided, or not known)`；东财 `datacenter-web.eastmoney.com` 同批失败。
+
+**关键判据（区分「解析层故障」与「某域被墙」）**: `Errno 8` = 解析器返回「名字不存在」。**同一次运行里** `intl_index`(yfinance/Yahoo) 与 `kr_stocks` **成功** ⇒ **不是整体网络故障，而是按域名选择性的解析失败**；且两个受害域**都是国内托管**（`api.waditu.com` CNAME → `cn-beijing.alb.aliyuncsslb.com`；东财 → `queniukt.com`）。间歇性：09-21 09:00 败 / 09-21 14:00 成 / 09-22 02:30 败。
+
+**根因**: **未定**。候选＝本机代理/DNS 层对部分域名的分流解析间歇失效（本环境有已知的 `198.18.x.x` fake-IP 映射痕迹）。**推断，未核。**
+
+**影响面**: ① 行情链 `stock_daily`/`market_amount` 当日零落（被沙箱班兜住）；② `margin_daily`/`margin_guarantee_ratio` **自 09-16 起连缺 4 个交易日**——该腿以 WARNING 降级、不阻断退出码，故长期静默；③ IPO 班滚动采集失败。
+
+**修复/建议修法**: 无根治（根因未定）。每次复现时按 `dig +short <域名>` 与 `scutil --dns` 取证。
+
+**预防门禁**: 取数步的「零新增」必须能被退出码看见（见 `ops/mac_daily_marketdata.py` 的 `STALE_POLICY`）；`margin` 腿的 WARNING 级降级需与「真失败」区分。
+
+**来源**: 2026-09-22 /resume 场 · `logs/mac_marketdata_20260922.log` · `/tmp/ipo_rolling.err` · Doctor 终端 `dig` 实跑
+
+## [NOTE-20260922-001] 判「排期那刻机器在不在」必须读 pmset 事件史——`kern.boottime` 会掩盖真漏跑（2026-09-22 实撞）
+
+**状态**: ✅ 已实装（面③ `machine_state_at()` + 纯函数 `classify_machine_state()`，见 `brain/.tools/scheduler_snapshot.py`）
+
+**问题**: launchd 排期落空时要先分清「机器当时没开（非故障）」与「机器在运行却没跑（真故障）」。**`kern.boottime` 做不到**——它只给**最近一次**开机：若 exp 之后重启过，「最近一次开机晚于 exp」既可能是「exp 时本没开」，也可能是「exp 处在一个已被重启终结的会话里」，二者不可区分。**据此降级会掩盖真漏跑**（二轮复验给过可复现负例）。
+
+**做法**: 读 `pmset -g log` 的 `Start`/`Sleep`/`Wake` 事件，取「exp 之前最后一个事件」定当时状态——`Start`/`Wake` → 在运行；`Sleep` → 在睡眠；exp 前无事件而其後首个是 `Start` → 未开机；取不到 → `unknown`（不猜）。
+
+**实撞样本（09-21 02:30）**: `kern.boottime` = 09-21 06:50:09；pmset 该日 00:00–06:50 **零条目、无 Sleep/Wake 对** ⇒ **机器整夜关机**，排期时它根本没开——**不是 launchd 故障**。（三天缺口由此收敛：09-17/18 = TCC 已治本、09-21 = 正常作息。）
+
+**残余盲区（如实标注）**: pmset 日志有滚动窗口，窗口外取不到 → `unknown`（按漏跑判红，可能有噪音）；「睡眠」与「关机」在窗口外不可分。
+
+**来源**: 2026-09-22 /resume 场 · Doctor 终端 `sysctl -n kern.boottime` + `pmset -g log -g` 实读
+
+## [NOTE-20260922-002] `ops/.last_run_status` 只留最后一行 ⇒ 同日重跑即抹掉失败记录（同一盲区第三次咬人）
+
+**状态**: 🔄 待修复（建议：改追加式 `_last_run_status.jsonl` 滚动 N 天，或至少保留 `.prev`）
+
+**问题**: 该文件是 `open(STATUS,"w")` 覆盖写。任何一次**手工补跑**都会把当天的 `FAIL` 抹成 `OK`——2026-09-22 03:51 的手工补跑正是如此。
+
+**已三次咬人（同一形态）**: ① 09-18 判「marketdata 连停两天」时只能看到 `OK 09-16`，看不到 09-17/18 各自的退出码；② 09-22 查 launchd 时 `.last_run_status` 已是当天新值，看不出周一那次成败；③ 09-22 补跑后 02:30 的 `FAIL` 记录消失（脚本自管日志里还在）。
+
+**判据/做法**: 需要某日的真实结果时，**以 `logs/mac_marketdata_YYYYMMDD.log` 的收尾行为准**；`.last_run_status` 只适合回答「此刻最新一次是成是败」。
+
+**来源**: 2026-09-22 /resume 场 · `ops/mac_daily_marketdata.py` STATUS 写入段实读 · 三次实例
+

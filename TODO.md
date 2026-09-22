@@ -11,6 +11,12 @@ type: log
 
 ## 待办
 
+- [ ] **巡检 · 周班简报是死代码 + 面③ 黄条送达 + 快照判据口径（2026-09-22 /save 挂 · 源：`logs/2026-09-22-巡检补盲与行情链共模修复.md` ＋ `permanent/巡检自愈循环-loop-engineering.md` §4 注）**：① 周班跑不了脚本即按自身 prompt 明文「报无法执行 + 贴命令 + 干净退出」⇒ **步骤 2–5（含出简报）在本环境走不到**，故「快照前进」只能由 Doctor 终端手动跑证明，`triggered_by=scheduled` **不是「班自动跑过」的证据**。② 由此派生的两个待定：**(a)** 周班要不要改成「跑不了脚本时也能读上次快照并出简报」——需 store SKILL 改动（Doctor 终端 SHA 往返）；**(b)** 快照验收判据是否从「generated_at 前进且 triggered_by=scheduled」改为承认「人工按班交接原文带参跑」。③ 面③ 的 ⚠ 黄条**已**改由 `brain-resume` Step 0.6 附报（09-22 落盘·四端 `11ee480b`），周班侧是否重复由 (a) 一并定。
+
+- [ ] **巡检 · 第三轮独立复验 + G-X193/audit 三行挂账（2026-09-22 /save 挂）**：二轮独立复验（PASS_WITH_LIMITS）之后我又**连改三轮设计**（作废 `boottime` 降级 → 作废时段窗 → 机器状态归因；另加 trade_cal 与 brain-resume 附报），**全部只有自验**——按纪律只写「已修改、自验结果、待独立验收」。**验收判据**：下一轮独立复验报告 ＋ 下次周班（2026-09-27 20:00 PT）面③ 实证。**同挂**：`通用教训` G-X193（🔄）· `_repair_audit.md` 三行 🔄（03:02 / 04:38 / 05:05）——✅ 归 Doctor 或指定独立验收方。
+
+- [ ] **行情链 · 三处残留（2026-09-22 /save 挂 · 源：`logs/2026-09-22-巡检补盲与行情链共模修复.md`）**：① **`trade_cal` 表要等下次 `ingest_stock_daily` 跑才落**——跑后须回读确认表存在、`is_open` 计数合理，且两处陈旧判定已切到日历路径（`mac_marketdata_*.log` 里会打「市场时钟 = trade_cal」，不再出现「回退」字样）；② `ops/.last_run_status` 只留最后一行 ⇒ **同日重跑即抹掉失败记录**（已三次咬人），建议改追加式滚动 N 天或至少留 `.prev`；③ `ipo-rolling` 的 `StandardOutPath` 仍在 `/tmp` ⇒ 面③「应跑未跑」对它**零覆盖**（09-18 的 stdio 迁移只搬了 usclose/marketdata 两件），建议同批迁出。另：两套新增负向测试（快照 45 项 / 烛照 27 项）**不挂在任何班或巡检上**，回归保护全靠人手跑——是否挂班归 Doctor 定。
+
 - [ ] **渊图 · wiki 派生层陈旧（2026-09-19 审核者 E 发现挂账 · 源：`logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`）**：`wiki/product_nvidiavr200rack.md`（mtime **09-16**）仍印旧概数值（bom 7,800,000 / cooling 72,000 / pcb 117,000 / storage 2,000,000），且**完全没有本次补的 6 个新键**；`product_NvidiaGB300Rack` **连 wiki 卡都没有**。成因＝`wiki_autogen.py` 默认只建**缺失**卡（`dest.exists() and not force → skip`），只有 `kg_promote.py:128` 那条 `--force` 路径全量重排；而两次 BOM promote 走的都是 `kg_merge_safe`（**无 wiki 步**）。**属 2026-09-16 起系统性滞后、非本次引入**，但使「扩键」在 wiki 面不可见。修法＝跑一次 `--force` 全量刷新（归 Doctor 终端）。
 
 - [ ] **渊图 · `product_HBM4ForVR200.cost_per_rack` 口径疑点（2026-09-19 审核者 E 报 · 不在本次 delta 内）**：该值 = **2,001,600**，与大摩原表 **Memory 行**（HBM4 **+ LPDDR5X 合并**口径）数值**完全相同**；但节点本体是「**VR200 用 HBM4**」专用节点，取整行为值疑口径不符。源表未给 HBM4 单拆。按本仓「数字入图必带口径」（CLAUDE.md 数字口径标注规范）应补口径标注或降级处置——**归 Doctor 裁**。
