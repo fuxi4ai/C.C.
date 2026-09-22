@@ -117,7 +117,7 @@ type: log
 
 - [ ] **EAL · gate 验收脚本 PRD 待终验（2026-09-17 /todo Doctor 勾「批」· **2026-09-18 专场已开完**）**：专场已实施——三产物落盘（`eal_gate_check.py` + 判据集 v1 + `test_gate_self.py`）· 判据两处漂移经 Doctor 裁修订后**沙箱实跑 gate 8/8 PASS · exit 0 · self 3/3 绿**；含渊图 promote 第 15 项负向单测持久化（`tests/test_kg_promote_gate15.py` 一次通过 · canonical 字节不变）。PRD `logs/2026-08/checkpoints/2026-08-17_EAL_gate验收脚本_PRD.md` **status=awaiting_acceptance**（§四已核文件本体）。**剩两项归 Doctor/VV**：① Doctor Mac 原生跑同脚本 exit 0（`python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py`）；② VV 审阅判据集 v1 完整性并终验签字。判据集增补流程「首演」素材已由本次两处漂移 + 判据 8 形态变迁提供。
 
-- [ ] **漏挂补挂批（2026-09-22 /todo 漏挂对账 · Doctor 裁「全补」· 源：09-16～09-19 五场日志，逐条注明）**——以下 10 条此前只留在日志里、从未进 TODO；本轮一次性补挂，后续按各自触发条件推进。
+> **漏挂补挂批（2026-09-22 /todo 漏挂对账 · Doctor 裁「全补」· 源：09-16～09-19 五场日志，逐条注明）**——以下 **11 条**此前只留在日志里、从未进 TODO；本轮一次性补挂，后续按各自触发条件推进。（本行为导航头，不计入待办条数）
 
 - [ ] **龙鱼 · 持仓看板 PRD 验收（2026-09-18 挂 · 4 天 · 源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md`）**：`logs/checkpoints/2026-09-18_龙鱼持仓看板截图流与手填升级_PRD.md` **status=awaiting_acceptance**（八条交付标准 [?]+证据 · 独立审查「可背书」· LOW 1 条已修 · 首轮三截图真实落库已完成）。**⇒ 2026-09-22 Doctor 裁「龙鱼三件一次办」**——验收与另两件（四只推板 / 常更清单扩面）合并处理，见本段「龙鱼 · 四只补分推板待裁」条。
 
