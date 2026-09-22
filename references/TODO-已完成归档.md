@@ -2,7 +2,7 @@
 title: TODO 已完成归档
 tags: [todo, archive]
 created: 2026-07-30
-updated: 2026-08-22
+updated: 2026-09-22
 status: active
 type: log
 ---
@@ -13,6 +13,13 @@ type: log
 > 拆分动机：`TODO.md` 39KB 里 70% 是已完成条目，`brain-resume` 每场整篇读入，token 花在已经做完的事上。
 
 ## 已完成
+
+- [x] **EAL 星空重建班首跑核（2026-09-13 挂 · dated 周一 09-14 18:15 PT 班后 · 源：剑酒青丘 GOTCHAS NOTE-20260913-001）**：✅ 2026-09-14 首跑已核——exit 0 · build status=verified · node 单测 26/26 fail=0 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14 领先）。⚠️ 首跑发现结构隐患：构建器截止日取「严格早于美东今天」，18:15 PT 运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改（0 21 * * 1-5 · 调度器回读 09:01 PM 生效）**；SKILL 无写死钟点、零漂移面。今晚 21:00 班将首次带当日收盘（09-14），明早 risk-daily 嵌入即验证。Doctor 目验已过（09-13），本条机制层自然验证完成。
+- [x] **安全 · Gangtise 本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。① 服务端撤销/轮换 → **已取消（2026-09-12 Doctor 裁：「取消，不用轮换，Gangtise 已基本弃用」）**；② 本地明文清理 → **✅ 已闭环（2026-09-13 CC 代勾·机器证据）**：VV W6 交付报告实读「`~/.claude/settings.local.json` 原 /permissions/allow/88、89、90、91、93、95、96 共 7 条含 bearer 的权限命令已精确移除·JSON 回读有效」+ Doctor 终端两轮实跑——残留 12 条 gangtise 相关 allow 条目全部为无凭据安装/卸载命令（mkdir /tmp、curl 下载 zip、cp skills、rm 卸载），凭据形状正则（Bearer/sk-/token 长串）检测 0 命中。剩卫生项：12 条无凭据命令是否从 allow 清除 → **2026-09-13 Doctor 裁「Gangtise 已明确退役，安全删除或归档 fuxi」** → CC 构造清理命令已交付（备份 `.bak_20260913_pre_gangtise_cleanup` + 过滤 12 条 + JSON 回读验证 + home 区 skills 残留核删）· 执行留痕待 Doctor 回执。
+- [x] **风险日报 · fomc_market_exp.json 手更（2026-09-11 挂 · 源：`logs/2026-09-11-TACO与地缘手工层更新.md`）**：✅ 2026-09-12 CC 联网多源核验写入（Doctor 批「写入（推荐）」）——as_of=2026-09-11（8 月 CPI 公布后）· hike 88.8 / hold 11.2 / cut 0（格隆汇/金十/证券之星/九方智投/同花顺 5+ 独立源收敛·CME 官方页 JS 渲染沙箱不可直读、转述源已在 source/note 标注）。证据：JSON 回读实核（p 合计 100.0 · 字段全对）。data_cutoff.value 前移随次早 build 自然带出；决议 09-16 落地后 outcome 回填走 JSON 自身机制；周日 18:00 ET 期货开盘后若读数大动可补手更（note 已留提示）。
+- [x] **PEC · 星空 git 化与备份件处置（2026-09-09 /save 补挂 · 源：`logs/2026-09-09-PEC星空选中加亮与放射线迭代.md`）**：① Projects/星空/ 无 git 仓——（**问答板 2A 已裁「独立 local-only 仓」· ✅ 已执行 09-09 06:13 PT——git init+root-commit `c45abbc` · 工作区 clean · Doctor 终端证据**）；② 备份件 `Projects/PEC/pec-starry-skies.html.bak_20260909_preSelLift`（**问答板 3A 裁归档 · ✅ 已执行 09-09 06:09 PT——移 `Projects/PEC/archived/` · 1,025,289 B 与原地一致 · 原地已无 .bak**）。
+- [x] **DVA · bundle 备份件排除（原「EXCLUDE_SUFFIXES 加 .bak」· 2026-09-09 挂 · 源：`logs/2026-09-09-DVA finance臂空数组回退全链部署与resume收尾.md` · **问答板 1A 已裁「加」**）**：09-09 bundle 构建把备份件 `semantic-parser.js.bak_20260909_preEmptyArrayFallback` 捎进包（26KB 无害）。**✅ 全链闭环（09-09 06:12 PT 改源自测 · 06:13 PT commit `26fc590` Doctor 终端）**：EXCLUDE_SUFFIXES 加 `.bak` + 新常量 `EXCLUDE_SUBSTRINGS=[".bak_",".bak."]`（实测后缀匹配挡不住 `.bak_日期` 命名惯例 → 改子串匹配）+ manifest 加 `exclude_substrings` 键；py_compile + 负向 3 例（真备份文件名全 True）/正向 2 例/回归 2 例全 PASS。源树内该备份件处置：rm 命令已贴 Doctor 终端待执行（untracked · 无害）。GOTCHAS ERR-20260907-001 状态行已同步部署+冒烟事实。
+- [x] **EAL · 班停摆核与修复（2026-09-17 /todo 挂 · 2026-09-18 晚场 CC 核销 · 机器证据）**：根因**不是二次停摆**，是 **launchd Mac agent 打不开带 `com.apple.macl` 的日志文件 → spawn 前 `EX_CONFIG 78`**（`launchctl print`：`state = not running` · runs 421→422 每 300 秒被点火 · `last exit code = 78` · 零 stdout；时间分界 = `kern.boottime` 09-17 01:46:15 vs stdout 末行 01:43:30；A/B 四探针 P4 复现 `Bootstrap failed: 5`）。Doctor 终端重命名两个 macl 日志件后：**22:22 落 `eal-mac-handoff-20260918.json` → 22:24:23 Mac 消费 attempt 1 成功 → 22:26:29 artifact updatedAt `09-16T07:25:23Z` → `09-19T05:26:29.911Z`（+2 日停更终止）**。**本轮亲核（实读，非转述）**：`launchd-stdout.log` 尾「SUCCESS on attempt 1; loop_dir=…/eal-post-event-loop-20260919T052421Z」· loop_dir 五件产物 22:24 · `eal_v3_sealed_20260918/` 全链产物 22:19–22:31（sealed db / candidate / daily-shadow / artifact-v2 html）· `shift-log-20260918.md` §4（09-17 handoff 亦已今晨消费）。X1 机制层终验随之闭环。详见 剑酒 GOTCHAS NOTE-20260918-001（应升格通用教训候选）。
 
 - [x] **9/15-18 双央行周 dated 高危窗（2026-08-03 挂 · 源：`logs/2026-08-03-日元carry监控注册AI警报.md`）** ✅ 2026-09-18 收口（客观证据硬勾 · 三观察点全实跑零触发）：① 09-15 会前首读（Fed 92.4-93.6 CME / BOJ 25bp 完全定价 90-98% · 扳机零触发 · 手更不补+不挂会后快照班已裁）；② 09-16 FOMC 决议日（加息 25bp 12-0 · 点阵 2026 中值 4.1% · DXY +0.66% · USDJPY 156.2 · 扳机零触发）；③ 09-18 BOJ 决议日（加息 25bp 至 1.25% 票型 7-2 · USDJPY 158 附近 · 日股 +1.38% · 油价两天崩破 100 · 扳机零触发）。收口详情 logs/2026-09-18-BOJ决议盘点与利差口径纠错.md（含「利差走扩」口径纠错+G-X75 追记）。（2026-09-18 /save 完成即迁 · CC 代勾留痕）
 

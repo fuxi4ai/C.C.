@@ -842,3 +842,15 @@ project: 渊图
 **同族**: 与 `EXP-20260919-001-T` 所记「`merge()` 就地改写传入 patch（`type.lower()` 在 dry_run 判断之前）」是**同一枚硬币的两面**——都是 `merge()` 入参/出参的别名问题。
 **来源**: 2026-09-19 大摩 BOM 回填场 · 复验者 C 独立实读 + 最小复现 · 日志 `logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`
 
+## [NOTE-20260919-002] SNAPSHOT-INFO.md 不随回流刷新更新——Stage 1a「刷新于」主判据会系统性误报陈旧（第二次复发）
+
+**状态**: ⚠️ 已知风险（2026-09-19 立 · 投知君君周更定时班实读证据确认 · 未修 · 修法归 Doctor/维护方裁）
+**优先级**: 🟡 中
+**触发**: 2026-09-19 定时班 `touzhijunjun-perspective-refresh` Stage 1a——`Database/Douyin/SNAPSHOT-INFO.md` 标「刷新于 20260907T132708Z」（距当日 12 天，超 3 天阈值），字面判据应报「镜像陈旧·未回流」；但实读 `.dva-fuxi-mirror.json` receipt 显示 2026-09-18T19:16Z 回流成功、`indexes/watchlist.json` updatedAt=2026-09-18T09:13Z、全账号字幕 mtime=09-18。
+**硬证据（实读）**: ① SNAPSHOT-INFO.md 文件 mtime=2026-09-07 06:27——09-16 与 09-18 两次回流（receipt run_id 在盘）均未触碰它；② 文件首行自称「回流刷新自动维护」，与实况不符；③ 09-16 班 `_last_run_note` 已记录同一滞后（「SNAPSHOT-INFO.md 标 20260907（滞后 9 天）」），本班为**第二次复发**。
+**根因**: 现行回流路径（dva-refresh / FAILED_PARENT_RECOVERED 自愈链）不更新 SNAPSHOT-INFO.md；该文件最后一次真实刷新停在 09-07 bundle。
+**影响面**: 每周定时班 Stage 1a 主判据失真——照字面会把「实际新鲜镜像」误判为「镜像陈旧·未回流」，误导 Doctor 重跑 `dva-refresh.sh`。可靠时点须三源交叉：`.dva-fuxi-mirror.json`（receipt published_at）+ `indexes/watchlist.json`（updatedAt / 各作者 lastUpdatedAt）+ `dy_downloader.db`（aweme create_time/download_time）。
+**建议修法（待裁）**: ① 回流脚本补写 SNAPSHOT-INFO.md；或 ② 若该文件已弃用，头部加「已停用·以 .dva-fuxi-mirror.json 为准」标注；或 ③ 班次 Stage 1a 判据改为「SNAPSHOT-INFO.md 与 .dva-fuxi-mirror.json 不一致时以 receipt 为准」。
+**同族**: [[通用教训]] G-X110（文档时效两陷阱：文件新不代表内容新）· G-X104（枚举空先当路径错再当无新增——同属「单一判据信不得」族）。**第二次复发 → 应升格通用教训**（升格动作待 Doctor 批）。
+**来源**: 2026-09-19 投知君君周更定时班 · 实读 SNAPSHOT-INFO.md / .dva-fuxi-mirror.json / watchlist.json / dy_downloader.db
+

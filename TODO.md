@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+> **⏸ fuxi-station 离线 · 需要 fuxi 的任务一律搁置至 2026-09-26（Doctor 2026-09-22 令）**——不推进、不计失败、不据离线态判错。受影响条目（已逐条加 ⏸ 标记）：DVA 自愈链终验（本段第 1 条，自带 09-26 回线补核清单）· 浪浪 partial 执行面 · DVA health 落点/回流写入者 · 渊图挂账批发②子项（`prices/*.bak_pre_clean_20260608` 待 fuxi 归档，条目未加标记）· X-Board ⑥（老毛/投知接 DVA 采集管线，同上）· DVA first-round 包清理（长期观察段）。回线后各按自带补核清单一次收口。**核过**：沙箱侧 `ping 192.168.1.32` 100% 丢包 + TCP/22 不通（04:42 PDT 实探），与 Doctor 所述一致。
+
 - [ ] **巡检 · 周班简报是死代码 + 面③ 黄条送达 + 快照判据口径（2026-09-22 /save 挂 · 源：`logs/2026-09-22-巡检补盲与行情链共模修复.md` ＋ `permanent/巡检自愈循环-loop-engineering.md` §4 注）**：① 周班跑不了脚本即按自身 prompt 明文「报无法执行 + 贴命令 + 干净退出」⇒ **步骤 2–5（含出简报）在本环境走不到**，故「快照前进」只能由 Doctor 终端手动跑证明，`triggered_by=scheduled` **不是「班自动跑过」的证据**。② 由此派生的两个待定：**(a)** 周班要不要改成「跑不了脚本时也能读上次快照并出简报」——需 store SKILL 改动（Doctor 终端 SHA 往返）；**(b)** 快照验收判据是否从「generated_at 前进且 triggered_by=scheduled」改为承认「人工按班交接原文带参跑」。③ 面③ 的 ⚠ 黄条**已**改由 `brain-resume` Step 0.6 附报（09-22 落盘·四端 `11ee480b`），周班侧是否重复由 (a) 一并定。
 
 - [ ] **巡检 · 第三轮独立复验 + G-X193/audit 三行挂账（2026-09-22 /save 挂）**：二轮独立复验（PASS_WITH_LIMITS）之后我又**连改三轮设计**（作废 `boottime` 降级 → 作废时段窗 → 机器状态归因；另加 trade_cal 与 brain-resume 附报），**全部只有自验**——按纪律只写「已修改、自验结果、待独立验收」。**验收判据**：下一轮独立复验报告 ＋ 下次周班（2026-09-27 20:00 PT）面③ 实证。**同挂**：`通用教训` G-X193（🔄）· `_repair_audit.md` 三行 🔄（03:02 / 04:38 / 05:05）——✅ 归 Doctor 或指定独立验收方。
@@ -19,17 +21,17 @@ type: log
 
 - [ ] **渊图 · wiki 派生层陈旧（2026-09-19 审核者 E 发现挂账 · 源：`logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`）**：`wiki/product_nvidiavr200rack.md`（mtime **09-16**）仍印旧概数值（bom 7,800,000 / cooling 72,000 / pcb 117,000 / storage 2,000,000），且**完全没有本次补的 6 个新键**；`product_NvidiaGB300Rack` **连 wiki 卡都没有**。成因＝`wiki_autogen.py` 默认只建**缺失**卡（`dest.exists() and not force → skip`），只有 `kg_promote.py:128` 那条 `--force` 路径全量重排；而两次 BOM promote 走的都是 `kg_merge_safe`（**无 wiki 步**）。**属 2026-09-16 起系统性滞后、非本次引入**，但使「扩键」在 wiki 面不可见。修法＝跑一次 `--force` 全量刷新（归 Doctor 终端）。
 
-- [ ] **渊图 · `product_HBM4ForVR200.cost_per_rack` 口径疑点（2026-09-19 审核者 E 报 · 不在本次 delta 内）**：该值 = **2,001,600**，与大摩原表 **Memory 行**（HBM4 **+ LPDDR5X 合并**口径）数值**完全相同**；但节点本体是「**VR200 用 HBM4**」专用节点，取整行为值疑口径不符。源表未给 HBM4 单拆。按本仓「数字入图必带口径」（CLAUDE.md 数字口径标注规范）应补口径标注或降级处置——**归 Doctor 裁**。
+- [ ] **渊图 · `product_HBM4ForVR200.cost_per_rack` 口径疑点（2026-09-19 审核者 E 报 · 不在本次 delta 内）**：该值 = **2,001,600**，与大摩原表 **Memory 行**（HBM4 **+ LPDDR5X 合并**口径）数值**完全相同**；但节点本体是「**VR200 用 HBM4**」专用节点，取整行为值疑口径不符。源表未给 HBM4 单拆。按本仓「数字入图必带口径」（CLAUDE.md 数字口径标注规范）应补口径标注或降级处置。**⇒ 2026-09-22 Doctor 裁「两条都批」——待执行**（采补口径标注路线：标注数值来源口径，数值本身不动）。
 
 - [ ] **渊图 · 大摩 BOM 收尾（2026-09-19 /save 挂 · 源：`logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`）**：**两轮 promote 均已闭环**（精确值回填 commit `5829b3f3` + 扩键补记 commit `a50bf62c`，独立审核者 A / E 各出 PASS / PASS_WITH_LIMITS，回读全绿）。余：**Settings 重贴**（签字分轨条 · 单行替换，命令见会话回报）。
 
-- [ ] **渊图 · 长芯博创节点补强待批（2026-09-18 /save 挂 · 源：`logs/2026-09-18-渊图口径治理与960受益链.md`）**：`company_ChangXinBoChuang` desc 现仅一句「谷歌800G AOC二供」——CC 两度提议补强（更名 2025-07-02 自博创科技·300548/年报产品结构〔数通消费工业互联 20.39 亿占 80.5%〕/谷歌 MPO 13.5 亿≈总营收 53%/长芯盛 60.45% 母子 part_of 边/客户集中度风险），归 Doctor 批。
+- [ ] **渊图 · 长芯博创节点补强待批（2026-09-18 /save 挂 · 源：`logs/2026-09-18-渊图口径治理与960受益链.md`）**：`company_ChangXinBoChuang` desc 现仅一句「谷歌800G AOC二供」——CC 两度提议补强（更名 2025-07-02 自博创科技·300548/年报产品结构〔数通消费工业互联 20.39 亿占 80.5%〕/谷歌 MPO 13.5 亿≈总营收 53%/长芯盛 60.45% 母子 part_of 边/客户集中度风险）。**⇒ 2026-09-22 Doctor 裁「两条都批」——待执行**（走 canonical 链：patch → `kg_merge_safe` → QA → 备份 → 回读）。
 
-- [ ] **龙鱼 · 四只补分推板待裁（2026-09-18 /save 挂）**：华丰 69.0/太辰 59.0/帝尔 53.5/罗博 51.5 已落 records·不进常更；看板 artifact 是否重建推送归 Doctor 裁。
+- [ ] **龙鱼 · 四只补分推板待裁（2026-09-18 /save 挂）**：华丰 69.0/太辰 59.0/帝尔 53.5/罗博 51.5 已落 records·不进常更；看板 artifact 是否重建推送归 Doctor 裁。**⇒ 2026-09-22 Doctor 裁「龙鱼三件一次办」**＝① 持仓看板 PRD 验收 ② 四只补分推板（重建推送）③ 中微/长芯博创/中际旭创H 常更清单扩面——同场一并处理。
 
 - [ ] **行业研究仓 · 工作区残余待裁（2026-09-18 /save 挂）**：watch/ 09-05 alarm_store 五件（alarm_store.py+test+history/+revisions/+lock）、docs/PROPOSAL-投知君君图谱候选.md（09-16 改）、index.json.bak_2026-08-24 与 bak_20260821_pre_refill 两删除——归属他场，提交/搁置归 Doctor 裁。
 
-- [ ] **DVA · 自愈链两真根因已诊断未执行 + 终验顺延至 fuxi 回线（2026-09-22 更新 · 源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md` ＋ Mac 侧 `Codex/Project Mirror/DVA/ops/state/dva-codex-supervision/`）**
+- [ ] ⏸**【fuxi 离线 · 搁置至 2026-09-26（Doctor 2026-09-22 令）】** **DVA · 自愈链两真根因已诊断未执行 + 终验顺延至 fuxi 回线（2026-09-22 更新 · 源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md` ＋ Mac 侧 `Codex/Project Mirror/DVA/ops/state/dva-codex-supervision/`）**
   **① 三项新契约仍顺延**——Mac 去 `st_dev`／`MIRROR_MAC_DISPATCH_LOST`+链式退役／`Get-DvaWriterRole`，等「下一个走到 mirror 的班」（若 mirror 再 unknown 且 Mac 无 intent，先离线跑 `_require_prior_actions_settled`）。
   **② 18:15 自愈首验：跑起来了，但卡住**——09-19 班 `refill-cycle-20260919T090001620Z` FAILED/**75**（`FINANCE_PENDING_HANDOFF`，设计内退出码 · 非硬故障），17:08 留 `.pending` 票据无人认领。原 rrule 写法 `DTSTART;TZID=Asia/Shanghai:…` **未生效**（与在跑的四个 heartbeat 写法不同形）→ VV 09-19 改型为 `FREQ=DAILY;BYHOUR=3;BYMINUTE=15`（PT 03:15 ＝ 北京 18:15）→ **09-20 首验触发成功**（PT 03:59 落 plan ＝ 北京 18:59；`lastBusinessProgressAt` ＝ 北京 09-20 18:54）。⚠ 冬令时后固定 PT 03:15 会漂成北京 19:15（在跑的四家同病，本轮不改）。
   **③ 两个真根因（VV 均已诊断，两 plan 皆 `executionAuthorized=false`·`businessRuns=0`，未执行）**：㈠ **policy 时间戳比较 bug**——inspect 在自身 terminal journal 更新*前*捕获快照，policy 却拿 `observed_at` 比 inspect 的 `recordedAt`，不可能的次序 ⇒ 递归的无副作用检查链，**一个合法 writer 但永不产生业务动作**（修法：inspect 只比 `issuedAt`，业务动作保留 `recordedAt` 边界）；㈡ **enrollment 错配**——bootstrap 仍批准更旧的 release transaction，与已装 policy 不匹配 ⇒ 新 cycle 拿不到 coordinator enrollment（修法：certification-only core transaction ＋ bootstrap 升级，明文不动业务代码/数据/调度/原 FAILED/journal）。
@@ -37,13 +39,10 @@ type: log
   **⑤ 09-26 回线后补核清单**：票据兑现（`ops/state/dva-refill-handoff-latest.json`）＋ coordinator 终态 ＋ Mac 镜像新代次 ＋ 消费端回读——**四项齐了才谈落签**。
   **⑥ 验收性质提示**：Mac 侧 runtime 在 09-19 后有代码变更（`dva_self_heal_journal.py`·`freeze_dva_self_heal_release.py`·`dva_healthcheck_recovered.py`·`dva_mac_mirror_contract.py` ＋ 一批 tests）⇒ **该部分含功能性成分，归 Doctor 或 Doctor 指定且未参与实施的验收方**；纯事实部分（班次终态／镜像代次／消费端）可由未参与实施的 subagent 落签。
 
-- [ ] **浪浪Insight · `partial` 常态化的处置待裁（2026-09-22 挂 · 源：`logs/2026-09-22-DVA自愈链诊断与三条教训.md`）**：浪浪自 09-14 起每日班均判 `partial`（`DYD_HARVEST_PARTIAL_V1`：`coverage=visible_routes_incomplete`·两条 route `1128`/`6383` 均 `PostRoutePayloadMissing` 中途跳出），而**内容实际不缺**——`Transcripts/浪浪Insight` = **json 79 / txt 79 / other 0**，与 09-18 浏览器覆盖认证 `declaredCount=79`（endReached=true）**精确吻合**；三个失败列表（downloadFailed / metadataFailures / asrFailed）**全空**。⇒ **partial 已成常态、信号价值归零**：真漏一条新作品时症状完全相同，无人分得出（今天能断定不缺，只因 09-18 那次认证把数字钉住了）。两条互斥路待裁：**①** 让 recovery 自动跑（partial 每天自动转 complete，噪音消、真缺口重新有信号）——治本，但需先接通自愈链第二环（消费者已定位＝Codex automation `dva-fuxi-mac`，见 `permanent/DVA自愈链.md`）；**②** 承认「路由不全但浏览器覆盖完整」为正常态、班不再为它报 partial——改动小，但等于接受 API 路长期不全。**CC 倾向 ①**。**另附一条待核**：班次汇总表的「最近更新」列口径可疑（对浪浪显示 09-14，而它 09-18 实际落过字幕）——已成功骗过 CC 一次（致我误报「零产出」），建议 DVA/Codex 侧核其取数口径。
+- [ ] ⏸**【执行面需 fuxi · 搁置至 2026-09-26；裁本身可先做】** **浪浪Insight · `partial` 常态化的处置待裁（2026-09-22 挂 · 源：`logs/2026-09-22-DVA自愈链诊断与三条教训.md`）**：浪浪自 09-14 起每日班均判 `partial`（`DYD_HARVEST_PARTIAL_V1`：`coverage=visible_routes_incomplete`·两条 route `1128`/`6383` 均 `PostRoutePayloadMissing` 中途跳出），而**内容实际不缺**——`Transcripts/浪浪Insight` = **json 79 / txt 79 / other 0**，与 09-18 浏览器覆盖认证 `declaredCount=79`（endReached=true）**精确吻合**；三个失败列表（downloadFailed / metadataFailures / asrFailed）**全空**。⇒ **partial 已成常态、信号价值归零**：真漏一条新作品时症状完全相同，无人分得出（今天能断定不缺，只因 09-18 那次认证把数字钉住了）。两条互斥路待裁：**①** 让 recovery 自动跑（partial 每天自动转 complete，噪音消、真缺口重新有信号）——治本，但需先接通自愈链第二环（消费者已定位＝Codex automation `dva-fuxi-mac`，见 `permanent/DVA自愈链.md`）；**②** 承认「路由不全但浏览器覆盖完整」为正常态、班不再为它报 partial——改动小，但等于接受 API 路长期不全。**CC 倾向 ①**。**⇒ 2026-09-22 Doctor 裁：走 ①**（执行随 fuxi 09-26 回线，先接通自愈链第二环）。**另附一条待核**：班次汇总表的「最近更新」列口径可疑（对浪浪显示 09-14，而它 09-18 实际落过字幕）——已成功骗过 CC 一次（致我误报「零产出」），建议 DVA/Codex 侧核其取数口径。
 
-- [x] **EAL 星空重建班首跑核（2026-09-13 挂 · dated 周一 09-14 18:15 PT 班后 · 源：剑酒青丘 GOTCHAS NOTE-20260913-001）**：✅ 2026-09-14 首跑已核——exit 0 · build status=verified · node 单测 26/26 fail=0 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14 领先）。⚠️ 首跑发现结构隐患：构建器截止日取「严格早于美东今天」，18:15 PT 运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改（0 21 * * 1-5 · 调度器回读 09:01 PM 生效）**；SKILL 无写死钟点、零漂移面。今晚 21:00 班将首次带当日收盘（09-14），明早 risk-daily 嵌入即验证。Doctor 目验已过（09-13），本条机制层自然验证完成。
 
-- [x] **安全 · Gangtise 本地明文清理（2026-09-12 挂 · 源：`logs/2026-09-12-审计Harness全链路上线.md` · VV 定位）**：历史配置里的 Gangtise bearer 凭据曾被子代理输出到工具记录；Claude 本地配置中有 7 条历史命令嵌入明文。① 服务端撤销/轮换 → **已取消（2026-09-12 Doctor 裁：「取消，不用轮换，Gangtise 已基本弃用」）**；② 本地明文清理 → **✅ 已闭环（2026-09-13 CC 代勾·机器证据）**：VV W6 交付报告实读「`~/.claude/settings.local.json` 原 /permissions/allow/88、89、90、91、93、95、96 共 7 条含 bearer 的权限命令已精确移除·JSON 回读有效」+ Doctor 终端两轮实跑——残留 12 条 gangtise 相关 allow 条目全部为无凭据安装/卸载命令（mkdir /tmp、curl 下载 zip、cp skills、rm 卸载），凭据形状正则（Bearer/sk-/token 长串）检测 0 命中。剩卫生项：12 条无凭据命令是否从 allow 清除 → **2026-09-13 Doctor 裁「Gangtise 已明确退役，安全删除或归档 fuxi」** → CC 构造清理命令已交付（备份 `.bak_20260913_pre_gangtise_cleanup` + 过滤 12 条 + JSON 回读验证 + home 区 skills 残留核删）· 执行留痕待 Doctor 回执。
 
-- [x] **风险日报 · fomc_market_exp.json 手更（2026-09-11 挂 · 源：`logs/2026-09-11-TACO与地缘手工层更新.md`）**：✅ 2026-09-12 CC 联网多源核验写入（Doctor 批「写入（推荐）」）——as_of=2026-09-11（8 月 CPI 公布后）· hike 88.8 / hold 11.2 / cut 0（格隆汇/金十/证券之星/九方智投/同花顺 5+ 独立源收敛·CME 官方页 JS 渲染沙箱不可直读、转述源已在 source/note 标注）。证据：JSON 回读实核（p 合计 100.0 · 字段全对）。data_cutoff.value 前移随次早 build 自然带出；决议 09-16 落地后 outcome 回填走 JSON 自身机制；周日 18:00 ET 期货开盘后若读数大动可补手更（note 已留提示）。
 
 - [ ] **PEC · 9-30 中评首读（2026-08-21 挂 · 源：`logs/2026-08-21-PEC美以伊60天窗与利益透镜复审.md`）**：IR-P3 新基准 / 僵持命题 / 镜像命题 / 行为走廊修订。**IR-P6 净读拍板已销 ✓〔2026-08-21 Doctor 拍「净读回中性」· register 已落 · `logs/2026-08-21-美债解法与财政巩固政治学.md` 场〕**。
 
@@ -76,7 +75,7 @@ type: log
 
 - [ ] **龙鱼 · 中微/长芯博创/中际旭创H 是否拉入常更清单（2026-09-01 挂 · 2026-09-18 扩面）**：原提案=中微（对比场未获回应·现仅芯碁在列）；09-18 持仓新增 长芯博创 300548.SZ（首评 68.0 观察）与 中际旭创H 03308.HK（首评 84.0 可配置）——均不在常更 25 只内、不会被周更双 scorer 覆盖；三只中哪些入常更归 Doctor 裁。源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md`。
 
-- [ ] **DVA · health 产物新落点确认 + 回流写入者排查（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-氦气鲜价喂入与DVA库审计定案.md` · INFRA-20260901-001 观察项②③）**：fuxi 侧 health 落点确认后改 GAI manifest 指向；回流写入者疑 launchd——均需 fuxi 侧核。
+- [ ] ⏸**【fuxi 侧核 · 搁置至 2026-09-26（Doctor 2026-09-22 令）】** **DVA · health 产物新落点确认 + 回流写入者排查（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-氦气鲜价喂入与DVA库审计定案.md` · INFRA-20260901-001 观察项②③）**：fuxi 侧 health 落点确认后改 GAI manifest 指向；回流写入者疑 launchd——均需 fuxi 侧核。
 
 
 - [ ] **EAL · ERR-20260828-001/002 落签（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-28-EAL验收链与消费治理.md` · 剑酒 GOTCHAS 实读 🔄 已确认待修复）**：001 索引 v6 与盘面漂移（修复＝VV 重生成 v6 或 Doctor 裁处置）·002 重放误报（无写入发生·前后 SHA 零变化）——落签归 Doctor。
@@ -103,11 +102,9 @@ type: log
 
 - [ ] **PEC · 图谱 v1.1 候选（2026-09-08 挂 · 源：图谱化方案实施场 · PRD open_decisions）**：①macro-facts 结构性事实入图（schema 12 类无 fact 类型 · 需 v0.2 schema 提案：fact 节点类+挂靠边语义）；②facts/ 高时效时序旁路层（对标渊图 prices/）。触发=Doctor 提或 v0.2 schema 提案获批。
 
-- [x] **PEC · 星空 git 化与备份件处置（2026-09-09 /save 补挂 · 源：`logs/2026-09-09-PEC星空选中加亮与放射线迭代.md`）**：① Projects/星空/ 无 git 仓——（**问答板 2A 已裁「独立 local-only 仓」· ✅ 已执行 09-09 06:13 PT——git init+root-commit `c45abbc` · 工作区 clean · Doctor 终端证据**）；② 备份件 `Projects/PEC/pec-starry-skies.html.bak_20260909_preSelLift`（**问答板 3A 裁归档 · ✅ 已执行 09-09 06:09 PT——移 `Projects/PEC/archived/` · 1,025,289 B 与原地一致 · 原地已无 .bak**）。
 
 - [ ] **风险日报 · Alarm PRD 落签（班重推回读已于 09-10 销账 · 2026-09-09 挂 · 源：`logs/2026-09-09-Alarm迭代与渊图三批及CPO测试设备.md`）**：~~渲染器多形态挂载路径修复后的班重推回读~~ ✅ **09-10 06:53 PT 实读销账**——artifact updatedAt 09-09T16:10Z（09-09 09:08 PT 班已推·机器证据）· HTML 实读（Grep）：AI-Tech-Alarm 标签页内容全在场（观察表/研究关注优先级/定价证据/证据状态列/利率观察区）+ watchlist display_note 数据在场 · 无降级占位文本；**顶部卡片视觉目验仍归 Doctor**。剩：Alarm PRD（`logs/checkpoints/2026-09-07_AI-Tech-Alarm迭代_PRD.md`）客观轨落签归 Doctor。
 
-- [x] **DVA · bundle 备份件排除（原「EXCLUDE_SUFFIXES 加 .bak」· 2026-09-09 挂 · 源：`logs/2026-09-09-DVA finance臂空数组回退全链部署与resume收尾.md` · **问答板 1A 已裁「加」**）**：09-09 bundle 构建把备份件 `semantic-parser.js.bak_20260909_preEmptyArrayFallback` 捎进包（26KB 无害）。**✅ 全链闭环（09-09 06:12 PT 改源自测 · 06:13 PT commit `26fc590` Doctor 终端）**：EXCLUDE_SUFFIXES 加 `.bak` + 新常量 `EXCLUDE_SUBSTRINGS=[".bak_",".bak."]`（实测后缀匹配挡不住 `.bak_日期` 命名惯例 → 改子串匹配）+ manifest 加 `exclude_substrings` 键；py_compile + 负向 3 例（真备份文件名全 True）/正向 2 例/回归 2 例全 PASS。源树内该备份件处置：rm 命令已贴 Doctor 终端待执行（untracked · 无害）。GOTCHAS ERR-20260907-001 状态行已同步部署+冒烟事实。
 
 - [ ] **DVA · 09-10 班自然验证读 summary + 两个新疑点（2026-09-10 挂 · ERR-20260907-001 验证进展追记）**：① ~~09-10 班验证~~ 被 exit 79 挡停——**✅ 根因已修（09-10 07:19 PT 从 `runtime.bak.20260909-204409` 拷回 `dva_data_gate.py`+`rebuild_global_index.py` · `-DryRun` 全绿实读 · NOTE-20260820-003 第 6 次）· 验证顺延 09-11 17:00 CST 班**——判 finance 臂 exit 0 不再因空数组 FAIL，通过则 ERR-20260907-001 ✅ 归 Doctor 落签；② cold_dedup audit 未认证 SUCCESS（healthcheck 唯一 blocker · 与 finance 无关）待查；③ Mac `DVA-Database/_health.json` 消失——**✅ 09-10 07:03 PDT 已恢复**（根因=自检脚本手动跑·refresh 替换目录冲掉产物未重跑；CC 沙箱重跑 dva_health.py exit 0 · overall=ok · 8/8 authors · gap 2d · 541B 落盘）；**治本待裁**：refresh 流程末尾嵌入自检（docstring 已预留此意）或挂定时——归 Doctor。
 
@@ -115,11 +112,34 @@ type: log
 
 - [ ] **ClaudeCode 体检遗留三件（2026-09-17 /todo 漏挂对账补挂 · 源：`logs/2026-09-17-ClaudeCode体检与自动更新报警消除.md`）**：① `~/CLAUDE.md` 的 `## Session Log Checklist` 与 Brain 两份开工清单分处两文件，是否合并归 Doctor 定；② `memory/environment.md` 可能抄了过期的 `Darwin 24.6.0`（~/.claude 下沙箱不可达·未核）；③ `DISABLE_AUTOUPDATER` 对 Cowork 桌面端是否生效未核（桌面端共用 ~/.claude，自更新失败会重写 state 文件、横幅复现）。
 
-- [x] **EAL · 班停摆核与修复（2026-09-17 /todo 挂 · 2026-09-18 晚场 CC 核销 · 机器证据）**：根因**不是二次停摆**，是 **launchd Mac agent 打不开带 `com.apple.macl` 的日志文件 → spawn 前 `EX_CONFIG 78`**（`launchctl print`：`state = not running` · runs 421→422 每 300 秒被点火 · `last exit code = 78` · 零 stdout；时间分界 = `kern.boottime` 09-17 01:46:15 vs stdout 末行 01:43:30；A/B 四探针 P4 复现 `Bootstrap failed: 5`）。Doctor 终端重命名两个 macl 日志件后：**22:22 落 `eal-mac-handoff-20260918.json` → 22:24:23 Mac 消费 attempt 1 成功 → 22:26:29 artifact updatedAt `09-16T07:25:23Z` → `09-19T05:26:29.911Z`（+2 日停更终止）**。**本轮亲核（实读，非转述）**：`launchd-stdout.log` 尾「SUCCESS on attempt 1; loop_dir=…/eal-post-event-loop-20260919T052421Z」· loop_dir 五件产物 22:24 · `eal_v3_sealed_20260918/` 全链产物 22:19–22:31（sealed db / candidate / daily-shadow / artifact-v2 html）· `shift-log-20260918.md` §4（09-17 handoff 亦已今晨消费）。X1 机制层终验随之闭环。详见 剑酒 GOTCHAS NOTE-20260918-001（应升格通用教训候选）。
 
 - [ ] **EAL · 删除授权死锁修法①已应用·待自然验证（承 NOTE-20260916-001 · 2026-09-18 晚场裁①并当晚应用）**：Doctor 2026-09-18 裁修法①（改班 SKILL 去交互）+ 范围「普查 24 班并修同族」——**已应用并核过**（Doctor 终端 23:09 实跑：store 对拍未滞后 → 备份+cp → 复验 store SHA = staging SHA `88018f86…`/`4b900c32…` → rsync 镜像刷新 → 终封 24 班全 OK；全库 `allow_cowork_file_delete` 实际调用点归零，仅存两句禁令）。staging 归档 `brain/archived/staging_2026-09-18/`。**唯一未闭项＝终验判据**：下一次真实挂载盘 I/O 失败时班应以 fresh attempt 重跑、保留残留、不再卡死（在此之前只算「已改」，不算验过）。同批顺带补回流 `refresh-risk-daily` 镜像（store 侧 09-17 更新漏回流，方向正确无覆盖损失）。预防门禁已登记应升格候选（调度班不动点＝班内零交互，升格归 Doctor）。背景：挂载瞬断 09-15/09-16 连续复发、尚未治。
 
 - [ ] **EAL · gate 验收脚本 PRD 待终验（2026-09-17 /todo Doctor 勾「批」· **2026-09-18 专场已开完**）**：专场已实施——三产物落盘（`eal_gate_check.py` + 判据集 v1 + `test_gate_self.py`）· 判据两处漂移经 Doctor 裁修订后**沙箱实跑 gate 8/8 PASS · exit 0 · self 3/3 绿**；含渊图 promote 第 15 项负向单测持久化（`tests/test_kg_promote_gate15.py` 一次通过 · canonical 字节不变）。PRD `logs/2026-08/checkpoints/2026-08-17_EAL_gate验收脚本_PRD.md` **status=awaiting_acceptance**（§四已核文件本体）。**剩两项归 Doctor/VV**：① Doctor Mac 原生跑同脚本 exit 0（`python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py`）；② VV 审阅判据集 v1 完整性并终验签字。判据集增补流程「首演」素材已由本次两处漂移 + 判据 8 形态变迁提供。
+
+- [ ] **漏挂补挂批（2026-09-22 /todo 漏挂对账 · Doctor 裁「全补」· 源：09-16～09-19 五场日志，逐条注明）**——以下 10 条此前只留在日志里、从未进 TODO；本轮一次性补挂，后续按各自触发条件推进。
+
+- [ ] **龙鱼 · 持仓看板 PRD 验收（2026-09-18 挂 · 4 天 · 源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md`）**：`logs/checkpoints/2026-09-18_龙鱼持仓看板截图流与手填升级_PRD.md` **status=awaiting_acceptance**（八条交付标准 [?]+证据 · 独立审查「可背书」· LOW 1 条已修 · 首轮三截图真实落库已完成）。**⇒ 2026-09-22 Doctor 裁「龙鱼三件一次办」**——验收与另两件（四只推板 / 常更清单扩面）合并处理，见本段「龙鱼 · 四只补分推板待裁」条。
+
+- [ ] **渊图 · 高盛调研场四条尾（2026-09-18 挂 · 4 天 · 源：`logs/2026-09-18-高盛半导体调研核实与股价归因.md`）**：① 高盛原文 PDF 获取后走 PDF 通道入语料池（`raw/Industrial Analysis pdfs/`，归 Doctor）；② 是否启第六轮收口复验 vs 直接落接受（文件现为「第四轮 PASS_WITH_LIMITS · 修复待复验」）；③ **`prices/` 层是否含天数智芯拆股前后价点、口径是否需 `_caliber_` 标注——本场未核**；④ 壁仞科技 09-14→09-18 超额 +12.59pp 归因未明。
+
+- [ ] **DVA · GOTCHAS 双源分叉（2026-09-17 挂 · 5 天 · 源：`logs/2026-09-17-DVA失败班次恢复收尾与Mac栅栏根因.md`）**：brain 索引称权威＝`Projects/DVA/GOTCHAS.md`（最新 ERR-20260911-001），但 Codex 交接与本场均写另一处——**两处权威声明不一致，需一次收敛**（同 08-20 烛照双落点收敛的先例）。
+
+- [ ] ⏸**【fuxi 相关 · 搁置至 2026-09-26】** **DVA · Codex 仓提交与 Fuxi staging 残件处置（2026-09-17 挂 · 5 天 · 同上日志）**：Codex 仓 commit+push；四个 Fuxi staging 目录与 `/private/tmp` 候选包/脚本、Fuxi `%TEMP%\dva-writer-role-test-*` 处置。
+
+- [ ] **两份功能性 PRD 待验收（2026-09-16 挂 · 6 天 · 源：`logs/2026-09-16-问答板六题批执行与收尾.md`）**：risk 赢面门改造 PRD（`logs/checkpoints/2026-09-16_risk赢面门改造_PRD.md`）＋ 渊图经济传导评分 PRD（`logs/checkpoints/2026-09-16_yuantu经济传导评分_PRD.md`）——均 awaiting_acceptance、独立复验在卷，逐条验收归 Doctor。
+
+- [ ] **两份 EAL PRD 待验收（2026-09-16 挂 · 6 天 · 源：`logs/2026-09-16-EAL星空与adapter迁Mac双线闭环.md` ＋ `logs/2026-09-16-EAL星空预期外视觉迭代与弹窗根治.md`）**：星空视觉迭代 PRD 9 条（`logs/checkpoints/2026-09-16_EAL星空预期外视觉迭代_PRD.md`）＋ adapter 迁 Mac PRD 8 条（`logs/checkpoints/2026-09-15_EAL数据链班adapter迁Mac原生_PRD.md`）——验收落 ✓ 归 Doctor。
+
+- [ ] **治理 · 注入层两条缺口（2026-09-19 挂 · 3 天 · 源：`logs/2026-09-19-签字分轨入Settings与扩键验收.md`）**：① 注入层要不要标「判据系派生」——归 Doctor 裁；② **既有缺口（非本批引入）**：完整源 09-18「审核者 subagent 派发默认允许」条在注入块中 **0 命中**（审核者 F 登记）。
+
+- [ ] **基建 · brain-resume.skill 包内夹带 `__pycache__/gitcheck.cpython-310.pyc`（2026-09-18 挂起 · 09-19 承场 · 3 天 · 源：`logs/2026-09-19-接收渊图会话与skill发布链修复.md`）**：复验方观察项，待另议（打包排除规则 或 源目录清理）。
+
+- [ ] **基建 · 5 个非 brain-\* runtime skill 被程序化批量重写、来源未明（2026-09-19 观察 · 3 天 · 同上日志）**：01:05:59 有 5 件（schedule / setup-claude / setup-cowork / consolidate-memory / explain-usage）在 7 毫秒内被批量重写；复核方逐件验过 frontmatter/行数/完整性未见损伤。**观察项，非待办**——再现时再查来源。
+
+- [ ] **龙鱼 · 周更班 SKILL 未含沙箱 env 清单（2026-09-19 挂 · 3 天 · 源：`logs/2026-09-19-龙鱼双scorer周更班.md`）**：任务书 SKILL.md 未列 `LYW_LIB`／`LYW_COMPARE_DIR`／`LYW_TREND_DIR`——待 Doctor 裁是否补（提案制，未动）。
+
+- [ ] **五仓未提交面（2026-09-22 /todo 现核新增 · gitcheck.py 实跑）**：龙鱼-标的分析库 **35 件** tracked 改动（records 47 + _index + 趋势 + 持仓看板.html + 对比校正 + cockpit.db）· 风险日报 **13 件**（含 `ai_tech_alarm_snapshot.html [MISSING]`＝旧名已废 · 无远端故 commit 即止）· 烛照九阴 **2 件 `[MISSING]`**（删除未入 commit）＋ `data/待人工复核-仓位.md` · brain **5 件**（含 `渊图/GOTCHAS.md`）。行业研究仅 `_health.json` 日更产物＝基本干净。**提交命令待 Doctor 终端**（本场回报已贴）。
 
 ## 长期观察
 
@@ -135,7 +155,7 @@ type: log
 
 - [ ] **风险日报 · C1 回测（2026-07-27 挂 · 2026-08-14 问答板 Q2A 移入）**：08-13 问答板裁「暂缓」——数据 fetch（解禁/定增日历·FOMC 日历·OMO 净投放·BZ=F 2010+ 回补）齐后开专场（含 harness 重写）；④⑤ 注记已落地部分保持。
 
-- [ ] **DVA · data.first-round-20260724 观察期后清理（2026-07-24 挂 · 收窄 2026-08-14 问答板 Q1A）**：旅行模式两件已全收口（快照回流 08-13 验收 + FROZEN 08-11 改写）；仅剩 fuxi 侧 first-round 数据包观察期后清理。
+- [ ] ⏸**【fuxi 侧清理 · 搁置至 2026-09-26】** **DVA · data.first-round-20260724 观察期后清理（2026-07-24 挂 · 收窄 2026-08-14 问答板 Q1A）**：旅行模式两件已全收口（快照回流 08-13 验收 + FROZEN 08-11 改写）；仅剩 fuxi 侧 first-round 数据包观察期后清理。
 
 - [ ] **基建 · 看门狗挂载授权固化（2026-08-09 挂 · 2026-08-14 问答板 Q5B 暂缓移入）**：08-13 问答板裁「开专场查授权固化」——因 Gateway store 沙箱不可读，需 Doctor 侧配合查机制；暂缓，触发=挂载类阻塞再发或 Doctor 提起。
 
