@@ -677,4 +677,3 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **判据/做法**: 需要某日的真实结果时，**以 `logs/mac_marketdata_YYYYMMDD.log` 的收尾行为准**；`.last_run_status` 只适合回答「此刻最新一次是成是败」。
 
 **来源**: 2026-09-22 /resume 场 · `ops/mac_daily_marketdata.py` STATUS 写入段实读 · 三次实例
-
