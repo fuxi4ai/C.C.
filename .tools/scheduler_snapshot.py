@@ -227,29 +227,68 @@ def expected_last_fire(sched, now):
     return best
 
 
-# 「应跑未跑」的判定窗（2026-09-22 Doctor 裁定）：只对落在窗内的排期做判定。
-# 理由＝凌晨类排期与机器作息天然冲突（实撞：com.zhuzhao.marketdata 09-21 02:30 的排期落空，
-# 真因是 Mac 整夜关机 boottime 09-21 06:50:09，不是 launchd 故障）。裁定＝承认 launchd 这一路
-# 是 best-effort（真保障在沙箱班），故凌晨类不做判定——否则每次周末关机都误报一次（G-X122）。
-STALE_WINDOW = (8, 23)
+# 「应跑未跑」：对**所有**排期都判，但先查原因（2026-09-22 Doctor 裁定）。
+#   裁定原文要点＝「改回要报『漏跑』，只是漏跑的原因先查是不是没开机」。
+#   故不设时段窗、也不按事后事实一键降级：每条判定都附**机器状态归因**，由归因定级：
+#     on        → 🔴 真·应跑未跑（机器在运行却没跑）
+#     asleep    → ⚠ 机器当时在睡眠（launchd 未点火，非脚本故障）——**仍报出**，只是不判红
+#     off       → ⚠ 机器当时未运行（开机前）——**仍报出**，只是不判红
+#     unknown   → 🔴 原因未能查明（宁可按漏跑报，不静默）
+PMSET_LOOKBACK_DAYS = 30
 
 
-def boot_time():
-    """本机开机时刻（kern.boottime）。用于区分「应跑未跑」与「机器当时没开」。
+def machine_state_at(exp):
+    """exp 时刻本机是否具备点火条件。返回 (state, detail)。
 
-    2026-09-22 实撞：com.zhuzhao.marketdata 在 09-21 02:30 的排期落空，真因是 Mac
-    整夜关机（boottime = 09-21 06:50:09），而排期是 02:30——机器当时不具备点火条件。
-    不加这道闸，新检查会在每次「周末关机」后误报一次（G-X122）。
+    state ∈ {'on', 'asleep', 'off', 'unknown'}
+
+    **为什么不用 kern.boottime**：它只给**最近一次**开机。若 exp 之后机器重启过，
+    「最近一次开机晚于 exp」既可能是「exp 时本没开」，也可能是「exp 处在一个已被重启
+    终结的会话里」——二者不可区分。用它降级会**掩盖真漏跑**（2026-09-22 二轮独立复验
+    给出的可复现负例）。故改读 pmset 日志的 Start/Sleep/Wake 事件史，取「exp 之前最后
+    一个事件」来定当时状态。
+
+    残余盲区（如实标注）：pmset 日志滚动窗口有限；窗口外的历史取不到 → 返回 unknown。
     """
     try:
-        out = subprocess.run(["sysctl", "-n", "kern.boottime"],
-                             capture_output=True, text=True, timeout=5).stdout
-        # 正则收紧（2026-09-22 二轮复验指出）：原 `sec\s*=\s*(\d+)` 是**次序依赖**的——
-        # 若输出把 usec 排在前面会抓到 usec。锚定 `{ sec = N , usec` 形态。
-        m = re.search(r"\{\s*sec\s*=\s*(\d+)\s*,\s*usec", out)
-        return datetime.fromtimestamp(int(m.group(1))) if m else None
-    except Exception:
-        return None
+        out = subprocess.run(["pmset", "-g", "log"], capture_output=True,
+                             text=True, timeout=30).stdout
+    except Exception as e:
+        return "unknown", f"pmset 不可读（{type(e).__name__}）"
+    pat = re.compile(r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) ([+-]\d{4})\s+"
+                     r"(Start|DarkWake|Wake|Sleep)\b")
+    floor = exp - timedelta(days=PMSET_LOOKBACK_DAYS)
+    ev = []
+    for line in out.splitlines():
+        m = pat.match(line)
+        if not m:
+            continue
+        t = datetime.strptime(m.group(1), "%Y-%m-%d %H:%M:%S")
+        if t >= floor:
+            ev.append((t, m.group(3)))
+    if not ev:
+        return "unknown", f"pmset 日志近 {PMSET_LOOKBACK_DAYS} 天内无 Start/Sleep/Wake 记录"
+    return classify_machine_state(exp, ev)
+
+
+def classify_machine_state(exp, events):
+    """由 (时刻, 事件名) 列表判定 exp 时刻的机器状态。**纯函数**，便于负向测试。
+
+    取「exp 之前最后一个事件」定状态；exp 之前一次事件都没有时，看最早事件是不是开机。
+    """
+    ev = sorted(events)
+    if not ev:
+        return "unknown", "无任何 Start/Sleep/Wake 事件可判"
+    before = [e for e in ev if e[0] <= exp]
+    if not before:
+        first_t, first_k = ev[0]
+        if first_k == "Start":
+            return "off", f"机器在 exp 之后才开机（{first_t:%Y-%m-%d %H:%M}）"
+        return "unknown", f"exp 前无事件、其后首事件为 {first_k}（{first_t:%Y-%m-%d %H:%M}）"
+    t, kind = before[-1]
+    if kind == "Sleep":
+        return "asleep", f"exp 前最后事件＝{t:%Y-%m-%d %H:%M} Sleep（机器在睡眠）"
+    return "on", f"exp 前最后事件＝{t:%Y-%m-%d %H:%M} {kind}（机器在运行）"
 
 
 def scan_launchd():
@@ -317,7 +356,6 @@ def scan_launchd():
     STALE_GRACE_MIN = 45
     staleness = []
     _now = datetime.now()
-    _boot = boot_time()
     for label, i in sorted(installed.items()):
         if not label.startswith(OURS):
             continue
@@ -328,18 +366,12 @@ def scan_launchd():
             continue
         if _now < exp + timedelta(minutes=STALE_GRACE_MIN):
             continue
-        # 闸⑤「夜间排期不判」（2026-09-22 Doctor 裁定）——见文件头 STALE_WINDOW 注。
-        #   ⚠ 曾有一版用 `_boot > exp` 降级，**已废**：kern.boottime 只证「最近一次开机」，
-        #   若 exp 之后机器重启过，会把「机器开着但 job 真没跑」误判成「机器没开」从而
-        #   **掩盖真漏跑**（2026-09-22 二轮复验给出可复现负例）。故闸改为「按排期时段」
-        #   而非「按事后事实推断」；boottime 退为判红时的**上下文标注**，不参与判级。
-        if not (STALE_WINDOW[0] <= exp.hour < STALE_WINDOW[1]):
-            staleness.append({"label": label, "level": "yellow", "expected": exp.isoformat(),
-                              "issue": f"排期 {exp:%H:%M} 落在判定窗外"
-                                       f"（{STALE_WINDOW[0]}:00–{STALE_WINDOW[1]}:00）——"
-                                       f"按 2026-09-22 裁定不做应跑未跑判定（凌晨类 best-effort）"})
-            continue
-        _bootnote = f"（本机开机于 {_boot:%Y-%m-%d %H:%M}）" if _boot else ""
+        # 先查原因：exp 时刻机器在不在（2026-09-22 Doctor 裁定「改回要报漏跑，只是原因先查
+        # 是不是没开机」）。归因定级，见文件头注：
+        #   on → 🔴 真故障；unknown → 🔴（查不出原因也按漏跑报，不静默）；
+        #   asleep / off → ⚠ **仍然报出**，只是不判红（原因已查明，不是脚本故障）。
+        state, why = machine_state_at(exp)
+        lvl = "red" if state in ("on", "unknown") else "yellow"
         out = i.get("stdout_path")
         if not out:
             staleness.append({"label": label, "level": "yellow", "expected": exp.isoformat(),
@@ -351,15 +383,16 @@ def scan_launchd():
             continue
         p = Path(out)
         if not p.exists():
-            staleness.append({"label": label, "level": "red", "expected": exp.isoformat(),
+            staleness.append({"label": label, "level": lvl, "expected": exp.isoformat(),
                               "issue": f"**应跑未跑**——最近应点火 {exp:%Y-%m-%d %H:%M}，"
-                                       f"但 stdout 文件不存在（{out}）{_bootnote}"})
+                                       f"但 stdout 文件不存在（{out}）；机器状态：{why}"})
             continue
         mt = datetime.fromtimestamp(p.stat().st_mtime)
         if mt < exp:
-            staleness.append({"label": label, "level": "red", "expected": exp.isoformat(),
+            staleness.append({"label": label, "level": lvl, "expected": exp.isoformat(),
                               "issue": f"**应跑未跑**——最近应点火 {exp:%Y-%m-%d %H:%M}，"
-                                       f"stdout mtime 停在 {mt:%Y-%m-%d %H:%M}（{out}）{_bootnote}"})
+                                       f"stdout mtime 停在 {mt:%Y-%m-%d %H:%M}（{out}）；"
+                                       f"机器状态：{why}"})
 
     return {"sources": sources, "installed": installed, "consistency": findings,
             "staleness": staleness}

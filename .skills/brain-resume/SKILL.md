@@ -35,6 +35,10 @@ cat ~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
 
 **先读修复审计**：`~/Documents/Claude/brain/permanent/_repair_audit.md` 尾段——存在状态 🔄/⚠️ 的行，在摘要里列出（未验修复不得静默；文件不存在＝尚无修复动作，正常）。
 
+**再读巡检黄条（2026-09-22 Doctor 裁定「把 ⚠ 也列进简报」）**：快照面③ 的「应跑未跑 / 无法判定」⚠ 项（`launchd.staleness` 里 level≠red 的条目，例如「机器当时在睡眠/未运行」「日志落 /tmp 无法判定」）——**在摘要里单列并逐条列出**。
+
+> **为什么挂在这里**：这些 ⚠ 先前只落在 `_scheduler_snapshot.md` 里，而**周班拿不到**——它在沙箱里跑不了巡检脚本，按自身 prompt 明文「报无法执行 + 贴命令 + 干净退出」，**走不到出简报的步骤**。故 ⚠ 的唯一有效送达口就是本步（唯一天然不定时会发生的人读通道）。**红条不在此重复**，它另有周班告警通道。
+
 再查快照新鲜度（含 triggered_by）：
 
 ```bash
@@ -58,6 +62,14 @@ else:
             print("   若新鲜     = F1b 班内落盘失效（贴 S1 重跑命令恢复基线；S3 未装则提示装 S3）")
     except Exception:
         print(f"⚠ 快照时间戳解析不了：{ts!r}")
+    # ⚠ 附报（2026-09-22 加 · Doctor 裁「把 ⚠ 也列进简报」）：面③ 的「应跑未跑/无法判定」
+    #   黄条此前只落在 md 里、Doctor 看不到；本步是唯一会跑的人读通道，故在此附报。
+    st = ((d.get("launchd") or {}).get("staleness")) or []
+    yellow = [x for x in st if x.get("level") != "red"]
+    if yellow:
+        print(f"⚠ 巡检黄条 {len(yellow)} 条（← 摘要须逐条列出）：")
+        for x in yellow:
+            print(f"   · {x.get('label')} — {(x.get('issue') or '')[:130]}")
 PY
 ```
 

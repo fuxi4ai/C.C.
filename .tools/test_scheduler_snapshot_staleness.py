@@ -91,7 +91,33 @@ def test_expected_last_fire():
     check("70 天窗外的月级排期 → None（保守不误报）", far is None, f"got={far}")
 
 
-# ───────────────── ② scan_launchd 的四道闸 ─────────────────
+# ───────────────── ③ classify_machine_state（纯函数）─────────────────
+def test_classify_machine_state():
+    print("\n③ classify_machine_state · 机器状态归因（含 kern.boottime 判别不了的那一例）")
+    E = datetime(2026, 9, 21, 2, 30)            # 复现 09-21 02:30 那个落空的排期
+    cases = [
+        ("exp 前最后一次是 Start → on",
+         [(datetime(2026, 9, 20, 22, 0), "Start")], "on"),
+        ("exp 前最后一次是 Wake → on",
+         [(datetime(2026, 9, 20, 22, 0), "Start"), (datetime(2026, 9, 21, 1, 0), "Wake")], "on"),
+        ("exp 前最后一次是 Sleep → asleep",
+         [(datetime(2026, 9, 20, 22, 0), "Start"), (datetime(2026, 9, 20, 23, 0), "Sleep")], "asleep"),
+        ("exp 之前无事件、之后才 Start → off（＝09-21 真实形状：整夜关机）",
+         [(datetime(2026, 9, 21, 6, 50), "Start")], "off"),
+        # ★ 核心判别例：**exp 之后重启过**。
+        #   kern.boottime 只会给出「最近一次开机 = 09-21 06:50 > exp」，据此降级就会**误判成
+        #   「机器没开」并掩盖真漏跑**；按事件史判则是「exp 时机器在运行」⇒ 真漏跑 ⇒ 红。
+        ("★ exp 后重启过，但 exp 时机器在运行 → on（不得被最近一次开机骗到）",
+         [(datetime(2026, 9, 20, 22, 0), "Start"), (datetime(2026, 9, 21, 6, 50), "Start")], "on"),
+        ("空事件 → unknown（不猜）", [], "unknown"),
+    ]
+    for desc, ev, want in cases:
+        got, why = SS.classify_machine_state(E, ev)
+        check(desc, got == want, f"got={got} · {why[:60]}")
+
+    print("  残余盲区如实标注")
+    got, why = SS.classify_machine_state(E, [(datetime(2026, 9, 20, 23, 0), "Sleep")])
+    check("只有 Sleep 记录时如实说「在睡眠」", got == "asleep" and "睡眠" in why, why[:60])
 def make_plist(d: Path, label, sched, stdout_path):
     body = {"Label": label, "StartCalendarInterval": sched,
             "ProgramArguments": ["/usr/bin/true"]}
@@ -128,9 +154,9 @@ def test_scan_launchd(tmproot: Path):
     SS.LAUNCH_AGENTS = la
     SS.OPS_DIRS = [ops]
     SS.launchctl_loaded = lambda label: {"loaded": True, "state": "not running", "last_exit_code": "0"}
-    # 判定窗先开到全时段，把「闸⑤ 夜间不判」隔离开——否则凌晨跑本测试时，
-    # 闸①-④ 的夹具会全部落进窗外的 yellow 分支，断言失真。窗规则另用专门段落验。
-    SS.STALE_WINDOW = (0, 24)
+    # 机器状态归因打桩为「在运行」——闸①-④ 的断言只反映「漏没漏跑」本身，
+    # 不受跑本测试时的真实机器状态影响（真实查询走 pmset，另用专门段落验）。
+    SS.machine_state_at = lambda exp: ("on", "测试桩：机器在运行")
 
     res = SS.scan_launchd()
     stal = {f["label"]: f for f in res["staleness"]}
@@ -165,27 +191,27 @@ def test_scan_launchd(tmproot: Path):
     res4 = SS.scan_launchd()
     check("com.google.* 被排除", "com.google.something" not in {f["label"] for f in res4["staleness"]})
 
-    print("  闸⑤ 判定窗：凌晨类排期不判（2026-09-22 Doctor 裁定）")
-    # 复现实撞形状：02:30 的排期落空，真因是机器整夜关机——这种不该当故障报。
-    # （旧版曾用 `_boot > exp` 降级，已废：那会把「机器开着但 job 没跑」也一起掩盖。）
+    print("  闸⑤ 机器状态归因：漏跑**要报**，由原因定级（2026-09-22 Doctor 裁定）")
+    # 复现实撞形状：02:30 排期落空、真因是机器整夜关机。裁定＝仍要报出，只是原因先查。
     make_plist(la, "com.zhuzhao.night", {"Hour": 2, "Minute": 30}, str(tmproot / "night.log"))
     (tmproot / "night.log").write_text("x")
-    os.utime(tmproot / "night.log", (old, old))          # mtime 明显落后，若在窗内必判红
-    SS.STALE_WINDOW = (8, 23)
-    res5 = SS.scan_launchd()
-    st5 = {f["label"]: f for f in res5["staleness"]}
-    chk = st5.get("com.zhuzhao.night", {})
-    check("02:30 排期 → yellow 而非红", chk.get("level") == "yellow", f"level={chk.get('level')}")
-    check("判词写明是「判定窗外」", "判定窗外" in chk.get("issue", ""),
-          chk.get("issue", "")[:70])
-    check("夜间 job 本身不在红单里",
-          "com.zhuzhao.night" not in {f["label"] for f in res5["staleness"] if f["level"] == "red"})
-    # ★ 关键反向断言：窗内排期（10:01，mtime 落后）必须**仍然判红**——闸不能把真漏跑也放过
-    check("窗内排期仍判红（闸不可过宽）",
-          any(f["label"] == "com.zhuzhao.missed" and f["level"] == "red"
-              for f in res5["staleness"]),
-          f"reds={[f['label'] for f in res5['staleness'] if f['level'] == 'red']}")
-    SS.STALE_WINDOW = (0, 24)
+    os.utime(tmproot / "night.log", (old, old))     # mtime 明显落后；机器若在运行就该判红
+    for st, want_lvl in [("on", "red"), ("unknown", "red"),
+                         ("asleep", "yellow"), ("off", "yellow")]:
+        SS.machine_state_at = lambda exp, s=st: (s, f"测试桩：{s}")
+        r5 = SS.scan_launchd()
+        chk = {f["label"]: f for f in r5["staleness"]}.get("com.zhuzhao.night", {})
+        check(f"machine_state={st} → {want_lvl}", chk.get("level") == want_lvl,
+              f"level={chk.get('level')}")
+        check(f"  └ state={st} 仍**报出**（不得静默）", bool(chk))
+        check(f"  └ state={st} 判词带机器状态归因", "机器状态：" in chk.get("issue", ""))
+    # ★ 关键反向断言：睡眠/未开机只是不判红，**不得连带把别的 job 也放过**
+    SS.machine_state_at = lambda exp: ("off", "测试桩：off")
+    r6 = SS.scan_launchd()
+    check("off 状态下，另一个 job 的判定不受影响（闸不过宽）",
+          "com.zhuzhao.night" in {f["label"] for f in r6["staleness"]},
+          f"labels={sorted({f['label'] for f in r6['staleness']})}")
+    SS.machine_state_at = lambda exp: ("on", "测试桩：机器在运行")
 
     print("  兼容性：结构键齐备（真断言：四个键一个都不能少）")
     check("返回 {sources, installed, consistency, staleness} 四键齐全",
@@ -198,6 +224,7 @@ def main():
     print("持久化负向测试 · 快照面③「应跑未跑」")
     try:
         test_expected_last_fire()
+        test_classify_machine_state()
         test_scan_launchd(tmproot)
     finally:
         shutil.rmtree(tmproot, ignore_errors=True)
