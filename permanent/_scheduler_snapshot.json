@@ -1,7 +1,7 @@
 {
  "_meta": {
-  "generated_at": "2026-09-14T04:49:07-07:00",
-  "triggered_by": "scheduled",
+  "generated_at": "2026-09-22T02:48:15-07:00",
+  "triggered_by": "manual",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
   "readonly": true
@@ -12,7 +12,7 @@
  ],
  "cowork_live": {
   "path": "/Users/lunarabbit/Gateway-workspace/Scheduled",
-  "count": 24,
+  "count": 26,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
@@ -65,6 +65,26 @@
     "cron": null
    },
    {
+    "taskId": "dva-selfheal-1815-completion-check",
+    "has_skill": true,
+    "skill_mtime": "2026-09-19 02:57",
+    "skill_sha12": "488e11a16e41",
+    "skill_lines": 62,
+    "name": "dva-selfheal-1815-completion-check",
+    "desc_head": "一次性：DVA 自愈 18:15 首考的第二点核查（完成态），只读，结果报 Doctor",
+    "cron": null
+   },
+   {
+    "taskId": "dva-selfheal-1815-firstrun-check",
+    "has_skill": true,
+    "skill_mtime": "2026-09-19 02:56",
+    "skill_sha12": "56f8aaac1809",
+    "skill_lines": 61,
+    "name": "dva-selfheal-1815-firstrun-check",
+    "desc_head": "一次性：核 DVA 自愈链 18:15（北京）首考是否点火，只读，结果直接报 Doctor",
+    "cron": null
+   },
+   {
     "taskId": "eal-starfield-rebuild",
     "has_skill": true,
     "skill_mtime": "2026-09-13 19:29",
@@ -77,9 +97,9 @@
    {
     "taskId": "event-attribution-watch",
     "has_skill": true,
-    "skill_mtime": "2026-09-07 07:51",
-    "skill_sha12": "83363c6f631f",
-    "skill_lines": 6,
+    "skill_mtime": "2026-09-18 23:09",
+    "skill_sha12": "88018f86cc19",
+    "skill_lines": 217,
     "name": "event-attribution-watch",
     "desc_head": "EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→a…",
     "cron": null
@@ -157,21 +177,21 @@
    {
     "taskId": "refresh-asset-dashboard",
     "has_skill": true,
-    "skill_mtime": "2026-09-13 00:31",
-    "skill_sha12": "2e5dedf48bbe",
+    "skill_mtime": "2026-09-19 01:59",
+    "skill_sha12": "c9316f12f98a",
     "skill_lines": 58,
     "name": "refresh-asset-dashboard",
-    "desc_head": "重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact→conch清空盘点），日更；挂载 Projects+Database+brain+4AI 四目录，覆盖 14/15 projec…",
+    "desc_head": "重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact→conch清空盘点），日更；挂载 Projects+Database+brain+两纪律目录（Claude/临时文件 · Cla…",
     "cron": null
    },
    {
     "taskId": "refresh-risk-daily",
     "has_skill": true,
-    "skill_mtime": "2026-09-12 22:59",
-    "skill_sha12": "08daf3e059b6",
-    "skill_lines": 28,
+    "skill_mtime": "2026-09-17 10:26",
+    "skill_sha12": "f501ce10c041",
+    "skill_lines": 30,
     "name": "refresh-risk-daily",
-    "desc_head": "每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → build_risk_daily.py → update_artifact；挂载盘 SQLite 一…",
+    "desc_head": "每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → build_risk_daily.py → update_artifact；…",
     "cron": null
    },
    {
@@ -187,8 +207,8 @@
    {
     "taskId": "scheduler-weekly-audit",
     "has_skill": true,
-    "skill_mtime": "2026-09-01 00:23",
-    "skill_sha12": "77b0be1a427c",
+    "skill_mtime": "2026-09-17 02:11",
+    "skill_sha12": "8426a542591f",
     "skill_lines": 98,
     "name": "scheduler-weekly-audit",
     "desc_head": "定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给…",
@@ -247,9 +267,9 @@
    {
     "taskId": "zhuzhao-market-fetch-daily-report",
     "has_skill": true,
-    "skill_mtime": "2026-08-27 02:12",
-    "skill_sha12": "a070c81fc8fc",
-    "skill_lines": 98,
+    "skill_mtime": "2026-09-14 22:17",
+    "skill_sha12": "5727ff7e2cec",
+    "skill_lines": 99,
     "name": "zhuzhao-market-fetch-daily-report",
     "desc_head": "每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走yahoo chart API默认源·盘中守卫+null …",
     "cron": null
@@ -270,16 +290,29 @@
    },
    "com.zhuzhao.marketdata": {
     "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.marketdata.plist",
-    "src_sha12": "74d1af18a30e",
-    "src_mtime": "2026-07-22 22:11"
+    "src_sha12": "eea31d1f14ae",
+    "src_mtime": "2026-09-18 23:07"
    },
    "com.zhuzhao.usclose": {
     "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.usclose.plist",
-    "src_sha12": "22e181cf3484",
-    "src_mtime": "2026-08-01 09:01"
+    "src_sha12": "7060853ca2ed",
+    "src_mtime": "2026-09-18 23:06"
    }
   },
   "installed": {
+   "com.eal.postevent-native": {
+    "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.eal.postevent-native.plist",
+    "installed_sha12": "235e84d02585",
+    "installed_mtime": "2026-09-18 22:52",
+    "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
+    "schedule": null,
+    "run_at_load": false,
+    "runtime": {
+     "loaded": true,
+     "state": "not running",
+     "last_exit_code": "0"
+    }
+   },
    "com.fuxi4ai.audit-harness.dispatch": {
     "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.fuxi4ai.audit-harness.dispatch.plist",
     "installed_sha12": "5073310dd55b",
@@ -290,7 +323,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "78:"
     }
    },
    "com.google.GoogleUpdater.wake": {
@@ -342,13 +375,13 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "1"
     }
    },
    "com.zhuzhao.marketdata": {
     "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.zhuzhao.marketdata.plist",
-    "installed_sha12": "74d1af18a30e",
-    "installed_mtime": "2026-07-22 22:12",
+    "installed_sha12": "eea31d1f14ae",
+    "installed_mtime": "2026-09-18 23:11",
     "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
     "schedule": [
      {
@@ -381,13 +414,13 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "1"
     }
    },
    "com.zhuzhao.usclose": {
     "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.zhuzhao.usclose.plist",
-    "installed_sha12": "22e181cf3484",
-    "installed_mtime": "2026-08-12 21:21",
+    "installed_sha12": "7060853ca2ed",
+    "installed_mtime": "2026-09-18 23:11",
     "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
     "schedule": [
      {
