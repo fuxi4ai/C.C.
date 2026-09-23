@@ -139,7 +139,7 @@ type: log
 
 - [ ] **龙鱼 · 周更班 SKILL 未含沙箱 env 清单（2026-09-19 挂 · 3 天 · 源：`logs/2026-09-19-龙鱼双scorer周更班.md`）**：任务书 SKILL.md 未列 `LYW_LIB`／`LYW_COMPARE_DIR`／`LYW_TREND_DIR`——待 Doctor 裁是否补（提案制，未动）。
 
-- [ ] **五仓未提交面（2026-09-22 /todo 现核新增 · gitcheck.py 实跑）**：龙鱼-标的分析库 **35 件** tracked 改动（records 47 + _index + 趋势 + 持仓看板.html + 对比校正 + cockpit.db）· 风险日报 **13 件**（含 `ai_tech_alarm_snapshot.html [MISSING]`＝旧名已废 · 无远端故 commit 即止）· 烛照九阴 **2 件 `[MISSING]`**（删除未入 commit）＋ `data/待人工复核-仓位.md` · brain **5 件**（含 `渊图/GOTCHAS.md`）。行业研究仅 `_health.json` 日更产物＝基本干净。**提交命令待 Doctor 终端**（本场回报已贴）。
+- [ ] **基建 · 两处 skill 的 git 探针文本该改（2026-09-23 /save 挂 · 提案制 · 源：`logs/2026-09-23-五仓提交与探针纠错.md` ＋ 通用教训 G-X83 同日两条追记）**：① `brain-resume` Step 3 现明写「工作区 `find -newermt <末次 commit 时间>` 扫未提交新文件」——**mtime 不是内容的代理**，2026-09-23 实证双向失效（漏报白泽 5 件内容真变 · 把符号链接报成假 dirty）；② `brain-save` Step 5 第 2 步现写「沙箱内则读 `.gitignore` 手判」——同日实证手判漏三条规则、**27 条被 ignore 路径写成命令致 commit 未生成而 push 空转**。建议改为：**内容级比对**（解析 `.git/index` 比对 blob SHA · 配方见 `permanent/经验库.md` `EXP-20260923-001-T`）＋ **ignore 交 `git check-ignore -v`**，沙箱内只报「候选（未过 ignore 判）」。属 skill 源改动（四端发布链），**提案制待 Doctor 批**，CC 未动。
 
 ## 长期观察
 
