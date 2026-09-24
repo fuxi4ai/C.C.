@@ -358,6 +358,12 @@ project: 渊图
 
 **⇒ 2026-08-31 同族新实例追记（CC 实读 canonical · Doctor 中微提问场）——中微公司三节点并存**：`company_Zhongwei`（度 9 · 04-03 建 · aliases AMEC/688012.SH · 富节点）/ `company_AMEC`（**度 0 孤岛** · 08-16 建 · desc「国产半导体设备龙头，受益于长鑫扩产」）/ `company_AMEC_TSV`（度 1 · 08-16 建 · HBM TSV 深硅刻蚀语境）——三节点 name 同为「中微公司」、aliases 均含 AMEC、无墓碑无合并记录。**根因**：08-16 Boss老白 198 篇批入库时 LLM 建公司节点前查重不充分（同批已有 HBF 伪公司 5 节点、长江存储双胞胎先例，均已并入本体）。**影响面**：中微的边分散三 id（9+0+1），kb 检索/聚合/wik 卡按 id 漏记；度 0 孤岛节点零引用。**建议修法**：并三为一（度高者 company_Zhongwei 主 · desc 并入 · 旧 id 入 aliases · 边重指 · 墓碑）——沿 08-28 C 档手术范式，手术动作归 Doctor 令。**预防门禁候选**：kg_ingest 新建公司节点时 aliases ∩ 存量 aliases 非空即判撞存量转 update（现仅 LLM 自行查重，AMEC 对 Zhongwei 未认出）。**⇒ 2026-09-01 /todo Doctor 裁「中微手术现在做」→ 已执行**：并 company_AMEC（度0）+company_AMEC_TSV（度1）入 company_Zhongwei（度 9→10）· desc/aliases/data_sources 并集（aliases 增「中微半导体」）· 1 边重指（rel_company_AMEC_TSV_process_HBM_TSV source→Zhongwei）· 墓碑 `_tombstones/2026-09-01_zhongwei_merge.json` · 手术记录 `mapping/_v3_20260901_中微三节点合并_手术记录.json` · 备份 bak_surgery_zhongwei_20260901_034342 · props 并集断言逮 _region_src 冲突（治理元键·保主节点 code）· 复检全绿（5191/5823·悬挂0/自环0/非法type0/旧id零残留）。状态：🔄 已修待验（实施者不自标 ✅）。
 
+**⇒ 2026-09-24 同族追记（上市代码校对批 · **7 例台湾公司名张冠李戴** · 已随批订正）**：以 **TWSE 官方名录（`t187ap03_L` 1095 家）** 逐条核对，图内 **7 个台湾公司节点的 `name` 实为「另一家公司」的名字**——`company_Scientech`「精技电脑」（真身**辛耘企業** 3583；精技電腦 Unitech 实为 2414）· `company_HonPrecision`「鸿准精密」（真身**鴻勁精密** 7769；鸿准＝鴻準 2354）· `company_MPI`「精測電子」（真身**旺矽科技** 6223；中華精測 CHPT 实为 6510）· `company_WinWay`「威宇科技」（真身**穎崴科技** 6515）· `company_AVC`「奇宏科技」（真身**奇鋐科技** 3017）· `company_Wiwynn`「纬湾科技」（真身**緯穎** 6669）· `company_Yageo`「国巨电子」（登记名「**國巨**股份有限公司」，无「電子」二字）。同批另 1 例非台湾：`company_WanrunIntelligence`「万润智能」实为**润泽科技**（300442），原名系误译且与台股上櫃萬潤科技 6187 构成近名陷阱。
+**根因**：入库时按「业务描述 + 近似中文名」建节点，**从未回交易所登记名**；且其中鴻勁/旺矽/穎崴三家在**同一篇大摩报告语境**下被并列（图内目标价与业务描述与该报告完全对应、唯独名字错位），说明是**报告阅读期的名对错位**而非入库幻觉——即 LLM 认对了实体、写错了名字。
+**处置**：已随「上市代码补录与校对批」按 TWSE/TPEx 登记名订正（`name` 字段 + `_code_correction_20260924` 留痕，顶层 `_` 键不上 wiki 卡）；**独立复验对 16 条改名逐条回源，无一条改错**（5 条重点抽查全部系正确的张冠李戴纠正）。
+**预防门禁候选**：入库 QA 增「**台/港公司节点 name 须与交易所登记名一致**」断言——对 `region ∈ (台,港)` 的 company 节点核 name 是否命中官方名录，未命中即报；与「别名须与实体同指」（ERR-20260823-001 族）互为补充。**同族计数**：本条为 ERR-20260602-001 / FIX-20260619-001 族在**「名字层」**的新形态（此前各例多为 id 层、边归属层、别名层）。
+**来源**：2026-09-24 上市代码补录与校对批（6 并行核实员 · TWSE/TPEx 官方名录 · 独立复验 PASS_WITH_LIMITS）
+
 ## [ERR-20260608-001] 价格层并发写竞态：price_extract 与 kg_ingest 钩子不可同时跑
 **状态**: ✅ 已知约束 **优先级**: 🔴 高
 **触发**: 两者都向 `prices/commodity_prices.jsonl` append；并发时各自读 pre-state 再写 → 撞键/丢点（本次 kg_ingest 价格钩子与源码编辑赶在一起，致 53 条混入 + 部分预测点被吞）
