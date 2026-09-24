@@ -619,6 +619,14 @@ project: 渊图
 
 **追记 2026-09-18（同根复发 · 第 10 例批次 · 帕米尔 7 篇批 · 3 例）**: LLM 新建重复公司 3 例——`company_AisenSemiconductor`/`company_SJMicroelectronics`（盛合晶微）/`company_TongfuMicroelectronics`（通富微电）。**漏拦根因**：本批 promote 用自写硬闸断言块（超集/悬挂/自环/三元组）**未走 `rules/kg_promote.py` 一键门**，第 16 项同名实体检测闸被绕过——撞名在 batch 日志零报警、靠 QA 人工撞见。**根修已实装（Doctor 2026-09-18 批「同意根修」）**：① `kg_ingest.py` 增管道内确定性撞名闸 `check_new_node_collisions`（新节点 name/aliases 归一与**全量**存量精确匹配·batch 当场红字逐条+末行汇总计数——比第 16 项 promote 闸更早反馈）；② 持久化负向测试 `tests/test_kg_ingest_collision.py` **5/5 PASS**（本批 3 例回归金丝雀 3/3 命中·真新公司 0 误报·裸别名不误报·归一化命中·自身豁免）+ canonical 全量回放 3/3 命中/0 误报；③ **promote 纪律修正**：batch promote 必走 `rules/kg_promote.py` 一键门（第 12-16 项全查），自写断言块不得绕过。本批 3 例已 QA 合并（墓碑 `_tombstones/2026-09-18_7pian_company_merges.json`）→ 6401/7031 干净落盘。状态 ✅（2026-09-18 独立验收 PASS · subagent 代签 · authority=Doctor 明示免核）**第 10 例批次 · 应升格通用教训已多次登记**——升格仍归 Doctor 裁。
 
+**追记 2026-09-24（同根复发 · 第 11 例 · **形态升级：伪实体名 + 归属/因果双错** · 存量节点）**: `company_Guangku`（光库科技）的 desc 与 props 记「收购**铌奥普**切入OCS整机代工」——**「铌奥普」全语料零命中**（`grep -rl 铌奥普 raw/` 排除我方札记 = **0 件**），真名为「**铌奥光电**」，且图内**另有独立节点** `company_NiaoOptoelectronics`（独立第三方，深度服务中际旭创/海思）。**三重错**：① 伪实体名；② 把独立第三方说成被光库收购；③ 因果错配——帕米尔 2026-09-10 原文写的是「**光库科技通过收购 Lumentum 薄膜铌酸锂芯片业务板块，顺利切入相干光市场**」，而光库获得 **OCS 整机代工**能力的真实路径是 **2025 年收购武汉捷普**（捷普科技（武汉）有限公司 · P0 公告 2025-040/048/060）。
+**扩散面（实测）**：`mapping/` **23 件**（canonical + `行业知识图谱_v3_20260924_QAfinal.json` + 19 个 backups + 墓碑 1 件）；派生层 `wiki/guangku.md` **2 行**；最早可见于 **2026-09-13** 批产物——即该错**已存在 11 天、跨 4 个批次未被发现**。
+**发现路径（本条的警示价值所在）**：Doctor 令「核实1」本为核武汉捷普体系归属，**独立复验员在核不相干事项时顺带查出**。说明现有 QA 层对「节点 desc/props 内嵌实体名真伪」**无任何校验**——desc 缩减（第 11 项）只看长度、整段替换检测（09-05 加）只看互含，都不查实体名是否存在。
+**处置**：patch `_v3_20260924_武汉捷普归属补录_manual.json` 订正 desc + props（含 `_meta.correction_20260924` 留痕：记录被修正的错误原文，供审计）——随该 patch 经 `kg_merge_safe` promote。
+**预防门禁候选**：① QA 增「**节点 desc/props 内嵌实体名断言**」——把 desc/props 里出现的所有 `company_*` 型 token 与疑似实体名，与全图节点 id/name/aliases 及 `raw/` 语料做存在性核，**语料零命中的实体名即报**；② 与「预防门禁第 16 项（同名实体检测）」互为**反向**：第 16 项只见「新节点撞存量」，不见「存量 desc 提到不存在的实体」。两项应成对。
+**状态**：🔄 已修待验（patch 已备、随 promote 落地；实施者不自签 ✅）。**第 11 例 · 应升格通用教训**——升格仍归 Doctor 裁。
+**来源**：2026-09-24 场（Doctor 令「核实1」→ 独立复验 PASS_WITH_LIMITS 查出 → 札记 `raw/核实/2026-09-24-武汉捷普归属核实札记.md` §五）
+
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 
 **状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-09-01 整合手术已执行：`concept_ScaleUpSwitchProtocolOSA` → `concept_ScaleUpSwitchProtocolOISA`（旧 id 入 aliases·name/desc 重写·边端点同步·边 id 留旧）+ `product_Shengke51p2TSwitchChip` desc「OSA→OISA」· 备份 `bak_surgery_centec_oisa_20260901_*` · 手术记录 `mapping/_v3_20260901_盛科曦智OISA整合_手术记录.json` · 复检全绿·实施者不自标 ✅ · 2026-09-14 复盘：OISA 新节点在盘/旧 id 已消/aliases 保留 ✓ · ✅ 已落签）
