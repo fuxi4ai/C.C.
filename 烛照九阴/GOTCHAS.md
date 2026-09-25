@@ -692,3 +692,22 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: agents/烛阴/logs/2026-09-23-课件入库.md（追加复核段 v2 + 根因补充 + 流程护栏）· 本会话 Doctor 三问纠错 · 联网核实源见日志
 **追记 2026-09-23（同日）**: 护栏固化已实施——Doctor 授权「直接改」，九儿经 update_scheduled_task 把「日期指涉核对」条写入 ingest SKILL 真身（三道入库闸门之前），回读消费端验证通过。本条目「建议修法/预防门禁」第③句「待 Doctor 裁」状态完结。
+
+## [ERR-20260925-001] 补数编排器对「最新日部分缺票」只报一次、永不重试——单票瞬时故障造成当日永久空洞（next_iso 自愈不覆盖 max 日）
+
+**状态**: 🔄 待修复
+
+**触发/硬证据**: 2026-09-24 launchd 补数班（14:02 起）NVDA 取数 yahoo SSL 握手超时、两源皆无 → 当日 us_anchor_daily 18/19，状态 FAIL。Doctor 按 SKILL 指引 kickstart 重跑（22:48）：水位 MAX=20260924 → 起点=2026-09-25，日志「待拉 [2026-09-25→2026-09-24]」空区间，0 行写入——编排器根本没重试 9-24。随后 01:23 手动补 9-24 又撞 Yahoo 全线 403（IP 级临时封）。库内实核：NVDA 本人最新行停在 20260923。
+
+**根因**: `mac_us_close_backfill.py` 的 `next_iso()` 锚定 `MAX(trade_date)+1`，只对「整日没写」自愈（盘中守卫丢末根场景）；「当日部分票失败」时 max 已推进，缺票日落在起点之后，`verify()` 只查最新日票数、只在那一次标 ❌，此后无任何代码路径重试或再报警该日。
+
+**影响面**: 任一交易日任一票瞬时失败（SSL 超时/单票限流）→ us_anchor_daily 当日永久缺一行；状态文件只第一次标 FAIL，此后各班全绿，缺口静默；下游按日线消费该票会看到断档（本例 NVDA 9-23→9-25）。SKILL 指引的 kickstart 补数对这类缺票实际无效。
+
+**判别信号**: 补数班日志「✅ 完成，写入 N 行」且 N<EXPECT；或某票 MAX(trade_date) 落后锚票一日以上而日志无对应 ❌。
+
+**建议修法（三选一，待 Doctor 裁）**: ① 起点改锚「最新完整日」`MAX(date WHERE count=EXPECT_ANCHOR_N)`——缺票日次班自动重试；② `verify()` 发现缺票时班内即时重试缺票 ticker（设重试次数/间隔上限）；③ 缺票清单落盘（如 ops/.pending_patch），下一班消费。改 `mac_us_close_backfill.py` 与补数看门狗 SKILL 验收段同步。
+
+**预防门禁**: 根治后须过一次负向测试（人为制造单票失败 → 次日自动补上）；未根治前，看门狗班继续人工兜底（本轮已用 stockanalysis 应急通道手动补单方案，见会话）。
+
+**来源**: 2026-09-24/25 us-close-backfill 班实跑（库只读实核 + `mac_us_close_backfill.py` next_iso/verify 段实读）+ Doctor 终端 kickstart 三份日志互证
+**追记 2026-09-25**: 本例数据洞已闭环——Yahoo 封禁解除后 Doctor 终端重跑 `fetch_us_anchor.py --from 2026-09-24 --to 2026-09-24`，19/19 全 yahoo 来源，NVDA close_adj=224.58、pct=-0.4124 与三源交叉验证一致（看门狗只读复核）。**设计洞仍在**：next_iso 对「最新日缺票」不自愈的根因未修，修法三选一待 Doctor 裁。
