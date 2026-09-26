@@ -2,7 +2,7 @@
 title: TODO 已完成归档
 tags: [todo, archive]
 created: 2026-07-30
-updated: 2026-09-22
+updated: 2026-09-26
 status: active
 type: log
 ---
@@ -13,6 +13,14 @@ type: log
 > 拆分动机：`TODO.md` 39KB 里 70% 是已完成条目，`brain-resume` 每场整篇读入，token 花在已经做完的事上。
 
 ## 已完成
+
+- [x] **龙鱼 · 中微/长芯博创/中际旭创H 是否拉入常更清单（2026-09-01 挂 · 2026-09-18 扩面）**：原提案=中微（对比场未获回应·现仅芯碁在列）；09-18 持仓新增 长芯博创 300548.SZ（首评 68.0 观察）与 中际旭创H 03308.HK（首评 84.0 可配置）——均不在常更 25 只内、不会被周更双 scorer 覆盖；三只中哪些入常更归 Doctor 裁。源：`logs/2026-09-18-龙鱼截图流与DVA金融线实核.md`。**（2026-09-26 /todo Doctor 统一授权勾定 · CC 代执行迁档 · 证据：`Database/龙鱼-标的分析库/常更标的.json` count=**30** · updated=**2026-09-22** · 备份 `常更标的.json.bak_20260922_add_holdings5` 在盘〔链：08-22 add_lightelligence → 08-26 add_cpo3 → 09-22 add_holdings5〕· 三只目标 ID **688012.SH / 300548.SZ / 03308.HK 均在列**。⚠ 依据含「备份名+时序」推断，未做该件 diff）**
+
+- [x] **渊图 · 大摩 BOM 收尾（2026-09-19 /save 挂 · 源：`logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`）**：**两轮 promote 均已闭环**（精确值回填 commit `5829b3f3` + 扩键补记 commit `a50bf62c`，独立审核者 A / E 各出 PASS / PASS_WITH_LIMITS，回读全绿）。余：**Settings 重贴**（签字分轨条 · 单行替换，命令见会话回报）。**（2026-09-26 /todo Doctor 统一授权勾定 · CC 代执行迁档 · 证据：Settings 重贴已于 2026-09-24 生效——本场与 09-24 两次逐行 diff，注入块 vs 镜像块 **36/36 行全等**、含「签字分轨」条全文、漂移零。同批核销一条**日志遗留未进 TODO** 的项：「两仓 push 未跑」——现核 `Database/行业研究` HEAD=`ab8514ad`＝origin ✓、`Claude/Projects/Financial/烛照九阴` HEAD=`2cd351a7`＝origin ✓，两仓均已同步）**
+
+- [x] **渊图 · wiki 派生层陈旧（前半 · 2026-09-19 审核者 E 发现挂账 · 2026-09-26 /todo 拆分迁档）**：`wiki/product_nvidiavr200rack.md`（当时 mtime 09-16）仍印旧概数值（bom 7,800,000 / cooling 72,000 / pcb 117,000 / storage 2,000,000），且完全没有本次补的 6 个新键。**✅ 前半已解决**（2026-09-26 /todo Doctor 统一授权勾定 · CC 代执行迁档 · 证据：该件现**生成时间 2026-09-24**〔wiki_autogen.py〕· bom **7803148** / cooling **72080** / pcb **116730** / storage **2001600** 均非旧值 · **6 个新键全部在场**〔mlcc / nvlink_switch / other_networking / power_supply / abf_substrate / others〕）。原条「`product_NvidiaGB300Rack` 连 wiki 卡都没有」一半**仍开**，已拆分为待办段独立条目。源 → `logs/2026-09-19-大摩VR200机柜BOM核实与回填.md`**
+
+- [x] **基建 · brain-resume.skill 包内夹带 `__pycache__/gitcheck.cpython-310.pyc`（2026-09-18 挂起 · 09-19 承场 · 3 天 · 源：`logs/2026-09-19-接收渊图会话与skill发布链修复.md`）**：复验方观察项，待另议（打包排除规则 或 源目录清理）。**（2026-09-26 /todo Doctor 统一授权勾定 · CC 代执行迁档 · 证据：`unzip -l Claude/brain/.skills/brain-resume.skill | grep -c __pycache__` = **0**）**
 
 - [x] **五仓未提交面（2026-09-22 /todo 现核新增 · gitcheck.py 实跑）**：龙鱼-标的分析库 **35 件** tracked 改动（records 47 + _index + 趋势 + 持仓看板.html + 对比校正 + cockpit.db）· 风险日报 **13 件**（含 `ai_tech_alarm_snapshot.html [MISSING]`＝旧名已废 · 无远端故 commit 即止）· 烛照九阴 **2 件 `[MISSING]`**（删除未入 commit）＋ `data/待人工复核-仓位.md` · brain **5 件**（含 `渊图/GOTCHAS.md`）。行业研究仅 `_health.json` 日更产物＝基本干净。**提交命令待 Doctor 终端**（本场回报已贴）。 ✅ **2026-09-23 结案（客观代勾 · G-X136 常驻授权 · 证据硬）**：五仓积压已分批入册——brain `5406f0e`／烛照九阴 `b840873`／风险日报 `af1a262`（本地-only）／龙鱼 `57f3e1f`／白泽大宗 `22eea49`＋`9b9ccb0`（＋追认 `3ba6aa6`）；2026-09-23 /resume 场**用内容级探针复扫五仓：M=0 · D=0**（`_git/index` blob SHA 比对），本地 ref 与远端一致（brain/烛照/龙鱼/白泽 已推；风险日报无远端＝设计如此），故办结移档。源 → `logs/2026-09-23-五仓提交与探针纠错.md`
 - [x] **EAL 星空重建班首跑核（2026-09-13 挂 · dated 周一 09-14 18:15 PT 班后 · 源：剑酒青丘 GOTCHAS NOTE-20260913-001）**：✅ 2026-09-14 首跑已核——exit 0 · build status=verified · node 单测 26/26 fail=0 · 锚定断言过 · 守卫未误 skip（库 MAX=09-14 领先）。⚠️ 首跑发现结构隐患：构建器截止日取「严格早于美东今天」，18:15 PT 运行时当日收盘永远进不了当晚快照 → 每日白天复现「星星在流线空」窗口。**Doctor 裁「班移 21:00 PT」（美东翻日后）→ cron 已改（0 21 * * 1-5 · 调度器回读 09:01 PM 生效）**；SKILL 无写死钟点、零漂移面。今晚 21:00 班将首次带当日收盘（09-14），明早 risk-daily 嵌入即验证。Doctor 目验已过（09-13），本条机制层自然验证完成。
