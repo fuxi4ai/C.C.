@@ -37,6 +37,8 @@ type: permanent
 
 6 个 2026-07-01 官方环境全部重装到位（从现源重打包、frontmatter 引号合规、`brain/.skills/` 镜像同步刷新）。**已弃用**：`_DEPRECATED_brain-commands`（早期合并版，存档可删）。
 
+> **⚠ 2026-09-26 一处已知 runtime 偏差（`brain-save` · 无害 · 刻意不修）**：当日经 `save_skill` 重装 **v3.7** 时——**正文 47147 B 逐字节全等**（runtime `f689c39f…` vs canonical `5cd5784e…`，仅尾随换行差 1 字节），但 **description 尾部少 2 字节的 `` `**` ``**（runtime 996 字 / canonical 998 字），系**传参时漏写该收尾加粗标记**。**影响＝零**（description 只是触发索引；且该 `**` 落在 YAML 双引号标量内，是普通字符）。**刻意不重修**：`save_skill` 只能**整体重传**，为 2 字节再传一次 45 KB，**有把已经逐字节正确的正文传歪的风险——期望收益为负**。⇒ **日后 `check_skill_parity.py` 报 `brain-save`「runtime 分歧」时，看本条即可，不必再查**；真要对齐，走 `.skills/brain-save.skill` 包由 Doctor 复装（那条路是逐字节的）。
+
 ---
 
 ## B · 自制其他 skills（源 `brain/.skills/`）
