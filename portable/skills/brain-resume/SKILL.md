@@ -43,10 +43,16 @@ cat ~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
 
 ```bash
 python3 - <<'PY'
-import json, datetime, pathlib
-p = pathlib.Path.home()/"Documents/Claude/brain/permanent/_scheduler_snapshot.json"
-if not p.exists():
-    print("⚠ 定时任务快照不存在——巡检机制可能从未跑过")
+import json, datetime, pathlib, glob
+# ⚠ 勿用 Path.home()：在 Cowork 沙箱里它解析到 /sessions/<session>（不是 /Users/<user>），
+#    会**稳定误报**「快照不存在——巡检机制可能从未跑过」（2026-09-26 实际踩到一次，
+#    实核后才排除）。按候选根逐个探，找到即用。
+_c = [pathlib.Path.home()/"Documents/Claude/brain/permanent/_scheduler_snapshot.json"]
+_c += [pathlib.Path(x) for x in glob.glob(
+      "/sessions/*/mnt/Documents/Claude/brain/permanent/_scheduler_snapshot.json")]
+p = next((x for x in _c if x.exists()), None)
+if p is None:
+    print(f"⚠ 定时任务快照不存在——巡检机制可能从未跑过（已探 {len(_c)} 个候选根）")
 else:
     d = json.load(open(p, encoding="utf-8"))
     meta = d.get("_meta") or {}
