@@ -1,6 +1,6 @@
 ---
 name: "brain-save"
-description: "Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **写 `permanent/经验库.md` 或 `通用教训.md` 时必须定位到对应 `##` 节插入、禁 append 文件尾；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；判断性勾项 CC 只搬运已勾的、不代打 ✓（G-X4 · v3.1），客观 TODO 证据硬按常驻授权代勾留痕（G-X136）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。宏观研究体系会话且本场有新材料时，条件增量更新研究材料 机构方法论提炼.md（v3.4）。Step 5 列 add 清单前先探目标仓 .gitignore，命中即从清单剔除、禁 -f 强带（v3.5）。**"
+description: "Persist the current session as a structured log entry in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **写 `permanent/经验库.md` 或 `通用教训.md` 时必须定位到对应 `##` 节插入、禁 append 文件尾；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；判断性勾项 CC 只搬运已勾的、不代打 ✓（G-X4 · v3.1），客观 TODO 证据硬按常驻授权代勾留痕（G-X136）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。宏观研究体系会话且本场有新材料时，条件增量更新研究材料 机构方法论提炼.md（v3.4）。Step 5 列 add 清单前先探目标仓 .gitignore，命中即从清单剔除、禁 -f 强带（v3.5）。Step 3.5 提案前必带「查重栏 ＋ 编号回源栏 ＋ 越界栏」，缺栏即不提案（v3.7）。**"
 ---
 
 # brain-save — 把本次会话存档到 brain
@@ -78,7 +78,7 @@ description: "Persist the current session as a structured log entry in the brain
 - [[wikilink]]
 ```
 
-### Step 3.5 · 记忆分拣提议(半自动 · v2.2 带判据 · v2.4 纳入当下便签)
+### Step 3.5 · 记忆分拣提议(半自动 · v2.2 带判据 · v2.4 纳入当下便签 · v3.7 查重栏)
 
 写完日志后,扫本次会话**＋本会话的「当下便签」**(见下框),把值得**长期留存**的内容列成**候选记忆清单**,每条标注【类别 → 目标文件 · 留/砍倾向】:
 
@@ -105,6 +105,18 @@ description: "Persist the current session as a structured log entry in the brain
 
 三问全 yes → 标【建议留】;泛泛通用 / 易再得 / 只服务本次 → 默认标【建议不留(留在日志即可)】。**判据只决定 CC 的默认建议,仍由 Doctor 最终点选**。
 落点松紧:`logs/`(Step 3 已写)放开、宁全勿漏;`permanent/` `references/` 高门槛,只进三问全 yes 的。
+
+**⛔ 提议前必做：查重栏 ＋ 编号回源栏（v3.7 · 2026-09-26 立 · Doctor 批）**
+
+**为什么加**：2026-09-26 /save 场，CC 提的三条「建议留」候选里**两条的实质早已在库中**——①「引用编号前先回源」＝`permanent/通用教训.md` 的 **`[G-X101]`**（2026-07-28 即立），②「index 算式禁加外层取模」**就写在 `EXP-20260923-001-T` ① 条内**（连正确算式与"必错写法"都在）；同场给 Doctor 的另一道选择题，其推荐项查下来**也是已有内容**。**三类三中。** 根因与 v3.0「写入位置铁律」同构——**「归哪类」规定了，但「先查它是不是已经有了」没规定**。
+
+**规矩（三条 · 机械可执行，缺栏即不提案）**：
+
+1. **查重栏**——每条候选必须带「**检索词 / 命中数 / 判定（新 or 旧）**」。做法：对候选的**目标文件**跑一次**同义**检索（核心词 ＋ 近义词，**不只查条目名字面**），命中即**改提「追记既有条目」**而非新建（GOTCHAS 合同的「同根复发优先追记既有条目」，同一原则）。
+2. **编号回源栏**——候选里凡出现 `G-Xnn` / `EXP-…` / `ERR-…` / 文件路径，**先 `grep` 该编号在 canonical 里的标题**再写进候选，并把标题抄进候选的证据栏。**语义印象对不等于编号对**（`通用教训.md` G-X101）。
+3. **越界栏**——候选的落点若落在有分节结构文件的**历史层 / 只读段**，须在候选里**明写该越界与理由**，不留给 Doctor 事后发现。
+
+> **⚠ Doctor 勾选 ≠ 前提已核**：本场 Doctor 依 CC 的描述勾了三条，而其中两条前提失实。**候选描述本身是本规矩的受控对象**——写「本场新发现」之前先确认它真是新的。
 
 **点选方式(v2.5)·用 AskUserQuestion 多选控件,别让 Doctor 打字报编号**:
 - 每个候选 = 多选题里的一个 option。label 用「编号 + 一句话主题」,description 写【类别 → 目标文件 · 留/砍倾向】。
@@ -287,6 +299,8 @@ cd ~/Documents/Claude/brain && \
 > **为什么它比「列了 ignore 路径」更隐蔽**：v3.5 那次（09-18）git 会当场报 `paths are ignored`，虽会静默走偏但**至少留了报错**；这次**没有任何报错**——目录合法、文件合法、commit 照常生成，只是**范围悄悄变大**。回执里唯一线索是 `create mode` 多出几行备份文件名，而那份回执通常只被扫一眼「commit 成功了吗」。
 > **硬规（三条）**：① `git add` 清单**逐文件列出，禁目录路径**；② 确需加目录时，**先** `git status --short` 读出该目录展开后的**全部**路径，**逐条**过 ignore 判据，再逐条写进清单；③ 起草完清单后**回读一遍**——凡条目里有以 `/` 结尾或指向目录的，一律拆成文件。
 > **判据根**：本仓 `.gitignore` 的兜底规则是**枚举式**（brain 只有 `*.bak_2*`，行业研究只有 `*.bak.*`/`*.bak_pre_*`），**新命名一律漏网**（本场的 `.bak_routefix_*`/`.bak_save_*` 即实例）。⇒ **不能指望 ignore 兜住散件，只能靠清单本身逐文件核**。
+>
+> **⚠ 追记（2026-09-26 · 同批）**：本句写下的**同一批**里，brain `.gitignore` 已补 **`*.bak_*`**（第 42 行）——故「brain 只有 `*.bak_2*`」**已过时**，`.bak_routefix_*`/`.bak_save_*` 现已被兜住。**但判据不变**：`*.bak_*` 同样漏 `*.bak2`／`*.bak` 一类新命名，且**行业研究侧规则未动** ⇒ 「**不能指望 ignore 兜住散件、只能清单逐文件核**」仍成立。**另**：本硬规此前只进了 git commit、**未落 v 历史条目**，已同日补记为 **v3.6**（与 commit `25a5d33a` 自打的标一致）。
 > **同族三连**：2026-06-17（首次，自动流程撞墙）→ 2026-09-18（第 2 次，CC 主动把 ignore 路径写成命令）→ **2026-09-26（第 3 次，CC 把目录写成命令；跨 brain 与行业研究两仓）**。已达合同「同族第二次复发或跨项目出现时升格通用教训」门槛。
 
 
@@ -383,6 +397,7 @@ git push
 - **引用 Step 4 那张缺口表前先自己跑命令重取差集,别照抄表**(v3.2.1)
 - **Step 4.5 宏观方法论增量=条件式:有新材料才追加、无则跳过,只追加不修改正文**(v3.4)
 - **列 `git add` 清单前必先过目标仓的 ignore 判据**(v3.5)——读该仓 `.gitignore` + 该仓 `CLAUDE.md`/README 的 git 段;命中即从清单剔除并在回报里明写「按本仓规 local-only」;**禁 `-f` 强带**(绕过仓主设计意图,须 Doctor 明批)。**任何目标仓都适用**——不止 brain,项目仓同样(渊图 `行业研究` 的 `raw/`+`outputs/` 即实例)
+- **Step 3.5 提案前必带「查重栏 ＋ 编号回源栏 ＋ 越界栏」，缺栏即不提案**(v3.7)——**语义**查重、非字面查重；带编号者先 `grep` 该编号标题再写；落点若越进历史层须自报
 
 ## v 历史
 
@@ -406,4 +421,6 @@ git push
 - **v3.3**(2026-08-02):**（推荐/不推荐）标签位置钉死为「选项 label 尾部」**。v2.7 只说「label 或 description 显式写」,实测 /save 分拣把控件 description 当载体——而 description 在控件里不显眼/可能被截,「默认值一眼可分」的设计落空;Doctor 当场明示「把是否推荐写在问题选项后面」。规则不变、位置钉死(选项文字后面直接跟（推荐）/（不推荐）,不许只放 description);「不限 /save、适用一切待裁选择题」的申明照旧。同步:portable/skills 与账号 save_skill 同版更新(D11 更新纪律)。
 - **v3.4**(2026-09-16):**新增 Step 4.5「宏观研究体系方法论笔记条件增量」**——/save 遇宏观研究体系/EAL 会话且有新材料(新 raw 落位/新解读稿/新回测结论/Doctor 明示)时,在 `研究材料/机构方法论提炼.md` 末尾「增量(时间线)」节追加一条(方法论 2-4 点·不写方向结论);无则跳过不写(条件式 · Doctor 2026-09-16 AskUserQuestion 裁)。配套:该笔记改名去日期(机构方法论提炼-2026-09-16.md → 机构方法论提炼.md,09-11 单文件规矩)+ 新增量区结构;首条增量=当日市场有效性回测结论。发布:portable 真源 + .skill 包 + save_skill 三层(Claude-3p 壳 plugin cache 由 Doctor 终端重装·fresh-session 路由实测)。
 - **v3.5**(2026-09-18):**Step 5 新增第 2 步「ignore 前置探测」硬闸——列 `git add` 清单前，先判清单里每个路径是否被目标仓 ignore**。触发案：/save 场 CC 给 `Database/行业研究` 仓的命令把 `raw/核实/…札记.md` 与 `outputs/gs/*.json` 列进 `git add`；Doctor 终端实跑 → git 拒绝 → **该仓 commit 未生成、push 空转打印 `Everything up-to-date`**（回执看起来像成了）。**根因不是不知道坑**：渊图 GOTCHAS `FIX-20260617-001`（2026-06-17）早登记过「raw/ 被 .gitignore 忽略」，该仓 `CLAUDE.md` 也写着「别列进 add 清单」——**规矩停在「文档 + 人脑」两层，而 CC 起草命令时既不读目标仓 `.gitignore`，也不回读该仓 CLAUDE.md 的 git 段**；形态比首次更重（首次是自动流程撞墙，这次是 CC 主动把 ignore 路径写成命令）。配套改动：Step 5 原第 2~5 步顺延为第 3~6 步；「边界」节加同款一条（**任何目标仓适用**，不止 brain）；渊图 GOTCHAS `FIX-20260617-001` 追记同根复发第 2 次。发布：portable 真源 + .skill 包 + save_skill 三层。
+- **v3.6**(2026-09-26 上午 · **本条目由同日 /save 场补记**——该批此前**只进了 git commit（`25a5d33a`「brain-save v3.6」）、未落 v 历史**，致同日另一批改动一度与本条撞名，已理顺):**Step 5 新增 `git add` 清单「逐文件、禁目录路径」硬规 ＋ ignore 兜底**。**触发案**：同日 /save 场 CC 的清单里写了**目录**（`git add .skills/QA` 与 `git add rules/`），而 ignore 判据**只核了"列出来的那些路径"、目录展开出来的文件一个都没核** ⇒ 4 个 brain 侧 `.skills/QA/*.bak_*` 与 2 个行业研究侧 `rules/*.bak_20260926_pre_*` 被扫进版本，事后靠 `git rm --cached` 清出。**比 v3.5 更隐蔽**：v3.5 那次 git 至少当场报 `paths are ignored`；这次**没有任何报错**——目录合法、文件合法、commit 照常生成，只是**范围悄悄变大**，回执里唯一线索是多出几行 `create mode` 的备份文件名。**新规三条**：① add 清单逐文件列出、禁目录路径；② 确需加目录时**先** `git status --short` 读出展开后的**全部**路径、逐条过 ignore 判据；③ 起草完回读一遍，凡以 `/` 结尾或指向目录的一律拆成文件。**判据根**：本仓 `.gitignore` 兜底是**枚举式**，新命名一律漏网 ⇒ 不能指望 ignore，只能靠清单逐文件核。**同族三连**：2026-06-17（首次，自动流程撞墙）→ 2026-09-18（第 2 次，CC 主动把 ignore 路径写成命令）→ **2026-09-26（第 3 次，CC 把目录写成命令；跨 brain 与行业研究两仓）**，已达「同族第二次复发即升格」门槛（G-X201）。
+- **v3.7**(2026-09-26 · Doctor 批 · AskUserQuestion 选「乙」):**Step 3.5 新增「提议前必做：查重栏 ＋ 编号回源栏 ＋ 越界栏」硬闸**。**触发案**——同日 /save 场，CC 提的三条候选里**两条的实质早已在库中**：①「引用编号前先回源」＝`permanent/通用教训.md` 的 **`[G-X101]`**（2026-07-28 即立），②「index 算式禁加外层取模」**就写在 `EXP-20260923-001-T` ① 条内**（连正确算式与"必错写法"都在）；**且同场给 Doctor 的另一道选择题，其推荐项查下来也是已有内容** ⇒ **三类三中**。**根因与 v3.0 同构**：v3.0 补了「写到哪」，本条补的是**「先查它是不是已经有了」**——两者都是**默认动作缺省**，不是知识缺失。**新规三条**：① 每条候选必带「**检索词 / 命中数 / 判定（新 or 旧）**」，对**目标文件**做**同义**检索（核心词＋近义词，**不只查条目名字面**），命中即改提「追记既有条目」；② 带编号者先 `grep` 该编号在 canonical 的**标题**再写进候选，标题抄进证据栏（`G-X101`：语义印象对不等于编号对）；③ 落点越进**历史层/只读段**须在候选里自报。**并加一条元纪律**：**Doctor 勾选 ≠ 前提已核**——**候选描述本身是受控对象**，写「本场新发现」前先确认它真是新的。**同批**：Settings 块一补「带编号的引用同样是实指」孪生条（该条与本 skill 同源于同一次事故，互为纵深）。发布：canonical → portable → .skill 三端（`save_skill` 第四跳因正文 42KB 改由 Doctor 用 `.skill` 包安装，遵 2026-09-26 brain-prd 先例）。
 
