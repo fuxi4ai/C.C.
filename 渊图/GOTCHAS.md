@@ -677,7 +677,13 @@ project: 渊图
 **预防门禁候选**：第 16 项增加「**存量回扫模式**」（`--scan-existing`：跳过 `_new` 过滤，全量 name/aliases 交叉扫），
 **输出必须分档**（真错 / 子节点拆分白名单 / 并购别名白名单）——直接照 72 组全判会制造 72 个假阳性。
 **状态**：⚠️ 已知风险（已登记未修 · 待 Doctor 裁处置方向）。**第 12 例 · 应升格通用教训已 4 次登记**——升格仍归 Doctor 裁。
-**来源**：2026-09-26 场（渊图两条 promote 执行中撞见 · 脚本 `outputs/` 内联粗扫 · canonical `6983ea52…`）
+**来源**：2026-09-26 场（渊图两条 promote 执行中撞见 · 脚本 `outputs/` 内联粗扫 · 扫描时点 canonical sha `6983ea52…`＝**改前**态；对应 TODО 已发布的 72 组数字）
+
+**追记 2026-09-26 晚（本条三项更新 · 承同日三方复验）**:
+**① 计数口径订正（76 组 → 真实簇数）**：粗扫命中的 **72 是「token 命中数」不是「重复簇数」**——同一对节点会因多个 token 反复出现（如 `dawning`/`sugon`/`中科曙光`/`曙光` 指的是**同一对**）。按连通分量合并后 **真实重复簇 = 46 簇 / 覆盖 103 个 company 节点**。另：该档有归一化口径依赖（`A_raw`＝`B_strip`＝`C_nopunct`＝`D_lower_nopunct` 同为 72；`E_suffix_strip`→75、`F_noparen`→79）。**分类清单已落** `raw/核实/2026-09-26-存量同名实体分类清单.md`（四类：真错 21 / 子节点·母子 12 / 假簇 8 / 伪 token 2 ＋ 混合 3），**只分类未动手**，待 Doctor 裁。
+**② 「处置：未修」已成旧文**：本条第 12 例点名的那一簇（**长芯博创**）**已于同日执行合并手术**——主节点 `company_ChangXinBoChuang` 并入 0 边空壳 `company_BochuangTech`（含 `stock_code 300548.SZ`）· 长芯盛 `company_Changxincheng` 移除错挂别名「长芯博创」· 新增 `part_of` 边。脚本 `outputs/surgery_changxinbochuang_merge_20260926.py` · 术前备份 `backups/行业知识图谱_完整数据库.json.bak_surgery_changxinbochuang_20260926_042626` · **墓碑 `mapping/_tombstones/2026-09-26_changxinbochuang_merge.json`**（含整节点原文，可单独复原）· 收尾补正 `outputs/cc_fix_changxinbochuang_followups_20260926.py`（metadata 计数 ＋ 印章 ＋ 墓碑落点）。**6484/7109 → 6483/7110**。**⚠ 同日共三轮独立复验**（① HBM4 批次 ② 三项修复复验 ③ 手术＋门禁接线复验），**三轮均判 PASS_WITH_LIMITS、无 FAIL**；三轮所逮问题已全部当轮修复。**✅ 落签仍归 Doctor。**
+**③ 别名卫生侧证（复验方实测）**：「alias 元素等于另一节点 name」型违例 **60 → 59**，差集**恰好**为本簇 ⇒ 手术目标达成、零副作用；**存量仍余 59 处**，属本盲区未清部分。
+**④ 门禁覆盖面的限定（复验方 N4）**：同日补的第 18 项口径闸挂的是**两条声明链**（`kg_merge_safe` / `rules/kg_promote`），**不是全库**——`grep "行业知识图谱_完整数据库"` 命中约 30 个直写/引用 canonical 的脚本（`mapping/fix_*.py`、`mapping/_surgery_*.py`、`outputs/surgery_*.py` 等），**手术类脚本不跑任何 `rules/` QA**。本轮手术未引入 `_caliber_` 违规键故无实害，但「已挂进写盘链」应读作**两条链**。
 
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 
