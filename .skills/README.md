@@ -42,7 +42,7 @@ type: resource
 | Skill | 触发 | 用途 |
 |-------|------|------|
 | `handshake-consumer` | 每日 09:00 定时任务 · "消费握手" | 消费 Shake Hands 机器握手通道（方案 B）：扫 `to CC/scheduled/*.latest.json` → 幂等校验 → 路由落盘 → 写 ack |
-| `问答板` | 「问答板」/ `/qa` | 多裁定项收成单文件暖色 HTML 对齐页（机器名 `wenda-ban`） |
+| `问答板` | 「问答板」/ `/qa` | 多裁定项收成单文件暖色 HTML 对齐页（机器名 `QA`） |
 
 ## 设计哲学
 

@@ -2,7 +2,7 @@
 
 > 自愈循环审计层：append-only。每次修复动作一行，**用 Edit 尾段追加，不 Write 覆写**（G-X107）。
 > 行 schema（六元组）：`ts`(ISO) / `trigger`(硬证据) / `action`(动作+工具名+参数形状) / `rollback`(回退点) / `acceptance`(判据·必须含可跑命令或工具名) / `actor`(实施者) / `status`(🔄/⚠️/✅)。
-> 状态只允许 🔄/⚠️/✅；**✅ 只由 Doctor 或指定独立验收方落**（实施者不自签，G-X4）。未验行会被 brain-resume Step 0.6 人读通道 + 周班机器读通道读出。
+> 状态只允许 🔄/⚠️/✅；**✅ 按分轨落**（事务性的由未参与实施的 subagent 代签；方向性的问 Doctor，G-X4）。未验行会被 brain-resume Step 0.6 人读通道 + 周班机器读通道读出。
 > 2026-08-29 由自愈循环设计创建：`brain/permanent/巡检自愈循环-loop-engineering.md`。
 
 | ts | trigger | action | rollback | acceptance | actor | status |

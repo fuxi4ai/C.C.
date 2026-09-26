@@ -57,7 +57,7 @@ project: 剑酒青丘
 **优先级**：🟡 中
 **触发场景**：EAL v2.3 VV 多轮验收——每轮修一处、漏多处引用（主规则区/关键发现/锚矩阵/P-24/迭代表/知会正文轮流出旧口径）；G5 的 expanding log score 未跑即写「候选梯跑完、结论变硬」；复现包未实跑即称「可执行」。
 **根因**：勘误以「改对的那处」为中心，未以「全文旧值清零」为收口判据；宣称完成前未跑验收清单。
-**修复/纪律**：① 勘误后必 `grep 旧值全文 = 0`（含否定语境逐一核对）才可称完成；② 任何「跑完/可执行/已复现」类表述前必须先实跑；③ 大改动配未参与开发的外部审查（本 session 已立为 EXP-20260815-008-P）；④ 载体同步验收只发布并验收**当前 index**；**~~（旧发布链表述 canonical→Brain→Gateway 已于 2026-08-18 VV 八轮 superseded——单一发布链以 INFRA-20260817-001 为准）~~**；**versions/latest 是 update_artifact 自动轮转的 N−1 历史副本，禁止人工覆盖、不参与同代判定**（2026-08-17 VV 二轮终验订正）。**升格（2026-08-17 VV 四轮）＝治理总条**：⑤ **实施者不得自签**——自然语言「PASS/闭环/全部通过」同属验收动作（G-X4 追记）；⑥ **第二次同根遗漏立即停止点修**，先做「概念 × 消费载体」影响面矩阵（G-X111 追记）。
+**修复/纪律**：① 勘误后必 `grep 旧值全文 = 0`（含否定语境逐一核对）才可称完成；② 任何「跑完/可执行/已复现」类表述前必须先实跑；③ 大改动配未参与开发的外部审查（本 session 已立为 EXP-20260815-008-P）；④ 载体同步验收只发布并验收**当前 index**；**~~（旧发布链表述 canonical→Brain→Gateway 已于 2026-08-18 VV 八轮 superseded——单一发布链以 INFRA-20260817-001 为准）~~**；**versions/latest 是 update_artifact 自动轮转的 N−1 历史副本，禁止人工覆盖、不参与同代判定**（2026-08-17 VV 二轮终验订正）。**升格（2026-08-17 VV 四轮）＝治理总条**：⑤ **实施者不得代签自己参与过的变更**（事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor）——自然语言「PASS/闭环/全部通过」同属验收动作（G-X4 追记）；⑥ **第二次同根遗漏立即停止点修**，先做「概念 × 消费载体」影响面矩阵（G-X111 追记）。
 **同族/来源**：G-X111 族（宣称完成未核）· G-X148（数值实读）· EXP-20260815-008-P。→ 同上
 
 **追记（2026-08-18 · VV 八轮终验 · 同根第三次复发 · CC 登记留痕 · 八轮时点快照）**：技术核心（--dry-run 零写入/不变测试实跑/repro fail-fast/新段落）全 PASS，治理文本仍 BLOCK——五项旧绝对规则未退场：`Doctor协作偏好.md:31`「实施与验收分权」缺限定（字面覆盖客观 TODO）· `:187`「G-X4 ✓ 权仍在 Doctor·propose-then-confirm 三步链照旧」· `通用教训.md` G-X4 核心规则 4「CC 永远不允许打 ✓」· G-X10「打勾权仍 Doctor 独占」· G-X136 标题与主判据仍「仅 brain-todo 目标模式·不外溢·新场景须重新明示批准」· propose-then-confirm 主条目无例外；`CLAUDE.md:192` GOTCHAS 模板仍 `✅ 已解决/⏳ 待解决` 且缺根因/影响面/硬证据/来源；`GOTCHAS.md:14` 状态图例未写 ✅ 归属与 🔄 双义。**硬证据**：VV 八轮回执行号逐处实读核认（CC 实核 8/8 属实）。**根因同一**：追加订正、上游旧文未替换——七轮新段落落盘时未 grep 旧绝对表述全文清零。**影响面**：两套现行命令并存，执行侧无可判准；Settings 镜像与源档之间、G-X136 主判据与追记之间互相矛盾。**建议修法**：修复方案已出（P0 治理文本 14 处 + 升格通用教训「规则修订必须替换上游旧文·禁文末追记并存双轨」），待 Doctor 批。**预防门禁**：规则修订合入时必 `grep 旧表述全文 = 0`；治理文本改动列「改动处 × 引用处」影响面矩阵。**来源**：VV 八轮终验回执 · 2026-08-18 resume 场。
@@ -174,7 +174,7 @@ project: 剑酒青丘
 **来源**：2026-09-05 凌晨场 · logs/2026-09-05-EAL加SOX响应轨实施.md
 
 ### [NOTE-20260911-001] EAL v3 班 adapter 守卫 FUSE fchmod 不落地——LOOP_SQLITE_GUARD_REJECTED 同根六连致 artifact 停更 6 天（2026-09-11 全金融审计立 · 同日 VV 交叉复核纠错后改写）
-**状态**：🔄 已修待验（2026-09-15 Doctor 裁方案①「adapter 移 Mac 原生」· CC 实施中·待 09-15 班自然验证；✅ 归 Doctor）
+**状态**：🔄 已修待验（2026-09-15 Doctor 裁方案①「adapter 移 Mac 原生」· CC 实施中·待 09-15 班自然验证；✅ 按分轨：事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor）
 **优先级**：🔴 高（消费端 artifact eal-v3-event-transition 自 09-04 起停更——用户可见）
 **硬证据/最小复现**：各班失败分布（09-04 shift-root-cause + 09-10 shift-report 实读）——**adapter guard 同根六连**：09-01、09-03 一班、09-03 二班、09-04（root-cause 原话「与 09-01/09-03×2 同根同签，第四次复发」）、09-09、09-10；另 09-07/09-08 两班**第一步即失败**（09-08 为 /tmp 残留锁 PermissionError·nobody 属主）——**并非每天 Steps 1-7 全绿卡最后一步**。09-10 班细节：Steps 1-7 全绿（行情写库 attempt 2/3 · sealed SHA ae642b01… · registry pin 283c947d · shadow EXIT=0 · candidate 38.2MB · loop completed_with_warnings）→ `7_adapter: REJECTED LOOP_SQLITE_GUARD_REJECTED — permission_guard_completed=false (FUSE fchmod 不落地，mode 恒 0o600)；fail-closed 停班`；`8_artifact: 未推送`。
 **根因**：zero-write guard 的权限位组件要求 chmod a-w 持久生效，Cowork 沙箱 FUSE 挂载盘 fchmod 不落地（mode 恒 0o600；09-04 班 58/58 采样全部 permission_deviation）——守卫按设计 fail-closed 正确，但当前运行环境结构性无法通过该组件＝「正确守卫 × 错误环境」。同族：烛照 GOTCHAS（FUSE 大写入不 durable）、巡检自愈循环 warnings（chmod a-w 受 FUSE 限制）——**应升格通用教训候选**：「FUSE 挂载面 POSIX 语义不完整（chmod/写入持久性），守卫设计必须环境感知」。

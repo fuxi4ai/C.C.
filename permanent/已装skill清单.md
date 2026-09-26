@@ -45,7 +45,7 @@ type: permanent
 |:---:|-------|------|------|-----------|
 | ✅ | `gsap-frontend` | 硬专名 "GSAP/gsap/GreenSock" | GSAP 前端动画（主干 + 5 references；粘性生效） | `brain/.skills/gsap-frontend.skill` |
 | ⏸ | `handshake-consumer` | 定时/手动 | 方案 B 跨 AI 握手消费端——**方案 B 搁置，暂不装** | `brain/.skills/handshake-consumer.skill` |
-| ✅ | `问答板`（机器名 `wenda-ban`） | 「问答板」· `/qa` | 多裁定项收成单文件暖色 HTML 对齐页（**2026-09-19 补记**；真源即 `brain/.skills/问答板/`，不在 portable 链上） | `brain/.skills/问答板.skill` |
+| ✅ | `问答板`（机器名 `QA`） | 「问答板」· `/qa` | 多裁定项收成单文件暖色 HTML 对齐页（**2026-09-19 补记**；真源即 `brain/.skills/问答板/`，不在 portable 链上） | `brain/.skills/问答板.skill` |
 
 > **⏸ 另有一个不在本链的已装技能（2026-09-19 补记）**：**`equity-thesis`**（个股定性研究）——
 > **canonical 在 Codex 侧**：`Codex/Infrastructure/skills/equity-thesis/`（**VV 维护**，CC 不覆写）；

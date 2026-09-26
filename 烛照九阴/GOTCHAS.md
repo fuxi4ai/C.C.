@@ -490,7 +490,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260911-001] stock_tracking 结果回写列 0/3986——信号收益闭环断裂 7 周未修（07-28 审计 P0-3 同根确认）
 
-**状态**: 🔄 已修待验（2026-09-14 Doctor 授权「授权」→ CC 实施三件：① signal_winrate_backtest 放开 unresolved 回写（VV 修正·池分母仍只收 resolved）+ 存量全量回写（excess 0→1569 行·5/5 抽样手算对账 ✓·备份 recap.db.bak_20260914_pre_winrate）；② 日报胜率引用改滚动窗口（静态 84.5%/181 → 滚动 50.0%/1023·样本至 09-09·口径标注）；③ 入链 staging 已部署（brain live 镜像 zhuzhao-market-fetch-daily-report SKILL 26986B·mtime 09-14 22:17 与 staging 逐字节吻合 · 2026-09-16 CC 实读核实）· 实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-09-14 Doctor 授权「授权」→ CC 实施三件：① signal_winrate_backtest 放开 unresolved 回写（VV 修正·池分母仍只收 resolved）+ 存量全量回写（excess 0→1569 行·5/5 抽样手算对账 ✓·备份 recap.db.bak_20260914_pre_winrate）；② 日报胜率引用改滚动窗口（静态 84.5%/181 → 滚动 50.0%/1023·样本至 09-09·口径标注）；③ 入链 staging 已部署（brain live 镜像 zhuzhao-market-fetch-daily-report SKILL 26986B·mtime 09-14 22:17 与 staging 逐字节吻合 · 2026-09-16 CC 实读核实）· 签字按分轨（事务性的由未参与实施的 subagent 代签）✅）
 
 **现象**: `stock_tracking` 3986 行中 `excess_1d/3d/5d/10d/hit_3d` 五列 **0 行非空**（2026-09-11 只读探针实跑）；`resolve_status` 3986/3986 已填（2708 resolved / 1278 unresolved）——兑现状态机在跑，但「结果 vs 基准」的收益测量列全空。
 
@@ -574,7 +574,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260915-001] dim4_trade_plan.plan_window 日期括注笔误——「周四（9-18）」应为「周四（9-17）」（2026-09-18 是周五）
 
-**状态**: 🔄 已修待验（2026-09-15 句芒课件入库审核班档1 当场修 · 待独立验收 · 实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-09-15 句芒课件入库审核班档1 当场修 · 待独立验收 · 签字按分轨（事务性的由未参与实施的 subagent 代签）✅）
 
 **优先级**: 🟢 低（单行文本括注错一天；数值列/结构化列不受影响）
 
@@ -616,7 +616,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260921-001] dim3.volume_trillion 老区段(2025-10~2026-03) 101 行错值/无出处值——59 行与课件原文对不上、42 行无任何课件依据
 
-**状态**: 🔄 已修待验（2026-09-21 句芒课件入库审核班档1 当场修 · 待独立验收 · 实施者不自签 ✅）
+**状态**: 🔄 已修待验（2026-09-21 句芒课件入库审核班档1 当场修 · 待独立验收 · 签字按分轨（事务性的由未参与实施的 subagent 代签）✅）
 
 **优先级**: 🔴 高（假数进库·数据真实性铁律级；dim3.volume_trillion 系复盘引用消费列）
 
@@ -711,3 +711,4 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: 2026-09-24/25 us-close-backfill 班实跑（库只读实核 + `mac_us_close_backfill.py` next_iso/verify 段实读）+ Doctor 终端 kickstart 三份日志互证
 **追记 2026-09-25**: 本例数据洞已闭环——Yahoo 封禁解除后 Doctor 终端重跑 `fetch_us_anchor.py --from 2026-09-24 --to 2026-09-24`，19/19 全 yahoo 来源，NVDA close_adj=224.58、pct=-0.4124 与三源交叉验证一致（看门狗只读复核）。**设计洞仍在**：next_iso 对「最新日缺票」不自愈的根因未修，修法三选一待 Doctor 裁。
+**追记 2026-09-26（句芒课件审核班·复发扫描）**: Yahoo 封禁第三次复发——09-25 14:29 usclose 班 yfinance 全线 HTTP 403（9/9 缺），写 0 行、标缺保留旧行，us_anchor_daily/intl_index 美股腿停在 20260924，**20260925 全日 0 行**。本轮系「整日缺失」（非「部分缺票」）——next_iso 自愈覆盖此场景，周六无班（排期 1-5）、周一班预期回补 0925。两处盲区存照：① 班日志收尾「全部完成 · 无 ❌」而实际写 0 行——退出码不反映零新增（与 ERR-20260922-001 预防门禁同族）；② `.last_run_status` 只留 marketdata 班 02:30 行、usclose 班成败无痕（NOTE-20260922-002 盲区再现）。编排器重试根因修复仍待 Doctor 裁（三选一）。

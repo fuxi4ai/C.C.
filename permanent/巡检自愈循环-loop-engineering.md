@@ -162,7 +162,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 
 - **修复完成 ≠ 修好**。验收只认机器证据，优先「下一次运行自证」谓词：`lastRunAt` 前进到预期窗口 / `generated_at` 前进且 triggered_by=scheduled（手动跑假绿灯是 08-02 实测双向都犯过的病）/ audit 行 schema 合规 / 回读比对逐字一致。
 - F3/F3p 属中风险（动 live store 班）：由**未参与实施的 subagent** 独立复验（授权内可自主派）；复验报告仅作背书，不取得 ✓ 权。
-- audit 行状态只允许 🔄/⚠️；✅ 只由 Doctor 或指定独立验收方落（G-X4）。**Doctor 08-29 授权「定时任务列入可代签代勾类别」指 TODO 销项，不覆盖 audit 行的 ✅ 落签**。
+- audit 行状态只允许 🔄/⚠️；✅ **按分轨落：事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor**（G-X4）。**⚠ 2026-09-26 裁更新（自检发现本行与同批改动对撞，已同步）**：本行原写「✅ 只由 Doctor 或指定独立验收方落（G-X4）。Doctor 08-29 授权『定时任务列入可代签代勾类别』指 TODO 销项，**不覆盖 audit 行的 ✅ 落签**」——Doctor 2026-09-26 裁「**保留名单也改**」，audit 行 ✅ 落签**并入分轨**，原保留取消；`permanent/_repair_audit.md` 头部、`Doctor协作偏好.md` 巡检豁免条与分权条、Settings 块内巡检条已**同批改为分轨**，本行是最后补齐的一处。
 - `_repair_audit.md`：append-only（**用 Edit 尾段追加，不用 Write 覆写**——G-X107）。每行 schema（六元组）：`ts`(ISO) / `trigger`(硬证据) / `action`(动作+工具名+参数形状) / `rollback`(回退点) / `acceptance`(判据，必须含可跑命令或工具名) / `actor`(实施者) / `status`(🔄/⚠️/✅)。test_repair_loop.py 含 audit 行解析器，缺字段/空字段即报。
 - audit 经 Doctor commit 后于 git diff 显形（G-X154：显形须等 commit，读侧以文件本体为准）——修复器的行为是**另一个被巡检对象**，叉二由此闭环。
 
@@ -177,7 +177,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 5. **沙箱不传 prompt 参数**（读不到 store 本体=盲写）——prompt 任何改动一律 Doctor 终端 SHA 往返；「字段级 diff」仅在参数级实现（只传 description，不传 prompt）；
 6. 不用 glob/日期排序拾取治理资产（G-X162）；
 7. 未确诊死因不动手（G-X141）；
-8. 修复后不自签「已修好」（G-X4）；
+8. 修复后不得代签自己参与过的变更、更不得自称「已修好」；事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor（G-X4）；
 9. 不改告警分级口径（G-X122）；
 10. 修复循环自身不新增定时班（它的触发点是 /resume 与周班——用不定时的东西兜底，不许再造一个需要被巡检的新班）。
 
