@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-09-19
+updated: 2026-09-26
 status: active
 type: resource
 project: 渊图
@@ -117,6 +117,25 @@ project: 渊图
 - 手工 patch 的 update_nodes 条目：`updated_at` 放**顶层**（与 id 同级），properties 只放事实 props。
 - patch 落盘前用真函数预检：`from kg_merge import _merge_node; _merge_node(base, u)[1]` 必须 == `"took_patch"`；或 promote 后看 Merge Diff 的 `(kept_base/took_patch)` 标注，kept_base 即未生效。
 - 首跑 kept_base 不丢数据（data_sources 已并、边已入、边幂等），修 patch 后二跑即补齐，无需回滚；`_merge_data_sources` 按 (file, reference) 去重，重跑无重复追加。
+
+## [NOTE-20260926-001] 口径辅助注释键禁含 `_caliber_` 子串——QA 第 18 项按子串判，注释键会撞七闭集闸
+
+**状态**: ⚠️ 已知风险（使用纪律 · 门禁行为正确） **优先级**: 🟡 中
+
+**触发**: 2026-09-26 HBM4 口径标注 patch（`mapping/_v3_2026-09-26_HBM4口径标注_manual.json`）给 `product_HBM4ForVR200` 加了两把键——正经锚键 `cost_per_rack_caliber_industry_2026e_usd`（`industry` ∈ 七闭集，合法）＋ 一把**辅助注释键** `cost_per_rack_caliber_note`。QA 第 18 项当场报 `🔴 未知 scope: 'note' 不在七闭集` → **结论 FAIL**。
+
+**机制**: `rules/check_caliber_conflicts.py` 的 `ANCHOR_ANY = re.compile(r"_caliber_([a-z_]+)")` 是**子串匹配**——键名里只要出现 `_caliber_`，其后那段词就必须落在七闭集，**与它是不是「锚键」无关**。设计如此且正确：口径锚命名空间被独占，辅助键不得挤进来。
+
+**规则**:
+- 口径锚键**只**用 `{指标}_caliber_{scope}_{时点}`，`scope` 必须落在七闭集（self_reported / industry / official / market_rumor / qualification / actual / forecast）。
+- **辅助注释/说明键一个字都不能带 `_caliber_`**——本场改名 `cost_per_rack_bom_row_note` 后通过。同理避开 `_scope_`（存量 `service_scope` / `product_scope` 已占该语义）。
+- **门禁 FAIL 时 canonical 已写**：`kg_merge_safe` 先写盘，第 18 项**不在其写盘链上**。**⚠ 订正（2026-09-26 · 第二轮独立复验方实测）**：本条初稿写「第 18 项是**事后**跑」，**不准确**——`grep -rn "check_caliber_conflicts"`（排除 `__pycache__`/`backups/`）全仓仅 4 处命中：脚本自身 · 负向测试 · 本场手术脚本 · `CLAUDE.md` 两行。`rules/kg_promote.py` 的门禁**只到第 17 项**；`kg_merge_safe.py` 是第 9/10/14 项 ＋ 同三元组闸，随后即备份 → 写 canonical。⇒ **第 18 项无任何自动调用点，只在有人手工跑时才存在**。本场之所以能验到 exit 0，纯因实施者手工跑了它。CLAUDE.md 质检清单把口径检测写成体系内一员，与实装不符。⇒ 落盘前**必须手工**跑 `python3 rules/check_caliber_conflicts.py`（建议挂进写盘链，归 Doctor 裁）。
+- **props 删键只能走专门脚本**：`kg_merge._deep_merge_dict_fields` 明写「无法再通过 patch 删除某个子键（本库 props 为累加事实，可接受；如需删走专门脚本）」——本场即写 `outputs/cc_fix_hbm4_caliber_key_20260926.py`（备份 ＋ 断言 ＋ fail-closed）。**⚠ 写这类守卫脚本时，判据正则必须 import 检测器本体复用，禁自写**：本场首版守卫用 `group(1).split("_")[0]` 把 `self_reported` 切成 `self`，误报 `concept_LinktelAOCGrossMargin` 的**合法**锚键；fail-closed 拦下了（没写盘），但方向差点被带偏。
+
+**来源**: 2026-09-26 场（Doctor 裁「两条都批」之①执行中自伤 ＋ 自修 · 手术脚本 `outputs/cc_fix_hbm4_caliber_key_20260926.py` · QA 复跑 exit=0 · 锚键 4 · 未知 scope 0）
+
+**追记同日（接线已修 · Doctor 2026-09-26 批「挂进写盘链」）**: 本条登记的根因（**该闸无自动调用点**）**已修**——两条写盘链各补一道「第 18 项」，均卡在**任何写盘动作之前**：`rules/kg_promote.py`（原先门禁只到第 17 项）与 `kg_merge_safe.py`（原先只跑第 9/10/14 项 + 同三元组闸）。两条链**复用检测器本体**（`import check_caliber_conflicts`），不自带 scope 字面量，杜绝双处漂移。持久化回归测试 `rules/test_gate18_wiring.py` **6/6 PASS**（每条链各跑正/负两向：负向要求「非零退出 ＋ 含第18项 ＋ 目标 canonical 逐字节未变」；正向要求不误拦；另含接线同源检查），全程在 tempdir 隔离树内跑、**不触碰真 canonical**。
+**⚠ 顺带修掉一处连带空转（同场实测发现）**：`kg_merge_safe` 原写 `merge(base, patch, dry_run=args.dry_run)`，而 `merge(dry_run=True)` **不返回已应用图**（`if not dry_run:` 跳过 append，L169/178/193/202；该函数 `deepcopy(base)` 起手，不改 base、不写盘）⇒ 干跑模式下 `merged` 实为**未应用的 base**，令下游的**同三元组检测**与我新增的口径闸**双双空转**（实测：干净图 + 非法锚键的干跑里，口径闸数到「锚键 0」、非法键零报警）。已改为恒以 `dry_run=False` 在内存应用，不写盘由下方 `if args.dry_run: return` 保证。**⇒ 这同时是一条存量旧账：同三元组闸在干跑下此前一直没在查。** 备份 `kg_merge_safe.py.bak_20260926_pre_gate18` · `rules/kg_promote.py.bak_20260926_pre_gate18`（可回退）。
 
 ## [NOTE-20260801-001] 接入 Kimi K3 作审查腿：四个坑与一条真相源（`/v1/models` ＞ 任何文档）
 
@@ -632,6 +651,33 @@ project: 渊图
 **预防门禁候选**：① QA 增「**节点 desc/props 内嵌实体名断言**」——把 desc/props 里出现的所有 `company_*` 型 token 与疑似实体名，与全图节点 id/name/aliases 及 `raw/` 语料做存在性核，**语料零命中的实体名即报**；② 与「预防门禁第 16 项（同名实体检测）」互为**反向**：第 16 项只见「新节点撞存量」，不见「存量 desc 提到不存在的实体」。两项应成对。
 **状态**：🔄 已修待验（patch 已备、随 promote 落地；实施者不自签 ✅）。**第 11 例 · 应升格通用教训**——升格仍归 Doctor 裁。
 **来源**：2026-09-24 场（Doctor 令「核实1」→ 独立复验 PASS_WITH_LIMITS 查出 → 札记 `raw/核实/2026-09-24-武汉捷普归属核实札记.md` §五）
+
+**追记 2026-09-26（同根复发 · 第 12 例 · **新形态：存量 × 存量同名 · 第 16 项结构性盲区**）**:
+**硬证据（脚本实跑）**：对 canonical 全量 company 节点做 name/aliases 归一交叉扫描，**跨节点同名 72 组**。
+**盲区机制（本条的核心）**：`rules/kg_promote.py` 第 16 项同名实体检测（2026-09-12 固化）的循环是
+`for _n in _new:`——**只遍历本批新增节点**，存量与存量之间的撞名**结构上不在扫描面内**。
+与 09-24 第 11 例登记的「第 16 项只见新节点撞存量、不见存量 desc 提到不存在的实体」互为**第三向盲区**：
+「存量 × 存量」这一格无人看。`kg_ingest.check_new_node_collisions`（09-18 加）同为「新节点 vs 全量」，不覆盖。
+**本场具体案例（发现路径：做「长芯博创 desc 补强」时撞见）**：
+① **同一法人三节点**——`company_ChangXinBoChuang`（name 长芯博创 · 1 边 · 05-16 建）、
+`company_Changxincheng`（name 长芯盛 · **aliases 含「长芯博创」** · 2 边 · 08-25 建）、
+`company_BochuangTech`（name「长芯博创（长芯博创科技股份有限公司）」· **stock_code 300548.SZ** · **0 边空壳** · 09-13 建 RES）；
+② 其中「长芯博创」同时是 A 节点的 name 与 B 节点的 alias，而 B 的 name「长芯盛」按 09-25 核源实为 **A 的 60.45% 控股子公司**——
+**别名与节点实体不同指**（正对 ERR-20260823-001 ②「aliases 元素须与节点实体同指」）。
+**⚠ 不要把 72 当 72 个错**：粗扫结果**混合**——里面既有真错（长芯博创/长芯盛 · 曙光 `company_Dawning`/`company_Sugon` · 中芯国际 `company_SMIC`/`company_NanjingSMIC`），
+也有**设计内的业务线子节点**（`company_AppliedMaterials` 与 `_HBM`/`_IonImplanter` · `company_LamResearch` 与 `_HBM_TSV` 等）
+与**历史并购别名**（`company_Coherent`/`company_Finisar`）。**分类未做**，须专项批逐组裁。
+**⚠ 且 72 这一档是有口径的（独立复验方实测）**：`A_raw`（原样匹配）/`B_strip`/`C_nopunct`/`D_lower_nopunct` **四档同为 72**，
+`E_suffix_strip`→**75**、`F_noparen`→**79**。⇒ **`company_BochuangTech`（name 带括号后缀）不落在 72 里，只有去括号归一才落进来**——
+专项批按 72 名单点会**漏掉它**，而它恰恰是那一组里唯一带 `stock_code: 300548.SZ` 的（即最可能是「同一上市主体」的正主）。
+**建议同批带 `stock_code` 维度**：全图 stock_code 撞车仅 2 组（`1802.TW` Taibo/TaiwanGlass · `688825.SH` CXMT/CXMT_Storage），
+两组同时在 72 名单内——可作「真重复节点」的正向标尺。
+**处置**：**未修**——本场授权范围仅「HBM4 口径标注 + 长芯博创 desc 补强」，合并/去别名属存量资产结构性改动，越授权边界；
+`company_ChangXinBoChuang` 的 desc 补强亦**因此暂缓**（三节点并存时往任一个写富 desc 会加重分裂）。**归 Doctor 裁**。
+**预防门禁候选**：第 16 项增加「**存量回扫模式**」（`--scan-existing`：跳过 `_new` 过滤，全量 name/aliases 交叉扫），
+**输出必须分档**（真错 / 子节点拆分白名单 / 并购别名白名单）——直接照 72 组全判会制造 72 个假阳性。
+**状态**：⚠️ 已知风险（已登记未修 · 待 Doctor 裁处置方向）。**第 12 例 · 应升格通用教训已 4 次登记**——升格仍归 Doctor 裁。
+**来源**：2026-09-26 场（渊图两条 promote 执行中撞见 · 脚本 `outputs/` 内联粗扫 · canonical `6983ea52…`）
 
 ## [NOTE-20260901-002] 「OSA」系 OISA 之误——西部证券笔误被图内继承（1 节点 + 2 边 desc）
 

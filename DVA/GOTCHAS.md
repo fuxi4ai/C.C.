@@ -2,7 +2,7 @@
 title: DVA · GOTCHAS（已知坑 · 索引）
 tags: [DVA, gotchas, index]
 created: 2026-05-14
-updated: 2026-06-14
+updated: 2026-09-26
 status: active
 type: resource
 project: DVA
@@ -11,10 +11,20 @@ project: DVA
 # DVA · GOTCHAS（已知坑 · 索引）
 
 > **本文件是索引/沉淀，不是日志。** 实时踩坑日志在
-> `~/Documents/Claude/Projects/DVA/GOTCHAS.md`（权威源，30+ 条，CC 解决问题后**立即**回写那里）。
+> **`Codex/Project Mirror/DVA/GOTCHAS.md`（权威真源 · Codex 日常在写）**。
 > 本文件只做：① 统一术语约定；② 指向权威日志；③ 沉淀少数跨项目通用教训。
 
-## 统一术语约定（与 Projects/DVA/GOTCHAS.md 完全一致）
+> ⚠ **权威改判（2026-09-17 Doctor /todo 裁「权威改 Codex 镜像仓」）**——**本条已于 2026-09-26 /todo 现核时补落**：
+> 原文写「权威源 = `~/Documents/Claude/Projects/DVA/GOTCHAS.md`」，与 09-17 裁定**相反**，且 `Projects/DVA/GOTCHAS.md`
+> 头部同期已加权威反转注记（自即日起为**历史副本**、只读参照）。两处声明不一致曾挂为 TODO 条目（2026-09-17 挂 · 5 天）；
+> 本场现核实读：`Projects/DVA/GOTCHAS.md` 头部**有**注记、`brain/DVA/GOTCHAS.md`（本文件）**无**——即 09-17 的
+> 「brain/DVA/GOTCHAS.md 纪律反转注记」当年**未实际落盘**。现按裁定补正：权威真源 = **`Codex/Project Mirror/DVA/GOTCHAS.md`**；
+> Mac 侧新条目报 Doctor 后落镜像仓；回流方向反转（Codex→Mac 汇报制）。
+> 三源现状（2026-09-26 实读）：`Codex/Project Mirror/DVA/GOTCHAS.md` **239,139B · 09-25 20:47**（活）／
+> `Claude/Projects/DVA/GOTCHAS.md` 156,464B · 09-26 01:07（历史副本，当日仍有写入）／
+> 本文件 14,929B · 09-18（索引）。
+
+## 统一术语约定（与 Codex/Project Mirror/DVA/GOTCHAS.md 完全一致）
 
 **编号：** `[BUG-YYYYMMDD-NNN]`（代码逻辑）/ `[INFRA-YYYYMMDD-NNN]`（环境·链路·依赖）/ `[RISK-YYYYMMDD-NNN]`（已知风险）
 **状态：** ✅ 已修复（**仅由 Doctor 或指定独立验收方落，实施者不得自标**）/ 🔄 待修复·已修待验 / ⚠️ 已知风险（暂不修复）
