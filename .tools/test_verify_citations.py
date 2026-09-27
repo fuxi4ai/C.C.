@@ -61,9 +61,9 @@ VERBOSE = "-v" in sys.argv
 
 _results: list[tuple[bool, str, str]] = []
 # ★ 例数守卫（承五轮复验 J1a/J1b）：汇总行只报 `N/N`，**删掉几例不会被任何断言拦住**
-#   （实测删 2 例仍 `29/29 通过 rc=0`），而四件文档到处写死具体例数（加此守卫时是 31，现已 34）。
+#   （实测删 2 例仍 `29/29 通过 rc=0`），而四件文档到处写死具体例数（加此守卫时是 31，随后每次加例都靠它当场逮到、现值见 `EXPECTED_CASES`）。
 #   ⇒ 钉住期望例数；**改例数必须同步改本常量与那四处文档**。
-EXPECTED_CASES = 35
+EXPECTED_CASES = 45
 
 
 def run(target: Path, corpus: list[Path], extra: list[Path] | None = None,
@@ -116,6 +116,8 @@ def main() -> int:
         # （散文里的 `CS-02` 曾让词元 `02` 匹配上它 ⇒ 首版假阳现场）。
         (case_a / "清单.md").write_text(body(20, "清单"), encoding="utf-8")
         (case_a / "A02_样件.md").write_text(body(30, "A02"), encoding="utf-8")
+        # 散文阈值夹具（P19）：stem「乙乙乙壬癸」=5 字、后缀「壬癸」=2 字 ⇒ 占比 0.4 ∈ [1/3,1/2)
+        (case_a / "乙乙乙壬癸.md").write_text(body(20, "壬癸"), encoding="utf-8")
         samples = tmp / "samples"; samples.mkdir()
 
         def sample(fn: str, text: str) -> Path:
@@ -313,6 +315,16 @@ def main() -> int:
         check("P10 弱归属放行（门限被同行件抬高）必须发 WARN，不得零信号（缺陷⑨ 守卫）",
               "弱归属放行" in out, f"rc={rc}\n{out}")
 
+        # P10b ★ **P10 的另一侧**（承八轮复验 HIGH-1）：上一条只守「该报必须报」，
+        #     **不守「不该报不能报」** —— 把收敛条件 `n > owner_len` 整条撤掉（回到无条件 WARN，
+        #     即当初被实测占 CS-02 全部 WARN 67–76% 的那个洪水），**金丝雀曾 41/41 全绿**。
+        #     ⇒ 本侧专守洪水：**弱归属但行号在归属件长度之内**时，**一条都不该发**。
+        _many = "本案见 `长件.md` 一册。\n" + "".join(f"另见 `:{i}` 处。\n" for i in range(2, 12))
+        s = sample("P10b.md", _many)
+        rc, out = run(s, [case_a], gate="range")
+        check("P10b 弱归属但行号**在归属件长度内** → 一条 WARN 都不该发（防洪守卫）",
+              "弱归属放行" not in out, f"rc={rc}\n{out}")
+
         # P11 ★ 缺陷⑧ 守卫（承三轮复验 B8）：corpus 名是 extra 名的**字符串前缀**时，
         #     extra 件不得被 `startswith` 误认成本案（旧法 `A` 会把 `AB` 当亲戚）。
         ext2 = tmp / "本案语料-EXTRA"; ext2.mkdir()
@@ -364,6 +376,81 @@ def main() -> int:
         rc, out = run(s, [case_a], gate="range")
         check("P15 单字 CJK 词元不得绑件（`件` 是多个件的公共后缀）",
               "散文名绑定·超出" not in out, f"rc={rc}\n{out}")
+
+        # ── 以下三条承**变异扫描**补（2026-09-27）：拿 10 个「此前各轮从未测过」的实现点做变异，
+        #    结果 **7 处无守卫**、其中 **3 处会真的改变四案读数**。三条正是那 3 处。
+        #    ⇒ 教训：**守卫只覆盖了历轮碰巧探到的地方**；没被探到的等价于没验过。
+
+        # P16 · `norm()` 的 NFKC 归一（去掉它 ⇒ CS-05/CS-09 读数改变）
+        sys.path.insert(0, str(TOOL.parent))
+        import verify_citations as V2  # noqa: E402
+        check("P16 `norm()` 必须做 NFKC 归一（全角/半角须等价）",
+              V2.norm("ＡＢＣ:１２") == V2.norm("ABC:12") and V2.norm("**粗**") == V2.norm("粗"),
+              f"{V2.norm('ＡＢＣ:１２')!r} vs {V2.norm('ABC:12')!r}")
+
+        # P17 · 引文对拍的 **30 字**截断（改成 5 字 ⇒ 更宽 ⇒ 假绿）
+        #    ⚠ 夹具构造要精确：目标是让 `norm(q)[:5]` **恰好是源行的前缀**、第 6 字起分叉。
+        #    首版夹具写「长 第 1 行XXXXXXXX」——归一后 `[:5]` = `长第1行X`，X 对不上源行的 `—`
+        #    ⇒ **两档结论相同、守卫无齿**（承自测逮出）。现改为「长 第 1 行——XX」：
+        #    `[:5]` = `长第1行——` ⊂ 源行 ✅（5 字档放行）；`[:30]` = `长第1行——XX` ⊄ 源行（30 字档判红）。
+        s = sample("P17.md", "本案见 `长件.md:1`「长 第 1 行——XXXXXXXX」处。\n")
+        rc, out = run(s, [case_a], gate="all")
+        check("P17 引文只对上前 5 个归一化字符、第 6 字起分叉 → 必须判「引文不在所指行」（30 字截断守卫）",
+              rc == 1 and "引文不在所指行" in out, f"rc={rc}\n{out}")
+
+        # P18 · 散文窗口 = **12 字**（放大到 40 ⇒ 更远的名字也会绑上，四案读数改变）
+        #    构造：`清单` 距引用 >12 字 ⇒ 窗口内看不到它 ⇒ **不得绑**。
+        #    ⚠ 填充字选 `子丑寅卯辰巳午未申酉`：**必须避开一切夹具件名的后缀**——
+        #      首版用 `甲乙丙丁戊己庚辛壬癸`，而 P19 新加的夹具件名以 `壬癸` 结尾
+        #      ⇒ 窗口里那个「壬癸」被绑上、P18 假红（**夹具互相污染**，当场逮出）。
+        s = sample("P18.md", "本案见 `长件.md`（500 行）。\n对照面见 清单 子丑寅卯辰巳午未申酉 `:99` 的那段。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P18 名字落在 12 字窗口之外 → 不得绑（窗口宽度守卫）",
+              "散文名绑定·超出" not in out, f"rc={rc}\n{out}")
+
+        # P19 · 散文阈值的**方向性**：占比 0.4（∈[1/3,1/2)）必须仍绑 ⇒ 挡住把 ≥1/3 放成 ≥1/2
+        s = sample("P19.md", "本案见 `长件.md`（500 行）。\n对照面见 壬癸 `:99` 的那段。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P19 后缀占比 0.4 必须仍绑（散文 ≥1/3 阈值守卫）",
+              "散文名绑定·超出" in out and "乙乙乙壬癸.md" in out, f"rc={rc}\n{out}")
+
+        # P20 · `CITE` 的行号位数须容 **1..5 位**（收到 1,3 ⇒ CS-05/CS-02 读数改变）
+        check("P20 CITE 必须认 1..5 位行号（4 位不得被截成 3 位）",
+              V2.CITE.search(":1588").group(1) == "1588" and V2.CITE.search(":7").group(1) == "7",
+              f"{V2.CITE.search(':1588').group(1)!r}")
+
+        # P21 · 年份过滤阈 **1000**：四位且超界的行号须**降 WARN**、不得判 FAIL
+        #     （阈值抬到 3000 ⇒ CS-05/CS-02 的 WARN 变 FAIL、读数改变）
+        s = sample("P21.md", "本案见 `短件.md:3` 处。\n另见 `短件.md:1500` 处。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P21 四位超界行号须降 WARN（年份过滤 1000 阈值守卫）",
+              rc == 0 and "疑似年份" in out, f"rc={rc}\n{out}")
+
+        # P22 ★ 引文夹带（承八轮复验 MEDIUM-2 · Doctor 2026-09-27 裁「加 WARN、不改判决」）：
+        #     判据里的反向包含 `sn[:30] in qn`（源行前 30 字 ⊂ 引文）本是给截断引文用的，
+        #     但**同时放行了「源行前 30 字 ＋ 任意编造续写」**。**不收紧判据**（会误伤合法截断），
+        #     改为**显著长于被匹配片段时发 WARN**。本条守「必须报得出来」。
+        _q = "长 第 1 行 —— 合成语料占位内容" + "X" * 24
+        s = sample("P22.md", f"本案见 `长件.md:1`「{_q}」处。\n")
+        rc, out = run(s, [case_a], gate="all")
+        check("P22 引文=源行前缀＋编造续写 → 必须发「引文夹带」WARN（反向包含放行守卫）",
+              "引文夹带" in out, f"rc={rc}\n{out}")
+
+        # P22b 另一侧：**正常的短引文**（无夹带）**不得**触发该 WARN
+        s = sample("P22b.md", "本案见 `长件.md:1`「长 第 1 行 —— 合成语料占位内容」处。\n")
+        rc, out = run(s, [case_a], gate="all")
+        check("P22b 正常引文不得触发「引文夹带」（另一侧守卫）",
+              "引文夹带" not in out, f"rc={rc}\n{out}")
+
+        # P22c ★ 承**真案回归**逮出的另一型：**被引行是空行**时 `sn[:30]` == ""、`"" in 任意串` 恒真
+        #      ⇒ 旧判据把「指向空行的引用」**一律静默放行**（真案 CS-02 实测 4 处）。
+        #      本条守「必须单独报得出来、且与『夹带』分开」。
+        _blank = "".join("\n" for _ in range(10)) + "有内容的一行\n" + "".join("\n" for _ in range(5))
+        (case_a / "空行件.md").write_text(_blank, encoding="utf-8")
+        s = sample("P22c.md", "本案见 `空行件.md:3`「这一行其实什么都没有」处。\n")
+        rc, out = run(s, [case_a], gate="all")
+        check("P22c 引用指向**空行** → 必须单独报「被引行是空行」（空串恒真守卫）",
+              "被引行是空行" in out and "引文夹带" not in out, f"rc={rc}\n{out}")
 
         print("\n══ R 类 · 真树回归 ══")
         # ⚠ 承独立复验 P7(a)：原先只用 `Path("/sessions")` 探——**Mac 侧原生跑必然探不到**，
