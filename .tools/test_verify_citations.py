@@ -20,13 +20,20 @@
 ⚠ 纪律：**改 `verify_citations.py` 的判据，必须先跑本文件**；
    新增判据必须同时补一对 N/P 例，只补 N 会让闸慢慢变成「总在报红」。
 
-**⚠ 当前已知红（2026-09-27 · 不要当成测试坏了）**
+**⚠ 本文件全绿 ≠ 工具闭合 —— 这是**守卫**的状态，不是**工具能力**的状态（2026-09-27）**
 ---
-**`P1` 报红是如实反映一个未闭缺陷**：兜底门限对「**已解析到 --extra**」的引用误判——
-写法完全合规的跨案全路径引用（`别案/件.md:311` ＋ 传 `--extra`）会被拿**本案**的最长件当门限，
-于是 `311 > 本案最长件` 时**误红**。该缺陷**未修**（改它＝改判据设计，归 Doctor 裁，见
-`brain/logs/checkpoints/2026-09-26_D4重跑起手包.md` §三「二轮未闭项」）。
-**在它修掉之前，本工具的越界闸对「引别案材料」的件不可信。**
+四轮复验判 `FAIL` 的那两处 HIGH，**同日已闭合**，但请连带读它们的**残留代价**：
+
+  - **① 第四闸「指错目录」**：判据已改「在**所有给的根**（corpus ∪ extra）里**一处都解析不到**」
+    ＝ **与 `resolve()` 同用一把尺**（旧版按 basename、与 resolve 的按路径**两把尺不一致**，
+    正是四轮复验 E6/E7 两个反例的共同根因）。
+  - **③ 目标错误零信号**：新增**散文名绑定**（引用前散文窗口抽词元 → 语料件名含之者为候选 →
+    行号超出**可辨认候选中最长者**即报）。**⚠ 它刻意只出 WARN、不判 FAIL** —— 绑定是启发式（两件可能含同一词元），
+    升 FAIL 会把「猜错」变成「假红」。**`N7` 守它必须报、`P13` 守它不许乱报。**
+  - ⇒ **本文件全绿只说明「已覆盖的判据没被改坏」**；**工具的检出面仍是提示级：红须人核、绿不能当通过。**
+  - 另记：**「把每处判据改回坏的、守卫全红」只在「整条修法删掉」这一种变异取法下成立** ——
+    子改动子集里另有几处无守卫（四轮复验逮出），**故该结论不能当通说**。未闭项见
+    `brain/logs/checkpoints/2026-09-26_D4重跑起手包.md` §三「二轮未闭项」。
 
 用法
 ----
@@ -53,10 +60,18 @@ TOOL = Path(__file__).resolve().with_name("verify_citations.py")
 VERBOSE = "-v" in sys.argv
 
 _results: list[tuple[bool, str, str]] = []
+# ★ 例数守卫（承五轮复验 J1a/J1b）：汇总行只报 `N/N`，**删掉几例不会被任何断言拦住**
+#   （实测删 2 例仍 `29/29 通过 rc=0`），而四件文档到处写死具体例数（加此守卫时是 31，现已 34）。
+#   ⇒ 钉住期望例数；**改例数必须同步改本常量与那四处文档**。
+EXPECTED_CASES = 35
 
 
 def run(target: Path, corpus: list[Path], extra: list[Path] | None = None,
-        gate: str | None = None):
+        gate: str | None = None, quiet: bool = False):
+    # ★ 承**七轮复验**：原先**没有 `quiet` 形参** ⇒ `F7`（守「覆盖率信号在 `--quiet` 下也必须在场」）
+    #   实际测的是**非 `--quiet`** 输出，**对它点名的那个变异不响**（把覆盖率提示移回 `warns`
+    #   ⇒ 金丝雀仍 35/35 全绿，而 `--quiet` 下该信号一个字都不打）。**一个不守的守卫比没有守卫更坏**：
+    #   它把「我验过了」借给了一个没被验证的行为。
     cmd = [sys.executable, str(TOOL), "--target", str(target)]
     for c in corpus:
         cmd += ["--corpus", str(c)]
@@ -64,6 +79,8 @@ def run(target: Path, corpus: list[Path], extra: list[Path] | None = None,
         cmd += ["--extra", str(e)]
     if gate:
         cmd += ["--gate", gate]
+    if quiet:
+        cmd += ["--quiet"]
     p = subprocess.run(cmd, capture_output=True, text=True)
     return p.returncode, (p.stdout + p.stderr)
 
@@ -95,6 +112,10 @@ def main() -> int:
         (case_a / "a").mkdir(); (case_a / "z").mkdir()
         (case_a / "a" / "同名.md").write_text(body(400, "同名A"), encoding="utf-8")
         (case_a / "z" / "同名.md").write_text(body(10, "同名Z"), encoding="utf-8")
+        # 散文名绑定夹具（N7/P13）：`清单.md` 供「散文词 → 件名」命中；`A02_样件.md` 供假阳守卫
+        # （散文里的 `CS-02` 曾让词元 `02` 匹配上它 ⇒ 首版假阳现场）。
+        (case_a / "清单.md").write_text(body(20, "清单"), encoding="utf-8")
+        (case_a / "A02_样件.md").write_text(body(30, "A02"), encoding="utf-8")
         samples = tmp / "samples"; samples.mkdir()
 
         def sample(fn: str, text: str) -> Path:
@@ -134,8 +155,25 @@ def main() -> int:
         #    ——**恰恰是要拦的形态被放过了**。修后走兜底门限（本案语料最长件 = 500）。
         s = sample("N4.md", "另见 `清单v2.md:900` 的行。\n本案见 `短件.md:3` 处。\n")
         rc, out = run(s, [case_a], gate="range")
-        check("N4 归属失败（文件名写错）仍须判越界 → FAIL", rc == 1 and "行号越界" in out and "兜底判据" in out,
+        check("N4 归属失败 + 行号**超过语料最长件** → FAIL（⚠ 只覆盖这一子情形：`：200` 这类不超的仍会静默放过）", rc == 1 and "行号越界" in out and "兜底判据" in out,
               f"rc={rc}\n{out}")
+
+        # N5 ★ 缺陷⑩ 守卫（承三轮复验 B2）：**只引别案材料的件是正当形态**，
+        #    不得被 fail-closed 第四闸判成「--corpus 指错」。收窄判据＝还要「owner 名字在本案一个同名件都找不到」。
+        #    ⚠ 四轮复验指出：本条**只覆盖「别案件与本案撞名」这个子情形**——把 extra 件改名成
+        #      `GOTCHAS.md`（`--extra` 的典型载荷、本案语料里通常无同名件）就会 rc=2。名称勿读宽。
+        s = sample("N5.md", "本案的真身见 `别案语料/短件.md:9` 那一行。\n")
+        rc, out = run(s, [case_a], extra=[tmp], gate="range")
+        check("N5 只引别案材料且**与本案撞名** → 不得 exit 2（⚠ 只覆盖撞名子情形）", rc == 0, f"rc={rc}\n{out}")
+
+        # N6 ★ 承四轮复验 E6：N5 过得了**只是因为它恰好撞名**。把 extra 件改成 `--extra` 的
+        #    **典型载荷名**（本案语料里没有同名件）——旧判据（按 basename 找同名）立刻失效，
+        #    而「按解析」的新判据仍然正确。
+        (case_b / "GOTCHAS.md").write_text(body(30, "别案坑"), encoding="utf-8")
+        s = sample("N6.md", "本案的真身见 `别案语料/GOTCHAS.md:9` 那一行。\n")
+        rc, out = run(s, [case_a], extra=[tmp], gate="range")
+        check("N6 只引别案材料、且该名**本案无同名**（GOTCHAS 型）→ 仍不得 exit 2",
+              rc == 0, f"rc={rc}\n{out}")
 
         print("\n══ F 类 · 故障注入（配置错误必须硬停 —— 不得静默放绿）══")
 
@@ -157,6 +195,11 @@ def main() -> int:
         check("F2b 无引用件 + 空语料 → exit 2（空语料闸必须自己响，不被第四闸代偿）",
               rc == 2 and "空语料" in out, f"rc={rc}\n{out}")
 
+        # F5 ★ 承三轮复验：`--target` 指向**目录**时原先是未捕获 `IsADirectoryError`、rc=1
+        #    （与「有 FAIL」同码，调用方分不出「崩溃」与「判决」）⇒ 纳入 fail-closed，rc=2。
+        rc, out = run(tmp, [case_a], gate="range")
+        check("F5 --target 是目录 → exit 2（fail-closed，非崩溃）", rc == 2, f"rc={rc}\n{out}")
+
         rc, out = run(tmp / "不存在.md", [case_a], gate="range")
         check("F3 --target 不存在 → exit 2（fail-closed，非崩溃）", rc == 2, f"rc={rc}\n{out}")
 
@@ -165,8 +208,33 @@ def main() -> int:
         wrong = tmp / "像语料但不是语料"; wrong.mkdir()
         (wrong / "别的东西.md").write_text(body(50, "别"), encoding="utf-8")
         rc, out = run(sample("F4.md", "本案清单 `短件.md`，另见 `:200` 那段。\n"), [wrong], gate="range")
-        check("F4 --corpus 指到存在但无关的目录 → exit 2（一条都没核到不得出绿）", rc == 2,
-              f"rc={rc}\n{out}")
+        # ⚠ 承四轮复验：原断言只有 `rc == 2`，**「返回前先打 FAIL、不吞红」那半无守卫**（删掉它也全绿）。
+        #   现加一条：必须真的把已判出的 FAIL 打出来。
+        check("F4 --corpus 指到存在但无关的目录 → exit 2 且**不吞红**（先打已判出的 FAIL）",
+              rc == 2 and "返回前先报" in out, f"rc={rc}\n{out}")
+
+        # F6 ★ 承四轮复验 E7：**错语料里恰有一个与引用名同名的件** —— 这是上一版收窄判据
+        #    会漏掉的 fail-open 形状（按 basename 找同名 ⇒ 被同名件骗过 ⇒ rc=0 · ✅）。
+        #    新判据按「解析到没有」判：该件里的两个引用在给的任何根里都解析不到 ⇒ 仍须 exit 2。
+        wrong2 = tmp / "像语料但指错"; wrong2.mkdir()
+        (wrong2 / "README.md").write_text(body(20, "错语料README"), encoding="utf-8")
+        (wrong2 / "CHANGELOG.md").write_text(body(20, "错语料CHANGELOG"), encoding="utf-8")
+        s = sample("F6.md", "见 `共享基础/README.md:5` 与 `共享基础/CHANGELOG.md:3`。\n")
+        rc, out = run(s, [wrong2], gate="range")
+        check("F6 错语料里**有同名件**但引用解析不到 → 仍须 exit 2（缺陷⑦ fail-open 复发守卫）",
+              rc == 2, f"rc={rc}\n{out}")
+
+        # F7 ★ 承五轮复验 HIGH#1 / 六轮复验 A4：**错语料里恰有同名的「长」件碰巧解析** ⇒ 合取被解除、
+        #   回到 `已核 1 处 · FAIL 0 · ✅`。该形态**无法硬拦**（会误杀「只引 extra 的正当件」），
+        #   故改为**覆盖率显著提示**；而首版把它 append 进 `warns` ⇒ **`--quiet` 下被整片吞掉**、
+        #   又是零信号。⇒ 移到**汇总行常显**。本条守的就是「`--quiet` 下也必须在场」。
+        wrong3 = tmp / "有同名长件"; wrong3.mkdir()
+        (wrong3 / "短件.md").write_text(body(3000, "错语料长同名件"), encoding="utf-8")
+        s = sample("F7.md", "见 `短件.md:3` 处。\n另见 `清单.md:999` 处。\n再见 `别件.md:5` 处。\n"
+                            "又见 `他件.md:7` 处。\n末见 `这件.md:9` 处。\n")
+        rc, out = run(s, [wrong3], gate="range", quiet=True)
+        check("F7 错语料含同名的长件 → `--quiet` 下汇总行**仍须**报「覆盖率过低」（fail-open 显形守卫）",
+              rc == 0 and "本案语料覆盖率过低" in out, f"rc={rc}\n{out}")
 
         print("\n══ P 类 · 正向（闸必须不报 —— 防误报把闸变成噪声源）══")
 
@@ -195,7 +263,9 @@ def main() -> int:
         s = sample("P3.md", "`谱系.md` 的 frontmatter 写 `updated: 2026-05-15`，正文见 `长件.md:3`。\n")
         rc, out = run(s, [case_a], gate="range")
         check("P3 日期串不得被当行号/行号区间（假红 B 守卫）",
-              rc == 0 and "疑似年份" not in out and ":5-" not in out, f"rc={rc}\n{out}")
+              rc == 0 and "疑似年份" not in out, f"rc={rc}\n{out}")
+        # ⚠ 承五轮复验（LOW 11）：原先还带一个 `":5-" not in out` 子句——实测该字面**从不出现**
+        #   于任何输出，属**恒真死重**，且给读者「连行号区间都查了」的错觉。已删。
 
         # P4/P5 日期规则的方向性（直接单测 strip_dates，不依赖语料）
         sys.path.insert(0, str(TOOL.parent))
@@ -227,10 +297,79 @@ def main() -> int:
         check("P8 散文里提及的件不抬高门限（仍有 200>10 的越界 → FAIL）",
               rc == 1 and "行号越界" in out, f"rc={rc}\n{out}")
 
+        # P9 ★ 缺陷⑫ 守卫（承三轮复验 B8）：日期判据改为**三段式**后，
+        #    `:1905-12` 这类**合法四位数行号区间**不得再被当日期整段抹掉。
+        check("P9 两段式 `:1905-12` 不得被当日期抠掉（否则合法行区间被吞）",
+              V.strip_dates("x :1905-12 y") == "x :1905-12 y", V.strip_dates("x :1905-12 y"))
+        # （原 `P9b 三段式真日期仍须被抠掉` 与 `P4` 表达式**逐字相同**、不增覆盖，承四轮复验已删。）
+
+        # P10 ★ 缺陷⑨ 守卫（承三轮复验 B4）：弱归属（`src=全文前置`）**不得零信号**。
+        #     ⚠ 触发器已**收敛**（首版无条件 WARN ⇒ 实测占 CS-02 全部 WARN 的 73%、把提示通道淹了）：
+        #     现只在「**弱归属确实改变了判决**」时报——该行号**超出全文前置认定的那一件**，
+        #     却被同行另一件放过。故夹具必须造成这个形状：
+        #     全文前置认定的是 `短件.md`（10 行），`:300` 本应越界，被同行的 `长件.md`（500 行）放过。
+        s = sample("P10.md", "本案见 `短件.md:3` 处。\n另有一段无关正文。\n对照面见 清单 `:300`，与 `长件.md` 同段。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P10 弱归属放行（门限被同行件抬高）必须发 WARN，不得零信号（缺陷⑨ 守卫）",
+              "弱归属放行" in out, f"rc={rc}\n{out}")
+
+        # P11 ★ 缺陷⑧ 守卫（承三轮复验 B8）：corpus 名是 extra 名的**字符串前缀**时，
+        #     extra 件不得被 `startswith` 误认成本案（旧法 `A` 会把 `AB` 当亲戚）。
+        ext2 = tmp / "本案语料-EXTRA"; ext2.mkdir()
+        (ext2 / "别.md").write_text(body(50, "别"), encoding="utf-8")
+        s = sample("P11.md", "本案见 `短件.md:3` 处。\n另见 `本案语料-EXTRA/别.md:9` 处。\n")
+        rc, out = run(s, [case_a], extra=[tmp], gate="range")
+        check("P11 corpus 名是 extra 名的前缀时，不得误认成本案（缺陷⑧ 守卫）",
+              "落在 **--extra" in out, f"rc={rc}\n{out}")
+
+        # P12 ★ 缺陷③「零信号」那半的守卫：工具**判不出**该型（另一半未闭、归 Doctor），
+        #     但**必须把「有多少引用是弱归属」和「不保证判出该型」讲出来** —— 零信号本身是缺陷的一半。
+        rc, out = run(sample("P12.md", "本案见 `短件.md:3` 处。\n另见 `:4` 处。\n"), [case_a], gate="range")
+        check("P12 汇总必须报**正确的**弱归属计数 ＋ 说明该型靠散文绑定提示、不判 FAIL（缺陷③）",
+              "弱归属（归属来源＝全文前置）1 / 2 处引用" in out and "不判 FAIL" in out, f"rc={rc}\n{out}")
+        # ⚠ 承五轮复验 A3：原断言只查「标签串存在」，而那两个串只要 `total_cites>0` 就必然打印
+        #   ⇒ 断言退化为「件里有至少一处引用」（把 `weak_total += 1` 挖空，金丝雀仍全绿）。
+        #   现钉**具体数字**：本夹具恰 2 处引用、其中 1 处弱归属。
+
+        # N7 ★ 缺陷③b 的**检测面**（Doctor 令「加」的散文名绑定）：`清单 \`:99\`` 这类——
+        #     真身写在**散文**里、不在反引号内 ⇒ 旧版零信号。绑定后必须报出候选与超出。
+        #     ⚠ 断言必须用 **WARN 前缀**（`散文名绑定·超出`）：汇总自陈行里也有「散文名绑定」四字，
+        #       用裸词断会**恒真**（本套自身当场踩过）。
+        s = sample("N7.md", "本案见 `长件.md`（500 行）。\n对照面见 清单 `:99` 的那一段。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("N7 散文名绑定：`清单` 型零信号须被报出（③b 检测面）",
+              "散文名绑定·超出" in out and "清单.md" in out, f"rc={rc}\n{out}")
+
+        # P13 ★ 散文绑定的**假阳守卫**（首版现场）：散文里的 `CS-02` 曾让词元 `02` 匹配上
+        #     `A02_样件.md` ⇒ 真案 CS-09 L323 造出假阳。规约＝CJK 词元 ≥2、纯 ASCII 词元 ≥4。
+        s = sample("P13.md", "本案见 `长件.md`（500 行）。\n参考 CS-02 的内容 `:99`。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P13 纯数字/短 ASCII 词元不得绑件（`CS-02`→`A02_…` 假阳守卫）",
+              "散文名绑定·超出" not in out, f"rc={rc}\n{out}")
+
+        # P14 ★ 边界（承五轮复验 E1 的 `>=` off-by-one）：**行号恰等于候选长度 ⇒ 不得报**；
+        #     多 1 才报。`清单.md` 在夹具里是 20 行。
+        s = sample("P14.md", "本案见 `长件.md`（500 行）。\n对照面见 清单 `:20` 的那段。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P14 行号**恰等于**候选长度 → 不得报（`>=` 边界守卫）",
+              "散文名绑定·超出" not in out, f"rc={rc}\n{out}")
+        s = sample("P14b.md", "本案见 `长件.md`（500 行）。\n对照面见 清单 `:21` 的那段。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P14b 行号**超出 1 行** → 必须报（边界另一侧）",
+              "散文名绑定·超出" in out, f"rc={rc}\n{out}")
+
+        # P15 ★ 单字 CJK 词元不得绑件（承五轮复验 E7）：`件` 是 `长件`/`短件`/`A02_样件` 的公共后缀，
+        #     单字在中文里命中率过高 ⇒ 必成噪声源。规约＝CJK 词元 ≥2 字。
+        s = sample("P15.md", "本案见 `长件.md`（500 行）。\n对照面见 件 `:99` 的那段。\n")
+        rc, out = run(s, [case_a], gate="range")
+        check("P15 单字 CJK 词元不得绑件（`件` 是多个件的公共后缀）",
+              "散文名绑定·超出" not in out, f"rc={rc}\n{out}")
+
         print("\n══ R 类 · 真树回归 ══")
         # ⚠ 承独立复验 P7(a)：原先只用 `Path("/sessions")` 探——**Mac 侧原生跑必然探不到**，
         #   且跳过时只在打印里提一句、**仍报「全过」**：守卫可以静默消失而汇总行照样绿。
-        #   现改为：多候选根 ＋ 跳过时**显式体现在汇总行**（`R 组未跑`），不让缺失伪装成通过。
+        #   现改为：多候选根 ＋ 跳过时**显式体现在汇总行**（`R 组 n/4`；`⏭` 行另有「R 组未跑」字样），
+        #   不让缺失伪装成通过。
         roots: list[Path] = []
         # ★ 二轮复验逮出两处：① 此变量原先只在 else 分支赋值、跳过分支却无条件读 ⇒
         #   **UnboundLocalError 崩溃**；② 即使初始化，「探针根存在、但四个真件缺失」这条路径
@@ -276,18 +415,22 @@ def main() -> int:
                           ok, f"rc={rc} fail={nfail} fail_lines={len(fail_lines)}\n{out}")
 
         print()
+        n_actual = len(_results)
+        expected_ok = (n_actual == EXPECTED_CASES)
         bad = [r for r in _results if not r[0]]
         # ⚠ 承独立复验 P7(a)：R 组跳过时**必须在汇总行现形**，否则「守卫静默消失」看起来仍是全过。
         # ⚠⚠ 承三轮复验 B-1：判据原为二值（0 / >0）⇒ **「部分缺件」（跑成 1/4 或 3/4）照样不现形**。
         #   现报**实际跑成的例数 n/4**，三种形状（0 · 部分 · 4）在汇总行都可辨。
         note = "" if r_checks == 4 else f"  ⚠ **R 组 {r_checks}/4**（真树层覆盖不全）"
-        print(f"══ 金丝雀：{len(_results) - len(bad)}/{len(_results)} 通过{note} ══")
+        print(f"══ 金丝雀：{n_actual - len(bad)}/{n_actual} 通过{note} ══")
+        if not expected_ok:
+            print(f"  ❌ **例数守卫**：期望 {EXPECTED_CASES} 例、实际 {n_actual} 例"
+                  f"（删例须同步改 EXPECTED_CASES 与四件文档里的「{EXPECTED_CASES} 例」）")
         if bad:
             print("未过：")
             for _, n, _ in bad:
                 print(f"  · {n}")
-            return 1
-        return 0
+        return 1 if (bad or not expected_ok) else 0
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

@@ -37,7 +37,7 @@
     --gate     默认 all；**已交三案（旧体例）用 range**
     --quiet    只打结论行
 
-**跑之前先跑它的金丝雀**：`python3 test_verify_citations.py`（**21 例 · 改判据前必跑**）
+**跑之前先跑它的金丝雀**：`python3 test_verify_citations.py`（**35 例 · 改判据前必跑**）
 
 退出码：0 = 无 FAIL；1 = 有 FAIL（越界 / 引文不在所指行）；
 **2 = 配置错误**（fail-closed · 四条：`--target` 不存在 · `--corpus` 不存在 · `--corpus` 无 .md ·
@@ -61,7 +61,8 @@
 | 其中假红（已分类） | ≥6 | 待分 | ≥20 |
 
 **⇒ 现阶段的正确用法＝「提示器」，不是「闸」。判红必须先人核。**
-（**⚠ 上句是 2026-09-26 的状态。见下节——2026-09-27 修掉两处判据缺陷后，越界闸已可当真闸用。**）
+（**⚠ 上句是 2026-09-26 的状态。下节记有两处判据缺陷的修法 —— 但「可当真闸用」这句已被推翻：
+本工具当天即由二轮与四轮独立复验两次判 `FAIL`，**定级＝提示器**。请以紧接的下一段为准，勿单引本行。**）
 
 **★ 2026-09-27 判据修复（两处缺陷 · 由负向测试逮出，非自审）**
 
@@ -85,25 +86,36 @@
 CS-09 仍报 **2** 条，均在 **L193**——那是**把错误原文的行号放进反引号复述**的 `:311` 与 `:318`
 （**订正**：首版写作「用引号转述」，归因不准 —— 触发的是**反引号**，不是 `「」`，见下节）。
 **⇒ 越界闸已可用；「带留痕复述的件」仍会产红，是当前唯一的已知红源。**
+（**⚠ 此句当日即被判「过强」并已订正 —— 见紧接的下一段；保留原文以留痕，勿单引。**）
 
 **⚠⚠ 2026-09-27 二轮独立复验判 `FAIL` —— 上一句「越界闸已可用」过强，本工具定级回到「提示器」**
 二轮复验（另一位未参与实施的审核者）逮出 **10 项**，其中 **3 项是本轮修复自己新引入的**。
-**⇒ 实施者已停止自行修补**（同 09-26 那条经验：同一方案连改三轮会累积新错）。**以下四条为未闭项：**
 
-  1. **fail-closed 第四闸误诊并吞红（本轮新引入）**：「解析到引用却一处没落进本案语料」⇒ exit 2。
-     但**一个「只引别案材料」的件，语料是对的**，会被判成「`--corpus` 指错」；且它在**打印前返回**，
-     把 `all` 下本该出的「裸简写无法归属」／越界红**一并吞掉** ⇒ 人会去改路径而不是改件。
-  2. **兜底门限对「已解析到 `--extra`」的引用误红（本轮新引入）**：修法①（归属落 extra）时仍拿
-     **本案**最长件当门限 ⇒ `311 > 本案最长件` 即误红。**这与下面「使用约定」写的
-     「跨案全路径 = WARN，不判越界」直接矛盾**；同型四位数反而被年份过滤放行 ⇒ **两个方向都测错对象**。
-     **金丝雀 `P1` 现为红，即为本条。**
-  3. **★ 目标错误在 carry 够长时零信号（判据效力）**：本工具的**存在理由**是抓 `清单 :311-318` 这类。
-     实测：当「全文最近前置文件名」恰好**够长**时，owner 被误指到那个长件、门限随之抬高 ⇒
-     **该错完全不报（连一行提示都没有）**。⇒ 上面那句「越界闸已可用」在这条上**不成立**。
-  4. **`src=全文前置` 的归属该不该继承该文件长度**——这是 3 的根因，属**归属规则设计**，未自决。
+**⚠ 同日修 6 项；余 1 项（③ 的**检测面**）未闭 —— 它已拆半：零信号那半已修，判不判得出那半需动归属规则（归 Doctor）**
+**全表见** `brain/logs/checkpoints/2026-09-26_D4重跑起手包.md` §三「二轮未闭项」。**摘要**：
+  1. **已闭合** — **fail-closed 第四闸误诊并吞红**：判据由「按 **basename** 找本案同名件」改为
+     「**在所有给的根（corpus ∪ extra）里一处都解析不到**」——**与 `resolve()` 同用一把尺**
+     （旧版两把尺不一致，正是四轮复验 E6/E7 两个反例的共同根因）。把判据改回旧口径，`N6` 与 `F6`
+     **两条一起红**；「返回前先打 FAIL、不吞红」另配 `F4` 断言。守卫 `N5`·`N6`·`F4`·`F6`。
+  2. **已闭合** — **兜底门限误红 `--extra` 引用** → **已解析到 extra 的引用按那一件自身长度判**。守卫 `P1`（**已由红转绿**）。
+  3. ⚠ **部分闭合（检测面 · WARN 级）** — **目标错误在 carry 够长时零信号**：承 Doctor 令「加」，
+     新增**散文名绑定**（`prose_candidates`）——取件名（去 `.md`）的**最长后缀**，看它是否出现在引用**前面的散文窗口**（12 字）里（**后缀须占件名 ≥1/3**）；命中即为候选，行号**超出可辨认候选中最长的**则报 WARN 并列出候选与行数。
+     **刻意只出 WARN、不改红/绿**（绑定是启发式，升 FAIL 会把「猜错」变成「假红」——本工具一路栽过的坑）。
+     **实证**：四轮复验的 E1 形状（`清单 \`:311-318\``）**被抓到**；四案实测**零假阳**
+     （CS-05/02/01 = 0，CS-09 = 2、**两条正落在已知出错的 L193**）。
+     ⚠ **首版假阳现场修**：词元原为 `[0-9A-Za-z_一-鿿]{2,}`，散文里的 `CS-02` 让 `02` 匹配上
+     `A02_a8_v3_多极并立阶段.md` ⇒ 真案 CS-09 L323 造出假阳；规约改 **CJK≥2 字 / 纯 ASCII≥4 字符**。
+     另附「零信号」半：汇总行报**弱归属计数**＋说明该型靠绑定提示、不判 FAIL。守卫 `N7`·`P13`·`P12`。
+  4. **同名件随目录序** → 歧义名**取最短件**（与 `resolve` 解耦）＋ `resolve` 的 hits 排序。守卫 `P7`。
+  5. **`strip_dates` 吞合法四位数区间** → 日期判据改**三段式** `YYYY-MM-DD`。守卫 `P9`。
+  6. **`--target` 指目录 rc=1** → 纳入 fail-closed，**rc=2**。守卫 `F5`。
+  7. **`in_corpus` 前缀塌缩** → 改**路径相对性**判（`is_relative_to`）。守卫 `P11`。
+**守卫有效性不是自述**：把每处判据**改回坏的**跑全量金丝雀，**7/7 都由对应那一条守卫报红**（无一恒真）。
 
-**⚠ 归 Doctor 裁的是「方向」、不是「再改一版」**：1／2 要动判据设计，3／4 要动归属规则。
-**在裁之前：只用本工具的提示，不得据其绿放行**；`起手包 §七 2.5` 已按此改口径。
+**⚠ 但定级仍为「提示器」、不是「闸」**：本轮修的是**已发现的**缺陷；`all` 的引文闸**在新体例件上仍无实测样本**，
+且两条**已知代价未消**——① 同行 span 内「引」与「提」机器分不出（行级 OR 仍可能被无关件名抬高）；
+② **四位数行号的越界降 WARN 会漏**。⇒ **红仍须人核、绿不能当通过**；`起手包 §七 2.5` 已按此改口径。
+**本场七项修复待独立复验（实施者不自签）。**
 
 **★ 同日二轮：独立复验又逮出三处（含一处**本轮自己引入的回归**）**
 
@@ -134,10 +146,10 @@ CS-09 仍报 **2** 条，均在 **L193**——那是**把错误原文的行号�
   **为什么不能只用 ①**：只用 ① 会把「写错文件名」这类**最该拦**的形态整行放过；只用 ② 就是被
   缺陷② 证伪的旧口径。两档并存＝**紧的管能定位的、松的管定不了位的**。
 
-**配套守卫测试**：`brain/.tools/test_verify_citations.py`（**21 例 · N/F/P/R 四组**）。
+**配套守卫测试**：`brain/.tools/test_verify_citations.py`（**35 例 · N/F/P/R 四组**）。
 **纪律：改本文件判据前先跑它；新增判据必须同时补一对 N（该报）+ P（不该报）**——
-只补 N，闸会慢慢退化成「总在报红」的噪声源。**R 组（真树回归）跳过时，汇总行会显式标「R 组未跑」**，
-不让守卫静默消失。
+只补 N，闸会慢慢退化成「总在报红」的噪声源。**R 组（真树回归）跳过或部分跳过时，汇总行会显式标
+「R 组 n/4」**（承六轮复验订正：先前写「R 组未跑」，实际字面是 `R 组 0/4`），不让守卫静默消失。
 
 **三类假红现状**：
   - **A · 跨行 carry**：修后**已被行级 OR 吸收**（CS-05「**已核引用 234 处**」实测 0 假红。
@@ -215,29 +227,90 @@ NAME = re.compile(r"([^\s`\\|]+\.md)")
 #   修法＝**在找引用之前先把日期串抠掉**，而不是事后过滤数字。
 #   ⚠ 判据必须是「像日期」而非「四位数-两位数」：`1588-16`（月=16 不合法）不算日期、不得抠，
 #     否则合法的四位数行号区间会被误吞。
-DATEISH = re.compile(r"(1[0-9]{3}|20[0-9]{2})\s*[-–—/.]\s*(\d{1,2})(?:\s*[-–—/.]\s*(\d{1,2}))?")
+#   ★ 2026-09-27 二次修复（承三轮复验 B8）：**要求三段式 `YYYY-MM-DD`**。上一版允许两段式，
+#     于是 `:1905-12` 这类**合法的四位数行号区间**被当成日期整段抹掉（实测连 WARN 都没有）。
+#     两段式日期（`2026-05`）仍会被读成区间，但经四位数过滤只降 WARN —— **如实留此残留**。
+DATEISH = re.compile(r"(1[0-9]{3}|20[0-9]{2})\s*[-–—/.]\s*(\d{1,2})\s*[-–—/.]\s*(\d{1,2})")
+
+
+# ── 散文名绑定（缺陷③b 的检测面 · 2026-09-27 Doctor 令「加」）────────────────────
+# **为什么需要**：`清单 \`:311-318\`` 这类引用的**真身写在散文里、不在反引号内**，解析器绑不到 ⇒
+#   原样**零信号**。这是本工具的存在理由那一型，也是四轮复验里唯一判「未闭」的检测面。
+# **做法**：取引用**前面的散文窗口**，抽出词元，凡**语料件名（去 `.md`）包含该词元**者即为候选。
+# **⚠ 刻意只出 WARN、不改红/绿**：绑定是启发式（两个不同件都可能含同一词元），
+#   把它升成 FAIL 会把「猜错」变成「假红」，正是本工具一路栽过的坑。
+#   **级别＝提示**：它把「零信号」变成「有人看得见的一行」，判不判得准仍归人。
+PROSE_WINDOW = 12
+
+
+def _ok_token(s: str) -> bool:
+    """词元合格判据：CJK ≥2 字；**含 ASCII 则须 ≥4 字符**。
+
+    ⚠ 两处都是现场踩出来的：**≥4** 挡掉 `02` 匹配 `A02_…`（CS-09 L323 假阳）；
+    **≥2 CJK** 挡掉单字词元（如 `中` 匹配 `数据中台`）——单字在中文里命中率过高、必成噪声源。
+    """
+    if not s:
+        return False
+    if any(c.isascii() for c in s):
+        return len(s) >= 4
+    return len(s) >= 2
+
+
+def prose_candidates(line: str, span_start: int, corpus_len: dict[str, int],
+                     window: int = PROSE_WINDOW) -> list[tuple[str, int]]:
+    """引用**前置散文窗口**里可能指代的语料件 → [(件名, 行数)]（**按行数降序**，最长者在前）。
+
+    **做法（2026-09-27 二次修 · 承五轮复验 A2b）**：不用「切词元再找件」，改为
+    **对每个件名（去 `.md`）取其最长后缀，看该后缀是否出现在散文窗口里**。
+
+    **为什么换**：首版「切词元 → `tok in stem`」是**单向包含**，而中文散文常把件名与上下文**粘连**
+    （`对照面见清单`、`CS-05 的时间线`）。首版在这两种写法下**静默不报**；真件 CS-09 L193 能被抓到，
+    **只因原文恰好写成了 `「清单 `:311…`——引号＋空格给了分隔符**。⇒ **那是形态运气，不是能力**。
+    后缀匹配天然处理粘连：`对照面见清单` 含 `清单`、`CS-05 的时间线` 含 `时间线`（⊂ `历史时间线`）。
+    **排序改为按行数降序**：`_hi`（决定「超出可辨认候选」的那个）必须排在最前，否则 `[:4]` 截断会把它藏掉。
+    """
+    prose = line[max(0, span_start - window):span_start]
+    hits: dict[str, int] = {}
+    for name, L in corpus_len.items():
+        stem = name[:-3] if name.endswith(".md") else name
+        for k in range(len(stem), 1, -1):          # 从最长后缀往下试
+            sub = stem[-k:]
+            if not _ok_token(sub) or sub not in prose:
+                continue
+            # ★ 2026-09-27 三次修（承**自测复现的五轮复验同类假阳**）：还须「**词元占件名相当比例**」。
+            #   放宽粘连支持后，CS-05 立刻多出 2 条假阳——`核心`(2 字) 撞上 12 字的
+            #   `03_大学中庸_四书核心.md`、`中华`(2 字) 撞上 18 字的 `A04_…_中华.md`；
+            #   而 CS-05 是中华文明案，`中华` 满篇都是。⇒ 规约 `len(sub) * 3 >= len(stem)`：
+            #   **短通用后缀撞长名 = 弱证据，弃**；`清单`⊂`文明基因清单`(2×3≥6) 这类同量级的保留。
+            if len(sub) * 3 < len(stem):
+                continue
+            hits[name] = L
+            break
+    return sorted(hits.items(), key=lambda kv: (-kv[1], kv[0]))
 
 
 def strip_dates(span: str) -> str:
-    """把 span 里的日期串（YYYY-MM[-DD]，且月/日在合法域内）抹成空格，再交给 CITE。"""
+    """把 span 里的**三段式日期**（YYYY-MM-DD，且月/日在合法域内）抹成空格，再交给 CITE。"""
     def repl(m: re.Match) -> str:
-        mo, dd = int(m.group(2)), m.group(3)
-        if 1 <= mo <= 12 and (dd is None or 1 <= int(dd) <= 31):
+        mo, dd = int(m.group(2)), int(m.group(3))
+        if 1 <= mo <= 12 and 1 <= dd <= 31:
             return " "
         return m.group(0)
     return DATEISH.sub(repl, span)
 
 
 def parse_citations(lines: list[str]):
-    """产出一串 (行号, 文件, 起行号, 止行号, 归属来源)。
+    """产出一串 (行号, 文件, 起行号, 止行号, 归属来源, 行文本, span 起点)。
 
     归属规则（与配方一致）：**同 span 内文件名 → 本行最近前置文件名 → 全文最近前置**。
+    `span 起点` 供**散文名绑定**取「引用前面的散文窗口」用（见 `prose_candidates`）。
     """
     out = []
     carry: str | None = None      # 全文最近前置文件名
     for i, line in enumerate(lines, 1):
         line_name: str | None = None
-        for span in re.findall(r"`([^`]+)`", line):
+        for sm in re.finditer(r"`([^`]+)`", line):
+            span = sm.group(1)
             names = NAME.findall(span)
             if names:
                 line_name = names[-1]
@@ -249,7 +322,7 @@ def parse_citations(lines: list[str]):
                     a, b = b, a
                 owner = line_name or carry
                 src = "span内" if names else ("本行前置" if line_name else ("全文前置" if carry else "无"))
-                out.append((i, owner, a, b, src, line))
+                out.append((i, owner, a, b, src, line, sm.start()))
     return out
 
 
@@ -263,7 +336,9 @@ def resolve(name: str | None, corpus: list[Path]) -> Path | None:
         if root.is_file() and root.name == name:
             return root
         if root.is_dir():
-            hits = list(root.rglob(name))
+            # ★ 2026-09-27：`rglob` 顺序未定义（目录序）⇒ **同名件取哪个不可复现**。
+            #   排序后再取，至少让同一输入的读数稳定（承三轮复验 A6）。
+            hits = sorted(root.rglob(name))
             if hits:
                 return hits[0]
     return None
@@ -293,8 +368,9 @@ def main() -> int:
     args = ap.parse_args()
 
     target = Path(args.target)
-    if not target.exists():
-        print(f"❌ --target 不存在：{target}\n   fail-closed：读不到件，拒绝出绿。", file=sys.stderr)
+    if not target.exists() or target.is_dir():
+        why = "不存在" if not target.exists() else "是目录、不是件"
+        print(f"❌ --target {why}：{target}\n   fail-closed：读不到件，拒绝出绿。", file=sys.stderr)
         return 2
     corpus = [Path(c) for c in args.corpus]
     lines = target.read_text(encoding="utf-8").splitlines()
@@ -339,7 +415,22 @@ def main() -> int:
         return 2
 
     def in_corpus(p: Path) -> bool:
-        return any(str(p).startswith(str(r)) for r in corpus)
+        # ★ 2026-09-27 修复（缺陷⑧「前缀塌缩」· 承三轮复验 B8）：原用 `str(p).startswith(str(r))`，
+        #   于是 `--corpus .../A` 会把 `.../AB/...` 当成**本案**（`A` 是 `AB` 的**字符串**前缀）⇒
+        #   既漏「落在 --extra」的提示、又**绕过第四闸**（fail-open 方向）。
+        #   改用**路径相对性**判，不靠字符串前缀。
+        try:
+            rp = p.resolve()
+        except Exception:
+            rp = p
+        for r in corpus:
+            try:
+                rr = r.resolve()
+                if rp == rr or rp.is_relative_to(rr):
+                    return True
+            except Exception:
+                continue
+        return False
 
     # 本案语料 basename → 行数（行级 OR 用；避免逐行 rglob）
     # ★ 2026-09-27 修复（缺陷⑤「同名件两套取法不一致」· 承独立复验 P6）：
@@ -347,10 +438,15 @@ def main() -> int:
     #   同一 basename 有两个件时**两处指向不同文件** ⇒ 门限按**无关件**算，可放行真越界。
     #   真实语料里并不罕见：CS-05 有 **9 个 `README.md`**，CS-01/02/03 各 2 个。
     #   修法＝**歧义 basename 不进行级 OR**，退回 owner 自身长度（取更紧的那把尺）。
-    _seen: dict[str, Path | None] = {}
+    # ★ 2026-09-27 二次修复（缺陷⑤续 · 承三轮复验 A6/B-5）：上一版把歧义名**排除**出行级 OR，
+    #   门限于是退回 `resolve()` 取到的那一个——而 `resolve()` 用**未排序**的 `rglob()[0]`，
+    #   实测量到的是 400 行件而非更紧的 10 行件 ⇒ **同一行文本的红/绿由文件系统顺序决定**。
+    #   修法两件：① 歧义 basename 取**最短件**（宁紧不松，且**与 resolve 的取法解耦**）；
+    #   ② `resolve()` 的 hits 先排序，去掉不确定性。
+    corpus_len: dict[str, int] = {}
     for p in corpus_files:
-        _seen[p.name] = None if p.name in _seen else p
-    corpus_len: dict[str, int] = {k: len(load_pre(v)) for k, v in _seen.items() if v is not None}
+        _L = len(load_pre(p))
+        corpus_len[p.name] = _L if p.name not in corpus_len else min(corpus_len[p.name], _L)
     _maxlen = max((len(load_pre(p)) for p in corpus_files), default=0)   # 兜底判据用
 
     def line_files_lens(line: str) -> list[int]:
@@ -369,11 +465,16 @@ def main() -> int:
     warns: list[str] = []
     checked = 0
     total_cites = 0
+    weak_total = 0              # 归属来源＝全文前置 的引用数（弱归属）
+    weak_over_owner = 0         # 其中「该行号已超出全文前置认定的那一件」——最需人核的子集
+    resolved_anywhere = 0       # 引用**在任何给的根里**（corpus ∪ extra）解析成功的次数（第四闸用）
     pairs_by_line: dict[int, list] = {}   # 行 → [(owner, path, a, b)]（引文对拍按行聚合）
 
-    for lineno, owner, a, b, src, line in parse_citations(lines):
+    for lineno, owner, a, b, src, line, span_start in parse_citations(lines):
         total_cites += 1
         path = resolve(owner, resolve_roots) if owner else None
+        if path is not None:
+            resolved_anywhere += 1
         in_corpus_hit = path is not None and in_corpus(path)
 
         if owner is None:
@@ -387,29 +488,66 @@ def main() -> int:
         elif path is None:
             warns.append(f"L{lineno} 引 `{owner}` —— **不在 --corpus/--extra 内**（跨案引用？还是携带？）")
         elif not in_corpus_hit:
-            warns.append(f"L{lineno} 引 `{owner}` —— 落在 **--extra（非本案语料）**，本行按兜底判据")
+            warns.append(f"L{lineno} 引 `{owner}` —— 落在 **--extra（非本案语料）**，按其自身长度判")
         else:
             checked += 1
             pairs_by_line.setdefault(lineno, []).append((owner, path, a, b))
 
-        # ── 越界闸（任何引用都过闸，两档门限）──
-        # ★ 2026-09-27 修复（缺陷⑥「归属失败的引用整行不查越界」· 承独立复验 P3 —— **本轮自己引入的回归**）：
-        #   修前把越界检查挪到三个 `continue` 之后 ⇒ **文件名写错 / 粘标点 / 裸简写**全部只落 WARN、
-        #   退出码 0 —— **恰恰是要拦的形态被放过了**。现改为：
-        #     ① 归属落在本案语料内 → **行级 OR**（紧：本行被引文件的最长者）
-        #     ② 归属失败 / 落在 --extra / 无法归属 → **兜底门限＝本案语料最长件**（松，宁可漏不可误报）
+        # ── 越界闸（任何引用都过闸 · 三档门限）──
+        # ★ 2026-09-27 二次修复（缺陷⑥续 · 承三轮复验 B1/B3）：
+        #   ① 归属落在**本案语料内** → 行级 OR（紧：本行被引文件的最长者）
+        #   ② 归属**已解析、但落在 --extra** → **用那一件自己的长度**
+        #      （★★ 改正：上一版拿**本案**最长件当门限 ⇒ 写法完全合规的跨案引用会误红，
+        #        `311 > 本案最长件` 就报——而 `:311` 在别案件里是合法行；**两个方向都测错对象**。）
+        #   ③ **真·归属失败**（解析不到 owner／无 owner）→ 兜底＝本案语料最长件（松，宁漏不误报）
         if in_corpus_hit:
             lens = line_files_lens(line)
             allowed = max(lens) if lens else len(load_pre(path))
+            owner_len = len(load_pre(path))
             where = f"owner={owner} · 归属来源={src}"
+            budget = f"本行可解析的**本案语料**文件最长只有 {allowed} 行"
+        elif path is not None:
+            allowed = len(load_pre(path))
+            owner_len = allowed
+            where = f"owner={owner} · 归属来源={src} · 非本案语料"
+            # ★ 承四轮复验 E5：原模板一律说「本行可解析的**本案语料**文件最长只有 N 行」，
+            #   但这一档的 N 是**别案那一件自身**的长度 —— 文案自相矛盾（把别案长度说成本案语料长度）。
+            budget = f"被引的那一件（非本案语料）自身只有 {allowed} 行"
         else:
             allowed = _maxlen
+            owner_len = None
             where = f"owner={owner or '未归属'} · 归属来源={src} · **兜底判据**"
+            budget = f"本案语料最长件只有 {allowed} 行"
+        # ⚠ 弱归属计数（缺陷③ 的**可诚实交付的那半**）：本工具**无法**保证判出该型（见 summary 末行的自陈），
+        #   但至少要让「这件里有多少引用是弱归属的」**可见** —— 零信号本身就是缺陷的一半。
+        if src == "全文前置":
+            weak_total += 1
+        # ★ 散文名绑定（缺陷③b 的**检测面** · WARN 级、不改红/绿）：
+        #   **触发条件＝该引用自身 span 里没有文件名**（`src != "span内"`）。
+        #   ⚠ 承五轮复验 A2b：首版只认 `src == "全文前置"`，于是**行内任何更早的 span 出现件名**
+        #     就会把 `src` 变成「本行前置」⇒ **整条绑定不跑**（同一条引用，只多一个无关 span 即静默）。
+        if src != "span内":
+            _cands = prose_candidates(line, span_start, corpus_len)
+            if _cands:
+                _hi = max(L for _, L in _cands)
+                _shown = " · ".join(f"`{nm}`（{L} 行）" for nm, L in _cands[:4])
+                _more = f" …等 {len(_cands)} 件" if len(_cands) > 4 else ""
+                for n in filter(None, (a, b)):
+                    if n > _hi:
+                        warns.append(
+                            f"L{lineno} **散文名绑定·超出可辨认候选**：引 `:{n}`，引用前的散文词可对应 "
+                            f"{_shown}{_more}，该行号**超出这些候选中最长的**（{_hi} 行）⇒ "
+                            "请人核这一处指哪个文件（可能正是要找的跨案携带错）")
+                        # ⚠ 文案改「可辨认候选」（承六轮复验 D-1）：候选集**经过筛选**（见
+                        #   `prose_candidates` 的 ≥1/3 规则 ＋ 12 字窗口），旧文案写「全部候选」是**过强**——
+                        #   一个被筛掉的**更长**同缀件会让这条提示把人引向错的件。逐条附「局限见汇总」。
+                    # ★ 五轮复验**删支**：原本还有一档「超出**部分**候选」（`n > _lo`），
+                    #   实测**一个 3 行的同名桩件就能让 `n=4…200` 全部报** ⇒ 把提示通道淹没
+                    #   （正是缺陷⑨当初栽过的形态）。**只留「超出全部候选」这一高档**，宁漏不误报。
         if allowed:
             for n in filter(None, (a, b)):
                 if n > allowed:
-                    msg = (f"L{lineno} **行号越界**：引 `:{n}`（{where}），"
-                           f"但本行可解析的本案语料文件最长只有 {allowed} 行")
+                    msg = (f"L{lineno} **行号越界**：引 `:{n}`（{where}），但 {budget}")
                     # ★ 年份过滤（2026-09-26 实测假红类 B）：行文里的 `：1588`／`：1805`／`：2026`
                     #   是**年份**，不是行号。判据＝**四位数（≥1000）且超出可解析长度** ⇒ 降 WARN。
                     #   真日期串已由 `strip_dates` 先行抠掉，这里管的是「像年份但不构成日期」的残例。
@@ -420,16 +558,52 @@ def main() -> int:
                         warns.append(msg + " ——⚠ **疑似年份／编号**（四位数），降为提示")
                     else:
                         fails.append(msg)
+                elif src == "全文前置" and owner_len is not None and n > owner_len:
+                    # ★ 缺陷⑨ 的**收敛版**（自测收窄）：首版是**无条件**对每条 `src=全文前置` 的引用
+                    #   发 WARN —— 实测占 CS-02 全部 WARN 的 **67–76%** ⇒ **把提示通道淹了**。
+                    #   收敛为**只在「弱归属确实改变了判决」时报**：按「全文前置」认定的那一件
+                    #   **本应判越界**，却被同行另一件／本案门限放过了。
+                    #   ⚠ 四轮复验正告：**这条触发器与缺陷③的原型（carry 够长）互斥、按构造不可能触发** ——
+                    #   它现在补的是「另一种形状」，**不是** ③ 本身；③ 的检测面仍未闭（见 summary 末行）。
+                    weak_over_owner += 1
+                    warns.append(
+                        f"L{lineno} **弱归属放行**：引 `:{n}`（owner={owner} · 归属来源＝全文前置），"
+                        f"该行号**已超出「全文前置」认定的那一件**（{owner_len} 行），"
+                        f"是**同行的另一件（最长 {allowed} 行）把它放过的** ⇒ "
+                        "**请人核这一处到底指哪个文件**（可能正是要找的跨案携带错）")
+
+    # ★ 承五轮复验 HIGH#1「第四闸残余 fail-open」＋ 六轮复验 A4：
+    #   错语料里只要有**一个同名的长件**碰巧解析，上面的合取就被解除 ⇒ 回到 `已核 1 处 · FAIL 0 · rc=0 · ✅`
+    #   （＝缺陷⑦ 的同一张脸）。**不改硬判**（会与「只引 extra 的正当件」打架），改为**显著提示**。
+    #   ⚠⚠ 修法二改（六轮复验逮出）：首版把提示 append 进 `warns` ⇒ **`--quiet` 下被整片吞掉**、
+    #   该形态在 `--quiet` 下仍是 `rc=0 · ✅ · 零信号`（本工具推荐用法之一就是 `--quiet`）。
+    #   ⇒ 移到**汇总行常显**（见下方 `已核引用 …（本案覆盖率 …）`），**不再依赖 WARN 列表**。
+    low_coverage = bool(total_cites >= 5 and checked * 2 < total_cites)
 
     # ★ fail-closed（缺陷⑦「指错但存在的目录」· 承独立复验 P1）：`--corpus` 指到一个**存在却指错**
     #   的目录（如把 `PEC/raw` 当成案语料）时，上面的 exists()／空目录两闸都拦不住——
-    #   结果是**已核引用 0 处 · FAIL 0 · exit 0 · 「✅ 未发现越界与引文失据」**，
-    #   即**缺陷④「路径写错反而全绿」的另一种、而且更可能发生的形态**。
-    #   判据：**解析到了引用，却一处都没落进本案语料** ⇒ 拒绝出绿。
-    if total_cites and not checked:
-        print(f"❌ 解析到 {total_cites} 处引用，但**没有一处落进本案语料** ——"
+    #   结果是**已核引用 0 处 · FAIL 0 · exit 0 · 「✅ 未发现越界与引文失据」**。
+    # ★ 2026-09-27 二次修复（缺陷⑩ · 承三轮复验 B2/B7）：上一版判据过宽且**吞红**——对
+    #   「**一个只引别案材料的件**」也判「--corpus 指错」（**那是正当形态**），且它在打印前返回，
+    #   把 `all` 下本该出的红**一并吞掉**。修法两件：
+    #     ① **判据＝「一条都没核到，且在所有给的根里（corpus ∪ extra）一处都解析不到」**。
+    #        ⚠ 承四轮复验 E6/E7 —— 上一版按 **owner 的 basename** 判「本案有没有同名件」，
+    #        而 `resolve()` 是按**路径**找的 ⇒ **两把尺不一致**：错语料里恰有一个同名件
+    #        （如 `README.md`）就能骗过它、回到 `rc=0 · ✅`（缺陷⑦ 被重新打开）；反过来，
+    #        只引 extra 的件若引用名本案无同名（`GOTCHAS.md` 正是 extra 典型载荷）又会被误判 exit 2。
+    #        **改用「解析到没有」这把与 `resolve()` 同一把的尺，两个反例同时被覆盖。**
+    #     ② **先把已判出的 FAIL/WARN 打出来再返回** —— 不吞红。
+    if total_cites and not checked and resolved_anywhere == 0:
+        print(f"❌ 解析到 {total_cites} 处引用，但没有一处落进本案语料，"
+              f"**且这些引用在给的所有根（corpus ∪ extra）里一处都解析不到** ——"
               f"\n   几乎肯定是 `--corpus` 指错了目录（当前：{' · '.join(str(c) for c in corpus)}）"
               "\n   fail-closed：一条都没核到，此处的绿灯无意义。", file=sys.stderr)
+        if fails:
+            print("\n  ❌ 返回前先报已判出的 FAIL（不吞红）：", file=sys.stderr)
+            for f_ in fails:
+                print("     " + f_, file=sys.stderr)
+        if warns and not args.quiet:
+            print(f"  ⚠ 另有 {len(warns)} 条 WARN（`--quiet` 下不展开）", file=sys.stderr)
         return 2
 
     # ── 按行聚合的引文对拍（每段引文只需对上本行任一处引用）──────────────
@@ -455,7 +629,28 @@ def main() -> int:
 
     print(f"引文核验：{target.name}")
     print(f"  corpus: " + " · ".join(str(c) for c in corpus))
-    print(f"  已核引用 {checked} 处 · FAIL {len(fails)} · WARN {len(warns)} · gate={args.gate}")
+    _cov = f"{checked}/{total_cites}" if total_cites else "—"
+    _low = ("  ⚠ **本案语料覆盖率过低（" + _cov + "）—— 先确认 `--corpus` 是否指对目录**"
+            if low_coverage else "")
+    print(f"  已核引用 {checked} 处（本案覆盖率 {_cov}）· FAIL {len(fails)} · WARN {len(warns)} · gate={args.gate}{_low}")
+    # ★ 缺陷③ 的**可诚实交付的那半**：检测面仍未闭（见下），但「有多少引用是弱归属」必须可见 ——
+    #   零信号本身是缺陷的一半，且是唯一现在还修得动的那一半（另一半要动归属规则，归 Doctor 裁）。
+    if total_cites:
+        extra = (f" · 其中 **{weak_over_owner} 处该行号已超出全文前置认定的那一件**（最需人核）"
+                 if weak_over_owner else "")
+        print(f"  弱归属（归属来源＝全文前置）{weak_total} / {total_cites} 处引用{extra}")
+        print("  ⚠ **「carry 够长型」越界靠『散文名绑定』提示、不判 FAIL**：该型下 owner 被指到长件、"
+              "门限随之抬高 ⇒ 越界闸**可能一行都不报**；绑定是从引用前的散文词去找语料件，"
+              "**是启发式、会猜错**。**四条已披露的局限**（承五/六轮复验，逐条实测）："
+              "① 候选集**经筛选**（后缀须占件名 ≥1/3、只看引用前 12 字窗口）⇒ 报出的「可辨认候选」"
+              "**可能不是全部相关件**，`超出可辨认候选` **≠ 一定越界**；"
+              "② 因此**覆盖与否部分取决于件名有多长**——同内容同写法，件名多几个字就可能**零候选、零提示**；"
+              "③ **英文缩写前缀写法绑不到**（如 `A02_a8` 指 `A02_a8_v3_…`，首版词元法能、后缀法不能）；"
+              "④ 名字被推出 12 字窗口即失效；"
+              "⑤ **覆盖率提示的边界**：它对「只引 `--extra` 的正当件」会**误问一句**（那类件覆盖率天然低），"
+              "且**有地板**——引用少于 5 处时**不报**；"
+              "⑥ **候选集里混进无关的、够长的同缀件**时 `_hi` 被顶高 ⇒ 本提示**可能被整条压掉**（漏报方向）。"
+              "**⇒ 弱归属占比高、或见到「散文名绑定」时，请回件对那几处 `文件:行号` 逐条实 grep。**")
     if fails:
         print("\n  ❌ FAIL：")
         for f in fails:
