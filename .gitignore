@@ -43,3 +43,4 @@ backups/
 logs/.wtest
 graphify/*/graphify-out/cache/
 graphify/*/graphify-out/.graphify_python
+*.bak[0-9]*_*
