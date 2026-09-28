@@ -1,13 +1,13 @@
 # 定时任务 · 四执行面现状快照
 
-> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-09-22T02:48:15-07:00（triggered_by=manual），**只读**。
+> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-09-27T22:34:30-07:00（triggered_by=scheduled），**只读**。
 
 > **本文件纳入 git；跑完 `git diff` 即知自上次快照以来什么变了** —— 无论改动来自 Doctor、别的会话还是 CC 自己。
 
-> 镜像步：镜像已同步：38 文件（更新 2 · 移除 0） · Artifacts：10 个（拷 5 · 清单全量）
+> 镜像步：镜像已同步：40 文件（更新 5 · 移除 0） · Artifacts：10 个（拷 5 · 清单全量）
 
 
-## 面① Cowork live 树（26 个）
+## 面① Cowork live 树（28 个）
 
 | taskId | SKILL mtime | 行数 | sha | 描述 |
 |---|---|---|---|---|
@@ -16,6 +16,8 @@
 | `baize-weekly-report` | 2026-09-11 07:05 | 118 | `ceb38eb5b8ad` | 白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周更） |
 | `brain-monthly-checkup` | 2026-08-11 09:01 | 41 | `f5b2a3680c56` | 每月初跑 meditation 心灵与记忆健康自检：折叠上月 logs + 记忆指标 + 数灵人格层 + 警告 |
 | `cockpit-snapshot` | 2026-08-12 18:59 | 18 | `6c33680aedea` | 影子驾驶舱夜间快照:三时钟状态落 cockpit.db(append-only)+ OOS 台账成熟(次一自然日) |
+| `dva-heartbeat-1815-a` | 2026-09-25 20:16 | 65 | `096487ac8433` | 一次性：DVA heartbeat 自然验证窗口（北京 18:20 / +5 分），只读，结果报 Doctor |
+| `dva-heartbeat-1815-b` | 2026-09-25 20:16 | 59 | `268a40a8a476` | 一次性：DVA heartbeat 自然验证窗口（北京 19:40 / +85 分）完成态核查，只读，结果报 Doctor |
 | `dva-selfheal-1815-completion-check` | 2026-09-19 02:57 | 62 | `488e11a16e41` | 一次性：DVA 自愈 18:15 首考的第二点核查（完成态），只读，结果报 Doctor |
 | `dva-selfheal-1815-firstrun-check` | 2026-09-19 02:56 | 61 | `56f8aaac1809` | 一次性：核 DVA 自愈链 18:15（北京）首考是否点火，只读，结果直接报 Doctor |
 | `eal-starfield-rebuild` | 2026-09-13 19:29 | 14 | `10c2e219deb3` | EAL·SOX 事件星空快照日更重建（risk-daily 第三标签源）：行情守卫→沙箱标准链 build→对表验证；防快照冻结致「星星在、流线空」（2026-09-13 根因） |
@@ -25,7 +27,7 @@
 | `longyu-weekly-dualscorer` | 2026-08-24 20:09 | 50 | `bd7c9385ff0f` | 龙鱼标的库周更：常更标的每周双scorer打分(deepseek子项+claude top-down)落库+对比校正队列+刷新个股库看板artifact |
 | `market-data-daily-update` | 2026-08-12 18:56 | 63 | `1897e9d46465` | 每交易日由句芒增量更新Market-Data行情到最近已收盘交易日=当日(收盘后第一时间;须在上游Tushare当日入库完成之后);去重+防空壳,取空则次日按缺口自动补回;下游白泽哨兵/次日晨报读到当日收盘;沙箱经代理+… |
 | `r7-threshold-recal` | 2026-09-07 08:16 | 17 | `b5f804200b2b` | 一次性：r7 USDJPY 急动阈值 v0 复校（首个实战🔴或两个月后之约） |
-| `recap-kejian-daily-ingest` | 2026-08-19 21:17 | 39 | `c8e77b367088` | 由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2；三道闸门：repr只收0-1数值·分项口径不落总仓列·dim2近似数必注… |
+| `recap-kejian-daily-ingest` | 2026-09-23 09:43 | 41 | `81b24fbbf042` | 由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2；三道闸门：repr只收0-1数值·分项口径不落总仓列·dim2近似数必注… |
 | `recap-kejian-review` | 2026-08-18 20:43 | 58 | `a7b27cef563b` | 每天09:30由句芒审核九儿课件入库：去重/数据合理性/P2标签/归位，扩审dim3(禁行情倒灌)与dim4仓位(归一/词表/待复核不重不漏)；全量自动修（两档机制·护栏：备份+证据+不自标✅）+次日复发扫描，出审核日志 |
 | `refresh-asset-dashboard` | 2026-09-19 01:59 | 58 | `c9316f12f98a` | 重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact→conch清空盘点），日更；挂载 Projects+Database+brain+两纪律目录（Claude/临时文件 · Cla… |
 | `refresh-risk-daily` | 2026-09-17 10:26 | 30 | `f501ce10c041` | 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → build_risk_daily.py → update_artifact；… |
@@ -53,12 +55,15 @@
 | `com.google.GoogleUpdater.wake` | — | False | — | 2026-07-01 09:22 |
 | `com.google.keystone.agent` | — | False | — | 2026-07-01 09:22 |
 | `com.google.keystone.xpcservice` | — | False | — | 2026-07-01 09:22 |
-| `com.zhuzhao.ipo-rolling` | {"Hour": 9, "Minute": 0} | True | 1 | 2026-09-12 23:40 |
-| `com.zhuzhao.marketdata` | [{"Weekday": 1, "Hour": 2, "Minute": 30}, {"Weekday": 2, "Hour": 2, "Minute": 30}, {"Weekday": 3, "Hour": 2, "Minute": 30}, {"Weekday": 4, "Hour": 2, "Minute": 30}, {"Weekday": 5, "Hour": 2, "Minute": 30}] | True | 1 | 2026-09-18 23:11 |
-| `com.zhuzhao.usclose` | [{"Weekday": 1, "Hour": 14, "Minute": 0}, {"Weekday": 2, "Hour": 14, "Minute": 0}, {"Weekday": 3, "Hour": 14, "Minute": 0}, {"Weekday": 4, "Hour": 14, "Minute": 0}, {"Weekday": 5, "Hour": 14, "Minute": 0}] | True | 0 | 2026-09-18 23:11 |
+| `com.zhuzhao.ipo-rolling` | {"Hour": 9, "Minute": 0} | True | 0 | 2026-09-12 23:40 |
+| `com.zhuzhao.marketdata` | [{"Weekday": 1, "Hour": 2, "Minute": 30}, {"Weekday": 2, "Hour": 2, "Minute": 30}, {"Weekday": 3, "Hour": 2, "Minute": 30}, {"Weekday": 4, "Hour": 2, "Minute": 30}, {"Weekday": 5, "Hour": 2, "Minute": 30}] | True | 0 | 2026-09-18 23:11 |
+| `com.zhuzhao.usclose` | [{"Weekday": 1, "Hour": 14, "Minute": 0}, {"Weekday": 2, "Hour": 14, "Minute": 0}, {"Weekday": 3, "Hour": 14, "Minute": 0}, {"Weekday": 4, "Hour": 14, "Minute": 0}, {"Weekday": 5, "Hour": 14, "Minute": 0}] | True | 0 | 2026-09-24 22:49 |
 | `netdisk_service` | — | False | — | 2025-03-15 02:42 |
 
 ✅ 源与装机全部一致
+
+**⏱ 应跑未跑 / 无法判定（按排期推算最近应点火时刻 × stdout mtime）：**
+- ⚠ `com.zhuzhao.ipo-rolling` — 日志落 /tmp（系统会清理），mtime 不足以判定是否点火（/tmp/ipo_rolling.log）
 
 ## 面④ crontab
 

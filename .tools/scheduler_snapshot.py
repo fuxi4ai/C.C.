@@ -66,6 +66,8 @@ GATEWAY_TREE = LIVE_TREE                                        # 别名 · 兼�
 DEAD_TREE = HOME / "Documents/Claude/Scheduled"                # 旧第三方 store 位 · 2026-08-02 已迁 GATEWAY_TREE。正常＝不存在；再现＝异常（有壳/有人在此重建 store）
 DEAD_ARCHIVED_GLOB = "_DEPRECATED_Scheduled_*"                 # 归档后的名字（可逆优先：改名不删）
 LAUNCH_AGENTS = HOME / "Library/LaunchAgents"                  # launchd 装机位
+TCC_PROTECTED = (HOME / "Documents", HOME / "Desktop",
+                 HOME / "Downloads")                           # TCC 隐私保护区（2026-09-27 加）：stdio 落此处＝launchd 静默停摆的风险位（判据见 tcc_suspect）
 OPS_DIRS = [                                                   # plist 源文件所在处
     HOME / "Documents/Claude/Projects/Financial/烛照九阴/ops",
 ]
@@ -184,6 +186,26 @@ def launchctl_loaded(label):
         return {"loaded": None, "detail": "launchctl 不可用（非 macOS？）"}
     except Exception as e:
         return {"loaded": None, "detail": f"{type(e).__name__}: {e}"}
+
+
+def _exit_code(raw):
+    """launchctl print 打的是 `last exit code = 78:`（尾随冒号）/ `0`（无冒号）。
+    只取开头整数；取不到返 None（＝不可判，调用方须当「不是 78」处理，别当 0）。"""
+    m = re.match(r"\s*(-?\d+)", raw or "")
+    return int(m.group(1)) if m else None
+
+
+def _in_tcc(path):
+    """该路径是否落在 TCC 隐私保护区内。`~` 展开、`..` 词法归一；非绝对/不可解析一律不算
+    （宁可漏报不误报）。归一必须走**词法**（normpath）而非 resolve()——launchd 打开的就是
+    plist 里那串字面路径，`~/Documents/../Codex/x.log` 实际落在区**外**，不能判成区内。"""
+    if not path:
+        return False
+    try:
+        p = Path(os.path.normpath(str(Path(path).expanduser())))
+    except Exception:
+        return False
+    return any(p == r or r in p.parents for r in TCC_PROTECTED)
 
 
 def expected_last_fire(sched, now):
@@ -322,6 +344,7 @@ def scan_launchd():
                 "schedule": sched,
                 "run_at_load": d.get("RunAtLoad"),
                 "stdout_path": d.get("StandardOutPath"),   # 应跑未跑判据（2026-09-22 加）
+                "stderr_path": d.get("StandardErrorPath"),  # TCC 指纹与 stdout 成对（2026-09-27 加）
                 "runtime": launchctl_loaded(label),
             }
 
@@ -394,8 +417,37 @@ def scan_launchd():
                                        f"stdout mtime 停在 {mt:%Y-%m-%d %H:%M}（{out}）；"
                                        f"机器状态：{why}"})
 
+    # ── TCC 静默停摆指纹（2026-09-27 加 · **前缀无关**）─────────────────────
+    # 动机：本面的退出码检查与「源↔装机」一致性检查**都只覆盖项目自有前缀**
+    #   （OURS）⇒ 第三方/跨项目 agent 的非 0 退出在本面上零可见度。实撞
+    #   2026-09-27：`com.fuxi4ai.audit-harness.dispatch` 的 `last exit code = 78:`
+    #   与 stdout 落 ~/Documents 并存，按〖剑酒青丘/GOTCHAS.md〗NOTE-20260918-001
+    #   即已知静默停摆的精确签名（launchd 在 spawn 前**自己**去 open
+    #   StandardOutPath，被 com.apple.macl 拒 → 进程根本不被创建 → 零输出 +
+    #   last exit code = 78: EX_CONFIG），停摆 ≥12 天无人发现。
+    # 判据：**不看 label 前缀**——任何 loaded 的 job，退出码 == 78（EX_CONFIG，
+    #   罕见）**且** stdout 或 stderr 落在 TCC 保护区 ⇒ 报。两条件同时成立才算，
+    #   误报面窄（G-X122：一条误报就能让真信号没人看）。
+    # ⚠ 已知不覆盖（如实登记，别当已覆盖）：① 非 78 的非 0 退出（EPERM 族等）
+    #   落在保护区的——未纳入，以免把第三方 agent 正常的非 0 退出变成噪声；
+    #   ② 判「是否真停摆」还需 macl 属性与点火计数，本面只做**疑似**提示。
+    tcc_suspect = []
+    for label, i in sorted(installed.items()):
+        rt = i.get("runtime") or {}
+        if rt.get("loaded") is not True or _exit_code(rt.get("last_exit_code")) != 78:
+            continue
+        hits = [v for v in (i.get("stdout_path"), i.get("stderr_path")) if v and _in_tcc(v)]
+        if not hits:
+            continue
+        tcc_suspect.append({
+            "label": label, "stdio_in_tcc": hits,
+            "issue": "退出码 78（EX_CONFIG）且 stdio 落在 TCC 保护区（"
+                     + "、".join(hits) + "）——疑似 launchd 静默停摆"
+                     "（进程不被创建、零输出）；核法见 GOTCHAS NOTE-20260918-001",
+        })
+
     return {"sources": sources, "installed": installed, "consistency": findings,
-            "staleness": staleness}
+            "staleness": staleness, "tcc_suspect": tcc_suspect}
 
 
 # ───────────────────── 面 ④ crontab ─────────────────────
@@ -570,6 +622,10 @@ def detect_anomalies(snap, prev):
         (red if f.get("level") == "red" else yellow).append(
             f"launchd `{f['label']}`：{f['issue']}")
 
+    # TCC 静默停摆指纹（前缀无关 · 2026-09-27 加）：装了、加载了，却零输出地死着
+    for f in lg.get("tcc_suspect", []):
+        red.append(f"launchd `{f['label']}` **疑似 TCC 静默停摆**：{f['issue']}")
+
     if snap["crontab"].get("entries"):
         yellow.append(f"crontab 非空（{len(snap['crontab']['entries'])} 条）"
                       "——第四执行面已启用，需入账")
@@ -690,6 +746,11 @@ def main():
         L.append("\n**⏱ 应跑未跑 / 无法判定（按排期推算最近应点火时刻 × stdout mtime）：**")
         for f in lg["staleness"]:
             L.append(f"- {'🔴' if f.get('level') == 'red' else '⚠'} `{f['label']}` — {f['issue']}")
+
+    if lg.get("tcc_suspect"):
+        L.append("\n**🛑 疑似 TCC 静默停摆（前缀无关 · 退出码 78 + stdio 落保护区）：**")
+        for f in lg["tcc_suspect"]:
+            L.append(f"- `{f['label']}` — {f['issue']}")
 
     cr = snap["crontab"]
     L.append(f"\n## 面④ crontab\n\n{cr['note']}")

@@ -23,6 +23,8 @@ description: 由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动�
 3b. **dim3 情绪/技术面（全自动）**：课件情绪/盘面叙述你自己提炼 → 入 `dim3_sentiment_tech`：`emotion_stage`（一句短语）、`sentiment_description`（要点分号连缀）、`date`=kejian_date。涨跌停家数/成交额等数字列**只录课件原文明说的**（P2 语料，**绝不从 Market-Data 行情库倒灌**）。课件没情绪段就不落。
 3c. **dim4 交易计划/仓位（半纳入·拿不准必留人工）**：仓位判读按既有规约（层=成=0.1 归一）；只填新列 `position_pct_min/max`（0-1，min≤max）、`position_repr`、`position_stance`（防御/谨慎/中性/偏多）、`position_conf`（low/mid/high）、`position_raw`、`position_source`、`plan_window`、`position_band`（不动 `position_guidance` 等旧列）。**闸门**：原文含混/矛盾/conf=low → **仓位数值列不落**，把课件名+原文摘句+疑点写入 `Projects/Financial/烛照九阴/data/待人工复核-仓位.md`。repr 类型与分项口径按下方【三道入库闸门】闸①闸②执行。有**明确个股多空判断**才落 `dim4_stock_analysis`。宁缺勿污。
 
+- **日期指涉核对（2026-09-23 立 · ERR-20260923-001）**：同班处理多份课件时，逐份先钉「文件名 kejian_date=X · 内容『今日/明日/前一日』指涉哪一天」再提炼；连续两日课件内容重叠（热点跨日连热）不构成「同日」证据。核实课件数字前先钉死课件说的哪一天，再取对日数据比对，禁止跨日错比；发现精确吻合（如 2.14×0.83≈1.77 恰为缩量 17%）先读成简单真相，不先构造复杂解释。
+
 ## 三道入库闸门（2026-08-19 哥哥交九儿落 · ERR-20260819-001 根治）
 
 每次落 dim2/dim4 数字前逐条过闸；闸触发 → 当场在 /tmp 副本按处置改，证据四件套（修前值/修后值/SQL/退出码）进当日日志。

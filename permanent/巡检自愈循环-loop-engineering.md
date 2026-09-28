@@ -161,7 +161,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 ### 5.4 L3 · 验收（实施与验收分权）+ 审计层
 
 - **修复完成 ≠ 修好**。验收只认机器证据，优先「下一次运行自证」谓词：`lastRunAt` 前进到预期窗口 / `generated_at` 前进且 triggered_by=scheduled（手动跑假绿灯是 08-02 实测双向都犯过的病）/ audit 行 schema 合规 / 回读比对逐字一致。
-- F3/F3p 属中风险（动 live store 班）：由**未参与实施的 subagent** 独立复验（授权内可自主派）；复验报告仅作背书，不取得 ✓ 权。
+- F3/F3p 属中风险（动 live store 班）：由**未参与实施的 subagent** 独立复验（授权内可自主派）；复验报告**按分轨落**：事务性／事实性的由该未参与实施的 subagent 代签；方向性的问 Doctor（G-X4，见下行）。**⚠ 2026-09-27 换文**：本句原写「复验报告仅作背书，不取得 ✓ 权」——无日期戳、属**现行陈述**，与下行 2026-09-26 已改的分轨文本**同节对撞**（分轨后此类项正是由未参与实施的 subagent 落 ✅，原句恰否认该权）；由未参与实施的审核者扫同族残留时报出，经 Doctor 裁定改。
 - audit 行状态只允许 🔄/⚠️；✅ **按分轨落：事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor**（G-X4）。**⚠ 2026-09-26 裁更新（自检发现本行与同批改动对撞，已同步）**：本行原写「✅ 只由 Doctor 或指定独立验收方落（G-X4）。Doctor 08-29 授权『定时任务列入可代签代勾类别』指 TODO 销项，**不覆盖 audit 行的 ✅ 落签**」——Doctor 2026-09-26 裁「**保留名单也改**」，audit 行 ✅ 落签**并入分轨**，原保留取消；`permanent/_repair_audit.md` 头部、`Doctor协作偏好.md` 巡检豁免条与分权条、Settings 块内巡检条已**同批改为分轨**，本行是最后补齐的一处。
 - `_repair_audit.md`：append-only（**用 Edit 尾段追加，不用 Write 覆写**——G-X107）。每行 schema（六元组）：`ts`(ISO) / `trigger`(硬证据) / `action`(动作+工具名+参数形状) / `rollback`(回退点) / `acceptance`(判据，必须含可跑命令或工具名) / `actor`(实施者) / `status`(🔄/⚠️/✅)。test_repair_loop.py 含 audit 行解析器，缺字段/空字段即报。
 - audit 经 Doctor commit 后于 git diff 显形（G-X154：显形须等 commit，读侧以文件本体为准）——修复器的行为是**另一个被巡检对象**，叉二由此闭环。
@@ -199,7 +199,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 
 ## 8 · 批准文本（Doctor 侧换文 · 已生效 2026-08-29 · 供重贴 Settings 时引用）
 
-> 巡检自愈循环 v2 已获批准。特批例外口径：授权不扩张清单中「调度安装或变更」的禁手，对本循环内预注册动作作如下豁免——仅限 `scheduler-weekly-audit` 一个 taskId，仅 `update_scheduled_task` 的 description 参数（prompt/cron/enabled/notifyOnCompletion 一律不经沙箱，prompt 改动走 Doctor 终端 SHA 往返）；新增/删除班、改排期、启停仍属禁手。修复动作必须落 `brain/permanent/_repair_audit.md` 留痕，验收判据凭机器证据（lastRunAt/generated_at 前进且 triggered_by=scheduled），✅ 落签仍只归 Doctor 或指定独立验收方。
+> 巡检自愈循环 v2 已获批准。特批例外口径：授权不扩张清单中「调度安装或变更」的禁手，对本循环内预注册动作作如下豁免——仅限 `scheduler-weekly-audit` 一个 taskId，仅 `update_scheduled_task` 的 description 参数（prompt/cron/enabled/notifyOnCompletion 一律不经沙箱，prompt 改动走 Doctor 终端 SHA 往返）；新增/删除班、改排期、启停仍属禁手。修复动作必须落 `brain/permanent/_repair_audit.md` 留痕，验收判据凭机器证据（lastRunAt/generated_at 前进且 triggered_by=scheduled），✅ 落签走分轨：**事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor**。
 
 ---
 

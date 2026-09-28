@@ -118,11 +118,13 @@ def test_classify_machine_state():
     print("  残余盲区如实标注")
     got, why = SS.classify_machine_state(E, [(datetime(2026, 9, 20, 23, 0), "Sleep")])
     check("只有 Sleep 记录时如实说「在睡眠」", got == "asleep" and "睡眠" in why, why[:60])
-def make_plist(d: Path, label, sched, stdout_path):
+def make_plist(d: Path, label, sched, stdout_path, stderr_path=None):
     body = {"Label": label, "StartCalendarInterval": sched,
             "ProgramArguments": ["/usr/bin/true"]}
     if stdout_path is not None:
         body["StandardOutPath"] = stdout_path
+    if stderr_path is not None:
+        body["StandardErrorPath"] = stderr_path
     p = d / f"{label}.plist"
     p.write_bytes(plistlib.dumps(body))
     return p
@@ -213,19 +215,119 @@ def test_scan_launchd(tmproot: Path):
           f"labels={sorted({f['label'] for f in r6['staleness']})}")
     SS.machine_state_at = lambda exp: ("on", "测试桩：机器在运行")
 
-    print("  兼容性：结构键齐备（真断言：四个键一个都不能少）")
-    check("返回 {sources, installed, consistency, staleness} 四键齐全",
-          set(res) == {"sources", "installed", "consistency", "staleness"}, f"keys={sorted(res)}")
+    print("  兼容性：结构键齐备（真断言：五个键一个都不能少）")
+    check("返回 {sources, installed, consistency, staleness, tcc_suspect} 五键齐全",
+          set(res) == {"sources", "installed", "consistency", "staleness", "tcc_suspect"},
+          f"keys={sorted(res)}")
+
+
+# ───────────────── ④ TCC 静默停摆指纹（前缀无关 · 2026-09-27 加）─────────────────
+def test_tcc_fingerprint(tmproot: Path):
+    """守卫须成对：N（该报）＋ P（不该报）。
+
+    判据＝`loaded ∧ 退出码==78 ∧ stdout 或 stderr 落 TCC 保护区`。
+    实撞原型：`com.fuxi4ai.audit-harness.dispatch`（`last exit code = "78:"` · stdout 落
+    `~/Documents/Codex/...`）——与 〖剑酒青丘/GOTCHAS.md〗NOTE-20260918-001 的
+    TCC 静默停摆签名吻合，却因**不在 OURS 前缀内**而从未被任何一面报出。
+    故本段首要主张是**前缀无关**：正报例刻意用非项目前缀的 label。
+    """
+    print("\n④ TCC 静默停摆指纹（前缀无关）")
+    la = tmproot / "tcc_agents"
+    ops = tmproot / "tcc_ops"
+    prot = tmproot / "protected"
+    prot2 = tmproot / "protected2"
+    outside = tmproot / "outside"
+    for d in (la, ops, prot, prot2, outside):
+        d.mkdir(exist_ok=True)
+    SS.LAUNCH_AGENTS = la
+    SS.OPS_DIRS = [ops]
+    # 不依赖真实 HOME：把「保护区」钉到临时目录，正例写其内、反例写其外
+    _saved_tcc = SS.TCC_PROTECTED
+    SS.TCC_PROTECTED = (prot, prot2)
+    SS.machine_state_at = lambda exp: ("on", "测试桩：机器在运行")
+    SCHED = {"Hour": 0, "Minute": 1}          # 恒过 grace 窗，逼 面③ 与指纹两条路径都走到
+
+    # ── 纯函数直测：钉契约本身 ──
+    # 作业级用例在两点上覆盖不到：「不可判」（0 与 None 在调用点行为不可分）与「路径归一」
+    # （`..` 形式不会自然出现在 plist 里）。故在此直接钉纯函数。2026-09-27 第四轮独立复验提示补。
+    check("纯函数 _exit_code：`78:` 尾随冒号须剥成 78", SS._exit_code("78:") == 78)
+    check("纯函数 _exit_code：`0` → 0（不得与 None 混）", SS._exit_code("0") == 0)
+    check("纯函数 _exit_code：不可判一律 None（**不得**当 0、也不得当 78）",
+          SS._exit_code(None) is None and SS._exit_code("") is None
+          and SS._exit_code("EX_CONFIG") is None, f"{SS._exit_code(None)!r}")
+    check("纯函数 _in_tcc：`..` 按**词法**归一 —— `<保护区>/../Codex/x.log` 判**区外**",
+          SS._in_tcc(str(prot / ".." / "Codex" / "x.log")) is False)
+    check("  └ 正对照：`<保护区>/../<保护区名>/o.log` 归一后回到区内 → True",
+          SS._in_tcc(str(prot / ".." / prot.name / "o.log")) is True)
+
+    def rt(loaded=True, code="0"):
+        return lambda label: {"loaded": loaded, "state": "not running", "last_exit_code": code}
+
+    # ── N 组：该报 ──
+    SS.launchctl_loaded = rt(True, "78:")
+    make_plist(la, "com.fuxi4ai.dispatch", SCHED, str(prot / "o.log"))          # 原型形状
+    make_plist(la, "com.fuxi4ai.stderronly", SCHED, str(outside / "o.log"),     # 仅 stderr 在内
+               stderr_path=str(prot / "e.log"))
+    got = {f["label"]: f for f in SS.scan_launchd()["tcc_suspect"]}
+    check("N：退出码 78: + stdout 落保护区 → 报（★ 且 label 非项目前缀）",
+          "com.fuxi4ai.dispatch" in got, f"got={sorted(got)}")
+    check("N：只有 stderr 落保护区 → 也报（stdio 成对，不只认 stdout）",
+          "com.fuxi4ai.stderronly" in got, f"got={sorted(got)}")
+    check("  └ stdio 清单只指保护区内的那一个",
+          got.get("com.fuxi4ai.stderronly", {}).get("stdio_in_tcc") == [str(prot / "e.log")],
+          f"{got.get('com.fuxi4ai.stderronly', {}).get('stdio_in_tcc')}")
+
+    # ── P 组：四道反例（假阳性闸）──
+    make_plist(la, "com.fuxi4ai.exit0", SCHED, str(prot / "o.log"))
+    make_plist(la, "com.fuxi4ai.outside", SCHED, str(outside / "o.log"))
+    make_plist(la, "com.fuxi4ai.exit1", SCHED, str(prot / "o.log"))
+    SS.launchctl_loaded = rt(True, "0")
+    g0 = {f["label"] for f in SS.scan_launchd()["tcc_suspect"]}
+    check("P：退出码 0 + stdout 落保护区 → 不报", "com.fuxi4ai.exit0" not in g0, f"got={sorted(g0)}")
+    # ★ 保护区闸必须在**码 78 之下**单独考。原版把这条与上一条挤在同一批 `rt(True,"0")` 里，
+    #   于是它只把「退出码闸」又测了一遍、**从未考过保护区闸**——2026-09-27 第四轮独立复验
+    #   逐条变异检验（把 `_in_tcc` 改恒真而用例不转红）逮出本用例为空转。已拆开并配同批正对照。
+    SS.launchctl_loaded = rt(True, "78:")
+    g78 = {f["label"] for f in SS.scan_launchd()["tcc_suspect"]}
+    check("P：码 78: 但 stdio **全在保护区外** → 不报（★ 关键假阳性闸 · 78 下单独考）",
+          "com.fuxi4ai.outside" not in g78, f"got={sorted(g78)}")
+    check("  └ 同批正对照：码 78: 且 stdout 在保护区内 → 仍要报（防整批恒空＝假绿）",
+          "com.fuxi4ai.dispatch" in g78, f"got={sorted(g78)}")
+    SS.launchctl_loaded = rt(True, "1")
+    check("P：退出码 1（非 78）+ stdout 落保护区 → 不报（本探针刻意只认 EX_CONFIG）",
+          "com.fuxi4ai.exit1" not in {f["label"] for f in SS.scan_launchd()["tcc_suspect"]})
+    SS.launchctl_loaded = rt(False, "78:")
+    check("P：loaded=False → 不报（没加载的不算这条病）",
+          not {f["label"] for f in SS.scan_launchd()["tcc_suspect"]}
+          & {"com.fuxi4ai.dispatch", "com.fuxi4ai.stderronly"})
+    SS.launchctl_loaded = rt(True, None)
+    check("P：退出码 None（不可判）→ 不报 —— 既不得当 0、也不得当 78",
+          "com.fuxi4ai.dispatch" not in {f["label"] for f in SS.scan_launchd()["tcc_suspect"]})
+
+    # ── 异常检测层：必须是 RED（装了、加载了，却零输出地死着 —— 须出声）──
+    SS.launchctl_loaded = rt(True, "78:")
+    snap = {"_meta": {}, "cowork_live": {"tasks": []},
+            "documents_dead_tree": {"exists": False, "content_diverged": [], "only_in_dead": []},
+            "launchd": SS.scan_launchd(), "crontab": {"entries": []}, "mounts": {}}
+    red, yellow = SS.detect_anomalies(snap, None)
+    check("升级层：detect_anomalies 把它判 RED",
+          any("疑似 TCC 静默停摆" in x for x in red), f"n_red={len(red)}")
+    check("  └ 且不得只落在 yellow（只作提示＝仍会被忽略）",
+          not any("疑似 TCC 静默停摆" in x for x in yellow))
+
+    # ── 还原全局，免污染后续 ──
+    SS.TCC_PROTECTED = _saved_tcc
 
 
 def main():
     global OK
     tmproot = Path(tempfile.mkdtemp(prefix="ss_stale_test_"))
-    print("持久化负向测试 · 快照面③「应跑未跑」")
+    print("持久化负向测试 · 快照面③「应跑未跑」+ TCC 停摆指纹")
     try:
         test_expected_last_fire()
         test_classify_machine_state()
         test_scan_launchd(tmproot)
+        test_tcc_fingerprint(tmproot)
     finally:
         shutil.rmtree(tmproot, ignore_errors=True)
     print(f"\n{'✅ 全过' if OK else '❌ 有失败项'}")
