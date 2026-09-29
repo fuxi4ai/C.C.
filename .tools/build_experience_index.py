@@ -73,7 +73,40 @@ def add(proj, eid, title, body, fname):
         "type": type_of(eid), "date": date_of(eid), "status": status_of(body, title),
         "mach": "✓" if machine_hint(body) else "-",
         "ptr": fname, "xside": "-", "body": body,
+        "trig": trigger_of(body),
     })
+
+TRIG_PRI = ["警报信号", "判据", "做法", "强制询问", "强制问询", "避坑", "预防门禁", "触发条件", "修法", "处置"]
+
+def trigger_of(body):
+    """**触发条件**（2026-09-29 加 · 承 Doctor 批）：从条目**自带的、被加粗的字段名行**里抽**一行**——
+    **不改任何正文，只改「索引抽什么」**。
+    为什么需要：原索引只抽标题，而「万能概念陷阱」这类标题**判不出「此刻该不该把它调出来」**。
+    收严口径（首版放到「任意含关键词的行」，实测抽到的是标题装饰 `（★★★ 关键 · …）` ⇒ 已收紧）：
+      ① 只认**被 `**…**` 包住的字段名行**（或紧邻其下的正文行）；
+      ② 值须 ≥6 字且**不以括号开头**（滤掉 `（★★★ 关键 · 2026-05-20 立）` 这类装饰）；
+      ③ 按 `TRIG_PRI` **优先级**取第一个命中（判据／做法 先于 修法／处置）；
+      ④ 抽不到 ⇒ `—`（如实标，不编）。
+    ⚠ 已知缺：**老格式条目**（标题写作 `**G-Xn 标题**（★★★…）`、下设无加粗字段名）抽不到 ⇒ `—`。"""
+    lines = (body or "").splitlines()
+    for name in TRIG_PRI:
+        pat = re.compile(rf"^\s*(?:>\s*)?(?:[-*]\s*)?\*\*\s*{re.escape(name)}[^*]*\*\*\s*[:：]?\s*(.*)$")
+        for i, l in enumerate(lines):
+            m = pat.match(l)
+            if not m:
+                continue
+            seg = m.group(1).strip()
+            if not seg:
+                for nxt in lines[i + 1:i + 4]:
+                    if nxt.strip():
+                        seg = nxt.strip()
+                        break
+            seg = re.sub(r"^[-*>\s]+", "", seg)
+            seg = re.sub(r"\*\*|`", "", seg).strip()
+            if len(seg) >= 6 and not seg.startswith(("（", "(")):
+                return f"[{name}] {seg[:54]}"
+    return "—"
+
 
 def seg_until(txt, start, marker):
     body = txt[start:]
@@ -147,8 +180,8 @@ lines = [
     "# 经验索引（薄索引 · 非事实源 · 可重建 · v2）",
     "",
     f"> 生成：{now} · 生成器 brain/.tools/build_experience_index.py（v2）· 重跑幂等",
-    "> 字段 9 项：条目ID · 类型 · 日期 · 状态 · 机器化 · 标题 · 证据指针 · 来源主体（节头） · 对侧状态（- 未见 / 👁已扫描未命中 / ⚑已预警 / ✓已复验）。",
-    "> 状态闭集：✅已修复/已沉淀 · 🔄待修复/已修待验 · ⚠已知风险 · ⏳旧状态词 · —未标。触发条件=标题摘要；正文按指针取。",
+    "> 字段 10 项（**2026-09-29 加第 10 项「触发条件」** · 承 Doctor 批）：条目ID · 类型 · 日期 · 状态 · 机器化 · 标题 · 证据指针 · 来源主体（节头） · 对侧状态（- 未见 / 👁已扫描未命中 / ⚑已预警 / ✓已复验）。",
+    "> 状态闭集：✅已修复/已沉淀 · 🔄待修复/已修待验 · ⚠已知风险 · ⏳旧状态词 · —未标。**触发条件＝从条目自带的「警报信号／判据／做法／强制问询／预防门禁」抽一行**（2026-09-29 起；原为「＝标题摘要」，已取代）；正文按指针取。",
     "> 覆盖：各项目 GOTCHAS（H2/H3/列表粗体/表格四格式）+ 通用教训 + 经验库 EXP。",
     "",
     f"## 总览（{len(entries)} 条 · {len(by_proj)} 个来源）",
@@ -161,7 +194,7 @@ for proj in sorted(by_proj):
 for proj in sorted(by_proj):
     lines.append(f"\n## {proj}")
     for e in by_proj[proj]:
-        lines.append(f"- `{e['id']}` · {e['type']} · {e['date']} · {e['status']} · 闸{e['mach']} · {e['title'][:56]} · → {e['ptr']} · 对侧{e['xside']}")
+        lines.append(f"- `{e['id']}` · {e['type']} · {e['date']} · {e['status']} · 闸{e['mach']} · {e['title'][:56]} · **触发**：{e['trig']} · → {e['ptr']} · 对侧{e['xside']}")
 open(OUT, "w", encoding="utf-8").write("\n".join(lines) + "\n")
 
 GATES_META = {
