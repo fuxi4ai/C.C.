@@ -150,7 +150,9 @@ git push
 
 ### Step 6.5 · 经验消费回执（本场采用的经验条目 · 2026-09-04 立）
 
-按 `retrieved → selected → encoded → consumer_verified → outcome_observed` 推进并 append `permanent/_consumption_receipts.jsonl`——**只记录实际证明到的阶段，可以停在中间阶段**（jsonl append-only，不回头改旧行）。绑定要求：
+按 `retrieved → selected → encoded → consumer_verified → outcome_observed` 推进并 append `permanent/_consumption_receipts.jsonl`——**只记录实际证明到的阶段，可以停在中间阶段**（jsonl append-only，不回头改旧行）。
+- **终态与射程（2026-09-28 补 · 与 `brain-resume` Step 3.5 同一份台账、同一套口径 · 两边必须同改）**：①「可以停在中间阶段」**不等于**可以留悬空——**本场无落盘产物** ⇒ 回执直接写终态行（`closed: true` ＋ `consumer_verified`/`outcome_observed` 留 null ＋ 一句说明）；**本场有落盘产物** ⇒ **留未闭**，直到真出现下游消费证据再升级（**有产物就是有供下游核验的对象**，「消费者＝本场自身」此时不成立）。② **结算行**（`settle_id` 以 `STL-` 起头）与**修正行**（`kind: "correction_void"`）都是**动作行**、本身不是回执 ⇒ **一律不计入未闭**；修正行可作废某条结算行（其 `corrects` 指该结算行 `settle_id`）。
+绑定要求：
 - **consumer_verified** 必须绑定**实际 consumer + canonical reads + 绝对路径 + SHA-256**；日志、索引生成成功或实施者声明不能代替消费端回读。
 - **outcome_observed** 必须绑定**后续真实任务结果**；一次同环境成功、文件存在或正常路径通过，不能直接升格为长期有效经验。
 - **适度工程**：低风险、可逆的普通整理不强制制造回执；新增门禁必须对应已有失败或高风险边界（G-X166：治理服务于任务完成）。
