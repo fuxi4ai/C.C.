@@ -20,9 +20,9 @@ project: PEC
 - **Doctor 三指令**：①批准 07-27 图谱化方案（复用渊图图基建+PEC 专属 schema+QA+provenance）；②检查现成优化；③仿渊图建独立 Artifact。
 - **PRD 立卷**：`logs/checkpoints/2026-09-08_PEC图谱升级与星空Artifact_PRD.md`（8 条交付标准 · awaiting_acceptance）。
 - **构建器四模块**：`Projects/PEC/tools/pec_build_graph.py`（主构建器+旧边映射表+审计报告）+ `pec_graph_qa.py`（13 项 QA+provenance 检查+负向注入）+ `pec_graph_data/nodes_curated.py`（框架层策展+旧图承接+证据补边）+ `pec_graph_data/verdicts_ir.py`（IR 组 v2.15 全量裁定链 44 条）。
-- **canonical 落成**：`Projects/PEC/pec_graph.json`——262 节点/281 边（F8/H15/G27/SP9/C24/case25/concept13/actor14/event6/source1/prediction73/verdict47）· 13 项 QA 全绿 · SHA ce0db243… 可复现 · 负向注入 fail-fast。
+- **canonical 落成**：`Projects/PEC/文明基因/展示层/pec_graph.json`——262 节点/281 边（F8/H15/G27/SP9/C24/case25/concept13/actor14/event6/source1/prediction73/verdict47）· 13 项 QA 全绿 · SHA ce0db243… 可复现 · 负向注入 fail-fast。
 - **现成优化落地**：承 07-27 试跑（构建器骨架+QA+双读）；旧图 56 节点承接（20 种边收敛 11 种映射表 20/20）；纪律审计收益内建（概率变动 2/47=IR-P3 链 · guards 活刀=G-03×22）；subagent 并行抽取非 IR 组（53 预测/3 裁定/22 hints）。
-- **星空 Artifact**：`Projects/星空/tools/pec_to_starscape.py` + `prototypes/starscape-template-pec.html`（补 case/prediction/verdict/clause 四色）→ `Projects/PEC/pec-starry-skies.html` → Cowork artifact `pec-starry-skies` 注册+推送（262 星点全量）。
+- **星空 Artifact**：`Projects/星空/tools/pec_to_starscape.py` + `prototypes/starscape-template-pec.html`（补 case/prediction/verdict/clause 四色）→ `Projects/PEC/文明基因/展示层/pec-starry-skies.html` → Cowork artifact `pec-starry-skies` 注册+推送（262 星点全量）。
 - **独立复验 PASS**：未参与实施的 subagent 实跑实读（QA 正负向/构建三连 SHA/对拍抽查 6 组/映射表/artifact 解析/结构断言）——2 发现：docstring 括注已修；CDN 白名单风险已内联闭环。
 
 ## 做出的决策
@@ -45,7 +45,7 @@ project: PEC
 
 - [[PEC]]
 - PRD：`logs/checkpoints/2026-09-08_PEC图谱升级与星空Artifact_PRD.md`
-- 真源：`Projects/PEC/pec_graph.json` · `Projects/PEC/tools/` · `Projects/星空/tools/pec_to_starscape.py`
+- 真源：`Projects/PEC/文明基因/展示层/pec_graph.json` · `Projects/PEC/tools/` · `Projects/星空/tools/pec_to_starscape.py`
 - 方案：`Projects/PEC/图谱化方案_v0.1_20260727.md`（状态已更新为已批准已实施）
 
 ---

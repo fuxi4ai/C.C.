@@ -65,7 +65,7 @@ PEC 的知识图谱停在 05-21 的手工可视化层（graph-data.js 8 节点�
 
 ### A. 功能需求（用户可感知的行为 / 结果）
 
-- [?] **R1** · `Projects/PEC/pec_graph.json` 生成，且 `pec_graph_qa.py` 13 项 QA（渊图继承 8 + PEC 专属 5 含双读一致性）输出全绿、退出码 0
+- [?] **R1** · `Projects/PEC/文明基因/展示层/pec_graph.json` 生成，且 `pec_graph_qa.py` 13 项 QA（渊图继承 8 + PEC 专属 5 含双读一致性）输出全绿、退出码 0
   - 验收方法: 实跑 `python3 pec_graph_qa.py --input pec_graph.json`，读退出码与 QA 输出行
   - 证据栏: 实跑 2026-09-08——正路 `exit 0` + 输出「✅ 全绿（含 provenance 检查）」（WARN 62 条均为未到期无裁定预测·非僵尸）；负向注入 `--inject-zombie` `exit 1` + FAIL「僵尸预测 P-ZOMBIE-INJECTED」
 - [?] **R2** · 四段咬合链全量入图：F-01~08、H-01~15、G-01~30、SP-01~09、C-01~21、全部案例（CS×9 + GE×8 + CR×3 + EC×4 + GE候选）、predictions-register 全部正式预测与 4 个候选区埋点均有节点；每个 prediction ≥1 条 adjudicates（僵尸预测=0）
