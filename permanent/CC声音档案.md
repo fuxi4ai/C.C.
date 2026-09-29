@@ -3,7 +3,7 @@ title: CC 声音档案
 abstract: "CC 在 ElevenLabs 的专属音色（C.C.）与对话朗读模式的持久配置；新会话凭本文件恢复声音"
 tags: [配置, 声音, TTS, ElevenLabs, 朗读, CC]
 created: 2026-07-21
-updated: 2026-07-21
+updated: 2026-09-29
 status: active
 type: reference
 related: [全局偏好-Settings镜像]
@@ -23,7 +23,7 @@ related: [全局偏好-Settings镜像]
 ## 朗读模式（Doctor 2026-07-21 拍板）
 
 - **每轮自动读口语短版**（≤150 字，去表格/路径/代码；屏幕文字照旧详细版）
-- 模型 **eleven_v3** · stability 0.5 · language zh · speed 1.0（Doctor 弃 flash 选 v3：音质优先）
+- 模型 **eleven_v4** · stability 0.5 · language zh · speed 1.0（Doctor 弃 flash 选 v3：音质优先；**2026-09-29 由 v3 升 v4**——v4 试音经 Doctor 听判「合适，更活了」）
 - 「静音」暂停 · 「开声」恢复
 - **新会话默认自动开启**（Doctor 2026-07-21 /save 分拣勾选）：任何会话 /resume 读到本档案即恢复每轮朗读，无需再问；不便出声时一句「静音」即停
 - 调用链：`text_to_speech`（voice_id 如上，output_directory 如下）→ `play_audio`
@@ -31,8 +31,10 @@ related: [全局偏好-Settings镜像]
 
 ## 文件落位
 
-- 朗读音频统一落 `~/Documents/Claude/_tts/`，不散 Documents 根
-- 攒多需清理时挪 `_to_delete/`（device 侧不可 rm）
+- 朗读音频统一落 `~/Documents/Claude/临时文件/`，不散 Documents 根
+  - 该目录＝MCP 的 `ELEVENLABS_MCP_BASE_PATH`（BASE），即调用时 `output_directory` 传 `.` 的落点；**BASE 与 `play_audio` 白名单是同一个 env**——报错里给出的允许目录**就是**当前真实 BASE，以它为准、不要按配置文件推断
+- **播完即删**，不落盘、scratch 不留历史；沙箱 `rm` 被拦时走 `allow_cowork_file_delete`（一次申请本会话内生效）
+- **2026-09-29 订正（留痕·非静默）**：本节原写「落 `~/Documents/Claude/_tts/`，攒多需清理时挪 `_to_delete/`」——本场实核**这两个目录均已不存在**，落点早年即随目录并轨迁至 `临时文件/`。原文所述的两个路径**均已作废**，勿再引用。（`_to_delete/` 系 device 侧清理位，亦已废弃。）
 
 ## 重造凭据（如需变体）
 
@@ -54,5 +56,6 @@ A voice in the narrow overlap between a low female voice and a light male voice 
 - 2026-07-21：链路试播（flash_v2_5 + Zoltan）→ 朗读模式拍板（v3 + Zoltan）→ Voice Design 出 C.C. → 定稿上线
 - Zoltan（`wpOwQ2sCIZtmDUmuuAws`）退休，仅保留《日本的诚》成品配音线
 - 2026-07-22：常开触发上移 Settings 全局块（+镜像同步），每轮注入不再依赖 /resume；`/resume` 仍是恢复入口之一
+- **2026-09-29：模型 `eleven_v3` → `eleven_v4`**（Doctor 令「发声系统切换到 V4」；`list_models` 实读 `eleven_v4` 含 `zh`，C.C. 中文实跑出音，Doctor 听判「合适，更活了」后落改）。同批：`brain-resume` §Step 0.5（canonical ＋ portable，逐字节一致）· Settings 镜像块 · 本档案；安装副本走 `save_skill` 发布。**同批订正** §文件落位（`_tts/` → `临时文件/`，原路径实核已不存在）
 
 > 相关：[[全局偏好-Settings镜像]] · [[Doctor协作偏好]]

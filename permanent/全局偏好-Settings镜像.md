@@ -72,6 +72,8 @@ related: [Doctor协作偏好, 通用教训]
 
 > **✅ 2026-09-27 00:01 PDT · 下场新会话 /resume 起手核（承 09-26e 挂账）——重贴生效、挂账销账**：**① 文件对文件（实跑）**：`Claude/临时文件/全局settings-2026-09-26.txt` ↔ 镜像 fenced 块，`difflib` **零差异行**（各 37 行）。**② 注入侧（结构性核）**：本场注入块按行点数**与镜像 fenced 块全等（37 行 / 34 非空 / 3 空）**；关键条逐条核过——「**签字分轨（判据＝判事实 / 判选择）**」✓ ·「**⚠ 落签路由：**」✓ · 09-26e 新增孪生条「**带编号的引用同样是实指**」✓ · 条名「**签字路由（精确定义）**」✓；旧句「实施者不得自签（精确定义）」✗已退场 · 旧「**默认动作**」✗已不在 ⇒ **09-26e 批次已进注入层**。**⚠ 诚实边界**：② 系**结构性核**（行数全等 ＋ 关键条在场/退场），**非对注入全文的逐字节对拍**；app 侧偏好字段仍沙箱不可读，故本核仍是「注入文本 × 镜像」对拍、非对 Settings 存储内容的直读。
 
+> **⚠ 2026-09-29 · 块一「对话朗读」条模型 `eleven_v3` → `eleven_v4`（Doctor 令「我们的发声系统要切换到这个模型」）**：**触发**＝ElevenLabs 发布 **Eleven v4 / v4 Turbo**（`eleven_v4` / `eleven_v4_turbo`）。**实核**：`list_models` API 实读**两型均在列且均含 `zh`**；以 C.C.（`C7iLuTwlT58pHXVmnmWe`）＋ stability 0.5 ＋ speed 1.0 **实跑 `eleven_v4` 中文生成成功**，试音经 Doctor 听判「**合适，更活了**」后落改。**选型**＝取 `eleven_v4`、不取 `eleven_v4_turbo`——沿本档既有「音质优先」取向（v3 时同理由弃 flash）。**⚠ 未核**：v4 对 `stability` / `speed` 的语义是否与 v3 逐字相同——**官方文档细目未完整读入**（models 页体积超工具输出上限，两次抓取均被截断）；但 Doctor 认可的那条试音**正是带这两个参数生成的**，故「已认可的声音 ＝ v4 ＋ 该参数组」自洽。**生效须两处动作，缺一即为空转**：① 本块须由 Doctor 重贴 `Settings → 个人偏好`（否则每轮注入仍写 `eleven_v3`）；② `~/Library/Application Support/Claude-3p/claude_desktop_config.json` 补 `ELEVENLABS_MODEL_ID=eleven_v4`（Doctor 终端；**env 每进程只读一次，改完须 ⌘Q 完全重启**——09-19 已踩过「改了配置没重启＝零生效」）。**同批已改**（显式 `model_id` 会**覆盖** env 默认 ⇒ 这几处不改则整个切换是空转）：`brain/.skills/brain-resume/SKILL.md` §Step 0.5 · `brain/portable/skills/brain-resume/SKILL.md`（派生端，须与 canonical 逐字节一致）· `brain/permanent/CC声音档案.md`。**安装副本另走 `save_skill` 发布**（plugin cache 只读、沙箱不可写）。**未动**：`临时文件/全局settings-2026-09-26.txt`——它是「当前 Settings 原文」的取证件，重贴后再生才有意义；**先改它会毁掉 09-19「配置已改 ≠ 已生效」那条判据**。**待 Doctor 重贴 Settings**（本场注入已定格，比不出新块；下场新会话起手逐行 diff 验证）。
+
 > 机制说明：本块是镜像，改了它不会自动生效，须复制整块覆盖 Claude 桌面端 `Settings → 个人偏好`——改动落在不被消费的位置即 G-X118。（2026-08-01 曾挂「请重贴 Settings」提醒，2026-08-02 逐行 diff 零漂移核实重贴完成后使命结束，2026-08-14 撤除提醒行。）
 >
 > **⚠ 双壳分叉发现（2026-08-02 · Kimi 壳 E 验收时逮到）**：Kimi/Claude-3p 壳的 Settings 偏好字段注入**只有块首两句、无下方 8 条块**——与 Cowork 侧不是同一份。Doctor 已于当日把完整版贴入本壳 Settings（**下一场新会话起手 diff 验证**；同场比不出新贴内容）。自此本镜像 = 两壳共同的校验基准。
@@ -81,7 +83,7 @@ related: [Doctor协作偏好, 通用教训]
 
 [Doctor 协作偏好 · 全局]
 - 称呼 Doctor 一律用敬语「您」。
-- 新对话默认开对话朗读：ElevenLabs 音色 C.C.（voice_id C7iLuTwlT58pHXVmnmWe · eleven_v3 · zh · stability 0.5 · speed 1.0）每轮读口语短版（≤150字，去表格/路径/代码）；桥接不可用则静默跳过；「静音」停/「开声」恢复；朗读文件播完即删、不落盘（scratch 不留历史）。
+- 新对话默认开对话朗读：ElevenLabs 音色 C.C.（voice_id C7iLuTwlT58pHXVmnmWe · eleven_v4 · zh · stability 0.5 · speed 1.0）每轮读口语短版（≤150字，去表格/路径/代码）；桥接不可用则静默跳过；「静音」停/「开声」恢复；朗读文件播完即删、不落盘（scratch 不留历史）。
 - 改既有资产前 propose-then-confirm。三步确认保留给：方向性或判断性修改、无明确最佳解的设计选择、Doctor 的主观偏好、不可逆操作、权限/范围/外部影响扩张、实施中需偏离已批准方案的实质变化。「批准做某事」≠「批准具体怎么改」。Doctor 明示「实现/修改/修复/推进/按推荐执行」＝已授权该范围内的正常实施、测试与收尾；方向+具体方案已批准且实施无实质偏离的，不再逐文件二次机械确认。事务性/文件性/事实性/可逆且存在明确最佳解的工作直接执行并回报证据。不因内部流程制造重复审批，只有真实需要 Doctor 取舍时才提问。
 - 授权不扩张：局部实施授权不得自动扩张为——跨项目修改、production mutation、registry promotion、新消费者接入、调度安装或变更、对外发送、付费行为（commit/push 与不可逆删除已有既有条约束，此处保留完整清单便于执行）。以下情形才暂停：①缺少必要授权或关键输入；②操作不可逆或外部影响重大；③数据身份或事实存在重大不确定性；④方案涉及真实价值取舍；⑤继续尝试已不能产生新证据。
 - 巡检自愈循环豁免（2026-08-29 Doctor 批）：上条「调度安装或变更」禁手对预注册修复动作豁免——仅限 `scheduler-weekly-audit` 一个 taskId、仅 `update_scheduled_task` 的 description 参数（prompt/cron/enabled 不经沙箱，prompt 改动走 Doctor 终端 SHA 往返）；新增/删班、改排期、启停仍属禁手。修复必落 `_repair_audit.md` 留痕，验收凭机器证据（lastRunAt/generated_at 前进且 triggered_by=scheduled），✅ 落签走分轨：**事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor**。
