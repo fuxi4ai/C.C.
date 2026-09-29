@@ -132,7 +132,10 @@ cat ~/Documents/Claude/brain/permanent/经验索引.md
 ```bash
 tail -5 ~/Documents/Claude/brain/permanent/_consumption_receipts.jsonl
 ```
-- 有未闭回执（有 retrieved/selected 但无 consumer_verified/outcome_observed，且超 3 天）→ 摘要单列一行「⚠ 未闭回执 {N} 条」。
+- **已得终态**的回执不计未闭——终态有两种形态（缺一不可，否则 append-only 台账里的结算对下游不可见，即 `G-X118`）：① 原行自标 `closed: true`，或 `consumer_verified` / `outcome_observed` 为真；② **结算行**认领（本行含 `settles: "_consumption_receipts.jsonl L{行号}"` 且自身 `closed: true`）。
+- **⚠ 射程（2026-09-28 补 · 实测踩过）**：本节只在**原始回执行**里数未闭。**结算行**（`settle_id` 以 `STL-` 起头）与**修正行**（`kind: "correction_void"`）都是**动作行**、本身不是回执 ⇒ **一律不计入未闭**；修正行可**作废**某条结算行（其 `corrects` 指该结算行 `settle_id`），此时被作废的结算行**不再**构成终态。⇒ 缺此管辖时，修正行会从第 4 天起被当成新未闭，**未闭数会自发放大**。
+- 有未闭回执（不属上述终态、且超 3 天）→ 摘要单列一行「⚠ 未闭回执 {N} 条」。
+- **写侧（根因条）**：本场读取经验后落盘**终态行**还是留悬空，看**有没有下游可验的东西**，**不是**看本场有没有产出——两条判据差别是实打实的（2026-09-28 夜场按「无新产物」误关 9 条，8 条其实有已落盘产物、只差下游还没读，全部退回）：① **本场无落盘产物** ⇒ 终态行（`closed: true` · `consumer_verified` / `outcome_observed` 留 null ＋ 一句说明），这类行没有可供下游核验的对象，留着只会让未闭集合单调上升；② **本场有落盘产物** ⇒ **留未闭**，直到真出现下游消费证据再升级——**有产物就是有供下游核验的对象，此时「消费者＝本场自身」不成立**。⚠ 这条**不放松**下述绑定要求：若声称已被下游消费，仍须给真实 consumer 证据，不得为求闭环而冒领。
 - 本场采用的每条经验，结束时按实际 append 一行（五态：retrieved→selected→encoded→consumer_verified→outcome_observed）——**只记录实际证明到的阶段，可以停在中间阶段**（jsonl append-only，不回头改旧行）。
 - **consumer_verified 绑定要求（2026-09-04 Doctor 立）**：必须绑定**实际 consumer + canonical reads + 绝对路径 + SHA-256**；日志、索引生成成功或实施者声明不能代替消费端回读。
 - **outcome_observed 绑定要求（2026-09-04 Doctor 立）**：必须绑定**后续真实任务结果**；一次同环境成功、文件存在或正常路径通过，不能直接升格为长期有效经验。
