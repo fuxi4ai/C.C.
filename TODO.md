@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-09-26
+updated: 2026-09-29
 status: active
 type: log
 ---
@@ -103,7 +103,7 @@ type: log
 
 
 
-- [ ] ⚠**〔前提已变 · 2026-09-29 /todo 现核〕落点问题已可指认、指向问题已自解**——fuxi 健康产物落 `E:\AI\DVA\ops\state\dva-healthcheck-latest.json`（09-27 08:30）＋ `ops\summaries\dva-health-*.md`；而 GAI manifest（`海螺姑娘/data/asset_manifest.json`）的 DVA-Database 项读的是 **Mac 侧** `Douyin/DVA-Database/_health.json`，该件现已补齐并被点亮（见本段 L201 条）⇒ **「改指向」的前提不存在**。**回流写入者**：fuxi 计划任务清单里**未发现**独立的「回流」任务；两 DVA 任务现 Disabled。**残余**：旧回流链停摆、Mac 镜像停 09-18 —— 归 09-29 新链。** **DVA · health 产物新落点确认 + 回流写入者排查（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-氦气鲜价喂入与DVA库审计定案.md` · INFRA-20260901-001 观察项②③）**：fuxi 侧 health 落点确认后改 GAI manifest 指向；回流写入者疑 launchd——均需 fuxi 侧核。
+- [ ] ⚠**〔前提已变 · 2026-09-29 /todo 现核〕落点问题已可指认、指向问题已自解**——fuxi 健康产物落 `E:\AI\DVA\ops\state\dva-healthcheck-latest.json`（09-27 08:30）＋ `ops\summaries\dva-health-*.md`；而 GAI manifest（`海螺姑娘/data/asset_manifest.json`）的 DVA-Database 项读的是 **Mac 侧** `Douyin/DVA-Database/_health.json`，该件现已补齐并被点亮（见本文件「DVA · `_health.json` 缺位」条）⇒ **「改指向」的前提不存在**。**回流写入者**：fuxi 计划任务清单里**未发现**独立的「回流」任务；两 DVA 任务现 Disabled。**残余**：旧回流链停摆、Mac 镜像停 09-18 —— 归 09-29 新链。** **DVA · health 产物新落点确认 + 回流写入者排查（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-31-氦气鲜价喂入与DVA库审计定案.md` · INFRA-20260901-001 观察项②③）**：fuxi 侧 health 落点确认后改 GAI manifest 指向；回流写入者疑 launchd——均需 fuxi 侧核。
 
 
 - [ ] **EAL · ERR-20260828-001/002 落签（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-28-EAL验收链与消费治理.md` · 剑酒 GOTCHAS 实读 🔄 已确认待修复）**：001 索引 v6 与盘面漂移（修复＝VV 重生成 v6 或 Doctor 裁处置）·002 重放误报（无写入发生·前后 SHA 零变化）——落签按分轨：事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor。
@@ -112,7 +112,7 @@ type: log
 - [ ] **DVA · dev/19 关闭裁定（2026-09-01 挂 · 源：`logs/2026-09-01-DVA盲审对账审计与EAL验收核验.md`）**：审计 verdict=FAIL（历史回执 `CC-to-VV-dev19-盲审对账回执-20260814.md` 经盘面实查不存在 · RECEIPT_NOT_FOUND）· 08-28 替代回执已签发（三分结论：historical FAIL / mechanical PASS / blind NOT_FULLY_EVIDENCED · SHA `9006a228…`）· 两处档案引用已修正（outbox README + 对比校正 L141）。**✅ 裁定已落（Doctor 2026-09-01「同意」以 08-28 替代回执关闭 dev/19 · 历史完整性 FAIL 为终态事实）** → 剩 VV/Codex 侧更新 DVA README 关闭状态（CC 不代勾 · 知会件 `4AI/Shake hands/to VV/CC-to-VV-dev19-关闭裁定知会-2026-09-01.md` 已备 · 经 Doctor 转交）。
 
 
-- [ ] ⚠**〔诊断存疑 · 路径已漂 · 2026-09-29 /todo 现核〕**「不再被 ignore 拦截」这一子断言**与 `.gitignore` 文本相抵**——白泽仓唯一 `.gitignore`（无取反行）含 `*.bak_*`，文本层判该件**仍被命中**；定论须 `git check-ignore -v`（**本席禁 git，未跑**）。**已证成立的部分**：文件确在 `data/archived/stocks_fundamentals.json.bak_20260831_pre_source_fix`（32,441 B）· 未跟踪 ✓ · 同仓同类未跟踪恰 **5** 件 ✓。**路径子项已漂**：`build_weekly_report.py.bak_audit20260728` 现实际在 `_bak/`（该目录 09-28 建），非原条写的 `scripts/reports/`。⇒ 剩下仍是**要不要 `git add` 入库**（您定）。** **白泽 · `.bak_20260831_pre_source_fix` 入库与否（2026-09-03 /todo 漏挂补挂
+- [ ] ⚠**〔诊断存疑 · 路径已漂 · 2026-09-29 /todo 现核〕**「不再被 ignore 拦截」这一子断言**与 `.gitignore` 文本相抵**——白泽仓唯一 `.gitignore`（无取反行）含 `*.bak_*`，文本层判该件**仍被命中**；定论须 `git check-ignore -v`（**本席禁 git，未跑**）。**已证成立的部分**：文件确在 `data/archived/stocks_fundamentals.json.bak_20260831_pre_source_fix`（**33,145 B** · ⚠ 原写「32,441 B」有误，那是同目录另一件 `…bak.20260709_025805_tier1v2` 的字节数——承落盘独立复核逮出）· 未跟踪 ✓ · 同仓同类未跟踪恰 **5** 件 ✓。**路径子项已漂**：`build_weekly_report.py.bak_audit20260728` 现实际在 `_bak/`（该目录 09-28 建），非原条写的 `scripts/reports/`。⇒ 剩下仍是**要不要 `git add` 入库**（您定）。**（⚠ 本行原条正文未逐字保留：本轮是「就地加注 ＋ 截断标题」，**非迁档**——改前全文见开工快照 `backups/todo-auto/2026-09-29-1315_TODO.md`；此偏差由落盘独立复核逮出，如实登记。）**
 
 
 
@@ -150,7 +150,7 @@ type: log
 
 - [ ] **渊图 · 高盛调研场四条尾（2026-09-18 挂 · 4 天 · 源：`logs/2026-09-18-高盛半导体调研核实与股价归因.md`）**：① 高盛原文 PDF 获取后走 PDF 通道入语料池（`raw/Industrial Analysis pdfs/`，归 Doctor）；② 是否启第六轮收口复验 vs 直接落接受（文件现为「第四轮 PASS_WITH_LIMITS · 修复待复验」）；③ **`prices/` 层是否含天数智芯拆股前后价点、口径是否需 `_caliber_` 标注——本场未核**；④ 壁仞科技 09-14→09-18 超额 +12.59pp 归因未明。
 
-- [ ] ⚠**〔前提已变 · 引用编号已漂 · 2026-09-29 /todo 现核〕**权威声明**已于 09-26 收敛**（`Claude/brain/DVA/GOTCHAS.md` 头部载「权威改判（2026-09-17 Doctor /todo 裁『权威改 Codex 镜像仓』）」＋ `Claude/Projects/DVA/GOTCHAS.md` 头部标「历史副本」）；且本条引的「最新 `ERR-20260911-001`」**已漂移**——Codex 镜像 `GOTCHAS.md`（267,570 B · 09-29 09:59）现至 **`ERR-20260929-002`**，领先 Mac 侧 3 天。**残余一行**：`Claude/brain/DVA/GOTCHAS.md` L35–37「## 权威日志入口」仍写「实时全量坑库：`Projects/DVA/GOTCHAS.md`——一切 BUG/INFRA/RISK 条目以此为准」，与同件头部**自相矛盾**（事务性，可顺手改）。** **DVA · GOTCHAS 双源分叉
+- [ ] ⚠**〔前提已变 · 引用编号已漂 · 2026-09-29 /todo 现核〕**权威声明**已于 09-26 收敛**（`Claude/brain/DVA/GOTCHAS.md` 头部载「权威改判（2026-09-17 Doctor /todo 裁『权威改 Codex 镜像仓』）」＋ `Claude/Projects/DVA/GOTCHAS.md` 头部标「历史副本」）；且本条引的「最新 `ERR-20260911-001`」**已漂移**——Codex 镜像 `GOTCHAS.md`（267,570 B · 09-29 09:59）现至 **`ERR-20260929-002`**，领先 Mac 侧 3 天。**残余一行**：`Claude/brain/DVA/GOTCHAS.md` L35–37「## 权威日志入口」仍写「实时全量坑库：`Projects/DVA/GOTCHAS.md`——一切 BUG/INFRA/RISK 条目以此为准」，与同件头部**自相矛盾**（事务性，可顺手改）。**（⚠ 本行原条正文未逐字保留：本轮是「就地加注 ＋ 截断标题」，**非迁档**——改前全文见开工快照 `backups/todo-auto/2026-09-29-1315_TODO.md`；此偏差由落盘独立复核逮出，如实登记。）**
 
 - [ ] ⏸**【fuxi 相关 · 搁置至 2026-09-26】** **DVA · Codex 仓提交与 Fuxi staging 残件处置（2026-09-17 挂 · 5 天 · 同上日志）**：Codex 仓 commit+push；四个 Fuxi staging 目录与 `/private/tmp` 候选包/脚本、Fuxi `%TEMP%\dva-writer-role-test-*` 处置。
 
@@ -170,7 +170,7 @@ type: log
 - [ ] **X-Board · `常更标的审核.html` 入口缺位（2026-09-26 由 /todo 漏挂对账补挂 · 源：`logs/2026-09-22-todo分流·fuxi搁置与龙鱼三件.md`）**：周更班 SKILL 与 08-26 裁定均称「常更清单由 `常更标的审核.html` 维护」，但**全盘 find 零命中**——不在龙鱼库、不在 Projects、不在 brain；而 `常更标的.json` 已 count=30（09-22 更新）。⇒ 维护入口的实际位置/存废待核。
 
 
-- [x] ~~**渊图 · `data_vintage` 是否增设「底层报告日期」字段**~~ **前提失效（2026-09-29 /todo 现核）**：**已有裁定且已落盘**——`Database/行业研究/CLAUDE.md` L142 起「## provenance 时点规范（**2026-09-19 Doctor 立**）」明写**改规约、不增设 schema 字段**（reference 必写「来源方, 原报告日期」＋ `provenance_kind:"cite"`；不可得标「日期未核」；存量不强制回填）；canonical 三节点已按此补 `摩根士丹利, 2026-05-20`·cite ⇒ 原条的「增设字段」路线**已被否**。**残余**：`NOTE-20260718-002` 的升格（见下条 L191 面）。（原条保留于 `references/TODO-已完成归档.md`）
+- [x] ~~**渊图 · `data_vintage` 是否增设「底层报告日期」字段**~~ **前提失效（2026-09-29 /todo 现核）**：**已有裁定且已落盘**——`Database/行业研究/CLAUDE.md` **L141** 起「## provenance 时点规范（**2026-09-19 Doctor 立**）」（⚠ 原写 L142，承落盘独立复核订正为 **L141**）明写**改规约、不增设 schema 字段**（reference 必写「来源方, 原报告日期」＋ `provenance_kind:"cite"`；不可得标「日期未核」；存量不强制回填）；canonical 三节点已按此补 `摩根士丹利, 2026-05-20`·cite ⇒ 原条的「增设字段」路线**已被否**。**残余**：`NOTE-20260718-002` 的升格（见 `brain/渊图/GOTCHAS.md` 该条状态行 —— ⚠ 原写「见下条 L191 面」是**悬空行引用**，承落盘独立复核逮出后改为内容指代）。（⚠ **原条正文未迁入归档件**——本轮系「就地作废 ＋ 删正文」，**故此处不写「原条保留于归档件」**（原写该句为**假**，承落盘独立复核逮出）；改前全文见开工快照 `backups/todo-auto/2026-09-29-1315_TODO.md`。）
 
 - [ ] **渊图 · `NOTE-20260718-002` 追记状态行更新（2026-09-26 由 /todo 漏挂对账补挂 · 源：同上）**：promote 后应可推进其状态行（`brain/渊图/GOTCHAS.md` L517 段）。**不代签 ✅**，归 Doctor/指定验收方。
 
@@ -181,7 +181,7 @@ type: log
 
 - [ ] ⚠**〔「已消」已被盘面反超 · 2026-09-29 /todo 现核当场重取〕**：现读该仓 **`M=6`**（`risk-daily.html` · `ai_kill_history.jsonl` · `latest-envelope.json` · `risk_snapshot.json` · `taco_components.db` · `fomc_market_exp.json`，mtime 全为 2026-09-29 09:09–09:11）· `D=0` · **未跟踪非 ignore 候选 4**（`data/envelopes/2026-09-26…29.envelope.json`，其中 **09-26/09-27 两封未随末次提交入库**）；**HEAD 已从 `c84768bc` 前进到 `3d5141da`**（末次＝「R 陈旧护栏注释订正＋当日班产物刷新」）；`.git/config` **无远端** ✓（本地-only 依旧）。⇒ 原「现核已消」的判断**触发条件已达**，属**日更节奏**而非积压（保留本行作触发式观察）。** **风险日报仓 · 12 改 + 8 未跟踪该场未处理，属其**日更节奏**而非积压。本场实读该仓 HEAD=`c84768bc`、无远端（Doctor 裁定本地-only）、**M=0 · D=0 · 未跟踪候选 0** ⇒ 已被后续班次/提交消化。保留一行留痕（触发=再现时再查）。
 
-- [x] ~~**DVA · `_health.json` 缺位**~~ **前提失效（2026-09-29 /todo 现核）**：该文件**在场**——`Database/Douyin/DVA-Database/_health.json`（534 B · generated `2026-09-26T04:21:42-07:00` · overall ok · 8 作者/1 失败）；`海螺姑娘/data/asset_manifest.json` 的 DVA-Database 项 `status:"healthy"`、freshness「自检 ok·全表一致·2026-09-26T04:21」、last_scan 2026-09-29 ⇒ **已补齐并被 GAI 看板点亮**。原条「conch 班连续两轮报 `update_health` 5≠6」的解释＝登记当日 04:21 之后被会话 `zen-tender-cori` 补跑。（原条保留于 `references/TODO-已完成归档.md`）
+- [x] ~~**DVA · `_health.json` 缺位**~~ **前提失效（2026-09-29 /todo 现核）**：该文件**在场**——`Database/Douyin/DVA-Database/_health.json`（534 B · generated `2026-09-26T04:21:42-07:00` · overall ok · 8 作者/1 失败）；`海螺姑娘/data/asset_manifest.json` 的 DVA-Database 项 `status:"healthy"`、freshness「自检 ok·全表一致·2026-09-26T04:21」、last_scan 2026-09-29 ⇒ **已补齐并被 GAI 看板点亮**。原条「conch 班连续两轮报 `update_health` 5≠6」的解释＝登记当日 04:21 之后被会话 `zen-tender-cori` 补跑。（⚠ **原条正文未迁入归档件**——本轮系「就地作废 ＋ 删正文」，**故此处不写「原条保留于归档件」**（原写该句为**假**，承落盘独立复核逮出）；改前全文见开工快照 `backups/todo-auto/2026-09-29-1315_TODO.md`。）
 
 
 - [ ] **白泽 · `.gitignore` 两条「过程产物」规则是否维持（2026-09-26 由 /todo 漏挂对账补挂 · 源：同上）**：09-23 那场反而证明这两条是**有效护栏**（替我挡下 27 条误入 add 清单）。现核实读两条仍在（`data/weekly/web_fill_*.csv` · `scripts/reports/v4.1 业务汇总版/白泽大宗完整分析报告_*.md`）。⇒ 是否维持归 Doctor 裁（CC 倾向维持）。
