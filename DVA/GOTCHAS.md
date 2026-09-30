@@ -2,7 +2,7 @@
 title: DVA · GOTCHAS（已知坑 · 索引）
 tags: [DVA, gotchas, index]
 created: 2026-05-14
-updated: 2026-09-26
+updated: 2026-09-30
 status: active
 type: resource
 project: DVA
@@ -34,7 +34,8 @@ project: DVA
 
 ## 权威日志入口
 
-- 实时全量坑库：`Projects/DVA/GOTCHAS.md` —— 一切 BUG/INFRA/RISK 条目以此为准。
+- 实时全量坑库：**`Codex/Project Mirror/DVA/GOTCHAS.md`** —— 一切 BUG/INFRA/RISK 条目以此为准。
+  **（2026-09-30 /todo 现核改）** 原写 `Projects/DVA/GOTCHAS.md`，**与本文件头部 L17「权威改判（2026-09-17 Doctor /todo 裁『权威改 Codex 镜像仓』）」相抵**；`Claude/Projects/DVA/GOTCHAS.md` 自 09-17 起为**历史副本、只读参照**（其头部已标）。本条为事务性对齐，不新增裁定。
 - 回写时机：CC 排查超过一轮并解决后，立即在权威日志追加条目，无需 Doctor 提示。
 - 本索引只在出现「值得跨项目复用的通用教训」时，才把要点沉淀到下方。
 

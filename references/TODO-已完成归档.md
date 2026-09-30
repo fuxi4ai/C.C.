@@ -2,7 +2,7 @@
 title: TODO 已完成归档
 tags: [todo, archive]
 created: 2026-07-30
-updated: 2026-09-29
+updated: 2026-09-30
 status: active
 type: log
 ---
@@ -14,6 +14,12 @@ type: log
 
 ## 已完成
 
+- [x] **🔴【挂您名下 · 需终端】丢件找回：`文明基因_互动地图_v0.2.html`（2026-09-29 由 /todo 漏挂对账补挂 · 源：`logs/2026-09-28-文明基因系统收敛与判据层整合.md`）**：**Time Machine / fuxi 备份可达，沙箱侧全树未见** ⇒ 只有 Doctor 终端够得到。
+  **（CC 代勾 · 2026-09-29 /todo 现核 · 证据：文件**已在盘**——`Projects/O MY HTML/文明基因_互动地图_v0.2.html`（**29,548 B · mtime 2026-05-12 08:10** · md5 `a155777ca1e373a5670834c147465c90`）；canonical `Projects/PEC/文明基因/判据/文明基因系统.md:481` 明记「**🔄 已找回（2026-09-28）**——沙箱与 git 均无副本，但从 **08-11 会话归档**…按工具调用序列逐 op 重放复原（1 Write ＋ 5 Edit）」。⇒ 本条挂出于 09-29，而找回记录早一天（09-28）已存在，条内「沙箱侧全树未见 ⇒ 只有 Doctor 终端够得到」**为假**——系漏挂对账时未复取。）**
+- [x] **数灵转移 · `architecture/决策记录.md:57` superseded 追记（2026-09-26 由 /todo 漏挂对账补挂 · 源：`logs/2026-09-19-备份归口与skill真源裁定.md` ＋ `logs/2026-09-19-接手渊图会话与skill发布链修复.md`）**：2026-08-02 D11 历史条目未加 superseded 追记——属历史层，按 brain-consolidate Step 1.5 新规处理。
+  **（CC 代勾 · 2026-09-29 /todo 现核 · 证据：`brain/数灵转移/architecture/决策记录.md`（mtime 2026-09-29 22:21:08）**L57** 现为「- **更新纪律（⚠ 本行前半已被取代 · 2026-09-29 /todo 追记）**：…」，**L58** 为「**〔superseded 追记（2026-09-29 · 承 2026-09-19「Skill 真源与发布链」裁定）〕**…canonical ＝ `brain/.skills/{名}/SKILL.md`…原句保留不删」⇒ 追记已落、原句保留。**⚠ 口径提示**：条目标题的加粗标记被插入括注（`**更新纪律**` → `**更新纪律（⚠ …）**`）——若口径是「整行一字未改」则不成立、若是「正文原句保留」则成立；承 `checkups/2026-09-29_todo落盘_独立复核.md`（F-10）已标。）**
+- [x] **渊图 · NOTE-20260826-001 三条观察修复方案待裁（2026-09-03 /todo 漏挂补挂 · 源：`logs/2026-08-27-渊图四批验收与美债10Y详情页.md`）**：①补 type 事务性可顺手 ②③挂账观察——待 Doctor 裁。
+  **（CC 代勾 · 2026-09-29 /todo 现核 · 证据：canonical `brain/渊图/GOTCHAS.md:**L815**` 该条状态行已为（**L814 为标题行**）「**✅ 已修**（2026-09-15 · 未参与实施的 subagent 独立审核代签 · 报告 4/4 PASS · 第 17 项 8/8 用例 · 真 canonical SHA 全程一致 `93801108…`）」，并含 2026-09-15 追记详述①自然销账（`concept_HuaweiAscend` 并入 `company_HuaweiAscend` · `concept_AlibabaCloudMaaSBusinessModel` 归正为 `concept_AlibabaMaaSBusinessModel`）；②③ 维持既有裁定（与 TODO 内「渊图挂账批发」条 ④ 同址）。⇒ 本条挂出于 09-03、闭合发生在 09-15，属「挂出后已被别处闭合」的陈旧条。残余仅为档内状态与本次现核的时点差，不改结论。）**
 - [x] **🔴 渊图 · 沐曦双节点（`company_MetaX` / `company_MuxiCo`）——授权面外的新真错 · 待裁（2026-09-26 挂 · 承第三轮独立复验新发现①）**：`company_MetaX`（name「沐曦」· `ticker_undated=688802.SS` · 度15 · 08-07 建）与 `company_MuxiCo`（name「沐曦股份」· `stock_code=688802.SH` · 度2 · 09-13 建）**是同一上市主体**（复验方读全字段核实：desc/source_span 同一主体画像 · `raw/核实/2026-09-24-上市代码核实底稿.json` 记 `company_MuxiCo: 688802.SH` · 相关边亦同指）。**为何此前两通道都漏**：归一 token 交集为空（「沐曦」≠「沐曦股份」）、code 字面不同（`.SS` vs `.SH`）——本轮给回扫工具的 code 通道**加归一后才暴露**。**⇒ 不在问答板 42 簇 / GOTCHAS 46 簇的授权清单内，CC 未动。** **⚠ 且照批 1 判例也做不成自动合并**：两节点 `properties.region` **冲突**（「其他」/`_region_src=kw/en` vs 「中」/默认），按「props 冲突即停手」须您裁 `region` 取值后才谈合并。**同批建议**：给 `rules/scan_existing_name_collisions.py` 的 A 档加「仅凭 code」人工二次确认要求（复验方指其输出是「指令形状」，脏 code 会直接产出「应合并」形态）。
   **（CC 代勾 · 2026-09-29 /todo 现核 · 证据：`company_MuxiCo` 已不存在；`company_MetaX` 存续 · `region=中` · `_region_src=manual_20260926`；墓碑 `mapping/_tombstones/2026-09-26_muxi_merge.json`（survivor=MetaX · absorbed=MuxiCo · 边重指 2 条）；`metadata._meta_surgery_muxi_20260926` 记 `region_ruling.authority="Doctor 2026-09-26「沐曦：中；」"` · 合并于 09-26 06:24 落地。**残余未做**：同批建议「A 档加仅凭 code 人工二次确认」经全文 grep 无此机制。）**
 - [x] **渊图 · `product_HBM4ForVR200.cost_per_rack` 口径疑点（2026-09-19 审核者 E 报 · 不在本次 delta 内）**：该值 = **2,001,600**，与大摩原表 **Memory 行**（HBM4 **+ LPDDR5X 合并**口径）数值**完全相同**；但节点本体是「**VR200 用 HBM4**」专用节点，取整行为值疑口径不符。源表未给 HBM4 单拆。按本仓「数字入图必带口径」（CLAUDE.md 数字口径标注规范）应补口径标注或降级处置。**⇒ 2026-09-22 Doctor 裁「两条都批」——待执行**（采补口径标注路线：标注数值来源口径，数值本身不动）。
