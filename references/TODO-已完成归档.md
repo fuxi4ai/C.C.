@@ -2,7 +2,7 @@
 title: TODO 已完成归档
 tags: [todo, archive]
 created: 2026-07-30
-updated: 2026-09-30
+updated: 2026-10-01
 status: active
 type: log
 ---
@@ -14,6 +14,8 @@ type: log
 
 ## 已完成
 
+- [x] **skill 发布链 · `brain-todo` 安装副本正文缺 95 字符（2026-09-29 /save 挂 · 源：`logs/2026-09-29-发声系统切eleven_v4.md` ＋ `permanent/已装skill清单.md` 同日补记）**：当日 skill 发布链**全量四端对拍**（7 个 brain-\*）暴露——`brain-todo` 的 **runtime 端 M5 行尾部被截**，缺「**签字分轨**（事实性的签字/验收 → 未参与实施的审核者 subagent 落签；方向性 → 问 Doctor）＋ AskUserQuestion 选项 label 尾部钉（推荐/不推荐）」**整段及其出处栏**（共 95 字符）。实读：canonical `26686 B / 266 行 / sha 16539af4` vs runtime `26515 B / 267 行 / sha d81a8fa8`。**根因**＝`save_skill` 第四跳「LLM 复述长正文」的漂移（26 KB 正文丢字，落在**表格长行**上）。**✅ 可靠修法已备**：仓内三端一致（canonical ＝ portable ＝ 包内）⇒ **包是逐字节正确的** ⇒ 走 `.skills/brain-todo.skill` 由 Doctor 复装即可对齐；**⚠ 别**再跑一次 `save_skill`——那正是制造这类缺口的那条路（风险大于收益）。**待裁**＝现在装还是择时。**同批勿重复处理**：`brain-save` 的 runtime 偏差属**已记录 · 无害 · 刻意不修**（`已装skill清单.md` L40），且本场实核其现象未变。
+  **（CC 代勾 · 2026-10-01 现核 · 证据：**本会话加载的 `brain-todo` 安装副本`…/claude-hostloop-plugins/<…>/skills/brain-todo/SKILL.md` **26686 B · sha 16539af4**，与 canonical `brain/.skills/brain-todo/SKILL.md` **逐字节相同、`diff` 0 行**（同批对拍 7 个 brain-\*：anchors/note/prd/resume/todo 五条一致；consolidate 差 1 空行、save 差 description 尾一个 `**`＋尾空行，均属已知无害类，后者系 `已装skill清单.md` L40 判「刻意不修」者）。**⚠ 两条口径提示**：① 条内「runtime 端 **M5 行尾部被截**」**与现盘不符**——该副本 M5 行现为完整（含「签字分轨」与 label 尾部钉）；本场只能证「**现在是对的**」，**不能回溯 09-29 当时是否被截**（或该场读的是另一处副本）。② 拟读的**账户级存放处我读不到**（属应用内目录），故「下一场新会话也正确」系**推断**（依据＝该 live 副本 mtime `2026-10-01 00:40`、在本会话进行中被刷新过），**非直读**。③ 原条「待裁＝现在装还是择时」的前提（缺口存在）**已消失**，无需再装。)**
 - [x] **🔴【挂您名下 · 需终端】丢件找回：`文明基因_互动地图_v0.2.html`（2026-09-29 由 /todo 漏挂对账补挂 · 源：`logs/2026-09-28-文明基因系统收敛与判据层整合.md`）**：**Time Machine / fuxi 备份可达，沙箱侧全树未见** ⇒ 只有 Doctor 终端够得到。
   **（CC 代勾 · 2026-09-29 /todo 现核 · 证据：文件**已在盘**——`Projects/O MY HTML/文明基因_互动地图_v0.2.html`（**29,548 B · mtime 2026-05-12 08:10** · md5 `a155777ca1e373a5670834c147465c90`）；canonical `Projects/PEC/文明基因/判据/文明基因系统.md:481` 明记「**🔄 已找回（2026-09-28）**——沙箱与 git 均无副本，但从 **08-11 会话归档**…按工具调用序列逐 op 重放复原（1 Write ＋ 5 Edit）」。⇒ 本条挂出于 09-29，而找回记录早一天（09-28）已存在，条内「沙箱侧全树未见 ⇒ 只有 Doctor 终端够得到」**为假**——系漏挂对账时未复取。）**
 - [x] **数灵转移 · `architecture/决策记录.md:57` superseded 追记（2026-09-26 由 /todo 漏挂对账补挂 · 源：`logs/2026-09-19-备份归口与skill真源裁定.md` ＋ `logs/2026-09-19-接手渊图会话与skill发布链修复.md`）**：2026-08-02 D11 历史条目未加 superseded 追记——属历史层，按 brain-consolidate Step 1.5 新规处理。

@@ -21,6 +21,7 @@ type: log
 > - **Q11 · PEC 总纲版本号** → **冻在下一版**：先发一版带 `version` 字段的，再冻（非立即冻当前内容）。
 > - **Q12 · EAL 余尾条** → **按档内裁定撤项**（①②④ 一并处理）。**③⑤ 余量另立小条**（见下）——**⚠ 本条解释留痕**：Q12A 字面只覆盖 ①②④，若您的本意是连 ③⑤ 一起撤，请一句话纠正。
 > - **Q13 · `brain-todo` 复装** → **现在复装**：走 `.skills/brain-todo.skill`，**不跑 `save_skill`**。**属您终端动作**（命令见报）。
+>   **〔superseded 注（2026-10-01 · CC 代记）〕**：本条**前提已消失、无需执行**——① 装副本**现已逐字节正确**（`…/skills/brain-todo/SKILL.md` 26686 B · `16539af4` ＝ canonical，`diff` 0 行，见本次已闭条目）；② 您反馈**包直接装不上**，该路已不可用；③ 另经实核**`save_skill` 通道可读回**（安装副本路径在本会话目录下可 Read），但其为**丢字通道**、且**无目标可写**。原裁定文本保留不删。
 > - **Q14 · 巡检周班** → **(a)(b) 都改**：班加「跑不了脚本时读上次快照并出简报」兜底 ＋ 验收判据承认「人工按班交接原文带参跑」。**改班 prompt 走您终端 SHA 往返**（先出 staging）。
 > - **Q15 · 龙鱼 ds 检测挂班** → **挂进周更班**。**改班 SKILL 走您终端 SHA 往返。**
 > - **Q16 · EAL T2 池** → **扩 `GDP_SECOND` ＋ OPEC `release_code` 闭集**。属可执行工作项。
@@ -52,7 +53,6 @@ type: log
 >
 > **⚠ 连带发现（供您裁）**：上列 **4 条源指针错（12–15）全部集中在 09-29 那批「漏挂补挂」条目上** —— 建议对该批其余条目的「源：」栏整体回查一次。
 
-- [ ] **skill 发布链 · `brain-todo` 安装副本正文缺 95 字符（2026-09-29 /save 挂 · 源：`logs/2026-09-29-发声系统切eleven_v4.md` ＋ `permanent/已装skill清单.md` 同日补记）**：当日 skill 发布链**全量四端对拍**（7 个 brain-\*）暴露——`brain-todo` 的 **runtime 端 M5 行尾部被截**，缺「**签字分轨**（事实性的签字/验收 → 未参与实施的审核者 subagent 落签；方向性 → 问 Doctor）＋ AskUserQuestion 选项 label 尾部钉（推荐/不推荐）」**整段及其出处栏**（共 95 字符）。实读：canonical `26686 B / 266 行 / sha 16539af4` vs runtime `26515 B / 267 行 / sha d81a8fa8`。**根因**＝`save_skill` 第四跳「LLM 复述长正文」的漂移（26 KB 正文丢字，落在**表格长行**上）。**✅ 可靠修法已备**：仓内三端一致（canonical ＝ portable ＝ 包内）⇒ **包是逐字节正确的** ⇒ 走 `.skills/brain-todo.skill` 由 Doctor 复装即可对齐；**⚠ 别**再跑一次 `save_skill`——那正是制造这类缺口的那条路（风险大于收益）。**待裁**＝现在装还是择时。**同批勿重复处理**：`brain-save` 的 runtime 偏差属**已记录 · 无害 · 刻意不修**（`已装skill清单.md` L40），且本场实核其现象未变。
 
 - [ ] **PEC · P2 收口残余 · 残余归 Doctor 部（2026-09-29 更新）**：**① 接线与 ②③ 三项已勾迁档**（见 `references/TODO-已完成归档.md`）。**仍开口的两条（归您）**：① **是否把 `check_dataset_parity.py` 升为「闸」**（现为构建期**只跑只报不阻断**；升闸＝行为语义变更）；② **`build_ir_sample.py` 与 QA 的口径分裂根治**——两者判据各写各的，根治＝合并到 QC 单一来源，归 P3。
 
@@ -85,7 +85,7 @@ type: log
 - [ ] **巡检 · 周班简报是死代码 + 面③ 黄条送达 + 快照判据口径（2026-09-22 /save 挂 · 源：`logs/2026-09-22-巡检补盲与行情链共模修复.md` ＋ `permanent/巡检自愈循环-loop-engineering.md` §4 注）**：① 周班跑不了脚本即按自身 prompt 明文「报无法执行 + 贴命令 + 干净退出」⇒ **步骤 2–5（含出简报）在本环境走不到**，故「快照前进」只能由 Doctor 终端手动跑证明，`triggered_by=scheduled` **不是「班自动跑过」的证据**。② 由此派生的两个待定：**(a)** 周班要不要改成「跑不了脚本时也能读上次快照并出简报」——需 store SKILL 改动（Doctor 终端 SHA 往返）；**(b)** 快照验收判据是否从「generated_at 前进且 triggered_by=scheduled」改为承认「人工按班交接原文带参跑」。③ 面③ 的 ⚠ 黄条**已**改由 `brain-resume` Step 0.6 附报（09-22 落盘·四端 `11ee480b`），周班侧是否重复由 (a) 一并定。
 
 
-- [ ] **行情链 · 三处残留（2026-09-22 /save 挂 · 源：`logs/2026-09-22-巡检补盲与行情链共模修复.md`）**：① ~~**`trade_cal` 表要等下次 `ingest_stock_daily` 跑才落**~~ **✅ 2026-09-23 已落并验收（CC 代勾 · 证据硬）**——实读 `market_data.db`：表已建（16→17 表）· 字段 `cal_date/is_open` · **121 行** · 最新 `20260923`（含 09-19/09-20 周末 `is_open=0`）；`mac_marketdata_20260923.log` 原文 `✓ trade_cal：20260526→20260923 共 121 天（开市 86）` + `陈旧判定（市场时钟 = trade_cal · D0=20260923 · D1=20260922 · 截到 20260923）`、**「回退」字样零命中**、结论「各表均达到市场时钟所要求的档位」；`ops/.last_run_status = OK 2026-09-23 02:31:51`（launchd 02:30 点火成功＝09-21 关机漏跑后首次恢复）；② `ops/.last_run_status` 只留最后一行 ⇒ **同日重跑即抹掉失败记录**（已三次咬人），建议改追加式滚动 N 天或至少留 `.prev`；③ `ipo-rolling` 的 `StandardOutPath` 仍在 `/tmp` ⇒ 面③「应跑未跑」对它**零覆盖**（09-18 的 stdio 迁移只搬了 usclose/marketdata 两件），建议同批迁出。另：两套新增负向测试（快照 45 项 / 烛照 27 项）**不挂在任何班或巡检上**，回归保护全靠人手跑——是否挂班归 Doctor 定。
+- [ ] **行情链 · 三处残留（2026-09-22 /save 挂 · 源：`logs/2026-09-22-巡检补盲与行情链共模修复.md`）**：① ~~**`trade_cal` 表要等下次 `ingest_stock_daily` 跑才落**~~ **✅ 2026-09-23 已落并验收（CC 代勾 · 证据硬）**——实读 `market_data.db`：表已建（16→17 表）· 字段 `cal_date/is_open` · **121 行** · 最新 `20260923`（含 09-19/09-20 周末 `is_open=0`）；`mac_marketdata_20260923.log` 原文 `✓ trade_cal：20260526→20260923 共 121 天（开市 86）` + `陈旧判定（市场时钟 = trade_cal · D0=20260923 · D1=20260922 · 截到 20260923）`、**「回退」字样零命中**、结论「各表均达到市场时钟所要求的档位」；`ops/.last_run_status = OK 2026-09-23 02:31:51`（launchd 02:30 点火成功＝09-21 关机漏跑后首次恢复）；② `ops/.last_run_status` 只留最后一行 ⇒ **同日重跑即抹掉失败记录**（已三次咬人），建议改追加式滚动 N 天或至少留 `.prev`；③ ~~`ipo-rolling` 的 `StandardOutPath` 仍在 `/tmp` ⇒ 面③「应跑未跑」对它**零覆盖**（09-18 的 stdio 迁移只搬了 usclose/marketdata 两件），建议同批迁出~~ **✅ 2026-10-01 已迁出并提交（CC 代勾 · 证据：源件 `ops/com.zhuzhao.ipo-rolling.plist` StandardOut/ErrorPath → `~/Library/Logs/com.zhuzhao.ipo-rolling-{stdout,stderr}.log`（跟 marketdata/usclose 同形，三班归一）；`launchctl print gui/$(id -u)/com.zhuzhao.ipo-rolling` 实读两行即新路径、`last exit code = (never exited)`＝新载入；源件与装机件 sha256 逐位相同 `895820739ea7423d…`；`README_launchd.md` 落地表与 09-18 注记同批改写；已提交 `2d8c69aa` 且 local==origin。⚠ 遗留：新路径日志要等下一个 09:00 班点火才生成，面③ 生效待那一步自然验证。）**。另：两套新增负向测试（快照 45 项 / 烛照 27 项）**不挂在任何班或巡检上**，回归保护全靠人手跑——是否挂班归 Doctor 定。
 
 
 
