@@ -2,7 +2,7 @@
 title: Codex 自动化层（真源结构与判读）
 tags: [codex, automation, 环境, 参考]
 created: 2026-09-22
-updated: 2026-09-22
+updated: 2026-10-01
 status: active
 type: reference
 ---
@@ -39,6 +39,8 @@ target_thread_id = "01a0aec7-…"   # 运行落在哪条 Codex thread
 created_at / updated_at           # 毫秒 epoch
 ```
 
+> ⚠ **上面这份样本取自 `dva-fuxi-mac`——该 automation 已于 2026-09-29 前后退役**（配置不再存在）。**字段结构本身仍通用**；DVA 一组已重组，见 §5。
+
 ## 三、`rrule` 的写法规律（判「能不能触发」的关键）
 
 **在跑的四家一律用裸 RRULE，时间写在 `BYHOUR`/`BYMINUTE` 里，按 Mac 本地时间解释**：
@@ -51,7 +53,7 @@ created_at / updated_at           # 毫秒 epoch
 | `after-hours-2` | `FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH;BYHOUR=18;BYMINUTE=45` |
 
 - **本地时间实证**：`automation` 的 5:30/17:30 与既有记录「Codex automation 05:30/17:30 **PT**」严丝合缝。
-- ⚠ **`DTSTART;TZID=…` 前缀的写法与在跑者不同形**——`dva-fuxi-mac` 原本写作
+- ⚠ **`DTSTART;TZID=…` 前缀的写法与在跑者不同形**——`dva-fuxi-mac`（**现已退役**）原本写作
   `DTSTART;TZID=Asia/Shanghai:20260919T181500\nRRULE:FREQ=DAILY;INTERVAL=1`，
   其 `RRULE` 里**没有任何 BYHOUR/BYMINUTE**，触发时刻全押在 `DTSTART` 那一行。2026-09-19 由 VV 改型为 `FREQ=DAILY;BYHOUR=3;BYMINUTE=15`（PT 03:15 ＝ 北京 18:15），**09-20 首验触发成功**。
 - ⚠ **冬令时漂移（全体共性）**：BYHOUR 按 Mac 本地时间 ⇒ 一律硬编码 PT 的班次在 PST 生效后**整体后移 1 小时**（PT 03:15 由北京 18:15 变 19:15）。不是某个 automation 的问题。
@@ -59,10 +61,10 @@ created_at / updated_at           # 毫秒 epoch
 ## 四、判读三个坑（本场踩过）
 
 1. **`notification_policy = "failed_runs_only"` 是通知策略，不是执行筛选器** —— 它只管「要不要吵人」，与「跑不跑」无关。语义证据在同一个 TOML 的 `prompt` 里（「没有变化且不需用户行动时保持安静；只在完成、实质变化、失败或需要输入时通知」）。**字段名 ≠ 语义**（→ [[通用教训]] G-X191）。
-2. **`memory.md` 缺失不能证明「从未运行」** —— 反例：`dva-fuxi-mac` 跑过却没写 `memory.md`。要判「跑没跑」得看该 automation **自己的证据面**（如 DVA 那套看 `dva-codex-supervision/state.json` 的 `observedAt`）。**样本同向不等于必然**（→ G-X190）。
+2. **`memory.md` 缺失不能证明「从未运行」** —— 反例：`dva-fuxi-mac`（**现已退役**）跑过却没写 `memory.md`。要判「跑没跑」得看该 automation **自己的证据面**——旧 DVA 链看 `dva-codex-supervision/state.json` 的 `observedAt`（**该链已退役**），现行链看 `incremental_pipeline_runs`。**样本同向不等于必然**（→ G-X190）。
 3. **`.codex-global-state.json` 里 grep 到关键词不等于找到了配置** —— 本场 `failed_runs_only` 在该文件命中 6 次，但那是嵌在**字符串值**里的聊天文本；配置正文在 `automations/`。
 
-## 五、本机 automation 清单（截至 2026-09-22）
+## 五、本机 automation 清单（截至 2026-09-22 实读；⚠ DVA 一组已重组，见下）
 
 | id | kind | status |
 |---|---|---|
@@ -71,11 +73,13 @@ created_at / updated_at           # 毫秒 epoch
 | `usdjpy-15` | heartbeat | ACTIVE |
 | `dva-2` | heartbeat | ACTIVE |
 | `dva-fuxi` | cron | **PAUSED** |
-| `dva-fuxi-mac` | heartbeat | ACTIVE |
+| ~~`dva-fuxi-mac`~~ | heartbeat | **已退役**（2026-09-29 前后配置不再存在） |
 | `eal-shadow-only-18-10` | cron | **PAUSED** |
+
+⚠ **DVA 一组已重组（2026-09-29 架构级取代）**：由上表的 `dva-fuxi-mac` 自愈闭环，改为**增量链**——`Fuxi-DVA-数据库驱动更新`（每日 00:00 PT）＋ `DVA Mac 增量成果回流`（每小时 :30）＋ `DVA Fuxi 健康告警`（PAUSED）。**新组的 id / 时刻为「转述未核」**（`~/.codex` 沙箱不可达），其**效果层**已实测；详见 [[DVA自愈链]]。
 
 ## 相关
 
-- [[DVA自愈链]]（该链的消费者就是这里的 `dva-fuxi-mac`）
+- [[DVA自愈链]]（DVA 链的**现行形态**与**已退役旧链**——旧链的消费者曾是这里的 `dva-fuxi-mac`）
 - [[通用教训]] **G-X190 / G-X191 / G-X192**
 - 与 brain 侧调度器（`~/Gateway-workspace/Scheduled/`）是**两个独立的执行面**，别混。
