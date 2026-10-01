@@ -30,6 +30,7 @@ brain/
 ├── logs/               ← 全局会话日志
 ├── references/         ← 外部参考资料摘要
 ├── templates/          ← 笔记模板
+├── .tools/             ← 写入侧闸与核验器（`check_quote_binding.py` 引录绑定 · `verify_citations.py` 提示器 · `check_pec_parity.py` 同版对）
 ├── chats/
 │   ├── code/           ← 从 Claude Code 导入的对话
 │   └── web/            ← 从 Claude Web/App 导入的对话
