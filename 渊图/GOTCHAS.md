@@ -1017,3 +1017,81 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **同族**: [[通用教训]] G-X110（文档时效两陷阱：文件新不代表内容新）· G-X104（枚举空先当路径错再当无新增——同属「单一判据信不得」族）。**第二次复发 → 应升格通用教训**（升格动作待 Doctor 批）。
 **来源**: 2026-09-19 投知君君周更定时班 · 实读 SNAPSHOT-INFO.md / .dva-fuxi-mirror.json / watchlist.json / dy_downloader.db
 
+## [NOTE-20260929-001] `_ASR_MISNAMES` 的**全局字面替换无语境限定**——同一缩写在另一语境是合法术语时被误改（HPC↔HBC）
+
+**状态**: 🔄 待修复（2026-09-29 立 · 2026-09-29 帕米尔 3 篇批 QA 实读 + 源文对读确认 · **判据有出处、应用面无范围** · 修法归 Doctor 裁）
+**优先级**: 🟡 中（写出错值、非静默丢失；但污染的是 canonical 文本层，且**下游消费者读 desc**）
+**触发**: 2026-09-29 帕米尔 3 篇批入库，`kg_ingest` 报「ASR 错名闸: 『HPC』→『HBC』」2 处。逐条对源文核——**源文写的是 HPC**（沃格篇：蓝思「重点押注 HPC/算力芯片载板」、京东方「半导体端 HPC、CPO/NPO 光模块同步推进」），产出的 desc 被改成 HBC。
+**硬证据（实读）**: ① 机制在 `kg_ingest.py:589` —— `_ASR_MISNAMES = {…, "RDM": "RRAM", "HPC": "HBC", …}`，执行体 `_fix_asr_misnames()`（L602-611）对**整个 `description` 与 `name` 做 `str.replace`**，并把被替换词**追加进 aliases**；② 本批后果 2 处：`concept_LensTechnologyTGVProgress`、`concept_BOETGVDualTrack` 的 desc 被改 + 各自多出一个 alias `HPC`；③ **二阶后果**：该 alias 随即被「撞名闸」当命中键，把这两个节点与 `concept_InfiniBand` 判成「疑似同名」——**错值又被下游闸当成信号**；④ **canonical 存量 1 处**：`concept_InfiniBand` desc 现为「专为严苛高性能计算（HBC）而生」，InfiniBand 对应的应是 HPC（High Performance Computing）——**成因未逐批回溯**（本批未改该节点 desc，只被别名字段牵出）。
+**根因**: 判据**本身有出处**——本条同族既有条目（本文件 L631「分层归因」）记的 ASR 层错误就含「英文缩写（RRAM→RDM、**HBC→HPC**、Tb/TB）」，即「源说 HBC、产出写成 HPC」确有其事。⇒ **错的不是判据方向，是把一个语境相关的改写做成了全库无条件的字面替换**：`HPC` 在 Qualcomm 语境确实该是 `HBC`（图内 `concept_HBCQualcomm`／`HBC3DStackingArchitecture`／`HBCLPDDRIntegration` 等 7 处**是合法术语**，实测未误伤），而在高性能计算语境 `HPC` 就是本字。**同一缩写在两语境下指两个不同实体**，字面替换无判别力。
+**影响面**: ① 写入端的 desc 文本；② aliases 被污染后**反向触发撞名闸**，制造假阳性合并信号（本批 9 处撞名里有 2 处即此）；③ 该闸在 `add_nodes`/`update_nodes`/`add_edges` 三处都跑。**同类风险面**：`_ASR_MISNAMES` 另有 `RDM→RRAM`、`ETS托卡马克→BEST`、`易算→亿算` 等 20 余条，**凡「错名」本身也是一个合法词/缩写的都同病**（未逐条普查，未核）。
+**建议修法（待裁，三选一）**: ① **删表项**——最小改动，代价是 Qualcomm 语境的 HBC↔HPC 又回到靠 LLM 自觉；② **加语境限定**——替换仅在该节点 id/name/邻近词命中语境词表（如 Qualcomm/HBC 族）时生效；③ **改写保留**——desc 原文不动、只登记「疑似错名」提示，把判定交人。**倾向 ②**（保方向、去误伤），但**②要求引入语境词表**，属功能新增 ⇒ 归 Doctor 裁。**未修代码**。
+**本批处置（已完成，不代签）**: canonical 未被触碰（promote 被第 15 项闸拦停）。batch 候选件上已复原 2 处为 HPC、摘除误加 alias，并**顺带订正 canonical 存量 1 处**（`concept_InfiniBand` HBC→HPC）——**随本批 promote 一并生效，届时请确认**。全程留痕于候选件 `metadata._meta_cc_qa_20260929_3pian`。
+**同族**: 本文件 L631（ASR 分层归因 · 本条是其**修复器侧**的镜像缺陷：归因对了、修复器做过头）· [[通用教训]] G-X191（配置字段语义由消费它的那一段决定）· G-X208（grep 命中关键串 ≠ 现行在场——本条的二阶后果正靠「命中即信号」放大）。
+**来源**: 2026-09-29 帕米尔 3 篇批（量检测／先进封装／沃格TGV）· `kg_ingest.py:581-621` 实读 · 源文与产出逐条对读 · 候选件 `mapping/行业知识图谱_v2_20260929_124425_3篇.json`
+
+## [NOTE-20260930-001] 节点 id 里嵌着**已修正的错名**——检索会命中一个名实不符的节点
+
+**状态**: 🔄 已修待验（2026-09-30 立 · 复核 VV《OCS 技术演示文档》时顺带实读发现 · **Doctor 2026-09-30「修掉」已实施**）：`concept_TPUv8tBoardflyTopology` → **`concept_TPUv8t3DTorusTopology`**，旧 id 入 aliases ＋ `_renamed_from`，边 `rel_product_GoogleTPUv8t_concept_TPUv8tBoardflyTopology` 端点同步改（**边 id 留旧**，沿 FIX-20260625-001）；节点数组位置未动。备份 `…bak_surgery_polatis_tpu_20260930_234815` · 墓碑 `mapping/_tombstones/2026-09-30_polatis_tpu_fix.json` · 留痕 `metadata._meta_surgery_polatis_tpu_20260930_234815` · 读盘复校：悬挂/自环/非法 type/同三元组 全 0 · meta 计数自洽 · 结构零丢失。**⚠ 实施者自验、未独立复验——✅ 落签归未参与实施的审核者。**
+**优先级**: 🟢 低（name/desc 均正确、不影响呈现；但 id 是检索面，会把查「Boardfly」的人引到一个讲 3D Torus 的节点上）
+**触发**: 2026-09-30 复核外部技术文档时，把文中「训练型 8t 用三维环面／推理型 8i 用 Boardfly」与图内对拍。
+**硬证据（实读）**: `concept_TPUv8tBoardflyTopology` —— **id 含 `Boardfly`，name 却是「TPU v8t三维环形网络拓扑（3D Torus）」**，desc 亦通篇讲 3D Torus。同图另有正确节点 `concept_BoardflyTopology`「Boardfly网络拓扑（TPU v8i专用）」＋ `product_GoogleTPUv8i.properties.network_topology_current = "Boardfly"`、`product_GoogleTPUv8t.properties.network_topology_current = "3D torus"` ⇒ **两处独立自证 name 侧为真、id 侧为误**（Boardfly 是 8i 的，不是 8t 的）。
+**根因（推断，未回溯）**: 建节点时先按「8t 的拓扑＝Boardfly」命名，后续按公开资料订正了 name/desc，**id 未跟改**（沿本仓「边 id 留旧」惯例的误用——该惯例是给**边**留痕用的，套到**节点 id** 上就变成活着的错名）。
+**影响面**: ① 全文检索／别名归一命中该节点；② 与本仓 id 前缀治理、`check_id_consistency` 系谱相关；③ 同族风险未普查（其他节点 id 是否也嵌了已订正的错名，**未扫**）。
+**建议修法（待裁）**: 改名 `concept_TPUv8t3DTorusTopology`（或 `concept_TPUv8tTorusTopology`），旧 id 入 aliases 可回溯，边端点同改；**须先确认无外部消费者按 id 引用**。
+**同族**: 本文件 L819（id 前缀与 type 双轨）· 2026-09-29 批 `concept_CoWoSLPanelLevel` 同型（id 错名、由独立复验逮出）。
+**来源**: 2026-09-30 OCS 演示文档复核场 · `mapping/行业知识图谱_完整数据库.json` 四节点实读对拍
+
+## [NOTE-20260930-002] 同一实体在**多个节点上挂互斥属性**——两条路线叙事各自自洽、合起来不可能同时为真
+
+**状态**: 🔄 已修待验（2026-09-30 立 · 由未参与实施的独立审核者实读发现 · **一真错 + 一疑误** · **Doctor 2026-09-30「修掉」已实施**）：`company_Polatis` **归压电族**——name 改 `Polatis（压电光束偏转型OCS，HUBER+SUHNER旗下）`、desc 重写为压电 DirectLight 光束偏转＋凌云光代理、摘除 `Thales Polatis`/`泰勒斯Polatis` 两条别名、加顶层 `_corrected_20260930`（含改前全文）；`concept_MechanicalOCS` 摘除误挂 alias `Polatis OCS`；**删除误挂边 `rel_company_Polatis_concept_MechanicalOCS`**（全文入墓碑），正确的 `rel_company_Polatis_concept_PiezoelectricCeramicOCS` 保留。canonical **6476/7154 → 6476/7153**。备份/墓碑/留痕同上条。**⚠ 实施者自验、未独立复验——✅ 落签归未参与实施的审核者。** **⚠ 同族第三处未修（新发现，不属本次两条）**：`concept_PiezoelectricOCS` **节点内自相矛盾**——desc 写「切换速度 **10ms**」而自身 props 另有 `switching_time_us_undated: "10-100微秒"`（与 `switching_delay_ms_undated: "几毫秒"`、`switching_speed_current_ms: 10` 并存），差 100–1000 倍；**取值须先定口径**（判断性）⇒ 未擅动。
+**⚠ 误挂溯源（复验方定位）**：「泰勒斯」**全库只有一处来源**——`raw/Obsidian Industrial/OSIC 2026-OCS.md` L162-166「### 3. 机械光开关方案 / 代表：Polatis（泰勒斯旗下）」。而同一节点的另一条 P1 源（`2025.11.25-帕米尔研究：OCS产业链深度解读.md` L85）**本来就写对**：「凌云光…主要代理 Polatis 的**压电陶瓷**光开关产品」⇒ **库内两源冲突，一手证据判在压电侧**。**同族教训**：多源入库时，同一实体的**互斥属性**缺跨节点校验（本仓闸门只管重复节点，不管属性对撞）。
+
+**优先级**: 🟡 中（消费端读到哪条取决于命中哪个节点／哪条边，属「结果不可复现」类）
+**触发**: 2026-09-30 复核外部文档时查 `company_Polatis`，顺带对读同族节点，发现三条互斥记载。
+**硬证据（实读 canonical）**: ① `concept_PiezoelectricOCS`（压电陶瓷型OCS光开关）desc 写「**Polatis 选用此路线**」、`mass_production: 测试未量产（Polatis小规模）`；② `concept_MechanicalOCS`（机械光开关型OCS）aliases 含 `Polatis OCS`、desc 写「采用**机械臂重新排列光纤**…切换时间为**分钟级**」；③ `company_Polatis` name 直接写成 `Polatis（**机械光开关**，泰勒斯旗下）`、desc「代表**机械臂光纤重排**路由技术路线，产品切换时间为**分钟级**」。⇒ ①②③ 对「Polatis 属哪条路线／切换时间量级」给出**不可兼容**的答案（压电光束偏转 vs 机械臂重排光纤；亚毫秒级 vs 分钟级）。
+**独立佐证（外部一手）**: Polatis 自署资料为**压电**——产品数据表（HUBER+SUHNER 7000n）逐字 `uses Polatis' patented, highly reliable **piezoelectric DirectLight beam-steering** technology`；Polatis 作者署名的 EU DISCUS D6.5 交付件逐字 `combining patented **piezoelectric actuation**` ＋ `opposing 2-D arrays of fibre-pigtailed collimators are individually steered by **piezoelectric actuators** via a low-stress flexure pivot`。⇒ ②③ 的「机械臂重排光纤／分钟级」与一手资料不符。
+**同族第二处（归属疑误）**: `company_Polatis` name 的「**泰勒斯旗下**」——HUBER+SUHNER 2016-05-31 公告收购 Polatis；polatis.com 联系邮箱为 `info.polatis@hubersuhner.com`；其产品页页脚署名 huber-suhner。⇒ 「泰勒斯旗下」疑为误挂（**⚠ 未穷尽回溯泰勒斯是否曾持股**，故记「疑误」不记「实错」）。
+**根因（推断，未回溯）**: 同一实体被不同批次分别建/挂在两条路线族下，**各批只看自己那篇源文**，缺跨节点互斥校验；本仓现有闸（同三元组、撞名、span、schema）**都不校验「同一实体的属性是否互斥」**。
+**影响面**: ① 检索「Polatis 切换时间」会拿到分钟级，检索「压电 OCS」又拿到 Polatis——**同一事实两个答案**；② 若下游（龙鱼/白泽/风险日报）按边遍历，取到哪条取决于路径；③ 同型风险**未普查**（其他跨族实体是否也这样，未扫）。
+**建议修法（待裁）**: ① 定 Polatis 的**唯一路线归属**（一手资料支持「压电」），另两处改挂或加限定；② `company_Polatis` name 里的「泰勒斯旗下」需核后订正或摘除；③ **机制层**：考虑加一条「同一实体跨族属性互斥」检查（与既有「同名实体闸」互补——那个查重复节点，这个查**属性对撞**）。
+**本批未动**: 未改 canonical 任何字段（只读审计）。外部文档方面，VV 的《OCS 技术演示文档》**未沿用**「泰勒斯」与「分钟级」表述，未被污染。
+**来源**: 2026-09-30 OCS 演示文档复核场 · 独立审核者实读 `mapping/行业知识图谱_完整数据库.json` ＋ Polatis/HUBER+SUHNER 一手页与 PDF
+
+### 2026-09-30 pass-2 补齐（承未参与实施的独立复验 6 条 · 判 PASS_WITH_LIMITS）
+
+> **⚠ 排布订正（2026-10-01）**：本节原先被插在本条 `**状态**` 字段**中间**，致条目自身的 `优先级/触发/硬证据…` 字段一度挂在本节之下。已按正确顺序重排——**内容一字未改，只动位置**。
+
+复验结论：**手术对象级完全干净（未声明改动 0 条、12 条声称逐条成立）**，限项全在留痕/惯例层。已逐条补：
+① **边 `_meta` 加 `id_renamed_20260930` 注记**——旧 id 还残留在 `_meta.relabel_2026_05_16.correct_source`（2026-05-16 当日值），**按「改引述＝篡改记录」保留原值、只加注记**，不改历史；
+② **补 `updated_at` 4 处**（三个被触及节点 ＋ 1 条边）→ `2026-09-30`（沿本仓批次惯例：touched 即标手术日；此前 09-24/09-26/09-29 批分别为 379/52/271 个节点，本刀原为 0）；
+③ **墓碑 `schema` 对齐**为 `1`（原为我自造的 `yuantu_surgery_tombstone_v1`）；**⚠ 该行初写「同批 6 件皆 schema:1」为计数笔误，实为 9 件，承独立复验逮出后已在墓碑内订正**；
+④ **`_health.json` 补盖章**（承 `scripts/write_health.py`）→ 现值 **6476/7153 · overall=ok**；⚠ **连带修掉 09-29 promote 也漏刷的那次**（该件此前停在 09-26 的 6449/7118）；
+⑤ **落手术脚本** `mapping/_surgery_polatis_tpu_20260930{,_pass2}.py`（沿 `_surgery_pop_meta_20260924.py` 先例；此前只在 /tmp，可追溯性弱）；
+⑥ **订正本仓一处措辞说满**：我原写「全图无残留悬挂引用」——**图完整性确无问题，但旧 id 字面残留 5 处**（aliases／`_renamed_from`／边 id／边 `_meta` 历史值／meta log）。⇒ 正解措辞＝「**无悬挂引用；残余旧拼写属留痕或惯例**」。
+另复验方两条独立佐证（**未采信我的转述、自行回源**）：F1 前提经 SemiAnalysis InferenceX 词条「TPU 8t, the training chip, keeps the 3D torus. TPU 8i … switches to Boardfly」证实；F2 经 Polatis 6000n 数据表 ＋ EU DISCUS D6.5 ＋ H+S 收购公告证实，且**英文/中文双向检索「Polatis 曾属泰勒斯」零命中**。
+
+### 2026-10-01 pass-3 · wiki 回刷（承第二轮独立复验 · 判 PASS_WITH_LIMITS）
+
+复验结论：**数据全数干净**（canonical 差异恰等于宣称、零未声明改动、wiki 是 canonical 的忠实投影、旧术语零残留）。**限项＝一处自述口径缺陷，且该缺陷已由复验方证伪**：
+**⚠ 实施者自曝一处推断错**：我曾称「`--force` 使 987 张卡改动的**只是** `_生成时间` 行」，依据是「那些卡的源节点本次一个没碰 ⇒ 内容不可能变」。**该推断不成立**——复验方走 `.git` 对象库物证路径（自写 zlib 解析、未跑任何 git 命令）实测：**79 张有内容级改动**（905 张仅盖戳、3 张新建）。**错因**：该推理默认 **wiki 树与 canonical 同步**；事实上**树自 09-24 起就没回刷过**，09-26/09-29 两批的图变更一直躺在盘上 ⇒ 那 78 张是**补课**（把积压漂移补齐）、另 1 张是我手术的邻卡 `piezoelectricocs.md`。⇒ **教训：「源未变 ⇒ 派生物不可能变」只在「派生链单次且同步」时成立；存在积压时该推理失效。** 该错已在报告与本节订正，**无数据危害**（全 989 张与现盘字节全等，可证无一处手工拼补）。
+**pass-3 实质动作**：按**正式生成链**点名重出两张低于阈值的孤儿卡——`python3 wiki_autogen.py --force concept_MechanicalOCS company_Polatis`（生成器支持按 id 点名，`if args: targets = args`），**未手工拼补**。回读：两卡与 canonical 一致；**全 wiki「泰勒斯」/「Thales」/「机械臂光纤重排」/旧边 id/旧节点 id 命中数全为 0**；`Boardfly` 命中 8 件**全部指 v8i**，无一张挂给 v8t。**同批另登记 `[NOTE-20261001-001]`。**
+**终态**：canonical **6476/7153** · 悬挂/自环/非法 type/同三元组 全 0 · 备份两件（`…bak_surgery_polatis_tpu_20260930_234815`、`…bak_surgery_pass2_20260930_235602`）· 墓碑 1 件（＋1 件 typo 备份）· 手术脚本 2 件 · wiki 回刷 989 件 · tmp 残留 0。
+**⚠ 各轮均由实施者自验或自报；✅ 落签仍归未参与实施的审核者——pass-2 已过独立复验、pass-3 尚未过第二轮复验。**
+
+## [NOTE-20261001-001] wiki 生成层三处结构缺陷——**slug 撞名静默覆盖** · 孤儿卡永不刷新 · 生成器只写不删
+
+**状态**: 🔄 待修复（2026-10-01 立 · 承 2026-09-30 Polatis/TPU 手术后回刷 wiki，由**未参与实施的独立审核者**用 `.git` 对象库物证路径发现 · **三条皆属功能新增，未擅动**，修法归 Doctor 裁）
+**优先级**: 🟡 中（不伤 canonical，但 **wiki 是消费者面**；影响是「查不到」与「查到旧值」）
+**触发**: 2026-09-30 手术后按常规跑 `wiki_autogen.py --force` 回刷消费者面。
+**硬证据（实读/实算）**:
+1. **slug 撞名 → 静默覆盖（26 组）**：`wiki_autogen.slug()`（L87）**剥掉类型前缀**后小写化，故「同主体、不同 type」的两个节点塌成同一文件名，后写者覆盖先写者、**无任何告警**。全图实测 **26 组**，例如 `ymtc.md` ← `company_YMTC` ＋ `concept_YMTC`；`faradayrotator.md` ← **三个**节点（material/product/concept）；另有 `smee / moorethreads / huatiantechnology / tsvcmp / xrayinspection / hbf / fau / shufflebox / carriercopperfoil / inpsubstrate / emllaser / glasssubstrateyieldcurrent …`。⇒ 26 组里每组至少一个节点**在 wiki 面无卡**。**本次 `--force` 候选集 988 个节点最终只写出 987 个文件**，差 1 即此机制（`company_SMEE`/`concept_SMEE`）——**根因既有，非本次引入，但是本次把它暴露了**。
+2. **孤儿卡永不刷新（1273 张 · 其中 175 张已漂移）**：生成器只写不删、且阈值为**度 ≥4**（`--min-degree`，默认 4）。实测有卡但节点度 <4 者 **1273 张**（占全 wiki 2305 的 55%）；用现盘 canonical 全量重出后对拍 ⇒ **175 张（13.7%）内容已漂移**（关系区显示旧节点名如 `WinWay Technology`→`穎崴科技`、desc 未收新批次增量、属性表缺新增字段、`曾·` 前缀残留）。**本次只点名重出了 2 张**，**其余 174 张漂移未动**。
+3. **`_生成时间` 不能当内容新鲜度用**：该行记的是**文件写入时刻**，不是**内容变更时刻**。本次 `--force` 使 987 张卡的这一行全部变成 2026-09-30，**其中 79 张确有内容级改动、905 张只是重新盖戳**。⇒ 任何以「卡上日期」判「内容是否新鲜」的消费端都会误判（同族 `G-X193`）。
+**根因**: 生成器把「节点」当作卡的唯一键，而文件名空间是**按 slug 压缩过的**——压缩不可逆（丢类型维度），既造成撞名覆盖，也使得「节点退役/降度」后旧卡无人回收。**本仓现有闸（同三元组、撞名、span、schema）都在 canonical 层，对派生的 wiki 层零覆盖。**
+**影响面**: ① 26 组里每组至少一个节点在 wiki 面**不可检索**；② 1273 张孤儿卡可能长期给出**与 canonical 不一致的旧值**（本次 175 张实证）；③ 消费者 `consumers/龙鱼五力/` 的**冻结批次产物**内嵌旧术语（如「Polatis（机械光开关，泰勒斯旗下）」）——经核**引擎活读路径 `batch_out/latest.json` 未命中旧术语**，故**不构成活引用**，属历史快照，按「历史记录不改」豁免。
+**建议修法（待裁）**: ① `slug()` 保留类型前缀（或撞名时加类型后缀）＋ 冲突即 fail-closed 告警（**最小改动、消灭覆盖**）；② 立「降度/退役卡」处置规则——归档或标记 stale，而非静默留存；③ 回刷范围与触发只归「构建链」——本次 `--force` 暴露出**回刷是手工偶发的**，图变了卡不一定跟着变。**三条均属功能新增，未擅动。**
+**同族**: `[NOTE-20260930-001]`（id 误名 · 同为「压缩/继承导致的命名收敛」）· `G-X193`（自指指标）。
+**来源**: 2026-09-30/10-01 渊图手术与 wiki 回刷 · 独立审核者自写 zlib 解析 `.git` 对象库取改前版本对拍（未跑任何 git 子命令）+ 全量重出对拍
+
+
