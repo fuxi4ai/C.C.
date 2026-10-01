@@ -2,7 +2,7 @@
 title: Codex 自动化层（真源结构与判读）
 tags: [codex, automation, 环境, 参考]
 created: 2026-09-22
-updated: 2026-10-01
+updated: 2026-09-30
 status: active
 type: reference
 ---

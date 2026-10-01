@@ -2,7 +2,7 @@
 title: DVA 链（现行机制图与判读判据 · 含已退役旧链）
 tags: [DVA, fuxi, 参考, 判读地图]
 created: 2026-09-22
-updated: 2026-10-01
+updated: 2026-09-30
 status: active
 type: reference
 ---
@@ -11,7 +11,7 @@ type: reference
 
 > ⚠ **2026-09-29 架构级取代**：旧「自愈闭环」链（heartbeat → `run_dva_self_heal.py` → coordinator）**已退役**；现行＝**增量协调器**（`dva_incremental_pipeline.py`）。旧链保留在本文件末尾**历史层**（只读不改，作考古）。
 > **用途**：判「有没有跑 / 有没有推进 / 卡在哪」时照这张图找面，**别再从零摸**。
-> **最后核验**：2026-10-01（只读实读）。**配置层（Codex automation 清单）沙箱不可达 ⇒ 凡涉它的一律标「转述未核」；效果层（fuxi/Mac 落盘产物）皆本轮实测。**
+> **最后核验**：2026-09-30（只读实读）。**配置层（Codex automation 清单）沙箱不可达 ⇒ 凡涉它的一律标「转述未核」；效果层（fuxi/Mac 落盘产物）皆本轮实测。**
 
 ## 一、现行链（2026-09-29 起）
 
