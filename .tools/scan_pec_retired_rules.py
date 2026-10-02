@@ -63,8 +63,12 @@ SCAN_DIRS = [
 ]
 SKIP_DIR_PARTS = {".git", "_bak", "archived", "__pycache__", "node_modules",
                   ".ruff_cache", "dist", ".pytest_cache"}
-SKIP_SUFFIX = (".pyc", ".bak", ".png", ".jpg", ".jpeg", ".gif", ".pdf",
+SKIP_SUFFIX = (".pyc", ".png", ".jpg", ".jpeg", ".gif", ".pdf",
                ".zip", ".tar", ".gz", ".sqlite3", ".db", ".xlsx")
+# ⚠ 备份件过滤用**模式式**：`endswith(".bak")` 漏掉 `.bak_p1b_2026-09-29` / `.bak_audit_...`
+#   一类命名（2026-10-02 由未参与实施的独立复验者逮出 —— 新增的根级 `checkpoints` 根
+#   **全部收益 +16 命中都落在 6 个此类备份件里、且全归「史层」静默**，即零真价值）。
+SKIP_RE = re.compile(r"\.bak($|[_.])")
 
 # 真退役层（**静默**：只计数、不逐条列 —— 这些层按纪律不追改）
 HIST_PATH_RE = re.compile(r"(/|^)(archived|_bak|_DEPRECATED_)(/|$)|\.bak")
@@ -99,7 +103,7 @@ def iter_files():
             if any(p in SKIP_DIR_PARTS for p in dp.split(os.sep)):
                 continue
             for fn in fns:
-                if fn.endswith(SKIP_SUFFIX):
+                if fn.endswith(SKIP_SUFFIX) or SKIP_RE.search(fn):
                     continue
                 yield os.path.join(dp, fn)
 
@@ -157,7 +161,7 @@ def scan(all_hits=False):
     return files, hits
 
 
-def report(files, hits, all_hits=False):
+def report(files, hits, all_hits=False, roots=None):
     pend = [h for h in hits if h["klass"] == "待判"]
     dat = [h for h in hits if h["klass"] == "资料层·须指针"]
     rec = [h for h in hits if h["klass"] == "记录·留痕"]
@@ -166,8 +170,15 @@ def report(files, hits, all_hits=False):
     print("PEC 已废规则串残留扫描 —— 提示器（非闸）")
     print("═" * 78)
     print(f"【扫描面】件 {len(files)} · 串 {len(RETIRED)} · 组合 {len(files) * len(RETIRED)}")
-    for d in SCAN_DIRS:
-        print(f"    · {d}")
+    # ⚠ 2026-10-02 改（承未参与实施的独立复验者 I4）：**印展开后的真实根**，不再印模式串 ——
+    #   初版把 `SCAN_DIRS` 的模式串照印，**展开为空或不存在的根也照印** ⇒ 「扫描面」读数可虚。
+    if roots:
+        print(f"    展开后根 {len(roots)} 个：")
+        for r in roots:
+            print(f"      · {os.path.relpath(r, HOST)}")
+    unmatched = [d for d in SCAN_DIRS if not glob.glob(os.path.join(HOST, d))]
+    if unmatched:
+        print(f"    ⚠ 未参与扫描（展开为空）：{unmatched}")
     print(f"【命中】{len(hits)} 处 —— 待判 {len(pend)} · 资料层·须指针 {len(dat)}"
           f" · 记录·留痕 {len(rec)} · 史层 {len(hist)}")
     for tag, group, note in (
@@ -266,7 +277,7 @@ def main():
         print("[配置错] 扫描根存在但展开出 0 个可读文件 —— 疑似根指错，或被 SKIP 规则整片吞掉",
               file=sys.stderr)
         return 2
-    return report(files, hits, a.all)
+    return report(files, hits, a.all, roots)
 
 
 if __name__ == "__main__":
