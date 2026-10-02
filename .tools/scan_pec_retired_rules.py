@@ -23,6 +23,7 @@
 作者：CC · 2026-10-02 · 本脚本未经独立复验
 """
 import argparse
+import glob
 import os
 import re
 import sys
@@ -53,7 +54,11 @@ RETIRED = [
 # 现行层：PEC 项目树（排归档/备份）＋ brain 侧现行执行件
 SCAN_DIRS = [
     "Projects/PEC",
-    "brain/logs/2026-09/checkpoints",
+    # ⚠ 用通配：月折目录会换。**首版写死 `brain/logs/2026-09/checkpoints`** ⇒ 与
+    #   `check_pec_parity.py` 的 `KIT` 路径**同一种死法**（到 10 月即失明）——
+    #   由 2026-10-02 未参与实施的独立复验者实跑逮出。**禁写死月份。**
+    "brain/logs/*/checkpoints",
+    "brain/logs/checkpoints",
     "brain/PEC",
 ]
 SKIP_DIR_PARTS = {".git", "_bak", "archived", "__pycache__", "node_modules",
@@ -79,11 +84,16 @@ RECORD_MARKERS = [
 ]
 
 
-def iter_files():
+def expand_roots():
+    """把 SCAN_DIRS 里含通配的项展开成真实目录（月折目录会换 ⇒ 禁写死月份）。"""
+    out = []
     for d in SCAN_DIRS:
-        root = os.path.join(HOST, d)
-        if not os.path.isdir(root):
-            continue
+        out += sorted(glob.glob(os.path.join(HOST, d)))
+    return [p for p in out if os.path.isdir(p)]
+
+
+def iter_files():
+    for root in expand_roots():
         for dp, dns, fns in os.walk(root):
             dns[:] = [x for x in dns if x not in SKIP_DIR_PARTS]
             if any(p in SKIP_DIR_PARTS for p in dp.split(os.sep)):
@@ -243,7 +253,19 @@ def main():
     a = ap.parse_args()
     if a.self_test:
         return self_test()
+    # ⚠ fail-closed（2026-10-02 补 · 首版**未实装**、docstring 却承诺了 rc=2 —— 由独立复验者逮出）：
+    #   根不可达 ⇒ **静默绿 exit 0** 是本线反复踩的同族病。现：根一个都不存在 / 展开 0 件 ⇒ rc=2。
+    roots = expand_roots()
+    if not roots:
+        print(f"[配置错] 扫描根一个都不存在：{SCAN_DIRS}\n"
+              f"          HOST={HOST}（沙箱内请设 PEC_SCAN_HOST=<沙箱 Documents/Claude/>）",
+              file=sys.stderr)
+        return 2
     files, hits = scan()
+    if not files:
+        print("[配置错] 扫描根存在但展开出 0 个可读文件 —— 疑似根指错，或被 SKIP 规则整片吞掉",
+              file=sys.stderr)
+        return 2
     return report(files, hits, a.all)
 
 
