@@ -264,7 +264,9 @@ def report(files, hits, all_hits=False, roots=None):
 
 
 def self_test():
-    """负向自检五式：① 围栏内不入判 · ② 直述→待判 / 带留痕→记录 · ③ 按路径记录与资料层正反例（含排 checkpoints）· ④ 正则型串 · ⑤ 域护栏。"""
+    """负向自检**六式**：① 围栏内不入判 · ② 直述→待判 / 带留痕→记录 · ③ 按路径记录与资料层正反例（含排 checkpoints）· ④ 正则型串（**经 `hit()`**）· ⑤ 域护栏（**经 `hit()`**）· ⑥ **入口级**（造合成 HOST 走真 `scan()`：域护栏／按路径记录／资料层 三条接线）。
+    ⚠ 计数声明须随实现同改（本行曾写「五式」而实跑已到 `[自检 6]`）——承独立复验者 ③-6 逮出。
+    """
     import shutil
     import tempfile
     ok = True
@@ -353,7 +355,7 @@ def self_test():
     r = next(x for x in RETIRED if x.get("regex"))
     for s, want in [("否则 ⇒ **候选**", True), ("否则 ⇒ 候选", True),
                     ("其余情形 ⇒ 见 `2.0（五）` 二值表", False)]:
-        got3 = re.search(r["pat"], s) is not None
+        got3 = hit(s, r)   # ⚠ 改调**共享判据**（原重抄 `re.search` ⇒ M6 残余假齿，承独立复验者逮出）
         f = "✓" if got3 == want else "✗"
         if got3 != want:
             ok = False
