@@ -191,3 +191,10 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 - logs/2026-06-30-gateway切换善后-skill与artifacts补迁.md（本清单初立 + frontmatter 根因）
 - logs/2026-07-01-切回官方-重建定时任务与skill.md（官方环境重装 + Vault 合并）
 > **brain-anchors 纪律锚批次（2026-10-02）部署对拍（机器证据）**：canonical ＝ portable ＝ `.skill` 包内 ＝ **runtime 安装副本** 四端 **逐字节一致 sha256 `288745a3b64729c2…`（15771 B）**；`check_skill_parity.py --docs <挂载根> --runtime <挂载根>/.claude/skills --name brain-anchors` → 四端列 **`288745a3 288745a3 288745a3 288745a3` · rc=0**（⚠ **不带 `--runtime` 的命令不足以支撑本结论**：该器默认 runtime 候选全在 `{home}` 下、沙箱里恒不可达，此时它仍打绿 rc=0——见 `ERR-20261002-003`／`-004`）；runtime 副本落盘 `2026-10-02 18:36:02`（`~/.claude/skills/brain-anchors/SKILL.md`）。⚠ **路由（是否会因「复核」自动起手）未验**——本会话注入的清单在起手即定格为旧版，须**全新会话**实测。
+> **⚠ 订正（2026-10-03 · 承 CC 实读四端 sha256 对拍）**：本页上方两处「四端一致」陈述**均已过期**，且第 56 行一句**已不成立**——
+> ① **`brain-anchors`**：canonical ＝ portable ＝ 包内 现为 **`c4e78e22` / 15777 B**（18:36 之后，纪律锚表行与触发示例由「九族 36 例」改述为「**十一族 40 例**」）；**runtime 安装副本仍为 `288745a3` / 15771 B** ⇒ **四端差 1 版**，新会话拿到的是旧措辞。
+> ② **`damper`**：canonical ＝ portable ＝ 包内 现为 **`8dbb78e6` / 78338 B**（已长到**十一族**）；**runtime 安装副本仍是 `f240a5db` / 59199 B** ⇒ **差 2 版**。故第 51 行所记 `283f94f9` / 52486 B 为历史值；**第 56 行「本 skill 从未安装」为假**——runtime 副本实存于 `~/.claude/skills/damper/SKILL.md`。
+> ③ ⇒ **两个 skill 都需重新安装**（`.skill` 包均已重打、仓内三端齐整）；装完本页两行才能回签。
+> **判据**：HEAD（`9d7d13f3`）树内 blob 与盘上文件**逐字节对拍 8/8 一致**（并据此确认当日那笔 commit 未丢件）——四项 sha 均可复算。
+> **✅ 订正②已闭（2026-10-03 01:17–01:18 重装完成）**：两个 skill **四端均逐字节一致** —— `brain-anchors` **`c4e78e22db4d6210` ×4**（15777 B · runtime 落盘 01:17:37）· `damper` **`8dbb78e62e4fdfb2` ×4**（78338 B · runtime 落盘 01:18:04）。机器判据：`check_skill_parity.py --docs <挂载根> --runtime <挂载根>/.claude/skills --all` 输出表内两行**均为「仓内三端一致 · 四端一致 ✓」，且不在问题清单中**。（该跑的 **rc=1 系别家 skill 所致，与本两者无关**——见下条。）
+> **⚠ 顺带实读（非本次改动 · 仅登记，未处置）**：同一跑 `--all` 报 **15 项问题**，全部落在**其它 skill**：`brain-save`（runtime 真分歧）· `brain-consolidate`（runtime 仅差末端空行，属已知归一化）· 及 `QA`／`audit`／`gsap-frontend`／`handshake-consumer`／两个 `_DEPRECATED_*`（**portable 端为空或缺失**，其 hash 显示为 `e3b0c442`＝空文件指纹）。**未判**这些「缺 portable 端」是**设计如此**（非 brain-* 家族本就走 `.skill` 包）还是**真缺口**——沿既有 TODO「`QA` skill 不在 parity 射程内」另议。**本条只登记，不动手。**
