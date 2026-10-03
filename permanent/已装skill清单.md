@@ -189,4 +189,4 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 - [[项目总览]]（anchor 触发依赖 brain-anchors 在装）
 - logs/2026-06-30-gateway切换善后-skill与artifacts补迁.md（本清单初立 + frontmatter 根因）
 - logs/2026-07-01-切回官方-重建定时任务与skill.md（官方环境重装 + Vault 合并）
-> **brain-anchors 纪律锚批次（2026-10-02）部署对拍（机器证据）**：canonical ＝ portable ＝ `.skill` 包内 ＝ **runtime 安装副本** 四端 **逐字节一致 sha256 `288745a3b64729c2…`（15771 B）**；`check_skill_parity.py --docs <挂载根> --name brain-anchors` **rc=0**；runtime 副本落盘 `2026-10-02 18:36:02`（`~/.claude/skills/brain-anchors/SKILL.md`）。⚠ **路由（是否会因「复核」自动起手）未验**——本会话注入的清单在起手即定格为旧版，须**全新会话**实测。
+> **brain-anchors 纪律锚批次（2026-10-02）部署对拍（机器证据）**：canonical ＝ portable ＝ `.skill` 包内 ＝ **runtime 安装副本** 四端 **逐字节一致 sha256 `288745a3b64729c2…`（15771 B）**；`check_skill_parity.py --docs <挂载根> --runtime <挂载根>/.claude/skills --name brain-anchors` → 四端列 **`288745a3 288745a3 288745a3 288745a3` · rc=0**（⚠ **不带 `--runtime` 的命令不足以支撑本结论**：该器默认 runtime 候选全在 `{home}` 下、沙箱里恒不可达，此时它仍打绿 rc=0——见 `ERR-20261002-003`／`-004`）；runtime 副本落盘 `2026-10-02 18:36:02`（`~/.claude/skills/brain-anchors/SKILL.md`）。⚠ **路由（是否会因「复核」自动起手）未验**——本会话注入的清单在起手即定格为旧版，须**全新会话**实测。
