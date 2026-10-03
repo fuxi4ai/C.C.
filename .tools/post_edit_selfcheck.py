@@ -22,8 +22,8 @@
   只按行区间取它的 `fb`；**第 4 条（锚串复算）是本支新增**（实测：`check_quote_binding` 对「纯坐标 + 非空行 + 内容
   不符」**不转红**，故不属重复造轮子）。**不整体照跑它的 A/C 项** —— 域外件上实测 A 未过数百、C 未过数条，是假报机。
 - **B · 量词 / C · 自造术语：提示器，非闸。** B 的词表是**开放集、不是穷举**；B 的豁免窗口＝同行／紧邻 ±2 行。
-  ⚠ **`--strict` 下 B/C 计入 rc ⇒ 此时实为闸**（如实标：默认是提示器，`--strict` 是升闸开关 —— 别把两种调用等同看待）。
-- **默认只报（rc=0）**；`--strict` ⇒ A 的红 ＋ B/C 命中计入 rc=1。
+  **B/C 在 `--strict` 下也只提示，不计入返回码。**（2026-10-03 订正：此前 `--strict` 会把 B/C 计入 rc —— 那等于把**开放集启发式**升成闸，既制造假红，又会**逼出族 10「修红反噬」**：为过闸去改被测对象。该升闸开关退役。）
+- **默认只报（rc=0）**；`--strict` ⇒ **仅 A 的红**计入 rc=1。
 - **`--file` 自身读不了 ⇒ rc=2（环境）；坐标所指的件不存在 ⇒ 红（不是 rc=2）。**
 - **解析根**：件所在目录 → 其父 → docs 根 → `--root` 补。**根给少了会假红**（同族实测：漏根时报 53 条、补根后 0 条）。
 - **不做 `quotes` 那道域闸**：坐标问题在 `brain/**` 一样犯，`asserts` 刻意**域中立** —— 此为有意，不是漏做。
@@ -455,9 +455,9 @@ def cmd_asserts(args) -> int:
         print(f"   ? L{ln} `{tok}` —— 疑未定义／无出处")
     rn = len(reach) + len(anchor_red)
     print(f"\n判据：A 红 {rn} 处{'（--strict ⇒ 计入 rc）' if args.strict else '（默认只报，rc 不因此变）'}；"
-          f"B/C 共 {len(quant_hits) + len(coins)} 处命中**恒为提示器**，`--strict` 下才计入 rc。")
+          f"B/C 共 {len(quant_hits) + len(coins)} 处命中**恒为提示器**，不计入 rc。")
     print("⚠ `--file` 自身读不了 ⇒ rc=2（环境）；**坐标所指的件不存在 ⇒ 红**（不是 rc=2）。")
-    if args.strict and (rn or quant_hits or coins):
+    if args.strict and rn:
         return 1
     return 0
 
@@ -650,7 +650,7 @@ def self_test() -> int:
                 rc = cmd_asserts(argparse.Namespace(file=str(tgt), docs=str(tmp), lines=[1, 1],
                                                     root=[], strict=True))
             out = buf.getvalue()
-            assert rc == 1 and "量词" in out, "无出处的量词行应被报出并计入 strict"
+            assert rc == 0 and "量词" in out, "量词提示应保留，但不得令 strict 失败"
             with contextlib.redirect_stdout(io.StringIO()):
                 rc2 = cmd_asserts(argparse.Namespace(file=str(tgt), docs=str(tmp), lines=[5, 5],
                                                      root=[], strict=True))
@@ -667,7 +667,7 @@ def self_test() -> int:
                 rc = cmd_asserts(argparse.Namespace(file=str(tgt), docs=str(tmp), lines=[1, 1],
                                                     root=[], strict=True))
             out = buf.getvalue()
-            assert rc == 1 and "v9" in out, "本件只出现一次的短标识应被报出"
+            assert rc == 0 and "v9" in out, "术语提示应保留，但不得令 strict 失败"
             tail = out.split("■ C ·")[1] if "■ C ·" in out else ""
             assert "G-X206" not in tail, "出现两次的 `G-X206` 不应被报为疑未定义"
         cases.append(("T16 asserts·C 自造术语：一次报/两次免", run(t16)))

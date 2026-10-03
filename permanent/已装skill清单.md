@@ -15,7 +15,7 @@ type: permanent
 > **2026-07-01 合并**：原 `Vault/SKILLS_MANIFEST.md` 已并入本文件（以 brain 为主），那份降为指向本文件的指针，勿再各记一份。
 > 状态图例：✅ 已装　⏳ 待装　🚫 本环境不适用（Codex/图生线）。**各环境实时装机状态**以本表「装机」列为准（截至 2026-07-01 官方桌面环境）。
 
-> 每个工作环境的 skill 目录独立，切环境（桌面官方 ↔ gateway/Claude-3p ↔ Claude Code CLI ↔ 换机）就要重装一遍。
+> 每个工作环境的 skill 目录独立，切环境（桌面官方 ↔ gateway/Claude-3p ↔ Claude Code CLI ↔ 换机）就要重装一遍。〔**注（2026-10-03）**：本句系 2026-06 立、为当时实况；**其中「Claude Code CLI ↔ Claude-3p」这一对是否真属不同目录 —— 未核**，见订正④①。〕
 
 ---
 
@@ -140,8 +140,8 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 | 工作环境 | 安装机制 | 备注 |
 |----------|---------------|------|
 | **Claude 桌面应用（官方版·当前）** | 双击 `.skill` → 系统弹卡片 → "Save skill" → `~/Library/Application Support/Claude/skills/<name>/` | bundle id `com.anthropic.claudefordesktop`；不支持自定义 base_url。**frontmatter 无引号也能装**（比 gateway 宽松，Doctor 2026-07-01 更正） |
-| **Cowork / Claude-3p（gateway 模式）** | **Settings → Skills 入口手动选 `.skill`**（plugin 体系）；落内部 plugin 缓存，用户态目录不可见 | 应用本体 `~/Library/Application Support/Claude-3p/skills/` **不扫**；`~/.claude/skills/` 也死路。present_files 卡片不弹 Save 按钮 → 交付附 `open -R` 一键定位 |
-| **Claude Code CLI** | `~/.claude/skills/<name>/`（与 gateway 共用文件系统） | 走 `ANTHROPIC_BASE_URL` |
+| **Cowork / Claude-3p（gateway 模式）** | **Settings → Skills 入口手动选 `.skill`**（plugin 体系）；落 **plugin 缓存** —— **沙箱内只读可见于 `<挂载根>/.claude/skills/`**（2026-10-03 实测：mode `0500` · **非符号链接** · 沙箱不可写） | 应用本体 `~/Library/Application Support/Claude-3p/skills/` **不扫**。⚠ **`~/.claude/skills/`（见下行 Claude Code CLI）与本行的 plugin 缓存是否同一目录 —— 未核**：据 **Doctor 终端实读**，该路径下**无 damper**，而 plugin 缓存下有 ⇒ **两层至少在该件上不同**（该终端读数本沙箱**不可复现**；诚实边界与反向线索见订正④①）。present_files 卡片不弹 Save 按钮 → 交付附 `open -R` 一键定位 |
+| **Claude Code CLI** | `~/.claude/skills/<name>/`（「**与 gateway 共用文件系统**」系 2026-06 旧记，**未复验**；与上行 plugin 缓存的关系见订正④①） | 走 `ANTHROPIC_BASE_URL` |
 
 **切环境踩坑教训**：① 2026-06-30 上午：自制 skill 只装桌面、`.skill` 没落 brain → 切 gateway 丢失、源找不回 → 对策：`.skill` 必落 `brain/.skills/`。② 2026-06-30 晚：Cowork 装 skill 非 `~/.claude/skills/` 直放，实测不读；正解 Settings 手动选。
 
@@ -190,11 +190,17 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 - [[项目总览]]（anchor 触发依赖 brain-anchors 在装）
 - logs/2026-06-30-gateway切换善后-skill与artifacts补迁.md（本清单初立 + frontmatter 根因）
 - logs/2026-07-01-切回官方-重建定时任务与skill.md（官方环境重装 + Vault 合并）
-> **brain-anchors 纪律锚批次（2026-10-02）部署对拍（机器证据）**：canonical ＝ portable ＝ `.skill` 包内 ＝ **runtime 安装副本** 四端 **逐字节一致 sha256 `288745a3b64729c2…`（15771 B）**；`check_skill_parity.py --docs <挂载根> --runtime <挂载根>/.claude/skills --name brain-anchors` → 四端列 **`288745a3 288745a3 288745a3 288745a3` · rc=0**（⚠ **不带 `--runtime` 的命令不足以支撑本结论**：该器默认 runtime 候选全在 `{home}` 下、沙箱里恒不可达，此时它仍打绿 rc=0——见 `ERR-20261002-003`／`-004`）；runtime 副本落盘 `2026-10-02 18:36:02`（`~/.claude/skills/brain-anchors/SKILL.md`）。⚠ **路由（是否会因「复核」自动起手）未验**——本会话注入的清单在起手即定格为旧版，须**全新会话**实测。
+> **brain-anchors 纪律锚批次（2026-10-02）部署对拍（机器证据）**：canonical ＝ portable ＝ `.skill` 包内 ＝ **runtime 安装副本** 四端 **逐字节一致 sha256 `288745a3b64729c2…`（15771 B）**；`check_skill_parity.py --docs <挂载根> --runtime <挂载根>/.claude/skills --name brain-anchors` → 四端列 **`288745a3 288745a3 288745a3 288745a3` · rc=0**（⚠ **不带 `--runtime` 的命令不足以支撑本结论**：该器默认 runtime 候选全在 `{home}` 下、沙箱里恒不可达，此时它仍打绿 rc=0——见 `ERR-20261002-003`／`-004`）；runtime 副本落盘 `2026-10-02 18:36:02`（**plugin 缓存** `<挂载根>/.claude/skills/brain-anchors/SKILL.md` —— 原文把该处指到 **Code CLI 那一层**〔**关键串按 PEC `G-35` 遮蔽，不逐字抄入留痕**〕，**层错了，已按 2026-10-03 实测订正**，见下方订正④）。⚠ **路由（是否会因「复核」自动起手）未验**——本会话注入的清单在起手即定格为旧版，须**全新会话**实测。
 > **⚠ 订正（2026-10-03 · 承 CC 实读四端 sha256 对拍）**：本页上方两处「四端一致」陈述**均已过期**，且第 56 行一句**已不成立**——
 > ① **`brain-anchors`**：canonical ＝ portable ＝ 包内 现为 **`c4e78e22` / 15777 B**（18:36 之后，纪律锚表行与触发示例由「九族 36 例」改述为「**十一族 40 例**」）；**runtime 安装副本仍为 `288745a3` / 15771 B** ⇒ **四端差 1 版**，新会话拿到的是旧措辞。
-> ② **`damper`**：canonical ＝ portable ＝ 包内 现为 **`8dbb78e6` / 78338 B**（已长到**十一族**）；**runtime 安装副本仍是 `f240a5db` / 59199 B** ⇒ **差 2 版**。故第 51 行所记 `283f94f9` / 52486 B 为历史值；**第 56 行「本 skill 从未安装」为假**——runtime 副本实存于 `~/.claude/skills/damper/SKILL.md`。
+> ② **`damper`**：canonical ＝ portable ＝ 包内 现为 **`8dbb78e6` / 78338 B**（已长到**十一族**）；**runtime 安装副本仍是 `f240a5db` / 59199 B** ⇒ **差 2 版**。故第 51 行所记 `283f94f9` / 52486 B 为历史值；**第 56 行「本 skill 从未安装」为假**——runtime 副本实存于 **plugin 缓存** `<挂载根>/.claude/skills/damper/SKILL.md`（**原文把该处指到 Code CLI 那一层**〔**关键串按 PEC `G-35` 遮蔽**〕，**层错了** —— Mac 上该层路径下**并无 damper**，2026-10-03 终端实测；详见下方订正④）。
 > ③ ⇒ **两个 skill 都需重新安装**（`.skill` 包均已重打、仓内三端齐整）；装完本页两行才能回签。
 > **判据**：HEAD（`9d7d13f3`）树内 blob 与盘上文件**逐字节对拍 8/8 一致**（并据此确认当日那笔 commit 未丢件）——四项 sha 均可复算。
 > **✅ 订正②已闭（2026-10-03 01:17–01:18 重装完成）**：两个 skill **四端均逐字节一致** —— `brain-anchors` **`c4e78e22db4d6210` ×4**（15777 B · runtime 落盘 01:17:37）· `damper` **`8dbb78e62e4fdfb2` ×4**（78338 B · runtime 落盘 01:18:04）。机器判据：`check_skill_parity.py --docs <挂载根> --runtime <挂载根>/.claude/skills --all` 输出表内两行**均为「仓内三端一致 · 四端一致 ✓」，且不在问题清单中**。（该跑的 **rc=1 系别家 skill 所致，与本两者无关**——见下条。）
+> **⚠ 订正④（2026-10-03 03:31 · 承 Doctor 终端实测 ＋ CC 沙箱回读；**本块经未参与实施的独立复核，首轮判 FAIL，①③④ 与 G 段两行已按复核订正**）——「两层 runtime」分层 ＋ damper 复装落地**：
+> ① **分层纠正（**范围受限版 · 承独立复核**）**：本页 193／196 两行把 runtime 副本的落点写成了 **Code CLI 那一层的路径**〔**关键串按 PEC `G-35` 遮蔽，不逐字抄入留痕**〕。**已核实的只有 (a)**：**plugin 缓存层** ＝ 本 3p 壳**加载**的副本，沙箱内**只读可见**于 `<挂载根>/.claude/skills/`（mode `0500` · **非符号链接** · 沙箱不可写 · 内容与本壳注入的 skill 清单 **1:1**）。**(b) Mac 上的 `~/.claude/skills/` 沙箱不可达**：据 **Doctor 终端实跑** `--runtime ~/.claude/skills --name damper` ⇒ **「runtime 缺该 skill」**，而同名件在 (a) 下存在 ⇒ **两层至少在该件上不同**。**⚠ 已核边界（2026-10-03 03:3x · 承 Doctor 终端探针）**：该终端读数本沙箱不可复现（另有未参与实施的复验者在**同刻**读数上另行支持了「至少在该件上不同」）。**至于 (a) 与 (b) 在别处是否同一目录 —— **已定案：不是**。**判据（Doctor 终端实跑 `ls -ld ~/.claude ~/.claude/skills && readlink -f ~/.claude/skills`）**：`/Users/lunarabbit/.claude/skills` 是**实体目录**（`drwxr-xr-x` · **12 条目** · mtime `2026-08-02 09:38` · `readlink -f` 回自身 ⇒ 非符号链接），而 (a) 侧为**独立 `fuse ro` 挂载 · 31 条目 · 含 damper** ⇒ **条目数不同＋有无 damper 不同＋mtime 不同**，三证同向。**（反向线索保留**：`<挂载根>/.claude/projects/` 挂着**本会话自己的实时 transcript**，形状与 Claude Code 的 `.claude/projects/` 树一致 —— 该线索指向「编排层构造形状」，**不翻本结论**，但说明「同源」不能靠形状推断。）⇒ **操作口径**：验 runtime 端**指向 (a)**；把 (b) 的结果当 (a) 的读数＝错。
+> ② **damper 复装已落地**（2026-10-03 **03:29**）：经 **Settings → Skills 入口**装 `brain/.skills/damper.skill` ⇒ plugin 缓存副本刷新为 **`6812485d6893fb1c…` / 87157 B**（此前 `8dbb78e6` / 78338 B · mtime 01:18）。**机器判据**：`check_skill_parity.py --docs <挂载根>/Documents --runtime <挂载根>/.claude/skills --all --name damper` ⇒ 表内一行 **`6812485d 6812485d 6812485d 6812485d` · 「仓内三端一致 · 四端一致 ✓」**；另 `cmp` 与 canonical **逐字节相同**（87157 B）。⇒ **本页 199 行所记的 `8dbb78e6 ×4` 已被本行取代**（该行是其时点的真实读数，按留痕保留不改）。
+> ③ **`brain-save` 的两侧版本（2026-10-03 · **承独立复核订正 —— 本条第一版把两侧写反了**）**：**canonical**（`724c0866` / 49029 B）＝「**一律**读 `.gitignore` 手判」**并明文禁跑 `git check-ignore`**；**runtime**（`272d82dd` / 48727 B）＝**旧版**「**有 git 环境者跑 `git check-ignore -v <paths>`**」。⇒ **含禁 git 明文的是 canonical，字面许可跑 git 的旧版在 runtime**。〔第一版写成「runtime 是一律手判版、canonical 是 check-ignore 版」，**两侧颠倒** —— 由未参与实施的复核者实读两侧正文逮出；根因＝读对拍器 **`runtime 分歧` 备注里那段 `-`／`+` 文本**时归错了侧（源码实读：该器 `difflib.unified_diff(a=canonical, b=runtime)` ⇒ **`-` 属 canonical、`+` 属 runtime**，我误把 `+` 侧当了 canonical）。〕⇒ **推论随之反转**：装上去是把 runtime **升到**已订正的安全版，**不是**「把规则冲突推进 runtime」；原「刻意不装」的理由**不成立**。（是否现在装仍由你定，但别再以那条为前提。）
+> ④ **`brain-consolidate`**：canonical 与 runtime **仅差末端空行**（canonical 尾 `。\n`／runtime 尾 `。\n\n`，`rstrip(b'\n')` 后相等）⇒ **同一版 modulo 尾换行**，**非「差一版」**〔第一版措辞自相抵，已订正〕；无害，不单独重装。
+> ⑤ **未验**：新包的路由（说一句带「复核／审核者」的话是否自动起手）—— 本会话 skill 清单**起手即定格**，须**全新会话**实测。
 > **⚠ 顺带实读（非本次改动 · 仅登记，未处置）**：同一跑 `--all` 报 **15 项问题**，全部落在**其它 skill**：`brain-save`（runtime 真分歧）· `brain-consolidate`（runtime 仅差末端空行，属已知归一化）· 及 `QA`／`audit`／`gsap-frontend`／`handshake-consumer`／两个 `_DEPRECATED_*`（**portable 端为空或缺失**，其 hash 显示为 `e3b0c442`＝空文件指纹）。**未判**这些「缺 portable 端」是**设计如此**（非 brain-* 家族本就走 `.skill` 包）还是**真缺口**——沿既有 TODO「`QA` skill 不在 parity 射程内」另议。**本条只登记，不动手。**

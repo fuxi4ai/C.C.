@@ -25,17 +25,17 @@
 - **`citer` 的「弱归属」是猜测**：同件内裸 `:NNN` 是否指向该被引件，本件只能按「同行是否出现该件名」
   或「该件是全文前置件名」弱判 —— 判定归人。
 - **它拦不住 Edit**（Edit 不过 shell）⇒ 纪律与它必须并存，不可只靠其一。
-- **位点级射程 `fixed`（2026-10-03 加 · 治「件在 declared 里、这一处其实没改」）**：每条 claim 可给
+- **登记射程 `fixed`（2026-10-03 加）**：**不读取快照或 diff**，`declared`／`fixed` 均只是名单登记，**不证明实际修改**（历史字段 `unfixed` 表示命中未被登记覆盖）。每条 claim 可给
   `fixed`（元素为 `path`＝件级，或 `path:line`＝位点级）。**命中落在 `declared` 但未被 `fixed` 覆盖 ⇒ 判红
   「已申报未修」**。**无 `fixed` 字段 ⇒ 旧行为，但会打印「位点级校验未启用」——不得静默降级。**
   - **优先级写死**：`allow`（件级／位点级）> `fixed` > `declared` > 未申报。**`allow` 有两档**：
-    件级 `{"file":…}` ／ **位点级 `{"file":…,"line":N}` 或 `{"file":…,"anchor":"串"}`** —— 后者是为
+    件级 `{"file":…}` ／ **位点级 `{"file":…,"line":N}` 或锚串级 `{"file":…,"anchor":"串"}`（后者豁免该文件中该锚串的**全部**命中，不是唯一位点）** —— 后者是为
     `declared` 件内**必然存在**的「历史留痕落点」（修订记录 · dated 追记）留的：它们**该留**，
     但件级豁免会把整件连同未修的活文一并放过 ⇒ **必须能只豁免一处并写明理由**（打印区分「已豁免·件级／已豁免·位点」）。
   - **件级放行必须报量**：`fixed` 只给裸 `path` 时，该件全部命中按「件」放行，**放行数与「降级」字样都会打印**
     （族 4：加档位规则必须把规则与**被放行的量**一起报出来）。
   - **幻影位点**：`fixed` 列了而**无任何锚串命中**的位点会单列（**这正是行号漂移的探针** —— 本仓实测漂过）。
-  - **语义随用法变**：准入步＝**拟改**的位点射程；交付步＝**已改**的位点。同一字段，两个时点。
+  - **使用边界**：准入步登记**拟改**射程；交付步须**先对账实际 diff 再登记结果**。字段本身不完成该核验。
   - **⚠ `path:line` 形式每次跑前须重取行号**（行号会漂 —— 本仓实测：同一 plan 在几十分钟内其位点即失配）。
     粗粒度可写裸 `path`，但那会触发「**件级放行报量 ＋ 降级**」提示。**本闸自身的 plan 也吃这条。**
 - **⚠ plan 与复核类文档不得落在扫根内（2026-10-03 Doctor 裁「移出扫根」）**：本闸**不排除自身 plan** ⇒
@@ -215,8 +215,8 @@ def cmd_anchors(args) -> int:
                 allow_occ.append((f, a.get("line"), str(a.get("anchor") or ""), a.get("reason", "")))
             else:
                 allow_all[f] = a.get("reason", "")
-        # ── 位点级射程 fixed（2026-10-03 加）：`path`（件级）或 `path:line`（位点级）
-        #    ⚠ 语义随用法变：准入步＝**拟改**的位点射程；交付步＝**已改**的位点。同一字段、两个时点。
+        # ── 登记射程 fixed（2026-10-03 加）：`path`（件级）或 `path:line`（位点级）
+        #    ⚠ 仅名单登记，不读取快照/diff：准入步登记拟改射程，交付步须先对账实际 diff 再登记结果。
         raw_fixed = claim.get("fixed")
         fixed_on = isinstance(raw_fixed, list) and len(raw_fixed) > 0
         fixed_files, fixed_pts = set(), set()
@@ -224,7 +224,7 @@ def cmd_anchors(args) -> int:
             head, _, tail = str(x).rpartition(":")
             (fixed_pts if (head and tail.isdigit()) else fixed_files).add(str(x))
         print(f"── {cid} · {claim.get('text', '')} " + "─" * max(0, 40 - len(str(claim.get('text', '')))))
-        print("   # 位点级射程 fixed = " + (f"位点 {sorted(fixed_pts)} · 件级 {sorted(fixed_files)}"
+        print("   # 登记射程 fixed = " + (f"位点 {sorted(fixed_pts)} · 件级 {sorted(fixed_files)}"
                                             if fixed_on else "（未给）"))
         undeclared, allowed, declared_hits, fixed_hits, unfixed, total = [], [], [], [], [], 0
         blanket_hits, all_pts = 0, set()
@@ -253,7 +253,7 @@ def cmd_anchors(args) -> int:
                     fixed_hits.append((rel, i, anchor))
                     if rel in fixed_files and f"{rel}:{i}" not in fixed_pts:
                         blanket_hits += 1
-                    print(f"     ✓ 已修    {rel}:{i}")
+                    print(f"     ~ 登记为 fixed（未核差异） {rel}:{i}")
                 elif fixed_on and rel in declared:
                     unfixed.append((rel, i, anchor))
                     print(f"     ✗ 已申报未修  {rel}:{i}   ← 件在 declared 内，但这一处未列入 fixed")
@@ -279,8 +279,8 @@ def cmd_anchors(args) -> int:
                 print(f"   ⚠ 位点级校验降级（本 claim 的 fixed 含裸 path：{'、'.join(sorted(fixed_files))}）"
                       f"—— 该件 {blanket_hits} 处命中按「件」放行。")
         else:
-            print("   ⚠ 位点级校验未启用（本 claim 无 fixed）—— declared 只证「这件动过」，"
-                  "不证「这处改到」。")
+            print("   ⚠ 位点级校验未启用（本 claim 无 fixed）—— declared 只是名单登记：只到「件」粒度，"
+                  "**不证明该件动过，也不证明任一处改到**。")
         print()
         summary.append({"id": cid, "anchors": anchors, "total_hits": total,
                         "declared": declared_hits, "allowed": allowed, "undeclared": undeclared,
@@ -292,7 +292,7 @@ def cmd_anchors(args) -> int:
     print(f"合计：未申报命中 {red_un_total} 处 · 已申报未修命中 {red_unfixed_total} 处 ⇒ 红合计 {red_total}")
     print("判据：红合计 == 0 ⇒ 过；> 0 ⇒ 逐处处置后再动手（改前准入步），或改后同批补改。")
     print("⚠ 提示：锚串是代理指标（G-X211）—— 同义型搜不到，人读不可省。")
-    print("⚠ `fixed` 语义随用法变：准入步＝拟改的位点射程 · 交付步＝已改的位点（同一字段，两个时点）。")
+    print("⚠ `fixed` 仅登记射程，未读取快照/diff；交付时实际修改须另行对账。")
     if args.json:
         pathlib.Path(args.json).write_text(
             json.dumps({"batch": plan.get("batch"), "claims": summary,
