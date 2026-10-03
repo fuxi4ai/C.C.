@@ -289,7 +289,7 @@ cd ~/Documents/Claude/brain && \
 
    **做法**：生成 add 清单**之前**，对**清单里每一个路径**先过一遍目标仓的 ignore 判据——
    - 读目标仓 `.gitignore`（+ `.git/info/exclude`），**并读该仓 `CLAUDE.md` / README 里的 git 段**（惯例常写在那儿，如「⚠ outputs/ 整目录被 gitignore——别列进 add 清单」）；
-   - 有 git 环境者跑 `git check-ignore -v <paths>`；沙箱内则读 `.gitignore` 手判，或读 `.git/index` 看该路径是否**曾被跟踪**（被 .gitignore 命中且从未跟踪 ⇒ 按仓规 local-only）；
+   - **一律读 `.gitignore` 手判**（＋ 读该仓 `CLAUDE.md`/README 的 git 段；或读 `.git/index` 看该路径是否**曾被跟踪**（被 .gitignore 命中且从未跟踪 ⇒ 按仓规 local-only））；**⚠ 沙箱内禁跑任何 git 子命令 —— 含 `git check-ignore`**（本条原写「有 git 环境者跑 `git check-ignore -v`」，而**沙箱装得有 git ⇒ 字面读法即许违反 Step 5 铁律**；2026-10-03 实测踩中一次，危害为零但违规成立 ⇒ 订正为"一律手判"）；
    - **命中 → 从清单剔除**，并在 Step 6 回报里明写一行：「该产物按本仓规 local-only（`.gitignore` 命中），不入版本控制」。**不要改用 `-f` 强带**——那是绕过仓主的设计意图，须 Doctor 明批。
 
 > **活体教训(2026-09-18)**：/save 场 CC 给 `行业研究` 仓的命令，把 `raw/核实/…札记.md` 与 `outputs/gs/*.json` 列进 `git add`。Doctor 终端实跑 → git 拒绝 → 该仓 **commit 未生成、push 空转**。**根因不是不知道这个坑**：渊图 GOTCHAS `FIX-20260617-001` 早在 2026-06-17 就登记过「raw/ 被 .gitignore 忽略」，该仓 `CLAUDE.md` 也写着「别列进 add 清单」——**规矩停在「文档 + 人脑」两层，而 CC 起草命令时既不读目标仓 `.gitignore`，也不回读该仓 CLAUDE.md 的 git 段**。形态比首次更重：首次是**自动流程撞墙**，这次是 **CC 主动把 ignore 路径写成了命令**。见渊图 GOTCHAS `FIX-20260617-001` 追记（同根复发第 2 次）。

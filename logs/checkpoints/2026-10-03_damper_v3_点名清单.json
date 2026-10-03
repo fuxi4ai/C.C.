@@ -1,0 +1,212 @@
+{
+  "batch": "2026-10-03 damper v3.0 · 迭代-2 终扫",
+  "roots": [
+    "brain/.skills",
+    "brain/permanent",
+    "brain/portable",
+    "Projects/PEC"
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "text": "「P6 三连 → 四连」这一标签的全部落点",
+      "anchors": [
+        "P6 三连",
+        "P6 四连",
+        "改后自核三连",
+        "改后自核四支"
+      ],
+      "declared": [
+        "brain/.skills/damper/SKILL.md",
+        "brain/portable/skills/damper/SKILL.md",
+        "brain/.skills/damper/机制与约束条目详解.md",
+        "brain/.tools/change_rescan_gate.py",
+        "brain/.tools/post_edit_selfcheck.py"
+      ],
+      "fixed": [
+        "brain/.skills/damper/SKILL.md:400",
+        "brain/.skills/damper/SKILL.md:473",
+        "brain/.skills/damper/SKILL.md:548",
+        "brain/.skills/damper/SKILL.md:550",
+        "brain/.skills/damper/SKILL.md:602",
+        "brain/.skills/damper/SKILL.md:604",
+        "brain/.skills/damper/机制与约束条目详解.md:127",
+        "brain/.tools/post_edit_selfcheck.py:3",
+        "brain/.tools/post_edit_selfcheck.py:706",
+        "brain/portable/skills/damper/SKILL.md:400",
+        "brain/portable/skills/damper/SKILL.md:473",
+        "brain/portable/skills/damper/SKILL.md:548",
+        "brain/portable/skills/damper/SKILL.md:550",
+        "brain/portable/skills/damper/SKILL.md:602",
+        "brain/portable/skills/damper/SKILL.md:604"
+      ],
+      "allow": [
+        {
+          "file": "brain/.skills/damper/SKILL.md",
+          "anchor": "P6 三连",
+          "reason": "历史留痕落点（v2.0 修订记录条目原文 · 禁改）",
+          "原行号": 592
+        },
+        {
+          "file": "brain/portable/skills/damper/SKILL.md",
+          "anchor": "P6 三连",
+          "reason": "历史留痕落点（v2.0 修订记录条目原文 · 禁改）",
+          "原行号": 592
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审_迭代2.md",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkpoints/2026-10-03_damper_v3_点名清单.json",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/TODO.md",
+          "anchor": "P6 三连",
+          "reason": "迭代-1 留痕条目：述 v2.0 时的标签，已就近挂「已改四连」指针，按历史留痕保留",
+          "原行号": 39
+        },
+        {
+          "file": "brain/TODO.md",
+          "anchor": "P6 三连",
+          "reason": "迭代-2 起手件条目：描述本批新增能力",
+          "原行号": 44
+        },
+        {
+          "file": "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+          "anchor": "P6 三连",
+          "reason": "轮 2 处方原文；已就近挂「已改四连」注",
+          "原行号": 190
+        },
+        {
+          "file": "brain/permanent/已装skill清单.md",
+          "line": 196,
+          "reason": "**并行会话**写入的部署对拍注（非本场）—— 其 sha 读数已过期，按禁改面只挂 TODO 指针"
+        },
+        {
+          "file": "brain/permanent/已装skill清单.md",
+          "line": 199,
+          "reason": "同上"
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "「位点级 fixed」这一新能力的全部落点",
+      "anchors": [
+        "位点级校验未启用",
+        "已申报未修"
+      ],
+      "declared": [
+        "brain/.skills/damper/SKILL.md",
+        "brain/.tools/change_rescan_gate.py",
+        "brain/TODO.md",
+        "brain/portable/skills/damper/SKILL.md"
+      ],
+      "fixed": [
+        "brain/.skills/damper/SKILL.md:400",
+        "brain/.skills/damper/SKILL.md:473",
+        "brain/.skills/damper/SKILL.md:548",
+        "brain/.skills/damper/SKILL.md:550",
+        "brain/.skills/damper/SKILL.md:602",
+        "brain/.skills/damper/SKILL.md:604",
+        "brain/.skills/damper/机制与约束条目详解.md:127",
+        "brain/.tools/change_rescan_gate.py",
+        "brain/.tools/post_edit_selfcheck.py:3",
+        "brain/.tools/post_edit_selfcheck.py:706",
+        "brain/portable/skills/damper/SKILL.md:400",
+        "brain/portable/skills/damper/SKILL.md:473",
+        "brain/portable/skills/damper/SKILL.md:548",
+        "brain/portable/skills/damper/SKILL.md:550",
+        "brain/portable/skills/damper/SKILL.md:602",
+        "brain/portable/skills/damper/SKILL.md:604"
+      ],
+      "allow": [
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审_迭代2.md",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkpoints/2026-10-03_damper_v3_点名清单.json",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/TODO.md",
+          "line": 39,
+          "reason": "迭代-1 留痕条目：述 v2.0 时的标签，已就近挂「已改四连」指针，按历史留痕保留"
+        },
+        {
+          "file": "brain/TODO.md",
+          "line": 44,
+          "reason": "迭代-2 起手件条目：描述本批新增能力"
+        },
+        {
+          "file": "brain/permanent/已装skill清单.md",
+          "line": 196,
+          "reason": "**并行会话**写入的部署对拍注（非本场）—— 其 sha 读数已过期，按禁改面只挂 TODO 指针"
+        },
+        {
+          "file": "brain/permanent/已装skill清单.md",
+          "line": 199,
+          "reason": "同上"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "「runtime 探不到／落后」这一结论的全部落点（2026-10-03 订正批新增 —— 承修后审指出「该结论从未立为 claim ⇒ 躲过扫面」）",
+      "anchors": [
+        "探不到 runtime",
+        "8dbb78e6",
+        "落后本版两个批次"
+      ],
+      "declared": [
+        "brain/.skills/damper/SKILL.md",
+        "brain/TODO.md",
+        "brain/permanent/经验库.md",
+        "brain/portable/skills/damper/SKILL.md"
+      ],
+      "allow": [
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审_迭代2.md",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+          "reason": "历史留痕（复核件／计划件／本对账件自身）—— 按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+          "line": 190,
+          "reason": "轮 2 处方原文；已就近挂「已改四连」注"
+        },
+        {
+          "file": "brain/permanent/已装skill清单.md",
+          "line": 196,
+          "reason": "**并行会话**写入的部署对拍注（非本场）—— 其 sha 读数已过期，按禁改面只挂 TODO 指针"
+        },
+        {
+          "file": "brain/permanent/已装skill清单.md",
+          "line": 199,
+          "reason": "同上"
+        }
+      ],
+      "fixed": [
+        "brain/.skills/damper/SKILL.md:605",
+        "brain/TODO.md:49",
+        "brain/permanent/经验库.md:3880",
+        "brain/portable/skills/damper/SKILL.md:605"
+      ]
+    }
+  ],
+  "扫面声明": "**准入步＝窄根（承 Doctor 裁决 3「移出扫根」）**：brain/.skills · brain/permanent · brain/portable · Projects/PEC。另跑一次**宽根（brain 整根）作查漏**，其命中按性质分流：活文 ⇒ 立 claim 或处置；历史留痕（brain/logs/**）⇒ allow。**两者不可混用** —— 宽根会把整片历史留痕灌进 allow，反而钝化准入步（本轮实测：宽根 74 处未申报，全在 brain/logs/**）。"
+}

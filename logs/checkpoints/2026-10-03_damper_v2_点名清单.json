@@ -1,0 +1,157 @@
+{
+  "batch": "2026-10-03 damper v2.0 · 终扫 v4（末轮后）",
+  "正本说明": "本件为正本；/tmp/plan_v2_final.json 为其镜像（/tmp 不持久）",
+  "roots": [
+    "brain",
+    "Projects/PEC"
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "text": "两道外部闸（修前审／修后审）这一结论的全部落点",
+      "anchors": [
+        "修前审",
+        "修后审"
+      ],
+      "declared": [
+        "brain/.skills/damper/SKILL.md",
+        "brain/.skills/damper/机制与约束条目详解.md",
+        "brain/.skills/README.md",
+        "brain/.skills/brain-anchors/SKILL.md",
+        "brain/permanent/已装skill清单.md",
+        "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+        "brain/portable/skills/damper/SKILL.md",
+        "brain/portable/skills/brain-anchors/SKILL.md",
+        "brain/logs/checkpoints/2026-10-03_damper_v2_点名清单.json"
+      ],
+      "allow": [
+        {
+          "file": "brain/logs/2026-10-02-damper立卷与四端发布.md",
+          "reason": "会话日志＝历史留痕，按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-02_帕米尔3篇批_事故与台账_独立复验.md",
+          "reason": "复核件＝历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_独立复验.md",
+          "reason": "〔修前审 R2 追加〕本轮复验报告＝历史留痕，不改"
+        },
+        {
+          "file": "brain/TODO.md",
+          "reason": "该行系 09-30 状态的历史陈述（『5 条本就在既有九族内』）；按准入判据不改原句，状态更新走该条进展注（本批已补）"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审.md",
+          "reason": "〔第二修批〕本批修后审报告＝复核件／历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审_第二修批.md",
+          "reason": "本议题的复核件＝历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_末轮审核与指标.md",
+          "reason": "本议题的复核件＝历史留痕，不改"
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "族数（九族 → 十一族）这一读数的全部落点",
+      "anchors": [
+        "九族",
+        "十一族",
+        "核心九族"
+      ],
+      "declared": [
+        "brain/.skills/damper/SKILL.md",
+        "brain/.skills/damper/机制与约束条目详解.md",
+        "brain/.skills/README.md",
+        "brain/.skills/brain-anchors/SKILL.md",
+        "brain/permanent/已装skill清单.md",
+        "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+        "brain/portable/skills/damper/SKILL.md",
+        "brain/portable/skills/brain-anchors/SKILL.md",
+        "brain/logs/checkpoints/2026-10-03_damper_v2_点名清单.json"
+      ],
+      "allow": [
+        {
+          "file": "brain/logs/2026-10-02-damper立卷与四端发布.md",
+          "reason": "会话日志＝历史留痕，按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-02_帕米尔3篇批_事故与台账_独立复验.md",
+          "reason": "复核件＝历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_独立复验.md",
+          "reason": "〔修前审 R2 追加〕本轮复验报告＝历史留痕，不改"
+        },
+        {
+          "file": "brain/TODO.md",
+          "reason": "该行系 09-30 状态的历史陈述（『5 条本就在既有九族内』）；按准入判据不改原句，状态更新走该条进展注（本批已补）"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审.md",
+          "reason": "〔第二修批〕本批修后审报告＝复核件／历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审_第二修批.md",
+          "reason": "本议题的复核件＝历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_末轮审核与指标.md",
+          "reason": "本议题的复核件＝历史留痕，不改"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "族例总数（36 例）这一读数的全部落点",
+      "anchors": [
+        "36 例"
+      ],
+      "declared": [
+        "brain/.skills/damper/SKILL.md",
+        "brain/.skills/damper/机制与约束条目详解.md",
+        "brain/.skills/README.md",
+        "brain/.skills/brain-anchors/SKILL.md",
+        "brain/permanent/已装skill清单.md",
+        "brain/logs/checkpoints/2026-10-03_修错新造错误约束_多轮方案.md",
+        "brain/portable/skills/damper/SKILL.md",
+        "brain/portable/skills/brain-anchors/SKILL.md",
+        "brain/logs/checkpoints/2026-10-03_damper_v2_点名清单.json"
+      ],
+      "allow": [
+        {
+          "file": "brain/logs/2026-10-02-damper立卷与四端发布.md",
+          "reason": "会话日志＝历史留痕，按准入判据不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-02_帕米尔3篇批_事故与台账_独立复验.md",
+          "reason": "复核件＝历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_独立复验.md",
+          "reason": "〔修前审 R2 追加〕本轮复验报告＝历史留痕，不改"
+        },
+        {
+          "file": "brain/TODO.md",
+          "reason": "该行系 09-30 状态的历史陈述（『5 条本就在既有九族内』）；按准入判据不改原句，状态更新走该条进展注（本批已补）"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审.md",
+          "reason": "〔第二修批〕本批修后审报告＝复核件／历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_修后审_第二修批.md",
+          "reason": "本议题的复核件＝历史留痕，不改"
+        },
+        {
+          "file": "brain/logs/checkups/2026-10-03_damper迭代1_末轮审核与指标.md",
+          "reason": "本议题的复核件＝历史留痕，不改"
+        }
+      ]
+    }
+  ]
+}
