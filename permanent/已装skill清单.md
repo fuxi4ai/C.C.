@@ -30,7 +30,7 @@ type: permanent
 | ✅ | `brain-resume` | `/resume` · "恢复上下文" | 跨 session 拉回工作状态 | `brain/.skills/brain-resume.skill` |
 | ✅ | `brain-save` | `/save [主题]` · "存档" | 落盘会话 + 提供 git 命令（per-agent 归位） | `brain/.skills/brain-save.skill` |
 | ✅ | `brain-note` | `/note [主题]` · "起一条笔记" | inbox/ 采集态 | `brain/.skills/brain-note.skill` |
-| ✅ | `brain-anchors` | 关键词监听（dva·龙鱼五力·渊图·白泽…） | 自动加载项目/数灵上下文 | `brain/.skills/brain-anchors.skill` |
+| ✅ | `brain-anchors` | 关键词监听（dva·龙鱼五力·渊图·白泽…）**＋纪律锚（审核者·复核·复审·复验·独立复核·核验·审计·挑错·对拍·二审·改动面·damper → 加载 damper）** | 自动加载项目/数灵上下文；**兼作 damper 的手动兜底路由** | `brain/.skills/brain-anchors.skill` |
 | ✅ | `brain-prd` | `/prd [任务简称]` · "立PRD" · "起草PRD" · "写交付标准" | 立 PRD——功能/需求验收基线，不是审批单 | `brain/.skills/brain-prd.skill` |
 | ✅ | `brain-consolidate` | `/consolidate` · "固化记忆" | brain 日志蒸馏入 permanent | `brain/.skills/brain-consolidate.skill` |
 | ✅ | `brain-todo` | `/todo` · "处理待办" · "清 TODO" | 漏挂对账 + 逐条现核 + 六类分流 + 勾完才落盘（v2.1 目标模式） | `brain/.skills/brain-todo.skill` |
@@ -189,3 +189,4 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 - [[项目总览]]（anchor 触发依赖 brain-anchors 在装）
 - logs/2026-06-30-gateway切换善后-skill与artifacts补迁.md（本清单初立 + frontmatter 根因）
 - logs/2026-07-01-切回官方-重建定时任务与skill.md（官方环境重装 + Vault 合并）
+> **brain-anchors 纪律锚批次（2026-10-02）部署对拍（机器证据）**：canonical ＝ portable ＝ `.skill` 包内 ＝ **runtime 安装副本** 四端 **逐字节一致 sha256 `288745a3b64729c2…`（15771 B）**；`check_skill_parity.py --docs <挂载根> --name brain-anchors` **rc=0**；runtime 副本落盘 `2026-10-02 18:36:02`（`~/.claude/skills/brain-anchors/SKILL.md`）。⚠ **路由（是否会因「复核」自动起手）未验**——本会话注入的清单在起手即定格为旧版，须**全新会话**实测。
