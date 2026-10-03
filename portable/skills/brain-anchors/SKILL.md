@@ -19,7 +19,7 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 | `海螺姑娘` / `Conch` | `brain/海螺姑娘/architecture/系统概览.md`<br>`brain/海螺姑娘/architecture/项目概要.md`（若存在）<br>`brain/海螺姑娘/GOTCHAS.md` |
 | `PEC` / `政治经济学` | `brain/PEC/architecture/系统概览.md`<br>`brain/PEC/frameworks/认识论框架.md`（若存在）<br>`brain/PEC/GOTCHAS.md`<br>`Projects/PEC/GOTCHAS.md`（若存在） |
 | `十站` | **思考链命令锚（属 PEC · 2026-08-26 立）**：读 `Projects/PEC/frameworks/思考链完整性清单.md`，**先按十站自走一遍再作答**（①事实/②证据/③机制/④双侧/⑤反事实/⑥层次/⑦回路/⑧时间/⑨二阶/⑩终点）。场合分层：快答走 ①+⑩；常规推演全十站；深案全站+自反台账。每站跳过须写明理由；停走判据=下一步不改变方向/量级/可证伪性则停（术本闸 G-12）。 |
-| `审核者` / `复核` / `复审` / `复验` / `独立复核` / `核验` / `审计` / `挑错` / `对拍` / `二审` / `改动面` / `damper` | **纪律锚（改动面纪律 · 属全局、非项目 · 2026-10-02 立）**：出现这些词即读 `brain/.skills/damper/SKILL.md`（九族 36 例 ＋ §二 相似性分型 ＋ §五 三阶段 ＋ §七 回灌闸）。**三处用途**：① **审核场景自动配给**——派发复核时一并交给审核者，或审核者本人起手加载；② 任何对既有资产的**修复／订正／补正／加固／收口／落地／重判／指针替换**类修改，**动手前**起手加载；③ 改完落盘前按其「改后自核」清单复核。**一句话判据**＝本次修改的『真实改动面』是否等于『被点名的目标面』？超出即已在犯。⚠ **本行系手动兜底路由**：2026-10-02 实测 damper 自身 description **未自动起手**（当日全场带「复核／审核者／复验」等词，实施者全程未自行加载、须人工指派），故挂此处兜底；其 description 改措辞＋重走发布链仍在 TODO。 |
+| `审核者` / `复核` / `复审` / `复验` / `独立复核` / `核验` / `审计` / `挑错` / `对拍` / `二审` / `改动面` / `damper` | **纪律锚（改动面纪律 · 属全局、非项目 · 2026-10-02 立）**：出现这些词即读 `brain/.skills/damper/SKILL.md`（十一族 40 例 ＋ §二 相似性分型 ＋ §五 三阶段 ＋ §七 回灌闸）。**三处用途**：① **审核场景自动配给**——派发复核时一并交给审核者，或审核者本人起手加载；② 任何对既有资产的**修复／订正／补正／加固／收口／落地／重判／指针替换**类修改，**动手前**起手加载；③ 改完落盘前按其「改后自核」清单复核。**一句话判据**＝本次修改的『真实改动面』是否等于『被点名的目标面』？超出即已在犯。⚠ **本行系手动兜底路由**：2026-10-02 实测 damper 自身 description **未自动起手**（当日全场带「复核／审核者／复验」等词，实施者全程未自行加载、须人工指派），故挂此处兜底；其 description 改措辞＋重走发布链仍在 TODO。 |
 | `司南` | `brain/司南/architecture/系统概览.md`<br>`brain/司南/方法论概要.md`（若存在）<br>`brain/司南/GOTCHAS.md` |
 | `O MY HTML` / `omy` | `brain/O MY HTML/architecture/系统概览.md`<br>`brain/O MY HTML/GOTCHAS.md`<br>**额外**：可加载 `Vault/taste-skills/` 和 `Vault/emil/`（设计 skills） |
 | `暖色·卡片页` / `warm card page` / `卡片页` | **设计原型锚（属 O MY HTML）**：要做暖色卡片页时，先读 `Projects/O MY HTML/design-system/warm-cardpage-styleguide.html`（范式：玻璃卡 + 双轴发光「色=类别/光=健康」+ 星云星点 + 行布局/连线 + 面板 + 原则）+ `warm-cardpage-boilerplate.html`（去数据起手骨架·改 NODES/EDGES/ROWS 即用）。base tokens 承 `jiuyin-warm-styleguide.html`。Canonical 活范例 = Artifact「Global Asset Inventory · 海螺姑娘」（`~/Documents/Claude/Artifacts/global-asset-inventory/index.html`，取最新视觉以它为准）。仅命中时加载，不主动激活其他设计 skills。 |
@@ -83,7 +83,7 @@ Doctor 单独发 `～` 或 `～！`（全角），或紧跟在对某提议/方�
 - Doctor 说 "～" → 对 CC 刚提出的方案/待批动作表示同意——直接执行，不再确认
 - Doctor 说 "～！" → 同意，且无方向决策需要的部分一口气做到结束再统一回报
 - Doctor 说 "十站" / "走十站" → 命中，先读 `Projects/PEC/frameworks/思考链完整性清单.md` 自走一遍十站，再带着链式分析作答（不先答后补）
-- Doctor 说 "复核一下这批改动" / "派个审核者" / "是不是改多了" → 命中**纪律锚**，先读 `brain/.skills/damper/SKILL.md`，再用其九族＋准入判据审改动面（**不判「写得对不对」，判「改的动作有没有跑出被点名的范围」**）
+- Doctor 说 "复核一下这批改动" / "派个审核者" / "是不是改多了" → 命中**纪律锚**，先读 `brain/.skills/damper/SKILL.md`，再用其十一族＋准入判据审改动面（**不判「写得对不对」，判「改的动作有没有跑出被点名的范围」**）
 
 ## 不触发的情况
 
