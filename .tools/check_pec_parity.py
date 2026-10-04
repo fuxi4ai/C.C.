@@ -154,7 +154,7 @@ def _read(rel: str, base: str | None) -> str:
         return fh.read()
 
 
-def check(base: str | None = None) -> tuple[int, list, str]:
+def check(base: str | None = None) -> tuple[int, list, str, list]:
     rels = sorted({r for pr in PAIRS for r in pr["files"]} | {c["file"] for c in CONDITIONAL})
     texts, bad = {}, []
     for rel in rels:
@@ -163,7 +163,7 @@ def check(base: str | None = None) -> tuple[int, list, str]:
         except FileNotFoundError:
             bad.append(f"路径不存在（两个候选根都探过）：{rel}")
     if not texts:
-        return 2, bad, "-"
+        return 2, bad, "-", []
 
     for pr in PAIRS:
         for rel in pr["files"]:
@@ -172,11 +172,17 @@ def check(base: str | None = None) -> tuple[int, list, str]:
             for can in pr["canaries"]:
                 if can not in texts[rel]:
                     bad.append(f"[{pr['name']}] {rel} —— 缺关键串：「{can}」")
+    warns = []
     for cd in CONDITIONAL:
         if cd["file"] in texts:
             for can in cd["canaries"]:
-                if can not in texts[cd["file"]]:
+                n = texts[cd["file"]].count(can)
+                if n == 0:
                     bad.append(f"[{cd['why']}] {cd['file']} —— 缺关键串：「{can}」")
+                elif n > 1:
+                    # ⚠ 2026-10-04 承 Doctor 裁「(c) 报黄自检」：canary 在目标件出现 >1 次
+                    #   ⇒ 可能被留痕里的逐字复述留了后门（在册而不在岗）——只报黄、不改 rc。
+                    warns.append(f"⚠ 报黄：canary「{can}」在 {cd['file']} 出现 {n} 次（>1 ⇒ 可能被留痕复述留了后门，在册而不在岗）")
 
     fp = fingerprint(texts) if len(texts) == len(rels) else "-"
     # v2 回读：声明值 vs 实算值
@@ -187,12 +193,12 @@ def check(base: str | None = None) -> tuple[int, list, str]:
         elif m.group(1) != fp:
             bad.append(f"**同版指纹失配**：声明 `{m.group(1)}` ≠ 实算 `{fp}` "
                        f"⇒ 件被改过而声明未更新。修法：把三处声明改成 `{fp}` 并留痕。")
-    return (1 if bad else 0), bad, fp
+    return (1 if bad else 0), bad, fp, warns
 
 
 def main(argv: list) -> int:
     if "--self-test" in argv:
-        rc0, bad0, fp0 = check()
+        rc0, bad0, fp0, _ = check()
         print(f"[自检 0] 正路径：退出码 {rc0}（应 0）· 实算指纹 {fp0}")
         if rc0 != 0:
             for b in bad0:
@@ -210,14 +216,14 @@ def main(argv: list) -> int:
             # 攻击 1：抹掉「为何支撑」（本批真实漏过的那一条）
             t = open(targets[KIT], encoding="utf-8").read()
             open(targets[KIT], "w", encoding="utf-8").write(t.replace("为何支撑", "已抹"))
-            rc1, bad1, _ = check(base=td)
+            rc1, bad1, _, _ = check(base=td)
             print(f"[自检 1] 抹掉「为何支撑」：退出码 {rc1}（应 1）")
             for b in bad1:
                 print("   ", b)
             # 攻击 2：改件不改声明指纹 ⇒ 应指纹失配
             t2 = open(targets[SYS], encoding="utf-8").read()
             open(targets[SYS], "w", encoding="utf-8").write(t2.replace("政权数 ≥2", "政权数≥2"))
-            rc2, bad2, fp2 = check(base=td)
+            rc2, bad2, fp2, _ = check(base=td)
             hit = any("同版指纹失配" in b for b in bad2)
             print(f"[自检 2] 同义改动（去掉空格）：退出码 {rc2}（应 1）· 指纹失配被抓={hit}（应 True）· 实算 {fp2}")
             for rel in rels:  # 原件未被改动
@@ -229,11 +235,13 @@ def main(argv: list) -> int:
             print(f"[自检 4] 负向断言={'通过 ✓' if ok else '失败 ✗'}")
             return 0 if ok else 2
 
-    rc, bad, fp = check()
+    rc, bad, fp, warns = check()
     if "--print" in argv:
         print(fp)
         return rc
     print(f"同版指纹（实算）{fp} · 对 {len(PAIRS)} 组 ＋ 条件项 {len(CONDITIONAL)} 组")
+    for w in warns:
+        print("   ", w)
     if rc == 0:
         print("✓ 关键串齐备 ＋ 声明指纹一致（⚠ 提示器级：位置与逐字同版均不保证，见 docstring）")
     else:
