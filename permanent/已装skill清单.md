@@ -224,3 +224,6 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 
 
 > **⚠ 订正⑧（2026-10-03 22:4x · CC 沙箱回读 · 复装核验）**：**damper runtime 已复装、四端一致 ✅** —— 安装副本 `7c8f9ba7d402eaa466cf2486f7d8099ebac2e955a7d1ff59cd27a05d37467cbc`（完整 sha256 与 canonical 相同 · `cmp` 零差异 · mtime 22:42）⇒ **订正⑦② 的「复装归 Doctor」销账**。**brain-anchors 22:54 也已复装、四端一致 ✅** —— runtime `1a59793a38368da6`（15777 B · mtime 22:54）＝ canonical。**至此两件第四跳全部销账。**
+
+
+> **⚠ 订正⑨（2026-10-03 23:2x · CC 沙箱回读 · 第四跳复装核验·续）**：**brain-resume `3c49eab8`（23:24 装）与 brain-consolidate `1a0b73ae`（23:25 装）均已四端逐字节一致** ✅——本夜四件复装（damper 22:42 · brain-anchors 22:54 · resume 23:24 · consolidate 23:25）**全部销账**。
