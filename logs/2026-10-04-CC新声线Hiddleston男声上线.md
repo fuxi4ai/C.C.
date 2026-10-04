@@ -34,8 +34,8 @@ project: 跨项目（brain 基建 · TTS 声线）
 
 ## 遗留问题 / 待办
 
-- [ ] Settings 重贴验证：下一场新会话起手逐行 diff（镜像 ↔ 注入），漂移零即销账
-- [ ] brain 仓 git 提交 ＋ push（含昨晚 2 commit 未推）
+- [x] Settings 重贴验证：下一场新会话起手逐行 diff（镜像 ↔ 注入），漂移零即销账 —— **✅ 2026-10-04 新会话起手核销（G-X136 证据代勾）**：注入 37 行与镜像全等 · 默认已为 Hiddleston-CN；10-01「短版/短篇」残差亦消；镜像注记已落销账行
+- [x] brain 仓 git 提交 ＋ push（含昨晚 2 commit 未推） —— **✅ 2026-10-04 现核销（证据代勾）**：本地 HEAD ＝ origin/main ＝ `fef5351`（10-04 三笔 commit 均在远端）· 工作区 `find -newermt` 零命中，无未提交件
 
 ## 相关笔记
 
