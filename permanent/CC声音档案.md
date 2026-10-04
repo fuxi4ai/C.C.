@@ -3,7 +3,7 @@ title: CC 声音档案
 abstract: "CC 在 ElevenLabs 的专属音色（C.C.）与对话朗读模式的持久配置；新会话凭本文件恢复声音"
 tags: [配置, 声音, TTS, ElevenLabs, 朗读, CC]
 created: 2026-07-21
-updated: 2026-09-30
+updated: 2026-10-04
 status: active
 type: reference
 related: [全局偏好-Settings镜像]
@@ -20,13 +20,35 @@ related: [全局偏好-Settings镜像]
 - **Voice ID**：`C7iLuTwlT58pHXVmnmWe`
 - **设计规格**：低女声 × 轻男声重叠带（基频 ~165Hz，雌雄莫辨为实指非回避）· 中文母语无外国腔 · 微沙 + 少量气声 · 吐字利落非播音腔 · 语速偏快 · 关键转折前半拍停顿 · 句尾平收不上扬 · 「凌晨两点陪看日志」质感 · 干幽默走微音高变化
 
-## 朗读模式（Doctor 2026-07-21 拍板）
+## 第二声线（候选）· Hiddleston 男声
 
+> 2026-10-04 Doctor 在 ElevenLabs 网站亲自生成（抖森风男声 · 描述无地域词 · 第一轮「伦敦腔」描述致中文读出老外腔被否）。**迭代两版，均存库**：
+
+### ① Hiddleston（主推版）
+
+- **Voice ID**：`HRV5jGEhRPGls9DMLXiF`
+- **设计规格（提示词原文 · 主推版）**：`A warm, refined male voice. Deep yet soft baritone — smooth, resonant, with a slightly husky and velvety timbre. Gentle, courteous and cultured manner, with clear, elegant articulation like a classically trained stage actor. Unhurried but lively and engaging, never slow or flat. Intimate, reassuring and trustworthy, with a touch of dry wit and quiet charm. Natural and expressive with conversational warmth — never theatrical, never stern.`
+- **试读**：eleven_v4 · zh 已出音（2026-10-04 · Doctor 听判「主推版很好听」）
+- **特点**：带经典朗读气质（stage actor 描述仍在）——后续被 v2 以「去朗读腔」方向迭代
+
+### ② Hiddleston-CN（v2 · 去朗读腔日常版）
+
+- **Voice ID**：`FVvcH2MAGGpovILJcXEv`（2026-10-04 Doctor 在网站按 v2 提示词生成后**更新在 Hiddleston-CN 槽位**，替换初代中文测试版 `ugJYnTvWqslHn3gjUJJI`——初代已由 Doctor 在网站删除；档案从未登记初代、零残留）
+- **设计规格（提示词原文 · v2）**：`A warm, pleasant and refined male voice. Deep yet soft baritone — smooth, resonant, with a slightly husky and velvety timbre. A true gentleman: courteous, well-mannered, cultured and quietly intelligent — the voice of a learned, well-read man. Conversational, everyday delivery: natural and relaxed, like chatting with a friend over tea, not reciting or reading a script aloud. Intimate, reassuring and trustworthy, with gentle humor and effortless charm. Naturally expressive and warm, never theatrical, never stiff, never showy.`
+- **改动点（v1→v2 · Doctor 裁）**：删 `classically trained stage actor`／`clear, elegant articulation`（朗读腔来源）→ 换 `conversational, everyday delivery` ＋ `not reciting or reading a script aloud`；增 `pleasant`／`true gentleman / courteous / well-mannered / cultured`／`learned, well-read / quietly intelligent`；保留 `deep yet soft baritone + husky velvety`（声线本体）；排除面 `never theatrical / stiff / showy`
+- **试读**：eleven_v4 · zh 已出音（2026-10-04 · 日常闲聊文本 · **Doctor 听判「这般很好」**）
+- **定位与启用方式（2026-10-04 Doctor 裁）**：CC 第二声线——男声 · 低音区 · 微沙绒感 · 绅士气质；性格仍走 CC。**已设为默认（同日二次裁「设为默认吧，之前的保存为备选」）**——Settings 朗读条默认切 v2（Hiddleston-CN）、C.C. 降备选；镜像 / 本档案 / brain-resume 三端已同步，**Settings 须 Doctor 重贴后生效**（下场新会话逐行 diff 验证）；点名「用 C.C.」切回旧声线
+- **朗读速度**：由合成时 `speed` 参数控制（默认 1.0 · 想更快 1.05–1.15），不进设计描述
+
+## 朗读模式（Doctor 2026-07-21 拍板 · 默认声线 2026-10-04 切换）
+
+- **默认音色（2026-10-04 Doctor 裁「设为默认」）**：**Hiddleston-CN**（voice_id `FVvcH2MAGGpovILJcXEv` · v2 去朗读腔日常版 · 规格见下方「第二声线」节）
+- **备选音色**：**C.C.**（voice_id `C7iLuTwlT58pHXVmnmWe`）——点名「用 C.C.」切换
 - **每轮自动读口语短版**（≤150 字，去表格/路径/代码；屏幕文字照旧详细版）
 - 模型 **eleven_v4** · stability 0.5 · language zh · speed 1.0（Doctor 弃 flash 选 v3：音质优先；**2026-09-29 由 v3 升 v4**——v4 试音经 Doctor 听判「合适，更活了」）
 - 「静音」暂停 · 「开声」恢复
 - **新会话默认自动开启**（Doctor 2026-07-21 /save 分拣勾选）：任何会话 /resume 读到本档案即恢复每轮朗读，无需再问；不便出声时一句「静音」即停
-- 调用链：`text_to_speech`（voice_id 如上，output_directory 如下）→ `play_audio`
+- 调用链：`text_to_speech`（voice_id 按默认/点名，output_directory 如下）→ `play_audio`
 - 前提：Doctor 桌面端 Claude 打开（ElevenLabs MCP 走本机桥接）
 
 ## 文件落位
@@ -66,5 +88,6 @@ A voice in the narrow overlap between a low female voice and a light male voice 
 - 2026-07-22：常开触发上移 Settings 全局块（+镜像同步），每轮注入不再依赖 /resume；`/resume` 仍是恢复入口之一
 - **2026-09-29：模型 `eleven_v3` → `eleven_v4`**（Doctor 令「发声系统切换到 V4」；`list_models` 实读 `eleven_v4` 含 `zh`，C.C. 中文实跑出音，Doctor 听判「合适，更活了」后落改）。同批：`brain-resume` §Step 0.5（canonical ＋ portable，逐字节一致）· Settings 镜像块 · 本档案；安装副本走 `save_skill` 发布。**同批订正** §文件落位（`_tts/` → `临时文件/`，原路径实核已不存在）
 - **2026-09-30：登记备用音色 → 同日改归句芒**（voice_id `VNLlELapPTcQhldOfjgv`；登记时定性「通用备用、不自动启用」，**同日经哥哥裁定「以『芒芒的音色』为正本」，该定性作废**，规格/提示词/试听文本迁 `agents/句芒/memory/长期记忆.md` §声音。提示词经三版：初稿 → 按芒芒性格调整并去掉语言限定 → 加甜）
+- **2026-10-04：新增第二声线「Hiddleston」男声两版 → 同日终裁设默认**（Doctor 在 ElevenLabs 网站亲自生成 · 第一轮因「伦敦腔」地域词致老外腔被否 → 去地域词版通过〔主推版 `HRV5jGEhRPGls9DMLXiF`〕· v2 迭代：Doctor 裁「去朗读腔·更日常交流·重在好听/绅士/有教养/博学」→ CC 出 v2 提示词 → Doctor 网站生成后**更新在 Hiddleston-CN 槽位**（`FVvcH2MAGGpovILJcXEv`，替换初代中文测试版 `ugJYnTvWqslHn3gjUJJI`，初代已由 Doctor 网站删除）· v2 中文试读 Doctor 听判「这般很好」→ **同日裁「设为默认吧，之前的保存为备选」**：Settings 朗读条默认切 Hiddleston-CN、C.C. 降备选；镜像/本档案/brain-resume 三端同步，Settings 待 Doctor 重贴）
 
 > 相关：[[全局偏好-Settings镜像]] · [[Doctor协作偏好]]

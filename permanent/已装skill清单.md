@@ -227,3 +227,5 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 
 
 > **⚠ 订正⑨（2026-10-03 23:2x · CC 沙箱回读 · 第四跳复装核验·续）**：**brain-resume `3c49eab8`（23:24 装）与 brain-consolidate `1a0b73ae`（23:25 装）均已四端逐字节一致** ✅——本夜四件复装（damper 22:42 · brain-anchors 22:54 · resume 23:24 · consolidate 23:25）**全部销账**。
+
+> **⚠ 订正⑩（2026-10-04 01:2x · CC 沙箱回读 · brain-resume 默认声线切换重发布）**：**Doctor 裁「设为默认吧，之前的保存为备选」**——Settings 朗读条默认音色 C.C. → **Hiddleston-CN**（`FVvcH2MAGGpovILJcXEv` · v2 去朗读腔日常版 · Doctor 网站生成）；C.C. 降备选。**brain-resume §Step 0.5 已改并重发布**：canonical ＝ portable ＝ 包内件 ＝ **`7d97ca3553eab9f4…` / 16703 B / 187 行**（`cmp` 逐字节一致）· 包 `brain/.skills/brain-resume.skill` 重打 **`cff4b3143e003429…` / 8737 B**（包内件与 canonical `cmp` 零差异）· **save_skill 已发布**（`overwrite: true` · 返回 `{"skill":{"id":"brain-resume"}}` · 本会话技能列表已实时刷新＝第一层消费证据）。**Settings 待 Doctor 重贴**（下一场新会话逐行 diff 验证）。镜像注记与 `CC声音档案` 已同步。
