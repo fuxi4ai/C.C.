@@ -22,6 +22,7 @@
 #   · 它**不判对错**，只把改动面摊开给人看——**它是提示器，不是闸**。
 #   · 它**拦不住 Edit 工具**（Edit 不过 shell）⇒ 它是**流程约定 + 事后摊面**，不是强制拦截。
 #   · 快照落 `/tmp`（VM 内、随会话消失、不落用户盘、不进任何仓）。
+#   · 快照键＝路径 hash 前缀＋文件名＋标签（同名件不互覆 · 2026-10-04 修）。
 #
 # 作者：CC · 2026-10-01 · 本脚本未经独立复验
 set -uo pipefail
@@ -30,18 +31,27 @@ SNAPDIR="${SCOPE_GUARD_DIR:-/tmp/.scope_guard}"
 
 die() { echo "scope_guard: $*" >&2; exit 2; }
 
+# 快照键＝路径 hash 前缀 ＋ 文件名 ＋ 标签（2026-10-04 修：原键只有 basename ⇒ 同名件互覆且 chk 假绿）
+_key() {
+  local f="$1" tag="$2" h
+  if command -v sha256sum >/dev/null 2>&1; then h=$(printf '%s' "$f" | sha256sum | cut -d' ' -f1)
+  elif command -v shasum >/dev/null 2>&1; then h=$(printf '%s' "$f" | shasum -a 256 | cut -d' ' -f1)
+  else h="ck$(printf '%s' "$f" | cksum | cut -d' ' -f1)"; fi
+  printf '%s_%s.%s.bak' "${h:0:12}" "$(basename "$f")" "$tag"
+}
+
 cmd_snap() {
   local f="$1" tag="${2:-default}"
   [ -f "$f" ] || die "文件不存在：$f"
   mkdir -p "$SNAPDIR"
-  cp -p "$f" "$SNAPDIR/$(basename "$f").$tag.bak" || die "快照失败（挂载怪癖？试新建+mv）"
-  echo "✓ 快照：$f → $SNAPDIR/$(basename "$f").$tag.bak"
+  cp -p "$f" "$SNAPDIR/$(_key "$f" "$tag")" || die "快照失败（挂载怪癖？试新建+mv）"
+  echo "✓ 快照：$f → $SNAPDIR/$(_key "$f" "$tag")"
   echo "  （改完后跑：scope_guard.sh chk \"$f\" \"$tag\"）"
 }
 
 cmd_chk() {
   local f="$1" tag="${2:-default}"
-  local b="$SNAPDIR/$(basename "$f").$tag.bak"
+  local b="$SNAPDIR/$(_key "$f" "$tag")"
   [ -f "$b" ] || die "无快照：$b（改前忘了 snap？）"
   [ -f "$f" ] || die "文件不存在：$f"
 
@@ -100,6 +110,19 @@ cmd_selftest() {
   out="$(cmd_chk "$tmp/f.md" t)"
   if printf '%s' "$out" | grep -q "增行 3 · 删行 2"; then
     echo "  ✓ 超出目标的改动被完整量出（增行 3 · 删行 2）"; else echo "  ✗ 未完整量出：$out"; ok=1; fi
+
+  # 回归：同名件互覆（2026-10-04 修 · 快照键含路径 hash 前缀）
+  mkdir -p "$tmp/d1" "$tmp/d2"
+  printf 'X1\n' > "$tmp/d1/SAME.md"; printf 'X2\n' > "$tmp/d2/SAME.md"
+  cmd_snap "$tmp/d1/SAME.md" c >/dev/null
+  cmd_snap "$tmp/d2/SAME.md" c >/dev/null
+  printf 'X1b\n' > "$tmp/d1/SAME.md"
+  out="$(cmd_chk "$tmp/d1/SAME.md" c)"
+  if printf '%s' "$out" | grep -q "增行 1 · 删行 1"; then
+    echo "  ✓ 同名件快照不互覆（各自对各自）"; else echo "  ✗ 同名件仍互覆：$out"; ok=1; fi
+  out="$(cmd_chk "$tmp/d2/SAME.md" c || true)"
+  if printf '%s' "$out" | grep -q "改动面＝0"; then
+    echo "  ✓ 另一件零改动不受波及"; else echo "  ✗ 另一件受波及：$out"; ok=1; fi
 
   rm -rf "$tmp"
   echo "SELF-TEST $([ $ok -eq 0 ] && echo PASS || echo FAIL)"
