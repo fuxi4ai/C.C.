@@ -114,6 +114,8 @@ project: 龙鱼五力
 **修复方向**: 跑引擎时显式 `export FF_REPORT_DIR=<挂载盘路径>`，或引擎 REPORT_DIR 改用挂载盘探测（同 G-X88 平铺挂载族）。
 **来源** → logs/2026-08-13-大活专项清理马拉松.md
 
+> **追记（2026-10-03 · 周更班第 4 次同根复发）**：`score_subitems.py --write` 落库同款错位——`LIB = os.environ.get("LYW_LIB") or os.path.expanduser("~/Documents/.../records")` 在沙箱解析为 `/sessions/<id>/Documents/...`（不存在）→ 首只 300476 落库 `FileNotFoundError`（fail-fast，未污染数据，重跑即修复）。本轮修法：`ln -s <mnt>/Documents ~/Documents` 一次性桥接 + 每条 bash 显式 `export LYW_LIB/LYW_TREND_DIR/LYW_COMPARE_DIR/CHANGGENG_JSON`（制度文档 §四 载明的 env 覆盖，本轮验证有效）。**根因不变**：本班 SKILL.md 环境段仍按 Mac 家目录习惯写 `~/Documents`；SKILL.md 缺沙箱 bootstrap 待 Doctor 裁（09-26 已挂 TODO）。来源 → logs/2026-10-03-龙鱼双scorer周更.md
+
 ---
 
 ## [NOTE-20260819-001] ds 腿引用未证实/错链数字（第二例）——应升格通用教训
