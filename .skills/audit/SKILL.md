@@ -39,7 +39,7 @@ launchd 监视 inbox，自动触发原生 CLI。**既往实测约数秒至 20 �
 cat ~/Documents/Codex/Infrastructure/loop-engineering/harness-drop/outbox/{request_id}/result.json
 ```
 
-按 dispatch 件里的 request_id 回读（2026-10-05 落点迁至 `harness-drop/outbox/{request_id}/`；迁移后盘面仅见 `outbox/{id}/inputs/`，result 叶名**未核**——首个真实派发时按回执与 outbox 实件核对本句）。未完成时查同 ID status，不重复投递；已得到错误证据且改了假设/输入的后续调查可以发新目标。逐项读取 status 和 error.code；partial 中完成项继续使用。`lesson_retrievals` 有召回命中时才出现（最多 3 条，候选仅供参考）。
+按 dispatch 件里的 request_id 回读（2026-10-05 落点迁至 `harness-drop/outbox/{request_id}/`）。**派发与发布是两个动作**：派发成功生成 `dispatch/` 回执与原生结果；实体回读包需另运行 `publish_audit_handoff.py` 才生成（2026-10-05 V.V. 实读发布器确认）。包内叶名契约已核＝`result.json`，同包另有 `request.json`、`run-report.json`，最后写入 `handoff.json`；迁移后实体包尚未实际生成验证。未完成时查同 ID status，不重复投递；已得到错误证据且改了假设/输入的后续调查可以发新目标。逐项读取 status 和 error.code；partial 中完成项继续使用。`lesson_retrievals` 有召回命中时才出现（最多 3 条，候选仅供参考）。
 
 `python_symbol` 取完整函数；`text` 默认 200 行、最多 1000 行，truncated=true 时按 next_line 续读相关部分，不能声称已读全文。回执绑定当次快照；后来源文件变化时用原 inputs 对拍，不把旧回执冒充当前数据。
 
