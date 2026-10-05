@@ -592,36 +592,14 @@ def detect_anomalies(snap, prev):
             red.append(f"班 `{t['taskId']}` 没有 SKILL.md")
 
     # 班消失＝可能误删（新增不报，那是正常操作）
-    # 2026-10-04 加证据判别（Doctor 批）：有完成/取消/退役证据的消失按正常结束（🟡 默认不出声），
-    #   无证据的消失仍报 🔴。证据三类：① 旧快照 desc/name 含「一次性」；② live 树 `_archived/`
-    #   有同名存档；③ Documents/Claude 的 `_DEPRECATED_Scheduled_*` 归档内有同名目录。
+    # 2026-10-05 撤销 10-04 加的证据判别（Doctor 裁定收回「任务生命周期取证」机制——审计方自认
+    #   过度设计、无实际误删事故支撑，见 _repair_audit.md 2026-10-05 行）：恢复原状＝消失一律 🔴，
+    #   由人按已有退役记录判读。消失告警天然一次性（下次快照已无此班），误降级＝该信号永久失明。
     if prev:
-        prev_by_id = {t["taskId"]: t for t in prev.get("cowork_live", {}).get("tasks", [])}
+        was = {t["taskId"] for t in prev.get("cowork_live", {}).get("tasks", [])}
         now = {t["taskId"] for t in cw.get("tasks", [])}
-        arch_dir = LIVE_TREE / "_archived"
-        try:
-            archived_live = {p.name for p in arch_dir.iterdir()} if arch_dir.exists() else set()
-        except Exception:
-            archived_live = set()   # 读不到＝无证据，保持告警（fail-closed）
-        for gone in sorted(prev_by_id.keys() - now):
-            t = prev_by_id[gone]
-            blurb = f"{t.get('desc_head') or ''} {t.get('name') or ''}"
-            ev = []
-            if "一次性" in blurb or "one-time" in blurb.lower():
-                ev.append("旧快照标一次性")
-            if gone in archived_live:
-                ev.append("live 树 `_archived/` 有存档")
-            try:
-                for p in (HOME / "Documents/Claude").glob(DEAD_ARCHIVED_GLOB):
-                    if (p / gone).exists():
-                        ev.append(f"Documents 有归档副本（{p.name}/）")
-                        break
-            except Exception:
-                pass
-            if ev:
-                yellow.append(f"班 `{gone}` 消失了——有完成/退役证据（{'、'.join(ev)}），按正常结束")
-            else:
-                red.append(f"班 `{gone}` 消失了（上次快照还在）——误删？")
+        for gone in sorted(was - now):
+            red.append(f"班 `{gone}` 消失了（上次快照还在）——误删？")
 
     d = snap["documents_dead_tree"]
     if d.get("content_diverged"):
