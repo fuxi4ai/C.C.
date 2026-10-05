@@ -24,6 +24,7 @@ import sys
 import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
+from unittest.mock import patch
 
 TOOL = Path(__file__).resolve().parent / "scheduler_snapshot.py"
 SPEC = importlib.util.spec_from_file_location("ss_under_test", TOOL)
@@ -42,6 +43,26 @@ def check(desc, cond, extra=""):
 
 def dt(s):
     return datetime.strptime(s, "%Y-%m-%d %H:%M")
+
+
+# ───────────────── 固定注入时钟（2026-10-05 Doctor 批「只修测试·固定注入时钟，让结果可重复」）──
+# 原 `test_scan_launchd` 用 `datetime.now()` 与固定排期 fixture（00:01 / 10:01 / 02:30）时间耦合：
+# 在各自点火后 45 分钟 grace 窗内跑，闸①会把 fixture 整体跳过 ⇒ noout/tmplog（乃至 missed/night）
+# 拿不到判定，出现 59/61 假红（2026-10-05 00:07 实撞，每日 00:01–00:46 等三个死窗）。
+# 修法＝把被测模块的 `datetime` 钉在正午 12:00（远离全部 fixture 排期的 grace 窗），任意时刻跑结果相同。
+FIXED_NOW = datetime(2026, 9, 22, 12, 0)
+
+
+class _FixedClock:
+    NOW = FIXED_NOW
+
+    @classmethod
+    def now(cls, tz=None):
+        return cls.NOW if tz is None else cls.NOW.replace(tzinfo=tz)
+
+    fromtimestamp = staticmethod(datetime.fromtimestamp)
+    fromisoformat = staticmethod(datetime.fromisoformat)
+    strptime = staticmethod(datetime.strptime)
 
 
 # ───────────────── ① expected_last_fire 纯函数 ─────────────────
@@ -130,13 +151,14 @@ def make_plist(d: Path, label, sched, stdout_path, stderr_path=None):
     return p
 
 
+@patch.object(SS, "datetime", _FixedClock)   # 固定注入时钟：scan_launchd 内部的 datetime.now() 同被钉住
 def test_scan_launchd(tmproot: Path):
     print("\n② scan_launchd · 防误报四道闸 + 正报")
     la = tmproot / "LaunchAgents"
     la.mkdir()
     ops = tmproot / "ops"
     ops.mkdir()
-    now = datetime.now()
+    now = FIXED_NOW
     recent = (now - timedelta(minutes=1)).timestamp()
     old = (now - timedelta(days=3)).timestamp()
 
