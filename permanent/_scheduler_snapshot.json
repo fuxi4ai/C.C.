@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-09-27T22:34:30-07:00",
+  "generated_at": "2026-10-04T23:24:07-07:00",
   "triggered_by": "scheduled",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
@@ -12,7 +12,7 @@
  ],
  "cowork_live": {
   "path": "/Users/lunarabbit/Gateway-workspace/Scheduled",
-  "count": 28,
+  "count": 25,
   "tasks": [
    {
     "taskId": "agents-memory-meditation",
@@ -65,46 +65,6 @@
     "cron": null
    },
    {
-    "taskId": "dva-heartbeat-1815-a",
-    "has_skill": true,
-    "skill_mtime": "2026-09-25 20:16",
-    "skill_sha12": "096487ac8433",
-    "skill_lines": 65,
-    "name": "dva-heartbeat-1815-a",
-    "desc_head": "一次性：DVA heartbeat 自然验证窗口（北京 18:20 / +5 分），只读，结果报 Doctor",
-    "cron": null
-   },
-   {
-    "taskId": "dva-heartbeat-1815-b",
-    "has_skill": true,
-    "skill_mtime": "2026-09-25 20:16",
-    "skill_sha12": "268a40a8a476",
-    "skill_lines": 59,
-    "name": "dva-heartbeat-1815-b",
-    "desc_head": "一次性：DVA heartbeat 自然验证窗口（北京 19:40 / +85 分）完成态核查，只读，结果报 Doctor",
-    "cron": null
-   },
-   {
-    "taskId": "dva-selfheal-1815-completion-check",
-    "has_skill": true,
-    "skill_mtime": "2026-09-19 02:57",
-    "skill_sha12": "488e11a16e41",
-    "skill_lines": 62,
-    "name": "dva-selfheal-1815-completion-check",
-    "desc_head": "一次性：DVA 自愈 18:15 首考的第二点核查（完成态），只读，结果报 Doctor",
-    "cron": null
-   },
-   {
-    "taskId": "dva-selfheal-1815-firstrun-check",
-    "has_skill": true,
-    "skill_mtime": "2026-09-19 02:56",
-    "skill_sha12": "56f8aaac1809",
-    "skill_lines": 61,
-    "name": "dva-selfheal-1815-firstrun-check",
-    "desc_head": "一次性：核 DVA 自愈链 18:15（北京）首考是否点火，只读，结果直接报 Doctor",
-    "cron": null
-   },
-   {
     "taskId": "eal-starfield-rebuild",
     "has_skill": true,
     "skill_mtime": "2026-09-13 19:29",
@@ -122,6 +82,16 @@
     "skill_lines": 217,
     "name": "event-attribution-watch",
     "desc_head": "EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→a…",
+    "cron": null
+   },
+   {
+    "taskId": "fcc-optical-postholiday-read",
+    "has_skill": true,
+    "skill_mtime": "2026-10-02 08:11",
+    "skill_sha12": "4c177283c256",
+    "skill_lines": 31,
+    "name": "fcc-optical-postholiday-read",
+    "desc_head": "一次性：A股节后首日（2026-10-08）取中际旭创/新易盛收盘读数，判相对强弱并回填 AI4ME FCC 光通信札记",
     "cron": null
    },
    {
@@ -147,9 +117,9 @@
    {
     "taskId": "longyu-weekly-dualscorer",
     "has_skill": true,
-    "skill_mtime": "2026-08-24 20:09",
-    "skill_sha12": "bd7c9385ff0f",
-    "skill_lines": 50,
+    "skill_mtime": "2026-10-04 01:54",
+    "skill_sha12": "b3a893628aa4",
+    "skill_lines": 65,
     "name": "longyu-weekly-dualscorer",
     "desc_head": "龙鱼标的库周更：常更标的每周双scorer打分(deepseek子项+claude top-down)落库+对比校正队列+刷新个股库看板artifact",
     "cron": null
@@ -237,9 +207,9 @@
    {
     "taskId": "touzhijunjun-perspective-refresh",
     "has_skill": true,
-    "skill_mtime": "2026-08-11 09:01",
-    "skill_sha12": "11d11fbca3dc",
-    "skill_lines": 63,
+    "skill_mtime": "2026-10-01 04:26",
+    "skill_sha12": "135d14103f9e",
+    "skill_lines": 65,
     "name": "touzhijunjun-perspective-refresh",
     "desc_head": "投知君君视角层增量提炼+反共识纠偏+图谱候选核实（自检增量·不自动promote），周两更",
     "cron": null
@@ -257,9 +227,9 @@
    {
     "taskId": "xboard-daily-repush",
     "has_skill": true,
-    "skill_mtime": "2026-08-22 06:57",
-    "skill_sha12": "5581f03c32da",
-    "skill_lines": 55,
+    "skill_mtime": "2026-10-01 05:09",
+    "skill_sha12": "f0033f839573",
+    "skill_lines": 65,
     "name": "xboard-daily-repush",
     "desc_head": "X 看板每日自动重推——18:00 PT 先增量提取抖音要点（extract_points.py --new-only·存量不补）再跑生成器并推 Cowork artifact x-board（2026-08-22 Do…",
     "cron": null
@@ -305,8 +275,8 @@
   "sources": {
    "com.zhuzhao.ipo-rolling": {
     "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.ipo-rolling.plist",
-    "src_sha12": "322645406d67",
-    "src_mtime": "2026-09-14 01:20"
+    "src_sha12": "895820739ea7",
+    "src_mtime": "2026-09-29 12:27"
    },
    "com.zhuzhao.marketdata": {
     "src_path": "/Users/lunarabbit/Documents/Claude/Projects/Financial/烛照九阴/ops/com.zhuzhao.marketdata.plist",
@@ -328,6 +298,7 @@
     "schedule": null,
     "run_at_load": false,
     "stdout_path": "/Users/lunarabbit/Library/Logs/eal-postevent-native-stdout.log",
+    "stderr_path": "/Users/lunarabbit/Library/Logs/eal-postevent-native-stderr.log",
     "runtime": {
      "loaded": true,
      "state": "not running",
@@ -342,6 +313,7 @@
     "schedule": null,
     "run_at_load": true,
     "stdout_path": "/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stdout.log",
+    "stderr_path": "/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stderr.log",
     "runtime": {
      "loaded": true,
      "state": "not running",
@@ -356,6 +328,7 @@
     "schedule": null,
     "run_at_load": null,
     "stdout_path": null,
+    "stderr_path": null,
     "runtime": {
      "loaded": false,
      "detail": "未加载（launchctl print 非 0）"
@@ -369,6 +342,7 @@
     "schedule": null,
     "run_at_load": null,
     "stdout_path": null,
+    "stderr_path": null,
     "runtime": {
      "loaded": false,
      "detail": "未加载（launchctl print 非 0）"
@@ -382,6 +356,7 @@
     "schedule": null,
     "run_at_load": null,
     "stdout_path": null,
+    "stderr_path": null,
     "runtime": {
      "loaded": false,
      "detail": "未加载（launchctl print 非 0）"
@@ -389,15 +364,16 @@
    },
    "com.zhuzhao.ipo-rolling": {
     "installed_path": "/Users/lunarabbit/Library/LaunchAgents/com.zhuzhao.ipo-rolling.plist",
-    "installed_sha12": "322645406d67",
-    "installed_mtime": "2026-09-12 23:40",
+    "installed_sha12": "895820739ea7",
+    "installed_mtime": "2026-10-01 00:39",
     "program": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
     "schedule": {
      "Hour": 9,
      "Minute": 0
     },
     "run_at_load": null,
-    "stdout_path": "/tmp/ipo_rolling.log",
+    "stdout_path": "/Users/lunarabbit/Library/Logs/com.zhuzhao.ipo-rolling-stdout.log",
+    "stderr_path": "/Users/lunarabbit/Library/Logs/com.zhuzhao.ipo-rolling-stderr.log",
     "runtime": {
      "loaded": true,
      "state": "not running",
@@ -438,10 +414,11 @@
     ],
     "run_at_load": false,
     "stdout_path": "/Users/lunarabbit/Library/Logs/com.zhuzhao.marketdata-stdout.log",
+    "stderr_path": "/Users/lunarabbit/Library/Logs/com.zhuzhao.marketdata-stderr.log",
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "(never"
     }
    },
    "com.zhuzhao.usclose": {
@@ -478,10 +455,11 @@
     ],
     "run_at_load": false,
     "stdout_path": "/Users/lunarabbit/Library/Logs/com.zhuzhao.usclose-stdout.log",
+    "stderr_path": "/Users/lunarabbit/Library/Logs/com.zhuzhao.usclose-stderr.log",
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "(never"
     }
    },
    "netdisk_service": {
@@ -492,6 +470,7 @@
     "schedule": null,
     "run_at_load": true,
     "stdout_path": null,
+    "stderr_path": null,
     "runtime": {
      "loaded": false,
      "detail": "未加载（launchctl print 非 0）"
@@ -499,12 +478,15 @@
    }
   },
   "consistency": [],
-  "staleness": [
+  "staleness": [],
+  "tcc_suspect": [
    {
-    "label": "com.zhuzhao.ipo-rolling",
-    "level": "yellow",
-    "expected": "2026-09-27T09:00:00",
-    "issue": "日志落 /tmp（系统会清理），mtime 不足以判定是否点火（/tmp/ipo_rolling.log）"
+    "label": "com.fuxi4ai.audit-harness.dispatch",
+    "stdio_in_tcc": [
+     "/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stdout.log",
+     "/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stderr.log"
+    ],
+    "issue": "退出码 78（EX_CONFIG）且 stdio 落在 TCC 保护区（/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stdout.log、/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stderr.log）——疑似 launchd 静默停摆（进程不被创建、零输出）；核法见 GOTCHAS NOTE-20260918-001"
    }
   ]
  },

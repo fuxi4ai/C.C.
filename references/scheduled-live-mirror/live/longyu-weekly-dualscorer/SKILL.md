@@ -14,7 +14,22 @@ description: 龙鱼标的库周更：常更标的每周双scorer打分(deepseek�
 
 ## 环境（每会话一次；bash 各调用独立、无 cwd/env 延续、45s 上限、后台不跨调用存活→长任务分片、引擎腿串行）
 ```
-cd ~/Documents && set -a; . Database/.env; set +a
+# 沙箱路径 bootstrap（2026-10-04 补 · 路径坑第 4 次同根复发 NOTE-20260813-001）：
+# 沙箱 ~/Documents 可能不存在或指向错误 → 桥接到挂载点（symlink 跨调用持久），
+# 再显式 export 四个库位 env（免 expanduser 落空）。
+if [ ! -d ~/Documents/Database ]; then
+  D=$(ls -d /sessions/*/mnt/Documents ~/mnt/Documents 2>/dev/null | head -1)
+  if [ -n "$D" ]; then
+    [ -e ~/Documents ] && [ ! -L ~/Documents ] && mv ~/Documents ~/Documents.bak_sandbox
+    ln -sfn "$D" ~/Documents
+  fi
+fi
+DOC_ROOT=$(cd ~/Documents 2>/dev/null && pwd -P) || { echo "⚠ Documents 挂载点不可达，本轮无法落库"; exit 1; }
+export LYW_LIB="$DOC_ROOT/Database/龙鱼-标的分析库/records"
+export LYW_COMPARE_DIR="$DOC_ROOT/Database/龙鱼-标的分析库/对比校正"
+export LYW_TREND_DIR="$DOC_ROOT/Database/龙鱼-标的分析库/趋势"
+export CHANGGENG_JSON="$DOC_ROOT/Database/龙鱼-标的分析库/常更标的.json"
+cd "$DOC_ROOT" && set -a; . Database/.env; set +a
 # 代理探测化（G-X 2026-08-01）：沙箱镜像不保证有 localhost:3128。
 # 写死 export 会让首只标的报出误导性的「找不到标的」（实为代理 connection refused）。
 curl -s -x localhost:3128 -m 3 -o /dev/null https://api.tushare.pro \
