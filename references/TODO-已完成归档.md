@@ -592,3 +592,5 @@ type: log
 
 - [x] **烛照九阴 · 班②d 步首跑验证（2026-09-01 /todo 漏挂对账补挂 · 源：`logs/2026-08-27-渊图四批验收与美债10Y详情页.md`）** ✅ 2026-09-01 CC 实核代勾（客观证据硬勾）：`fred_ust_daily` 表 65 行 · updated_at=09-01 10:07:35（今天班实际写入）· DFII10 最新 08-28=2.42 与 FRED 官方 CSV 逐位一致 · THREEFYTP10 08-21=0.8682 同源一致 · 日报 HTML as_of 同步。②d 已双落且班内正常运行；H.15 发布时点（16:15 ET）晚于班跑时点（13:07 ET）致「滞后 2 交易日」属结构性正常，非故障。
 
+- [x] **VV · audit dispatcher 的 harness-drop 迁出 AI4ME（2026-10-04 挂 · 源：2026-10-04 周班后审计方核对 · Doctor 裁定「转 V.V. 处理」）** ✅ 2026-10-05 客观代勾（G-X136 证据硬勾）：V.V. 已修复 dispatcher 并迁出——原生合成目标 `d5f3dd…b2e5` 派发 completed、随后定时触发退出码 0 未重复执行；新 inbox `Codex/Infrastructure/loop-engineering/harness-drop/inbox/`（盘面实测 `vv_dispatch_migration_20261005_target.json`＋同级 dispatch 回执在案）；日志迁 `~/Library/Logs/Fuxi4AI/audit-dispatch/`；commit `dbdd5b34` 由 V.V. 推。CC 侧同步完成：`.skills/audit/SKILL.md` L22 投递路径＋L39 回读路径已改（result 叶名标未核）· save_skill 注册表副本已 overwrite · `_repair_audit.md` 2026-10-04 行加闭环标记。交接件：`4AI/Shake hands/to CC/VV-to-CC-audit-dispatch修复与投递路径-20261005.md`。
+

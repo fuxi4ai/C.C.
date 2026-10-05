@@ -19,7 +19,7 @@ description: 用固定只读探针审查代码、配置、JSON 和班次日志�
 
 ### 1. 写目标文件
 
-路径：`~/Documents/AI4ME/Financial-Audit-outputs/harness-drop/inbox/{ts}_target.json`
+路径：`~/Documents/Codex/Infrastructure/loop-engineering/harness-drop/inbox/{ts}_target.json`（2026-10-05 V.V. 迁出 AI4ME · commit dbdd5b34；回执同级 `dispatch/`、实体回读包同级 `outbox/`）
 
 ```json
 {"question": "一句话任务描述", "project": "CC Audit Harness", "targets": ["demo:sample.json"], "deadline_minutes": 2}
@@ -36,10 +36,10 @@ launchd 监视 inbox，自动触发原生 CLI。**既往实测约数秒至 20 �
 ### 3. 同 ID 回读
 
 ```bash
-cat ~/Documents/Codex/Infrastructure/loop-engineering/runs/audit-harness/{request_id}/result.json
+cat ~/Documents/Codex/Infrastructure/loop-engineering/harness-drop/outbox/{request_id}/result.json
 ```
 
-按 dispatch 件里的 request_id 回读。未完成时查同 ID status，不重复投递；已得到错误证据且改了假设/输入的后续调查可以发新目标。逐项读取 status 和 error.code；partial 中完成项继续使用。`lesson_retrievals` 有召回命中时才出现（最多 3 条，候选仅供参考）。
+按 dispatch 件里的 request_id 回读（2026-10-05 落点迁至 `harness-drop/outbox/{request_id}/`；迁移后盘面仅见 `outbox/{id}/inputs/`，result 叶名**未核**——首个真实派发时按回执与 outbox 实件核对本句）。未完成时查同 ID status，不重复投递；已得到错误证据且改了假设/输入的后续调查可以发新目标。逐项读取 status 和 error.code；partial 中完成项继续使用。`lesson_retrievals` 有召回命中时才出现（最多 3 条，候选仅供参考）。
 
 `python_symbol` 取完整函数；`text` 默认 200 行、最多 1000 行，truncated=true 时按 next_line 续读相关部分，不能声称已读全文。回执绑定当次快照；后来源文件变化时用原 inputs 对拍，不把旧回执冒充当前数据。
 

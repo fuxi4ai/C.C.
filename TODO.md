@@ -403,8 +403,6 @@ type: log
 
 - [ ] **brain 仓 · `.bak*` 残留归档（2026-09-26 挂 · 2026-09-29 /todo 现核当场重数 · 由本文件「待办」段移入）**：「**97 个 `.bak*`（8.62 MB）**」这个旧数**连续两轮漂移**——本场（2026-09-29 23:3x）实测 `find -name '*.bak*'`（排除 `.git`）＝ **133 件**；表观字节合计 **16,128,095 B ＝ 15,750 KB（≈15.38 MB）**（`du -ck` 块计 16,008 KB）。**⚠ 条目内原注记自称「132 件 / 15,864 KB」，两个数本场均复现不出** ⇒ 该计数随各场备份动作持续前进，**凡引用必须当场重数，禁转述**。**其余仍成立**：`.gitignore:42` ＝ `*.bak_*` 在场（41＝`*.bak_2*`、46＝`*.bak[0-9]*_*`）✓ · 自解析 `.git/index`（1668 条）内 `.bak` 路径**恰 11 条** ✓（3 个具名 `bak-doctor-20260917` ＋ 8 个均在 `archived/`）· 风险判断不变。**背景与已办**：`.gitignore` 原只覆盖极窄的 `*.bak_2*`，而工作树有近百个 `.bak*`；09-26 并行场已补 `*.bak_*` 覆盖（`gitignore` 对已跟踪文件无效，库内既有 11 个路径不受影响）；新备份自此不会被 `git add -A` 带入库。曾误带 4 个 `.skills/QA` 备份入索引，靠独立 commit 出库（`chore: 4 个 .skills/QA 备份移出索引（文件保留本地）`）。**⏳ 残留（低优先 · 已无风险）**：这些 `.bak*` 仍在盘上待处置——系分轨回退的「改前」证据 ＋ 各场 `.bak_save`/`note`/`fix` 留痕，**按可逆优先只能归档不删**；无明确时点触发，**归长期观察，不催**。
 
-- [ ] **VV · audit dispatcher 的 harness-drop 迁出 AI4ME（2026-10-04 挂 · 源：2026-10-04 周班后审计方核对 · Doctor 裁定「转 V.V. 处理」）**：`com.fuxi4ai.audit-harness.dispatch` 仍硬引用 `~/Documents/AI4ME/Financial-Audit-outputs/harness-drop`，与 Doctor 刚确定的目录定位冲突，需 V.V. 侧迁出并同步投递入口；**CC 侧待办**＝迁移完成后同步 `.skills/audit/SKILL.md` L22 的投递路径。转交方式待定：Doctor 转交，或授权 CC 落 `4AI/Shake hands/to VV/` 握手信。
-
 ---
 
 > **已完成 / 已取消条目** → [[TODO-已完成归档]]（`references/TODO-已完成归档.md`）。
