@@ -179,9 +179,11 @@ def launchctl_loaded(label):
         if r.returncode != 0:
             return {"loaded": False, "detail": "未加载（launchctl print 非 0）"}
         st = re.search(r"state\s*=\s*(.+)", r.stdout)   # 「not running」有空格，勿用 \S+
-        last = re.search(r"last exit code\s*=\s*(\S+)", r.stdout)
+        # 2026-10-04 修：原 `\S+` 把 `(never exited)`（含空格）截成 `(never`，下游误判非 0。
+        # 整段取回再 strip——保留完整退出状态，是否非 0 交给 _exit_code() 按整数判定。
+        last = re.search(r"last exit code\s*=\s*(.+)", r.stdout)
         return {"loaded": True, "state": st.group(1) if st else None,
-                "last_exit_code": last.group(1) if last else None}
+                "last_exit_code": (last.group(1).strip() if last else None)}
     except FileNotFoundError:
         return {"loaded": None, "detail": "launchctl 不可用（非 macOS？）"}
     except Exception as e:
@@ -590,11 +592,36 @@ def detect_anomalies(snap, prev):
             red.append(f"班 `{t['taskId']}` 没有 SKILL.md")
 
     # 班消失＝可能误删（新增不报，那是正常操作）
+    # 2026-10-04 加证据判别（Doctor 批）：有完成/取消/退役证据的消失按正常结束（🟡 默认不出声），
+    #   无证据的消失仍报 🔴。证据三类：① 旧快照 desc/name 含「一次性」；② live 树 `_archived/`
+    #   有同名存档；③ Documents/Claude 的 `_DEPRECATED_Scheduled_*` 归档内有同名目录。
     if prev:
-        was = {t["taskId"] for t in prev.get("cowork_live", {}).get("tasks", [])}
+        prev_by_id = {t["taskId"]: t for t in prev.get("cowork_live", {}).get("tasks", [])}
         now = {t["taskId"] for t in cw.get("tasks", [])}
-        for gone in sorted(was - now):
-            red.append(f"班 `{gone}` 消失了（上次快照还在）——误删？")
+        arch_dir = LIVE_TREE / "_archived"
+        try:
+            archived_live = {p.name for p in arch_dir.iterdir()} if arch_dir.exists() else set()
+        except Exception:
+            archived_live = set()   # 读不到＝无证据，保持告警（fail-closed）
+        for gone in sorted(prev_by_id.keys() - now):
+            t = prev_by_id[gone]
+            blurb = f"{t.get('desc_head') or ''} {t.get('name') or ''}"
+            ev = []
+            if "一次性" in blurb or "one-time" in blurb.lower():
+                ev.append("旧快照标一次性")
+            if gone in archived_live:
+                ev.append("live 树 `_archived/` 有存档")
+            try:
+                for p in (HOME / "Documents/Claude").glob(DEAD_ARCHIVED_GLOB):
+                    if (p / gone).exists():
+                        ev.append(f"Documents 有归档副本（{p.name}/）")
+                        break
+            except Exception:
+                pass
+            if ev:
+                yellow.append(f"班 `{gone}` 消失了——有完成/退役证据（{'、'.join(ev)}），按正常结束")
+            else:
+                red.append(f"班 `{gone}` 消失了（上次快照还在）——误删？")
 
     d = snap["documents_dead_tree"]
     if d.get("content_diverged"):
@@ -614,9 +641,12 @@ def detect_anomalies(snap, prev):
         rt = i.get("runtime") or {}
         if rt.get("loaded") is False:
             red.append(f"launchd `{label}` **未加载**——装了但不会跑")
-        ec = rt.get("last_exit_code")
-        if ec not in (None, "0"):
-            red.append(f"launchd `{label}` 上次退出码 **{ec}**（非 0）")
+        # 2026-10-04 修：按整数判定（`0:`＝0 成功 · `(never exited)`＝未运行、不判失败），
+        # 告警文本保留退出状态原文。「未运行」与「运行失败」不混判——未运行的可见度由应跑未跑面承担。
+        ec_raw = rt.get("last_exit_code")
+        ec = _exit_code(ec_raw)
+        if ec is not None and ec != 0:
+            red.append(f"launchd `{label}` 上次退出码 **{ec_raw}**（非 0）")
 
     for f in lg.get("staleness", []):
         (red if f.get("level") == "red" else yellow).append(

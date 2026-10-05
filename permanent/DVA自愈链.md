@@ -2,7 +2,7 @@
 title: DVA 链（现行机制图与判读判据 · 含已退役旧链）
 tags: [DVA, fuxi, 参考, 判读地图]
 created: 2026-09-22
-updated: 2026-09-30
+updated: 2026-10-04
 status: active
 type: reference
 ---
@@ -11,14 +11,14 @@ type: reference
 
 > ⚠ **2026-09-29 架构级取代**：旧「自愈闭环」链（heartbeat → `run_dva_self_heal.py` → coordinator）**已退役**；现行＝**增量协调器**（`dva_incremental_pipeline.py`）。旧链保留在本文件末尾**历史层**（只读不改，作考古）。
 > **用途**：判「有没有跑 / 有没有推进 / 卡在哪」时照这张图找面，**别再从零摸**。
-> **最后核验**：2026-09-30（只读实读）。**配置层（Codex automation 清单）沙箱不可达 ⇒ 凡涉它的一律标「转述未核」；效果层（fuxi/Mac 落盘产物）皆本轮实测。**
+> **最后核验**：效果层（fuxi/Mac 落盘产物）2026-09-30 实测；配置层（Codex automation 清单）2026-10-04 本机实读已核（审计方核验：`fuxi-dva` 每日 00:00 PT · `dva-mac` 每日 06:30 PT）。沙箱对配置层仍不可达，本文件涉配置层以 2026-10-04 实读为准。
 
 ## 一、现行链（2026-09-29 起）
 
 ```
-[Codex] `Fuxi-DVA-数据库驱动更新`（ACTIVE · 每日 00:00 PT ＝ 北京 15:00）★转述未核
+[Codex] `Fuxi-DVA-数据库驱动更新`（id `fuxi-dva` · ACTIVE · 每日 00:00 PT ＝ 北京 15:00）★已核 2026-10-04 本机实读
    └─ 采集 / 下载 / 转写 / 按 mode 分析 → 写 fuxi canonical ＋ `incremental_pipeline_runs`
-[Codex] `DVA Mac 增量成果回流`（ACTIVE · 每小时 :30）★转述未核
+[Codex] `DVA Mac 增量成果回流`（id `dva-mac` · ACTIVE · 每日 06:30 PT）★已核 2026-10-04 本机实读
    └─ 把**已登记成果**打成代次 → fuxi `ops\mirror\ready\dva-mirror-{ts}-{hash}\`
         └─ [Mac] 原子替换 `Documents/Database/Douyin/`（权威库 `DVA-Inventory/videos.sqlite3`）
 ```
