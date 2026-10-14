@@ -11,6 +11,8 @@ type: log
 
 ## 待办
 
+- [ ] **会话目录清理定频（2026-10-13 挂 · Doctor 待定）**：本地会话树第二轮清理已闭环（1439 场 3.1G → 235 场 235M；冷归档 fuxi `F:\Mac_Backup\cc_sessions\` 双端 SHA 逐位一致）。45 天后会再涨回（19 班日产 + 交互场）。待 Doctor 定：是否挂月频盘点班（每月盘点 + 超 45d 提醒归档；执行仍 Doctor 终端，删除闸门＝双端 SHA 逐位一致不变）。流程范本见 `logs/2026-10-13-本地会话清理归档.md` 与 CC memory `reference_local_sessions_storage`。
+
 - [ ] **EAL 行情触发因素 · 历史与增量对拍（2026-10-13 挂 · 剩尾）**：历史回填 150 日（CC · `剑酒青丘/outputs/market_daily_events_v2_20260302_20261012.jsonl`）与 VV 班增量（10-13 收盘起 · usdjpy-15 第四阶段）对拍——请求件第五节约定防重复/缺口；两边数据就位后做。前提已闭环：jsonl 已搬运 ✓、挂班 SHA 已核 ✓、表已建 ✓、可读 md 已生成 ✓。
 
 - [x] **仓位提示器 v5.1 生产首跑观察（2026-10-11 挂）**：明晨 refresh-risk-daily 班（1.6 版）后核三件——① warning_latest.json 是否被班刷新（as_of 是否推进、scheme 是否 v5.1）；② gate_flags.csv 是否同链日更（v5.1 缺日 fail-closed 会显性报 ValueError，班日志可见即证明门控链缺位）；③ 班 prompt 是否含旧卖点字段断言（store 沙箱不可读，只能以班输出实证）。若 ② 缺位 → 调度方案归 Doctor 裁（禁手）。另：两件 .bak_2026-10-11_prePAv5 已清理（2026-10-13 · index 实读未跟踪 · v5.1 已入库）。〔✅ 2026-10-13 三件核完（G-X136 证据代勾 · 实读）：① 班已刷新 ✓——warning_latest.json mtime 10-12 09:11 · scheme=v5.1 · 重放对齐断言随班跑；as_of 未推进（根因同②，非班故障）。② **缺位确认**——feature_matrix_v2.csv（mtime 10-10 23:43）与 gate_flags.csv（10-10 23:37）末行均停 10-09，班链与全树无任何日更步（3 天内仅 warning_latest/signal_history/daily_warning.py 被写），fail-closed 金丝雀被矩阵冻结架空（矩阵不前进则缺 gate 永不触发）⇒ 按条「调度方案归 Doctor 裁（禁手）」。③ 班 SKILL 1.6 步直读无旧字段断言 ✓（失败即跳过+卡片降级态；sell_warning 旧字段保留向后兼容）。〕
