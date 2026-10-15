@@ -2,8 +2,8 @@
 title: PRD · 提示器退役与 Risk Daily 接入 V1
 tags: [prd, acceptance, 剑酒青丘, 风险日报]
 created: 2026-10-13 21:45
-updated: 2026-10-13 21:45
-status: in_progress
+updated: 2026-10-15
+status: delivered
 task_authorization:
   state: verified
   source_type: 会话裁定
@@ -66,11 +66,11 @@ template_version: v1.2
 
 - [ ] **R3** · refresh-risk-daily 班每日自动执行 V1 信号步（班 SKILL 1.6 步替换为 V1 信号器调用，经 Doctor 终端 SHA 往返装班后），下一班运行产出当日信号文件且卡片 as_of 推进。
   - 验收方法: 机器比对——装班后首个真实班跑（10-14 09:08 PT）后回读 v1_position_signal.json 的 as_of/generated_at 前进、班日志含该步输出；班 SKILL store 现文 SHA 与 staging 一致
-  - 证据栏:
+  - 证据栏: [?] **2026-10-15 生产首跑证据核完（CC 实读实跑）**：① 10-14 09:08 PT 班真实跑——scheduler lastRunAt `2026-10-14T16:08:27Z`（准点+jitter）· 班会话回读输出含 V1 信号步：`RC=0 · as_of 2026-10-14 · hold · 满仓 100%`，构建成功温度 36 平静，artifact 已更新；② `v1_position_signal.json` 实读：as_of `2026-10-14`（较装班前 10-13 前进）· generated_at `2026-10-14T09:10:19-07:00` 与班跑时刻一致；③ 卡片消费端回读（Gateway artifact risk-daily/index.html）：「仓位管理 · 科创50 V1 · 无信号维持档位 · 100%→100%（t+1 收盘执行）· as_of 2026-10-14 · 免责声明」在文，内嵌 JSON temperature 36/平静；④ 班 SKILL store 现文与 staging **v2**（`e9d7e4db` · D3 修订版）**逐行一致**（store 在 Gateway、不在沙箱挂载面，SHA 无法沙箱复算——以全文逐行比对代替；与 v1 `0b727d7d` 有 L22/L32 两处措辞差异 ⇒ 装班实文＝v2，R4 注记同场订正）。
 
 - [ ] **R4** · 仓位提示器废弃：`backtest/position_advisor/` 更名为 `backtest/_DEPRECATED_position_advisor_2026-10-13/`（文件名标注），其日更链（daily_feature_update.py、daily_warning.py、feature_matrix_v2、gate_flags、advisor_output）停止由班调用；原 `2026-10-13_仓位提示器日更链补建_PRD.md` 提请 Doctor 转 cancelled。
   - 验收方法: 机器比对——盘上无 backtest/position_advisor 旧路径残留（Glob）；班 SKILL 现文无 position_advisor 引用（grep=0）；_DEPRECATED_ 目录内原文件 SHA 与归档前一致（抽查 ≥3 件）
-  - 证据栏: [?] Doctor 终端 git mv 已执行（剑酒青丘 commit `f637ca8` · rename 100% 全量 · push `81c3eb4..f637ca8`）；盘上实核：backtest/ 下仅 `_DEPRECATED_position_advisor_2026-10-13`（旧名消失）；班 SKILL store SHA=`0b727d7d…`（cp 装班完成 · mirror 同步一致）；旧 PRD cancelled 提请已在交付报告，状态改动归 Doctor。
+  - 证据栏: [?] Doctor 终端 git mv 已执行（剑酒青丘 commit `f637ca8` · rename 100% 全量 · push `81c3eb4..f637ca8`）；盘上实核：backtest/ 下仅 `_DEPRECATED_position_advisor_2026-10-13`（旧名消失）；班 SKILL store SHA=`0b727d7d…`（cp 装班完成 · mirror 同步一致）；旧 PRD cancelled 提请已在交付报告，状态改动归 Doctor。〔**2026-10-15 订正（R3 证据同场核出）**：装班实文逐行比对＝staging **v2**（`e9d7e4db` · D3「对齐断言措辞」修订版），非 v1——原「store SHA=`0b727d7d`」注记过时（v1↔v2 差异：L22 fail-closed 措辞、L32 卡片例外句）；store 现文与 v2 全文一致。〕
 
 - [ ] **R5** · V1 信号器所需 KS50 日线数据由 marketdata 班每日保障：信号器从行情库 `cn_index_daily`（000688.SH）读取最新收盘；取数器（fetch_daily_inputs.py）集成进 marketdata 班的动作按侦查结论执行（若行情库已覆盖则仅确认＋原取数器归档，不再新增取数步）。
   - 验收方法: 机器比对——信号器实跑读取到 as_of 当日最新 KS50 收盘且与行情库行一致；集成动作有留痕（迭代记录/知会记录）或确认记录
@@ -103,12 +103,12 @@ template_version: v1.2
 ### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书 · 总签必须可审计）
 
 - 客观轨总签（覆盖 R*/N*/X* 中机器可判项）：
-  - covered_requirement_ids: []
-  - authority:
-  - designation_source_ref:
-  - signed_at:
-  - result:
-  - reviewer_evidence_ref:
+  - covered_requirement_ids: [R1, R2, R3, R4, R5, N1, N2, N3, X1, X2]
+  - authority: Doctor
+  - designation_source_ref: 2026-10-15 会话 AskUserQuestion 裁定「验收 V1 + 旧 PRD 取消」（全取推荐）
+  - signed_at: 2026-10-15
+  - result: 验收通过（全条目 · checkbox 保留 [?] 实施者未自签审计链）
+  - reviewer_evidence_ref: 2026-10-13 独立审查 PASS_WITH_LIMITS（agentId a86e2d85187b3f979）＋ 2026-10-15 生产首跑证据核验（CC 实读实跑 · 见 R3 证据栏与 R4 订正）
 - 原则轨（结论/裁定类）共 0 条：开发中已由 Doctor 拍板（三问），按 v1.4 不列原则轨。
 
 **独立审查背书记录（Step 7.5 · 2026-10-13 夜）**：审查者＝未参与实施的 general-purpose subagent（agentId `a86e2d85187b3f979`）· 总判定 **PASS_WITH_LIMITS**。验证动作（实跑）：信号器 selftest rc=0 PASS · 4 条 fail-closed 负向注入（无行/非正值/落后开市日/重复日期）全部 rc!=0 零写入 · 源码 grep 证零规则复制 · build_risk_daily.py 旧引用 grep 0 命中＋现盘卡片与信号 JSON 逐项一致 · fetch 取数器归一/幂等/失败语义逐条核 · 市场班编排 py_compile＋子步存在 · staging SHA 实算一致。**六发现及处置**：D1【中·行动项】存量 185 行紧凑日期待 UPDATE（命令已贴 Doctor，02:30 班前）· D2 显式 MARKET_DB 不兜底（已修+负向复验 rc=1）· D3 班文案对齐断言措辞（staging v2 已修）· D4 对拍脚本已归档进 outputs/（README 所指路径落位）· D5 注释漂移两处（已修）· D6 历史文档断链属 PRD T4 预期保留。审查者限制清单五条（git 禁跑/Store 不可读/R3 班未跑/网络路径未实调/未重跑 build 全流程）如实保留。
