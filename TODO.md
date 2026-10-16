@@ -11,6 +11,10 @@ type: log
 
 ## 待办
 
+- [ ] **10-16 A股收盘数据回填（2026-10-16 挂）**：搜索源索引滞后未取到 10-16 收盘（仅到 11:30 午盘）——行情库 01:30 PT 班跑完后实读 `market_data.db` 回填 `宏观研究体系/EAL/研究材料/A股美股跟随性复盘-2026-10-15.md` §六 待补项（收盘点位/午后形态/周线终值）。
+
+- [ ] **宏观研究体系仓远端策略（2026-10-16 挂 · Doctor 待定）**：该仓 `git push` 报 `No configured push destination`——2026-09-07 建仓时只 git init 未配 remote。待 Doctor 裁：① 配 GitHub 远端（给我仓库名）；② 按风险日报先例作 local-only 仓管理（备份走 fuxi tar+scp）。
+
 - [ ] **会话目录清理定频（2026-10-13 挂 · Doctor 待定）**：本地会话树第二轮清理已闭环（1439 场 3.1G → 235 场 235M；冷归档 fuxi `F:\Mac_Backup\cc_sessions\` 双端 SHA 逐位一致）。45 天后会再涨回（19 班日产 + 交互场）。待 Doctor 定：是否挂月频盘点班（每月盘点 + 超 45d 提醒归档；执行仍 Doctor 终端，删除闸门＝双端 SHA 逐位一致不变）。流程范本见 `logs/2026-10-13-本地会话清理归档.md` 与 CC memory `reference_local_sessions_storage`。
 
 - [ ] **EAL 行情触发因素 · 历史与增量对拍（2026-10-13 挂 · 剩尾）**：历史回填 150 日（CC · `剑酒青丘/outputs/market_daily_events_v2_20260302_20261012.jsonl`）与 VV 班增量（10-13 收盘起 · usdjpy-15 第四阶段）对拍——请求件第五节约定防重复/缺口；两边数据就位后做。前提已闭环：jsonl 已搬运 ✓、挂班 SHA 已核 ✓、表已建 ✓、可读 md 已生成 ✓。
