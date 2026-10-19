@@ -1130,7 +1130,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 
 ## [NOTE-20261019-001] batch 漏建主角公司节点——metric 成孤儿 + 竞争边错挂产品
 
-**状态**: 🔄 已修待验（2026-10-19 当日手术修复 · 独立验收归分轨）
+**状态**: ✅ 已修复（2026-10-19 独立验收 PASS_WITH_LIMITS · 代签者=未参与实施的审核 subagent · 授权=Doctor 2026-09-01 常设授权「事实性修复由未参与实施的 subagent 独立验收后代签」· 证据：复验报告 A-I 全过——Cesiyi 节点字段/四边方向/补录 stock_code 实读在盘）
 **优先级**: 🟡 中
 **触发**: 2026-10-19 帕米尔五篇批 QA——电科思仪篇（全文主角=电科思仪）batch 产出里**没有公司节点**，只有孤儿 `metric_CesiyiVNARevenue2025`（0 边）；「鼎阳挑战电科思仪」的 competes 边被挂到 `product_67GHzVNA` 上（company competes product，类型错位）。
 **根因**: LLM 对「通篇主角公司」漏建公司节点（可能因 node_reference 主题过滤后未把公司本体列为候选），却按依赖关系建了它的 metric 与竞争边——结构闸（悬挂/type/三元组）全查不出：边端点存在、类型合法，唯独**语义上缺了主角**。
