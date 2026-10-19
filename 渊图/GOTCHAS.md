@@ -253,6 +253,8 @@ project: 渊图
 
 **追记 2026-09-07（同族复发 · 三篇帕米尔批后读盘 QA · 08-25 批带入 · 连过三场）**: canonical 读盘逮 **2 个 type/name/created_at 全 None 空壳**——`concept_AlibabaCloudMaaSBusinessModel`（08-24 阿里云篇 · 与既有 `concept_AlibabaMaaSBusinessModel` 同名重复 · 1 边 part_of 重指 · props 7 键迁入 · 旧 id 入 aliases）+ `concept_HuaweiAscend`（08-24 超节点篇 · 与既有 `company_HuaweiAscend` 撞车 · 0 边 · shipment_2026e/2027e props 迁入）。修补 `outputs/cc_qa_fix_20260907.py`（备份 `bak_cc_qa_20260907` + 墓碑 `_tombstones/2026-09-07_qa_typefix_merge.json`）→ **5411/6033 → 5409/6033**（-2 节点 · 边守恒 · 复检 type None=0）。**根因（实读坐实）**：`kg_promote.py` L21 只校验**边** type（`e.get("type") not in VALID`），**无节点 type 断言**——type=None 节点畅通无阻，08-25/09-01/09-05 三场门全绿放行。**预防门禁候选**：kg_promote 加节点 type 断言（None 或非法值硬拦 · 与 QA 第 8 项「非法点 type」对齐）——待 Doctor 批。**来源**：2026-09-07 三篇帕米尔批入库 QA 场。
 
+**追记 2026-10-19（同族复发 · 帕米尔五篇批 · evolves_from 方向反置）**: 电科思仪篇产出 `rel_67GHzVNA_120GHzVNA` 写 67GHzVNA --evolves_from--> 120GHzVNA，而 desc 明写「纯主机120G方案演进自67G」——方向反置，且边 id 与 desc 方向矛盾（self-矛盾型，desc 里就有正确答案，比 09-05 的 supplies 反置更易逮）。另同批 `rel_CompanyCesiyi_67GHzVNA` 边 id 名不副实（实际 source=company_DingyangTech）。QA 已修（对调 + 改 id）。**形态登记**：这是本族**第 3 种反置**（09-05 supplies 委托方向 · 本条 evolves_from 演进方向）——「方向反置」族已复发 3 次（09-05 / 10-19 两批），按合同应升格通用教训（升格由 Doctor 裁，本条不自升）。**来源**：2026-10-19 帕米尔五篇批入库 QA 场。
+
 ## [ERR-20260719-001] 二次生成摘要的相对年份系统性偏移 → 入库 LLM 不做统一裁决、逐节点各自猜 → 同篇内**混合污染**
 **状态**: ✅ 已归正（2026-07-19，7 节点 / 3 边，canonical 3384/3903 守恒）**优先级**: 🔴 高
 
@@ -1125,5 +1127,16 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **来源**: 2026-10-01 A′ 实施现场 · 差集断言与 mtime 复核 · 还原后计数回 2305/2501
 
 **补记（2026-10-01 · 承交叉复核者指出「未见于任何留档」）**：同批我的**对照测试**（`--force --max-new 0`）除新建外**还覆写了 205 张已有卡**（`--force` 分支遇 `dest.exists()` 仍写）。核实结论：**205/205 与用生成器重算逐字节相同 ⇒ 零内容漂移**，唯一变化是 `_生成时间` 由 09-30 变 10-01。**危害**：该行记的是**文件写入时刻**、不是内容变更时刻，故这批「重盖章」会让**任何以卡上日期判内容新鲜度的消费端误判**（与本条 bullet 3 同源）。⇒ 处置：不改回（改回＝再写一次，同病），但**登记在案**；日后若要让日期可信，须改生成器让它只在内容变化时才更新该行。
+
+## [NOTE-20261019-001] batch 漏建主角公司节点——metric 成孤儿 + 竞争边错挂产品
+
+**状态**: 🔄 已修待验（2026-10-19 当日手术修复 · 独立验收归分轨）
+**优先级**: 🟡 中
+**触发**: 2026-10-19 帕米尔五篇批 QA——电科思仪篇（全文主角=电科思仪）batch 产出里**没有公司节点**，只有孤儿 `metric_CesiyiVNARevenue2025`（0 边）；「鼎阳挑战电科思仪」的 competes 边被挂到 `product_67GHzVNA` 上（company competes product，类型错位）。
+**根因**: LLM 对「通篇主角公司」漏建公司节点（可能因 node_reference 主题过滤后未把公司本体列为候选），却按依赖关系建了它的 metric 与竞争边——结构闸（悬挂/type/三元组）全查不出：边端点存在、类型合法，唯独**语义上缺了主角**。
+**影响面**: 下游 kb 检索/公司卡聚合查不到电科思仪；metric 无 measured_by 宿主；竞争关系错挂在产品上。
+**修复**: 补建 `company_Cesiyi`（301689.SZ · web 核实上市事实）+ 边重指/改 id + 补 measured_by/supplies 2 边（手术脚本 `outputs/surgery2_pamier5_20261019.py`）。
+**预防门禁候选**: ① 沙箱 QA 增「孤儿 metric」检查——metric 节点须至少有 1 条 measured_by 边连 company（或允许的宿主类型），0 边即报；② 「主角公司检查」——batch 日志的「新节点 N」里若某篇 title 主体公司名未出现在新/存量 company name/aliases 中，QA 提示人工核（启发式，非硬闸）。
+**来源**: 2026-10-19 帕米尔五篇批入库 QA 场（手术修复 · 核实札记 `raw/核实/2026-10-19-帕米尔五篇批QA核实札记.md` §三）
 
 
