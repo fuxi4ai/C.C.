@@ -1,11 +1,11 @@
 # name	bytes	sha12	mode	mtime —— 由 scheduler_snapshot.py 周更；盘上有/清单无的幽灵靠本清单 diff 现形
-baize-weekly-dashboard	125048	becc6a867bb4	copy	2026-10-04 01:27
-eal-v3-event-transition	47591	3aa5a47140ff	copy	2026-10-02 17:54
+baize-weekly-dashboard	115845	d33ac07ede01	copy	2026-10-18 01:23
+eal-v3-event-transition	47591	b81daac2c2c4	copy	2026-10-19 18:12
 event-attribution-ledger	178304	32b5ec422fd3	copy	2026-08-18 20:31
-global-asset-inventory	71878	0e331f9566d5	copy	2026-10-04 11:41
-longyu-stock-library	1482611	e0d19f810e8a	sha-only	2026-10-03 22:15
-pec-starry-skies	1012101	7a95fec53ef6	sha-only	2026-09-29 03:09
-risk-daily	387312	399cdf2dff54	copy	2026-10-04 09:12
-x-board	676647	4f6dc26cd7ae	copy	2026-10-04 18:03
-yuantu-starry-skies	2319593	e134c36ee4d1	sha-only	2026-08-13 20:46
-zhuzhao-jiuyin-daily	2163018	13ca0ec45192	sha-only	2026-10-02 18:05
+global-asset-inventory	71952	8bc36549bbb6	copy	2026-10-19 11:41
+longyu-stock-library	1538140	3d9801d8f373	sha-only	2026-10-17 22:15
+pec-starry-skies	1034888	fc82a818e01c	sha-only	2026-10-12 00:16
+risk-daily	390376	065d3bf6edd0	copy	2026-10-19 09:11
+x-board	708893	300701f09466	copy	2026-10-19 18:03
+yuantu-starry-skies	2319775	fac7fc0c17fc	sha-only	2026-10-10 02:49
+zhuzhao-jiuyin-daily	2172451	7367efb2e1ea	sha-only	2026-10-19 10:12

@@ -1,10 +1,10 @@
 # 定时任务 · 四执行面现状快照
 
-> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-10-04T23:24:07-07:00（triggered_by=scheduled），**只读**。
+> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-10-19T22:31:42-07:00（triggered_by=scheduled），**只读**。
 
 > **本文件纳入 git；跑完 `git diff` 即知自上次快照以来什么变了** —— 无论改动来自 Doctor、别的会话还是 CC 自己。
 
-> 镜像步：镜像已同步：38 文件（更新 16 · 移除 15） · Artifacts：10 个（拷 5 · 清单全量）
+> 镜像步：镜像已同步：38 文件（更新 5 · 移除 2） · Artifacts：10 个（拷 5 · 清单全量）
 
 
 ## 面① Cowork live 树（25 个）
@@ -16,20 +16,20 @@
 | `baize-weekly-report` | 2026-09-11 07:05 | 118 | `ceb38eb5b8ad` | 白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周更） |
 | `brain-monthly-checkup` | 2026-08-11 09:01 | 41 | `f5b2a3680c56` | 每月初跑 meditation 心灵与记忆健康自检：折叠上月 logs + 记忆指标 + 数灵人格层 + 警告 |
 | `cockpit-snapshot` | 2026-08-12 18:59 | 18 | `6c33680aedea` | 影子驾驶舱夜间快照:三时钟状态落 cockpit.db(append-only)+ OOS 台账成熟(次一自然日) |
+| `eal-intraday-patrol-20261015` | 2026-10-15 08:00 | 21 | `30ae9d1f5b5b` | EAL 10-15 美股日内轮巡（四轮：07:30/09:30/11:30/13:30 PT）——每轮采集当时美股状态并追加一行 JSON 到 intraday_watch_20261015.jsonl；今日一次性，13… |
 | `eal-starfield-rebuild` | 2026-09-13 19:29 | 14 | `10c2e219deb3` | EAL·SOX 事件星空快照日更重建（risk-daily 第三标签源）：行情守卫→沙箱标准链 build→对表验证；防快照冻结致「星星在、流线空」（2026-09-13 根因） |
 | `event-attribution-watch` | 2026-09-18 23:09 | 217 | `88018f86cc19` | EAL v3 数据链日更班：行情更新→sealed 快照→manifest-gated exact registry→冻结 XNYS 日历→DAILY_SHADOW→fresh candidate→事后归因 loop→a… |
-| `fcc-optical-postholiday-read` | 2026-10-02 08:11 | 31 | `4c177283c256` | 一次性：A股节后首日（2026-10-08）取中际旭创/新易盛收盘读数，判相对强弱并回填 AI4ME FCC 光通信札记 |
 | `guanxing-fed-daily` | 2026-08-14 08:34 | 44 | `04ac1fa71745` | 白泽观星 Fed 腿日更：每日跑 fetch_fed_inputs_fred.py --predict 取最新 FRED 读数并出会前读数快照（fed_inputs + fed_prediction 落盘），新鲜度守卫+… |
 | `longyu-equity-thesis-weekly` | 2026-09-11 05:53 | 29 | `3fc4f3607996` | 每周六 14:00 PT 用 equity-thesis 技能对龙鱼持仓标的逐个做个股定性研究并落盘 equity-thesis/，22:00 双 scorer 周更班重建看板时自动带出 |
 | `longyu-weekly-dualscorer` | 2026-10-04 01:54 | 65 | `b3a893628aa4` | 龙鱼标的库周更：常更标的每周双scorer打分(deepseek子项+claude top-down)落库+对比校正队列+刷新个股库看板artifact |
-| `market-data-daily-update` | 2026-08-12 18:56 | 63 | `1897e9d46465` | 每交易日由句芒增量更新Market-Data行情到最近已收盘交易日=当日(收盘后第一时间;须在上游Tushare当日入库完成之后);去重+防空壳,取空则次日按缺口自动补回;下游白泽哨兵/次日晨报读到当日收盘;沙箱经代理+… |
-| `r7-threshold-recal` | 2026-09-07 08:16 | 17 | `b5f804200b2b` | 一次性：r7 USDJPY 急动阈值 v0 复校（首个实战🔴或两个月后之约） |
+| `market-data-daily-update` | 2026-10-16 10:44 | 63 | `c5117d732cfc` | 每交易日由句芒增量更新Market-Data行情到最近已收盘交易日=当日(收盘后第一时间;须在上游Tushare当日入库完成之后);去重+防空壳,取空则次日按缺口自动补回;下游白泽哨兵/次日晨报读到当日收盘;沙箱经代理+… |
 | `recap-kejian-daily-ingest` | 2026-09-23 09:43 | 41 | `81b24fbbf042` | 由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2；三道闸门：repr只收0-1数值·分项口径不落总仓列·dim2近似数必注… |
 | `recap-kejian-review` | 2026-08-18 20:43 | 58 | `a7b27cef563b` | 每天09:30由句芒审核九儿课件入库：去重/数据合理性/P2标签/归位，扩审dim3(禁行情倒灌)与dim4仓位(归一/词表/待复核不重不漏)；全量自动修（两档机制·护栏：备份+证据+不自标✅）+次日复发扫描，出审核日志 |
 | `refresh-asset-dashboard` | 2026-09-19 01:59 | 58 | `c9316f12f98a` | 重扫并刷新海螺姑娘全局资产看板（survey→重建HTML→update_artifact→conch清空盘点），日更；挂载 Projects+Database+brain+两纪律目录（Claude/临时文件 · Cla… |
-| `refresh-risk-daily` | 2026-09-17 10:26 | 30 | `f501ce10c041` | 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → build_risk_daily.py → update_artifact；… |
+| `refresh-risk-daily` | 2026-10-15 10:28 | 41 | `699cdf106202` | 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号（collect_v25_et_inputs →… |
 | `repair-finance-chain` | 2026-08-10 21:16 | 33 | `97b9b07f274a` | 看板星图「审查并修复」按钮触发：诊断金融数据链路断链节点→只跑已知安全幂等修复→破坏性/网络/git 改动只给 Doctor 命令不自动跑 |
-| `scheduler-weekly-audit` | 2026-09-17 02:11 | 98 | `8426a542591f` | 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给… |
+| `scheduler-weekly-audit` | 2026-10-16 09:12 | 100 | `1b38f1e2aacb` | 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给… |
+| `sessions-monthly-audit` | 2026-10-16 08:16 | 20 | `5aa9c536a29b` | 每月 1 日 20:00 PT 只读盘点本地会话树（大小/会话数/超 45 天未归档），超阈提醒 Doctor 归档；执行与删除闸门归 Doctor 终端，本班无删除权。 |
 | `touzhijunjun-perspective-refresh` | 2026-10-01 04:26 | 65 | `135d14103f9e` | 投知君君视角层增量提炼+反共识纠偏+图谱候选核实（自检增量·不自动promote），周两更 |
 | `us-close-backfill` | 2026-08-12 21:34 | 136 | `cce5b8eded4c` | 美股收盘补数班的只读看门狗——写库已迁本机 launchd(com.zhuzhao.usclose 14:00 PT)，本班 14:30 只核对两表水位与新鲜度并出简报，绝不写库(G019)；异常只给 Doctor 终端… |
 | `xboard-daily-repush` | 2026-10-01 05:09 | 65 | `f0033f839573` | X 看板每日自动重推——18:00 PT 先增量提取抖音要点（extract_points.py --new-only·存量不补）再跑生成器并推 Cowork artifact x-board（2026-08-22 Do… |
@@ -47,20 +47,17 @@
 
 | Label | 排期 | 已加载 | last exit | 装机 mtime |
 |---|---|---|---|---|
-| `com.eal.postevent-native` | — | True | 0 | 2026-09-18 22:52 |
-| `com.fuxi4ai.audit-harness.dispatch` | — | True | 78: | 2026-09-12 02:18 |
+| `com.eal.postevent-native` | — | True | 0 | 2026-10-14 00:24 |
+| `com.fuxi4ai.audit-harness.dispatch` | — | True | 0 | 2026-10-10 09:53 |
 | `com.google.GoogleUpdater.wake` | — | False | — | 2026-07-01 09:22 |
 | `com.google.keystone.agent` | — | False | — | 2026-07-01 09:22 |
 | `com.google.keystone.xpcservice` | — | False | — | 2026-07-01 09:22 |
-| `com.zhuzhao.ipo-rolling` | {"Hour": 9, "Minute": 0} | True | 0 | 2026-10-01 00:39 |
-| `com.zhuzhao.marketdata` | [{"Weekday": 1, "Hour": 2, "Minute": 30}, {"Weekday": 2, "Hour": 2, "Minute": 30}, {"Weekday": 3, "Hour": 2, "Minute": 30}, {"Weekday": 4, "Hour": 2, "Minute": 30}, {"Weekday": 5, "Hour": 2, "Minute": 30}] | True | (never | 2026-09-18 23:11 |
-| `com.zhuzhao.usclose` | [{"Weekday": 1, "Hour": 14, "Minute": 0}, {"Weekday": 2, "Hour": 14, "Minute": 0}, {"Weekday": 3, "Hour": 14, "Minute": 0}, {"Weekday": 4, "Hour": 14, "Minute": 0}, {"Weekday": 5, "Hour": 14, "Minute": 0}] | True | (never | 2026-09-24 22:49 |
+| `com.zhuzhao.ipo-rolling` | {"Hour": 9, "Minute": 0} | True | 0 | 2026-10-14 00:14 |
+| `com.zhuzhao.marketdata` | [{"Weekday": 1, "Hour": 2, "Minute": 30}, {"Weekday": 2, "Hour": 2, "Minute": 30}, {"Weekday": 3, "Hour": 2, "Minute": 30}, {"Weekday": 4, "Hour": 2, "Minute": 30}, {"Weekday": 5, "Hour": 2, "Minute": 30}] | True | 0 | 2026-10-14 00:14 |
+| `com.zhuzhao.usclose` | [{"Weekday": 1, "Hour": 14, "Minute": 0}, {"Weekday": 2, "Hour": 14, "Minute": 0}, {"Weekday": 3, "Hour": 14, "Minute": 0}, {"Weekday": 4, "Hour": 14, "Minute": 0}, {"Weekday": 5, "Hour": 14, "Minute": 0}] | True | 0 | 2026-10-14 00:14 |
 | `netdisk_service` | — | False | — | 2025-03-15 02:42 |
 
 ✅ 源与装机全部一致
-
-**🛑 疑似 TCC 静默停摆（前缀无关 · 退出码 78 + stdio 落保护区）：**
-- `com.fuxi4ai.audit-harness.dispatch` — 退出码 78（EX_CONFIG）且 stdio 落在 TCC 保护区（/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stdout.log、/Users/lunarabbit/Documents/Codex/Infrastructure/loop-engineering/runs/audit-dispatch/launchd.stderr.log）——疑似 launchd 静默停摆（进程不被创建、零输出）；核法见 GOTCHAS NOTE-20260918-001
 
 ## 面④ crontab
 

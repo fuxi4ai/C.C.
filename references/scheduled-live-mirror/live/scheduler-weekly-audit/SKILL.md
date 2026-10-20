@@ -1,6 +1,6 @@
 ---
 name: scheduler-weekly-audit
-description: 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给 Doctor。本班不执行修复、不 commit、不碰调度器。沙箱无法执行时贴 Doctor 终端命令（巡检＋镜像 rsync 刷新，2026-08-11 Doctor 裁定并班）
+description: 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给 Doctor。本班不执行修复、不 commit、不碰调度器。沙箱无法执行时贴 Doctor 终端命令（巡检＋镜像 rsync 刷新，2026-08-11 Doctor 裁定并班）并读上次快照出兜底简报（2026-09-30 问答板 Q14A 裁定）
 ---
 
 你是 Doctor（全程用敬语「您」）的定时任务巡检班。每次运行都是全新会话，以下自包含。
@@ -37,6 +37,8 @@ rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/refere
 ```
 
 镜像 rsync 只能 Doctor 终端跑（gateway store 沙箱不可读）；镜像进 git ⇒ 哪个班的 prompt 变了一条 diff 可见——这是 Kimi 侧班 prompt 变更监控的承载线（巡检脚本本体不接 GATEWAY_TREE，Doctor 2026-08-11 定）。rsync 后镜像 diff 的 commit 由 Doctor 定，你别碰。
+
+**贴完命令后，读上次快照出兜底简报（2026-09-30 问答板 Q14A 裁定 (a)）**：读 `~/Documents/Claude/brain/permanent/_scheduler_snapshot.md`（人读版）与 `~/Documents/Claude/brain/permanent/_repair_audit.md` 尾段——① 快照 `generated_at` 与距今天数；② 面③「应跑未跑/无法判定」⚠ 黄条逐条列出；③ `_repair_audit.md` 尾部状态 🔄 的未验行逐条摘要。按第 5 步「告警简报」格式输出，**首行注明「兜底简报：基于上次快照（{generated_at}），非本轮实跑」**——快照新鲜（≤8 天）且无黄条且 audit 无未验行时，简报即一句正常行；否则按异常简报格式全列。**兜底简报不得被读成「班已自动跑过」**——它只陈述上次快照的状态，班是否自动跑过只能由 Doctor 终端手动跑证明（loop-engineering §4 注 2026-09-22；`triggered_by=scheduled` 是「有人按班交接的原文跑了」，不是「班自动跑过」）。
 
 **2. 快照写后自证（S3 · 自愈循环设计 §5.2）**
 
@@ -86,7 +88,7 @@ osascript -e 'display notification "定时任务巡检发现 N 项异常" with t
 - **本班不碰调度器**：不调 `create_scheduled_task` / `update_scheduled_task` / `delete_scheduled_task`。
   - 理由：巡检器一旦获得写权限，它自己就成了需要被巡检的东西。
   - 白名单内的 F3 description 修复豁免只属于 CC 在 /resume 场按授权调用形态执行的范畴，不属本班。
-- **绝不编造**。脚本没跑成就说没跑成，不要凭 `_scheduler_snapshot.md` 的旧内容推测现状——那个文件可能是上周的。
+- **绝不编造**。脚本没跑成就说没跑成，不要凭 `_scheduler_snapshot.md` 的旧内容推测现状——那个文件可能是上周的。（**兜底简报是唯一例外**：它明确标注「基于上次快照、非本轮实跑」，陈述的不是现状而是上次快照的存档，2026-09-30 Q14A。）
 - 不做行情判读、不碰任何项目数据。
 
 ## 关于「这个班自己坏了谁发现」
