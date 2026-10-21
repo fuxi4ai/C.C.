@@ -1140,3 +1140,15 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **来源**: 2026-10-19 帕米尔五篇批入库 QA 场（手术修复 · 核实札记 `raw/核实/2026-10-19-帕米尔五篇批QA核实札记.md` §三）
 
 
+
+
+## [NOTE-20261021-001] market_signal 空壳标签 41 个——键在场、categories 空，星空信号层计数含空壳
+
+**状态**: ⚠️ 已知风险（2026-10-21 登记 · 修法待 Doctor 裁——2026-10-21 决策记录挂账①「待裁」）
+**优先级**: 🟡 中（不伤 canonical 结构，但空壳带 market_signal 键，下游按类次过滤/展示时可能当作无类别信号）
+**触发**: 2026-10-20 深夜→10-21 凌晨市场信号补打标签专场（canonical 手术 239f4311…→72c5942e…）收尾盘点遗留；挂账原文先引本编号（logs/2026-10-20-渊图星空NewlyEmerged与日期滑块.md 遗留节 · 决策记录 2026-10-21 条），条目本体本轮补登。
+**硬证据（实跑 · 2026-10-21 04:2x PT）**: canonical `Database/行业研究/mapping/行业知识图谱_完整数据库.json` 实读——sha256 `72c5942e0f8ae63a…` · 7211 节点 / 7809 边；带 `_meta.market_signal` 的节点 **211** 个，其中 `categories` 空或缺 **41** 个（样本：`concept_GlobalTGlassDemand` · `concept_MiddleEastEnergyRisk` · `concept_AluminumGlobalDeficit2026` · `concept_TSMCLeadingEdgeConstraint`）；categories 非空 **170** 个（= 05-17 存量有效标注 + 本批新打 107）。
+**根因**: 05-17 一次性标注时部分供需语义节点写入 market_signal 键但未填 categories；本批补打只扫 created_at ≥ 2026-09-01 候选（233），存量空壳不在射程。
+**影响面**: 空壳节点带 market_signal 键 ⇒ 星空信号层计数（62→158）是否包含空壳未核（本轮未读星空侧消费代码，不推断）；按类次（supply_shock/persistent_imbalance/demand_surge）过滤的下游会看到 categories 空的信号。
+**建议修法（待裁）**: ① 按本批打标口径补填 41 空壳的 categories/confidence/reason/method；或 ② 摘除空壳的 market_signal 键（视同未标注）。二选一归 Doctor 裁。
+**来源**: logs/2026-10-20-渊图星空NewlyEmerged与日期滑块.md · 渊图/architecture/决策记录.md 2026-10-21 条挂账① · canonical 实读计数（本轮）
