@@ -88,12 +88,29 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
   **为何补这条**：2026-06-30 已为 Market-Data 立过「体检挪到末位写库方跑」（见 5.5），但 **recap.db 这条线当时漏改**——体检留在 09:30、写库延续到 10:00，结构上永远差一轮。**病例（2026-07-30）**：`_health.json` 生成于 09:41 报 `overall: stale` / `target_date: 2026-07-28`，而当日 21:35、22:02 两轮写库已把数据补到 **07-30**；报告没人重跑，次日读到的人（含 `/resume` 的 CC）一律被误导。
   **配套**：脚本已加 `db_mtime_at_check` 字段——比对 `recap.db` 当前 mtime 即可判本报告是否已被后续写库作废。另 `--phase` 已加白名单（2026-08-01），只接受 `manual` / `ingest-check` / `eod-final`，拼错即 exit 1 且**不写盘**。
   **⏰ 钟点口径**：以上 09:30 / 10:00 取自 `list_scheduled_tasks` 的 cron（review 班 `30 9 * * *`、本班 `0 10 * * 1-5`，显示时刻含随机抖动）。**本条初稿曾写 15:30 / 16:00，那是 2026-07-30 cron 整体 −6h 之前的旧值**；日后再动 cron，记得回来同步这几个数——写死在正文里的钟点不会自己跟着变。维护清单（2026-08-25 对表立）：review 班 `30 9 * * *`（09:30）、本班 `0 10 * * 1-5`（10:00）、句芒班 `30 1 * * 1-5`（01:35）、us-close 看门狗 `30 14 * * 1-5`（14:30，launchd 写库 14:00 PT）、Mac 原生落库 launchd 02:30 PDT；对表方法＝`list_scheduled_tasks` 实测 cron，勿用沙箱 date。
+
+**5.6 体系提炼摘录（2026-10-21 Doctor 裁「日报接'提炼过的有价值信息'·班内摘录」· PRD `brain/logs/checkpoints/2026-10-21_烛照日报整合上游提炼_PRD.md`）**
+- **只读纪律**：本步只读上游文件，**绝不写上游任何文件/库**；转述**不改判**（结论归属上游项目，不夹带九儿新判断）；**绝不编造**。
+- **候选源清单（提炼产物 · 按判据自选 · 非全摘）**：
+  - 风险日报（09:08 PT 当日新鲜）：`~/Documents/Claude/Projects/风险日报/data/taco_reading.json`（regime/note）· `geo_reading.json`（phase/note）· `fomc_market_exp.json`（FOMC 预期）
+  - 仓位信号（09:08 PT 当日新鲜）：剑酒青丘 `v25_et_position_signal.json` 四态信号
+  - 白泽哨兵（02:40 PT 当日新鲜）：信号 A/B/C2 生命周期（预注册记账件）
+  - 白泽观星（07:30 PT 当日新鲜）：`fed_prediction` 会前读数快照
+  - X Board（昨日 18:00 PT 板）：`board_current_snapshot_v1` 综合研判层（多空信号/烈度/证据等级/传导链）
+  - 星空（批量更新·非日更）：canonical `market_signal` 标签 / NE 增量——**as_of 如实显示、防陈旧**（拿不到当日批注就按文件 as_of 标注）
+  - EAL（昨日 17:44 PT 班）：事件归因/惊奇结果
+  - 龙鱼五力（周六 14:00 PT 班·周频）：`equity-thesis` 定性结论（首选动作/触发器·快照引用）
+  - 白泽周报（周日 01:09 PT 班·周频）：受益榜结论（快照引用）
+- **摘录判据**：① 与 A 股隔日交易相关（持仓/常更标的、板块、情绪、流动性、外围定价）；② 有增量（状态变化/新信号/新研判，**不摘与昨日重复内容**）；③ 每条带来源项目＋as_of（数据时刻）；④ 宁缺毋滥——无可摘增量就写空数组，**绝不编**。
+- **落盘**：写 `~/Documents/Claude/Projects/Financial/烛照九阴/docs/daily_integration_{YYYY-MM-DD}.json`（数据日用横杠格式）——结构 `{"date":"YYYY-MM-DD","notes":[{"text":"一句话要点","source":"来源项目","as_of":"数据时刻"}]}`。今日无增量 → `{"date":"...","notes":[]}`。docs 写不进（挂载缺失）→ 日志记「摘录落盘失败」、跳过本步**不阻断**（生成器缺件自动渲染「今日无」）。
+- **降级**：任一上游缺失 → 跳过该源；全部缺失 → 空数组或文件不写；本步失败**绝不阻断步骤 6 出报**。摘录结果记入第 7 步日志。
+
 6. 生成正式日报：`cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 tools/gen_daily_report.py`（v2 暖色范式；正式输出到 `~/Documents/AI4ME/烛照九阴-outputs/`，同名旧报会自动先存档到 archived/，永不删）。**沙箱设了 ZZJY_OUTPUT_ROOT（见前置）即直写正式目录、归档逻辑照常，无需再 `--output` 到 /tmp 手动搬归档——G-X45 已修。** 测试或排障时仍可用 `--output /tmp/zhuzhao-daily-test --no-archive`，不碰正式目录。
 6.5 **同步侧栏 Artifact**（id=`zhuzhao-jiuyin-daily`，2026-06-12 老师定）：把当日新报转 Artifact 兼容版后调 `mcp__cowork__update_artifact`（deferred 则先 ToolSearch `select:mcp__cowork__update_artifact`）。流程：
    - 源文件 = `~/Documents/AI4ME/烛照九阴-outputs/` 下 `ls -t 烛照九阴日报_*.html | head -1`（最新一期）；
    - python 转换（**2026-07-28 实测：生成器已自带内联 echarts、无 CDN 标签**——仅当 grep 到 echarts 外链 `<script src=…>` 时才需 `cd /tmp && npm install echarts@5 --silent` 后内联替换，替换前先 assert 该 js 内无 `</script` 防早闭）：① `:root` 内补 `color-scheme:light`（已有则跳过）；② **籁琴图转真 img**（2026-06-12 实测：Artifact 渲染器吞 CSS 巨型变量背景图，`<img>`+data: 才稳）：摘出 `--laiqin-art:url("data:image/png;base64,…")` 变量并删除；`.hero-art` 规则中 `background:var(--laiqin-art) left top/auto 100% no-repeat;` 替换为 `overflow:hidden;`；`<div class="hero-art" aria-hidden="true"></div>` 内塞 `<img src="{data_url}" alt="" style="position:absolute;left:0;top:0;height:100%;width:auto;display:block">`（filter 留父级仍生效）。字体本就内嵌，无需处理；
    - 自检：转换后 grep 无**运行时**外链残留（license 注释/W3C 命名空间等惰性字符串可放行；成品 2~3.5MB 属正常）才调用 `update_artifact{id:"zhuzhao-jiuyin-daily", html_path:"zhuzhao-jiuyin-daily.html", update_summary:"日报 YYYY-MM-DD 重渲"}`（产物写 scratch/outputs）；
    - 此步失败仅警告不阻塞收尾；无人值守时更新若停在待批属预期。结果（成/败/待批）记入第 7 步日志。
-7. **日志（落盘归位铁律：烛阴的事落烛阴档）**：写 `~/Documents/Claude/brain/agents/烛阴/logs/{今天YYYY-MM-DD}-行情拉取与日报.md`——`T_anchor` 与四表各更新到哪日、新增行数、美股锚是否陈旧、**派生回填五步各自结果（emotion/sync/gap/closure/targets，recap 各表更新行数）**、**closure apply 变更 N 条 + 兑现变更 md 路径 + predaily 回滚锚路径**、**FRED 序列结果（DFII10/THREEFYTP10 各更新到哪日、值多少；被优雅跳过则记跳过原因）**、日报数据日与文件路径、Artifact 同步结果、**两份 `_health.json` 体检结果**（Market-Data：5.5 步 `overall` + 落后表；**recap.db：5f 步 `overall` + `target_date` + `phase=eod-final`**）、跳过/异常。同日二次触发则追加复核段、不覆盖当日已有记录。
+7. **日志（落盘归位铁律：烛阴的事落烛阴档）**：写 `~/Documents/Claude/brain/agents/烛阴/logs/{今天YYYY-MM-DD}-行情拉取与日报.md`——`T_anchor` 与四表各更新到哪日、新增行数、美股锚是否陈旧、**派生回填五步各自结果（emotion/sync/gap/closure/targets，recap 各表更新行数）**、**closure apply 变更 N 条 + 兑现变更 md 路径 + predaily 回滚锚路径**、**FRED 序列结果（DFII10/THREEFYTP10 各更新到哪日、值多少；被优雅跳过则记跳过原因）**、**体系提炼摘录结果（摘了 N 条·各条来源与 as_of·跳过原因/无增量）**、日报数据日与文件路径、Artifact 同步结果、**两份 `_health.json` 体检结果**（Market-Data：5.5 步 `overall` + 落后表；**recap.db：5f 步 `overall` + `target_date` + `phase=eod-final`**）、跳过/异常。同日二次触发则追加复核段、不覆盖当日已有记录。
 
-约束：写 market_data.db 的烛阴四表 + `fred_ust_daily`（美债 FRED 序列）+ recap.db 的派生表（emotion_cycle/yuantu_buy_signals/industry_signals/stock_tracking/fx_cnh_daily，均走 /tmp 副本往返）+ AI4ME 日报输出与 Artifact 同步产物（scratch + id=zhuzhao-jiuyin-daily）+ `_health.json`（收尾体检产物）；**交易日判定一律以句芒 stock_daily 的 MAX(trade_date) 为锚、绝不信沙箱 date**（2026-07-14 根治）；**closure 自动 --apply 但每次先留 predaily 锚 + 变更 diff 留痕可回滚**（2026-06-23 裁定）；**不在 sandbox 跑任何 git 子命令**（含 status/log——会留 index.lock 且沙箱无权删除）；**绝不编造行情/信号**（拉不到就标缺、保留原数据）；缺数在日报里如实展示。
+约束：写 market_data.db 的烛阴四表 + `fred_ust_daily`（美债 FRED 序列）+ recap.db 的派生表（emotion_cycle/yuantu_buy_signals/industry_signals/stock_tracking/fx_cnh_daily，均走 /tmp 副本往返）+ AI4ME 日报输出与 Artifact 同步产物（scratch + id=zhuzhao-jiuyin-daily）+ `_health.json`（收尾体检产物）；**交易日判定一律以句芒 stock_daily 的 MAX(trade_date) 为锚、绝不信沙箱 date**（2026-07-14 根治）；**closure 自动 --apply 但每次先留 predaily 锚 + 变更 diff 留痕可回滚**（2026-06-23 裁定）；**体系提炼摘录只读上游提炼产物、转述不改判、无增量如实写空、绝不编造（2026-10-21 Doctor 裁）**；**不在 sandbox 跑任何 git 子命令**（含 status/log——会留 index.lock 且沙箱无权删除）；**绝不编造行情/信号**（拉不到就标缺、保留原数据）；缺数在日报里如实展示。
