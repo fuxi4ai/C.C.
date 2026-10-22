@@ -58,7 +58,7 @@ project: 剑酒青丘
 
 **来源**: 2026-10-21 烛照日报班日志「日报与 Artifact」段 + CC 本场排查（实读 adjustment_grade.py / gen_daily_report.py A6 段 / AI4ME 盘面 / 9-07 迁移日志）。
 
-**状态**: 🔄 已修待验（2026-10-21 迁址重建·部分闭环）——① **A6 已恢复**：管线迁 `剑酒青丘/回调级别判别/`（Doctor 裁「AI4ME 属可删目录，量化回测资产归剑酒青丘」）；`rebuild_index_db.py` 首建三指数 2010 起全量（4077/4077/3979 行至 20261021 · integrity ok）；adjustment_grade.py/gen_daily_report.py 双消费者路径改锚剑酒青丘；`--json` 实跑恢复读数、生成器 A6 灯恢复（量能 252 日分位 p17·「级别读数不可用」占位退场）。② **B6 未修**：universe_fixed.json（729 宇宙）生成脚本不在仓、精确清单不可复现，重算口径（2020-2025 出现率≥90%）推断有偏差风险——**归 Doctor 裁**（推荐：从 market_data.db 按口径重算并如实标注与历史不可比性；或等 fuxi 找回）。③ **episode 库仍缺失**：fuxi 探测 Connection refused 未查，待可达后补查。✅ 归 Doctor 或指定独立验收方。
+**状态**: 🔄 已修待验（2026-10-21 迁址重建＋原件找回·全链闭环）——① **管线迁址** `剑酒青丘/回调级别判别/`（Doctor 裁「AI4ME 属可删目录，量化回测资产归剑酒青丘」）；双消费者路径改锚剑酒青丘。② **db 重建**：`scripts/rebuild_index_db.py` 三指数 2010 起全量（4077/4077/3979 行至 20261021 · integrity ok）。③ **原件找回**（Doctor 终端 find）：10-04 07:03 的「AI4ME 迁出」动作（执行者=Codex/VV 域，CC 日志零命中）把全套资产迁至 `Codex/Project Mirror/剑酒青丘/research/AI4ME迁出/回调级别判别/` 但未通知消费者——outputs 六件（universe_fixed.json 精确 729 · episodes csv · features pkl · nn_profiles · backtest_results）＋ scripts 五件＋立项报告已复制回剑酒青丘仓。④ **演练全绿**：adjustment_grade --json 恢复读数（L3 慢磨型·confirm）；生成器 A6/B6 双灯恢复（量能分位 p17 · 浮盈集中度·环境·静），「级别读数不可用」占位退场。⑤ **兜底工具**：`scripts/rebuild_universe.py`（按口径重算 universe · 带 729 锚负向检验）留仓备用。✅ 归 Doctor 或指定独立验收方。
 
 ## 跨项目通用教训
 
