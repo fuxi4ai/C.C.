@@ -42,6 +42,24 @@ project: 剑酒青丘
 
 **状态**: 🔄 已修待验（v5.1 段延伸+历史持久化已落 · selftest 五用例含段延伸/缺 gate fail-closed 全 PASS · 复审 PASS_WITH_LIMITS；**首个生产实证待 2026-10-13 晨班**——矩阵推进后首跑若 as_of 正确推进且档位推演正常即销）。
 
+### [INFRA-20261021-001] `AI4ME/回调级别判别/` 管线目录整体缺失——index_research.db 断链，日报「级别读数」降级占位 17 天+（2026-10-21 排查确认）
+
+**触发**: 2026-10-21 烛照日报班日志报「级别读数」降级占位（自陈既存退化）；Doctor 令排查，CC 实读确认 A6 数据源 index_research.db 断链。
+
+**硬证据/最小复现**: ① `Documents/AI4ME/回调级别判别/` 目录不存在——index_research.db ＋ episode 库（2010-2026 · 2026-07-18 冻结）＋ `outputs/universe_fixed.json`（729 固定宇宙锁）＋ `outputs/nn_profiles.json` 全部缺失；② 盘上仅存空壳 `Documents/AI4ME/剑酒青丘-outputs/回调级别判别/{outputs,scripts}`（2026-10-04 07:03 创建 · 全空 · 制造者未定位——10 月 CC 会话日志与剑酒青丘仓 logs 均零命中）；③ 最小复现：`adjustment_grade.py --json` 报 `sqlite3.OperationalError: unable to open database file`（`ro(IDX)` 打开失败），`grade_section` 两分支（--update --json → --json）皆败降级；④ 班日志已核：20261009 起全部存档日报均带「级别读数不可用」占位。
+
+**根因**: 管线目录消失且无盘上动作记录——9-07 AI4ME 迁移归位清单（Claude/AI4ME 28 件）不含本目录，7-28 迁移日志不提，Claude/AI4ME 旧址已不存在；可能系 Mac 侧手工动作或迁移漏件＋后续清理，盘上无法进一步定位。10-04 空壳系另一次「重建目录骨架」尝试的残留（只建 outputs/scripts 空目录、未搬数据）。
+
+**影响面**: ① 日报 S2 环境层 A6（创业板量能 252 日分位）不可评 17 天+，每日 grade_section 两次 subprocess 失败；② 连带丢失 episode 回测库——找回失败则「回调级别判别器」回测背书（L3 事件级 11/13）不可再验证；③ universe_fixed.json（B6 固定宇宙 · ERR-20260719-001 依赖）同失。
+
+**建议修法**: ① 找回优先——Doctor 终端全盘 `find ~ -name "index_research.db"` 与 `find ~ -type d -name "回调级别判别"`（沙箱挂载只见 Documents）；fuxi-station Mac_Backup 查（沙箱可直连 192.168.1.32）；② 找回失败 → 重建 index_research.db（tushare index_daily 三指数历史可拉 · A6 分位 252 日窗口两周内恢复可用），episode 库不可再生、回测背书降级为「无底稿」；③ 或不修 → A6 灯显性化「未维护」。**归 Doctor 裁**。
+
+**预防门禁**: ① 关键管线目录（含冻结回测库）进备份清单与 GAI 资产清单（当前 GAI 未覆盖 AI4ME 目录级资产）；② 迁移清单逐目录对拍＋迁移后一周内跑「消费端回读」验证（9-07 归位已做对拍仍漏，说明对拍不足以防丢失）。
+
+**来源**: 2026-10-21 烛照日报班日志「日报与 Artifact」段 + CC 本场排查（实读 adjustment_grade.py / gen_daily_report.py A6 段 / AI4ME 盘面 / 9-07 迁移日志）。
+
+**状态**: 🔄 已修待验（2026-10-21 迁址重建·部分闭环）——① **A6 已恢复**：管线迁 `剑酒青丘/回调级别判别/`（Doctor 裁「AI4ME 属可删目录，量化回测资产归剑酒青丘」）；`rebuild_index_db.py` 首建三指数 2010 起全量（4077/4077/3979 行至 20261021 · integrity ok）；adjustment_grade.py/gen_daily_report.py 双消费者路径改锚剑酒青丘；`--json` 实跑恢复读数、生成器 A6 灯恢复（量能 252 日分位 p17·「级别读数不可用」占位退场）。② **B6 未修**：universe_fixed.json（729 宇宙）生成脚本不在仓、精确清单不可复现，重算口径（2020-2025 出现率≥90%）推断有偏差风险——**归 Doctor 裁**（推荐：从 market_data.db 按口径重算并如实标注与历史不可比性；或等 fuxi 找回）。③ **episode 库仍缺失**：fuxi 探测 Connection refused 未查，待可达后补查。✅ 归 Doctor 或指定独立验收方。
+
 ## 跨项目通用教训
 
 - 跨项目脚本靠相对层级（`../×N` / `parents[N]`）回推根目录的，一律换「探测含标志子目录的祖先」——见 [[通用教训]] G-X88（平铺挂载路径族）。
