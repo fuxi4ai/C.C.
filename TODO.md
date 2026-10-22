@@ -11,6 +11,10 @@ type: log
 
 ## 待办
 
+- [ ] **烛照日报整合 PRD 验收（2026-10-21 挂）**：9 条标准独立审查 PASS_WITH_LIMITS 已全填三态 · awaiting_acceptance；明晨 10:03 PT 班首跑（判据版 SKILL）后 Doctor 扫日报「隔日关注」栏打 ✓。PRD `logs/checkpoints/2026-10-21_烛照日报整合上游提炼_PRD.md`。
+- [ ] **摘录三问前向检验设计（2026-10-21 Doctor 裁「交给新 session」）**：三问（指向/预注册/失效条件）＋ 前向核验脚本（1/3/5 日窗口对拍 Q2）＋命中率聚合降权——方案已在 10-21 会话给出待批，批后并入摘录 PRD 立 R6/R7。
+- [ ] **VV 知会 · 剑酒青丘共管资产落点变更（2026-10-21 挂）**：回调级别判别管线迁至剑酒青丘仓（canonical）；`Codex/Project Mirror/剑酒青丘/research/AI4ME迁出/` 现为历史镜像、勿当主源。
+
 - [ ] **模式切换 Gateway→官方登录 · 挂起待官方订阅（2026-10-21 立）**：文件级备份+复制已完成并双保险入仓（镜像刷平 / 双壳 config `.bak_modeswitch_2026-10-21` / brain 3 commit / 风险日报 2 commit / 官方侧 pre_sync 快照 / rsync 复制终封 24/24 OK / 影子树归档 `_DEPRECATED_DocumentsShadow_20261021`）。**待官方订阅开通后执行**：① 官方壳 list 核 19 班 enabled→全 disable；② create 新 5 班（guanxing-fed-daily `30 7 * * *` · eal-starfield-rebuild `0 21 * * 1-5` · xboard-daily-repush `0 18 * * *` · longyu-equity-thesis-weekly `0 14 * * 6` · sessions-monthly-audit `0 20 1 * *`）并保持 disabled；③ 官方壳 Settings 贴镜像块（版本未核）；④ 官方壳 MCP 补 `ELEVENLABS_MODEL_ID=eleven_v4`；⑤ artifact 对齐（官方缺 3 板重推：pec-starry-skies/eal-v3-event-transition/x-board · 独有 2 板 touzhijunjun-workflow/longyu-holdings-board 处置归 Doctor）；⑥ 双壳并行验收→正式切。真源：`references/scheduled-live-mirror/回切操作卡.md` · `permanent/切环境复原清单.md` · `references/scheduled-live-mirror/artifact_manifest_2026-10-21.md`。**Gateway 侧运行面零改动（store 本体未动）**。
 
 - [ ] **渊图市场信号补打标签专场（2026-10-20 挂 · Doctor 选「补打标签专场」）**：9-10 月新入图供需语义候选 233 个（concept 215/metric 17/company 1 · degree=0 的 32 个）补打 market_signal 标签（categories/confidence/reason/method · 不新打 temporal · 证据不足留剔除清单）→ canonical 手术 + promote 闸 + 独立复验 + 星空刷新推 store。PRD `logs/checkpoints/2026-10-20_渊图市场信号补打标签专场_PRD.md`（draft · open_decisions=开工时机）。前置盘点已完（候选清单/既有标签模式/口径预裁定三条）。
