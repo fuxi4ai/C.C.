@@ -11,6 +11,7 @@ type: log
 
 ## 待办
 
+- [ ] **EAL 量化锚 QA-20261023-001 到期回看（2026-10-23 挂 · 确认窗口 10-26~10-30）**：判据＝沪深300 收盘站稳 10-23 收盘价之上且不再跌破 10-23 盘中低点区域 → confirmed（深V反包=真承接）；再创新低 → failed（一日反抽）。到期由 CC 在 /resume 或会话中实读行情回看并汇报 Doctor。真源 `Database/宏观研究体系/EAL/quant_anchors/anchors.jsonl`（机制定案 2026-10-23：jsonl 起步 + TODO/resume 回看）。
 - [ ] **烛照日报整合 PRD 验收（2026-10-21 挂）**：9 条标准独立审查 PASS_WITH_LIMITS 已全填三态 · awaiting_acceptance；明晨 10:03 PT 班首跑（判据版 SKILL）后 Doctor 扫日报「隔日关注」栏打 ✓。PRD `logs/checkpoints/2026-10-21_烛照日报整合上游提炼_PRD.md`。
 - [ ] **摘录三问前向检验设计（2026-10-21 Doctor 裁「交给新 session」）**：三问（指向/预注册/失效条件）＋ 前向核验脚本（1/3/5 日窗口对拍 Q2）＋命中率聚合降权——方案已在 10-21 会话给出待批，批后并入摘录 PRD 立 R6/R7。
 - [ ] **VV 知会 · 剑酒青丘共管资产落点变更（2026-10-21 挂）**：回调级别判别管线迁至剑酒青丘仓（canonical）；`Codex/Project Mirror/剑酒青丘/research/AI4ME迁出/` 现为历史镜像、勿当主源。
