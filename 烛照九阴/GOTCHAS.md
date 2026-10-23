@@ -442,7 +442,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260830-001] config.py 的 RAW_RECAP_DIR 从 DATABASE_ROOT 派生——误设 env 时漂移，record --all-new 静默扫空返回 0
 
-**状态**: ⚠️ 已知风险（正常路径 Mac 原生不设 env、照旧向上找 Documents，不触发；仅人为设 `ZZJY_DATABASE_ROOT=/tmp/…` 时踩 · 待 Doctor 批修或裁定「输入目录独立 env」方案）
+**状态**: ✅ 已修复（✅ 2026-10-23 修复批验收 · 未参与实施的审核 subagent 落签 · Doctor 问答板批 · 证据：config.py L63 `RAW_RECAP_DIR = os.environ.get("ZZJY_RAW_RECAP_DIR") or str(DATABASE_ROOT / "烛照九阴" / "Raw-Recap")` 独立 env 实装（L60-62 注释挂本条 ID）· /tmp 副本进程内三态断言 3/3 全绿（无 env→DATABASE_ROOT 派生不变 / 仅 ZZJY_DATABASE_ROOT env→随根漂移·旧行为保留 / 双 env→RAW 钉住解耦且 RECAP_DB 仍随 DATABASE_ROOT）· py_compile rc=0）
 **优先级**: 🟡 中
 **触发场景**: ingest 工作流设 `ZZJY_DATABASE_ROOT=/tmp/dbroot` 做隔离操作时，config.py 的 RAW_RECAP_DIR 随 DATABASE_ROOT 派生漂移至 /tmp 下不存在路径 → scan 扫空 → `record --all-new` 返回 0，误判「无新课件」。
 **硬证据/最小复现**: 九儿 2026-08-30 ingest 日志（`agents/烛阴/logs/2026-08-30-课件入库.md`「过程备注」）：`ZZJY_DATABASE_ROOT=/tmp/dbroot` 后 record --all-new 首次返回 0；解法为 `ln -s` 真 Raw-Recap 至 /tmp/dbroot/烛照九阴/Raw-Recap 后 record 成功（260830 入库 17 条）。
@@ -489,6 +489,12 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **追记 2026-10-19（句芒课件入库审核班·复发扫描·同款场景第二十三次出现·防御有效）**: 九儿 10-19 班（周一·新课件 261019 入库 27 条业务行+1 条登记）设 `ZZJY_DATABASE_ROOT=/tmp/jiuer-dbroot` 跑隔离写库（旧会话遗留 `/tmp/dbroot`、`/tmp/dbroot-2237` 均属上一班 nobody 不可写、换自有同构新根规避——与第二十二次同一性质；Raw-Recap 软链回指真盘，G-X45 平铺挂载机制沿用），dedup scan 得 294 未变 + 1 新（261019）、record --all-new 记 1 条，防御照旧生效。句芒独立核验终态：真库 recap.db 8,126,464 B（九儿写库后·句芒档2 修复放回后）· 今日写入 1 次·无 journal/wal/shm 残留 · integrity ok（35 表）· processed_kejian 295 行（0 重复 filename/hash）↔ Raw-Recap 实盘 295 课件集合双向一致（盘有库无仅「转换文稿」目录·不在 ingest 范围；库有盘无 0）· 261019 登记 hash a72dc81c… 与磁盘 md5 逐字节一致 · 7 张业务表 2026-10-19 新行 1/1/1/9/1/1/13 各恰一份（无重复入库）· 对 `recap.db.bak_20261018_prefix句芒` 全量 diff＝仅新增行+昨日修复生效+sqlite_sequence 计数推进（旧行零改动）→ **数据无损、无漏扫**。同款场景累计**第二十三次**出现（08-30 起历次形态见此前追记），防御全靠班内自觉、根部「输入/输出目录未解耦 + 扫空静默」依旧——修法①②（独立 env 或 fail-loud 告警）仍待 Doctor 裁。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
 
+**追记 2026-10-21（句芒课件入库审核班·复发扫描·同款场景第二十四次出现·防御有效·绕行改为直写）**: 九儿 10-21 班（周三·新课件 261020/261021 两份入库 21 条业务行+2 条登记）设 `ZZJY_DATABASE_ROOT=/tmp/zzjy-dbroot` 跑隔离写库（旧会话遗留 `/tmp/dbroot` 属上一进程 nobody 不可写、换自有同构新根规避——与第二十三次同一性质；Raw-Recap 软链回指真盘，G-X45 平铺挂载机制沿用），dedup scan（真库 mode=ro）得 295 未变 + 2 新（261020/261021）；但副本侧 `record --all-new` 在 env 覆盖下 RAW_RECAP_DIR 跟随指向 /tmp（不存在）→ 报「已记录 0 个」——**本次未再走软链防御，改为按 record 同款逻辑（同 md5 算法、INSERT OR REPLACE）直写副本 processed_kejian 两行，随放回一并回真库**。句芒独立核验终态：真库 recap.db 8,257,536 B · mtime 2026-10-21 09:12（今日写入 1 次·无 journal/wal/shm 残留）· md5 9c8ec50e8c1014b0603b8b63fd0912c8（本班实算）· processed_kejian 297 行（0 重复 filename/hash）· 261020/261021 各恰 1 行、登记 hash 0d7b579426e502b090b92c212fbdf020 / 43b6fe60d39b044fb0fc1163c0f3dc63 与磁盘 md5 逐字节一致 · 课件线各表 2026-10-20/10-21 新行 recap_daily 2 / dim1 2 / dim2 2 / industry_signals 9 / dim3 2 / dim4 2 各恰一份（无重复入库）· 去重闭环经放回后真库 scan 验证（297 全 unchanged、待处理 0）→ **数据无损、无漏扫，直写绕行效果等价**。同款场景累计**第二十四次**出现（08-30 起历次形态见此前追记），防御全靠班内自觉、根部「输入/输出目录未解耦 + 扫空静默」依旧——修法①②（独立 env 或 fail-loud 告警）仍待 Doctor 裁。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
+
+**追记 2026-10-22（句芒课件入库审核班·复发扫描·同款场景第二十五次出现·防御有效）**: 九儿 10-22 班（周四·当日无新课件）再设 `ZZJY_DATABASE_ROOT=/tmp/dbroot` 跑 dedup scan（RAW_RECAP_DIR 跟随漂移至 /tmp 下不存在路径，用软链回指真挂载 Raw-Recap 解决——与 10-21 班「record --all-new 记 0 条」同根；本轮 /tmp/dbroot 可写，10-21 班曾遇的属主 nobody 问题未复现），scan 得 297 课件全未变、待处理 0（new 0 / changed 0 / unchanged 297），全程零写库、防御照旧生效。句芒独立核验终态：真库 recap.db 8,425,472 B · mtime 2026-10-21 19:37（今日零写入·无 journal/wal/shm 残留）· md5 b894e3f9b3b291fb1fb0ee82ffe4a38b 与九儿所记逐字节一致 · integrity ok（35 表）· processed_kejian 297 行（0 重复 filename/hash · max(kejian_date)=2026-10-21 · 261020/261021 登记 hash 0d7b5794…/43b6fe60… 与磁盘 md5 逐字节一致）↔ Raw-Recap 实盘 297 课件（298 目录条目含「转换文稿」目录·不在 ingest 范围）集合双向一致（盘有库无 0 · 库有盘无 0）· 六张关键 dim 表 max(date)=2026-10-21 · 全库 2026-10-22 行 0 → **数据无损、无漏扫**。同款场景累计**第二十五次**出现（08-30 起历次形态见此前追记），防御全靠班内自觉、根部「输入/输出目录未解耦 + 扫空静默」依旧——修法①②（独立 env 或 fail-loud 告警）仍待 Doctor 裁。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
+
+**追记 2026-10-23（句芒课件入库审核班·复发扫描·同款场景第二十六/二十七次出现·防御有效）**: 两起同款场景入账——① **第二十六次（10-22 晚班·此前无人追记）**：九儿 10-22 晚间班（21:53）设 `ZZJY_DATABASE_ROOT=/tmp/dbroot` 跑隔离写库（新课件 261022 落盘入库 16 条业务行+1 条登记），该班属 nobody 会话、所建 /tmp/dbroot 留至次日；② **第二十七次（10-23 早班）**：九儿 10-23 班（09:05·当日无新课件）沿用 /tmp/dbroot 遇属主冲突（nobody 不可写）→ 改设本会话自有根 `/tmp/j9db`，RAW_RECAP_DIR 跟随漂移→软链回指真挂载 Raw-Recap，scan 得 298 课件全未变、待处理 0（new 0 / changed 0 / unchanged 298），全程零写库。九儿班内自提建议：「建副本前先测写，遇属主冲突换会话自有根目录」（跨班联动候选·挂单待哥哥批改九儿 ingest SKILL）。句芒独立核验终态：真库 recap.db 8,458,240 B · mtime 2026-10-22 21:53（今日零写入·无 journal/wal 残留）· integrity ok（35 表）· processed_kejian 298 行（0 重复 filename/hash）· 261022 恰 1 行 file_hash 8f246290d142c7aadb497553363f73b8 与磁盘 md5 逐字节一致（本班实算）· 课件线各表 2026-10-22 新行 dim1 1 / dim2 1 / dim3 1 / dim4_trade_plan 1 / dim4_stock_analysis 6 / recap_daily 1 / industry_signals 5 = 16 条各恰一份（无重复入库）· 六张关键 dim 表 max(date)=2026-10-22 · 全库 2026-10-23 行 0 → **数据无损、无漏扫**。同款场景累计**第二十七次**出现（08-30 起历次形态见此前追记），防御全靠班内自觉、根部「输入/输出目录未解耦 + 扫空静默」依旧——修法①②（独立 env 或 fail-loud 告警）仍待 Doctor 裁。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
+
 ## [ERR-20260901-001] 大盘涨跌幅用 510300 ETF 代理——连续三日与沪深300指数偏离 0.2pp+ + 显示 1 位小数抹平微跌
 
 **状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-09-01 Doctor 裁「换指数真身」→ 实施：`scripts/fetch_index_daily.py` 新建（tushare index_daily 000300.SH → `cn_index_daily` 表）+ 内嵌进 `fetch_theme_etf.py`（同批原子拉取·班 prompt 零改动）+ `gen_daily_report.py` 快照/大盘曲线改读指数表（`IDX`）（2026-09-14 复盘：cn_index_daily 表 655 行在库 ✓ · ✅ 已落签）+ bench_note「沪深300指数」+ `pct_span` .1f→.2f。验证：负向（无表→「待取数」fail-closed·exit 0）+ 正向（/tmp 镜像灌真实值→快照 -0.30%·产物零「代理/510300」残留）。**实施者不自签**——待独立验收；回填与重生成命令已贴 Doctor 终端）
@@ -533,7 +539,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260911-001] stock_tracking 结果回写列 0/3986——信号收益闭环断裂 7 周未修（07-28 审计 P0-3 同根确认）
 
-**状态**: 🔄 已修待验（2026-09-14 Doctor 授权「授权」→ CC 实施三件：① signal_winrate_backtest 放开 unresolved 回写（VV 修正·池分母仍只收 resolved）+ 存量全量回写（excess 0→1569 行·5/5 抽样手算对账 ✓·备份 recap.db.bak_20260914_pre_winrate）；② 日报胜率引用改滚动窗口（静态 84.5%/181 → 滚动 50.0%/1023·样本至 09-09·口径标注）；③ 入链 staging 已部署（brain live 镜像 zhuzhao-market-fetch-daily-report SKILL 26986B·mtime 09-14 22:17 与 staging 逐字节吻合 · 2026-09-16 CC 实读核实）· 签字按分轨（事务性的由未参与实施的 subagent 代签）✅）
+**状态**: ✅ 已修复（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权「认可已实施面」· 证据：tools/signal_winrate_backtest.py 实读——unresolved/无行情标的收益列照常回写（docstring L21「按持有窗到期即写、不论 resolve 与否」）、池胜率分母仍只收 resolve_status='resolved'（L155/170/177）· recap.db 只读实读 stock_tracking excess_1d 非空 2045 行（总行 5216 · max(signal_date)=2026-10-21）· gen_daily_report.py L865-875 胜率引用改滚动窗口〔own 池 resolved·剔 gap1×price_driven·COUNT/AVG/MAX(signal_date) 动态口径·注释挂本条 ID〕· 条目内 ②分簇③retrospective 标注未实装（描述保留不删 · 不属本批已实施面））
 
 **现象**: `stock_tracking` 3986 行中 `excess_1d/3d/5d/10d/hit_3d` 五列 **0 行非空**（2026-09-11 只读探针实跑）；`resolve_status` 3986/3986 已填（2708 resolved / 1278 unresolved）——兑现状态机在跑，但「结果 vs 基准」的收益测量列全空。
 
@@ -596,10 +602,10 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: 2026-09-14 周巡检快照（Doctor 终端实跑）· CC 实核：ops/ 无 plist + VV 证据目录有源 + .git/index 明文核 fetch_ipo_rolling.py 已跟踪
 
-**追记（2026-10-14 · 同族第 5 例 · 反向形态：改了装机没回写源 · 状态 🔄 已修待验）**: 2026-10-13 快照 `launchd.consistency` 报三件「❌ 源↔装机不一致（改了源没重装，等同死树分叉）」——ipo-rolling（src `895820739ea7` vs installed `d09f033c0547`）· marketdata（`eea31d1f14ae` vs `b9be31baf158`）· usclose（`7060853ca2ed` vs `18ba1d6a766f`）；装机侧 mtime 均 2026-10-10 09:53。**实核根因（方向反了）**：brain 日志 `2026-10-10-零字节专项与pyc根治.md` 实读——2026-10-10 pyc 根治给 launchd 四班（eal.postevent-native + zhuzhao 三件）+ audit-harness 的**装机 plist** 加 `PYTHONDONTWRITEBYTECODE` 键并重载（「验证逐行 1」），**只改装机位、未回写源件** → 源侧三件 EnvironmentVariables 仅 HOME/PATH（CC 逐件实读确认无该键）→ 分叉 4 天无人察觉，10-13 快照才报。快照判词「改了源没重装」预设方向、按「sha 不等」不分向出词——本案实为**改了装机没回写源**。**同批连带**：eal.postevent-native 装机 `7d8603c47959` ≠ 源 `235e84d02585` 同根分叉，但快照 `sources` 段未登记 eal（覆盖盲区，未报）；audit-harness 装机同批被改（源在 Codex 树，VV 域，未处置）。
+**追记（2026-10-14 · 同族第 5 例 · 反向形态：改了装机没回写源 · 状态 ✅ 已验收（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权 · 证据：_scheduler_snapshot.json 实读 launchd.consistency=[] · generated_at 2026-10-19T22:31:42-07:00 · triggered_by=scheduled））**: 2026-10-13 快照 `launchd.consistency` 报三件「❌ 源↔装机不一致（改了源没重装，等同死树分叉）」——ipo-rolling（src `895820739ea7` vs installed `d09f033c0547`）· marketdata（`eea31d1f14ae` vs `b9be31baf158`）· usclose（`7060853ca2ed` vs `18ba1d6a766f`）；装机侧 mtime 均 2026-10-10 09:53。**实核根因（方向反了）**：brain 日志 `2026-10-10-零字节专项与pyc根治.md` 实读——2026-10-10 pyc 根治给 launchd 四班（eal.postevent-native + zhuzhao 三件）+ audit-harness 的**装机 plist** 加 `PYTHONDONTWRITEBYTECODE` 键并重载（「验证逐行 1」），**只改装机位、未回写源件** → 源侧三件 EnvironmentVariables 仅 HOME/PATH（CC 逐件实读确认无该键）→ 分叉 4 天无人察觉，10-13 快照才报。快照判词「改了源没重装」预设方向、按「sha 不等」不分向出词——本案实为**改了装机没回写源**。**同批连带**：eal.postevent-native 装机 `7d8603c47959` ≠ 源 `235e84d02585` 同根分叉，但快照 `sources` 段未登记 eal（覆盖盲区，未报）；audit-harness 装机同批被改（源在 Codex 树，VV 域，未处置）。
 **处置（CC 出清单 · 装机执行归 Doctor 终端）**: 源侧回写 env 键（保注释）→ plutil -lint → cp 源→装机 → 双端 SHA 对拍 → bootout/bootstrap 重载；验收判据＝下份快照（周班 10-18 或 Doctor 终端 `--triggered-by scheduled`）面③ consistency 空。
-**执行（2026-10-14 00:1x PT · Doctor 终端 · 三件闭环）**: 段 0 diff 逐件确认差异＝+`PYTHONDONTWRITEBYTECODE`＋PlistBuddy 剥注释/键序重排（**无其他实质键**，schedule/脚本路径/PATH/stdio 全同）→ 源回写三件（备份 `_bak/*.bak_20261014_pre_pycenv` 在盘）→ plutil -lint 三件 OK → cp 双端对拍一致 ×3 → bootout/bootstrap 重载（state=not running · RunAtLoad=false 待自然排期）→ git commit `1458cff`（3 files · 6 insertions；备份件 .gitignore 命中不入仓）。**eal 第 4 件未处置**（diff 已确认同根，处置由 Doctor 定）。**状态维持 🔄 已修待验**——验收判据＝下份快照面③ consistency 空（届时按分轨由未参与实施的 subagent 核快照实据代签，实施者不自签）。
-**执行②（2026-10-14 00:1x PT · Doctor 终端 · eal 第 4 件一并闭环）**: 源回写（备份 `宏观研究体系/_bak/com.eal.postevent-native.plist.bak_20261014_pre_pycenv`）→ lint OK → cp 对拍一致 → bootout/bootstrap（(never exited) 正常）→ git commit `cace380`（1 file · 2 insertions）。**四件至此全部收口，状态维持 🔄 已修待验**——唯一验收判据＝下份快照（周班 10-18 或 Doctor 终端 `--triggered-by scheduled`）面③ `launchd.consistency` 空，届时由未参与实施的 subagent 核快照实据按分轨代签。
+**执行（2026-10-14 00:1x PT · Doctor 终端 · 三件闭环）**: 段 0 diff 逐件确认差异＝+`PYTHONDONTWRITEBYTECODE`＋PlistBuddy 剥注释/键序重排（**无其他实质键**，schedule/脚本路径/PATH/stdio 全同）→ 源回写三件（备份 `_bak/*.bak_20261014_pre_pycenv` 在盘）→ plutil -lint 三件 OK → cp 双端对拍一致 ×3 → bootout/bootstrap 重载（state=not running · RunAtLoad=false 待自然排期）→ git commit `1458cff`（3 files · 6 insertions；备份件 .gitignore 命中不入仓）。**eal 第 4 件未处置**（diff 已确认同根，处置由 Doctor 定）。**状态 ✅ 已验收（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权）**——验收判据（下份快照面③ consistency 空）已达成：_scheduler_snapshot.json（generated_at 2026-10-19T22:31:42-07:00 · triggered_by=scheduled）launchd.consistency=[] 实读在盘；按分轨由未参与实施的 subagent 核快照实据代签。
+**执行②（2026-10-14 00:1x PT · Doctor 终端 · eal 第 4 件一并闭环）**: 源回写（备份 `宏观研究体系/_bak/com.eal.postevent-native.plist.bak_20261014_pre_pycenv`）→ lint OK → cp 对拍一致 → bootout/bootstrap（(never exited) 正常）→ git commit `cace380`（1 file · 2 insertions）。**四件至此全部收口，状态 ✅ 已验收（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权）**——唯一验收判据（下份快照面③ `launchd.consistency` 空）已由 2026-10-19 scheduled 快照实读达成（launchd.consistency=[]），由未参与实施的 subagent 核快照实据按分轨代签。
 **预防门禁（建议，未擅改代码）**: ① 任何「直改 ~/Library/LaunchAgents 装机位」的动作，同批必须回写对应项目源件并双端 sha 对拍（git 只兜源侧、兜不住装机位）；② scheduler_snapshot.py consistency 判词改方向中立（报「sha 不等」不预设「改了源没重装」）＋ `sources` 段补登记 eal；③ 应升格通用教训维持并加码（同族第 5 例）。
 **来源**: 2026-10-13 快照实读 · 10-10 pyc 根治场日志实读 · 三件源 plist 全文实读 · 全树 plist SHA 对撞（装机侧 5 sha 零命中副本）
 
@@ -624,7 +630,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260915-001] dim4_trade_plan.plan_window 日期括注笔误——「周四（9-18）」应为「周四（9-17）」（2026-09-18 是周五）
 
-**状态**: 🔄 已修待验（2026-09-15 句芒课件入库审核班档1 当场修 · 待独立验收 · 签字按分轨（事务性的由未参与实施的 subagent 代签）✅）
+**状态**: ✅ 已修复（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权 · 证据：recap.db 只读实读——date=2026-09-15 行 plan_window 现为「明日（9-16）至周四（9-17）变盘窗口…」· 全表「周四（9-17）」命中 1 ·「周四（9-18）」零残留（全表「9-18」字面 2 处均非本笔误形态：09-06 行「9-18富时A50指数调整生效日」、09-17 行「明日（9-18）」——9-17 的明日即 9-18，无误））
 
 **优先级**: 🟢 低（单行文本括注错一天；数值列/结构化列不受影响）
 
@@ -666,7 +672,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260921-001] dim3.volume_trillion 老区段(2025-10~2026-03) 101 行错值/无出处值——59 行与课件原文对不上、42 行无任何课件依据
 
-**状态**: 🔄 已修待验（2026-09-21 句芒课件入库审核班档1 当场修 · 待独立验收 · 签字按分轨（事务性的由未参与实施的 subagent 代签）✅）
+**状态**: ✅ 已修复（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权 · 证据：recap.db 只读实读——dim3_sentiment_tech.volume_trillion MAX=3.69 · MIN=1.33 · 全表 >5 行数 0（9.0/8.0/7.0 假数已清）· 老区段样例对拍 2026-01-13=3.69 / 2025-10-26=1.99 / 2025-10-29=2.29 / 2026-03-08=2.21 与课件原文逐项一致 · NULL=117（42 行清 NULL + 近期既有 NULL 行））
 
 **优先级**: 🔴 高（假数进库·数据真实性铁律级；dim3.volume_trillion 系复盘引用消费列）
 
@@ -718,7 +724,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [NOTE-20260922-002] `ops/.last_run_status` 只留最后一行 ⇒ 同日重跑即抹掉失败记录（同一盲区第三次咬人）
 
-**状态**: 🔄 待修复（建议：改追加式 `_last_run_status.jsonl` 滚动 N 天，或至少保留 `.prev`）
+**状态**: ✅ 已修复（✅ 2026-10-23 修复批验收 · 未参与实施的审核 subagent 落签 · Doctor 问答板批 · 证据：ops/mac_daily_marketdata.py write_status 改追加式+30 天滚动+封顶 500 行〔L94-123·末行仍为「此刻最新一次是成是败」既有消费口径不变·不换文件名防打断既有消费方〕· /tmp 副本探针 6/6 全绿（首次 FAIL 单行 / 同日补跑 FAIL 保留且末行=OK / 超窗旧行剔除 / 窗内行不受影响 / 写失败只打日志不抛）· py_compile rc=0 · test_marketdata_staleness.py 重跑全过（真库 mtime/size 逐位未变））
 
 **问题**: 该文件是 `open(STATUS,"w")` 覆盖写。任何一次**手工补跑**都会把当天的 `FAIL` 抹成 `OK`——2026-09-22 03:51 的手工补跑正是如此。
 
@@ -747,7 +753,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20260925-001] 补数编排器对「最新日部分缺票」只报一次、永不重试——单票瞬时故障造成当日永久空洞（next_iso 自愈不覆盖 max 日）
 
-**状态**: 🔄 待修复
+**状态**: ✅ 已修复（✅ 2026-10-23 修复批验收 · 未参与实施的审核 subagent 落签 · Doctor 问答板批 · 证据：ops/mac_us_close_backfill.py anchor_from() 改锚「最新完整日」〔修法①·L167-198·票数≥EXPECT_ANCHOR_N 的最新 trade_date 次日——缺票日次班自动重试；无完整日回退 MAX 当日有界重拉；表空回看 7 天兜底·注释挂本条 ID 与 Doctor 2026-10-23 批〕· /tmp 副本探针 5/5 全绿（最新日缺票→锚回缺口日 / 最新完整日→次日正常推进 / 无完整日→回退 MAX 当日 / 表空→7 天兜底 / 缺票日在完整日之后→重试缺口）· py_compile rc=0）
 
 **触发/硬证据**: 2026-09-24 launchd 补数班（14:02 起）NVDA 取数 yahoo SSL 握手超时、两源皆无 → 当日 us_anchor_daily 18/19，状态 FAIL。Doctor 按 SKILL 指引 kickstart 重跑（22:48）：水位 MAX=20260924 → 起点=2026-09-25，日志「待拉 [2026-09-25→2026-09-24]」空区间，0 行写入——编排器根本没重试 9-24。随后 01:23 手动补 9-24 又撞 Yahoo 全线 403（IP 级临时封）。库内实核：NVDA 本人最新行停在 20260923。
 
@@ -767,7 +773,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20261008-001] 日报「级别读数」小节连续多班降级——adjustment_grade.py 锚定的 `AI4ME/回调级别判别/index_research.db` 自 AI4ME 迁移后去向不明
 
-**状态**: ⚠️ 已知风险（跨项目·剑酒青丘线基础设施）
+**状态**: ✅ 已修复（跨项目·剑酒青丘线基础设施）（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · 证据：adjustment_grade.py L43-44 RES 与 gen_daily_report.py L2436-37 B6 universe 均改锚 剑酒青丘/回调级别判别/（2026-10-21 Doctor 裁迁出 AI4ME 记于 docstring L8）· index_research.db 在盘 index_daily 12136 行 max=20261022 · 10-22 成品报渲染 L3(慢磨型)、「级别读数不可用」占位 0（10-21 报为 1））
 
 **触发/硬证据**: 2026-10-08 烛照日报班 gen_daily_report 实跑：`[grade_section] 级别读数降级(两分支均败)`——`--update` 与 `--json` 两分支均报 `sqlite3.OperationalError: unable to open database file`（IDX=`AI4ME/回调级别判别/index_research.db`）。实读挂载树：`AI4ME/` 下无 `回调级别判别/` 目录；迁移后新址 `AI4ME/剑酒青丘-outputs/回调级别判别/` 存在但 `outputs/`、`scripts/` 皆空、无 db；`AI4ME/_migrated_in_from_claude_AI4ME_2026-09-07/` 仅剩空壳 `us_intraday_20260729/`。AI4ME（限深4）与剑酒青丘项目树（限深4）均搜不到 index_research.db。成品报回读：archived/烛照九阴日报_20260930.html 与当日烛照九阴日报_20261008.html 的「回调级别」出现次数均为 0——降级已连续多班（10-05/06/07 日志同根记载）。
 
@@ -787,7 +793,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20261008-002] closure_engine 留痕「固定名覆盖 + NULL→首评不计数」双缺陷——同日二次触发吞掉晨班审计文件
 
-**状态**: 🔄 待修复（closure_engine.py 留痕函数两处改动）
+**状态**: ✅ 已修复（✅ 2026-10-23 修复批验收 · 未参与实施的审核 subagent 落签 · Doctor 问答板批 · 证据：tools/closure_engine.py 留痕函数实读——① 首评单列 firsts〔L462·NULL→首评附 id/状态 L478-483·计入变更总数 L499·留痕独立小节 L507-510〕；② 按次命名 `兑现变更_{YYYYMMDD}_{HHMM}.md`〔L487-490·同分钟碰撞降 HHMMSS·仍撞加序号 _k·同日永不覆盖 L491-498〕· py_compile rc=0）
 
 **触发/硬证据**: 2026-10-08 同日二次触发（app 白天未开，晨班 10:04-20:37 跑完、晚班 21:56 再触发）晚班重跑 `closure_engine --apply`：① 引擎留痕写 `docs/兑现变更_20261008.md`（固定名 `兑现变更_{今日}.md`），**同名覆盖**晨班 20:31 留痕（7 条 gap_status 变更明细，714B→被写成「变更 0 条」）；② 引擎自报「gap_status 变更 0 条」，但库内实际发生 8 条 NULL→首评写入（3 open / 5 no_anchor，id 1817-1824）——diff 只计旧值非空的行。晨班 7 条明细已由本班按 db 三快照机械 diff 重建还原（见 `兑现变更_20261008.md` 重建说明与 `兑现变更_20261008_晚班.md`）。
 

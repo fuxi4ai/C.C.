@@ -132,7 +132,7 @@ project: 龙鱼五力
 ---
 
 ## [ERR-20260822-001] 看板重推误用 08-06 老生成链（build_html.py），覆盖 08-11 定稿星空范式
-**状态**: 🔄 已修待验（2026-08-22 当场切回正确链重推——`_index/build_dark_board.py` + `board_template.html` 星空范式产物已推 artifact updatedAt 08-22T17:53Z · Doctor 目验待回执 · 实施者不自标 ✅）
+**状态**: ✅ 已修复（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权 · 证据：新链 `_index/build_dark_board.py` + `board_template.html` 在盘〔Database/龙鱼-标的分析库/_index/ · board_template 393668B〕· 退役改名件在盘〔`_DEPRECATED_龙鱼标的库_20260822.html` · `_index/_DEPRECATED_build_html_20260822.py`〕· 条目内注明：README 改版子项未办 · 待 Doctor 批（2026-10-23 拆出））
 **优先级**: 🟡 中
 **触发场景**: 2026-08-22 Doctor 令「常更标的加曦智 + 现在推」——CC 未查看板生成链档案，凭目录里 README 老文档指引跑了 `build_index.py` + `build_html.py`（08-06 玻璃拟态老链）并 update_artifact，看板视觉范式回退（深色玻璃拟态·无星空背景/无 14 组配色），Doctor 目验发现「视觉范式不一样了」。
 **根因**: 龙鱼看板生成链 08-11 已换代（星空背景定稿场：模板 `_index/board_template.html` + 生成器 `_index/build_dark_board.py`），但 ① README.md（06-28 版）仍指向老链命令；② CC 未读 08-11 定稿日志与 memory「龙鱼看板背景定稿」就动手重建。信息沉淀在日志/memory 而执行时未加载 = 单一真源与发布链纪律违规（派生产物必须从 canonical 经正式生成与发布链写入）。
@@ -162,7 +162,7 @@ project: 龙鱼五力
 ---
 
 ## [NOTE-20260911-001] claude 腿 engine_facts 丢失——已提取 pack 结构不匹配（09-10 周更 23 份）（2026-09-11 VV 独立审计发现 · CC 实读定位）
-**状态**: 🔄 待修复（根因已定位 · 修法明确 · 待 Doctor 批）
+**状态**: ✅ 已修复（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · 证据：write_claude_score.py `_facts_from_pack` 已按 VV 修法分流三支〔docstring 载 NOTE-20260911-001〕+ records 23 条含 engine_facts_backfill 标记 + 抽样 300308.SZ 19/19 键非空 pe_ttm=51.26 与 _packs_claude 原包吻合 + 备份 records_backup_20260912_pre_backfill.tar.gz 23 文件）
 **优先级**: 🟡 中（事实快照丢失·不改变判分结论——engine_facts 是证据快照层，claude 腿维度级判分不依赖它；但看板「引擎实测」侧栏与事实锚校验链缺了 claude 腿一侧）
 **触发**: 2026-09-10 手动周更场 write_claude_score.py 落库 23 条，engine_facts 19 键全空（records 实读：688630.SH/300308.SZ 等）；09-11 全金融审计（CC 报告十大#5）+ VV 交叉复核「龙鱼事实包缺失」确认。**精确表述（VV 验收更正·2026-09-11）**：原函数体对真实 pack（`_packs_claude/000063.SZ.json` 17 键 17 非空）重放得 19 键 = **18 个 None + 1 个 `fin_score="None/5"`（字符串）**；「19 键全 None」不准确，缺包分支才返回 `{}`。
 **根因（2026-09-11 VV 第三轮更正 · CC 实读坐实）**: **pack 存在且含有效 engine_facts，但结构不匹配被丢数**——`_packs_claude/*.json` 顶层键实读为 `{ts_code, name, …, engine_facts{pe_ttm/pb/…}, kg_context, _blind, _extracted_at}`（engine_facts 已提取且非空）；`write_claude_score.py` `_facts_from_pack` L39 却把**整个 pack** 传给 `score_subitems._facts(pkg)`，而 `_facts` 期待**原始引擎包结构**（`valuation_data.latest` / `financial_score.key_metrics` / `financial_data`）——pack 无这些键 → 返回 19 键全 None 的 dict 被写入 records（09-10 claude 条目实读全 None）。空 pack 返回 `{}`（L37）只是另一条防御路径，**不是本次根因**；只加空包检查修不好这条路径。

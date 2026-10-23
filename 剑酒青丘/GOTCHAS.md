@@ -40,7 +40,7 @@ project: 剑酒青丘
 
 **来源**: 2026-10-11 仓位提示器买点集成场 · 首轮独立复验 subagent 逮出（D1）· v5.1 当日修复 · 复审 subagent 独立构造验证确认根治。
 
-**状态**: 🔄 已修待验（v5.1 段延伸+历史持久化已落 · selftest 五用例含段延伸/缺 gate fail-closed 全 PASS · 复审 PASS_WITH_LIMITS；**首个生产实证待 2026-10-13 晨班**——矩阵推进后首跑若 as_of 正确推进且档位推演正常即销）。
+**状态**: ⚠️ 作废（2026-10-23 消化）——追踪前提永久失效：提示器线已于 2026-10-13 由 Doctor 裁「废弃提示器·Risk Daily 接入 V1」退役归档（git mv → backtest/_DEPRECATED_position_advisor_2026-10-13 · 半年同窗口对拍 V1 完胜），「矩阵推进后首跑」的生产实证自此不可发生（盘上核据：末次运行 10-13 01:23 as_of=10-09 · 矩阵 10-13 09:11 方推进至 10-12 · 此后无任何运行）；v5.1 修复代码（段延伸/判向历史持久化/对齐限 range(n_fold)/段长守卫 + 五用例 selftest）随归档留存，教训与预防门禁保留为历史坑记录（错题本消化 · 未参与实施的审核 subagent 落签）。
 
 ### [INFRA-20261021-001] `AI4ME/回调级别判别/` 管线目录整体缺失——index_research.db 断链，日报「级别读数」降级占位 17 天+（2026-10-21 排查确认）
 
@@ -58,7 +58,7 @@ project: 剑酒青丘
 
 **来源**: 2026-10-21 烛照日报班日志「日报与 Artifact」段 + CC 本场排查（实读 adjustment_grade.py / gen_daily_report.py A6 段 / AI4ME 盘面 / 9-07 迁移日志）。
 
-**状态**: 🔄 已修待验（2026-10-21 迁址重建＋原件找回·全链闭环）——① **管线迁址** `剑酒青丘/回调级别判别/`（Doctor 裁「AI4ME 属可删目录，量化回测资产归剑酒青丘」）；双消费者路径改锚剑酒青丘。② **db 重建**：`scripts/rebuild_index_db.py` 三指数 2010 起全量（4077/4077/3979 行至 20261021 · integrity ok）。③ **原件找回**（Doctor 终端 find）：10-04 07:03 的「AI4ME 迁出」动作（执行者=Codex/VV 域，CC 日志零命中）把全套资产迁至 `Codex/Project Mirror/剑酒青丘/research/AI4ME迁出/回调级别判别/` 但未通知消费者——outputs 六件（universe_fixed.json 精确 729 · episodes csv · features pkl · nn_profiles · backtest_results）＋ scripts 五件＋立项报告已复制回剑酒青丘仓。④ **演练全绿**：adjustment_grade --json 恢复读数（L3 慢磨型·confirm）；生成器 A6/B6 双灯恢复（量能分位 p17 · 浮盈集中度·环境·静），「级别读数不可用」占位退场。⑤ **兜底工具**：`scripts/rebuild_universe.py`（按口径重算 universe · 带 729 锚负向检验）留仓备用。⑥ **空壳清理**：AI4ME/剑酒青丘-outputs/回调级别判别/ 空壳已删（Doctor 裁 2026-10-21 · 删前终核 0 文件）。✅ 归 Doctor 或指定独立验收方。
+**状态**: ✅ 已修复（2026-10-21 迁址重建＋原件找回·全链闭环）（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权 · 证据：`剑酒青丘/回调级别判别/` 迁址在盘〔index_research.db+outputs+scripts+立项报告〕· index_research.db 实读 index_daily 12136 行 max=20261022 · universe_fixed.json 实读顶层 list 长度 729 · adjustment_grade.py L43-44 RES 改锚 剑酒青丘/回调级别判别〔docstring L8 记 2026-10-21 Doctor 裁〕· AI4ME/剑酒青丘-outputs/回调级别判别/ 与 AI4ME/回调级别判别 均不存在〔空壳已删〕）——① **管线迁址** `剑酒青丘/回调级别判别/`（Doctor 裁「AI4ME 属可删目录，量化回测资产归剑酒青丘」）；双消费者路径改锚剑酒青丘。② **db 重建**：`scripts/rebuild_index_db.py` 三指数 2010 起全量（4077/4077/3979 行至 20261021 · integrity ok）。③ **原件找回**（Doctor 终端 find）：10-04 07:03 的「AI4ME 迁出」动作（执行者=Codex/VV 域，CC 日志零命中）把全套资产迁至 `Codex/Project Mirror/剑酒青丘/research/AI4ME迁出/回调级别判别/` 但未通知消费者——outputs 六件（universe_fixed.json 精确 729 · episodes csv · features pkl · nn_profiles · backtest_results）＋ scripts 五件＋立项报告已复制回剑酒青丘仓。④ **演练全绿**：adjustment_grade --json 恢复读数（L3 慢磨型·confirm）；生成器 A6/B6 双灯恢复（量能分位 p17 · 浮盈集中度·环境·静），「级别读数不可用」占位退场。⑤ **兜底工具**：`scripts/rebuild_universe.py`（按口径重算 universe · 带 729 锚负向检验）留仓备用。⑥ **空壳清理**：AI4ME/剑酒青丘-outputs/回调级别判别/ 空壳已删（Doctor 裁 2026-10-21 · 删前终核 0 文件）。✅ 已由未参与实施的审核 subagent 落签（2026-10-23 错题本消化 · Doctor 2026-10-23 问答板授权 · 证据见状态行）。
 
 ## 跨项目通用教训
 

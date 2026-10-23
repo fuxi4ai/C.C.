@@ -80,6 +80,7 @@ project: DVA
 **修复：** 改 `process.env.DVA_ERROR_LOG_PATH || path.join(__dirname,'GOTCHAS.md')`。默认行为不变；自动任务设 env 改向 `Database/Douyin/DVA-ops/failures/dva-errors.md`（目标文件须含 `## 🐛 当前易错点` 标记，否则不写入）。已验证设 env 后源 GOTCHAS.md 字节前后一致。
 
 ### [OPS-20260614] ASR finalize 卡点：先查落地路径，别先怪网络
+**状态：** ✅ 已修复（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · 证据：现行 `dyd/dva_asr.py` 输出路径由 `_compute_out_paths(output_dir…)` 推导（L439-446）、默认规范 Transcripts 目录（L99-100），全树 grep `dva_asr_out`/`/tmp/dva_asr` 0 命中〔源码+现存字幕目录〕）
 **现象：** 一条 ASR `--poll-once` 卡住，state 的 `_note` 写着"OSS 北京区白名单 blocker"。
 **真相：** 白名单 blocker 已不存在（transcript 正常下载）；实际卡点是 state 的 `out_txt` 硬编码到 stale `/tmp/dva_asr_out_5`（属主 nobody 不可写）。改向规范 `Transcripts/` 目录即一次 finalize 跑通。
 **教训：** transcript 写失败先查**输出路径**权限/存在性（尤其硬编码 `/tmp` 旧目录），再怀疑网络/白名单。另：挂载盘默认禁删，清理需 `allow_cowork_file_delete`。

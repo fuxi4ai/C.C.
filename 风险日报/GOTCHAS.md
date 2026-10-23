@@ -90,7 +90,7 @@ project: 风险日报
 **预防措施**: 开窗宽度 ≥ 窗定义 + 该源最大数据滞后；窄窗×人肉源先查「窗内实测点数」，≤1 点禁判型（fail-visible）。机理详见 决策记录 2026-07-30 议息卡节。
 
 ## [ERR-20260730-003] Yahoo chart API 经沙箱 web_fetch 返回空体——us_anchor ×19 人肉工作流断供风险
-**状态**: ⚠ 值守中（2026-07-30 发现·未修）
+**状态**: ✅ 已关闭（✅ 2026-10-23 错题本消化 · Doctor 问答板裁『直接✅关』· 未参与实施的审核 subagent 落签 · 证据：G-X128 反爬演进定性 + us_anchor 19/19 至 20261022 · _health stale_days=0）
 **优先级**: 🟡 中（若持续则升 🔴——us_anchor/TACO SPY 腿断供）
 **触发场景**: 拉 07-29 美股分时：`query1/query2.finance.yahoo.com/v8/finance/chart/` 经沙箱 web_fetch 连续 6 次返回空体（带/不带 %5E、含 period 参数均试）；Chrome 桥未连接。同端点 Doctor 终端 `curl -A "Mozilla/5.0" --compressed` 一次成功。
 **解决方案**: 当次走「构造 curl 命令交 Doctor 终端」（AI4ME/us_intraday_20260729/ 15 文件）。**根因未定**：可能是 Yahoo 对无 UA/无 cookie 抓取收紧，也可能是 web_fetch 对 application/json 的处理变化。
