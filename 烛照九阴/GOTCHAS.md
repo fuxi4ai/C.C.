@@ -537,6 +537,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: agents/句芒/logs/2026-09-07-课件入库审核.md · 本条目 2026-09-07 句芒课件入库审核班发现并修复
 
+**追记 2026-10-26（同根第二次复发 · 句芒课件入库审核班 · 档1 当场修）**: 2026-10-25 批次 industry_signals 6 行（id 1904-1909）viewpoint_owner 再次全 NULL，而 10-15~10-22 连续 6 批次惯例全为「小鲍老师」——九儿现场 INSERT 再漏该列，与 09-07 同款。句芒档1 当场修：`UPDATE industry_signals SET viewpoint_owner='小鲍老师' WHERE date='2026-10-25' AND viewpoint_owner IS NULL`（rowcount=6；修前 6 NULL / 修后 0 NULL）；备份 `recap.db.bak_20261026_prefix句芒`（md5 1ad0db7c9dc471b885465924f6ad85b5=修前真库）；/tmp 副本往返（副本 integrity ok → 修 → cp 放回 → 真库再验 integrity ok、8 表行数与修前一致只增不减）。证据四件套见 `agents/句芒/logs/2026-10-26-课件入库审核.md`「修复记录」。**同款二犯 → 已按跨班联动协议挂单请哥哥批九儿改 ingest**（落库断言加「industry_signals.viewpoint_owner 非空」自检·见 brain/TODO.md）。状态 ✅ 已验收（2026-10-26 班次待办验收 · 未参与实施的审核 subagent 落签 · 证据：recap.db 只读实读 2026-10-25 六行（id 1904-1909）viewpoint_owner 非 NULL 6/6 全「小鲍老师」· 修前备份 recap.db.bak_20261026_prefix句芒 同批六行全 NULL · md5 1ad0db7c9dc471b885465924f6ad85b5 与日志一致 · 近周惯例 10-20/21/22 亦全「小鲍老师」）。
+
 ## [ERR-20260911-001] stock_tracking 结果回写列 0/3986——信号收益闭环断裂 7 周未修（07-28 审计 P0-3 同根确认）
 
 **状态**: ✅ 已修复（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权「认可已实施面」· 证据：tools/signal_winrate_backtest.py 实读——unresolved/无行情标的收益列照常回写（docstring L21「按持有窗到期即写、不论 resolve 与否」）、池胜率分母仍只收 resolve_status='resolved'（L155/170/177）· recap.db 只读实读 stock_tracking excess_1d 非空 2045 行（总行 5216 · max(signal_date)=2026-10-21）· gen_daily_report.py L865-875 胜率引用改滚动窗口〔own 池 resolved·剔 gap1×price_driven·COUNT/AVG/MAX(signal_date) 动态口径·注释挂本条 ID〕· 条目内 ②分簇③retrospective 标注未实装（描述保留不删 · 不属本批已实施面））
