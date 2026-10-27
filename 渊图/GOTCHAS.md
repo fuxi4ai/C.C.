@@ -118,6 +118,8 @@ project: 渊图
 
 **追记 2026-09-11（同族第 6 次复发 · 帕米尔 5 篇批 · batch 路径）**: 68 个 update 中 **4 个 desc 缩写覆盖**——`company_Innolight` 66→18（旭创核心公司！）、`company_QingheJingyuan` 177→53、`concept_TIM2GapPad` 202→61、`concept_TIM1PhaseChange` 216→85。base 主+增量合并恢复（`outputs/cc_qa_fix_20260911.py` · 带「2026-09-11 帕米尔批增量」批次戳）。**同族第 6 次 · 升格通用教训候补已 3 连**——check_desc_shrink 的「整段替换检测」模式（09-05 提案）仍未实装，本次 4 例均为纯缩写、被第 11 项命中 4/4（形态未升级）。**来源**：2026-09-11 帕米尔 5 篇批入库 QA 场。
 
+**追记 2026-10-26（同族第 7 次复发 · 帕米尔 10 篇批 · batch 路径）**: 304 个 update 中 **1 个 desc 缩写覆盖**——`company_GaokaiTechnology` 160→35（2026-10-02 治理注记段「口径·独立来源限定」全丢；本批增量仅「北方华创外部零部件供应商之一」）。**形态新点**：本批 ingest 已带「存量 desc 保护闸」（日志自陈「整体覆盖、已合并而非覆盖」），仍拦不住 LLM **重写型缩短**（非整段复制覆盖型）——保护闸只拦整段替换，短写型照过。第 11 项 check_desc_shrink 命中 1/1（检测链正常），base 主＋增量合并恢复（`surgery_merge_20261026_pamir10.py` 内）。**同族第 7 次 · 升格通用教训候补已 4 连**（08-15/08-27/08-30/09-05/09-09/09-11/10-26）· 整段替换检测模式仍未实装。**来源**：2026-10-26 帕米尔 10 篇批入库 QA 场。
+
 ## [NOTE-20260814-001] 手工 patch update_nodes 的 `updated_at` 必须放条目顶层（放 properties 里会被静默 kept_base）
 
 **状态**: ✅ 已实证修复 **优先级**: 🟡 中
@@ -1152,3 +1154,17 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **影响面**: 空壳节点带 market_signal 键 ⇒ 星空信号层计数（62→158）是否包含空壳未核（本轮未读星空侧消费代码，不推断）；按类次（supply_shock/persistent_imbalance/demand_surge）过滤的下游会看到 categories 空的信号。
 **建议修法（待裁）**: ① 按本批打标口径补填 41 空壳的 categories/confidence/reason/method；或 ② 摘除空壳的 market_signal 键（视同未标注）。二选一归 Doctor 裁。
 **来源**: logs/2026-10-20-渊图星空NewlyEmerged与日期滑块.md · 渊图/architecture/决策记录.md 2026-10-21 条挂账① · canonical 实读计数（本轮）
+
+## [NOTE-20261026-001] kg_ingest update 路径 LLM 生成 created_at 覆盖存量创建时点（批运行日抹除原始创建日期）
+
+**状态**: ⚠️ 已知风险（数据层已当场恢复 6 处 · 代码修法待 Doctor 裁）**优先级**: 🟡 中
+
+**触发**: 2026-10-26 帕米尔十篇批入库独立复验（审核者 a60d574a）批级变更普查——**6 个存量节点 created_at 被改写成批运行日 2026-10-26**：`company_SunaOptoelectronics`（原 05-31）· `company_ChangguangHuaxin`（09-18）· `company_JoulWatt`（09-13）· `company_SilTerra`（07-28）· `product_Huafeng8600`（09-01）· `company_GaokaiTechnology`（09-18）。数据层已由 `surgery2_20261026_pamir10_auditfix.py` 恢复原值（备份 `backups/行业知识图谱_完整数据库.json.bak_surgery2_auditfix_20261026`）。同场另发现：`rel_Zeiss_EUVMultilayerMirror` 被 update 重写时 weight 0.95→0.85 无理由降权（已恢复 0.95/created_at；desc/evidence 保留本批 P1 增量）；`product_Huafeng8600` 与 `company_GaokaiTechnology` 的 name 被 LLM 改动——经原文复核均为**正确修正**（原文即写「高凯科技」），旧名「高凯技术」入 aliases 可回溯。
+
+**根因**: kg_ingest update 路径——LLM 对部分 update 节点/边生成新 created_at=批运行日，合并层顶层字段整体覆盖（与 NOTE-20260815-001 desc 覆盖族同根：update 槽顶层字段无逐字段保护）。同批 304 个 update 中仅 6 个 created_at 被改写 ⇒ LLM 行为不稳定（有时填有时不填），盘查只能靠 promote 前备份 diff 或全量批级普查。
+
+**影响面**: 创建时点被抹——影响「节点年龄」类统计（星空 NewlyEmerged 按 created_at 过滤）、审计追溯；节点若多次被 touch，created_at 持续漂移。本批经独立复验兜住，此前批次是否已存在同类漂移未普查（未知面）。
+
+**建议修法（待裁）**: kg_ingest/合并层对 created_at 加保护（update 槽遇存量一律保留存量值）；边 weight 无理由降权保护可同批。属 ingest 代码功能性修改，归 Doctor 裁。
+
+**来源**: 2026-10-26 独立复验报告限额 L4 · 手术 `surgery2_20261026_pamir10_auditfix.py` · 批前备份 `backups/…bak_pre_promote_20261026_070413` diff（本轮实跑）
