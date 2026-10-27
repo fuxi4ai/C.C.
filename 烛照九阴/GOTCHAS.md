@@ -736,6 +736,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: 2026-09-22 /resume 场 · `ops/mac_daily_marketdata.py` STATUS 写入段实读 · 三次实例
 
+**追记 2026-10-26（生产实证 · 班次待办场）**: 追加式修复首次在真事故中兑现——`.last_run_status` 保住「OK 2026-10-23 02:33:23 → FAIL 2026-10-26 03:35:41」两行（旧覆盖式下这次 FAIL 无痕）；同日该 FAIL 引导出 ERR-20261026-001（trade_cal 时钟停更环）并成为其硬证据②。
+
 ## [ERR-20260923-001] 九儿核实课件数字跨日错比——260923 课件的「今日 1.77 万亿」错拿去和 9/22 的 2.14 万亿比，误判「课件错误」并错误撤下已入库数值
 
 **状态**: ✅ 已闭环（Doctor 2026-09-23 语「应该固化完成了」 · 句芒未参与实施·实读核验代记——live ingest SKILL 已含「日期指涉核对」护栏段、与建议修法①②③逐条对应；brain live 镜像为派生只读副本、待 Doctor 终端 rsync 刷新，命令已随本班 git 块贴出；可回退·Doctor 一句话可改）
@@ -856,3 +858,15 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 审计/校准结论跨标的引用前先过同标的复验；生产链消费的外部源件必须可被沙箱审计链读取（不可审计＝治理盲区）。
 
 **来源**: 2026-10-17 审计场（报告 `剑酒青丘/回测报告/2026-10-17_五因_科创50计温审计.md` · 重放脚本 `outputs/audit_wuyin_ks50_20261017.py`）
+
+## [ERR-20261026-001] Mac marketdata 班时钟源 trade_cal 停更 10-23 → 班时钟锁死 → ks50/market_amount/guarantee_ratio 三步失败（2026-10-26 巡检红条 · CC 登记）
+
+**状态**: 🔄 待修复（trade_cal 已由 CC 2026-10-26 回补至 10-31 解锁；班脚本时钟取数口径根因待日志确证）
+**优先级**: 🔴 高（Mac 班三步停摆 · 巡检红条现行）
+**触发场景**: 2026-10-26 03:18 PT Mac 班（launchd com.zhuzhao.marketdata）——市场时钟=trade_cal·D0=20261023（落后截点 3 日历天·阈值 3 边缘），ks50_index/market_amount 03:18:52 失败、guarantee_ratio 03:35:41 失败（exit 1）；巡检快照（Doctor 07:10 终端实跑）报 🔴 marketdata/ipo-rolling 上次退出码 1。
+**硬证据**: ① trade_cal 表 10-26 晨止 20261023（CC 实读 · 已回补至 10-31）；② `.last_run_status` 追加式史：OK 10-23 → FAIL 10-26 03:35:41（追加式修复首次逮住失败记录——旧覆盖式下此失败无痕）；③ 班 stdout（Doctor 终端 tail）：三步失败 + 表 MAX 全停 10-23/22 + 班自判「✅ 各表均达档位」（时钟自身共模盲区 · STALE_POLICY 注）。
+**根因（两假设并列 · 待上方日志确证）**: ① 时钟取数口径缺陷——班更新 trade_cal 时 end_date 取「昨日」（周一晨＝周日 → 拿不到 10-26 → 时钟锁死 10-23 → 当日步判无新交易日 → 三步 fail-closed）；② trade_cal 更新步自身失败（DNS 间歇失效 ERR-20260922-001 同族）。周一晨班天然暴露（前一日为休市日）。
+**影响面**: cn_index_daily 000688 停 10-23（已由 CC KS50 补写 10-26 修复）、market_amount_daily 停 10-23（烛照班 10:03 PT 覆盖）；数据链总体被 Cowork 句芒班（04:14 成功落 10-26 全量）兜住——Mac 班失败≠数据缺，但若持续失败其独有表（market_amount/theme_etf/limit_list/margin 系）将停更。
+**建议修法**（归 Doctor 裁 · 生产脚本 propose-then-confirm）: ① trade_cal 更新 end_date 取「今天」（北京时间），不取「昨日」；② 班自检加第二判据——时钟落后截点 ≥2 日历天时显式红字（防共模盲区静默）；③ 修后负向测试（周一晨场景）+ 未参与实施的 subagent 验收。
+**预防门禁**: 时钟源表（trade_cal）自身的停更不得被「按时钟判档位」的自检吞掉——自检必须含「时钟 vs 日历」第二判据。
+**来源**: 2026-10-26 巡检红条（Doctor 07:10 实跑快照）+ Doctor 终端 stdout tail + CC 实读 trade_cal/DB
