@@ -1157,7 +1157,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 
 ## [NOTE-20261026-001] kg_ingest update 路径 LLM 生成 created_at 覆盖存量创建时点（批运行日抹除原始创建日期）
 
-**状态**: ⚠️ 已知风险（数据层已当场恢复 6 处 · 代码修法待 Doctor 裁）**优先级**: 🟡 中
+**状态**: 🔄 已修待验（2026-10-27 Doctor 批「现在修」· 代码已实装：`_protect_stock_fields` 闸 + 单测 6 条全过 + 全量回归 48/48 + 自跑 18/18 · 功能性修复验收归 Doctor 侧）**优先级**: 🟡 中
 
 **触发**: 2026-10-26 帕米尔十篇批入库独立复验（审核者 a60d574a）批级变更普查——**6 个存量节点 created_at 被改写成批运行日 2026-10-26**：`company_SunaOptoelectronics`（原 05-31）· `company_ChangguangHuaxin`（09-18）· `company_JoulWatt`（09-13）· `company_SilTerra`（07-28）· `product_Huafeng8600`（09-01）· `company_GaokaiTechnology`（09-18）。数据层已由 `surgery2_20261026_pamir10_auditfix.py` 恢复原值（备份 `backups/行业知识图谱_完整数据库.json.bak_surgery2_auditfix_20261026`）。同场另发现：`rel_Zeiss_EUVMultilayerMirror` 被 update 重写时 weight 0.95→0.85 无理由降权（已恢复 0.95/created_at；desc/evidence 保留本批 P1 增量）；`product_Huafeng8600` 与 `company_GaokaiTechnology` 的 name 被 LLM 改动——经原文复核均为**正确修正**（原文即写「高凯科技」），旧名「高凯技术」入 aliases 可回溯。
 
