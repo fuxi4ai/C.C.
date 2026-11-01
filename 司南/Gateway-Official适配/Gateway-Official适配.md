@@ -12,7 +12,7 @@ project: 司南/Gateway-Official适配
 
 > 司南子项目：**Gateway 壳与官方 Claude 桌面端之间切环境/切登录模式的护航知识线**。核心命题＝注册表不随环境走 × 文件层≠注册表层 × 两壳只能单开 × 落后方定位后按真源对齐。本文件夹只放沿革与索引，**文件本体留真源位**（沿 2026-07-06 订阅分发裁定：搬动=断链+破惯例）。
 
-## 历史沿革（五站 · 2026-06-30 → 2026-10-21）
+## 历史沿革（六站 · 2026-06-30 → 2026-11-01）
 
 | 时点 | 事件 | 关键教训/产物 |
 |---|---|---|
@@ -21,6 +21,7 @@ project: 司南/Gateway-Official适配
 | 2026-07-31 | 官方侧默认目录变更 → 双树分叉 | 官方 store 从 `~/Documents/Claude/` 变到 `~/Claude's workspace/`，07-30 的 SKILL 改动全落死树（「静默成功」教训：工具的可见范围决定它写到哪）；readlink 证两棵独立树；合并装回 |
 | 2026-08-02/03 | 数据根迁 Gateway-workspace | 19 班+6 artifact 真身迁出 Documents（保护跟随 store 位置、改 setting 只重写注册表指针）；「归并 Cowork 目录」否决（注册表分裂是结构性的）；**回切操作卡**立档（disable 先行 / rsync 方向不可反 / 字节级终封 diff）；命名 vendor 中立 |
 | 2026-10-21 | 反向适配（Gateway→官方 · 进行中） | 差异定位：官方侧落后（19 旧班+9 板 vs Gateway 24 班+10 板）；文件级备份+复制完成（镜像刷平/双壳 config 备份/manifest 快照/官方侧 pre_sync 快照/rsync 终封 24/24 OK/影子树归档）；**注册步待官方订阅开通**；新教训：写入延迟 flush 第 3 例（真机 git 瞬时干净≠未落盘）、凭证 E-004 |
+| 2026-11-01 | 引擎格局定版（Doctor 亲述） | **三层分工**：CC=Gateway（Claude Desktop 映射 DeepSeek API）· Claude 补充=APIYI 转接（目标态·适配未做·当前 key 无 Claude 模型）· VV（GPT-6.1 Sol）=凌晨无人班；**fuxi 定位**=DVA/设计/VV/部分回测（金融链在本地 Documents/）；**「切 3P」术语**=官方→Gateway 适配切换（skill/班/settings 全套）；**claude 腿沿革**=真 Claude→Kimi K3（08-02）→DeepSeek Pro（随壳）⇒ 双腿同源；适配提案=`logs/checkpoints/2026-10-31_APIYI-Claude腿适配提案.md`（缓一周+分批已裁 · 目标切换班 11-07） |
 
 ## 切环境方法要点（八律 · 浓缩自历次实战）
 
@@ -62,6 +63,14 @@ project: 司南/Gateway-Official适配
 - ✅ 差异定位 · ✅ 文件级备份（双仓 commit 全绿 + pre_sync 快照）· ✅ 文件级复制（终封 24/24 OK）· ✅ 影子树归档
 - ⏳ 官方壳注册新 5 班（disable 态）+ 19 班 enabled 核验 + Settings/MCP 对齐 + artifact 重推 —— **全部待官方订阅开通**
 - Gateway 侧运行面零改动，24 班照常值守
+
+## 引擎格局（2026-11-01 Doctor 定版）
+
+- **CC 主引擎**：Claude Desktop（Gateway）映射 DeepSeek API——artifact 班 + 日常交互
+- **Claude 补充**：APIYI 转接（目标态）——dualscorer claude 腿、仲裁位；**适配未做**（当前 APIYI key 仅图像模型；提案见 checkpoints）
+- **VV（Codex 侧 · OpenAI GPT-6.1 Sol）**：长时间凌晨无人值守班
+- **fuxi-station**：DVA / 设计 / VV / 部分回测；金融生产链在 Mac 本地（Documents/）
+- **官方订阅壳**：当前非常态
 
 ## 边界
 
