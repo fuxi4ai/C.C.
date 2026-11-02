@@ -1,9 +1,9 @@
 # CC 侧经验对侧索引（薄 · 供 VV 只读 · 可重建 · 非事实源）
 
-> 生成：2026-09-30 21:54 · 生成器 brain/.tools/build_experience_index.py（v2）
+> 生成：2026-11-01 20:33 · 生成器 brain/.tools/build_experience_index.py（v2）
 > 正文真源在 CC 侧 canonical（brain/ 各项目 GOTCHAS.md + permanent/通用教训.md + permanent/经验库.md），本文件只含定位指针，供跨系统预警与复验。
 
-## 摘要（894 条）
+## 摘要（983 条）
 结构与 permanent/经验索引.md 相同（对侧对 brain 只读可直取）。
 
 ## 机器闸清单（六字段：路径/SHA/可见性/重放命令/预期通过/最近运行）
@@ -23,7 +23,7 @@
   - 预期通过: exit 0 = 无 desc 缩减；对未修 _v2 报出 15 处、对 canonical 报 0
   - 最近运行: 2026-09-01 渊图 QA 场（日志实据） · ⚠用法未在本场实跑
 - Database/行业研究/rules/bare_alias_check.py
-  - sha256[:16]=637af0c199997f23
+  - sha256[:16]=27cc71b9e44b1e6d
   - 可见性: Doctor 侧路径 · VV 可见范围外
   - 重放: python3 rules/bare_alias_check.py（参数以 --help 为准）
   - 预期通过: 大小写重复/裸简称/近名兄弟簇清单；无新增违例

@@ -58,3 +58,14 @@ project: 星空
 **真因/事实**: 渊图（08-13 定稿）核 `smoothstep(0,0.10)`、halo 0.50、pow 1.5——光体发散，为 700+ 节点大图景能看清；PEC（09-09 定稿）核 0.05、halo 0.44（09-08 Doctor 亲裁再收窄 30%）、pow 1.85——小而锐、静止克制，「散射交给 bloom」。EAL 22 颗星+页面 K 线为主角 → 选 PEC。
 **预防**: 星空家族下次派生选参数先查本条；小星图（<50 星、有主视觉）用 PEC 参数，大图景用渊图参数。
 **来源**: 2026-09-13 EAL 星空视觉调参场 · 经验库 EXP-20260913-006-P
+
+## [NOTE-20261101-002] 星空板「数据段替换」未生效——推送件仍为旧口径数据（发布链同族 · 与 10-20 谱系事故/10-19 位置复用族并列）
+**状态**: 🔄 已修待验（本场已修复重推 · 待独立复验/Doctor 目验）
+**优先级**: 🟡 中
+**触发**: 2026-11-01 错题本消化场执行 Doctor「推」（星空板同步重推）时，对拍发现 11-01 凌晨场声称「重跑管线 6089 星点/7816 边·口径 10-26 → 数据段替换组装 → update_artifact 推送」，但 store 实际数据段为旧口径。
+**硬证据**: `Claude/临时文件/yuantu-starry-skies_store_2026-11-01.html`（11-01 场推送件留档）与 `render-archive/yuantu-starry-skies-v3-full-inlined.html`（10-21 版）starscape-data 段**逐字节相同**（meta subtitle=2026-10-20 · nodes=6013 · edges=7708），全文仅差 cowork-artifact-meta 包装 520 字节；「6089」在推送件中**零出现**；盘上无 11-01 场新 store JSON 产物（未落盘）。渲染引擎直接消费 starscape-data 段（`JSON.parse(getElementById('starscape-data').textContent)`）。
+**根因**: 数据段替换未生效——新 store 跑出（6089/7816 数字与本次重跑吻合，证明管线当时确实跑过）但未进入最终推送件；推送件仍复用 10-21 旧 html 仅加包装层。日志所述与实际推送件不符。
+**影响面**: 星空板 10-21 起展示 10-20 口径旧数据，缺 10-26 帕米尔批 +83 节点的星图呈现，与 canonical（7294/7917）脱节 6 天。Doctor 10-21 目验「正常」仅证渲染正常、不证数据口径。
+**建议修法**: 已当场修复——本场重跑布局（沙箱 OOM → 分块等价实现 `outputs/layout_starscape_chunked.py` · seed 42 · iters 100）+ 数据段替换 + 三段结构断言 + node --check 9 段 + update_artifact（updatedAt 11-02T05:18Z）；推送件现为 6089/7816 · 口径 2026-11-01。
+**预防门禁**: ① 星空板推送前必对拍成品 starscape-data 段 meta.subtitle/kpis 与当批 canonical 口径；② 数据段替换后必 grep 新口径数字（如「6089」）在成品中在场，替换无效=数字缺席当场显形；③ 管线中间产物（store JSON）落盘留痕，勿只存内存/scratch。
+**来源**: 2026-11-01 错题本消化场「推」环节实读发现 · 修复证据 `outputs/starscape_store_20261101.json` + `outputs/yuantu-starry-skies_store_2026-11-01v2.html`
