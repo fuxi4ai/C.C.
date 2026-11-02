@@ -40,7 +40,9 @@ project: 剑酒青丘
 
 **来源**: 2026-10-11 仓位提示器买点集成场 · 首轮独立复验 subagent 逮出（D1）· v5.1 当日修复 · 复审 subagent 独立构造验证确认根治。
 
-**状态**: ⚠️ 作废（2026-10-23 消化）——追踪前提永久失效：提示器线已于 2026-10-13 由 Doctor 裁「废弃提示器·Risk Daily 接入 V1」退役归档（git mv → backtest/_DEPRECATED_position_advisor_2026-10-13 · 半年同窗口对拍 V1 完胜），「矩阵推进后首跑」的生产实证自此不可发生（盘上核据：末次运行 10-13 01:23 as_of=10-09 · 矩阵 10-13 09:11 方推进至 10-12 · 此后无任何运行）；v5.1 修复代码（段延伸/判向历史持久化/对齐限 range(n_fold)/段长守卫 + 五用例 selftest）随归档留存，教训与预防门禁保留为历史坑记录（错题本消化 · 未参与实施的审核 subagent 落签）。
+**状态**: ✅ 已修复（2026-11-01 独立核验：v5.1 根治在盘 · 未参与实施的审核者代签）
+
+**核验注记（2026-11-01 · 未参与实施的独立审核者落签 · 判据=v5.1 根治在盘〔实跑实读〕）**：① 代码核——归档件 `backtest/_DEPRECATED_position_advisor_2026-10-13/backtest/daily_warning.py` 实读，v5.1 四项修复全在盘（segment_dates 段延伸至矩阵末行〔docstring 明写 end_date=矩阵末行日期〕· signal_history.json 判向历史持久化+同日 upsert 幂等〔在盘 20 条=19 fold+10-09 upsert〕· 对齐显式限 range(n_fold)〔L175〕· 段长<末折长 raise 守卫〔L158-159〕· 缺 gate fail-closed+对齐失败 fail-fast）；缺陷特征 `build_test_dates` 全 Documents 零命中、`scores[n-1]` 随段延伸成为动态段末槽位（今日=矩阵末行），「今日==末折末日」硬假设消除；② 测试实跑——`python3 backtest/daily_warning.py --selftest` 五用例全 PASS exit=0（对齐 67 天逐日一致 · 负向篡改报警 · 判向注入 cap/降档 · 段延伸 D1 修复验证〔2099 远期锚=复审 L3 修复〕· 缺 gate fail-closed），实跑时点矩阵末行 10-12>末折 test_end 10-09 恰为缺陷场景；③ 复审证据——session log `2026-10-11-仓位提示器买点集成.md` L24-26 与 PRD §五 21:0x/21:3x：首轮复验逮 D1→v5.1 当日修复→复审（新 subagent）PASS_WITH_LIMITS 确认 D1-D4 无回归、L1/L3 当场修，PRD §四 Doctor 2026-10-11 23:08 总签 delivered；④ 2026-10-23 作废留痕保全——提示器线 2026-10-13 Doctor 裁退役归档（git mv 至本归档件），「矩阵推进后首跑」生产实证不可发生（盘上核据：末次运行 10-13 01:23 as_of=10-09〔warning_latest.json 实读〕· 矩阵 10-13 09:11 方推进至 10-12 · 此后无任何运行），v5.1 代码随归档留存、教训与预防门禁保留为历史坑记录——本条 ✅ 系「v5.1 根治在盘」事实核验，非生产实证。
 
 ### [INFRA-20261021-001] `AI4ME/回调级别判别/` 管线目录整体缺失——index_research.db 断链，日报「级别读数」降级占位 17 天+（2026-10-21 排查确认）
 
@@ -89,7 +91,7 @@ project: 剑酒青丘
 **同族/来源**：规则立了但执行不引用——与「局部修全局漏」同根。→ 同上
 
 ### [RISK-20260817-002] 「局部修全局漏」+ 宣称完成未核（多轮验收反复）
-**状态**：🔄 已修待独立验收（2026-08-17 VV 五轮终验：治理方向正确但 GOTCHAS 未进仓+状态自签 · 五轮整改中；**2026-08-18 VV 八轮：技术核心 PASS · 治理文本 BLOCK · 同根第三次复发——追加订正、上游旧文未替换**）
+**状态**：✅ 已关闭（2026-11-01 · Doctor 问答板 1A 裁 · EAL v2.3 已退役、验收对象不复存在 · 纪律已升格通用教训 G-X111/G-X151 · 未参与实施的审核者代签）
 **优先级**：🟡 中
 **触发场景**：EAL v2.3 VV 多轮验收——每轮修一处、漏多处引用（主规则区/关键发现/锚矩阵/P-24/迭代表/知会正文轮流出旧口径）；G5 的 expanding log score 未跑即写「候选梯跑完、结论变硬」；复现包未实跑即称「可执行」。
 **根因**：勘误以「改对的那处」为中心，未以「全文旧值清零」为收口判据；宣称完成前未跑验收清单。
@@ -116,53 +118,67 @@ project: 剑酒青丘
 
 **追记十（2026-08-21 · 已修待独立验收）**：Doctor 授权“帮CC修复完成”后，已同步修正生产 `README.md/MODEL_CARD.md/ABSORPTION_ADAPTATION.md`、Brain canonical PRD 三态/过程态和实际 pass3 消费结果；新增 `CURRENT_SHA256SUMS` 作吸收树 consumer manifest，旧 `SHA256SUMS` 只作 staging provenance。实施者不将本条标为 PASS/CLOSED。
 
+**关条留痕（2026-11-01 · 历史批次关条）**：治理总条已升格通用教训 G-X151（标题点名「剑酒青丘 RISK-002 同族第三次复发升格」）与 G-X111/G-X4 系；EAL v2.3 于 2026-08-19 Doctor 裁「功成退役」冻结（v3 已于 08-21 总签发布上线），验收对象不复存在，按 Doctor 问答板 1A 裁由未参与实施的审核者代签关闭。
+
 ### [BUG-20260817-003] requirements.lock.txt 用 pip freeze 全量 = 错误依赖锁：含系统包、缺核心包
-**状态**：🔄 已修待独立验收（2026-08-17 · 九修 · VV 终验阻断点 1 逮出 · 随 A 阶段待 VV 复核）
+**状态**：✅ 已关闭（2026-11-01 · Doctor 问答板 1A 裁 · EAL v2.3 已退役、验收对象不复存在 · 纪律已升格通用教训 G-X111 · 未参与实施的审核者代签）
 **优先级**：🟡 中
 **触发场景**：EAL repro_v23 复现包首版 lock 用 `pip freeze` 全量快照——40 行里是 cloud-init/dbus-python 等 Ubuntu 系统包，缺 numpy/pandas/SciPy/statsmodels，干净环境 `pip install -r` 因 `cloud-init==26.1` 无解而失败。
 **根因**：「全量 lock」= 环境快照 ≠ 依赖锁；依赖锁必须走传递依赖（核心四包+纯 Python 依赖）。
 **修复/纪律**：lock 重写为传递依赖锁；声称「干净环境可装」前必须干净环境实装验证；「八文件包、七项 SHA 通过」类表述数清 payload 数。**强化（2026-08-17 VV 四轮 · 2026-08-18 VV 九轮订正三合同）**：干净环境实装、锁文件与 payload/SHA 一致性——**三个独立合同分别对账**：① `requirements.txt` 的顶层依赖全部由 lock 覆盖且版本一致；② `SHA256SUMS` 文件名集合与 payload 集合完全相等；③ 每个 payload 实算 SHA-256 与记录逐项一致。不得把三者混称「一一对应」（「锁文件数目 ↔ manifest 行数」是伪合同——lock 行数与 manifest 行数本无对应关系，VV 九轮指正）。**现状同步（VV 七轮）**：`SHA256SUMS` 八行覆盖八个 payload（estimate_m4/panel/FRED×2/requirements×2/README/test_failfast·不自哈希）。
 **同族/来源**：RISK-20260817-002（宣称完成未核）。→ 同上
 
+**关条留痕（2026-11-01 · 历史批次关条）**：宣称完成未核纪律已升格 G-X111 族（源头＝RISK-20260817-002）；v2.3 复现包随版本退役、验收对象不复存在，按 Doctor 问答板 1A 裁由未参与实施的审核者代签关闭。
+
 ### [RISK-20260817-003] 「artifact 双份同步」可直接判假——三处文件逐个实读才能声称同步
-**状态**：🔄 已修待独立验收（2026-08-17 · 九修 · VV 终验阻断点 4 逮出 · 随 A 阶段待 VV 复核）
+**状态**：✅ 已关闭（2026-11-01 · Doctor 问答板 1A 裁 · EAL v2.3 已退役、验收对象不复存在 · 纪律已升格通用教训 G-X111 · 未参与实施的审核者代签）
 **优先级**：🔴 高
 **触发场景**：八修宣称「artifact 双份 v2.3」——实读三处全假：brain 镜像仍旧 0.2400 基线/候选梯待跑/旧 FOMC；Gateway index 只改头尾标签、正文仍 v2.2；Gateway versions/1786977170792.html 连标签都是 v2.2 且与 index 哈希不同。
 **根因**：只推了「自己记得的那处」，未把三处文件当清单逐项核。
 **修复/纪律**：**~~（旧「两处全推（brain 镜像 + Gateway index）」表述已于 2026-08-18 VV 八轮 superseded——单一发布链以 INFRA-20260817-001 为准）~~** 声称同步前逐文件实读核验；**versions/*.html 由 update_artifact 自动轮转（更新前 index 的 N−1 回滚副本），禁止人工覆盖、不参与同代判定**（2026-08-17 VV 二轮终验订正）——与「结构改动须 artifact+prompt 双落」铁律互补：双落管机制、实读管宣称。**强化（2026-08-17 VV 四轮）**：统一发布链 **canonical→renderer→staging→校验→Gateway active→回读→snapshot/manifest**（权威定义见 INFRA-20260817-001）的**章节级回读规则**——发布后按章节逐级回读实际消费端，不比 hash 了事。
 **同族/来源**：RISK-20260817-002（宣称完成未核）。→ 同上
 
+**关条留痕（2026-11-01 · 历史批次关条）**：三处实读核验纪律入 G-X111 族；v2.3 发布链随版本退役、验收对象不复存在，按 Doctor 问答板 1A 裁由未参与实施的审核者代签关闭。
+
 ### [BUG-20260817-004] 回归结果身份丢失——M4/M6 系数混写·R²/adjR² 混用·OLS/NW t 混用（2026-08-17 VV 四轮立）
-**状态**：🔄 部分修复待独立验收（2026-08-17 · 十二修：台账 2-R/迭代表已按 canonical 重渲；**富版仍手工 patch、结果对象生成未实现、renderer 明示非生产**——VV 五轮指正降档）
+**状态**：✅ 已关闭（2026-11-01 · Doctor 问答板 1A 裁 · EAL v2.3 已退役、验收对象不复存在 · 纪律已升格通用教训 G-X111 · 未参与实施的审核者代签）
 **优先级**：🔴 高
 **触发场景**：EAL 通道方程——M4 系数（0.113/0.108）与 M6 系数（0.143/0.098）在台账/PRD/富版间混写；「传导层主账」现行标题与 v2.3 滚动 β 残差并陈自相矛盾；R²=0.747183 与 adjR²=0.737989 及 OLS t 与 NW t 口径混用。
 **根因**：回归结果没有身份绑定——跨规格手抄数值时丢失 model_id/n/cov_type/统计量名。
 **修复/纪律**：每个结果必须绑定 `model_id / n / y / X / cov_type / statistic_name`；表格由结果对象生成，**禁止跨规格手抄**。
 **同族/来源**：G-X111 载体版（事实分布多载体）· BUG-20260817-002（规格合同）· VV 四轮终验（方程区同代 BLOCK）
 
+**关条留痕（2026-11-01 · 历史批次关条）**：结果身份绑定纪律入 G-X111 载体版；v2.3 台账/富版随版本退役、验收对象不复存在，按 Doctor 问答板 1A 裁由未参与实施的审核者代签关闭。
+
 ### [RISK-20260817-004] 构造回归量与统计零结果的识别边界（2026-08-17 VV 四轮立）
-**状态**：🔄 已修待独立验收（2026-08-17 · 十二修 · 台账 v2.3 定位「同日通道共变（非因果）」+ constructed-regressor 边界落盘）
+**状态**：✅ 已关闭（2026-11-01 · Doctor 问答板 1A 裁 · EAL v2.3 已退役、验收对象不复存在 · 纪律已升格通用教训 G-X112 · 未参与实施的审核者代签）
 **优先级**：🔴 高
 **触发场景**：AI_gap = r_SMH − r_SPY 右端含同期因变量，仍称「解释力/传导通道」；事件哑变量零结果写成「全部经通道传导」；相关增量写成通道坐实。
 **根因**：描述性结果被写成机制与因果——没有识别设计的相关量不能给因果语域。
 **修复/纪律**：RHS 含同期 Y 时强制标 `constructed-regressor · non-causal`；没有正式识别设计，只能写「待检机制假说」或「未检出条件增量」。
 **同族/来源**：台账 v2.3 勘误（Pearl 中介边界）· G-X112（口径四问 · 数据语义类比）· **G-X95（源须先行独立信号·效应反推源＝镜像非因果）** · VV 四轮六根因表「因果边界失守」
 
+**关条留痕（2026-11-01 · 历史批次关条）**：因果边界纪律入 G-X112 系（口径四问）；v2.3 台账随版本退役、验收对象不复存在，按 Doctor 问答板 1A 裁由未参与实施的审核者代签关闭。
+
 ### [BUG-20260817-005] 正常路径全绿不证明 fail-fast（2026-08-17 VV 四轮立）
-**状态**：🔄 已修待独立验收（2026-08-17 · 十二修 · test_failfast.py 固化·SHA 八项含测试件；**五轮降档 → 五轮整改已补**：乱序/重复键/真实 -O 子进程三用例 + 框架去 assert + 负例错误族 marker 核验 + 版本守卫真实注入 → **13 用例双模式 13/13**；**七轮增强**：负例非零退出外必验错误族 marker·版本守卫改真实错误版本注入）
+**状态**：✅ 已关闭（2026-11-01 · Doctor 问答板 1A 裁 · EAL v2.3 已退役、验收对象不复存在 · 纪律已升格通用教训 G-X150 · 未参与实施的审核者代签）
 **优先级**：🔴 高
 **触发场景**：三轮验收三种假闭环——① assert 守卫被 `python -O` 删除；② 最终 score 非有限（注入极大值 → −inf）仍 exit 0；③ 冻结输入删行（121→120）仍正常退出。
 **根因**：把「当前机器跑通」误当「失败时能正确停下」。
 **修复/纪律**：覆盖 `assert/-O`、最终 score 非有限、冻结输入漂移、非收敛、负向测试未固化五类；**每个不变量都有破坏性测试，并纳入复现包与 SHA**。
 **同族/来源**：G-X150（本条跨项目升格）· RISK-20260817-002 · VV 二/三/四轮（fail-fast 三连 BLOCK）
 
+**关条留痕（2026-11-01 · 历史批次关条）**：fail-fast 负向注入纪律已升格 G-X150（本条跨项目升格）；v2.3 复现包随版本退役、验收对象不复存在，按 Doctor 问答板 1A 裁由未参与实施的审核者代签关闭。
+
 ### [INFRA-20260817-001] EAL 发布链多真源（2026-08-17 VV 四轮立）
-**状态**：🔄 已修待独立验收（2026-08-17 · 十二修 · 发布器保险丝+previewRoot+candidate 移 staging+快照真源改 Gateway；**事实更正（2026-08-18 十五轮）**：live 镜像真源已接 Gateway（08-18 五轮整改完成 · 「仍用旧 Cowork Scheduled 真源」的降档注已不成立——更正事实、保持待独立验收））
+**状态**：✅ 已关闭（2026-11-01 · Doctor 问答板 1A 裁 · EAL v2.3 已退役、验收对象不复存在 · 纪律已升格通用教训 G-X118 · 未参与实施的审核者代签）
 **优先级**：🔴 高
 **触发场景**：artifact 多代拼接（N−1 富版事实错代）、snapshot 脚本指旧真源（会回滚 mirror）、candidate 留生产目录成第二真源、preview 任意路径绕过保险丝。
 **根因**：多份载体 + 多真源，发布链没有固化顺序。
 **修复/纪律**：固化 **canonical→renderer→staging→校验→Gateway active→回读→snapshot/manifest**；禁止手拼历史版本、candidate 留生产目录、preview 绕保险丝。
 **同族/来源**：G-X118 追记（回读消费者+再生不回滚）· RISK-20260817-003 · VV 四轮 P0-1/P1
+
+**关条留痕（2026-11-01 · 历史批次关条）**：发布链单一真源纪律入 G-X118 追记（回读消费者+再生不回滚）；v2.3 发布链随版本退役、验收对象不复存在，按 Doctor 问答板 1A 裁由未参与实施的审核者代签关闭。
 
 ### [RISK-20260819-001] shadow.7 错误族优先级依赖 runtime statistics 实现——3.10 收件端重跑 34/35（2026-08-19 接包重跑立）
 **状态**：⚠️ 已知风险（包声明 CPython 3.11+ · 3.10 不在支持范围 · **生产候选 Mac CPython 3.13.3 已全套验证全绿 · 部署风险解除 · 测试注入脆弱点残留**）
@@ -180,7 +196,7 @@ project: 剑酒青丘
 **独立验收落签（2026-08-21）**：Doctor 会话总签 EAL v3 PRD 20 R/N（「EAL总签」）——「已修待验」侧（最低支持版验证补齐 · N1 证据）就此落签；测试注入脆弱点（建议修法①）仍在范围外未修，本条整体维持 ⚠️ 已知风险，转修时机随 VV 十六轮/生产吸收裁定。
 
 ### [ERR-20260828-001] delivery_index.v6 与盘面漂移——索引构建后被审计资产并发修改，回读 mismatch=1（2026-08-28 CC 独立验收立）
-**状态**：🔄 已确认待修复（索引失效非数据丢失 · 修复＝VV 重生成 v6 或 Doctor 裁处置 · 实施者不自标 ✅）
+**状态**：✅ 已关闭（2026-11-01 Doctor 裁『关条』· EAL 验收工具链 · 下次 EAL 发布/验收自然覆盖 v7 后核销 · 未参与实施的审核者代签）
 **优先级**：🟡 中
 **硬证据/最小复现**：v6（SHA 91c9f7ad · 00:55 PT 构建）内嵌 `_vv_staging/test_final_verification.py` = 11765 B / 1cb02337…；该文件 01:24 PT（索引构建后 29 分钟）被并发修改为 12936 B / 06828db5…。`verify_post_promotion_acceptance` 全量回读 mismatch=1（EAL_CURRENT_DELIVERY_INDEX_DRIFT）；--require-system-closure blockers=2 而非声称的 1。CC 首轮归一重建曾精确复现 v6 SHA/digest（当时文件仍 11765 B）→ 漂移发生在验收进行中。
 **根因**：create-only 索引与文件系统之间无「索引后文件变更」哨兵；索引构建与后续编辑（同批迭代）之间无冻结窗。资产在验收窗口内被并发修改。
@@ -189,8 +205,10 @@ project: 剑酒青丘
 **预防门禁**：索引类 create-only 产物落盘后，被索引文件的变更应触发显式告警（构建脚本输出「indexed_files_digest」并由验收器比对当前盘面）。
 **来源**：CC 独立机械验收（2026-08-28 · Doctor 指定）· 重放脚本 /tmp/runshim3.py（路径前缀翻译 shim·不改逻辑）
 
+**关条注记（2026-11-01 · 未参与实施的审核者落签）**：核据——条目现状 🔄 在盘；EAL v3 验收工具链仍在运行：mcp__cowork__list_artifacts 实读 `eal-v3-event-transition` updatedAt＝2026-10-31T00:55:55.322Z（10-30 收盘班推送 · 持续日更未停摆）。按 Doctor 2026-11-01 裁『关条』代签关闭；v7 核销随下次 EAL 发布/验收自然覆盖。
+
 ### [ERR-20260828-002] execute_registry_promotion --execute 重放：已存在目标被误报为 EAL_PROMOTION_COMMITTED_POSTCHECK_FAILURE（exit 5）（2026-08-28 CC 独立验收立）
-**状态**：🔄 已确认待修复（仅误报·无写入发生·目标字节经前后 SHA 比对零变化）
+**状态**：✅ 已关闭（2026-11-01 Doctor 裁『关条』· EAL 验收工具链 · 下次 EAL 发布/验收自然覆盖 v7 后核销 · 未参与实施的审核者代签）
 **优先级**：🟡 中
 **硬证据/最小复现**：对已存在且与 APPROVED_SHA256 逐位一致的生产目标跑 `--execute` 重放 → preflight 正确抛 `EAL_PROMOTION_TARGET_EXISTS`，但 main() 的 except 分支按「目标存在且 hash=批准值」判 committed=True → 改写为 exit 5 `EAL_PROMOTION_COMMITTED_POSTCHECK_FAILURE`。preflight-only（不带 --execute）重放则为声称的 exit 2 + `EAL_PROMOTION_TARGET_EXISTS`（双模式实测 ✓）。
 **根因**：committed 判定无法区分「本次运行刚写入」与「此前已存在」——只凭目标存在+hash 匹配判 committed，误伤拒绝路径。
@@ -198,6 +216,8 @@ project: 剑酒青丘
 **建议修法**：committed 判定加「本次运行确实执行过 write_create_only」标志（如 target_warning/receipt 已生成），而非仅凭目标存在+hash。
 **预防门禁**：create-only 重放负测须覆盖 --execute 与 preflight-only 两种形式并断言错误码。
 **来源**：CC 独立机械验收（2026-08-28 · Doctor 指定）· 实测 exit 5 vs 声称 exit 2
+
+**关条注记（2026-11-01 · 未参与实施的审核者落签）**：核据——条目现状 🔄 在盘；EAL v3 验收工具链仍在运行：mcp__cowork__list_artifacts 实读 `eal-v3-event-transition` updatedAt＝2026-10-31T00:55:55.322Z（10-30 收盘班推送 · 持续日更未停摆）。按 Doctor 2026-11-01 裁『关条』代签关闭；v7 核销随下次 EAL 发布/验收自然覆盖。
 
 ### [NOTE-20260905-001] eal_v3 生产目录防写锁——授权部署须走「解锁→改→锁回」（2026-09-05 SOX 部署立）
 **状态**：⚠️ 已知风险（08-19 部署纪律 · 非缺陷）
@@ -210,7 +230,7 @@ project: 剑酒青丘
 **来源**：2026-09-05 凌晨场 · logs/2026-09-05-EAL加SOX响应轨实施.md
 
 ### [NOTE-20260911-001] EAL v3 班 adapter 守卫 FUSE fchmod 不落地——LOOP_SQLITE_GUARD_REJECTED 同根六连致 artifact 停更 6 天（2026-09-11 全金融审计立 · 同日 VV 交叉复核纠错后改写）
-**状态**：🔄 已修待验（2026-09-15 Doctor 裁方案①「adapter 移 Mac 原生」· CC 实施中·待 09-15 班自然验证；✅ 按分轨：事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor）
+**状态**：✅ 已修复（2026-11-01 独立核验落签：adapter 已移 Mac 原生〔launchd `com.eal.postevent-native` last_exit_code="0" · 装机件＝源件 SHA 726fc102d26e〕· 生产班自然验证持续通过〔artifact `eal-v3-event-transition` updatedAt 2026-10-31T00:55:55Z · 10-30 班 result 四段 exits 全 0＋permission_guard verified/restored〕· 证据与限定见条目尾部核验注记）
 **优先级**：🔴 高（消费端 artifact eal-v3-event-transition 自 09-04 起停更——用户可见）
 **硬证据/最小复现**：各班失败分布（09-04 shift-root-cause + 09-10 shift-report 实读）——**adapter guard 同根六连**：09-01、09-03 一班、09-03 二班、09-04（root-cause 原话「与 09-01/09-03×2 同根同签，第四次复发」）、09-09、09-10；另 09-07/09-08 两班**第一步即失败**（09-08 为 /tmp 残留锁 PermissionError·nobody 属主）——**并非每天 Steps 1-7 全绿卡最后一步**。09-10 班细节：Steps 1-7 全绿（行情写库 attempt 2/3 · sealed SHA ae642b01… · registry pin 283c947d · shadow EXIT=0 · candidate 38.2MB · loop completed_with_warnings）→ `7_adapter: REJECTED LOOP_SQLITE_GUARD_REJECTED — permission_guard_completed=false (FUSE fchmod 不落地，mode 恒 0o600)；fail-closed 停班`；`8_artifact: 未推送`。
 **根因**：zero-write guard 的权限位组件要求 chmod a-w 持久生效，Cowork 沙箱 FUSE 挂载盘 fchmod 不落地（mode 恒 0o600；09-04 班 58/58 采样全部 permission_deviation）——守卫按设计 fail-closed 正确，但当前运行环境结构性无法通过该组件＝「正确守卫 × 错误环境」。同族：烛照 GOTCHAS（FUSE 大写入不 durable）、巡检自愈循环 warnings（chmod a-w 受 FUSE 限制）——**应升格通用教训候选**：「FUSE 挂载面 POSIX 语义不完整（chmod/写入持久性），守卫设计必须环境感知」。
@@ -223,6 +243,8 @@ project: 剑酒青丘
 **追记（2026-09-15 凌晨 · 方案①实施）**: Doctor 经 AskUserQuestion 裁「方案①移 Mac 原生（推荐）」→ CC 立 PRD `2026-09-15_EAL数据链班adapter迁Mac原生_PRD.md` 并实施沙箱侧：① 新增 Mac 原生执行体 `调度/eal-post-event-native/run_step7_native.py`（读交接清单→SHA 对拍→原参数跑 Step 7 三段→evidence 硬校验 status=verified+permission_guard 成立→原子写结果留痕；幂等；失败重试 3×180s 避开 usdjpy-15 心跳 18:30 PT 写窗）+ `com.eal.postevent-native.plist`（launchd 每日 18:35 PT）+ `FORMAT.md`；② 班 SKILL Step 7 段改「7a 落交接清单（O_EXCL+shasum 现算）→7b 轮询 result（60 分钟超时）→7c fail-closed 停班」，Step 8 推送留沙箱班；守卫/eal_v3 生产代码/registry/selector 零改动。负向测试 3 组全绿。**待**：Doctor 终端装 launchd+store SKILL 同步 → 09-15 17:44 PT 班+18:35 Mac 班自然验证（shift-log 守卫全过+artifact updatedAt 前进）。
 
 **追记②（2026-09-16 凌晨 · 首跑验证与三修复闭环）**: 09-15 班首跑暴露三缺陷并当晚闭环——① launchd EPERM（CommandLineTools python3 无 FDA→换已授 FDA 的 python3.13 + HOME/PATH env，usclose 班先例）；② 执行体预建 loop_dir 触发 guard LOOP_SQLITE_GUARD_OUTPUT_PREEXISTING（exit 91·根因=执行体实现 bug，非守卫误报）；③ 午夜翻日丢交接（改跨日期扫描）+evidence 校验字段名错（改读 permission_guard.restored/write_bits_removed/mode 实值）。Mac 班改 5 分钟幂等轮询（Doctor 裁）。**最终验证**：09-16 00:24:34 PT Step 7 全链 success 落盘——四段全 0 · evidence status=verified · permission_guard mode 384→256(0o400)→384 restored（**守卫零弱化在 Mac 原生实证成立**）· report accepted · artifact updatedAt 09-04→09-16T07:25Z 停更 12 天恢复（Step 8 由 CC 场外补推）。触发方判证：result 落盘早于 Doctor 手动跑 login 4 秒指向 launchd 轮询，但 launchd stdout 每触发截断、终态不可判别——**机制层以今晚 09-16 班自然验证为准**。PRD 8 条已填 [?]+证据，独立审查 PASS_WITH_LIMITS（留痕失实一处已修正），✅ 归 Doctor。
+
+**核验注记（2026-11-01 · 未参与实施的独立审核者落签 · 判据①adapter 移 Mac 原生〔Doctor 2026-09-15 裁方案①〕②生产班自然验证）**：实跑证据——① `mcp__cowork__list_artifacts` 现读：`eal-v3-event-transition` `updatedAt`＝`2026-10-31T00:55:55.322Z`（09-04 停更恢复后持续更新至最近收盘班 10-30，无复发）；② 实读 `brain/permanent/_scheduler_snapshot.json`（scheduler_snapshot.py 周更 · generated_at=2026-10-26T07:10:29-07:00）：`launchd.installed["com.eal.postevent-native"]` 存在 · `runtime.last_exit_code`＝`"0"` · `loaded`＝true · program=python3.13（FDA 解释器）· `stdout_path`＝`~/Library/Logs/eal-postevent-native-stdout.log`（追记③治本迁移已在装机件成立）· `tcc_suspect`/`staleness`/`consistency` 全空；③ 装机对拍：源件 `宏观研究体系/EAL/调度/eal-post-event-native/com.eal.postevent-native.plist` 实算 sha12=`726fc102d26e` 与快照 `installed_sha12` 逐位一致；④ 生产班实件：`Database/宏观研究体系/EAL/eal-mac-handoff-20261030.result.json` 实读 `status="success"` · attempts_used=1 · 四段 exits 全 0 · `zero_write_evidence.status="verified"` · `permission_guard` mode 384→256→384 `restored=true`/`write_bits_removed=true`（守卫零弱化在 Mac 原生继续实证）；loop_dir `20261031T005517Z` 落盘后 38 秒 artifact updatedAt 即前进；10-22/10-28/10-29/10-30 连续四班 handoff+result 成对在盘。**限定**：snapshot 为 10-26 周更时点值（last_exit_code "0" 系该时点读数）；「持续更新」由 artifact 现读 updatedAt＋盘上连续 handoff 成对件共同支撑。
 
 ### [NOTE-20260911-002] risk.py 仓位函数赢面门排除低胜率高赔率机会（2026-09-11 VV 独立审计发现 · CC 实读确认）
 **状态**：✅ 已修复（Doctor 2026-09-17 落签 · CC 代记——2026-09-16 问答板 5A Doctor 裁「①②③全采纳」→ 已实施：期望口径门 EV=p·b−(1−p) + 扰动稳健门（p±.05/b±20% 四角）+ 输入口径固化（p/b=持有期收益概率/赔率）+ 保留③（单票硬顶/止损上限/养家档）；测试 15/15 含旧版权威对拍（5 用例决策逐位一致）；独立复验 PASS_WITH_LIMITS〔缺陷 1 已修·B5 断言固化〕）
@@ -252,7 +274,7 @@ project: 剑酒青丘
 **追记②（2026-09-16 深夜 · 机制层闭环）**：21:00 时点班连续第二晚实跑——09-16 21:03 重建完成（generated_at 04:02:53Z · market_as_of=09-16 实读 · candle 含 09-16 OHLC · 视觉迭代新源码首跑：hover-info 15/tag-above 2/star-label 0/旧方向定位 0 残留）——「当日收盘进当晚快照」机制层验收闭环；明早 09:08 refresh-risk-daily 班嵌入即端到端（消费端自然验证）。
 
 ### [NOTE-20260916-001] 班会话卡死文件删除授权待批 → 整班停摆（后台班无人值守死锁）
-**状态**: 🔄 已修待验（2026-09-18 Doctor 裁修法①并当晚应用：EAL 班去交互 + 同族 `refresh-asset-dashboard` 一并修；双端 SHA 核过、24 班终封全 OK、全库交互调用点归零。**验收判据＝下一次真实挂载盘 I/O 失败时班不再卡死**——在此之前只是「已改」）
+**状态**: ✅ 已修复（2026-11-01 · Doctor 裁 4A 验收通过：观察期 6 周无复发+结构修复已核 · 未参与实施的审核者代签）
 **优先级**: 🟡 中
 **硬证据/最小复现**: 2026-09-16 17:44 班 Step 1 行情写库 attempt 1 命中挂载瞬断（commit disk I/O error · 与 09-15 同款 · 挂载瞬断第二次复发）→ 班自验主库完好（SHA 不变·integrity ok）→ 计划「清理两件本轮 staging 残留后重试」→ 调用 `allow_cowork_file_delete` 申请删除授权 → **无人在场批准、会话 idle 卡死** → Step 2-8 全未执行（无 sealed/交接清单/shift-log/artifact 推送）。launchd Mac 轮询整晚「no unconsumed handoff」空转（launchd-stdout 实读）。班会话转录实读（local_225aa4c9）末条=删除授权调用、无结果返回。
 **根因**: ① 挂载瞬断（白名单根因 · 09-15/09-16 连续复发）；② 班清理 staging 残留依赖「删除授权」交互——后台班无人在场即死锁，无超时降级路径。
@@ -264,8 +286,10 @@ project: 剑酒青丘
 **追记（2026-09-18 晚场 · 修法裁定 + 跨班同族 · CC 实读）**: Doctor 裁修法①（AskUserQuestion 两题全选推荐：修法①「改班 SKILL 去交互」+ 范围「普查+修同族」）。**根因复核（读脚本源码）**：`update_attribution_db.py` 的 staging 名含 pid/随机串（`.{target}.next-{pid}` L406、`attribution-inc-<random>.db` L426，均 `dir=target.parent`），锁为 `fcntl.flock(LOCK_EX|LOCK_NB)` 咨询锁（L420-424，**进程退出即释放**）⇒ **残留不阻塞重试**，「删残留再重试」系班自由裁量自加动作、非流程必需（同班 Steps 2/6 早已用「保留 failed attempt + fresh 重试」模式）。**实证**：2026-09-14 孤儿四项（`attribution-inc-7r2yovwk.db-journal`、`.fuse_hidden0000001000000001` 37MB、`.cc-write-probe-20260914.sqlite` + journal）在盘逾四日，其后的 09-15/09-17/09-18 三班照常跑通。**跨班同族**：`refresh-asset-dashboard`（每日 11:40 班）SKILL L51 把 `allow_cowork_file_delete` 写在**正常路径**上（conch 清空 rm 被拦时的兜底）——同款死锁、尚未发作，本轮一并修。**24 班普查（只读）**：`request_cowork_directory` 用于 10 个班且长期日更正常（实证不阻塞，不列隐患）；`allow_cowork_file_delete` 仅上述 1 处；`present_files` 2 处、`update_scheduled_task` 2 处未观测到阻塞（标**未核**）；`refresh-risk-daily` L25 与 `us-close-backfill` L21 早已用「/tmp 副本整库覆写回挂载、不用 rename/unlink」的设计规避同类问题（既有正解先例）。**交付**：staging 两份落 `~/Documents/_staging_skill_{event-attribution-watch,refresh-asset-dashboard}_2026-09-18_SKILL.md`（SHA `88018f86…` / `4b900c32…`），修法＝硬纪律加「不得调用任何需人工批准的工具」+ Step 1 写明「保留残留、fresh 重试、严禁班内删除」+ 失败循环白名单/禁止自修各补一条；应用走 Doctor 终端 sha 对拍 → cp → 复验 → rsync 镜像刷新。**应升格通用教训候选**（跨班出现，按 GOTCHAS 合同⑤登记；升格归 Doctor 裁）：**调度班的不动点应是「班内零交互」**——凡需人工批准的工具在无人值守班一律不得调用，改为留证据＋停班＋贴命令。
 **追记二（2026-09-18 23:09 PT · 应用与终封 · Doctor 终端实跑 + CC 实读）**: 应用完成六步——① 对拍 store 现文 = 本仓镜像（`cacf0b6f…`/`2e5dedf4…`，**镜像未滞后**）；② 备份 `SKILL.md.bak_20260918_preDeadlockFix` 后 cp；③ store 复验 = staging SHA（`88018f86…`/`4b900c32…`）；④ rsync 镜像刷新，**清单含一项未预告的 `refresh-risk-daily/SKILL.md`**——store 侧 09-17 10:26 的更新一直未回流镜像，本轮顺带补齐；方向 store→mirror，无镜像侧待应用改动被覆盖；该班刷新后重扫：`allow_cowork_file_delete` 0 命中、L25「不支持 unlink」铁律仍在，**普查结论不受影响**；⑤ 终封 24 班全 OK；⑥ staging 两份归档 `brain/archived/staging_2026-09-18/`（SHA 与已应用件逐字节一致，归档不删）。**全库复扫**：`allow_cowork_file_delete` 现仅存两句**禁令**（EAL 班 L19 无人值守纪律 / 海螺班 L51），**实际调用点归零**。**未闭项**：终验须等一次真实挂载盘 I/O 失败自然发生（届时班应以 fresh attempt 重跑并保留残留）；在此之前状态为 🔄 已修待验，不落 ✅。
 
+**验收注记（2026-11-01 · 未参与实施的独立审核者落签 · 判据=修法①应用+观察期+交互调用点归零）**：实读证据——① 修法①在盘：`references/scheduled-live-mirror/live/event-attribution-watch/SKILL.md` L19「无人值守纪律：不得调用任何需要人工批准的工具」与同族 `refresh-asset-dashboard/SKILL.md` L51 禁令在场；Documents 侧全库复扫班 SKILL 仅存两句禁令、实际调用点归零（Gateway store 侧本沙箱不可直读，以 live 镜像＋条目追记二双端 SHA 记录交叉核）；② 观察期：`permanent/_scheduler_snapshot.json`（as-of 2026-10-26 周更快照）`launchd.installed["com.eal.postevent-native"].runtime.last_exit_code`＝`"0"`；artifact `eal-v3-event-transition` updatedAt＝`2026-10-31T00:55:55Z`（修法应用 2026-09-18 后持续更新、观察期满 6 周）。
+
 ### [NOTE-20260918-001] launchd Mac agent 打不开带 `com.apple.macl` 的日志文件 → spawn 前被拒（EX_CONFIG 78）→ 数据链班 Step 7 交接停摆 2 天（2026-09-18 CC 诊断 · Doctor 终端执行 · 应升格通用教训）
-**状态**: 🔄 已修待验（重命名两个 macl 日志件 → `last exit code = 0` · handoff 一次消费成功 · result JSON 落盘；端到端待今晚 17:43 班 Step 8 推 artifact 自然验证）
+**状态**: ✅ 已修复（2026-11-01 独立核验落签：端到端自然验证成立——artifact `eal-v3-event-transition` 自 2026-09-19T05:26:29.911Z 推进后持续更新至 2026-10-31T00:55:55Z · launchd `com.eal.postevent-native` last_exit_code="0" · 证据与限定见条目尾部核验注记）
 **优先级**: 🔴 高
 **硬证据/最小复现**:
 - 09-17 17:44 班 Steps 1–6 全过、Step 7 轮询 60 分钟未取到 result → artifact 未推（fail-closed）；`eal-v3-event-transition` artifact updatedAt 停 `2026-09-16T07:25:23Z`。
@@ -290,3 +314,5 @@ project: 剑酒青丘
 - **⛔ 订正追记②**：其写「`com.zhuzhao.marketdata` 待 **09-19 02:30** 自然验」**有误**——该班 `StartCalendarInterval` 为 **Weekday 1-5 @02:30**，09-19 是周六（Weekday 6）**根本不会点火**。修复后首次自然验证应为 **09-21（周一）02:30**。usclose 同理为 **09-21（周一）14:00**。
 - **停摆实况（CC 实读仓内自己指定的两个状态源，非计数器）**：`ops/.last_run_status` = **`OK 2026-09-16 02:31:05`** → marketdata **缺 09-17、09-18 两次排期（连停两天）**；`ops/.last_run_status_usclose` = **`OK 2026-09-18 14:00:26`**（改名修复后当日 14:00 已恢复，stdout 1696B、`全部完成 · 无 ❌`、us_anchor 19/19 推进 20260918、stderr 0B）。脚本自管日志佐证：`mac_marketdata_20260916.log` 为末件、`mac_usclose_20260917.log` **缺失**。
 - **数据影响（实读 market_data.db）**：`stock_daily`/`daily_market`/`intl_index_daily`/`cn_index_daily`/`theme_etf_daily`/`market_amount_daily`/`limit_list_daily`/`ipo_daily` **均到 20260918，主数据无缺口**（Cowork 句芒班按设计兜住）。**两处待核**：`margin_daily` 与 `margin_guarantee_ratio` 停在 **20260915**（最后写入 09-16 09:30）、`north_flow` 停 20260917 —— **是否与本次停摆相关本场未核**（两融本身有源端 T+1 延迟的可能），不得据此归因。
+
+**核验注记（2026-11-01 · 未参与实施的独立审核者落签 · 判据=端到端班 Step 8 推 artifact 自然验证）**：实跑证据——① `mcp__cowork__list_artifacts` 现读：`eal-v3-event-transition` `updatedAt`＝`2026-10-31T00:55:55.322Z`（2026-09-18 之后持续更新至最近收盘班 10-30；条目追记②已记 2026-09-18 22:26 端到端首闭环 updatedAt→`2026-09-19T05:26:29.911Z`）；② 实读 `brain/permanent/_scheduler_snapshot.json`（as-of 2026-10-26 快照）：`com.eal.postevent-native` `runtime.last_exit_code`＝`"0"` · stdio 已装机于 `~/Library/Logs/`（追记③治本迁移成立）· `tcc_suspect` 空；③ 生产班实件：`Database/宏观研究体系/EAL/eal-mac-handoff-20261030.result.json` 实读四段 exits 全 0 · `zero_write_evidence.status="verified"`；loop_dir `20261031T005517Z` 落盘后 38 秒 artifact updatedAt 前进；10-22/10-28/10-29/10-30 连续四班 handoff+result 成对在盘。**限定**：snapshot 为 10-26 周更时点值。

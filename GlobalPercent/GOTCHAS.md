@@ -31,11 +31,13 @@ project: GlobalPercent
 **来源**: Polymarket Documentation — Gamma Markets API（docs.polymarket.com）。
 
 ## [GOTCHA-20260629-002] 一批修复改了未提交，悬在 initial commit 之后
-**状态**: ⚠️ 已知风险（需 Doctor 终端 git）（⏳→⚠️ · 2026-08-26 迁移专场 Doctor 裁）
+**状态**: ✅ 已修复（2026-11-01 独立核验落签：Doctor 已于 2026-06-29 commit 2ba33266 且 local=origin 同步 · 工作区零未提交 · 证据见条目尾部核验注记）
 **优先级**: 🟡 中
 **触发场景**: `git status` 显示 `aggregator.py / publish.py / GOTCHAS.md / requirements.txt / test_publish.py` 已改 + `tests/test_aggregator.py` 新增，全未 commit（initial commit = `beffe24`）。
 **风险**: 一旦 checkout/clone 丢这些修复。
 **解决**: Doctor 终端 `git add -A && git commit`（CC 不在沙箱跑 git 写命令）。
+
+**核验注记（2026-11-01 · 未参与实施的独立审核者落签 · 纯文本实读 `.git/`，未运行任何 git 子命令）**：实跑证据——① `.git/logs/HEAD` 全 2 行，末行＝`beffe2424adda1fd797378c714bfc389ac91b11f 2ba33266556e10516cf73c20d6e03a270b396c71 Doctor <garciajessicadltis7409@gmail.com> 1782712487 +0800 commit: fix(audit): 滚动窗口校准+删死分支+量纲核实+测试数28`；② `.git/refs/heads/master` 与 `.git/refs/remotes/origin/master` 均＝`2ba33266556e10516cf73c20d6e03a270b396c71`（local=origin 同步）；③ `find <仓根> -not -path "*/.git/*" -newermt "@1782712487" -type f` 输出空〔exit 0〕——全工作树文件 mtime 实测最大＝1782712271（2026-06-28 22:51:11Z）< commit 时点，commit 后零文件变更；④ 加固：解析 `.git/index`（v2 · 37 entries · 写于 commit 时刻）——37 个 tracked 文件逐件与盘上 **mtime＋size 双逐位相等**〔0 差异 · 0 缺失〕，修复批七件〔aggregator.py/publish.py/config.py/store.py/requirements.txt/tests/test_aggregator.py/GOTCHAS.md〕全部在 index；未跟踪件仅 `.pytest_cache/` 四件〔.gitignore 已覆盖的缓存件，与修复批无关〕。**注**：仓根实为 `Claude/Projects/Financial/备查区/GlobalPercent/`，`Financial/GlobalPercent` 是指向它的符号链接——`find` 对 symlink 起始点默认不深入、会得到空转的假「干净」结果，本注记全部结论基于真实路径重跑。
 
 ## [GOTCHA-20260629-003] 百分位校准用全量历史、无滚动窗口
 **状态**: ✅ 已解决（2026-06-29）

@@ -1146,7 +1146,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 
 ## [NOTE-20261021-001] market_signal 空壳标签 41 个——键在场、categories 空，星空信号层计数含空壳
 
-**状态**: ⚠️ 已知风险（2026-10-21 登记 · 修法待 Doctor 裁——2026-10-21 决策记录挂账①「待裁」）
+**状态**: ✅ 已修复（2026-11-01 Doctor Q6 裁『摘空壳键』· 41 键已摘 · 备份+复验留痕 · 未参与实施的审核者代签）
 **优先级**: 🟡 中（不伤 canonical 结构，但空壳带 market_signal 键，下游按类次过滤/展示时可能当作无类别信号）
 **触发**: 2026-10-20 深夜→10-21 凌晨市场信号补打标签专场（canonical 手术 239f4311…→72c5942e…）收尾盘点遗留；挂账原文先引本编号（logs/2026-10-20-渊图星空NewlyEmerged与日期滑块.md 遗留节 · 决策记录 2026-10-21 条），条目本体本轮补登。
 **硬证据（实跑 · 2026-10-21 04:2x PT）**: canonical `Database/行业研究/mapping/行业知识图谱_完整数据库.json` 实读——sha256 `72c5942e0f8ae63a…` · 7211 节点 / 7809 边；带 `_meta.market_signal` 的节点 **211** 个，其中 `categories` 空或缺 **41** 个（样本：`concept_GlobalTGlassDemand` · `concept_MiddleEastEnergyRisk` · `concept_AluminumGlobalDeficit2026` · `concept_TSMCLeadingEdgeConstraint`）；categories 非空 **170** 个（= 05-17 存量有效标注 + 本批新打 107）。
@@ -1155,9 +1155,11 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **建议修法（待裁）**: ① 按本批打标口径补填 41 空壳的 categories/confidence/reason/method；或 ② 摘除空壳的 market_signal 键（视同未标注）。二选一归 Doctor 裁。
 **来源**: logs/2026-10-20-渊图星空NewlyEmerged与日期滑块.md · 渊图/architecture/决策记录.md 2026-10-21 条挂账① · canonical 实读计数（本轮）
 
+**修复注记（2026-11-01 · 未参与实施的审核者落签 · Q6 摘空壳键复验）**：canonical 实读（2026-11-01）——sha256 `f0e7c4eaf4621ab07b9d90f11c8c2cddc5113bd393535a047d6633cddc8bba73` 与裁定对拍值逐位一致 · 节点 7294 / 边 7917 · 带 `_meta.market_signal` 键节点 **170**（= 原 211 − 空壳 41）· categories 空/缺 **0**（170/170 全非空 · 值域 supply_shock 103 / persistent_imbalance 62 / demand_surge 35）· 结构抽查全绿（悬挂边 0 · 自环 0 · 节点/边重复 id 0 · 节点 type 9 类、边 type 11 类全合法）· 备份 `Database/行业研究/backups/行业知识图谱_完整数据库.json.bak_20261101_shellstrip` 在场（实读＝术前快照：211 ms 节点 / 41 空壳 · sha256 `6c3bb7a2…` ≠ 现 canonical）
+
 ## [NOTE-20261026-001] kg_ingest update 路径 LLM 生成 created_at 覆盖存量创建时点（批运行日抹除原始创建日期）
 
-**状态**: 🔄 已修待验（2026-10-27 Doctor 批「现在修」· 代码已实装：`_protect_stock_fields` 闸 + 单测 6 条全过 + 全量回归 48/48 + 自跑 18/18 · 功能性修复验收归 Doctor 侧）**优先级**: 🟡 中
+**状态**: ✅ 已修复（2026-11-01 功能性验收 PASS · Doctor 7A 指定未参与实施的 subagent 验收 · 闸实读 kg_ingest.py:779-804/调用点 1150 + 单测 6/6 实跑 + 负向注入原值保留 + canonical 6 节点实读原值在位）**优先级**: 🟡 中
 
 **触发**: 2026-10-26 帕米尔十篇批入库独立复验（审核者 a60d574a）批级变更普查——**6 个存量节点 created_at 被改写成批运行日 2026-10-26**：`company_SunaOptoelectronics`（原 05-31）· `company_ChangguangHuaxin`（09-18）· `company_JoulWatt`（09-13）· `company_SilTerra`（07-28）· `product_Huafeng8600`（09-01）· `company_GaokaiTechnology`（09-18）。数据层已由 `surgery2_20261026_pamir10_auditfix.py` 恢复原值（备份 `backups/行业知识图谱_完整数据库.json.bak_surgery2_auditfix_20261026`）。同场另发现：`rel_Zeiss_EUVMultilayerMirror` 被 update 重写时 weight 0.95→0.85 无理由降权（已恢复 0.95/created_at；desc/evidence 保留本批 P1 增量）；`product_Huafeng8600` 与 `company_GaokaiTechnology` 的 name 被 LLM 改动——经原文复核均为**正确修正**（原文即写「高凯科技」），旧名「高凯技术」入 aliases 可回溯。
 
@@ -1168,3 +1170,14 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **建议修法（待裁）**: kg_ingest/合并层对 created_at 加保护（update 槽遇存量一律保留存量值）；边 weight 无理由降权保护可同批。属 ingest 代码功能性修改，归 Doctor 裁。
 
 **来源**: 2026-10-26 独立复验报告限额 L4 · 手术 `surgery2_20261026_pamir10_auditfix.py` · 批前备份 `backups/…bak_pre_promote_20261026_070413` diff（本轮实跑）
+
+---
+
+**验收注记 NOTE-20261026-001 · 2026-11-01 功能性验收 PASS（Doctor 问答板 7A 指定未参与实施的 subagent 独立验收）**
+
+- **① 闸实装（实读代码）**: `kg_ingest.py:779-804` `_protect_stock_fields` 实码；调用点 `kg_ingest.py:1150`（extract_from_file 内，batch/单文件唯一 LLM 产出路径均经此，merge 写回前执行）。存量 id 的 update_nodes 剥 created_at、update_edges 剥 created_at+weight；`kg_merge.py:111-114/137-139`「保留 base 中 patch 未提供字段」使原值在写回时存活。闸后无 created_at 回注面（`_cite_nodes_to_updates` 只产 {id, updated_at, data_sources}；`combine_patches` 的 created_at 属 patch_meta；tushare_ingest 更新槽无 created_at）。
+- **② 单测 6/6 实跑**: `python3 -I` 直跑 `tests/test_kg_ingest_stock_fields.py` 6 条断言全过（沙箱补 anthropic stub 仅因缺该依赖）。
+- **③ 负向注入自构复现**: LLM 式越界 update（节点 created_at=批运行日 2026-10-26 · 边 weight 0.95→0.85）走真实闸+`kg_merge.merge` → 原值 05-31/0.95/08-16 全保留、合法字段（description/updated_at/evidence）正常写入；无闸反事实同构复现事故（created_at→2026-10-26、weight→0.85），证明闸承重。
+- **④ 数据层实读（只读）**: canonical 6 受害节点 created_at=2026-05-31/09-18/09-13/07-28/09-01/09-18 原值在位（均非 2026-10-26）；`rel_Zeiss_EUVMultilayerMirror` weight=0.95 已恢复。
+- **残余面（不成缺陷）**: 保护层在 kg_ingest（LLM 唯一入口）；绕过 ingest 直喂 kg_merge/kg_merge_safe 的体外 patch 不受此闸——已核现无此类含 created_at 的生产路径。
+- **证据**: 本场 `outputs/accept_kg_ingest_stock_fields_driver.py` 实跑 ALL PASS · exit 0 · canonical 只读未动。
