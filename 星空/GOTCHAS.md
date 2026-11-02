@@ -60,7 +60,7 @@ project: 星空
 **来源**: 2026-09-13 EAL 星空视觉调参场 · 经验库 EXP-20260913-006-P
 
 ## [NOTE-20261101-002] 星空板「数据段替换」未生效——推送件仍为旧口径数据（发布链同族 · 与 10-20 谱系事故/10-19 位置复用族并列）
-**状态**: 🔄 已修待验（本场已修复重推 · 待独立复验/Doctor 目验）
+**状态**: ✅ 已修复（2026-11-01 独立复验 PASS：数据段口径 6089/7816·11-01 与 canonical 对拍一致 · 未参与实施的审核者代签）
 **优先级**: 🟡 中
 **触发**: 2026-11-01 错题本消化场执行 Doctor「推」（星空板同步重推）时，对拍发现 11-01 凌晨场声称「重跑管线 6089 星点/7816 边·口径 10-26 → 数据段替换组装 → update_artifact 推送」，但 store 实际数据段为旧口径。
 **硬证据**: `Claude/临时文件/yuantu-starry-skies_store_2026-11-01.html`（11-01 场推送件留档）与 `render-archive/yuantu-starry-skies-v3-full-inlined.html`（10-21 版）starscape-data 段**逐字节相同**（meta subtitle=2026-10-20 · nodes=6013 · edges=7708），全文仅差 cowork-artifact-meta 包装 520 字节；「6089」在推送件中**零出现**；盘上无 11-01 场新 store JSON 产物（未落盘）。渲染引擎直接消费 starscape-data 段（`JSON.parse(getElementById('starscape-data').textContent)`）。
@@ -69,3 +69,4 @@ project: 星空
 **建议修法**: 已当场修复——本场重跑布局（沙箱 OOM → 分块等价实现 `outputs/layout_starscape_chunked.py` · seed 42 · iters 100）+ 数据段替换 + 三段结构断言 + node --check 9 段 + update_artifact（updatedAt 11-02T05:18Z）；推送件现为 6089/7816 · 口径 2026-11-01。
 **预防门禁**: ① 星空板推送前必对拍成品 starscape-data 段 meta.subtitle/kpis 与当批 canonical 口径；② 数据段替换后必 grep 新口径数字（如「6089」）在成品中在场，替换无效=数字缺席当场显形；③ 管线中间产物（store JSON）落盘留痕，勿只存内存/scratch。
 **来源**: 2026-11-01 错题本消化场「推」环节实读发现 · 修复证据 `outputs/starscape_store_20261101.json` + `outputs/yuantu-starry-skies_store_2026-11-01v2.html`
+**复验注记（2026-11-01 · 未参与实施的审核者代签）**: 判据①—④实跑全绿——新 store 实读 6089 节点/7816 边 · meta.subtitle 含 2026-11-01 · 0 节点缺 position · id 无重复；成品 html starscape-data 段 JSON.parse 得 6089/7816 · subtitle 2026-11-01 · 「6089」在场（旧件 0 命中）· 与旧件段（6013/7708 · 2026-10-20）逐字节不同；canonical 实读 7294 节点/7917 边 · raw sha256 f0e7c4ea…与裁定逐位一致 · store 节点 id 集合与边对集合同 canonical 经 min-degree1+非 expired 独立过滤（6089/7816）逐项相等 · 抽样 10 id 全命中；消费端 list_artifacts yuantu-starry-skies updatedAt 2026-11-02T05:18:52Z ≥ 05:00Z · 部署件 6089×2/6013×0
