@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-10-19T22:31:42-07:00",
+  "generated_at": "2026-11-01T23:22:39-08:00",
   "triggered_by": "scheduled",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
@@ -37,9 +37,9 @@
    {
     "taskId": "baize-weekly-report",
     "has_skill": true,
-    "skill_mtime": "2026-09-11 07:05",
-    "skill_sha12": "ceb38eb5b8ad",
-    "skill_lines": 118,
+    "skill_mtime": "2026-10-21 22:01",
+    "skill_sha12": "709687a0d88c",
+    "skill_lines": 120,
     "name": "baize-weekly-report",
     "desc_head": "白泽大宗周报：渊图先验+web补价+Top20双面交叉验证+龙鱼六维(实时读龙鱼库·领域分库)→出MD周报与O MY HTML看板（周更）",
     "cron": null
@@ -107,9 +107,9 @@
    {
     "taskId": "longyu-equity-thesis-weekly",
     "has_skill": true,
-    "skill_mtime": "2026-09-11 05:53",
-    "skill_sha12": "3fc4f3607996",
-    "skill_lines": 29,
+    "skill_mtime": "2026-10-21 21:59",
+    "skill_sha12": "e7404a444ed6",
+    "skill_lines": 31,
     "name": "longyu-equity-thesis-weekly",
     "desc_head": "每周六 14:00 PT 用 equity-thesis 技能对龙鱼持仓标的逐个做个股定性研究并落盘 equity-thesis/，22:00 双 scorer 周更班重建看板时自动带出",
     "cron": null
@@ -137,9 +137,9 @@
    {
     "taskId": "recap-kejian-daily-ingest",
     "has_skill": true,
-    "skill_mtime": "2026-09-23 09:43",
-    "skill_sha12": "81b24fbbf042",
-    "skill_lines": 41,
+    "skill_mtime": "2026-10-21 22:00",
+    "skill_sha12": "810590667298",
+    "skill_lines": 43,
     "name": "recap-kejian-daily-ingest",
     "desc_head": "由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2；三道闸门：repr只收0-1数值·分项口径不落总仓列·dim2近似数必注…",
     "cron": null
@@ -147,9 +147,9 @@
    {
     "taskId": "recap-kejian-review",
     "has_skill": true,
-    "skill_mtime": "2026-08-18 20:43",
-    "skill_sha12": "a7b27cef563b",
-    "skill_lines": 58,
+    "skill_mtime": "2026-10-21 22:00",
+    "skill_sha12": "79c4a55b53f2",
+    "skill_lines": 60,
     "name": "recap-kejian-review",
     "desc_head": "每天09:30由句芒审核九儿课件入库：去重/数据合理性/P2标签/归位，扩审dim3(禁行情倒灌)与dim4仓位(归一/词表/待复核不重不漏)；全量自动修（两档机制·护栏：备份+证据+不自标✅）+次日复发扫描，出审核日志",
     "cron": null
@@ -167,9 +167,9 @@
    {
     "taskId": "refresh-risk-daily",
     "has_skill": true,
-    "skill_mtime": "2026-10-15 10:28",
-    "skill_sha12": "699cdf106202",
-    "skill_lines": 41,
+    "skill_mtime": "2026-10-20 01:33",
+    "skill_sha12": "8d0b3a34f951",
+    "skill_lines": 51,
     "name": "refresh-risk-daily",
     "desc_head": "每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号（collect_v25_et_inputs →…",
     "cron": null
@@ -207,9 +207,9 @@
    {
     "taskId": "touzhijunjun-perspective-refresh",
     "has_skill": true,
-    "skill_mtime": "2026-10-01 04:26",
-    "skill_sha12": "135d14103f9e",
-    "skill_lines": 65,
+    "skill_mtime": "2026-10-21 22:00",
+    "skill_sha12": "fa181aed8172",
+    "skill_lines": 67,
     "name": "touzhijunjun-perspective-refresh",
     "desc_head": "投知君君视角层增量提炼+反共识纠偏+图谱候选核实（自检增量·不自动promote），周两更",
     "cron": null
@@ -237,9 +237,9 @@
    {
     "taskId": "yuantu-alarm-earnings-season",
     "has_skill": true,
-    "skill_mtime": "2026-08-10 21:15",
-    "skill_sha12": "e8bcb5aedf35",
-    "skill_lines": 16,
+    "skill_mtime": "2026-10-21 21:59",
+    "skill_sha12": "282c6d51089d",
+    "skill_lines": 18,
     "name": "yuantu-alarm-earnings-season",
     "desc_head": "渊图警报监控·财报季加密（1/4/7/10月周四）核验折旧脚注/FCF/capex",
     "cron": null
@@ -247,9 +247,9 @@
    {
     "taskId": "yuantu-alarm-weekly",
     "has_skill": true,
-    "skill_mtime": "2026-08-10 21:15",
-    "skill_sha12": "8cc9ea07b8ba",
-    "skill_lines": 16,
+    "skill_mtime": "2026-10-21 21:59",
+    "skill_sha12": "05de6fbd37fe",
+    "skill_lines": 18,
     "name": "yuantu-alarm-weekly",
     "desc_head": "渊图警报监控·常态每周核验 AI 科技股未定价危险时点",
     "cron": null
@@ -257,9 +257,9 @@
    {
     "taskId": "zhuzhao-market-fetch-daily-report",
     "has_skill": true,
-    "skill_mtime": "2026-09-14 22:17",
-    "skill_sha12": "5727ff7e2cec",
-    "skill_lines": 99,
+    "skill_mtime": "2026-11-01 20:35",
+    "skill_sha12": "3161752ca499",
+    "skill_lines": 116,
     "name": "zhuzhao-market-fetch-daily-report",
     "desc_head": "每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走yahoo chart API默认源·盘中守卫+null …",
     "cron": null
@@ -418,7 +418,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "(never exited)"
     }
    },
    "com.zhuzhao.usclose": {
@@ -459,7 +459,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "(never exited)"
     }
    },
    "netdisk_service": {

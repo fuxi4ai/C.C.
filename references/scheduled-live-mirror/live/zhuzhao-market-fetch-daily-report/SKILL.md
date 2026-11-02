@@ -41,7 +41,7 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
    - 若 `stock_daily` 本身落后（句芒未就绪，`T_anchor` 未到当日应有交易日），仍照后续 5a 的「句芒未就绪」逻辑处理，不以时钟兜底。
 2. **挂载盘 I/O GOTCHA（必须走 /tmp 副本，2026-06-12 实测直写 commit 必报 disk I/O error）**：
    - 副本根用**当班唯一名**（如 `/tmp/dbroot-YYYYMMDD-HHMM`；固定名跨会话必被 nobody 占位写不进，G-20260728-001），`mkdir -p {根}/Market-Data`；
-   - **副本根四件套（G-20260728-002）**：① 持公共写锁后用 SQLite backup API 生成 `Market-Data/market_data.db` 一致性快照（不复制 live journal/WAL）② `Market-Data/tushare-cache` 软链到挂载源（只读种子；缺它 populate 会被 G030 守卫拦）③ `行业研究` 软链到挂载源（sync_buy_signals 的 KG 只读源）④ `.env` 以 0600 权限实拷；
+   - **副本根六件套（G-20260728-002 扩 · 2026-11-01 ERR-20261008-003 修法）**：① 持公共写锁后用 SQLite backup API 生成 `Market-Data/market_data.db` 一致性快照（不复制 live journal/WAL）② `Market-Data/tushare-cache` 软链到挂载源（只读种子；缺它 populate 会被 G030 守卫拦）③ `行业研究` 软链到挂载源（sync_buy_signals 的 KG 只读源）④ `.env` 以 0600 权限实拷；⑤ `龙鱼-标的分析库` 软链到挂载源（`gen_daily_report` 六维分只读源：`fundamentals_lookup.py` 读 `DATABASE_ROOT/龙鱼-标的分析库/records/`）⑥ `宏观-大宗商品` 软链到挂载源（白泽六维分只读源：`DATABASE_ROOT/宏观-大宗商品/business_breakdown.db`）——**缺 ⑤⑥ 时日报「受益标的」注解会静默回退图谱口径（ERR-20261008-003 实踩）**；
    - 副本上 `PRAGMA integrity_check` 必须 ok（热 journal 会自动回滚）；
    - `export ZZJY_DATABASE_ROOT={根}`（config.py 认这个环境变量）。
 3. 在 `~/Documents/Claude/Projects/Financial/烛照九阴/` 下跑取数脚本（A股三表 --from = 各表 max 日期的次日）：
@@ -92,7 +92,7 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
 **5.6 体系提炼摘录（2026-10-21 Doctor 裁「日报接'提炼过的有价值信息'·班内摘录」· PRD `brain/logs/checkpoints/2026-10-21_烛照日报整合上游提炼_PRD.md`）**
 - **只读纪律**：本步只读上游文件，**绝不写上游任何文件/库**；转述**不改判**（结论归属上游项目，不夹带九儿新判断）；**绝不编造**。
 - **候选源清单（提炼产物 · 按判据自选 · 非全摘）**：
-  - 风险日报（09:08 PT 当日新鲜）：`~/Documents/Claude/Projects/风险日报/data/taco_reading.json`（regime/note）· `geo_reading.json`（phase/note）· `fomc_market_exp.json`（FOMC 预期）
+  - 风险日报（09:08 PT 当日新鲜）：`~/Documents/Claude/Projects/风险日报/taco_reading.json`（regime/note）· `geo_reading.json`（phase/note）· `fomc_market_exp.json`（FOMC 预期）
   - 仓位信号（09:08 PT 当日新鲜）：剑酒青丘 `v25_et_position_signal.json` 四态信号
   - 白泽哨兵（02:40 PT 当日新鲜）：信号 A/B/C2 生命周期（预注册记账件）
   - 白泽观星（07:30 PT 当日新鲜）：`fed_prediction` 会前读数快照
@@ -101,7 +101,7 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
   - EAL（昨日 17:44 PT 班）：事件归因/惊奇结果
   - 龙鱼五力（周六 14:00 PT 班·周频）：`equity-thesis` 定性结论（首选动作/触发器·快照引用）
   - 白泽周报（周日 01:09 PT 班·周频）：受益榜结论（快照引用）
-- **摘录判据**：① 与 A 股隔日交易相关（持仓/常更标的、板块、情绪、流动性、外围定价）；② 有增量（状态变化/新信号/新研判，**不摘与昨日重复内容**）；③ 每条带来源项目＋as_of（数据时刻）；④ 宁缺毋滥——无可摘增量就写空数组，**绝不编**。
+- **摘录判据**：① 与 A 股隔日交易相关（持仓/常更标的、板块、情绪、流动性、外围定价）；② **信号新鲜度按信号时间（as_of）判：as_of 距数据日 ≤3 日历天**（as_of 缺失/不可解析 → 排除该条）；窗口内同信号可重复出现（状态延续仍有隔日意义），**不以「昨日摘过」为排除判据**（2026-10-21 Doctor 裁：不摘与昨日重复有点绝对，记录信号时间并排除 3 天前旧信号）；③ 每条带来源项目＋as_of（数据时刻）；④ 宁缺毋滥——无可摘增量就写空数组，**绝不编**。
 - **落盘**：写 `~/Documents/Claude/Projects/Financial/烛照九阴/docs/daily_integration_{YYYY-MM-DD}.json`（数据日用横杠格式）——结构 `{"date":"YYYY-MM-DD","notes":[{"text":"一句话要点","source":"来源项目","as_of":"数据时刻"}]}`。今日无增量 → `{"date":"...","notes":[]}`。docs 写不进（挂载缺失）→ 日志记「摘录落盘失败」、跳过本步**不阻断**（生成器缺件自动渲染「今日无」）。
 - **降级**：任一上游缺失 → 跳过该源；全部缺失 → 空数组或文件不写；本步失败**绝不阻断步骤 6 出报**。摘录结果记入第 7 步日志。
 
