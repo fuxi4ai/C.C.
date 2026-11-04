@@ -16,6 +16,8 @@ description: 由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动�
 - **写前**：`mkdir -p /tmp/dbroot/烛照九阴`；把 $REAL_DB（若有非零 `-journal` 一并）`cp` 到 `/tmp/dbroot/烛照九阴/recap.db`；副本上 `PRAGMA integrity_check` 必须 ok（热 journal 会自动回滚）；`export ZZJY_DATABASE_ROOT=/tmp/dbroot`——`config.py` 的 RECAP_DB 自动指向此副本，`dedup_kejian.py` 及各写库操作**无需改脚本**。本次所有写（步骤 1 的 record、步骤 3/3b/3c 的 dim 表插入、步骤 5.5 的 processed_kejian）**全部落 /tmp 副本**；你自己用 sqlite3 手插 dim 表时也务必对 `/tmp/dbroot/烛照九阴/recap.db` 写，不碰真库。
 - **写后放回**：关键表（recap_daily / dim1_external_pricing / dim2_sector_themes / dim3_sentiment_tech / dim4_trade_plan / dim4_stock_analysis / processed_kejian）放回前**只增不减**校验 + 副本 `integrity_check` ok；通过则真库残留 `-journal` **截断为 0 字节**（挂载盘禁删，截 0 即无害），再把 /tmp 整库 `cp` 覆盖放回 $REAL_DB，放回后重新 `integrity_check` + 行数复核。任一步不过 → **保留原库、不放回**、日志标明、staged 提炼稿交回。
 
+⚠ **价值四问（2026-10-21 Doctor 立）**：提炼行业主线/产业逻辑时凡判断「这条信息值不值得入维度」，先读 `~/Documents/Claude/brain/permanent/信息价值前置检验.md`，按其四问漏斗（增量→可行动→真伪分层→时效标签）与出口动作执行——与既有「拿不准就留待人工复核」闸并行。
+
 任务：把**小鲍老师复盘课件**的市场数据 + 行业/产业逻辑增量入 recap.db，**严格去重**。
 
 1. **扫新课件 + 去重（已固化·2026-06-24）**：跑 `cd Projects/Financial/烛照九阴 && python3 tools/dedup_kejian.py scan`（**只读**·去重逻辑已沉到代码）。它按 **filename+md5** 比对 `processed_kejian` 表 → 打印「待处理清单」（new / changed；unchanged 已跳过）。**只处理它列出的 `to_process` 项**；无待处理则今日无新课件（仍照常放回/收尾即可）。`dedup_kejian.py --json` 可取结构化清单。
@@ -23,7 +25,7 @@ description: 由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动�
 3b. **dim3 情绪/技术面（全自动）**：课件情绪/盘面叙述你自己提炼 → 入 `dim3_sentiment_tech`：`emotion_stage`（一句短语）、`sentiment_description`（要点分号连缀）、`date`=kejian_date。涨跌停家数/成交额等数字列**只录课件原文明说的**（P2 语料，**绝不从 Market-Data 行情库倒灌**）。课件没情绪段就不落。
 3c. **dim4 交易计划/仓位（半纳入·拿不准必留人工）**：仓位判读按既有规约（层=成=0.1 归一）；只填新列 `position_pct_min/max`（0-1，min≤max）、`position_repr`、`position_stance`（防御/谨慎/中性/偏多）、`position_conf`（low/mid/high）、`position_raw`、`position_source`、`plan_window`、`position_band`（不动 `position_guidance` 等旧列）。**闸门**：原文含混/矛盾/conf=low → **仓位数值列不落**，把课件名+原文摘句+疑点写入 `Projects/Financial/烛照九阴/data/待人工复核-仓位.md`。repr 类型与分项口径按下方【三道入库闸门】闸①闸②执行。有**明确个股多空判断**才落 `dim4_stock_analysis`。宁缺勿污。
 
-- **日期指涉核对（2026-09-23 立 · ERR-20260923-001）**：同班处理多份课件时，逐份先钉「文件名 kejian_date=X · 内容『今日/明日/前一日』指涉哪一天」再提炼；连续两日课件内容重叠（热点跨日连热）不构成「同日」证据。核实课件数字前先钉死课件说的哪一天，再取对日数据比对，禁止跨日错比；发现精确吻合（如 2.14×0.83≈1.77 恰为缩量 17%）先读成简单真相，不先构造复杂解释。
+- **日期指涉核对（2026-09-23 立 · ERR-20260923-001）**：同班处理多份课件时，逐份先钉「文件名 kejian_date=X · 内容『今日/明日/前一日』指涉哪一天」再提炼；连续两日课件内容重叠（热点跨日连热）不构成「同日」证据。核实课件数字前先钉死课件说的哪一天，再取对日数据比对，禁止跨日错比；**星期几断言必须实查（`python3 -c "import datetime;print(datetime.date(Y,m,d).isoweekday())"` 或 trade_cal），禁心算凭印象（ERR-20260923-001 门禁 · 2026-11-04 挂单批）**；发现精确吻合（如 2.14×0.83≈1.77 恰为缩量 17%）先读成简单真相，不先构造复杂解释。
 
 ## 三道入库闸门（2026-08-19 哥哥交九儿落 · ERR-20260819-001 根治）
 
@@ -34,7 +36,7 @@ description: 由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动�
 - **闸③ dim2 近似注记闸**：`limit_up_count`/`limit_down_count` 来自近似表述（"六十几个""80 家左右""超过十个"）→ 照录近似数（"超过十个"取下限），并**逐字段**在 `supply_demand_pattern` 追加【近似注记】，固定格式：`【近似注记】limit_up_count≈{值} 系原文「{原句}」近似录入`（已有内容则分号追加、不覆盖）；精确数**不注**。口径与 dim3 `trading_amount` 注记一致。
 
 4. **打标**：入库记录尽量带 `source="小鲍复盘课件"`、`confidence="P2"`、`kejian_date`（表无列则记日志）。
-5. **校验（含落库前自检 · fail-fast）**：核行数变化与非空；读不出/格式怪的跳过并记。放回前对 /tmp 副本**今日行**跑断言 SQL：repr 非 NULL 必 0-1 实数；min/max/repr 非 NULL 必 ∈[0,1] 且 min≤repr≤max；stance/conf 词表违例=0；conf=low 行数值列全 NULL；dim2 涨跌停列非 NULL 必 INTEGER；断言不过 → 当场修/留空、证据进日志后再放回。
+5. **校验（含落库前自检 · fail-fast）**：核行数变化与非空；读不出/格式怪的跳过并记。放回前对 /tmp 副本**今日行**跑断言 SQL：repr 非 NULL 必 0-1 实数；min/max/repr 非 NULL 必 ∈[0,1] 且 min≤repr≤max；stance/conf 词表违例=0；conf=low 行数值列全 NULL；dim2 涨跌停列非 NULL 必 INTEGER；**今日 industry_signals 行 viewpoint_owner 非 NULL（ERR-20260907-001 门禁 · 2026-11-04 挂单批）**；断言不过 → 当场修/留空、证据进日志后再放回。
 5.5 **标已处理（去重收尾·必跑）**：本次 `to_process` 课件入库完成后，跑 `cd Projects/Financial/烛照九阴 && python3 tools/dedup_kejian.py record --all-new`（写 `processed_kejian` 到 /tmp 副本，随放回一起回真库），下次 scan 即跳过。
 6. **日志**：`~/Documents/Claude/brain/agents/烛阴/logs/{今天YYYY-MM-DD}-课件入库.md`：新增 N 课件、入库 M 条（落到哪些表，**含 dim3/dim4 各几条**）、几条进待人工复核、放回是否成功（integrity/行数）、跳过/异常；无新增则一行"今日无新课件"。同日二次触发追加复核段、不覆盖。
 
