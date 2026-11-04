@@ -64,6 +64,8 @@ project: 司南/Gateway-Official适配
 - ⏳ 官方壳注册新 5 班（disable 态）+ 19 班 enabled 核验 + Settings/MCP 对齐 + artifact 重推 —— **全部待官方订阅开通**
 - Gateway 侧运行面零改动，24 班照常值守
 
+**2026-11-04 补记**：官方订阅已开通，Doctor 裁定定时班与看板留 Cowork 标签，Code 标签不建班（见 `references/scheduled-live-mirror/官方端适配指令卡-2026-11-04.md` §〇 与 `司南/GOTCHAS.md` ERR-20261104-001）。Cowork 注册表现状待该标签实读；上段「待官方订阅开通」与下节「官方订阅壳：当前非常态」为历史口径，正式切后再改。
+
 ## 引擎格局（2026-11-01 Doctor 定版）
 
 - **CC 主引擎**：Claude Desktop（Gateway）映射 DeepSeek API——artifact 班 + 日常交互

@@ -23,7 +23,7 @@
 - 需 Doctor 拍板的事给「推荐/不推荐+理由」，不用一句话带过。
 - 有观点但不选边、不和稀泥、不谄媚——对 Doctor 自己的命题也做独立审视。
 - **git 边界（本模式专用）**：本地模式跑只读 git 命令没问题（「沙箱禁一切 git」只约束 Cowork 沙箱的 FUSE 环境，别搬错场景）；但 **commit/push 仍交 Doctor 终端**——多会话并发提交是既往事故源（ERR-20260718-002）。
-- Cowork 专属能力在本模式**部分可用**：对话朗读/ElevenLabs 与跨会话定时任务**不存在**（静默跳过朗读；定时需求走 Cowork 侧）；**AskUserQuestion 选择窗可用**（2026-09-17 实测成功，转录窗口内另有 3 次成功记录），拍板类问题优先用选择窗、选项 label 尾部带（推荐/不推荐）——与本文件「报裁/批复二通道」条一致。
+- Cowork 专属能力在本模式**部分可用**：ElevenLabs 视当前壳的 MCP 连接而定（2026-11-04 官方 Code 标签实测可用，未连接则静默跳过朗读）；Code 标签虽有 `scheduled-tasks` 工具，但存于 `~/.claude/scheduled-tasks/`、与 Cowork 不是同一处——**读到 0 不代表 Cowork 为空，也不在此建班**，定时与看板推送走 Cowork 侧；**AskUserQuestion 选择窗可用**（2026-09-17 实测成功，转录窗口内另有 3 次成功记录），拍板类问题优先用选择窗、选项 label 尾部带（推荐/不推荐）——与本文件「报裁/批复二通道」条一致。
 
 ## 数灵
 
@@ -33,7 +33,7 @@
 
 **官方 Cowork 为主，本（开发者/第三方）模式为备。**
 
-- 定时任务只在 Cowork 侧跑；20 个班的操作说明镜像在 `brain/references/scheduled-live-mirror/`（只读参考，改班要去 Cowork 侧）。
+- 定时任务只在 Cowork 侧跑（2026-11-04 Doctor 重申：班与看板留 Cowork）；24 个班的操作说明镜像在 `brain/references/scheduled-live-mirror/`（只读参考，改班要去 Cowork 侧）。
 - 同一资产两侧都能写 ⇒ 动手前先看 git 状态有无未提交的并发改动；写完请 Doctor 尽快提交，缩小覆盖窗口。
 
 ## Skills

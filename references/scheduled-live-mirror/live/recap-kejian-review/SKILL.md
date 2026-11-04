@@ -11,6 +11,8 @@ description: 每天09:30由句芒审核九儿课件入库：去重/数据合理�
 
 ⚠️ **审核对象 = 复盘库 `~/Documents/Database/烛照九阴/recap.db`**（`processed_kejian` 去重表 + 当日入库的 dim1_external_pricing/dim2_sector_themes/industry_signals/recap_daily/**dim3_sentiment_tech/dim4_trade_plan/dim4_stock_analysis**）+ 九儿日志 `~/Documents/Claude/brain/agents/烛阴/logs/{今天YYYY-MM-DD}-课件入库.md` + 待复核清单 `Projects/Financial/烛照九阴/data/待人工复核-仓位.md`。**不是渊图、不是 news.db（已归档）。**
 
+⚠ **价值四问（2026-10-21 Doctor 立）**：审查「数据合理性/非编造」与档 2 判断性修复时，先读 `~/Documents/Claude/brain/permanent/信息价值前置检验.md` 作采信判据（四问漏斗+出口动作），不凭印象判定。
+
 ## 一、六项审查
 1. **去重完整性**：`processed_kejian` 无重复 filename/file_hash；当日入库与已登记课件一一对应，**无重复入库**（同一 kejian_date/主题被插多条）。
 2. **数据合理性**：市场数据数值在常识区间（无量级离谱/占位错值）；行业/产业逻辑条目非空、非编造、能对回课件原文（pdftotext 抽 Raw-Recap 原文核验，数字逐条命中）。

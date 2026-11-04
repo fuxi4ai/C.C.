@@ -39,6 +39,8 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
 
 【Stage 0 · 渊图先验】用 bash 读 /Users/lunarabbit/Documents/Database/行业研究/mapping/行业知识图谱_完整数据库.json，对 13 种商品(碳酸锂/稀土/黄金/铜/原油/氦气/钨/六氟化钨/光模块-800G/光模块-1.6T/高多层板/HVLP铜箔/液冷服务器)检索相关节点的结构判断(供给收紧/供需缺口/见顶约束等)与其 data_sources[].confidence_level + data_vintage。记下每商品结构先验(P1)，用于判 persistence_type/dimensions 与交叉验证。**若写入 data/weekly/yuantu_priors_YYYY-MM-DD.json，structure 字段必须每商品非空（2026-09-11 修：09-06 曾全空致全品种挂「待判(渊图)」）**。
 
+⚠ **价值四问（2026-10-21 Doctor 立）**：Stage 1 web 补价与 Stage 2 新闻侧采信，凡判断「这条信息值不值得采用」（写 CSV／入 crossval support/refute）时，先读 `~/Documents/Claude/brain/permanent/信息价值前置检验.md`，按其四问漏斗（增量→可行动→真伪分层→时效标签）与出口动作执行——与既有 confidence/asof/yoy_comparable 三闸并行、互不取代。
+
 【Stage 1 · 补价 + 定位受益公司】
 1) 读 PROJ/data/commodity_prices_live.json，看本地 cron 已写入哪些新鲜价（含 [1]期货 [2]SMM 钨/稀土）。读 data/weekly/local_prep_health.json 看各步是否跑成。
    注：SMM h5(钨/稀土)应已由 Stage 0.5 步骤[2]（或过渡期 Mac cron）merge 进 live store；若 [2] 自检失败且 health 显示 cron 侧也失败，则把钨/稀土并入下条 web 补价。

@@ -12,6 +12,8 @@ description: 每周六 14:00 PT 用 equity-thesis 技能对龙鱼持仓标的逐
 
 第二步·标的清单：读 /Users/lunarabbit/Documents/Database/龙鱼-标的分析库/holdings.json 的 holdings 数组（全部条目，以当日文件为准）。每只仅知「在持仓清单内」——不给、不用股数/成本/状态，禁止臆测持仓比例。
 
+⚠ **价值四问（2026-10-21 Doctor 立）**：逐只研究「最近事件与边际增量」取舍，凡判断「这条信息值不值得写进报告」，先读 `~/Documents/Claude/brain/permanent/信息价值前置检验.md`，按其四问漏斗（增量→可行动→真伪分层→时效标签）与出口动作执行——与技能自带「影响判断的关键事实必须打开原始来源」并行。
+
 第三步·逐只研究（可并行多只），每只按以下顺序：
 
 **第零步·演化轨道回访（研究前先做）**：读该标的 /Users/lunarabbit/Documents/Database/龙鱼-标的分析库/equity-thesis/{ts_code}.json 的 entries 最后一个（无则跳过）。

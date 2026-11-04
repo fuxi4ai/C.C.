@@ -1,6 +1,6 @@
 ---
 name: refresh-risk-daily
-description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号（collect_v25_et_inputs → v25_et_daily_signal → v25_et_position_signal.json）→ 股权溢价指数原子（fetch_erp_atom.py → render_erp_detail.py）→ build_risk_daily.py → update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写）
+description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号 → 股权溢价指数原子 → AI Tech Alarm 事件源定向回源更新（四维度 P0/P1·未核保留）→ prepare V17 包→model_entry DeepSeek 判读→build 校验落盘·失败回退标陈旧）→ update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写
 ---
 
 每日刷新「风险日报」artifact。自包含步骤：
@@ -37,11 +37,21 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
    - pip 安装耗时约 1-2 分钟属正常；装失败 → 记「ERP atom skipped: pip 失败」并继续。
    - 沙箱直连 Tushare/akshare，勿设代理（与市场班同通道；akshare 走英为财情）。
 
-2. 运行后端构建脚本：在沙箱跑 `python3 ~/Documents/Claude/Projects/风险日报/build_risk_daily.py`（它读 market_data.db / recap.db / PEC predictions-register / AI Tech Alarm 底层信号 / taco_components.db / erp_atom.json 等一手数据，重算风险原子（含 TACO）的温度/震动烈度，派生风险分子预警，生成 `dashboard/risk-daily.html` + `data/risk_snapshot.json`）。若脚本报错或某原子缺数据，如实贴出错误，**不要用旧数据蒙混、不要编造温度**。
+2. （AI Tech Alarm 事件源定向回源更新 · 信息自纠正第一步 · 2026-11-03 四目标优化接入）在沙箱：
+   - 先读 `~/Documents/Claude/Projects/风险日报/data/narrative_events.json`（四维度：demand/returns/funding/delivery）逐事件核对 `next_check_utc` 是否已到期/三日内到期，再按四维度观察点定向 WebSearch 回源 P0/P1（机构评论用于选指标，公司/交易披露确认事实）：现金回报→大云财报/FCF/折旧指引；融资信用→发债定价与交割、OpenAI first close、Anthropic IPO、CoreWeave 再融资；付费需求→云收入/合同转收入；交付→可计费容量/交付延期。
+   - **核到新事实或反证（P0/P1 可读源）才更新事件层**：新事件追加（event_id 唯一）、事实/时间/生命周期（developing/confirmed/cleared）更新、同一风险命题的新一代以 supersedes 覆盖旧代；更新后立即跑 `python3 ~/Documents/Claude/Projects/风险日报/narrative_score.py` 自检校验。**未核到合格源 → 原事件一字不动**，输出一行「事件源更新: 本轮无新 P0/P1 事实」。
+   - **范围只限 narrative_events.json**；绝不碰 `watch/alarm_watchlist.jsonl`（冻结输入）、`current.json`、`revisions/`。
 
-3. 更新 artifact：调用 `mcp__cowork__update_artifact`，id='risk-daily'，html_path='/Users/lunarabbit/Documents/Claude/Projects/风险日报/dashboard/risk-daily.html'，update_summary 写「当日综合风险温度 {值} {带} · {日期}」。
+3. 运行后端构建脚本（含 AI Tech Alarm 四维度模型复核）：在沙箱跑
+   python3 ~/Documents/Claude/Projects/风险日报/narrative_review.py prepare review-input.json
+   python3 ~/Documents/Claude/Projects/风险日报/build_risk_daily.py --review-command ~/Documents/Claude/Projects/风险日报/model_entry.py --review-model deepseek-chat
+   - prepare 生成 V17 模型复核输入包（绑定事件哈希/revision 身份/行情收盘/市场哈希）；build 自动调模型入口（stdin 读包 → DeepSeek API 判读 → stdout 出评估回包）→ 严格校验（绑定/时点/引用/权重）→ 落盘评估 → 评分 → 生成 dashboard/risk-daily.html + data/risk_snapshot.json。
+   - 失败语义：模型入口失败/超时/回包校验拒绝（倒签、缺字段、引用非法等）或 KG_API_KEY 不可得 → build 自动回退保留上次有效评估并显著标陈旧（fail-visible：_review_errors/stale_fallback 注记在场），**不阻塞日报，保留这次带复核 build 的产物**；**禁止再跑无参 build 覆盖**（无参会清掉本轮失败注记）。
+   - 若脚本报错或某原子缺数据，如实贴出错误，**不要用旧数据蒙混、不要编造温度**。
 
-4. 纪律：
+4. 更新 artifact：调用 `mcp__cowork__update_artifact`，id='risk-daily'，html_path='/Users/lunarabbit/Documents/Claude/Projects/风险日报/dashboard/risk-daily.html'，update_summary 写「当日综合风险温度 {值} {带} · {日期}」。
+
+5. 纪律：
    - 数据真实性铁律（温度全部来自脚本读的真实一手值，无估算冒充）；risk_overlay_not_alpha——只出风险读数，**不出任何交易/仓位/方向建议**。⚠ 仓位卡片属既有例外（Doctor 2026-10-10 令：卡片自带「仅供参考，不构成投资建议」免责标注，只呈现、不做任何方向断言以外的加工）。股权溢价指数原子同纪律：只出读数与历史分位档位，不做方向断言。
    - **挂载盘 SQLite 铁律（2026-07-31 事故后立）**：`~/Documents` 是 FUSE 挂载，**不支持 unlink**（实测 EPERM）。SQLite 回滚日志的原子提交点正是删除 `-journal`，所以在挂载盘上直接开 rw 连接（`sqlite3.connect(path)` 不带 `mode=ro`）必然 `disk I/O error`，并留下 hot journal，反复累积即 `database disk image is malformed`（07-27/28/29 连续三天损坏的根因）。
      → 任何写库一律「拷到 /tmp 本地副本 → 在副本上 rw → 自检 integrity ok → 整库覆写回挂载」（truncate 写允许，rename/unlink 不允许）。fetch_taco_components.py 已按此改造（`_stage()` / `_commit_back()`）。纯 `mode=ro` 读挂载盘是安全的，无需改。

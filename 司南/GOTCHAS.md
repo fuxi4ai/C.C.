@@ -28,3 +28,11 @@ project: 司南
 ---
 
 <!-- 在下方追加新条目 -->
+
+## [ERR-20261104-001] 官方壳 Code 标签与 Cowork 标签是两个执行面，适配卡只按 Cowork 写
+**状态**: 🔄 待修复/已修待验
+**优先级**: 🟡 中
+**触发场景**: 2026-11-04 Doctor 在官方订阅的 Code 标签要求核查 Gateway→官方迁移，指令卡的注册表、skill、artifact 步骤均按 Cowork 写。
+**错误信息**: Code 标签 `list_scheduled_tasks` 返回 0；`list_artifacts`（claude-artifacts）返回空；工具集无 `update_artifact`、`request_cowork_directory`；工具说明写明任务存于 `~/.claude/scheduled-tasks/`；24 个活班 prompt 中 16 个依赖 Cowork 工具或沙箱路径（镜像关键词扫描，未实跑）。
+**解决方案**: Doctor 裁定班与看板留 Cowork；指令卡增「〇 · 执行面订正」节。Cowork 注册表现状仍待该标签实读。
+**预防措施**: 切环境核查前先确认执行面（Cowork / Code / Gateway）；不用 Code 标签的注册表读数判定 Cowork；复原清单与沿革须按执行面区分。

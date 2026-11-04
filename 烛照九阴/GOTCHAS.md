@@ -495,6 +495,12 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **追记 2026-10-23（句芒课件入库审核班·复发扫描·同款场景第二十六/二十七次出现·防御有效）**: 两起同款场景入账——① **第二十六次（10-22 晚班·此前无人追记）**：九儿 10-22 晚间班（21:53）设 `ZZJY_DATABASE_ROOT=/tmp/dbroot` 跑隔离写库（新课件 261022 落盘入库 16 条业务行+1 条登记），该班属 nobody 会话、所建 /tmp/dbroot 留至次日；② **第二十七次（10-23 早班）**：九儿 10-23 班（09:05·当日无新课件）沿用 /tmp/dbroot 遇属主冲突（nobody 不可写）→ 改设本会话自有根 `/tmp/j9db`，RAW_RECAP_DIR 跟随漂移→软链回指真挂载 Raw-Recap，scan 得 298 课件全未变、待处理 0（new 0 / changed 0 / unchanged 298），全程零写库。九儿班内自提建议：「建副本前先测写，遇属主冲突换会话自有根目录」（跨班联动候选·挂单待哥哥批改九儿 ingest SKILL）。句芒独立核验终态：真库 recap.db 8,458,240 B · mtime 2026-10-22 21:53（今日零写入·无 journal/wal 残留）· integrity ok（35 表）· processed_kejian 298 行（0 重复 filename/hash）· 261022 恰 1 行 file_hash 8f246290d142c7aadb497553363f73b8 与磁盘 md5 逐字节一致（本班实算）· 课件线各表 2026-10-22 新行 dim1 1 / dim2 1 / dim3 1 / dim4_trade_plan 1 / dim4_stock_analysis 6 / recap_daily 1 / industry_signals 5 = 16 条各恰一份（无重复入库）· 六张关键 dim 表 max(date)=2026-10-22 · 全库 2026-10-23 行 0 → **数据无损、无漏扫**。同款场景累计**第二十七次**出现（08-30 起历次形态见此前追记），防御全靠班内自觉、根部「输入/输出目录未解耦 + 扫空静默」依旧——修法①②（独立 env 或 fail-loud 告警）仍待 Doctor 裁。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
 
+**追记 2026-11-02（句芒课件入库审核班·复发扫描·同款场景第二十八次出现·防御方式升级为官方 env）**: 九儿 11-02 班（周一·当日无新课件）设 `ZZJY_DATABASE_ROOT=/tmp/dbroot-jiuyin`（旧会话遗留 `/tmp/dbroot` 属 nobody 不可写、换自有根规避——与第二十七次同一性质），**且显式设 `ZZJY_RAW_RECAP_DIR` 指向真挂载 Raw-Recap**——2026-10-23 修复批实装的独立 env（config.py L63）在实战中首次被九儿直接使用，绕行方式从软链/拷文件升级为官方 env。dedup scan 得 304 课件全未变、待处理 0（new 0 / changed 0 / unchanged 304），防御照旧生效。句芒独立核验终态：真库 recap.db 8,744,960 B · mtime 2026-11-01 09:09:17（今日零写入·无 journal/wal/shm 残留）· md5 58a2c7e188bdfa79ea7a94bc2713c8c0 与九儿所记逐字节一致 · integrity ok（35 表）· processed_kejian 304 行（0 重复 filename/hash）↔ Raw-Recap 实盘 304 课件、最新登记 261101 file_hash dc596211… 与九儿所记一致 · 六张关键 dim 表 max(date)=2026-11-01 · 全库 2026-11-02 行 0 → **数据无损、无漏扫**。同款场景累计**第二十八次**出现（08-30 起历次形态见此前追记），但根部已修复（独立 env 实装）、防御从自觉绕行升级为显式 env——残余风险仅「未设 env 时 RAW_RECAP_DIR 仍随 DATABASE_ROOT 派生」的默认路径语义（属设计保留、非缺陷）。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
+
+**追记 2026-11-02 晚间（句芒课件入库审核班·复发扫描·同款场景第二十九次出现·防御有效·官方 env 第二次使用）**: 九儿 11-02 晚间班（19:40 触发·新课件 `261102四维度训练营-总结_完整版.pdf` 19:37 落盘 Raw-Recap）设 `ZZJY_DATABASE_ROOT=/tmp/zzjy-dbroot` 隔离写库（旧会话遗留 `/tmp/dbroot` 属上一会话 nobody 不可写、换自有根规避——与第二十八次同一性质），`ZZJY_RAW_RECAP_DIR` 显式指回真挂载 Raw-Recap（官方 env 第二次实战使用），dedup scan 得 304 未变 + 1 新（261102）、`record --all-new` 记 1 条，防御照旧生效。句芒独立核验终态：真库 recap.db 8,790,016 B · mtime 2026-11-02 19:48:53（今日写入 1 次·无 journal/wal/shm 残留）· integrity ok（35 表）· processed_kejian 305 行（0 重复 filename/hash）↔ Raw-Recap 实盘 305 课件集合双向一致（盘有库无 0 · 库有盘无 0）· 261102 恰 1 行 file_hash 91bd7b815ef2a5edec25896447d01fcd 与磁盘 md5 逐字节一致 · 课件线 7 表 2026-11-02 新行 1/0/1/1/1/22/3 各恰一份（无重复入库）· 全库 2026-11-02 行仅课件线表 + emotion_cycle（18:08 他流程行·九儿未碰）→ **数据无损、无漏扫**。同款场景累计**第二十九次**出现（08-30 起历次形态见此前追记），防御从自觉绕行升级为显式 env（根部已修复·官方 env 连续两班使用均有效）——残余风险仅「未设 env 时 RAW_RECAP_DIR 仍随 DATABASE_ROOT 派生」的默认路径语义（属设计保留、非缺陷）。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
+
+**追记 2026-11-03（句芒课件入库审核班·复发扫描·同款场景第三十次出现·防御有效·官方 env 第三次使用）**: 九儿 11-03 班（周二·新课件 261103 入库 35 条业务行+1 条登记）设 `ZZJY_DATABASE_ROOT=/tmp/zzjy_dbroot_2457` 跑隔离写库（旧会话遗留 `/tmp/dbroot` 属上一会话 nobody 不可写、换自有根规避——与第二十九次同一性质），`ZZJY_RAW_RECAP_DIR` 显式指回真挂载 Raw-Recap（官方 env 第三次实战使用），dedup scan 得 305 未变 + 1 新（261103）、`record --all-new` 记 1 条，防御照旧生效。句芒独立核验终态：真库 recap.db 8,830,976 B · mtime 2026-11-03 09:11:36（今日写入 1 次·无 journal/wal/shm 残留）· md5 7af3521f… · integrity ok（35 表）· processed_kejian 306 行（0 重复 filename/hash）↔ Raw-Recap 实盘 306 课件集合双向一致（盘有库无 0 · 库有盘无 0·「转换文稿」目录不在 ingest 范围）· 261103 恰 1 行 file_hash 28d8d5d4cc6157b32de4ed69028be4a0 与磁盘 md5 逐字节一致 · 课件线 7 表 2026-11-03 新行 1/1/1/11/1/1/19 各恰一份（无重复入库）→ **数据无损、无漏扫**。同款场景累计**第三十次**出现（08-30 起历次形态见此前追记），防御从自觉绕行升级为显式 env（根部已修复·官方 env 连续三班使用均有效）——残余风险仅「未设 env 时 RAW_RECAP_DIR 仍随 DATABASE_ROOT 派生」的默认路径语义（属设计保留、非缺陷）。状态维持 ⚠️ 已知风险（本班只读观测 + 追记，不自标 ✅）。
+
 ## [ERR-20260901-001] 大盘涨跌幅用 510300 ETF 代理——连续三日与沪深300指数偏离 0.2pp+ + 显示 1 位小数抹平微跌
 
 **状态**: ✅ 已验收（Doctor 2026-09-14 落签「批准收取」 · CC 代记 · 2026-09-01 Doctor 裁「换指数真身」→ 实施：`scripts/fetch_index_daily.py` 新建（tushare index_daily 000300.SH → `cn_index_daily` 表）+ 内嵌进 `fetch_theme_etf.py`（同批原子拉取·班 prompt 零改动）+ `gen_daily_report.py` 快照/大盘曲线改读指数表（`IDX`）（2026-09-14 复盘：cn_index_daily 表 655 行在库 ✓ · ✅ 已落签）+ bench_note「沪深300指数」+ `pct_span` .1f→.2f。验证：负向（无表→「待取数」fail-closed·exit 0）+ 正向（/tmp 镜像灌真实值→快照 -0.30%·产物零「代理/510300」残留）。**实施者不自签**——待独立验收；回填与重生成命令已贴 Doctor 终端）
@@ -738,6 +744,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **追记 2026-10-26（生产实证 · 班次待办场）**: 追加式修复首次在真事故中兑现——`.last_run_status` 保住「OK 2026-10-23 02:33:23 → FAIL 2026-10-26 03:35:41」两行（旧覆盖式下这次 FAIL 无痕）；同日该 FAIL 引导出 ERR-20261026-001（trade_cal 时钟停更环）并成为其硬证据②。
 
+**追记 2026-11-01（第三次复发确证 · GAI 未尽检查场）**: ERR-20261026-001 根因经实读 `logs/mac_marketdata_20261026.log` 确证——10-26 晨班 tushare `api.waditu.com` DNS `Errno 8` 全断（trade_cal 3/3 失败 + stock_daily/ks50/fund_daily 全批失败），即本族**第三次复发**（09-22 → 10-26）；10-27 起自愈。班脚本 `end_date` 取「今天」的口径缺陷假设被证伪（`ops/ingest_stock_daily.py` L128 实读）。DNS 层根治与「自检第二判据」一并挂本族预防门禁线待裁。
+
 ## [ERR-20260923-001] 九儿核实课件数字跨日错比——260923 课件的「今日 1.77 万亿」错拿去和 9/22 的 2.14 万亿比，误判「课件错误」并错误撤下已入库数值
 
 **状态**: ✅ 已闭环（Doctor 2026-09-23 语「应该固化完成了」 · 句芒未参与实施·实读核验代记——live ingest SKILL 已含「日期指涉核对」护栏段、与建议修法①②③逐条对应；brain live 镜像为派生只读副本、待 Doctor 终端 rsync 刷新，命令已随本班 git 块贴出；可回退·Doctor 一句话可改）
@@ -865,12 +873,24 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20261026-001] Mac marketdata 班时钟源 trade_cal 停更 10-23 → 班时钟锁死 → ks50/market_amount/guarantee_ratio 三步失败（2026-10-26 巡检红条 · CC 登记）
 
-**状态**: 🔄 待修复（trade_cal 已由 CC 2026-10-26 回补至 10-31 解锁；班脚本时钟取数口径根因待日志确证）
+**状态**: ✅ 已修复（2026-11-01 根因确证：DNS 间歇失效（ERR-20260922-001 第三次复发）· 假设①证伪 · 班 10-27 起自愈 · 未参与实施的审核者代签）
 **优先级**: 🔴 高（Mac 班三步停摆 · 巡检红条现行）
 **触发场景**: 2026-10-26 03:18 PT Mac 班（launchd com.zhuzhao.marketdata）——市场时钟=trade_cal·D0=20261023（落后截点 3 日历天·阈值 3 边缘），ks50_index/market_amount 03:18:52 失败、guarantee_ratio 03:35:41 失败（exit 1）；巡检快照（Doctor 07:10 终端实跑）报 🔴 marketdata/ipo-rolling 上次退出码 1。
 **硬证据**: ① trade_cal 表 10-26 晨止 20261023（CC 实读 · 已回补至 10-31）；② `.last_run_status` 追加式史：OK 10-23 → FAIL 10-26 03:35:41（追加式修复首次逮住失败记录——旧覆盖式下此失败无痕）；③ 班 stdout（Doctor 终端 tail）：三步失败 + 表 MAX 全停 10-23/22 + 班自判「✅ 各表均达档位」（时钟自身共模盲区 · STALE_POLICY 注）。
-**根因（两假设并列 · 待上方日志确证）**: ① 时钟取数口径缺陷——班更新 trade_cal 时 end_date 取「昨日」（周一晨＝周日 → 拿不到 10-26 → 时钟锁死 10-23 → 当日步判无新交易日 → 三步 fail-closed）；② trade_cal 更新步自身失败（DNS 间歇失效 ERR-20260922-001 同族）。周一晨班天然暴露（前一日为休市日）。
+**根因（2026-11-01 确证 · 实读 `烛照九阴/logs/mac_marketdata_20261026.log` + `ops/ingest_stock_daily.py`）**: **假设②成立、假设①证伪**——① 证伪：代码 L128 `persist_trade_cal(con, token, today_bj)`，end_date 取**今天**（北京时间），从未取「昨日」；② 成立：日志 L5-11 trade_cal 拉取 **3/3 失败 `[Errno 8] nodename nor servname provided`（DNS 解析失效）**，L8「trade_cal 落表失败（不阻断行情落库；下游陈旧判定将退回 stock_daily 时钟）」，随后 03:17 stock_daily 落库、03:18:52 ks50、03:18:53 fund_daily 全批失败——**全部 `api.waditu.com Failed to resolve`**。即 10-26 晨班 tushare 域名 DNS 间歇失效（与 ERR-20260922-001 **同根第三次复发**：09-22 → 10-26），trade_cal 更新步失败 → 时钟锁 10-23 → 当日步判无新交易日 → 三步 fail-closed（正确行为，未编数）。10-27 起 DNS 恢复、班自愈（10-27~10-30 数据全落库实据）。
 **影响面**: cn_index_daily 000688 停 10-23（已由 CC KS50 补写 10-26 修复）、market_amount_daily 停 10-23（烛照班 10:03 PT 覆盖）；数据链总体被 Cowork 句芒班（04:14 成功落 10-26 全量）兜住——Mac 班失败≠数据缺，但若持续失败其独有表（market_amount/theme_etf/limit_list/margin 系）将停更。
-**建议修法**（归 Doctor 裁 · 生产脚本 propose-then-confirm）: ① trade_cal 更新 end_date 取「今天」（北京时间），不取「昨日」；② 班自检加第二判据——时钟落后截点 ≥2 日历天时显式红字（防共模盲区静默）；③ 修后负向测试（周一晨场景）+ 未参与实施的 subagent 验收。
+**建议修法**: ① ~~trade_cal 更新 end_date 取「今天」~~（前提不成立，作废——代码本就取今天）；② 班自检加第二判据——时钟落后截点 ≥2 日历天时显式红字（防共模盲区静默）——**仍适用，归并 ERR-20260922-001 预防门禁线待裁**；③ DNS 线根治（代理/DNS 分流）同归 ERR-20260922-001。
 **预防门禁**: 时钟源表（trade_cal）自身的停更不得被「按时钟判档位」的自检吞掉——自检必须含「时钟 vs 日历」第二判据。
-**来源**: 2026-10-26 巡检红条（Doctor 07:10 实跑快照）+ Doctor 终端 stdout tail + CC 实读 trade_cal/DB
+**来源**: 2026-10-26 巡检红条（Doctor 07:10 实跑快照）+ Doctor 终端 stdout tail + CC 实读 trade_cal/DB；根因确证 2026-11-01 CC 实读班日志+代码
+**核验注记（2026-11-01 · 未参与实施的审核者代签）**: 三判据实跑实读全绿——① 日志 L5-11 trade_cal 两轮 3/3 失败 `[Errno 8] nodename nor servname provided`（DNS 断）+ L8「trade_cal 落表失败（不阻断行情落库…）」；03:17:14 stock_daily 失败 (exit 1)（根=trade_cal DNS 重试耗尽）、03:18:52 ks50_index 失败（tushare HTTPS getaddrinfo Errno 8）、03:18:53 fund_daily/index_daily 全批 `Failed to resolve 'api.waditu.com'`；② 代码 `ops/ingest_stock_daily.py` L122-123 `today_bj`=北京时间今天、L129 `persist_trade_cal(con, token, today_bj)` 之 end_date 取今天——假设①证伪；③ market_data.db 只读实查（sqlite mode=ro）——trade_cal MAX(cal_date)=20261031、10-27~10-30 四日 is_open=1（10-31=0）；cn_index_daily max=2026-10-30 四日各 2 行、daily_market max=20261030 四日各 1 行、stock_daily max=20261030 四日各 5570~5571 行——班 10-27 起自愈成立，落签 ✅。
+
+## [ERR-20261104-001] 平铺挂载（无整盘 Documents）下 adjustment_grade.py `_find_root` 命中 mnt、RES 拼 `Claude/Projects/Financial/剑酒青丘` 不存在 → 级别读数两分支均败
+**状态**: 🔄 已绕过待修（本班 env 垫片绕过，代码未改）
+**优先级**: 🟡 中
+**触发场景**: 2026-11-04 烛照班（07:09 PST 触发），本 session 挂载为平铺七目录（Database / 烛照九阴 / 剑酒青丘 / AI4ME / brain…），非 11-03 班的整盘 Documents。
+**硬证据/最小复现**: gen_daily_report 首跑 stderr：`[grade_section] 级别读数降级(两分支均败): --update rc=1 … sqlite3.OperationalError: unable to open database file | --json rc=1 …`。`_find_root()` 上找到含 `Database/` 的 `mnt/` 作根 → `RES=mnt/Claude/Projects/Financial/剑酒青丘/回调级别判别` 不存在；真址 `mnt/剑酒青丘/回调级别判别/index_research.db` 在盘。
+**根因**: `_find_root` 只保证 Database 可达，RES 仍假定 Documents 整树结构；平铺挂载下 Database 与 剑酒青丘 是兄弟而非 Documents 子树。与 ERR-20261008-001（路径迁移）、ERR-20260721-001（/tmp 域）同族、不同变体。
+**影响面**: 平铺挂载的班次日报「回调级别读数」灰字占位（不阻断）。
+**修复/建议修法**: 本班绕过：`/tmp/zzmnt-*/Database→Database 挂载点`、`/tmp/zzmnt-*/Claude/Projects/Financial/剑酒青丘→剑酒青丘 挂载点` 软链，`export ZZJY_MNT_ROOT=/tmp/zzmnt-*` 后重跑 → 降级行消失、成品 0 处「级别读数不可用」。根修（改剑酒青丘资产，须其线/Doctor 确认）：RES 改为先试 `HERE` 相对上溯（脚本自身在 剑酒青丘/infrastructure/取数工具/ 下，`HERE/../../回调级别判别` 即真址），再回退 `_mnt(...)`；或 SKILL 前置段把 `ZZJY_MNT_ROOT` 垫片列为常规步骤。
+**预防门禁**: 日报生成 stderr 出现 `[grade_section]` 即查挂载形态；SKILL 前置 env 段补 ZZJY_MNT_ROOT。
+**来源**: 2026-11-04 烛照班 CC（九儿）实跑实读。
