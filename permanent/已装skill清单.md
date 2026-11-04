@@ -142,6 +142,7 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 | **Claude 桌面应用（官方版·当前）** | 双击 `.skill` → 系统弹卡片 → "Save skill" → `~/Library/Application Support/Claude/skills/<name>/` | bundle id `com.anthropic.claudefordesktop`；不支持自定义 base_url。**frontmatter 无引号也能装**（比 gateway 宽松，Doctor 2026-07-01 更正） |
 | **Cowork / Claude-3p（gateway 模式）** | **Settings → Skills 入口手动选 `.skill`**（plugin 体系）；落 **plugin 缓存** —— **沙箱内只读可见于 `<挂载根>/.claude/skills/`**（2026-10-03 实测：mode `0500` · **非符号链接** · 沙箱不可写） | 应用本体 `~/Library/Application Support/Claude-3p/skills/` **不扫**。⚠ **`~/.claude/skills/`（见下行 Claude Code CLI）与本行的 plugin 缓存是否同一目录 —— 未核**：据 **Doctor 终端实读**，该路径下**无 damper**，而 plugin 缓存下有 ⇒ **两层至少在该件上不同**（该终端读数本沙箱**不可复现**；诚实边界与反向线索见订正④①）。present_files 卡片不弹 Save 按钮 → 交付附 `open -R` 一键定位 |
 | **Claude Code CLI** | `~/.claude/skills/<name>/`（「**与 gateway 共用文件系统**」系 2026-06 旧记，**未复验**；与上行 plugin 缓存的关系见订正④①） | 走 `ANTHROPIC_BASE_URL` |
+| **官方订阅 Cowork（云端化 · 2026-11-04 实测）** | **Customize > Skills →「+」→ Create skill → Upload a skill**，上传 zip（**不在** Settings → Capabilities） | zip 根下须是**与 skill 同名的文件夹**（内含 SKILL.md）；结构不合规会被拒（本场 brain-save 包即重打）。2026-11-04 传 8 包，Doctor 回「全部搞定」 |
 
 **切环境踩坑教训**：① 2026-06-30 上午：自制 skill 只装桌面、`.skill` 没落 brain → 切 gateway 丢失、源找不回 → 对策：`.skill` 必落 `brain/.skills/`。② 2026-06-30 晚：Cowork 装 skill 非 `~/.claude/skills/` 直放，实测不读；正解 Settings 手动选。
 
