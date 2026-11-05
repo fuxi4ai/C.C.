@@ -173,3 +173,24 @@ project: 龙鱼五力
 
 **2026-09-12 实施（Doctor 问答板批「VV 建议修法」）**：`_facts_from_pack` 已改 pack 结构分流——①顶层含 engine_facts（已提取包）→ 直取并保留合法空值（0/""/False）；②无 engine_facts 但有原始引擎段 → 委托 `_ss._facts`；③未知结构 → raise 拒绝（不静默写全 None）。冒烟 5/5 实跑通过（已提取包取真值 / 原始包 fin_score=3.2/5 / 未知结构 raise / 不存在包 {} / 非对象 raise）。**09-10 批次 23 条回填**：同股同刻原包绑定（`_packs_claude/{ts}.json`·`_extracted_at=2026-09-10`）23/23 成功 · 备份 `records_backup_20260912_pre_backfill.tar.gz`（23 文件）· 复验 broken 残留 0 · 抽样 300308 pe_ttm=51.26 全 19 键非空 + `_meta.engine_facts_backfill` 标记。回填脚本 `outputs/cc_backfill_engine_facts_20260912.py`（fail-closed：路径错/空扫即拒）。状态 🔄 已修待验（实施者不自标 ✅）· 独立验收归未参与实施的 subagent/Doctor。
 
+## [ERR-20261105-001] `TushareClient` 过带账号的代理时不发认证头 → 407，引擎全部取数失败
+**状态**: 🔄 已修待验（2026-11-05 Doctor「能」后按建议实施；✅ 落签走分轨）
+**优先级**: 🟡 中
+**触发场景**: 2026-11-04 夜 Code 标签沙箱验证 G-X244，真实调用引擎。
+**硬证据/最小复现**: `client.call` 返回「Tunnel connection failed: 407 Proxy Authentication Required」；`HTTPS_PROXY` 带用户名和密码（只核了有无，未读值）。
+**根因**: `_connect` 只取代理的 host/port，`set_tunnel` 没带 `Proxy-Authorization`；旧注释假设代理无账号。
+**影响面**: 代理带账号的环境（Code 沙箱已确认）。无代理变量时走直连，读代码判断不受影响；云端班未核。
+**修复/建议修法**: 代理 URL 带用户名时发 Basic 认证头。修后真实调用成功。commit `50c3ffd9`。无持久化回归测试。
+**预防门禁**: 暂无；若复发，先核代理 URL 是否带账号。
+**来源**: 2026-11-04 Code 标签会话。
+
+## [ERR-20261105-002] `test_check_ds_evidence.py` 正向用例「谷歌长协锁产能」失败，疑因锚点过期
+**状态**: ⚠️ 已知风险
+**优先级**: 🟢 低
+**触发场景**: 2026-11-04 夜回归引擎修改时顺带跑。
+**硬证据/最小复现**: `[FAIL] 正向-谷歌长协锁产能: kinds=['旧锚'] (期望含 [])`。
+**根因**: 假设：用例依赖 08-20 建的锚点仍算新鲜，随时间变成旧锚。未逐行确认。撤回条件：查明判定逻辑另有原因。
+**影响面**: 只影响这项测试的可信度；`check_ds_evidence.py` 不引用五力引擎，与 G-X244 修复无关。
+**修复/建议修法**: 用例固定判定日期，或用不随时间过期的夹具。
+**预防门禁**: 涉及新鲜度的测试不依赖当前日期。
+**来源**: 2026-11-04 Code 标签会话。
