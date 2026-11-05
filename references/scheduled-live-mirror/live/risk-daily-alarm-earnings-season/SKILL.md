@@ -15,8 +15,8 @@ description: Risk Daily · AI Tech Alarm 监控·财报季加密（1/4/7/10月�
 3. 判级 watching→warming→triggered，同常态任务口径；逐条与第 1 步的 `legacy.status` 基线比较。
 4. 给 Doctor 简报（敬语、简洁）：有异动/升级的条目 + 一句话证据 + 来源链接；全部无异动则一行带过，注明「财报季加密核验」。
 5. **只写提案，不发版**：
-   - 判出变化，且有**来源、时间、数值和可比较的阈值**：在 `~/Documents/Claude/Projects/风险日报/alarm/proposals/pending/{YYYY-MM-DD}_{alarm_id}.json` 写一条提案（同名已存在就加 `_2`、`_3` 后缀，不覆盖），`proposal_id` 用文件名去掉 `.json`。**一条信号只出一条提案**：同一 signal_id 不得出现在两条提案里（本次已有提案改过的信号，不再另开提案）。字段按 `alarm_proposals.py` 文件头：必填 `proposal_id`、`created_at_utc`、`created_by`（填本班名）、`base_revision_id`（第 1 步的 revision_id）、`alarm_id`、`summary_cn`、`signal_updates`（至少一条，键为 signal_id / test / status / observed_at_utc / source_ids / finding_cn）；来源和数值放 `sources` / `metrics`（字段同 revision）。提案不得声明 triggered 或 scenario_status，这两者由阈值算出。
-   - 写完必须在 `alarm/` 目录跑 `python3 -B alarm_proposals.py check proposals/pending/<文件名>`；退出码非 0 就不算交付，把错误原文报给 Doctor（提案文件保留原样，不删不改名）。`check` 会打印复核摘要，把摘要原样贴进简报，不改写、不删节。
+   - 判出变化，且有**来源、时间、数值和可比较的阈值**：在 `~/Documents/Claude/Projects/风险日报/alarm/proposals/pending/{YYYY-MM-DD}_{alarm_id}.json` 写一条提案（同名已存在就加 `_2`、`_3` 后缀，不覆盖），`proposal_id` 用文件名去掉 `.json`。**一条信号只出一条提案**：写之前先读 `proposals/pending/` 里所有已有提案的 `signal_updates[].signal_id`；已被任何提案改过的信号（含以前批次和本次），不再出提案，只在简报里写「已有提案 <文件名> 在改，未重复出」。字段按 `alarm_proposals.py` 文件头：必填 `proposal_id`、`created_at_utc`、`created_by`（填本班名）、`base_revision_id`（第 1 步的 revision_id）、`alarm_id`、`summary_cn`、`signal_updates`（至少一条，键为 signal_id / test / status / observed_at_utc / source_ids / finding_cn）；来源和数值放 `sources` / `metrics`（字段同 revision）。提案不得声明 triggered 或 scenario_status，这两者由阈值算出。
+   - 写完必须在 `alarm/` 目录把 pending 里全部提案一起校验：`python3 -B alarm_proposals.py check proposals/pending/*.json`；退出码非 0 就不算交付，把错误原文报给 Doctor（提案文件保留原样，不删不改名；报错指向以前批次的旧提案时同样原样上报，不碰旧提案）。`check` 会打印复核摘要，把摘要原样贴进简报，不改写、不删节。
    - 定性判断或拿不到数值的：不写提案，只在简报里写：条目 id · 基线→新判级 · 一句话证据 · 来源链接（markdown），并标「定性·未入提案」。
    - **绝不写** `alarm/legacy/`、`alarm/current.json`、`alarm/revisions/`；**不调用 `alarm_store.py import`，也不调用 `alarm_proposals.py build`**。绝不碰迁移前的旧目录、canonical 图谱（mapping/）或价格层（prices/）。
    - 简报末尾列出本次新提案的文件名和 check 退出码，写「待 Doctor 复核」。

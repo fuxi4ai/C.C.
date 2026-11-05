@@ -113,3 +113,5 @@ Gateway 同名班的 SKILL 正文仍是写文件的旧版，打开 Gateway app �
 
 周班 11-09 前请改完，否则会把 r5、r7 当新升级重复提案。回报 trigger 的 `updated_at` 和镜像回读。
 
+
+**追加（14:25 UTC · Doctor 裁「先查再写、整批 check」）：** `alarm_proposals.py check` 的查重只比对同一次调用里传入的文件，不会扫描 `pending/` 目录（实读第 97–109 行）。`test_two_proposals_same_signal_rejected` 测试存在，实跑 `test_alarm_proposals.py` 20 项全过，退出码 0。因此两班第 5 步改为：写提案前先读 `pending/` 里所有已有提案的 signal_id，已有提案在改的信号不再出提案；写完后用 `check proposals/pending/*.json` 整批校验，报错指向以前批次的旧提案时也原样上报。镜像备份为 `.bak_2026-11-05_pre-batchcheck`；云端周班 updated_at 14:24:14Z，财报季班 14:25:59Z。代价：`pending/` 里任一旧提案失效（例如发版后 base 过期），都会让当班的 check 报错，需要 Doctor 清理 `pending/`。另：14:2x 实读时 `pending/` 里只有 `.gitkeep`，Code 侧说的两条提案不在这里。
