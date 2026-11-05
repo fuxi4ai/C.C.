@@ -107,3 +107,26 @@ project: 风险日报
 **✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS——① diff 对 `render_alarm_tab.py.bak_2026-11-05_priossot` 仅两处：JS `score(d)` 4 行公式 → 只读 `d.priority`（非有限数 → NaN）、`_self_test` 加第 ⑤ 项；② `--self-test` rc=0（约 85 s）；⑤ 项判据对备份源文本判 FAIL、对新版 PASS；③ 真 revision 经 `build_view_data` 7 条 alarm 的 `priority` 全为 float（`_priority` 恒返回 float，den≤0 返 0.0），r4 78.8 / r6 70.6 / r7 68.8 / r1 67.5 / r2 57.5 / r3 53.8 / r5 43.8，旧公式复算 63.0/56.5/55.0/54.0/46.0/43.0/35.0，与修复记录一致；④ grep 旧公式 `W.U+(s.P`：Projects 下仅余生成物 `ai_tech_alarm_tab.html`、`dashboard/risk-daily.html`（各 1 处、`d.priority` 0 处）与 EAL 迁移留证旧件；`build_risk_daily.py` 的 `AXES_W` 只作 `ai_axes_w` 数据透传、无重算。限：两生成物未重建（待 refresh-risk-daily 班刷新后复 grep：`d.priority`≥1、旧公式 0）；⑤ 是源码静态断言、非 JS 执行测；self-test PASS 文案未列 ⑤；`color()`/`levelOf()` 阈值沿用旧刻度，表格整体偏暖。
 
 <!-- 在下方追加新条目 -->
+
+## [ERR-20261105-101] AI Tech Alarm 冻结输入被定时班改写：v2 迁移没迁班次，权威 revision 两个月无供料
+**状态**: ⚠️ 已知风险（迁移、归档、提案队列已做，未参与实施的审核者判 PASS_WITH_LIMITS · 2026-11-05；下列限制未修，云端 prompt 与 11-09 周班未验证）
+**优先级**: 🔴 高
+**触发场景**: 2026-11-05 渊图门禁加固提交时发现 `watch/alarm_watchlist.jsonl` 工作树与 HEAD 不同。
+**硬证据/最小复现**: HEAD 版 sha `ce6ce1bb…`，规定的冻结 SHA `e47732e8…`；把漂移版放入隔离副本实跑 `alarm_store.py verify` 得 `legacy SHA-256 mismatch`，rc=2。`build_risk_daily.py` 读不了 revision 时 AI 面板缺失（实读；10 月到 11-04 面板是否真的缺失未核）。当前 revision 的 `as_of` 仍为 2026-09-07。
+**根因**: 09-05 权威数据迁到 revision，但 `yuantu-alarm-*` 两班仍读写冻结文件；班次判级（watching/warming/triggered）在 revision schema 里没有落点；文件放在渊图仓库、班名带渊图前缀，归属不清；失配没有告警。11-04 恢复时 `46371439` 只提交了备份，恢复本体到 `0cd126ce` 才入库。写入者是这两班属推断，未逐条核对。
+**影响面**: r5-grid（10-05）、r7-yencarry（10-19）两段判断只留在 `alarm/legacy/drift_ce6ce1bb_20261103.jsonl`，未外核，不是现行数据，待 Doctor 定是否发版。
+**修复**: Doctor 2026-11-05 裁：归风险日报、改名改位置、旧文件归档、判断进提案队列。① 迁到 `Projects/风险日报/alarm/`，旧目录归档 `行业研究/archived/2026-11-05/watch_迁至风险日报/`（只读），原处只留 `MOVED.md`；消费端只认新路径，无回退。② 冻结输入改名 `legacy/alarm_watchlist_frozen_v1.jsonl`，权限 444。③ `alarm_proposals.py`（check/build）与 `proposals/`。④ `test_no_drift.py`。⑤ Cowork 改班名与提示词（`inbox/Cowork请求二-…`）。
+**限制**（审核者实跑）: ① 人工复核只靠班次提示词，程序不阻止谁跑 import，revision 也不记 proposal_id。② 阈值和指标由提案自定，恒真阈值只能靠人看摘要。③ `test_no_drift` 只防疏忽，只在周班收尾跑；不查 `.claude` 内容、`MOVED.md` 内容、alarm 根杂文件和 drift 证据；`ALARM_WATCH_DIR` 可指向归档（实搜无人设置）。④ 未被引用的 source 能进 pack，摘要不显示（低）。⑤ `~/.codex/skills/equity-thesis` 副本仍写旧路径，读不到时会报错。⑥ Gateway 同名班正文仍是旧版写文件步骤，须保持停用。⑦ 未验证：云端 prompt、真实班次运行、真实 import、`build_risk_daily` 全链路。
+**预防门禁**: `python3 -B alarm/test_no_drift.py`；迁移权威数据时同批迁写者。
+**来源**: 2026-11-05 Code 标签会话，实跑实读。
+
+## [ERR-20261105-102] test_narrative_score 第 4d 条失败（行情变化拒绝且评估未改）
+**状态**: 🔄 待修复
+**优先级**: 🟡 中
+**触发场景**: 2026-11-05 Alarm 迁移回归，`python3 -B test_narrative_score.py` 得 53 PASS / 1 FAIL，失败项 `4d 模型运行中行情变化则拒绝且评估未改`。
+**硬证据/最小复现**: HEAD 隔离副本同样失败（实施者与审核者各跑一次），非迁移引入。
+**根因**: 未查。
+**影响面**: 未查；这条护的是模型运行中行情变化时拒绝写入评估。
+**建议修法**: 先定位是测试夹具还是逻辑问题。
+**预防门禁**: 无。
+**来源**: 2026-11-05 Code 标签会话，实跑。

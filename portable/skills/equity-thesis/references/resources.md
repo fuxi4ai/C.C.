@@ -17,7 +17,7 @@
 ## 风险日报与风险卡
 
 - 概览：`/Users/lunarabbit/Documents/Claude/Projects/风险日报/data/risk_snapshot.json`；方法/GOTCHAS 在同项目。generated 是构建时间，atoms/molecules/compounds/edge_evidence 各字段仍须核原始观察时点。
-- 卡片真源：上述渊图根 `watch/current.json` → 读取 revision_id → `watch/revisions/<revision_id>.json`。revision 是含 pack/revision_id/sha256 的 wrapper。按 `watch/alarm_store.py` 的现行合同校验：`sha256((json.dumps(pack, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False) + '\n').encode('utf-8'))` 等于 wrapper 和指针的 sha256；revision_id 等于 `r-` 加 digest 前 24 位。**不是 wrapper 原文件的字节 hash。** 路径须在 revisions 内；schema/状态派生另行按当前合同校验，hash 不证明金融事实。不要硬编码当前 revision ID，不回退冻结的 `watchlist.jsonl`。快照 ai_panel 是简化派生，缺失证据不能据此补齐。
+- 卡片真源：`/Users/lunarabbit/Documents/Claude/Projects/风险日报/alarm/current.json` → 读取 revision_id → `alarm/revisions/<revision_id>.json`。revision 是含 pack/revision_id/sha256 的 wrapper。按 `watch/alarm_store.py` 的现行合同校验：`sha256((json.dumps(pack, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False) + '\n').encode('utf-8'))` 等于 wrapper 和指针的 sha256；revision_id 等于 `r-` 加 digest 前 24 位。**不是 wrapper 原文件的字节 hash。** 路径须在 revisions 内；schema/状态派生另行按当前合同校验，hash 不证明金融事实。不要硬编码当前 revision ID，不回退冻结的 `watchlist.jsonl`。快照 ai_panel 是简化派生，缺失证据不能据此补齐。
 - 保留 pack schema_version/as_of_utc 与卡片 id/assets/event_group_id、scenario_cn/assessment_cn/invalidation_cn、evidence_status/pricing_status/scenario_status、last_verified_at_utc、signals[].test/source_ids/observed_at_utc、trigger_all/warming_any。回到引用 source 的 locator/日期和指标 period/unit/basis/calculation。
 - `legacy` 强断言不晋升当前事实；verified/signal_observed 也不意味着已定价或未计价。价格状态 unknown 必须保留。风险叠加是风险观察层，不直接生成 alpha、仓位或概率。
 
