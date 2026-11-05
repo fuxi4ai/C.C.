@@ -487,6 +487,13 @@ def scan_mounts():
 
 # ───────────────────── 异常检测 ─────────────────────
 
+# 2026-11-04 停用（Doctor 裁「停用 Gateway→镜像」· ERR-20261104-005）：Gateway store 已冻结，
+# 而 live/<班>/SKILL.md 自 11-04 起是云端班正文真源；再镜像会用旧版覆盖真源、并删除 Gateway 没有的文件。
+# 回切 Gateway 时才改回 True（见回切操作卡）。
+MIRROR_ENABLED = False
+MIRROR_OFF_NOTE = "已停用（Gateway 冻结，live/ 与 artifacts/ 不再从 Gateway 覆盖）"
+
+
 def mirror_live_tree(dry=False):
     """第三输出 · live 树镜像 → brain（2026-08-02 Doctor 批 a 案）。
     章程不变：只读 live、只写 brain 内自有输出目录，不修、不 commit、不碰调度器。
@@ -495,6 +502,8 @@ def mirror_live_tree(dry=False):
     --delete 语义（镜像里删 live 已不存在的）不违反「不删文件」——镜像在 git 里，删除可见可回溯。
     dry=True（2026-08-17 VV 五轮要求）：只列将更新/移除清单，不落盘。"""
     import shutil
+    if not MIRROR_ENABLED:
+        return "live 镜像" + MIRROR_OFF_NOTE
     if not LIVE_TREE.exists():
         return "live 树不可读，镜像跳过"
     live_files = {p.relative_to(LIVE_TREE) for p in LIVE_TREE.rglob("*") if p.is_file()}
@@ -527,6 +536,8 @@ def mirror_artifacts(dry=False):
     副产品 _artifacts_manifest.txt 使 Artifacts 成为本机制看得见的第六个执行面。
     dry=True（2026-08-17 VV 七轮要求）：只算计划，不 mkdir/copy/unlink/写清单。"""
     import shutil
+    if not MIRROR_ENABLED:
+        return "Artifacts 镜像" + MIRROR_OFF_NOTE
     if not ARTIFACTS_TREE.exists():
         return "Artifacts 树不可读，跳过"
     lines, copied = [], 0
@@ -711,7 +722,7 @@ def main():
              "无论改动来自 Doctor、别的会话还是 CC 自己。\n")
     L.append(f"> 镜像步：{mirror_note} · {art_note}\n")
 
-    L.append(f"\n## 面① Cowork live 树（{len(cowork)} 个）\n")
+    L.append(f"\n## 面① Gateway store（已冻结，不代表云端班现状 · {len(cowork)} 个）\n")
     L.append("| taskId | SKILL mtime | 行数 | sha | 描述 |")
     L.append("|---|---|---|---|---|")
     for c in cowork:
@@ -799,7 +810,7 @@ def main():
     print(f"✅ 快照已生成")
     print(f"   {OUT_JSON}")
     print(f"   {OUT_MD}")
-    print(f"\n面① Cowork live : {len(cowork)} 个班")
+    print(f"\n面① Gateway store（已冻结）: {len(cowork)} 个班")
     print(f"面② Documents死树: {'⚠ 仍在 ' + str(d.get('dir_count')) + ' 个目录' if d.get('exists') else '✅ 已清'}"
           + (f"（内容分叉 {len(d['content_diverged'])}）" if d.get("content_diverged") else ""))
     print(f"面③ launchd      : 源 {len(lg['sources'])} · 装机 {len(lg['installed'])}"

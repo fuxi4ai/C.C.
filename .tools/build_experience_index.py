@@ -50,6 +50,21 @@ def status_of(body, title=""):
             return mark
     return "—"
 
+# Projects/ 来源专用（brain 来源仍走 status_of，旧条目判定不变）。
+# 同一行既有开放词又有闭合词时判开放：宁可多报，不低报（海螺 GOTCHA-20260819-001 同类教训）。
+OPEN_TOKENS = (("🔄", "🔄"), ("⚠", "⚠"), ("⏳", "⏳"), ("已知风险", "⚠"), ("已修待验", "🔄"), ("待修复", "🔄"),
+               ("未修复", "🔄"), ("待执行", "🔄"), ("待核", "🔄"), ("待裁", "🔄"), ("待老师", "🔄"), ("待验", "🔄"))
+CLOSED_TOKENS = ("✅", "已解决", "已修复", "已修", "已裁", "已定性", "已登记", "已验证", "已复核", "并修复")
+
+def project_status(body, title=""):
+    """覆盖 `**状态**:`、`**状态：**`、`| **状态** | x |`、`状态: x`、`- 状态：x`；无状态行则看标题。"""
+    m = re.search(r"^\s*(?:[-*|]\s*)*(?:\*\*)?状态(?:\*\*)?\s*[:：|]?\s*(?:\*\*)?\s*[:：|]?\s*(.+)$", body, re.M)
+    s = m.group(1) if m else title
+    for token, mark in OPEN_TOKENS:
+        if token in s:
+            return mark
+    return "✅" if any(token in s for token in CLOSED_TOKENS) else "—"
+
 def type_of(eid):
     for pre, t in TYPE_MAP:
         if eid.startswith(pre):
@@ -65,12 +80,12 @@ def machine_hint(body):
 
 entries = []
 
-def add(proj, eid, title, body, fname):
+def add(proj, eid, title, body, fname, status=None):
     if "YYYYMMDD" in eid or "NNN" in eid:
         return
     entries.append({
         "proj": proj, "id": eid, "title": title.replace("|", "｜")[:64],
-        "type": type_of(eid), "date": date_of(eid), "status": status_of(body, title),
+        "type": type_of(eid), "date": date_of(eid), "status": status or status_of(body, title),
         "mach": "✓" if machine_hint(body) else "-",
         "ptr": fname, "xside": "-", "body": body,
         "trig": trigger_of(body),
@@ -131,6 +146,58 @@ for d in sorted(os.listdir(BRAIN)):
     for m in re.finditer(r"^\|\s*(G-\d+)\s*\|\s*([^|]+)\|\s*([^|]+)\|", txt, re.M):
         add(d, m.group(1), m.group(2).strip(), "", f"{d}/GOTCHAS.md 全表索引（正文在 Projects/PEC/GOTCHAS.md）")
 
+# 1b) canonical 落在 Projects/ 的 GOTCHAS（2026-11-04 Doctor 批「修生成器」· ERR-20261104-004）
+#     显式白名单，不递归扫：DVA 为历史副本（权威在 Codex 镜像仓）、烛照九阴为退役指针，都不进来。
+#     条目格式：`[ID]` 标题、`GOTCHA-NNN:`／`G-NNN —` 标题、`- **EAL-M001 · …**` 列表。
+#     `### [ ] 待办勾选` 不算条目；带状态行却解析不了的标题会写进索引头，不静默跳过。
+PROJECT_SOURCES = [
+    ("白泽大宗", "Projects/Financial/白泽大宗/GOTCHAS.md"),
+    ("白泽观星", "Projects/Financial/白泽观星/GOTCHAS.md"),
+    ("风险日报", "Projects/风险日报/GOTCHAS.md"),
+    ("星空", "Projects/星空/GOTCHAS.md"),
+    ("海螺姑娘", "Projects/海螺姑娘/GOTCHAS.md"),
+    ("EAL", "Projects/Financial/宏观研究体系/EAL/GOTCHAS.md"),
+]
+NOT_COVERED = ("Projects/DVA（含 yt-dlp；历史副本，真源在 Codex 镜像仓）、Projects/Financial/烛照九阴（退役指针，含 news）、"
+               "Projects/PEC（brain 已有全表索引）、Projects/O MY HTML 与 Projects/Financial/剑酒青丘/*（无编号格式）、"
+               "EAL/backtest/eal_v3（只读保留件）")
+PROJECT_ENTRY_RES = [
+    re.compile(r"^#{2,3} \[([A-Z][A-Z0-9]*(?:-[A-Za-z0-9]+)+)\]\s*(.*)$", re.M),
+    re.compile(r"^#{2,3} ((?:GOTCHA|G)-\d+)\s*[:：·—-]+\s*(.*)$", re.M),
+    re.compile(r"^- \*\*([A-Z]+-[A-Z]*\d+)\s*·\s*(.*?)\*\*", re.M),
+]
+SOURCE_WARNINGS = []
+for proj, rel in PROJECT_SOURCES:
+    p = os.path.join(DOCS, "Claude", rel)
+    if not os.path.isfile(p):
+        SOURCE_WARNINGS.append(f"来源缺失：{rel}")
+        continue
+    txt = re.sub(r"<!--.*?-->", "", open(p, encoding="utf-8").read(), flags=re.S)
+    ptr = "../" + rel  # 证据指针统一相对 brain/
+    matches = sorted((m for r in PROJECT_ENTRY_RES for m in r.finditer(txt)), key=lambda m: m.start())
+    matches = [m for m in matches if "YYYYMMDD" not in m.group(1) and "NNN" not in m.group(1)]
+    starts = {m.start() for m in matches}
+    seen = {e["id"] for e in entries if e["proj"] == proj}
+    for i, m in enumerate(matches):
+        if m.group(1) in seen:
+            SOURCE_WARNINGS.append(f"编号重复（保留先出现者）：{proj}/{m.group(1)} @ {rel}")
+            continue
+        seen.add(m.group(1))
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(txt)
+        body = txt[m.end():end]
+        sect = re.search(r"^## ", body, re.M)
+        body = body[:sect.start()] if sect else body
+        title = m.group(2).strip()
+        add(proj, m.group(1), title, body, ptr, status=project_status(body, title))
+    if not matches:
+        SOURCE_WARNINGS.append(f"来源解析为 0 条：{rel}")
+    # 带状态行却没被解析成条目的标题
+    heads = list(re.finditer(r"^#{2,3} (.*)$", txt, re.M))
+    missed = [h.group(1)[:30] for j, h in enumerate(heads) if h.start() not in starts
+              and re.search(r"^\s*(?:[-*]\s*|\|\s*\*\*)*(?:\*\*)?状态", txt[h.end():heads[j + 1].start() if j + 1 < len(heads) else len(txt)], re.M)]
+    if missed:
+        SOURCE_WARNINGS.append(f"未解析标题 {len(missed)} 个（带状态行，未进索引）：{rel}：" + "；".join(missed))
+
 # 2) 通用教训（粗体 G-X 行）
 gl = os.path.join(PERM, "通用教训.md")
 if os.path.isfile(gl):
@@ -182,7 +249,9 @@ lines = [
     f"> 生成：{now} · 生成器 brain/.tools/build_experience_index.py（v2）· 重跑幂等",
     "> 字段 10 项（**2026-09-29 加第 10 项「触发条件」** · 承 Doctor 批）：条目ID · 类型 · 日期 · 状态 · 机器化 · 标题 · 证据指针 · 来源主体（节头） · 对侧状态（- 未见 / 👁已扫描未命中 / ⚑已预警 / ✓已复验）。",
     "> 状态闭集：✅已修复/已沉淀 · 🔄待修复/已修待验 · ⚠已知风险 · ⏳旧状态词 · —未标。**触发条件＝从条目自带的「警报信号／判据／做法／强制问询／预防门禁」抽一行**（2026-09-29 起；原为「＝标题摘要」，已取代）；正文按指针取。",
-    "> 覆盖：各项目 GOTCHAS（H2/H3/列表粗体/表格四格式）+ 通用教训 + 经验库 EXP。",
+    "> 覆盖：brain 各项目 GOTCHAS（H2/H3/列表粗体/表格四格式）+ Projects/ 下白名单 GOTCHAS（" + "、".join(n for n, _ in PROJECT_SOURCES) + "）+ 通用教训 + 经验库 EXP。Projects 来源的证据指针相对 brain/。",
+    "> 未纳入：" + NOT_COVERED + "。**「开放 0」只表示已入索引的条目中无开放项；「未标」＝条目无可判定状态，不等于已闭。**",
+    *[f"> ⚠ {w}" for w in SOURCE_WARNINGS],
     "",
     f"## 总览（{len(entries)} 条 · {len(by_proj)} 个来源）",
     "",
@@ -190,7 +259,8 @@ lines = [
 for proj in sorted(by_proj):
     es = by_proj[proj]
     n_open = sum(1 for e in es if e["status"] in ("🔄", "⚠", "⏳"))
-    lines.append(f"- {proj}: {len(es)} 条（开放 {n_open}）")
+    n_unmarked = sum(1 for e in es if e["status"] == "—")
+    lines.append(f"- {proj}: {len(es)} 条（开放 {n_open} · 未标 {n_unmarked}）")
 for proj in sorted(by_proj):
     lines.append(f"\n## {proj}")
     for e in by_proj[proj]:
@@ -232,7 +302,7 @@ ex = [
     "# CC 侧经验对侧索引（薄 · 供 VV 只读 · 可重建 · 非事实源）",
     "",
     f"> 生成：{now} · 生成器 brain/.tools/build_experience_index.py（v2）",
-    "> 正文真源在 CC 侧 canonical（brain/ 各项目 GOTCHAS.md + permanent/通用教训.md + permanent/经验库.md），本文件只含定位指针，供跨系统预警与复验。",
+    "> 正文真源在 CC 侧 canonical（brain/ 各项目 GOTCHAS.md + Projects/ 下白名单 GOTCHAS + permanent/通用教训.md + permanent/经验库.md），本文件只含定位指针，供跨系统预警与复验。",
     "",
     f"## 摘要（{len(entries)} 条）",
     "结构与 permanent/经验索引.md 相同（对侧对 brain 只读可直取）。",

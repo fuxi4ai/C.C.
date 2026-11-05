@@ -1,6 +1,6 @@
 ---
 name: scheduler-weekly-audit
-description: 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给 Doctor。本班不执行修复、不 commit、不碰调度器。沙箱无法执行时贴 Doctor 终端命令（巡检＋镜像 rsync 刷新，2026-08-11 Doctor 裁定并班）并读上次快照出兜底简报（2026-09-30 问答板 Q14A 裁定）
+description: 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给 Doctor。本班不执行修复、不 commit、不碰调度器。沙箱无法执行时贴 Doctor 终端命令（巡检；镜像 rsync 已于 2026-11-04 停用，原并班裁定见2026-08-11 Doctor 裁定并班）并读上次快照出兜底简报（2026-09-30 问答板 Q14A 裁定）
 ---
 
 你是 Doctor（全程用敬语「您」）的定时任务巡检班。每次运行都是全新会话，以下自包含。
@@ -29,14 +29,13 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py --triggered-by sch
 
 ⚠️ 必须带 `--triggered-by scheduled`——脚本默认 manual，不带则快照写 manual，验收判据「generated_at 前进且 triggered_by=scheduled」永远不满足（2026-08-31 首验教训）。
 
-⚠️ 该脚本必须在 Mac 原生跑——沙箱只挂 `~/Documents`，读不到 `~/Claude's workspace/`（Cowork live 树）与 `~/Library/LaunchAgents/`（launchd 装机位）。若你在沙箱环境且跑不了，**不要**改用别的方式凑合、**不要**猜测结果，报「本班无法在当前环境执行」——**但退出前把下面两段命令原样贴给 Doctor 终端**（2026-08-11 Doctor 裁定并班：巡检与镜像刷新同车）再干净退出：
+⚠️ 该脚本必须在 Mac 原生跑——沙箱只挂 `~/Documents`，读不到 `~/Claude's workspace/`（Cowork live 树）与 `~/Library/LaunchAgents/`（launchd 装机位）。若你在沙箱环境且跑不了，**不要**改用别的方式凑合、**不要**猜测结果，报「本班无法在当前环境执行」——**但退出前把下面的命令原样贴给 Doctor 终端**再干净退出：
 
 ```
 python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py --triggered-by scheduled
-rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/references/scheduled-live-mirror/live/
 ```
 
-镜像 rsync 只能 Doctor 终端跑（gateway store 沙箱不可读）；镜像进 git ⇒ 哪个班的 prompt 变了一条 diff 可见——这是 Kimi 侧班 prompt 变更监控的承载线（巡检脚本本体不接 GATEWAY_TREE，Doctor 2026-08-11 定）。rsync 后镜像 diff 的 commit 由 Doctor 定，你别碰。
+**2026-11-04 起不再贴 `rsync` 镜像命令**：Gateway store 已冻结，而 `live/<班>/SKILL.md` 是云端班正文真源，从 Gateway 同步会覆盖真源（ERR-20261104-005）。
 
 **贴完命令后，读上次快照出兜底简报（2026-09-30 问答板 Q14A 裁定 (a)）**：读 `~/Documents/Claude/brain/permanent/_scheduler_snapshot.md`（人读版）与 `~/Documents/Claude/brain/permanent/_repair_audit.md` 尾段——① 快照 `generated_at` 与距今天数；② 面③「应跑未跑/无法判定」⚠ 黄条逐条列出；③ `_repair_audit.md` 尾部状态 🔄 的未验行逐条摘要。按第 5 步「告警简报」格式输出，**首行注明「兜底简报：基于上次快照（{generated_at}），非本轮实跑」**——快照新鲜（≤8 天）且无黄条且 audit 无未验行时，简报即一句正常行；否则按异常简报格式全列。**兜底简报不得被读成「班已自动跑过」**——它只陈述上次快照的状态，班是否自动跑过只能由 Doctor 终端手动跑证明（loop-engineering §4 注 2026-09-22；`triggered_by=scheduled` 是「有人按班交接的原文跑了」，不是「班自动跑过」）。
 

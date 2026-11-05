@@ -62,6 +62,8 @@ type: resource
 
 ## 安装
 
+> **2026-11-04 Doctor 定**：Code 用 `~/.claude/skills` 的链接（指向 portable，`qa` 指向 `.skills/QA`），Cowork 用账号副本，须在 Customize > Skills 手动上传。两边同名并存属预期；改完跑 `.tools/check_skill_parity.py` 比对账号副本。下述双击 `.skill` 为旧流程，以此为准。
+
 ### 方式 A · Finder 双击 .skill 文件
 
 打开 Finder，`Cmd + Shift + G` 粘贴：

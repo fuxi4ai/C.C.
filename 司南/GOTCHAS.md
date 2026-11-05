@@ -60,12 +60,26 @@ project: 司南
 
 
 ## [ERR-20261104-004] 经验索引只扫 brain/{项目}/GOTCHAS.md，漏掉 Projects/ 下的 canonical GOTCHAS，/resume 把开放条目报成 0
-**状态**: ⚠️ 已知风险
+**状态**: ✅ 已修复（2026-11-04 Doctor 回复「ok」验收 · CC 代记；独立复验 PASS_WITH_LIMITS，限制见修法与会话报告）
 **优先级**: 🟡 中
 **触发场景**: 2026-11-04 夜 Code 标签 /resume 后重建经验索引，核对当日新条目时发现。
 **硬证据/最小复现**: `.tools/build_experience_index.py` L118 取 `os.path.join(BRAIN, d, "GOTCHAS.md")`。重建后索引总览「白泽大宗：11 条（开放 0）」，`Projects/Financial/白泽大宗/GOTCHAS.md` 实有 12 条 `## [ERR`、状态行 🔄/⚠ 6 条；ERR-20261104-001（哨兵）在索引内命中 0。
 **根因**: 生成器按 brain 目录枚举来源，未覆盖 canonical 落在 Projects/ 的项目。
 **影响面**: 白泽大宗确认受影响；`Projects/` 下风险日报 3 条、星空 2 条、DVA 2 条、EAL 1 条是否已被 brain 侧覆盖未核。/resume 的「经验召回」会低报开放数。
-**修复/建议修法**: 生成器增加 Projects/ 下 canonical GOTCHAS 来源，并处理与 brain 同名件的去重；属行为变更，待 Doctor 批。
-**预防门禁**: 重建后对拍各来源 `## [ERR` 计数与索引条数；引用「开放 0」前先核该项目 canonical 位置。
+**修复/建议修法**: 生成器增加 Projects/ 下 canonical GOTCHAS 来源，并处理与 brain 同名件的去重；属行为变更。已实施（首轮独立复验 FAIL 后补全）：生成器增 `PROJECT_SOURCES` 白名单（白泽大宗、白泽观星、风险日报、星空、海螺姑娘、EAL），解析 `[ID]`、`GOTCHA-NNN:`、`G-NNN —`、`- **EAL-… ·**` 四种条目；Projects 来源用 `project_status`（同行有开放词即判开放）；总览分列「开放／未标」；带状态行而未解析的标题写入索引头。DVA 历史副本、烛照九阴指针、PEC、O MY HTML 不纳入并在索引头写明。备份 `.tools/build_experience_index.py.bak_before_projsources_2026-11-04`，测试 `.tools/test_build_experience_index.py`。
+**预防门禁**: 重建后看索引头 ⚠ 告警（来源缺失／解析为 0／未解析标题／编号重复），并对拍各来源条目数与索引条数；引用「开放 0」前先核该项目 canonical 位置。
+**口径（2026-11-04 Doctor 裁）**: 「待 Doctor 提交、待班首跑」这类残留不算开放，生成器词表不扩；由状态行负责人更新状态行。
 **来源**: 2026-11-04 Code 标签会话，实读生成器与两份 GOTCHAS。
+
+
+## [ERR-20261104-005] 「停用 Gateway→镜像」只改了文档，`scheduler_snapshot.py` 每次运行仍覆盖 live/ 与 artifacts/
+**状态**: 🔄 已修待验（2026-11-04 依 Doctor 既有裁定与「推进适配问题」实施；✅ 落签走分轨）
+**优先级**: 🔴 高
+**触发场景**: 2026-11-04 夜核对适配未闭项。指令卡写明 `live/<班>/SKILL.md` 是云端班正文真源、须停用 Gateway→镜像，并作废了 1.1 的 rsync。
+**硬证据/最小复现**: 旧版 `main()` 无条件调用 `mirror_live_tree()`（从 `~/Gateway-workspace/Scheduled` 覆盖 live/，并 unlink Gateway 没有的文件）与 `mirror_artifacts()`。20:50 快照自述「Artifacts：10 个（拷 4）」；工作区 4 个 artifacts/index.html 的 SHA 与 Gateway 全等。`test_scheduler_snapshot_no_mirror.py` 对旧版 5 项 FAIL。
+**根因**: 裁定只落到指令卡与 rsync 命令，没有追到同样执行镜像的脚本（影响面未列全，G-X151 族）。
+**影响面**: 20:50 那次运行未改动 live/（更新 0 · 移除 0），文件级与 Gateway 全等；更早的运行有没有冲掉未提交改动，无证据。一旦修改 live/，下一次 S1 就会把改动冲掉。README、定时任务清单与周班 prompt 里的 rsync 同样危险：本地文档已改，云端 prompt 须在 Cowork 核改。**停用的代价**：`_artifacts_manifest.txt` 冻结在 11-04 20:50，幽灵检测失效；`eal_gate_check.py` 判据 6 要求盘上文件与 manifest 一致，`render-event-attribution-artifact.mjs --write` 改动镜像后会 FAIL（读码推断，未实跑）；manifest 如何处理归 Cowork 侧（2026-11-04 Doctor：定时任务和 Artifacts 交给 Cowork）。
+**修复/建议修法**: 增 `MIRROR_ENABLED=False`，两个镜像函数提前返回；面① 标题注明 Gateway 已冻结；回切卡补恢复步骤。备份 `.tools/scheduler_snapshot.py.bak_before_nomirror_2026-11-04`。
+**预防门禁**: `.tools/test_scheduler_snapshot_no_mirror.py`（HOME 指向临时目录）。
+**附带发现**: `test_scheduler_snapshot_staleness.py` 在本沙箱新旧版都报失败，因夹具落在 `/tmp` 下被判「日志落 /tmp」，非本次引入（独立审核者换 TMPDIR 后新旧版全过）。
+**来源**: 2026-11-04 Code 标签会话。

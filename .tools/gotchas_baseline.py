@@ -79,7 +79,7 @@ for e in entries:
 L = [
     "# 规则库基线 · 2026-09-03（第一份 · 只读统计 · 可重跑 · v2 三级执行等级口径）",
     "",
-    f"> 生成器 brain/.tools/gotchas_baseline.py（解析逻辑复用 build_experience_index.py · 单一真源）· 统计范围=CC 侧 brain/ 全域（GOTCHAS 四格式 + 通用教训 + 经验库 EXP）",
+    f"> 生成器 brain/.tools/gotchas_baseline.py（解析逻辑复用 build_experience_index.py · 单一真源）· 统计范围=CC 侧 brain/ 全域 + Projects/ 白名单 GOTCHAS（GOTCHAS 四格式 + 通用教训 + 经验库 EXP）",
     "> 注意：与 VV 侧（Codex）统计口径独立，不直接合并数字。",
     "",
     "## 统一分类（VV 收敛口径：日志/经验/Gotcha/规则）",

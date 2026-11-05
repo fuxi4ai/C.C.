@@ -52,3 +52,5 @@
 ## Skills
 
 `/resume` `/save` `/note` `/prd` `/consolidate` 与 anchor 加载由 `~/.claude/skills/brain-*` 提供（symlink 自 `brain/portable/skills/`）。**canonical = `brain/.skills/brain-*/SKILL.md`**（2026-08-18 立 · **2026-09-19 扩至全部 7 个 brain-\* skill**）；本目录与各环境安装副本均为**只读派生**——改 skill 一律从 canonical 起手，别在本目录或账号侧改（见 `brain/portable/README.md` · `brain/.skills/README.md`）。~~「真源在 brain：这里改动直接进 git；Cowork 账号侧改了要重导出」为 2026-08-02 旧方向，已废~~
+
+**技能来源（2026-11-04 Doctor 定）**：Code 用 `~/.claude/skills` 的链接，改 canonical 并同步 portable 后即生效；Cowork 用账号副本，须手动重新上传。Code 的技能列表里 `brain-resume` 与 `anthropic-skills:brain-resume` 这类同名项会并存，优先用不带前缀的。改完技能跑 `python3 ~/Documents/Claude/brain/.tools/check_skill_parity.py`（`damper` 另加 `--all --name damper`），看账号副本是否已落后。`--all` 单跑会把无 portable 链的技能报成问题，属预期。

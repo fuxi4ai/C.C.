@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import difflib
+import glob
 import hashlib
 import os
 import pathlib
@@ -151,11 +152,19 @@ def main() -> int:
         if not rt_root.is_dir():
             rt_root = None
     else:
-        for hint in RUNTIME_HINTS:
-            p = pathlib.Path(hint.format(home=os.path.expanduser("~")))
-            if p.is_dir():
-                rt_root = p
-                break
+        # 2026-11-04：优先比对账号副本（Cowork 与 anthropic-skills:* 用这份，只能手动上传，会落后）；
+        # ~/.claude/skills 是指向 portable 的链接，天然跟随，比它测不出漂移。盘上可能有旧账号目录，取最新的。
+        home = os.path.expanduser("~")
+        accounts = [pathlib.Path(p) for p in glob.glob(
+            f"{home}/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/*/*/skills")]
+        if accounts:
+            rt_root = max(accounts, key=lambda p: p.stat().st_mtime)
+        else:
+            for hint in RUNTIME_HINTS:
+                p = pathlib.Path(hint.format(home=home))
+                if p.is_dir():
+                    rt_root = p
+                    break
 
     problems: list[str] = []
     print(f"# brain-* skill 四端对拍 · {len(names)} 个")

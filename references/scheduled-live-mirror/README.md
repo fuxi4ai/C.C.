@@ -11,18 +11,19 @@ related: [巡检自愈循环-loop-engineering, portable/README]
 
 # scheduled-live-mirror — gateway live 定时任务的只读镜像（原 Cowork）
 
+> ⚠ **2026-11-04 起本文下述「真源＝Gateway」「rsync 刷新」「改完重刷镜像」全部停用**（ERR-20261104-005）：Gateway store 已冻结，定时任务归官方 Cowork 云端。`live/<班>/SKILL.md` 是云端 8 个推看板班的正文真源，直接改这里；其余班的 prompt 整篇存在云端，这里只作历史参考。`scheduler_snapshot.py` 已不再写本目录。以下保留为历史记录，回切见 `回切操作卡.md`。
+
 **真源**：`~/Gateway-workspace/Scheduled/`（2026-08-02 自 `/Users/lunarabbit/Claude's workspace/Scheduled/` 迁入，D14；保护跟随 store——开发者模式与沙箱都够不到，沙箱挂载根被管理员限制在 `~/Documents`）。
 
 **本目录** = rsync 单向镜像（live → `live/` 子目录），git 跟踪 ⇒ 「哪个班的 prompt 变了」一条 `git diff` 可见——与巡检治理机制（`permanent/巡检自愈循环-loop-engineering.md` §2）的「git 当变更检测器」同一思路。
 
 ## 刷新（只能 Doctor 终端跑）
 
-```bash
-# ⚠ 方向不可反：源=live 树，目的=本镜像。反了会用旧镜像毁掉 live 树。
-rsync -a --delete ~/Gateway-workspace/Scheduled/ ~/Documents/Claude/brain/references/scheduled-live-mirror/live/
-```
+**已停用，勿跑**：旧命令会用冻结的 Gateway 版覆盖 `live/` 真源，并删除 Gateway 没有的文件。
 
 ## artifacts/ 子目录（2026-08-02 追加 · 第四输出）
+
+> ⚠ 2026-11-04 起不再从 Gateway 刷新，内容与 `_artifacts_manifest.txt` 均停在 11-04 20:50 那次快照；现行看板在 Cowork 侧。幽灵检测因此失效（见 ERR-20261104-005）。
 
 **真源**：`~/Gateway-workspace/Artifacts/`（2026-08-17 收敛为 **7 个 artifact**：longyu-holdings-board 并入个股库、touzhijunjun-workflow 无消费点，Doctor 裁不补建；实测 241M 里 ~97% 是 Cowork 自管的 `versions/` 回滚历史）。
 本镜像只收各家 `index.html` 当前态：**7 总数＝≤1M 全拷（5 家）+ >1M sha-only（2 家）**；>1M 只在 `_artifacts_manifest.txt` 记 `sha12+字节+mtime`（zhuzhao-jiuyin-daily · yuantu-starry-skies——正文备份责任在生成器：`烛照九阴/tools/gen_daily_report.py` 在 git，星空可由渊图 canonical 重生成）。`versions/`、`thumbnail.png` 刻意不入。
