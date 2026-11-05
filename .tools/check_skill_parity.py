@@ -48,6 +48,9 @@ RUNTIME_HINTS = (
 )
 
 
+STUB_MARKER = b"<!-- skill-stub:"
+
+
 def sha(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
 
@@ -93,6 +96,10 @@ def classify(canon: bytes, rt: bytes) -> tuple[str, str]:
     """返回 (类别, 说明)。类别 ∈ identical / eof-only / divergent。"""
     if canon == rt:
         return "identical", ""
+    if STUB_MARKER in rt:
+        # 薄壳：账号副本只留 frontmatter 与指针，正文读 canonical，只需 frontmatter 一致
+        same = split_frontmatter(canon.decode("utf-8", "replace"))[0] == split_frontmatter(rt.decode("utf-8", "replace"))[0]
+        return ("stub", "") if same else ("divergent", "薄壳 frontmatter 与 canonical 不一致，须重新上传")
     if canon.rstrip(b"\n") == rt.rstrip(b"\n"):
         return "eof-only", "末端空白行差异（已知归一化）"
     a = canon.decode("utf-8", "replace").splitlines()
@@ -212,6 +219,8 @@ def main() -> int:
             verdict += " · 四端一致 ✓"
         elif rt_cls == "eof-only":
             verdict += " · runtime 仅差末端空行"
+        elif rt_cls == "stub":
+            verdict += " · runtime 薄壳 ✓"
         elif rt_cls == "n/a":
             verdict += " · runtime 未核"
         else:
