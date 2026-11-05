@@ -10,7 +10,7 @@
 
 判定口径：
   · 仓内三端（canonical / portable / 包内）必须**逐字节一致**
-  · runtime 与 canonical 的差异**只允许末端空白行**
+  · runtime 与 canonical 的差异**只允许末端空白行**（薄壳除外：只比 frontmatter，精确比对见 skill_release.py）
   · 各端 frontmatter 必须 `yaml.safe_load` 通过
   · runtime 不得出现重复 frontmatter 块
 
@@ -32,6 +32,7 @@ import glob
 import hashlib
 import os
 import pathlib
+import re
 import sys
 import zipfile
 
@@ -98,7 +99,8 @@ def classify(canon: bytes, rt: bytes) -> tuple[str, str]:
         return "identical", ""
     if STUB_MARKER in rt:
         # 薄壳：账号副本只留 frontmatter 与指针，正文读 canonical，只需 frontmatter 一致
-        same = split_frontmatter(canon.decode("utf-8", "replace"))[0] == split_frontmatter(rt.decode("utf-8", "replace"))[0]
+        drop_name = lambda s: re.sub(r"^name:.*$", "", s or "", count=1, flags=re.M)  # 账号名大小写可与目录不同
+        same = drop_name(split_frontmatter(canon.decode("utf-8", "replace"))[0]) == drop_name(split_frontmatter(rt.decode("utf-8", "replace"))[0])
         return ("stub", "") if same else ("divergent", "薄壳 frontmatter 与 canonical 不一致，须重新上传")
     if canon.rstrip(b"\n") == rt.rstrip(b"\n"):
         return "eof-only", "末端空白行差异（已知归一化）"

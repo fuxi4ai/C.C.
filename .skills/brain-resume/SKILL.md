@@ -39,7 +39,7 @@ cat ~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
 
 > **为什么挂在这里**：这些 ⚠ 先前只落在 `_scheduler_snapshot.md` 里，而**周班拿不到**——它在沙箱里跑不了巡检脚本，按自身 prompt 明文「报无法执行 + 贴命令 + 干净退出」，**走不到出简报的步骤**。故 ⚠ 的唯一有效送达口就是本步（唯一天然不定时会发生的人读通道）。**红条不在此重复**，它另有周班告警通道。
 
-**查技能版本（2026-11-04 Doctor 立）**：跑 `python3 ~/Documents/Claude/brain/.tools/skill_release.py status --brief`。退出码非 0 时把输出那一行列进摘要（待发布、待上传或账号未核）；云端或沙箱读不到账号目录属预期，写「账号未核」即可，不阻断。
+**查技能版本（2026-11-04 Doctor 立）**：跑 `python3 ~/Documents/Claude/brain/.tools/skill_release.py status --brief`。路径不存在时换成实际挂载的 brain 根目录。退出码非 0 时把输出那一行列进摘要（待发布、待上传、账号未核或检查出错）；云端或沙箱读不到账号目录属预期，不阻断。
 
 再查快照新鲜度（含 triggered_by）：
 

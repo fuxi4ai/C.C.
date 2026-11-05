@@ -132,7 +132,8 @@ git push
 ```
 
 - **commit 只暂存本任务路径**：`git add <本次 consolidate 明确改动的文件列表>`，保留其他工作区改动；已推远端的失真 commit 不改写历史（G-X138）。
-- **若本场改到 skill（2026-09-04 立 · 2026-09-19 按新裁定订正动线 · 2026-09-19 补通道配方）**：走发布链 **canonical → portable → package → runtime consumer → readback**——**canonical = `brain/.skills/{名}/SKILL.md`**（2026-08-18 立 · 2026-09-19 扩至全部 brain-\*），先改 canonical → 同步 `portable/skills/{名}/SKILL.md` → 重打 `brain/.skills/{名}.skill` → `save_skill` 发布；**四端 SHA 一致**（canonical / portable / 包内 / 运行时缓存差 1B EOF 空行属已知归一化）。发布后回读实际远端提交 ID（`.git/logs/HEAD` 纯文本核）；runtime 层最终证据＝下一场 fresh-session 实际触发（EXP-20260819-001-T）。~~「先改 portable 真源」为旧方向措辞，已废~~
+- **若本场改到 skill：2026-11-04 起跑 `python3 ~/Documents/Claude/brain/.tools/skill_release.py release`，只上传它列出的 zip；账号里是薄壳，不要用 `save_skill` 发全文（会把薄壳覆盖掉）。下面的旧动线与配方仅作历史记录。**
+- **旧动线（2026-09-04 立 · 2026-09-19 按新裁定订正动线 · 2026-09-19 补通道配方）**：走发布链 **canonical → portable → package → runtime consumer → readback**——**canonical = `brain/.skills/{名}/SKILL.md`**（2026-08-18 立 · 2026-09-19 扩至全部 brain-\*），先改 canonical → 同步 `portable/skills/{名}/SKILL.md` → 重打 `brain/.skills/{名}.skill` → `save_skill` 发布；**四端 SHA 一致**（canonical / portable / 包内 / 运行时缓存差 1B EOF 空行属已知归一化）。发布后回读实际远端提交 ID（`.git/logs/HEAD` 纯文本核）；runtime 层最终证据＝下一场 fresh-session 实际触发（EXP-20260819-001-T）。~~「先改 portable 真源」为旧方向措辞，已废~~
   - **⛔ `save_skill` 调用配方（2026-09-19 三发实测立 · 不照做必出「双 frontmatter」）**：该通道**自己生成 frontmatter**，且行为不对称——`description` 参数**由工具转义**、`content` 则**逐字写不转义**，另会补末端空行。故：**`description` 传 frontmatter 里 description 的「原文」（纯引号、无反斜杠，即解析后的值）；`content` 只传正文、从标题行起，绝不带 frontmatter**。content 带 frontmatter ⇒ 产出**两块 frontmatter**（`brain-anchors` 2026-09-19 前即此误用、`audit` runtime 同病）；description 传已转义形 ⇒ 引号/反斜杠**再加倍**。
   - **验收判据（必做 · 不得只看「调用成功」）**：发完回读 `…/.claude/skills/{名}/SKILL.md`，与 canonical 做 `diff` + `yaml.safe_load` **双侧对拍**——允许差异仅剩末端 1 个空行；frontmatter 解析不过＝不可发布（G-X187）。一键核检：`python3 brain/.tools/check_skill_parity.py`（负向测试 `.tools/test_check_skill_parity.py`）。
 

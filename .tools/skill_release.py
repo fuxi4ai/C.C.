@@ -2,34 +2,29 @@
 # -*- coding: utf-8 -*-
 """技能版本治理（2026-11-04 Doctor 立）：账号放薄壳，正文读 canonical；安全靠版本比对，不依赖运行时「读不到就停」。
 
-正文版本＝canonical SKILL.md 的内容哈希，改了内容就是新版本，不靠人记得改号；只改正文无需重传。
-须重传的只有三种：壳版本落后（STUB_VERSION）、触发描述变了（frontmatter）、账号不是薄壳。
-发布台账 .skills/_release_ledger.jsonl 记录每个发布过的正文版本。注册表写 "account": "full" 的技能放完整副本。
+正文版本＝canonical 技能目录的内容哈希（含附属文件），改了内容就是新版本，不靠人记得改号。
+只改正文无需重传。须重传的只有：账号不是薄壳、壳内容与当前应有内容不符（含 description 变化）。
+发布台账 .skills/_release_ledger.jsonl 记录发布过的版本。注册表写 "account": "full" 的技能放完整副本。
 
-  python3 skill_release.py status [--brief]   # 退出码 0=全部同步 1=有待处理 2=账号副本读不到
+  python3 skill_release.py status [--brief]   # 退出码 0=全部同步 1=有待处理 2=账号副本读不到 3=检查本身出错
   python3 skill_release.py release            # 同步 portable、重打 .skill、记台账、产出待上传 zip
   python3 skill_release.py record-current     # 把 canonical 现状记入台账，不改其他文件（初始化用）
-环境变量：DOCS_DIR（默认 ~/Documents）、SKILL_ACCOUNT_DIR（默认取最新的账号技能目录）
+环境变量：DOCS_DIR（默认按脚本位置推算）、SKILL_ACCOUNT_DIR（默认取最新的账号技能目录）、SKILL_CODE_DIR（默认 ~/.claude/skills）
 """
 from __future__ import annotations
 
-import datetime, glob, hashlib, importlib.util, json, os, pathlib, shutil, sys, zipfile
+import datetime, glob, hashlib, importlib.util, io, json, os, pathlib, re, shutil, sys, zipfile
 
 HERE = pathlib.Path(__file__).resolve().parent
-_spec = importlib.util.spec_from_file_location("parity", HERE / "check_skill_parity.py")
-parity = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(parity)
-
-DOCS = pathlib.Path(os.environ.get("DOCS_DIR") or os.path.expanduser("~/Documents"))
-BRAIN = DOCS / "Claude/brain"
+BRAIN = pathlib.Path(os.environ["DOCS_DIR"]) / "Claude/brain" if os.environ.get("DOCS_DIR") else HERE.parent
 SKILLS = BRAIN / ".skills"
 PORTABLE = BRAIN / "portable/skills"
 LEDGER = SKILLS / "_release_ledger.jsonl"
-OUT = DOCS / "Claude/临时文件/skill-release"
+OUT = BRAIN.parent / "临时文件/skill-stub"
 SYNCED = "已同步"
-STUB_VERSION = "2"
+STUB_MARKER = b"<!-- skill-stub:"
 STUB_BODY = """
-<!-- skill-stub: v{ver} 正文真源在 brain/.skills，勿在此写正文 -->
+<!-- skill-stub: 正文真源在 brain/.skills，勿在此写正文 -->
 
 # {name}（薄壳）
 
@@ -45,21 +40,6 @@ STUB_BODY = """
 """
 
 
-def frontmatter(raw: bytes, account_name=None, src=None) -> str:
-    text = raw.decode("utf-8", "replace")
-    if account_name and src and account_name != src:
-        text = text.replace(f'name: "{account_name}"', f'name: "{src}"', 1)
-    end = text.find("\n---", 3)
-    return text[:end + 4] if text.startswith("---") and end != -1 else ""
-
-
-def stub_text(src: str, name: str, canon: bytes) -> str:
-    head = frontmatter(canon)
-    if name != src:
-        head = head.replace(f'name: "{src}"', f'name: "{name}"', 1)
-    return head + "\n" + STUB_BODY.format(ver=STUB_VERSION, name=name, src=src)
-
-
 def registry():
     return json.loads((SKILLS / "_registry.json").read_text(encoding="utf-8"))["skills"]
 
@@ -73,16 +53,46 @@ def account_root():
     return max(roots, key=lambda p: p.stat().st_mtime) if roots else None
 
 
-def norm(raw: bytes, account_name: str | None = None, src: str | None = None) -> str:
-    """比较前归一：末端空白行；账号名与目录名大小写不同的还原 name 行。"""
-    text = raw.decode("utf-8", "replace").rstrip("\n")
-    if account_name and src and account_name != src:
-        text = text.replace(f'name: "{account_name}"', f'name: "{src}"', 1)
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+def rename_fm(raw: bytes, old: str, new: str) -> bytes:
+    """只改 frontmatter 的 name 行，兼容带引号与不带引号。"""
+    if old == new:
+        return raw
+    return re.sub(rf'^name:\s*["\']?{re.escape(old)}["\']?\s*$'.encode(), f'name: "{new}"'.encode(), raw, count=1, flags=re.M)
 
 
-def read(p: pathlib.Path):
-    return p.read_bytes() if p.is_file() else None
+def keep(rel: pathlib.PurePath) -> bool:
+    return rel.name != ".DS_Store" and ".bak" not in rel.name and "__pycache__" not in rel.parts
+
+
+def dir_tree(root: pathlib.Path) -> dict:
+    if not root.is_dir():
+        return {}
+    return {p.relative_to(root).as_posix(): p.read_bytes() for p in sorted(root.rglob("*"))
+            if p.is_file() and keep(p.relative_to(root))}
+
+
+def pack_tree(src: str) -> dict:
+    """读 .skill 成员。包内顶层目录可能是 <名>/，旧包也可能直接在根。"""
+    pkg = SKILLS / f"{src}.skill"
+    if not pkg.is_file():
+        return {}
+    out = {}
+    with zipfile.ZipFile(pkg) as z:
+        for n in z.namelist():
+            if n.endswith("/"):
+                continue
+            rel = n[len(src) + 1:] if n.startswith(f"{src}/") else f"__root__/{n}"
+            out[rel] = z.read(n)
+    return out
+
+
+def digest(tree: dict) -> str:
+    """版本号：SKILL.md 去末端换行后与附属文件一起算，上传造成的末端空行差异不算新版本。"""
+    h = hashlib.sha256()
+    for rel in sorted(tree):
+        data = tree[rel].rstrip(b"\n") if rel == "SKILL.md" else tree[rel]
+        h.update(rel.encode() + b"\0" + data + b"\0")
+    return h.hexdigest()
 
 
 def ledger_versions():
@@ -95,64 +105,77 @@ def ledger_versions():
     return seen
 
 
-def pack_files(src: str):
-    root = SKILLS / src
-    for p in sorted(root.rglob("*")):
-        if p.is_file() and p.name != ".DS_Store" and ".bak" not in p.name and "__pycache__" not in p.parts:
-            yield p, p.relative_to(root)
+def frontmatter(raw: bytes) -> bytes:
+    end = raw.find(b"\n---", 3)
+    return raw[:end + 4] if raw.startswith(b"---") and end != -1 else b""
 
 
-def pack_skill_md(src: str):
-    pkg = SKILLS / f"{src}.skill"
-    if not pkg.is_file():
-        return None
-    with zipfile.ZipFile(pkg) as z:
-        for n in z.namelist():
-            if n.endswith("/SKILL.md") and n.count("/") == 1:
-                return z.read(n)
+def stub_bytes(src: str, name: str, canon: bytes) -> bytes:
+    head = rename_fm(frontmatter(canon), src, name)
+    return head + b"\n" + STUB_BODY.format(name=name, src=src).encode()
+
+
+def code_link_problem(src):
+    code = pathlib.Path(os.environ.get("SKILL_CODE_DIR") or os.path.expanduser("~/.claude/skills"))
+    if not code.is_dir():
+        return None  # 云端或沙箱没有这个目录，属预期
+    name = "qa" if src == "QA" else src
+    link = code / name
+    if not link.is_symlink():
+        return "Code 链接缺失或不是链接"
+    target = link.resolve()
+    if target not in ((PORTABLE / src).resolve(), (SKILLS / src).resolve()):
+        return "Code 链接指向不对"
     return None
 
 
 def state_of(src, cfg, root, seen):
-    canon = read(SKILLS / src / "SKILL.md")
+    tree = dir_tree(SKILLS / src)
+    canon = tree.get("SKILL.md")
     if canon is None:
         return "canonical 缺失"
-    cur = norm(canon)
-    if cfg.get("portable"):
-        if norm(read(PORTABLE / src / "SKILL.md") or b"") != cur:
-            return "待发布"
-    pkg = pack_skill_md(src)
-    if pkg is None or norm(pkg) != cur:
+    if cfg.get("portable") and dir_tree(PORTABLE / src) != tree:
         return "待发布"
+    if pack_tree(src) != tree:
+        return "待发布"
+    cur = digest(tree)
     if cur not in seen.get(src, set()):
         return "待发布"
     if root is None:
         return "账号未核"
+    state = account_state(src, cfg, root, seen, tree, canon, cur)
+    if state == SYNCED and (cfg.get("portable") or src == "QA"):
+        return code_link_problem(src) or SYNCED
+    return state
+
+
+def account_state(src, cfg, root, seen, tree, canon, cur):
     name = cfg.get("account_name", src)
-    acc = read(root / name / "SKILL.md")
+    acc_tree = dir_tree(root / name)
+    acc = acc_tree.get("SKILL.md")
     if acc is None:
         return "待上传（账号缺失）"
     if cfg.get("account", "stub") == "full":
-        a = norm(acc, name, src)
+        norm_tree = {**acc_tree, "SKILL.md": rename_fm(acc, name, src)}
+        a = digest(norm_tree)
         if a == cur:
             return SYNCED
         return "待上传（账号落后）" if a in seen.get(src, set()) else "待上传（账号副本不是任何已发布版本）"
-    if parity.STUB_MARKER not in acc:
+    if STUB_MARKER not in acc:
         return "待上传（账号还不是薄壳）"
-    if f"skill-stub: v{STUB_VERSION} ".encode() not in acc:
-        return "待上传（壳版本落后）"
-    if frontmatter(acc, name, src) != frontmatter(canon):
+    if acc.rstrip(b"\n") == stub_bytes(src, name, canon).rstrip(b"\n"):
+        return SYNCED
+    if rename_fm(frontmatter(acc), name, src) != frontmatter(canon):
         return "待上传（触发描述已变）"
-    if f".skills/{src}/SKILL.md".encode() not in acc:
-        return "待上传（壳指向错误）"
-    return SYNCED
+    return "待上传（壳内容不是最新）"
 
 
 def unregistered(reg):
     names = set()
-    if SKILLS.is_dir():
-        names = {d.name for d in SKILLS.iterdir() if d.is_dir() and (d / "SKILL.md").is_file()
-                 and not d.name.startswith(("_", "."))}
+    for base in (SKILLS, PORTABLE):
+        if base.is_dir():
+            names |= {d.name for d in base.iterdir() if d.is_dir() and (d / "SKILL.md").is_file()
+                      and not d.name.startswith(("_", "."))}
     return sorted(names - set(reg))
 
 
@@ -171,8 +194,7 @@ def status(brief=False):
     else:
         print(f"账号目录：{root if root else '读不到'}")
         for s, st in rows:
-            cur = read(SKILLS / s / "SKILL.md")
-            print(f"{s:<20}{(hashlib.sha256(cur).hexdigest()[:8] if cur else '—'):<10}{st}")
+            print(f"{s:<20}{digest(dir_tree(SKILLS / s))[:8]:<10}{st}")
         for s, c in reg.items():
             if c["channel"] != "release":
                 print(f"{s:<20}{'—':<10}不发布（{c['channel']}）")
@@ -184,7 +206,6 @@ def status(brief=False):
 
 
 def record(src, sha, note):
-    SKILLS.mkdir(parents=True, exist_ok=True)
     row = {"ts": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
            "skill": src, "version": f"{datetime.date.today().isoformat()}-{sha[:8]}", "sha256": sha, "note": note}
     with LEDGER.open("a", encoding="utf-8") as f:
@@ -194,74 +215,97 @@ def record(src, sha, note):
 def record_current():
     reg, seen = registry(), ledger_versions()
     for s, c in reg.items():
-        raw = read(SKILLS / s / "SKILL.md")
-        if c["channel"] == "release" and raw is not None and norm(raw) not in seen.get(s, set()):
-            record(s, norm(raw), "初始化")
+        tree = dir_tree(SKILLS / s)
+        if c["channel"] == "release" and "SKILL.md" in tree and digest(tree) not in seen.get(s, set()):
+            record(s, digest(tree), "初始化")
     return status()
 
 
 def check_valid(src, raw):
+    # yaml 依赖只有发布时才需要，status 不受它影响
+    spec = importlib.util.spec_from_file_location("parity", HERE / "check_skill_parity.py")
+    parity = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(parity)
     text = raw.decode("utf-8", "replace")
-    err = parity.parse_fm(text)[1]
+    fm, err = parity.parse_fm(text)
     if err:
         return f"frontmatter 解析失败：{err}"
+    if not isinstance(fm, dict):
+        return "frontmatter 不是映射"
+    if str(fm.get("name", "")).lower() != src.lower():
+        return f"name 与目录名不符：{fm.get('name')!r}"
+    if not str(fm.get("description", "")).strip():
+        return "description 为空"
     if parity.dup_frontmatter(text):
         return "重复 frontmatter 块"
-    if parity.STUB_MARKER in raw:
+    if STUB_MARKER in raw:
         return "canonical 不得是薄壳"
     return None
 
 
-def write_pack(path: pathlib.Path, src: str, name: str):
+def write_zip(path: pathlib.Path, members: dict):
+    """先写内存再原子替换，中途失败不留半个包。"""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for n, data in members.items():
+            z.writestr(n, data)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
-        for p, rel in pack_files(src):
-            data = p.read_bytes()
-            if rel.name == "SKILL.md" and rel.parent == pathlib.Path(".") and name != src:
-                data = data.replace(f'name: "{src}"'.encode(), f'name: "{name}"'.encode(), 1)
-            z.writestr(f"{name}/{rel.as_posix()}", data)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_bytes(buf.getvalue())
+    os.replace(tmp, path)
 
 
 def release():
     reg, root = registry(), account_root()
     targets = {s: c for s, c in reg.items() if c["channel"] == "release"}
-    problems = [f"{s}: {e}" for s, c in targets.items()
-                for e in [check_valid(s, read(SKILLS / s / "SKILL.md") or b"")] if e]
+    problems = [f"{s}: {e}" for s in targets
+                for e in [check_valid(s, dir_tree(SKILLS / s).get("SKILL.md", b""))] if e]
     if problems:
         print("✗ 未发布，先修：\n  " + "\n  ".join(problems))
         return 1
     seen = ledger_versions()
-    upload = []
-    if OUT.is_dir():
-        for old in OUT.glob("*.zip"):
-            old.unlink()  # 本工具自己的产物；清掉上一轮，目录里只留这次要传的
     for s, c in targets.items():
-        raw = read(SKILLS / s / "SKILL.md")
-        cur = norm(raw)
+        tree = dir_tree(SKILLS / s)
         if c.get("portable"):
-            for p, rel in pack_files(s):
-                dst = PORTABLE / s / rel
-                if read(dst) != p.read_bytes():
+            pdir = PORTABLE / s
+            for rel, data in tree.items():
+                dst = pdir / rel
+                if not dst.is_file() or dst.read_bytes() != data:
                     dst.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(p, dst)
+                    shutil.copy2(SKILLS / s / rel, dst)
                     print(f"同步 portable：{s}/{rel}")
-        pkg = pack_skill_md(s)
-        if pkg is None or norm(pkg) != cur:
-            write_pack(SKILLS / f"{s}.skill", s, s)
+            for rel in set(dir_tree(pdir)) - set(tree):
+                (pdir / rel).unlink()  # portable 是单向派生，多余文件 git 可回溯
+                print(f"移除 portable 多余文件：{s}/{rel}")
+        if pack_tree(s) != tree:
+            write_zip(SKILLS / f"{s}.skill", {f"{s}/{rel}": data for rel, data in tree.items()})
             print(f"重打包：{s}.skill")
+        cur = digest(tree)
         if cur not in seen.get(s, set()):
             record(s, cur, "release")
             seen.setdefault(s, set()).add(cur)
             print(f"记台账：{s} {cur[:8]}")
-        if state_of(s, c, root, seen) != SYNCED:
-            name = c.get("account_name", s)
-            if c.get("account", "stub") == "full":
-                write_pack(OUT / f"{name}.zip", s, name)
-            else:
-                OUT.mkdir(parents=True, exist_ok=True)
-                with zipfile.ZipFile(OUT / f"{name}.zip", "w", zipfile.ZIP_DEFLATED) as z:
-                    z.writestr(f"{name}/SKILL.md", stub_text(s, name, raw))
-            upload.append(f"{name}.zip")
+    # 只清本工具按注册表产出的包，别的文件一律不动
+    for c_s, c in targets.items():
+        old = OUT / f"{c.get('account_name', c_s)}.zip"
+        if old.is_file():
+            old.unlink()
+    if root is None:
+        print("账号目录读不到，无法判断要传哪些，未产出上传包")
+        return 2
+    upload = []
+    for s, c in targets.items():
+        st = state_of(s, c, root, seen)
+        if not st.startswith("待上传"):
+            continue
+        name = c.get("account_name", s)
+        tree = dir_tree(SKILLS / s)
+        if c.get("account", "stub") == "full":
+            members = {f"{name}/{rel}": (rename_fm(d, s, name) if rel == "SKILL.md" else d) for rel, d in tree.items()}
+        else:
+            members = {f"{name}/SKILL.md": stub_bytes(s, name, tree["SKILL.md"])}
+        write_zip(OUT / f"{name}.zip", members)
+        upload.append(f"{name}.zip")
     print(f"待上传（{len(upload)}）：{OUT}" if upload else "无待上传")
     for u in upload:
         print(f"  {u}")
@@ -271,14 +315,18 @@ def release():
 def main():
     args = sys.argv[1:]
     cmd = args[0] if args else "status"
-    if cmd == "status":
-        return status("--brief" in args)
-    if cmd == "release":
-        return release()
-    if cmd == "record-current":
-        return record_current()
+    try:
+        if cmd == "status":
+            return status("--brief" in args)
+        if cmd == "release":
+            return release()
+        if cmd == "record-current":
+            return record_current()
+    except Exception as e:  # noqa: BLE001 — 坏数据也要给出一行可读结论
+        print(f"技能版本：检查本身出错（{type(e).__name__}: {str(e)[:120]}）")
+        return 3
     print(__doc__)
-    return 2
+    return 3
 
 
 if __name__ == "__main__":
