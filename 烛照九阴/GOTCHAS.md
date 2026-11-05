@@ -896,3 +896,16 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **修复/建议修法**: 本班绕过：`/tmp/zzmnt-*/Database→Database 挂载点`、`/tmp/zzmnt-*/Claude/Projects/Financial/剑酒青丘→剑酒青丘 挂载点` 软链，`export ZZJY_MNT_ROOT=/tmp/zzmnt-*` 后重跑 → 降级行消失、成品 0 处「级别读数不可用」。根修（改剑酒青丘资产，须其线/Doctor 确认）：RES 改为先试 `HERE` 相对上溯（脚本自身在 剑酒青丘/infrastructure/取数工具/ 下，`HERE/../../回调级别判别` 即真址），再回退 `_mnt(...)`；或 SKILL 前置段把 `ZZJY_MNT_ROOT` 垫片列为常规步骤。
 **预防门禁**: 日报生成 stderr 出现 `[grade_section]` 即查挂载形态；SKILL 前置 env 段补 ZZJY_MNT_ROOT。
 **来源**: 2026-11-04 烛照班 CC（九儿）实跑实读。
+
+
+## [ERR-20261104-002] closure_engine 选行 `WHERE status != 'retired'` 漏掉 status 为 NULL 的行 → 2026-08-23 四条 industry_signals 永不重算 gap_status
+**状态**: 🔄 已修待验（2026-11-04 Doctor 批「选行时把空值也算进去」→ CC 实施；✅ 落签走分轨）
+**优先级**: 🟢 低（4 行，均为历史行）
+**触发场景**: 2026-11-04 官方端迁移场，独立复核 subagent 只读查 recap.db 时发现；主会话 CC 复核实读确认。
+**硬证据/最小复现**: `sqlite3 'file:recap.db?mode=ro'` → `select id,date,status,gap_status from industry_signals where status is null` 返回 1611–1614（date 2026-08-23，status NULL，gap_status NULL，info_gap_level 3/3/3/2）；`tools/closure_engine.py` 约 L319–320 选行为 `WHERE status != 'retired'`，SQL 三值逻辑下 `NULL != 'retired'` 为 NULL → 这 4 行被排除。
+**根因**: 退役过滤写成不等式，没处理 NULL；入库侧当时未给 status 赋默认值（其余行为 'new' 等）。
+**影响面**: 这 4 条信号的 gap_status / 兑现跟踪恒空，日报与回测里按「无状态」处理；不影响其他行。
+**修复/建议修法**: 二选一（Doctor 选①）：① 改选行为 `WHERE status IS NULL OR status != 'retired'`（或 `COALESCE(status,'') != 'retired'`）；② 数据侧把 4 行 status 补 'new' 再由次日班重算。
+**修复记录（2026-11-04 · 已修待验）**: 同根三处一并改为 `COALESCE(status, '') != 'retired'`——`tools/closure_engine.py` L321（选行，另加注释）、`tools/gen_daily_report.py` L1085/L1090（日报「逾期未兑现」计数与高占比锚聚合，与引擎口径保持一致）。备份 `_bak/{closure_engine,gen_daily_report}.py.bak_2026-11-04_nullstatus`（md5 103dd5d0… / 8f4212e6…）。验证（/tmp 隔离根 + recap.db 副本，真库 md5 前后同 13e0e3bd…）：`closure_engine --dry-run --table industry` 新版审核表比旧版多且只多 1611–1614 四行（dormant / no_anchor / dormant / closing），其余 1926 行逐字一致；retired 29 行仍排除；日报逾期计数今日 61→61（四行 gap_desc 尚空，次日 apply 后才可能计入）。持久化测试 `tests/test_retired_filter_null.py`（静态禁裸写法 + 内存库语义）2/2 OK；故障注入：旧版 closure_engine 放临时树 → 静态测 FAIL 并点名 L320。真库落库由次日 10:00 班 5c-4 `--apply` 完成，CC 未手动 apply。
+**预防门禁**: 带不等式的 SQL 过滤对可空列一律显式处理 NULL；入库写 status 默认值。
+**来源**: 2026-11-04 官方端迁移场 · 独立复核 subagent 发现 + CC 实读复核。
