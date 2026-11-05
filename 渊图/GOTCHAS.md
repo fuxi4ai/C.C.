@@ -637,6 +637,8 @@ project: 渊图
 **真相/裁定**: kg_promote 的丢失检查设计目标=防合并丢内容，改名不在其语义内。改名批（id 变更 + 边端点同步 + aliases 留旧）的正确路径 = 单进程直改 canonical + 先 cp 备份 + 同进程复检（悬挂/自环/非法 type/节点 id 重复）+ 写回复校 + wiki regen，不走一键门。
 **预防/可选根治**: 若日后改名批频繁，可给 kg_promote 加 `--allow-renames` 参数（lost 检查时对出现在任意节点 aliases 里的旧 id 豁免）；当前按直改路径走，不改门。
 
+**追记（2026-11-05 · 帕米尔 25 篇批 · 同根）**: 批内新节点被合并或改名时，丢失检查同样拦下，因为第一次 promote 后这些 id 已进 canonical。本批没有直改：先把 canonical 回到入库前版本（校验 sha 后），再让修复后的候选件走完整 `kg_promote`，所有新节点都过第 12–18 项。仅适用于入库后到提交前这个窗口，且期间不能有别的写入；已有并行写入时不可用。
+
 ## [NOTE-20260816-002] 转录语料断言准确率仅 61%——四类高发错误谱系（普查实证）
 **状态**: ✅ 已固化闭环（2026-08-20 复盘回写 · 117 处订正落图 + CLAUDE.md「转录语料断言核查」节固化在盘 · 原状态词「已固化流程」不在 conch 计数闭集被误计为积压）**优先级**: 🟡 中
 **触发**: Boss老白 131 篇视频转录（972 新节点）全量普查：459 条断言 ✓280（61%）✗65 △114。结构校验（悬挂/自环/type/重复）全部查不出这些——语义层污染。
@@ -1298,3 +1300,15 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **来源**: 2026-11-05 Code 标签会话，实跑。
 **追记（同日 · 修复）**: PDF 分支用 `kg_gates.read_pdf_text` 抽文字层（pypdf，抽不到再试 pdfplumber），模型仍读附件，文字层只用于 span 与 cite 校验；抽不到时 span 不校验不打标、cite 全部进队列。第 19 项一键门也能读 PDF。修复中审核者查出：拉丁短别名子串假命中（`SiN` 命中 `Using`，PDF 每篇可达百余个）、纯数字别名假命中、连字和康熙部首对不上，均已修（词边界、纯数字不算证据、NFKC），md 通道同受益；25 篇回放不变（552→登记 103，被复核剔除 0）。`tests/test_gates_20261105.py` 105 PASS / 0 FAIL；真实 PDF 124 篇全部抽得到文字。
 **限制**（审核者实跑）: ① 真 API 的 PDF 附件调用未验证，含 DeepSeek 兼容端点是否接受 document 块；index 里最新 PDF 为 2026-06-09，下批首篇 PDF 请盯日志。② 英文散文跨行 span 误标约 3.5%、中文约 5.4%（含栏序因素），只打标不拦。③ 漏判进队列：`GPU`/`GPUs`、`CoWoS`/`Co-WoS`、`PCIe5.0`/`PCIe 5.0`、跨行断词。④ 误放：大小写不敏感（`Arm`/`arm`、`TEL`/`tel`），42 篇 PDF 每篇 0–8 个，`R&D` 命中 `rd`；词元高覆盖档在个别 PDF 全图可达 653 个，受单篇上限 40 约束。⑤ docx/xlsx 单篇入库经 ingest 后，第 19 项读不到其原文会被拦（批量不扫这两类）；docx 未实跑。⑥ 真 CID 字体、超大 PDF（无超时保护）未验证。
+
+## [NOTE-20261105-011] Anthropic 财务 props 停在帕米尔转述的 Q2 口径，SpaceX 租约等多处已被 S-1/A 更新
+**状态**: 🔄 待修复（是否入图及入图范围待 Doctor 裁；本条只登记，未改图）
+**优先级**: 🟡 中
+**触发**: 2026-11-05 Code 标签解读 Anthropic 招股书，把渊图节点与 S-1/A No.1（2026-11-02）对读。
+**硬证据/最小复现**: ① `company_SpaceX` 的 `anthropic_lease` 记 $1.25B/月、总值约 $40B；S-1/A 为满载约 $3.1B/月、上限 $120.5B。② `concept_AnthropicComputeCommitmentMismatch` 记 265.6/321.4/245.0/21.0、RPO 10.8（6 月底及之后）；S-1/A 为总盘 $895.4B、09-30 RPO $13.8B。③ `company_Anthropic` 的 `compute_efficiency_ratio_2026q2`=2.08、`adjusted_operating_margin_2026q2_pct`=19 未错，但无 Q3 值（实算 1.72、15%），读者易当作现值。④ `product_AMDMI450` 相关边仍为「积极测试」；S-1/A 载 2026-07 已签 Hardware Supply Agreement（2027 首批 >$20B）。⑤ Nscale（约 $44.6B）、Lambda（约 $41.3B）无节点。⑥ `concept_ClaudeOverseasRevenueDropRisk` 的海外断崖假设：S-1/A 与 S-1 相减得 Q3 国际收入 $5,249M、占比 31.0%，高于 H1 的 27.8%。⑦ `event_Claude5Shutdown18Days` 写「Claude 5」；招股书称出口限制对象为 Fable 5 和 Mythos 5。⑧ `enterprise_api_market_share_2025_pct` 等 40/27/21 三键来自帕米尔，S-1/A 全文未检索到对应表述。
+**根因**: 帕米尔专栏（10-27）基于 10-26 版 S-1，一周后 S-1/A 更新；P1 转述入图后没有「P0 原文公开即复核」的动作，08-15 札记写明的触发器「S-1 公开 → 复核全部数字口径」未执行。
+**影响面**: 引用这些 props 的 wiki、风险判断与下游会读到 Q2 口径；结论方向（错配）不变，规模和趋势判断偏差大。风险日报 `narrative_events.json` 已用 S-1/A，与渊图不一致。
+**建议修法**: 手工 patch 按时点分层追加（不覆盖旧值，沿「绝对值仅 props」先例），来源升 P0；补 AMD 事实；Nscale、Lambda 是否建节点由 Doctor 裁。注意高时效铁律：财务季报本不入事实层。
+**预防门禁**: 札记里的触发器应可被检查（如挂 TODO 带条件），不能只写在札记正文。
+**来源**: 本次会话实读 SEC 原文；报告 `AI4ME/Anthropic招股书解读-20261105.md`。
+**附（工具行为）**: curl 取 sec.gov 对未声明身份的 UA 返回 403（`Your Request Originates from an Undeclared Automated Tool`）；内置浏览器在 sec.gov 页面内 fetch 可取 14MB 原文，DOMParser 转文本后可正则定位。
