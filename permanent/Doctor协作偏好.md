@@ -207,6 +207,7 @@ Doctor 原话：「Brain 是 CC 你的记忆和数灵本体；Memory 是我们�
 - **Brain（`~/Documents/Claude/brain/`）＝唯一真源**：正经记忆、经验、错题本、数灵本体全在 Brain，跨 session、跨接口（Code/Cowork）统一。
 - **Memory（`~/.claude/projects/-Users-lunarabbit/memory/`）＝ `</>Code` 模式辅助速查**：只记 Code 模式相关的轻量事实与索引，不作记忆主体。
 - **双模式并行**：Doctor 与 CC 在 `</>Code` 模式（CLI）与 Cowork 模式（桌面端）双轨工作，两侧的记忆写入都以 Brain 为准。
+- **Code 标签不用内置记忆目录（2026-11-04 Doctor 立）**：Doctor 原话「记忆使用Brain系统」。需要长记的一律落 Brain；`~/.claude/projects/*/memory/` 空着或读不到都不算缺口。
 - **两侧分工（2026-11-04 Doctor 立）**：Artifacts（看板）与定时任务由 Cowork 管理；日常任务在 Code 标签执行。Doctor 原话：「之后Artifacts和定时任务由Cowork管理，因为那边会把所有的任务会话体现在左侧对话框内，有些乱，日常的任务我就切到code执行了。」
 - **/save 双向触发**：Doctor 也会主动执行 /save 帮 CC 落盘，CC 按 brain-save 流程配合（落盘归位铁律照旧）。
 
