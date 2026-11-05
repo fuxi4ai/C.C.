@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-11-01T23:22:39-08:00",
+  "generated_at": "2026-11-04T20:50:16-08:00",
   "triggered_by": "scheduled",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
@@ -137,8 +137,8 @@
    {
     "taskId": "recap-kejian-daily-ingest",
     "has_skill": true,
-    "skill_mtime": "2026-10-21 22:00",
-    "skill_sha12": "810590667298",
+    "skill_mtime": "2026-11-04 06:25",
+    "skill_sha12": "6d2537cd3533",
     "skill_lines": 43,
     "name": "recap-kejian-daily-ingest",
     "desc_head": "由九儿扫小鲍课件→四维入recap.db：dim1/dim2全自动、dim3情绪叙述纳入、dim4仓位半纳入(拿不准留待人工复核)，严格去重标P2；三道闸门：repr只收0-1数值·分项口径不落总仓列·dim2近似数必注…",
@@ -167,11 +167,11 @@
    {
     "taskId": "refresh-risk-daily",
     "has_skill": true,
-    "skill_mtime": "2026-10-20 01:33",
-    "skill_sha12": "8d0b3a34f951",
-    "skill_lines": 51,
+    "skill_mtime": "2026-11-03 22:44",
+    "skill_sha12": "2f36f785a15b",
+    "skill_lines": 61,
     "name": "refresh-risk-daily",
-    "desc_head": "每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号（collect_v25_et_inputs →…",
+    "desc_head": "每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号 → 股权溢价指数原子 → AI Tech Al…",
     "cron": null
    },
    {
@@ -418,7 +418,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "(never exited)"
+     "last_exit_code": "0"
     }
    },
    "com.zhuzhao.usclose": {
@@ -459,7 +459,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "(never exited)"
+     "last_exit_code": "0"
     }
    },
    "netdisk_service": {

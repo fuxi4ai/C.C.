@@ -1,11 +1,11 @@
 # name	bytes	sha12	mode	mtime —— 由 scheduler_snapshot.py 周更；盘上有/清单无的幽灵靠本清单 diff 现形
 baize-weekly-dashboard	111312	bd8e0679998a	copy	2026-11-01 01:24
-eal-v3-event-transition	47591	04d92f6eca23	copy	2026-10-30 17:55
+eal-v3-event-transition	47591	96b81a209aec	copy	2026-11-03 18:00
 event-attribution-ledger	178304	32b5ec422fd3	copy	2026-08-18 20:31
-global-asset-inventory	72716	fe4f254942e7	copy	2026-11-01 23:09
+global-asset-inventory	72719	1cffecde65b9	copy	2026-11-03 11:42
 longyu-stock-library	1077545	5af3aa2c456b	sha-only	2026-10-31 22:20
-pec-starry-skies	1034770	2cde990ce1c7	sha-only	2026-10-28 08:50
-risk-daily	435361	4db11d8d8913	copy	2026-11-01 09:13
-x-board	675773	9841d2b850a4	copy	2026-11-01 18:02
+pec-starry-skies	1034871	3bfdee67da78	sha-only	2026-11-01 23:41
+risk-daily	529845	f50d56cd392d	copy	2026-11-04 05:12
+x-board	726198	25f49e0bfbce	copy	2026-11-03 18:03
 yuantu-starry-skies	4986877	fd5d840fef7f	sha-only	2026-11-01 21:18
-zhuzhao-jiuyin-daily	2212836	2c256ba6d24f	sha-only	2026-10-30 10:10
+zhuzhao-jiuyin-daily	2221550	70a7c81db1da	sha-only	2026-11-03 10:10
