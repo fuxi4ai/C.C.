@@ -62,10 +62,10 @@ Gateway 同名班的 SKILL 正文仍是写文件的旧版，打开 Gateway app �
 
 ## 验收（请回报实读证据）
 
-- [ ] `list_triggers`：新班名、prompt 回读无 `行业研究/watch`、无 `alarm_watchlist.jsonl`
-- [ ] 无重复班；旧名已停
-- [ ] `live/` 镜像与云端 prompt 一致
-- [ ] 在新路径实跑 `alarm_store.py verify` 得 `verified:true`、`alarm_proposals.py --help` 正常
+- [x] `list_triggers`：新班名、prompt 回读无 `行业研究/watch`、无 `alarm_watchlist.jsonl`（独立复核 2026-11-05 · 证据见回执）
+- [x] 无重复班；旧名已停（独立复核 2026-11-05 · 证据见回执）
+- [x] `live/` 镜像与云端 prompt 一致（独立复核 2026-11-05 · 证据见回执）
+- [x] 在新路径实跑 `alarm_store.py verify` 得 `verified:true`、`alarm_proposals.py --help` 正常（独立复核 2026-11-05 · 证据见回执）
 - [ ] 11-09 周班跑完：`python3 -B alarm/test_no_drift.py` 通过
 
 ## 补充（Code 侧 2026-11-05 05:50 PT 追加）
@@ -81,3 +81,21 @@ Gateway 同名班的 SKILL 正文仍是写文件的旧版，打开 Gateway app �
 
 - **r5、r7 判断是否发版：** 待 Doctor 定，请不要发版。内容在 `alarm/legacy/drift_ce6ce1bb_20261103.jsonl`，未外核。
 - **`风险日报/test_narrative_score.py` 第 4d 条失败：** Code 侧跟进。
+
+## Cowork 回执（2026-11-05 · 交互会话）
+
+**trigger id 不变**（原地改名，未新建，因此不存在一个班跑两次的问题）：
+
+| 新班名（云端显示名） | trigger | 最后写入 updated_at | 下次运行 |
+|---|---|---|---|
+| risk-daily-alarm-weekly（Risk daily alarm weekly） | `trig_01EPBsGDNhUb2moaWtt9jVbE` | 2026-11-05T14:03:51Z | 2026-11-09T17:06Z |
+| risk-daily-alarm-earnings-season（Risk daily alarm earnings season） | `trig_014KYdk16XT3tTAWMRximzVa` | 2026-11-05T14:07:04Z | 2027-01-07T17:08Z |
+
+- **改名和改路径**：`live/yuantu-alarm-*` 已改名为 `live/risk-daily-alarm-*`（目录内保留 `.bak_2026-11-05_pre-readonly`、`pre-rename`、`pre-supplement` 三代备份）。第 1 步改为 `cd ~/Documents/Claude/Projects/风险日报/alarm && python3 -B alarm_store.py verify`，接 `export`；自检改查 `legacy/alarm_watchlist_frozen_v1.jsonl`。两班正文已无 `行业研究/watch`、无 `alarm_watchlist.jsonl`，旧目录只写作「迁移前的旧目录」。
+- **提案队列**：第 5 步改为只写 `proposals/pending/{日期}_{alarm_id}.json`；写完跑 `check`，复核摘要原样贴进简报；一条信号只出一条提案；不调用 `import` 和 `build`；简报末尾给只加提案目录的 git 命令。定性判断不写提案，只进简报。
+- **补充项**：`test_no_drift.py` 已接进两班的收尾自检，失败原文上报；`refresh-risk-daily` 镜像第 43 行改为新路径（该班云端 prompt 以镜像为正文真源，镜像改了即生效）。
+- **清单**：指令卡状态表第 69、70 行和 `TODO.md` 第 26 行写成「新名（原旧名）」；带日期的历史叙述行没改。`定时班挂载需求清单` 里没有这两个班名，无需改。`permanent/定时任务清单.md`（archived）、`回切操作卡`（列的是 Gateway 侧班名，Gateway 班不改名）、`经验库`、`logs/`、`backups/` 都没动。每个改过的文件都有 `.bak_2026-11-05_*` 备份。
+- **实跑（新路径）**：`alarm_store.py verify` 退出码 0，`verified:true`，指向 `r-a52c920ddee516a44fe74d13`；`alarm_proposals.py --help` 和 `check --help` 退出码都是 0；冻结文件前 16 位 `e47732e86d245746`。
+- **⚠ 发现：`test_no_drift.py` 在云端 VM 里 7 项有 1 项失败**：`test_frozen_readonly` 报 `128 != 0`。VM 里 `legacy/alarm_watchlist_frozen_v1.jsonl` 是 `600`，`os.access(W_OK)=True`，也就是 owner 可写。Mac 本机是否只读，这里核不到（未核）。在修复或改测试之前，两班每次收尾都会报「⚠ 防漂移测试失败」。我没有改它的权限，也没有改测试：前者是 Code 侧的资产，后者属于放宽校验。另外，`test_old_path_only_tombstone` 依赖 `~/Documents` 软链，没有垫片时会直接返回、静默通过；班里第一步就会建垫片，所以班内运行有效。
+- **Gateway**：本会话读不到 `~/Gateway-workspace/`，未核。请 Doctor 在 Gateway 侧保持这两班停用或删除。
+- **未发版**：没有调用 `alarm_store.py import` 或 `alarm_proposals.py build`；r5、r7 没动。
