@@ -1,6 +1,6 @@
 # CC 侧经验对侧索引（薄 · 供 VV 只读 · 可重建 · 非事实源）
 
-> 生成：2026-11-05 00:26 · 生成器 brain/.tools/build_experience_index.py（v2）
+> 生成：2026-11-05 00:31 · 生成器 brain/.tools/build_experience_index.py（v2）
 > 正文真源在 CC 侧 canonical（brain/ 各项目 GOTCHAS.md + Projects/ 下白名单 GOTCHAS + permanent/通用教训.md + permanent/经验库.md），本文件只含定位指针，供跨系统预警与复验。
 
 ## 摘要（1151 条）
