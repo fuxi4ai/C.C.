@@ -57,3 +57,15 @@ project: 司南
 **预防措施**: 混合部署前先核「两边调度器是否能同时在线」；切壳后首日按 cron 名义时刻抽查一班产物 mtime，别只看「班已启用」。另：Doctor 打开 Gateway app 去停班时，app 启动会先补跑漏班（今日 07:0x 实证）——写库类 6 班可能在停之前先补跑一次，与云端双写。
 **来源**: 2026-11-04 /resume 场「继续迁移完整性检查」
 **进展（2026-11-04 19:35 UTC）**: Doctor 确认两 app 不可能同开（单开成因＝app 级互斥，已核）。Doctor 裁「留官方，推看板班也上云」：推看板 8 班改为云端照跑、推送入待推队列 `brain/.tmp/pending-artifact-push.jsonl`、交互会话补推；云端启用 22（21 定时 + 1 按钮触发）；回切操作卡已补云端段。仍待：Doctor 停 Gateway 24 班、各班首跑核对、scheduler-weekly-audit / sessions-monthly-audit 无云端可行形态（暂停，/resume 兜底）。
+
+
+## [ERR-20261104-004] 经验索引只扫 brain/{项目}/GOTCHAS.md，漏掉 Projects/ 下的 canonical GOTCHAS，/resume 把开放条目报成 0
+**状态**: ⚠️ 已知风险
+**优先级**: 🟡 中
+**触发场景**: 2026-11-04 夜 Code 标签 /resume 后重建经验索引，核对当日新条目时发现。
+**硬证据/最小复现**: `.tools/build_experience_index.py` L118 取 `os.path.join(BRAIN, d, "GOTCHAS.md")`。重建后索引总览「白泽大宗：11 条（开放 0）」，`Projects/Financial/白泽大宗/GOTCHAS.md` 实有 12 条 `## [ERR`、状态行 🔄/⚠ 6 条；ERR-20261104-001（哨兵）在索引内命中 0。
+**根因**: 生成器按 brain 目录枚举来源，未覆盖 canonical 落在 Projects/ 的项目。
+**影响面**: 白泽大宗确认受影响；`Projects/` 下风险日报 3 条、星空 2 条、DVA 2 条、EAL 1 条是否已被 brain 侧覆盖未核。/resume 的「经验召回」会低报开放数。
+**修复/建议修法**: 生成器增加 Projects/ 下 canonical GOTCHAS 来源，并处理与 brain 同名件的去重；属行为变更，待 Doctor 批。
+**预防门禁**: 重建后对拍各来源 `## [ERR` 计数与索引条数；引用「开放 0」前先核该项目 canonical 位置。
+**来源**: 2026-11-04 Code 标签会话，实读生成器与两份 GOTCHAS。
