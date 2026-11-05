@@ -90,10 +90,11 @@ project: DVA
 **机理：** `handleImportTranscriptsCommand` 的 `walk(rootDir)` 扫**整个** `TRANS_DIR`；解析不到 sec_uid 的字幕在 `dva.js:1608` 打 `[无法定位作者]` 告警，而**这一步早于 `secUidFilter` 过滤（1612 行）**。故定时班即便只补一个作者、传了 secUid，全树 ~630 条跨作者孤儿仍逐条假红——三桶分级只是把它单列止血，非治本。
 **治本①（1a·作者域扫描）：** harvest 第 3 步 import 扫描根改 `path.join(TRANS_DIR, authorName)`（不存在兜底退整根）→ 跨作者孤儿永不被访问。standalone `dva import-transcripts <dir> [sec_uid]` CLI 不改，整根手动导入仍照常告警（回归基线）。
 **排查提示：** 复查「假红/告警洪泛」先看**告警点与过滤点的行序**——过滤在告警之后＝全量误报。改 import 相关逻辑时以此为第一手线索。
-**状态：** ① 已改 Mac 源（未部署·待 bundle/VV 验）；② 孤儿集中裁决留①稳定后另起。
+**状态：** ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS_WITH_LIMITS）← 原：① 已改 Mac 源（未部署·待 bundle/VV 验）；② 孤儿集中裁决留①稳定后另起。
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS——① Mac 源 `dva.js` L1517-1525：harvest 第 3 步 `importRoot = path.join(TRANS_DIR, authorName)`，目录不存在兜底整根，standalone `import-transcripts` CLI 未改；`node --check dva.js` rc=0；② 20260820T150155Z 与 20260909T123945Z 两 bundle 内 `dva.js`（sha `7406d4b22648`）与 Mac 源逐字一致——原状态「未部署」已过时，08-20 / 09-09 两次 install 均已带上。限：该路径无自动化测；fuxi 生产班日志（`[无法定位作者]` 假红是否归零）盘上不可达未核。② 孤儿集中裁决不在本签范围，由 `logs/2026-08/checkpoints/2026-08-13_DVA孤儿②集中裁决移交.md`（已裁定 + 已移交 VV · 待 VV 执行回报）追踪。
 
 ### [BUG-20260819-001] Qwen3-ASR 长音频整段转写 CUDA OOM（生产班受波及）
-**状态：** 🔄 已修待验（2026-08-20 adapter 分段修复落地 Mac 源 · 单测 9/9 绿 · **bundle→fuxi 已部署**〔`dva-runtime-20260820T150155Z` · sha256 `ae008d4e…` · 旧 runtime→`runtime.bak.20260820-230624` 可回滚〕· **Doctor 快验通过**〔single-20260820-152826Z · 32.5min 视频端到端 exit=0 无 OOM · 10314 字 · 产物 asr_status=success / source=qwen3-asr-1.7b-local-fuxi〕· 待 VV 独立补验后关条〔移交件 `docs/移交VV_ASR长音频分段修复_20260820.md`〕· **VV 补验顺延（2026-08-20 额度用尽）**· 周六 08-22 05:00 定时班为自然第二验证点）
+**状态：** ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS_WITH_LIMITS）← 原：🔄 已修待验（2026-08-20 adapter 分段修复落地 Mac 源 · 单测 9/9 绿 · **bundle→fuxi 已部署**〔`dva-runtime-20260820T150155Z` · sha256 `ae008d4e…` · 旧 runtime→`runtime.bak.20260820-230624` 可回滚〕· **Doctor 快验通过**〔single-20260820-152826Z · 32.5min 视频端到端 exit=0 无 OOM · 10314 字 · 产物 asr_status=success / source=qwen3-asr-1.7b-local-fuxi〕· 待 VV 独立补验后关条〔移交件 `docs/移交VV_ASR长音频分段修复_20260820.md`〕· **VV 补验顺延（2026-08-20 额度用尽）**· 周六 08-22 05:00 定时班为自然第二验证点）
 **优先级：** 🟡 中
 **触发：** 2026-08-19 调研情报局单视频任务：32.5min 视频 `single_one.ps1` 转写稳定复现 OOM——torch 报进程内已分配 34.58 GiB（4090 仅 24 GiB）、请求 3.62 GiB 失败。同日 `refill-20260818-210000Z.log`（周三 05:00 班）含多行同款 OOM，班次转写成批失败。
 **根因：** `transcribe.py` 把整段长音频一次传入 `model.transcribe()`，无分段/流式；模型加载（~3.4GB bf16）与 20s 短音频均正常（probe 实证 exit 0），长音频处理阶段内存膨胀至 OOM。
@@ -102,6 +103,7 @@ project: DVA
 **建议修法：** ~~transcribe.py 内建分段（whisper 式滑窗或 N 分钟分段+拼接）；或 DVA 管线层对超长音频预分段。修复与部署由 Doctor/VV 裁。~~ → **已按「DVA adapter 分段」修**（Doctor 2026-08-20 裁）：`dyd/asr_local_qwen3.py` 内建 ffprobe 探测 >900s → ffmpeg 切 450s 段 → 逐段 CLI → 拼接（backend=`local-cuda-chunked-450s`）；单测 `dyd/tests/test_asr_local_qwen3.py` 9/9。**待**：bundle→fuxi 部署 + VV 端到端验长视频。CLI 内建分段（模型单次加载更省）作优化建议知会 VV，改不改由 VV 定。
 **预防门禁：** 新音频长度 >15min 先测整段再上；班日志出现 OutOfMemory 即查本条族。
 **来源：** 2026-08-19 调研情报局单视频任务（硬证据：两次整段复现 + 20s 对照 + 班日志 OOM 行）
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS——① Mac 源 `dyd/asr_local_qwen3.py` 含 ffprobe>900s → 450s 分段 → 逐段 CLI → 拼接（L50-58 / L95-208）；② `dist/dva-runtime-20260820T150155Z.tar.gz`（sha256 `ae008d4e4377…`＝本条所记部署包）与 `dva-runtime-20260909T123945Z.tar.gz`（`7c3f105392c1…`＝09-09 会话日志所记 install 包）内 `dyd/asr_local_qwen3.py`（sha `6bbaa6613198`）及其单测与 Mac 源逐字一致；③ `python3 -m pytest -q -p no:cacheprovider tests/test_asr_local_qwen3.py` 9 passed rc=0；④ Doctor 快验证据在 `docs/移交VV_ASR长音频分段修复_20260820.md`（single-20260820-152826Z · 32.5min · wav≈1949s>900s 走分段 · 10314 字 · exit=0 无 OOM · asr_status=success）。限：fuxi 生产日志（08-22 起 refill 班是否再现 OOM）盘上不可达未核；VV 独立端到端补验无回执；`Projects/DVA/GOTCHAS.md` 同条副本仍为 🔄（本签只落 brain 件）。
 
 ### [NOTE-20260820-001] single_one.ps1 BOM 丢失复发——修复被覆盖＝发布链有洞
 **状态**: ⚠️ 已知风险

@@ -825,7 +825,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20261008-003] gen_daily_report 在 /tmp 副本根缺「龙鱼-标的分析库 / 宏观-大宗商品」软链时六维分静默回退图谱口径
 
-**状态**: ⚠️ 已知风险（SKILL 步骤 2 四件套未覆盖报表步骤的只读依赖）
+**状态**: ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS_WITH_LIMITS）← 原：🔄 已修待验（2026-11-05 缺件告警实施·SKILL 六件套未做）
 
 **触发/硬证据**: 2026-10-08 晚班二次触发重出日报：按 SKILL 步骤 2 四件套（market_data.db 快照 / tushare-cache / 行业研究 / .env）搭 /tmp 副本根跑 `gen_daily_report`，产出报「受益标的」注解从晨班的「六维61.5」等静默退化为「图谱:…」（六维 0 处）。根因定位：`fundamentals_lookup.py` 六维分读 `DATABASE_ROOT/龙鱼-标的分析库/records/` + `DATABASE_ROOT/宏观-大宗商品/business_breakdown.db`，两者均不在四件套内 → /tmp 根下缺失 → fl 查不到 → 无任何告警回退图谱口径。补齐两条软链重跑即恢复（六维 18 处）。晨班 20:31 报六维正常（其副本根带了这两条），证明非源数据问题、纯副本根缺件。
 
@@ -838,6 +838,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 重出日报后 grep 成品报「六维」计数——为 0 即触发本条排查；与晨班/上一版报 grep 对拍「六维」处数一致方算同口径。
 
 **来源**: 本班 2026-10-08 二次触发实跑（22:07 降级版 vs 22:09 修复版 grep 对拍 + fundamentals_lookup.py 源码实读）
+**修复记录（2026-11-05 · GAI 错题本积压场 · Doctor 批「日报六维缺件告警」· 已修待验）**: 取建议修法 ②——`tools/fundamentals_lookup.py` 加 `_warn_missing_once()`：首次 `lookup` 时若 `龙鱼-标的分析库/records` 或 `宏观-大宗商品/business_breakdown.db` 缺，向 stderr 打一行 `[fundamentals_lookup] ⚠ 缺件：…`（每进程一次，不改返回值/退出码）。备份 `_bak/fundamentals_lookup.py.bak_2026-11-05_misswarn`。测试 `tests/test_fundamentals_missing_warn.py` 2/2（缺件恰一行 · 齐件零告警）连同 `test_retired_filter_null` 共 4/4 OK；旧版跑新测 FAIL；真库查询零误报。修法 ①（SKILL 四件套→六件套）**订正（同日审核者2实读）**：镜像 SKILL L44 已是「副本根六件套（2026-11-01 ERR-20261008-003 修法）」，本记录初稿称「未做」有误；云端正文未核；「stderr 见缺件即补链」门禁尚未写进 SKILL。预防门禁可加一条：日报班 stderr 出现 `[fundamentals_lookup] ⚠ 缺件` 即补软链重跑。✅ 待未参与实施的审核者落签。
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS——① diff 对 `_bak/fundamentals_lookup.py.bak_2026-11-05_misswarn` 仅新增 `_MISSING_WARNED`+`_warn_missing_once()` 与 `lookup()` 内一行调用，返回值/退出码零改；② `python3 -m unittest tests.test_fundamentals_missing_warn` 2/2 OK（连同 test_retired_filter_null 4/4）；备份置入临时深层副本根跑同测 → 缺件用例 FAIL（0≠1）、齐件用例 ok；③ 真库 `lookup('300502.SZ')` 命中六维 83.5、stderr 零告警；④ `gen_daily_report --output /tmp --no-archive --no-deploy` 齐件 rc=0、stderr 空、「六维」48 处；缺两库的临时 DATABASE_ROOT rc=0、stderr 恰一行 `[fundamentals_lookup] ⚠ 缺件`、六维 0 处（降级已可见）；⑤ stderr 消费面：fundamentals_lookup 仅被 gen_daily_report import，烛照班 SKILL 镜像仅 L11 `ls … 2>/dev/null` 涉 stderr，全仓无解析 gen_daily_report stderr 的调用方 → 新告警不破坏下游。限：原状态「SKILL 六件套未做」与盘面不符——镜像 `references/scheduled-live-mirror/live/zhuzhao-market-fetch-daily-report/SKILL.md` L44 已是「副本根六件套（…2026-11-01 ERR-20261008-003 修法）」含 ⑤⑥ 软链（云端正文未核）；预防门禁「stderr 见 ⚠ 缺件即补链重跑」尚未写进 SKILL。
 
 ## [ERR-20261016-001] cn_index_daily 两种日期格式混写（000688.SH 带横杠 vs 000300.SH 无横杠）→ 按格式过滤静默漏读科创50
 
@@ -859,7 +861,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ## [ERR-20261017-001] 五因计温 × 科创50 审计未过闸 + A6/B6 源件不可审计 + CNH 腿错报区
 
-**状态**: ⚠️ 已知风险（Doctor 2026-10-17 裁「不退役·记注收口」· 生产零改动）
+**状态**: 📌 常驻（依据：Doctor 2026-10-17 裁「不退役·记注收口」·生产零改动，`config/risk_factors.json` calibration_note 已追记「lift 仅限创业板·禁外推科创50」；审计报告所列 CNH 腿/A6·B6 在位性核查为待裁观察项、非本条待修；复核 2027-02-03）
 
 **触发/硬证据**: 2026-10-17 Doctor 令审计（窗口 2026-02-28~10-16 · 标的 000688.SH 科创50 · 预注册 + 生产原码重放）——154 日 14 触发日（全 F5 贡献·F4 全程休眠）冰点率 21.4% vs 基准 17.5% · lift 1.22 · Fisher p=0.459 · **置换 p=0.447（N=1000·seed 42）**；样本内 lift 0.52（方向反）· 样本外 3 日 lift 3.80（n=3）。3 月 8 日密集触发段 fwd3 多平缓（错报区）· 7 月 13/23/29 三次连续命中（真信号区）。
 
@@ -887,7 +889,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **核验注记（2026-11-01 · 未参与实施的审核者代签）**: 三判据实跑实读全绿——① 日志 L5-11 trade_cal 两轮 3/3 失败 `[Errno 8] nodename nor servname provided`（DNS 断）+ L8「trade_cal 落表失败（不阻断行情落库…）」；03:17:14 stock_daily 失败 (exit 1)（根=trade_cal DNS 重试耗尽）、03:18:52 ks50_index 失败（tushare HTTPS getaddrinfo Errno 8）、03:18:53 fund_daily/index_daily 全批 `Failed to resolve 'api.waditu.com'`；② 代码 `ops/ingest_stock_daily.py` L122-123 `today_bj`=北京时间今天、L129 `persist_trade_cal(con, token, today_bj)` 之 end_date 取今天——假设①证伪；③ market_data.db 只读实查（sqlite mode=ro）——trade_cal MAX(cal_date)=20261031、10-27~10-30 四日 is_open=1（10-31=0）；cn_index_daily max=2026-10-30 四日各 2 行、daily_market max=20261030 四日各 1 行、stock_daily max=20261030 四日各 5570~5571 行——班 10-27 起自愈成立，落签 ✅。
 
 ## [ERR-20261104-001] 平铺挂载（无整盘 Documents）下 adjustment_grade.py `_find_root` 命中 mnt、RES 拼 `Claude/Projects/Financial/剑酒青丘` 不存在 → 级别读数两分支均败
-**状态**: 🔄 已绕过待修（本班 env 垫片绕过，代码未改）
+**状态**: ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS）← 原：🔄 已修待验（2026-11-05 根修实施）
 **优先级**: 🟡 中
 **触发场景**: 2026-11-04 烛照班（07:09 PST 触发），本 session 挂载为平铺七目录（Database / 烛照九阴 / 剑酒青丘 / AI4ME / brain…），非 11-03 班的整盘 Documents。
 **硬证据/最小复现**: gen_daily_report 首跑 stderr：`[grade_section] 级别读数降级(两分支均败): --update rc=1 … sqlite3.OperationalError: unable to open database file | --json rc=1 …`。`_find_root()` 上找到含 `Database/` 的 `mnt/` 作根 → `RES=mnt/Claude/Projects/Financial/剑酒青丘/回调级别判别` 不存在；真址 `mnt/剑酒青丘/回调级别判别/index_research.db` 在盘。
@@ -896,7 +898,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **修复/建议修法**: 本班绕过：`/tmp/zzmnt-*/Database→Database 挂载点`、`/tmp/zzmnt-*/Claude/Projects/Financial/剑酒青丘→剑酒青丘 挂载点` 软链，`export ZZJY_MNT_ROOT=/tmp/zzmnt-*` 后重跑 → 降级行消失、成品 0 处「级别读数不可用」。根修（改剑酒青丘资产，须其线/Doctor 确认）：RES 改为先试 `HERE` 相对上溯（脚本自身在 剑酒青丘/infrastructure/取数工具/ 下，`HERE/../../回调级别判别` 即真址），再回退 `_mnt(...)`；或 SKILL 前置段把 `ZZJY_MNT_ROOT` 垫片列为常规步骤。
 **预防门禁**: 日报生成 stderr 出现 `[grade_section]` 即查挂载形态；SKILL 前置 env 段补 ZZJY_MNT_ROOT。
 **来源**: 2026-11-04 烛照班 CC（九儿）实跑实读。
-
+**修复记录（2026-11-05 · GAI 错题本积压场 · Doctor 批「_find_root 根修」· 已修待验）**: 剑酒青丘 `infrastructure/取数工具/adjustment_grade.py` 新增 `_find_res()`——RES 顺序 ① 设了 `ZZJY_MNT_ROOT` 时取 env 根下整树址（保留垫片语义）② 脚本自身上溯 `HERE/../../回调级别判别` ③ 原 `_mnt` 整树址保底。备份 `adjustment_grade.py.bak_2026-11-05_resfix`。持久化测试 `test_adjustment_grade_res.py`（平铺 / 整盘 / 垫片三形态临时树）新版 3/3 rc=0；指向旧版 → 平铺用例 FAIL rc=1。整盘实跑 `--json` 新旧输出逐字节一致（rc=0）。✅ 待未参与实施的审核者落签。
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS——① diff 对备份 `adjustment_grade.py.bak_2026-11-05_resfix` 仅一处（原 L43 单行 `RES=_mnt(...)` → `_find_res()` 三级候选，其余零动）；② `test_adjustment_grade_res.py` 新版 3/3 rc=0，指向备份 → 平铺用例 FAIL rc=1；③ 整盘实跑 `--json` 新/旧 rc=0/0、输出 587 B 逐字节一致（_ROOT=Documents，RES=canonical `剑酒青丘/回调级别判别`）；④ `gen_daily_report --output /tmp --no-archive --no-deploy`（ZZJY_MNT_ROOT 指临时垫片、防 --update 写真库）rc=0、成品 0 处「级别读数不可用」。解析顺序复核：gen_daily_report 以 `PROJECT_ROOT.parent/剑酒青丘/…` 调真脚本 → HERE 上溯即 canonical；env 优先仅在 env 根下整树址真实存在时生效（与旧垫片语义同，env 指向旧副本时读副本属显式覆盖、非新风险）；盘上另一 `回调级别判别` 仅在 Codex 镜像、其旁无本脚本，不会误绑。残余观察：平铺挂载的生产班尚未自然跑过（临时树用例已覆盖该形态）。
 
 ## [ERR-20261104-002] closure_engine 选行 `WHERE status != 'retired'` 漏掉 status 为 NULL 的行 → 2026-08-23 四条 industry_signals 永不重算 gap_status
 **状态**: 🔄 已修待验（2026-11-04 Doctor 批「选行时把空值也算进去」→ CC 实施；✅ 落签走分轨）

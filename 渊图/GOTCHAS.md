@@ -135,7 +135,7 @@ project: 渊图
 
 ## [NOTE-20260926-001] 口径辅助注释键禁含 `_caliber_` 子串——QA 第 18 项按子串判，注释键会撞七闭集闸
 
-**状态**: ⚠️ 已知风险（使用纪律 · 门禁行为正确） **优先级**: 🟡 中
+**状态**: ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS_WITH_LIMITS · 两条正式写盘链已机器强制；手术直写脚本仍属使用纪律） **优先级**: 🟡 中
 
 **触发**: 2026-09-26 HBM4 口径标注 patch（`mapping/_v3_2026-09-26_HBM4口径标注_manual.json`）给 `product_HBM4ForVR200` 加了两把键——正经锚键 `cost_per_rack_caliber_industry_2026e_usd`（`industry` ∈ 七闭集，合法）＋ 一把**辅助注释键** `cost_per_rack_caliber_note`。QA 第 18 项当场报 `🔴 未知 scope: 'note' 不在七闭集` → **结论 FAIL**。
 
@@ -153,6 +153,7 @@ project: 渊图
 **⚠ 顺带修掉一处连带空转（同场实测发现）**：`kg_merge_safe` 原写 `merge(base, patch, dry_run=args.dry_run)`，而 `merge(dry_run=True)` **不返回已应用图**（`if not dry_run:` 跳过 append，L169/178/193/202；该函数 `deepcopy(base)` 起手，不改 base、不写盘）⇒ 干跑模式下 `merged` 实为**未应用的 base**，令下游的**同三元组检测**与我新增的口径闸**双双空转**（实测：干净图 + 非法锚键的干跑里，口径闸数到「锚键 0」、非法键零报警）。已改为恒以 `dry_run=False` 在内存应用，不写盘由下方 `if args.dry_run: return` 保证。**⇒ 这同时是一条存量旧账：同三元组闸在干跑下此前一直没在查。** 备份 `kg_merge_safe.py.bak_20260926_pre_gate18` · `rules/kg_promote.py.bak_20260926_pre_gate18`（可回退）。
 **✅ 落签（未参与实施的审核者 · 独立核验后自主落签）**：独立核验 21 次实跑全过 —— `python3 rules/test_gate18_wiring.py` 实跑 **6/6 PASS（exit=0）**；另在 `/tmp` 隔离树**自造** 5 类违规（未知 scope ／ 七闭集词尾缀变体 `industryy` ／ 同 base 同 scope 多值真冲突 ／ 缺 scope 段 ／ 多锚）× 两条链 = 15 次负向实跑，`kg_merge_safe.py`（`--dry-run` 与实写两态）与 `rules/kg_promote.py` **全部 exit=1、输出含「第18项未过」、真 canonical sha256 前后均 `99e9d579…` 逐字节未变**，且被拦的运行**连 `backups/` 都未创建**（＝闸在任何写盘/备份动作之前的硬证明）；6 次正向（干净图 ＋「同 base 同 scope 同值」对照）全部放行、零误拦；变更面受控 —— `diff kg_merge_safe.py <其 pre_gate18 备份>` 仅 2 处 hunk（`dry_run` 恒 False 订正 ＋ 第 18 项）、`diff rules/kg_promote.py <其 pre_gate18 备份>` 仅 1 处 hunk（第 18 项），两条链均 `import check_caliber_conflicts` 不含 scope 字面量。附注（不改本次判据）：锚键若挂在**边 `properties` ／ 节点顶层字段名 ／ `properties` 内嵌 dict** 三处位置则不在扫描面，两条链均不拦；canonical 现零实例。
 **✅ 落签（同日第二次 · 未参与实施的审核者 · 独立核验后自主落签）**：「扩面」独立核验 —— ① **三处旧绕过均已堵**：`check()` 经 `_iter_keys` 递归产出 nodes／edges **各自顶层键 ＋ 其内任意层级 dict／list 的键名**，`_scan` 对节点与边同款调用；本审核者**自造**夹具（非法键 `zzz_caliber_bogusword_2026`，不复用被测方夹具）逐类实跑 —— 边 `properties` ／ 节点自身顶层字段名 ／ `properties` 内嵌一层，检测器各报 1 处（旧版 `check_caliber_conflicts.py.bak_20260926_pre_broaden` 同夹具三处 **viol 全 0**），经 `kg_merge_safe.py` **实写态（不传 `--dry-run`）** 全部 **exit=1 ＋ 输出含「第 18 项未过」＋ 真 canonical sha256 `4e54c9ca…` 前后逐字节未变 ＋ `backups/` 零新增**。② **第四处**：节点／边**之内**未找到（边自身顶层字段名 ／ 属性嵌三层 ／ list 内 dict ／ list 套 list ／ `data_sources[]` 元素键 ／ `_meta` 嵌套 ／「缺 scope 段」落在内嵌层 —— 7 类自造夹具全部拦下）；**但节点／边之外仍余一处**：`rules/kg_promote.py` 用 `shutil.copy(batch, CANON)` **整文件覆盖**，图根层（如 `metadata` 内）的 `_caliber_` 违规键**不进 `check()` 扫描面** ⇒ 隔离树实测**过闸落盘**（`kg_merge_safe` 侧不可达 —— `merge()` 只读四数组、patch 图根键不落图，已实测）。③ 测试：`python3 rules/test_gate18_wiring.py` **12/12 PASS（exit=0）** · `python3 rules/test_check_caliber_conflicts.py` **8/8（exit=0）**。④ 遗留（不改本次判据）：冲突**成组**仍只在 `properties` 顶层下探，同 base 同 scope 分处不同嵌套层不报（docstring 已声明为设计）；上方原「附注（不改本次判据）…三处位置则不在扫描面」**自本轮起作废** —— 三处已堵，仅余图根层一处。
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS —— ① 上轮遗留「图根层绕过」已堵：`rules/kg_promote.py` 第 18 项现同时跑 `check()` ＋ `check_graph_root(b)`，均在备份／`shutil.copy` 之前；`kg_merge_safe` 侧 patch 图根键不落盘（自造 M1 夹具实写后 canonical 不含 `caliber`）。② 实跑 `rules/test_gate18_wiring.py` **16/16 rc=0** · `rules/test_check_caliber_conflicts.py` **8/8 rc=0** · canonical 实跑 `check_caliber_conflicts.py` 锚键 22／违规 0 rc=0 · canonical 图根 `check_graph_root` 0 处。③ 自造 /tmp 隔离树违规夹具 9 类（promote：根层直挂键／metadata 内 list 套 dict／根层缺 scope 段／根层多锚／properties 内 list 套 dict／同 base 同 scope 异值／复数尾缀 actuals；merge_safe 干跑＋实写：update_nodes 嵌套 list／边自身顶层字段）全部 rc=1 ＋「第18项未过」＋ 隔离 canonical 逐字节未变 ＋ 零备份；合法根层锚对照放行。真 canonical sha256 `f0e7c4ea…` 前后一致。④ 限制（未闭，仍靠纪律）：`mapping/`、根目录、`outputs/` 下 09-26 之后的手术直写脚本（如 `surgery3_20261027_huafer_caliber.py`、`outputs/surgery_shellstrip_20261101.py`）直接 `json.dump`/`write_text` canonical，均不调第 18 项；`check_caliber_conflicts.py` 命令行 `main()` 不扫图根层；CLAUDE.md 质检清单表未列第 16–18 项、L141 仍写负向测试「7 项」（实为 8）。
 
 ## [NOTE-20260926-002] 干跑（`--dry-run`）若不覆盖主流程，给的是**虚假通过信号**——本场两度咬人
 
@@ -631,7 +632,7 @@ project: 渊图
 **预防措施**: ①沙箱验证带公式 xlsx 优先走 soffice convert 路径，recalc.py 只作备选；②convert 写回会**去掉无空格 sheet 名的引号**（='附注'!$B$2 → =附注!$B$2），跨表公式完整性检测勿用精确前缀匹配（会误报「跨表公式=0」），直接抽查公式单元格内容即可。
 
 ## [NOTE-20260816-001] kg_promote 丢失检查不豁免改名——改名批绕一键门直改 canonical
-**状态**: ⚠️ 已知风险（2026-09-14 状态词归一·原「🟢 已知边界」不在计数闭集） **优先级**: 🟡 中
+**状态**: 📌 常驻（依据：设计边界＋使用纪律、非缺陷——`Database/行业研究/rules/kg_promote.py` L18 lost 检查按设计不豁免 aliases，改名批走「直改 canonical」范式（如 `mapping/_rename_nazhen_20260924.py` 已按此执行），`--allow-renames` 仅为可选增强、无待修项；复核 2027-02-03） **优先级**: 🟡 中
 **触发**: Boss老白批 QA 把 7 个非规范前缀节点（device_×4 / eqpt_×3）改名 equipment_ 后走 kg_promote——被「丢失旧内容=7」拦下：旧 id 只入 aliases 不出现在节点 id 集合，kg_promote 的 `lost = canonical_ids - batch_ids` 检查无 aliases 豁免。
 **真相/裁定**: kg_promote 的丢失检查设计目标=防合并丢内容，改名不在其语义内。改名批（id 变更 + 边端点同步 + aliases 留旧）的正确路径 = 单进程直改 canonical + 先 cp 备份 + 同进程复检（悬挂/自环/非法 type/节点 id 重复）+ 写回复校 + wiki regen，不走一键门。
 **预防/可选根治**: 若日后改名批频繁，可给 kg_promote 加 `--allow-renames` 参数（lost 检查时对出现在任意节点 aliases 里的旧 id 豁免）；当前按直改路径走，不改门。
@@ -1181,3 +1182,26 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 - **④ 数据层实读（只读）**: canonical 6 受害节点 created_at=2026-05-31/09-18/09-13/07-28/09-01/09-18 原值在位（均非 2026-10-26）；`rel_Zeiss_EUVMultilayerMirror` weight=0.95 已恢复。
 - **残余面（不成缺陷）**: 保护层在 kg_ingest（LLM 唯一入口）；绕过 ingest 直喂 kg_merge/kg_merge_safe 的体外 patch 不受此闸——已核现无此类含 created_at 的生产路径。
 - **证据**: 本场 `outputs/accept_kg_ingest_stock_fields_driver.py` 实跑 ALL PASS · exit 0 · canonical 只读未动。
+
+## [NOTE-20261105-001] dedup_check.py 不扫 .md，只对 .pdf/.txt 去重——MD 通道查重恒报「未发现重复」
+**状态**: 🔄 待修复
+**优先级**: 🟡 中
+**触发**: 2026-11-05 帕米尔 25 篇入库前，`python3 dedup_check.py "兴森"` 报「✅ 未发现重复」，同时显示语料库只有 1 个文件，而 `index.json` 有 764 篇。
+**硬证据/最小复现**: `dedup_check.py` 的 `_build_corpus` 只收 `.pdf`、`.txt` 后缀；帕米尔纪要都是 `.md`，不进语料。命中阈值默认 3 个关键词，单关键词查询也不可能命中。
+**根因**: 工具写于 PDF 下载阶段，MD 通道（`raw/Obsidian Industrial/`）成为主通道后没有跟进。
+**影响面**: `CLAUDE.md` 新研报流程第 1 步对 MD 通道形同虚设，绿灯不代表无重复。实际防重靠 `index.json` 文件名比对，内容重叠靠后续撞名闸。
+**建议修法**: 语料加入 `.md` 与 `index.json` 的 title；阈值按查询词数调整；语料为空或过小时明确报警，不报绿。
+**预防门禁**: 查重工具报告语料规模与预期不符时，不采信其结论。
+**来源**: 2026-11-05 Code 标签会话（读码＋实跑）。
+
+## [NOTE-20261105-002] 手术脚本直写 canonical 绕过第 18 项（及第 12–17 项）——两条正式写盘链之外仍靠使用纪律
+**状态**: ⚠️ 已知风险（待裁：手术脚本统一挂第 18 项，或规定直写一律改走 `kg_merge_safe`）
+**优先级**: 🟡 中
+**触发**: 2026-11-05 GAI 错题本积压场，未参与实施的审核者独立复核 NOTE-20260926-001 时发现。
+**硬证据**: 09-26 之后二十余个 surgery/fix 脚本直接 `json.dump`/`write_text` canonical（例：`surgery3_20261027_huafer_caliber.py`、`outputs/surgery_shellstrip_20261101.py`），均不调用第 18 项；`rules/kg_promote.py` 与 `kg_merge_safe.py` 两条正式链已机器强制（`test_gate18_wiring.py` 16/16）。另：`check_caliber_conflicts.py` 命令行 `main()` 不扫图根层；`CLAUDE.md` 质检清单表未列第 16–18 项、L141 写负向测试「7 项」实为 8 项。
+**根因**: 手术脚本是一次性直写路径，不经任何写盘链门禁。
+**影响面**: 手术批若带非法 `_caliber_` 键或第 12–17 项违规，可落盘不报。
+**建议修法**: ① 手术脚本模板写盘前统一 `import check_caliber_conflicts` 跑 `check()`＋`check_graph_root()`；或 ② 规定手术直写改走 `kg_merge_safe`。CLI `main()` 补图根层扫描；CLAUDE.md 表订正（事务性，可直接做）。
+**预防门禁**: 新手术脚本落盘前手工跑 `python3 rules/check_caliber_conflicts.py`。
+**来源**: 2026-11-05 审核者 subagent 复核报告（NOTE-20260926-001 落签附注）。
+**追记（同日 · 事务性部分已做）**: `CLAUDE.md` 质检清单表补第 16–18 项行、表头 14→18 项、L141「7 项」→「8 项」（备份 `CLAUDE.md.bak_2026-11-05_qatable`）。手术脚本挂闸与 CLI `main()` 图根层扫描仍待裁。

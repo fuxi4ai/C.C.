@@ -97,11 +97,13 @@ project: 风险日报
 **预防措施**: ① 九儿 us_anchor ×19 与 intl_index_daily 同源——**下一班跑前先单只试拉**，空体即切终端 curl 批量方案（命令模板见本条触发场景）；② 情报源台账「手工 web_fetch ×19」行的失败表现补「空体≠无数据，先当通道错」（fail-visible/G-X104 同族：静默空与真空同貌）。
 
 ## [ERR-20261103-001] AI Tech Alarm 优先级口径分裂：表格 JS score() 分母固定 100 vs 渲染器 _priority 分母按有效轴
-**状态**: ⚠️ 已知风险（修复＝功能性口径统一，归 Doctor 裁）
+**状态**: ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS_WITH_LIMITS）← 原：🔄 已修待验（2026-11-05 JS 改读 priority 字段）
 **优先级**: 🟡 中（同页表格分数与主面板「AI估值泡沫」分子不一致）
 **触发场景**: 2026-11-03 为「最终风险值」头卡选口径时显形——头卡须与主面板同源，实测 JS 表格 `score()`（分母固定 100）与 Python `_priority`（分母＝有效轴权重和，U 无定价证据时 U 权重不计入分母）对同一数据产出 **63.0 vs 78.8**（r4 例）。表格显示 63.0、主面板 ai_top 吃 78.8，同页两数打架。
 **错误信息**: 无报错——两种实现各自合法、注释语义相同（「U 无定价证据时贡献 0」），分母口径未写进注释。
 **解决方案**: 本轮头卡直接读 `build_view_data` 的 `priority` 字段（Python 口径·与主面板同源），不在 JS 侧重算。两口径统一（改 JS score() 分母或改 _priority）属功能性改动，待 Doctor 裁。
 **预防措施**: 派生字段（priority）只在一处算（渲染器 Python 侧），前端展示一律读字段、禁各写一份公式；同语义双实现必须共用一个分母定义并写进注释。
+**修复记录（2026-11-05 · GAI 错题本积压场 · Doctor 批「风险日报口径统一」· 已修待验）**: `render_alarm_tab.py` 内嵌 JS `score(d)` 删去自带加权公式，改为只读渲染器 `priority` 字段（字段缺失→NaN 显式可见）；`--self-test` 加第 ⑤ 项（score() 须含 `d.priority`、不得含 `W.[SCUPV]`）。备份 `render_alarm_tab.py.bak_2026-11-05_priossot`。新版 self-test PASS rc=0；第 ⑤ 项判据对旧版判 FAIL。真数据新旧对照：7 条表格分全部上调为主面板同口径（r4 63.0→78.8 · r6 56.5→70.6 · r7 55.0→68.8 · r1 54.0→67.5 · r2 46.0→57.5 · r3 43.0→53.8 · r5 35.0→43.8），排序不变、颜色整体偏暖。`ai_tech_alarm_tab.html` / `dashboard/risk-daily.html` 未手工重建，待次日 `refresh-risk-daily` 班经正式链刷新。✅ 待未参与实施的审核者落签（Doctor 已指定 subagent 验收）。
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS——① diff 对 `render_alarm_tab.py.bak_2026-11-05_priossot` 仅两处：JS `score(d)` 4 行公式 → 只读 `d.priority`（非有限数 → NaN）、`_self_test` 加第 ⑤ 项；② `--self-test` rc=0（约 85 s）；⑤ 项判据对备份源文本判 FAIL、对新版 PASS；③ 真 revision 经 `build_view_data` 7 条 alarm 的 `priority` 全为 float（`_priority` 恒返回 float，den≤0 返 0.0），r4 78.8 / r6 70.6 / r7 68.8 / r1 67.5 / r2 57.5 / r3 53.8 / r5 43.8，旧公式复算 63.0/56.5/55.0/54.0/46.0/43.0/35.0，与修复记录一致；④ grep 旧公式 `W.U+(s.P`：Projects 下仅余生成物 `ai_tech_alarm_tab.html`、`dashboard/risk-daily.html`（各 1 处、`d.priority` 0 处）与 EAL 迁移留证旧件；`build_risk_daily.py` 的 `AXES_W` 只作 `ai_axes_w` 数据透传、无重算。限：两生成物未重建（待 refresh-risk-daily 班刷新后复 grep：`d.priority`≥1、旧公式 0）；⑤ 是源码静态断言、非 JS 执行测；self-test PASS 文案未列 ⑤；`color()`/`levelOf()` 阈值沿用旧刻度，表格整体偏暖。
 
 <!-- 在下方追加新条目 -->
