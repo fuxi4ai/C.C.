@@ -1184,7 +1184,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 - **证据**: 本场 `outputs/accept_kg_ingest_stock_fields_driver.py` 实跑 ALL PASS · exit 0 · canonical 只读未动。
 
 ## [NOTE-20261105-001] dedup_check.py 不扫 .md，只对 .pdf/.txt 去重——MD 通道查重恒报「未发现重复」
-**状态**: 🔄 待修复
+**状态**: ✅ 已修复（未参与实施的审核者代签 · 2026-11-05 · 判定 PASS_WITH_LIMITS · 三轮复验：FAIL→修→PASS_WITH_LIMITS→修→PASS_WITH_LIMITS）；限制见 NOTE-20261105-009
 **优先级**: 🟡 中
 **触发**: 2026-11-05 帕米尔 25 篇入库前，`python3 dedup_check.py "兴森"` 报「✅ 未发现重复」，同时显示语料库只有 1 个文件，而 `index.json` 有 764 篇。
 **硬证据/最小复现**: `dedup_check.py` 的 `_build_corpus` 只收 `.pdf`、`.txt` 后缀；帕米尔纪要都是 `.md`，不进语料。命中阈值默认 3 个关键词，单关键词查询也不可能命中。
@@ -1195,7 +1195,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **来源**: 2026-11-05 Code 标签会话（读码＋实跑）。
 
 ## [NOTE-20261105-002] 手术脚本直写 canonical 绕过第 18 项（及第 12–17 项）——两条正式写盘链之外仍靠使用纪律
-**状态**: ⚠️ 已知风险（待裁：手术脚本统一挂第 18 项，或规定直写一律改走 `kg_merge_safe`）
+**状态**: ✅ 已修复（Doctor 2026-11-05 裁：印章不一致硬拦、附理由可放行 · 第 21 项；一键门支持合并清单 · 未参与实施的审核者代签 · 2026-11-05 · 判定 PASS_WITH_LIMITS · 三轮复验：FAIL→修→PASS_WITH_LIMITS→修→PASS_WITH_LIMITS）；只防疏忽，删印章或伪造印章防不住，见 NOTE-20261105-009
 **优先级**: 🟡 中
 **触发**: 2026-11-05 GAI 错题本积压场，未参与实施的审核者独立复核 NOTE-20260926-001 时发现。
 **硬证据**: 09-26 之后二十余个 surgery/fix 脚本直接 `json.dump`/`write_text` canonical（例：`surgery3_20261027_huafer_caliber.py`、`outputs/surgery_shellstrip_20261101.py`），均不调用第 18 项；`rules/kg_promote.py` 与 `kg_merge_safe.py` 两条正式链已机器强制（`test_gate18_wiring.py` 16/16）。另：`check_caliber_conflicts.py` 命令行 `main()` 不扫图根层；`CLAUDE.md` 质检清单表未列第 16–18 项、L141 写负向测试「7 项」实为 8 项。
@@ -1207,7 +1207,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **追记（同日 · 事务性部分已做）**: `CLAUDE.md` 质检清单表补第 16–18 项行、表头 14→18 项、L141「7 项」→「8 项」（备份 `CLAUDE.md.bak_2026-11-05_qatable`）。手术脚本挂闸与 CLI `main()` 图根层扫描仍待裁。
 
 ## [NOTE-20261105-003] 帕米尔 25 篇批：存量 description/aliases/source_span/weight 被 LLM 整段改写，`check_desc_shrink` 只比长度报绿
-**状态**: ✅ 数据面已修复（未参与实施的审核者代签 · 2026-11-05 · 判定：canonical `e061db7b6d454abd` 对入库前备份，旧 desc 不被包含仅余 `concept_DomesticDSPVendorStatus`〔ASR 订正〕，别名丢失 0，非空 source_span 覆写 0，weight_multiplier/created_by 非空改值 0）；🔄 门禁面仍开放：`rules/check_desc_shrink.py` 仍只比长度，`kg_ingest._protect_stock_fields` 未扩字段，`company_Anthropic` trend ↑→↑↑ 未复原
+**状态**: ✅ 数据面已修复（未参与实施的审核者代签 · 2026-11-05 · 判定：canonical `e061db7b6d454abd` 对入库前备份，旧 desc 不被包含仅余 `concept_DomesticDSPVendorStatus`〔ASR 订正〕，别名丢失 0，非空 source_span 覆写 0，weight_multiplier/created_by 非空改值 0）；门禁面 ✅ 已修复（第 11 项改包含判据并接入一键门，`_protect_stock_fields` 扩字段，第 20 项 · 未参与实施的审核者代签 · 2026-11-05 · 判定 PASS_WITH_LIMITS · 三轮复验：FAIL→修→PASS_WITH_LIMITS→修→PASS_WITH_LIMITS）；`company_Anthropic` trend ↑→↑↑：Doctor 同日裁 trend/priority 允许更新并留痕，该值数据面未动
 **优先级**: 🔴 高
 **触发**: 2026-11-05 渊图入库独立复验（未参与实施的审核者），新 canonical（sha256 前 16 位 `ad0f034c877edc6b`）对比入库前备份 `backups/行业知识图谱_完整数据库.json.bak_pre_promote_20261105_023028`（`f0e7c4eaf4621ab0`）。
 **硬证据/最小复现**: 存量 description 变化 79 处，其中 73 处为旧文前缀＋追加，6 处旧文不再被包含：`company_Unimicron`（丢「IC 载板及 PCB 制造商、BT 载板主要供应商、受益 Rubin CCL 升级」）、`material_SubmicronSphericalSilica`（「爆燃法……粒径 0.5 微米以上」改成「液相法」）、`concept_ABFFilmDomesticVerificationOpportunity`（丢寒武纪/海光/沐曦/平头哥与莲花二供三供）、`metric_ABFFilmPriceByApplication`（售价节点的 desc 变成成本占比与垄断句）、`metric_ABFSubstratePriceByApplication`、`concept_DomesticDSPVendorStatus`（诚科微→橙科微，属可接受的 ASR 订正）。`python3 rules/check_desc_shrink.py <旧> <新>` 仍报 `desc 不缩减 ✓（0 处）`、rc=0。aliases 丢失 4 节点：`company_Huazheng`（丢 `Huazheng`、`company_HuazhengNewMaterial`）、`material_SubmicronSphericalSilica`（丢 `爆燃法硅微粉`、`亚微米球硅`）、`company_Unimicron`、`company_Anthropic`。另有 `source_span` 非空被覆写 2 节点（`company_Anthropic`、`concept_ABFFilmDomesticVerificationOpportunity`），`weight_multiplier` 改值 2 节点（Anthropic 1.0→1.5、`metric_XinsenABFSubstrateCapacity2026` 1.1→1.0），`created_by` 覆写 3 节点。properties 新增 288 键、删除 0、改值 0；name/created_at/type 零变化。
@@ -1229,7 +1229,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **来源**: 2026-11-05 审核者复验，实跑实读。
 
 ## [NOTE-20261105-005] 帕米尔 25 篇批源文抽查：边方向反转、产能单位差 10 倍、价格层越界、主角公司漏建与字节芯片错并
-**状态**: ✅ 已修复列明条目（未参与实施的审核者代签 · 2026-11-05 · 判定：3 条反向边、`_kwpm` 8 值、无源边、Meta 股价行、M8 行、字节家族拆回均对原文核过；latest.json 与重建一致）；🔄 仍开放：全批新边方向未普查，价格分流未加股价拒收，3 个补建公司字段与 mRNA 平台节点命名见 NOTE-20261105-006；⚠️ 本条 ⑥ 的「同芯片」是审核者推断，Ada2 与 Ada 2S 的时间线矛盾见 NOTE-20261105-006
+**状态**: ✅ 已修复列明条目（未参与实施的审核者代签 · 2026-11-05 · 判定：3 条反向边、`_kwpm` 8 值、无源边、Meta 股价行、M8 行、字节家族拆回均对原文核过；latest.json 与重建一致）；🔄 仍开放：全批新边方向未普查，价格分流未加股价拒收（门禁面同日 ✅ 已修，见 NOTE-20261105-009），3 个补建公司字段与 mRNA 平台节点命名见 NOTE-20261105-006；⚠️ 本条 ⑥ 的「同芯片」是审核者推断，Ada2 与 Ada 2S 的时间线矛盾见 NOTE-20261105-006
 **优先级**: 🟡 中
 **触发**: 同上复验，抽查 5 篇（兴森、HBM 11.02、存储 10.30、云顶新耀、AI 算力 11.03）对原文。
 **硬证据/最小复现**: ① 方向反转（抽查 57 条边中 3 条）：`metric_BTSubstratePriceHike2026Q4 causes concept_BTSubstrateMSAPMaterialOverlap`（边自身 desc 是重合度推高价格）；`concept_DomesticGPUCostHighSpotHBM causes concept_HBMPriceHighCycle2028`（原文是高价 HBM 抬升成本）；`concept_DRAMCapacityByVendor2026 evolves_from concept_DRAMCapacityReduction2027`。② 单位：`concept_HBMCapacityByVendor2026`、`concept_DRAMCapacityByVendor2026` 的 `*_kwpm` 值 20/18/8/1.2、58/66/35/30，原文单位为「万片」，差 10 倍；同批 `dalian_capacity_current_kwpm`=100（10 万片）是对的。③ 无源：`concept_NANDPriceChinaUSDivergence causes concept_NAND_HBM` 的「促使关注 NAND 基 HBM」，原文无此句。④ 价格层：`Meta股价 648.85 美元/股`（2026-10-22）违反 `prices/PRICE_LAYER.md`「股价不进」；`px_M8覆铜板_M8等级_现货_20261105` 的 as_of 落入库日而源文为 2026-10-27，unit 为 null，price_low 为空串（原文「1200 元/张以上」）。⑤ 主角公司无 company 节点：致尚科技、剂泰医药、药明生物（grep name/aliases 全 0，且为 index subject）。⑥ 合并：`company_ByteDance_AI_Chip` 是字节自研芯片家族描述，被并入 `product_BytedanceAda2S`，使第三代性能键和别名「字节自研芯片」落到二代节点，该别名现与 `product_BytedanceSelfDesignChip`、`product_ByteDanceSICKCHIP` 三方碰撞；存量 `concept_BytedanceAda2Chip` 与 `product_BytedanceAda2S` 带相同的 deployment/shipment/unit_cost 属性，是同芯片漏并。
@@ -1272,3 +1272,27 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **建议修法**: 「[2026-08 目标口径]」改为 2026-05-14 并写明 10 亿；`_review_20260812` 保留原文，加时效标记并指向 8 亿主口径；`_bn` 键按口径规范新增正确单位键，旧键不改名；概览第 49 行按本批实测重写；`updated_at` 是否随手术更新请先查 kg_merge 时戳闸的影响。
 **预防门禁**: 手术脚本写入的时点标签须能对上该节点 data_sources 的 vintage；改主口径时全文检索节点所有字段的「主口径」字样；概览更新批次时逐行核对「当前数字」表。
 **来源**: 2026-11-05 审核者复验，实跑实读。
+
+
+## [NOTE-20261105-009] 门禁加固时查实的根因与仍在的限制：改写走 add_nodes 撞 id，ASR 闸把缺 name 的条目写成空 name；上一批也有 cite 灌水
+**状态**: ⚠️ 已知风险（下列限制未修；对应实错的修复已由审核者判 PASS_WITH_LIMITS）
+**优先级**: 🟡 中
+**触发**: 2026-11-05 加固入库链门禁，回放 `mapping/行业知识图谱_v2_20261105_022714_25篇.json.bak_pre_surgery_20261105`，未参与实施的审核者三轮对抗。
+**硬证据/最小复现**: `python3 tests/test_gates_20261105.py` 修复后 82 PASS / 0 FAIL；`KG_CODE_ROOT=<HEAD 代码> python3 tests/test_gates_20261105.py` 31 PASS / 51 FAIL。① 夹具里 `created_at` 被改的 9 个节点说明改写不走 `update_nodes`：update 闸早就剥 created_at，只有 `add_nodes` 撞存量 id（`kg_merge` 转成 update）才带得进来。② `_fix_asr_misnames` 无条件写 `n["name"] = nm.replace(...)`，update 条目不带 name 时写入空串，合并后清空存量 name（`concept_DomesticDSPVendorStatus`）。③ cite 灌水不止本批：`行业知识图谱_完整数据库.json.bak_pre_promote_20261026_070413`→`行业知识图谱_完整数据库.json.bak_pre_promote_20261105_023028` 这一窗口新增 cite 279 条，单篇最多 119 条（实读备份对比，未逐条复核）。
+**根因**: 保护闸只看 `update_nodes`，而 merge 把撞 id 的 add 也当 update；第 11 项原先不在任何写盘链上。
+**影响面**: 历史批次的改写和灌水未回溯普查；存量里可能还有同类改写与灌水 cite。
+**仍在的限制**（审核者实跑）: ① 删 `_gate_stamp.json` 即静默回到引导，印章也可伪造，第 21 项只防疏忽。② 灌水条目带 `note`、`evidence`、priority 变更或新 property 时不算只加来源，仍能过；同窗口另一篇改过节点内容时，一键门也认不出。③ `updated_at` 早于存量的条目，来源进队列，reason 写的是 `evidence_insufficient`，易误读（25 篇批 493 条变化中 5 条非当日）。④ 合并清单只核 properties 键，不核值，原值靠墓碑。⑤ 拉丁短别名无词边界（TEL 命中 Intel），泛化别名（「芯片」）算全名档；全图实测每篇误命中 0–4 个。⑥ `is_stock_quote` 仍漏 `PE为30倍`、无单位 `target price`、`估值`，note 提及股价的商品会误拒；存量 1274 行实测 5 个品名命中全对。⑦ 存量价格层里这 5 个股价类品名（宇树IPO发行价、兆易H股发行价、英伟达股价目标价、东方电缆股票、北方华创股票）未清理，闸只拦新增。⑧ 分类器翻转 `properties.region` 会被第 20 项拦，须在清单声明 `properties.region`。⑨ 回放夹具 gitignore，缺失时测试报 SKIP，`run_all` 仍算通过。⑩ 未验证：真 LLM 的 `--batch`、`tag_market_signals`、写盘中途失败（只实读）。
+**建议修法**: ②③ 加无效键白名单、单篇来源总量告警、kept_base 独立 reason；⑦ 是否清理请 Doctor 定；历史回溯另立专场。
+**预防门禁**: `tests/run_all.py`；第 11、19–21 项见 `CLAUDE.md`。
+**来源**: 2026-11-05 Code 标签会话，实跑实读；审核者脚本 `/private/tmp/claude-501/aud/`（临时目录）。
+
+## [NOTE-20261105-010] kg_ingest PDF 通道必然失败：`file_text` 未赋值，每篇报「未知错误，已跳过」
+**状态**: 🔄 待修复
+**优先级**: 🟡 中
+**触发**: 2026-11-05 加固门禁时读 `extract_from_file`。
+**硬证据/最小复现**: 假 LLM 加最小 PDF 调 `extract_from_file`，实跑返回 `{}`，日志 `✗ 未知错误，已跳过: cannot access local variable 'file_text' where it is not associated with a value`。PDF 分支只赋 `file_b64`，而 `_validate_source_span(patch, file_text)` 无条件引用 `file_text`。实读 `index.json`：124 篇 PDF，最新日期 2026-06-09。
+**根因**: 2026-08-16 溯源校验只考虑文本通道（`git log` 未核，时点为推断）；异常被通用 except 吞掉，只表现为跳过。
+**影响面**: 外资 PDF 放进 `raw/Industrial Analysis pdfs/` 不会入库，也不会标 processed，只烧一次 API。CLAUDE.md 的「PDF 通道」描述与实际不符。
+**建议修法**: PDF 分支先抽文本（或显式 `file_text = None` 并让 span 校验跳过），同时决定 PDF 的 cite 证据口径：现在无文本时全部进待复核队列，抽出文本才能自动登记。
+**预防门禁**: 给 PDF 通道加 `extract_from_file` 冒烟测试。
+**来源**: 2026-11-05 Code 标签会话，实跑。
