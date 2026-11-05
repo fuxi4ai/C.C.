@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """check_skill_parity.py — brain-* skill 发布链「四端对拍」只读核检器
 
-背景：brain-* skill 的发布链是 canonical → portable → `.skill` 包 → `save_skill`(runtime)。
+背景（旧）：brain-* skill 的发布链曾是 canonical → portable → `.skill` 包 → `save_skill`(runtime)。
+2026-11-04 起账号放薄壳，发布用 skill_release.py，不要再用 save_skill 发全文（会覆盖薄壳）。
 四端必须同版，实测最易出的三类偏差：
   ① content 带 frontmatter 传给 save_skill ⇒ runtime 出「双 frontmatter 块」
   ② YAML 双引号标量里写裸反斜杠 ⇒ frontmatter 解析失败（通用教训 G-X187）
@@ -10,7 +11,7 @@
 
 判定口径：
   · 仓内三端（canonical / portable / 包内）必须**逐字节一致**
-  · runtime 与 canonical 的差异**只允许末端空白行**（薄壳除外：只比 frontmatter，精确比对见 skill_release.py）
+  · runtime 与 canonical 的差异**只允许末端空白行**（薄壳除外：与当前应有的壳逐字比对；附属文件与 damper 等以 skill_release.py status 为准）
   · 各端 frontmatter 必须 `yaml.safe_load` 通过
   · runtime 不得出现重复 frontmatter 块
 
@@ -30,6 +31,7 @@ import argparse
 import difflib
 import glob
 import hashlib
+import importlib.util
 import os
 import pathlib
 import re
@@ -99,9 +101,15 @@ def classify(canon: bytes, rt: bytes) -> tuple[str, str]:
         return "identical", ""
     if STUB_MARKER in rt:
         # 薄壳：账号副本只留 frontmatter 与指针，正文读 canonical，只需 frontmatter 一致
-        drop_name = lambda s: re.sub(r"^name:.*$", "", s or "", count=1, flags=re.M)  # 账号名大小写可与目录不同
-        same = drop_name(split_frontmatter(canon.decode("utf-8", "replace"))[0]) == drop_name(split_frontmatter(rt.decode("utf-8", "replace"))[0])
-        return ("stub", "") if same else ("divergent", "薄壳 frontmatter 与 canonical 不一致，须重新上传")
+        # 与 skill_release.py 同一口径：逐字比对当前应有的壳；账号名大小写可与目录不同
+        name_of = lambda b: (re.search(rb'^name:\s*["\']?([^"\'\s]+)', b, re.M) or [b"", b""])[1].decode()
+        spec = importlib.util.spec_from_file_location("skill_release", pathlib.Path(__file__).resolve().parent / "skill_release.py")
+        rel = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(rel)
+        want = rel.stub_bytes(name_of(canon), name_of(rt), canon)
+        if rt.rstrip(b"\n") == want.rstrip(b"\n"):
+            return "stub", ""
+        return "divergent", "薄壳内容不是最新，须重新上传（详见 skill_release.py status）"
     if canon.rstrip(b"\n") == rt.rstrip(b"\n"):
         return "eof-only", "末端空白行差异（已知归一化）"
     a = canon.decode("utf-8", "replace").splitlines()

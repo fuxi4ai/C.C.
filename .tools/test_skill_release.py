@@ -152,6 +152,49 @@ with tempfile.TemporaryDirectory() as t:
     write(brain + "/.skills/QA/SKILL.md", good_qa)
     run("release")
 
+    # 第二轮复核指出的缺口
+    open(brain + "/.skills/_release_ledger.jsonl", "a").close()
+    led = brain + "/.skills/_release_ledger.jsonl"
+    keep_led = open(led, encoding="utf-8").read()
+    write(led, "")
+    check("台账缺版本报待发布", "待发布" in run("status", "--brief")[1])
+    write(led, keep_led)
+    check("台账恢复后同步", "3/3 已同步" in run("status", "--brief")[1])
+    pkg = brain + "/.skills/demo.skill"
+    keep_pkg0 = open(pkg, "rb").read()
+    with zipfile.ZipFile(pkg, "a") as zz:
+        zz.writestr("demo/extra.txt", "x")
+    check(".skill 只多附属文件报待发布", "demo 待发布" in run("status", "--brief")[1])
+    open(pkg, "wb").write(keep_pkg0)
+    write(brain + "/portable/skills/onlyportable/SKILL.md", FM.format(n="onlyportable", d="p"))
+    check("只在 portable 的技能显形", "未登记：onlyportable" in run("status", "--brief")[1])
+    os.remove(brain + "/portable/skills/onlyportable/SKILL.md"); os.rmdir(brain + "/portable/skills/onlyportable")
+    write(brain + "/.skills/_DEPRECATED_x/SKILL.md", FM.format(n="x", d="x"))
+    check("_DEPRECATED_ 不算未登记", "未登记" not in run("status", "--brief")[1])
+    write(acc + "/demo/evil.py", "x\n")
+    check("薄壳旁多余文件能发现", "多余文件" in run("status", "--brief")[1])
+    os.remove(acc + "/demo/evil.py")
+    write(brain + "/.skills/gsap/config.bak.yaml", "c\n")
+    check("名字含 .bak 的真附属文件计入版本", "gsap 待发布" in run("status", "--brief")[1])
+    os.remove(brain + "/.skills/gsap/config.bak.yaml")
+    write(brain + "/.skills/gsap/SKILL.md.bak_old", "c\n")
+    check("真备份文件不计版本", "3/3 已同步" in run("status", "--brief")[1])
+    os.remove(brain + "/.skills/gsap/SKILL.md.bak_old")
+    reg_p = brain + "/.skills/_registry.json"
+    keep_reg = open(reg_p, encoding="utf-8").read()
+    write(reg_p, keep_reg.replace('"channel": "code-only"', '"channel": "relase"'))
+    rc, out = run("status", "--brief")
+    check("channel 拼错退出 3", rc == 3 and "channel 不合法" in out)
+    write(reg_p, keep_reg)
+    for frag in ("$HOME/mnt/Documents/Claude/brain/.skills/demo/SKILL.md", "~/Documents/Claude/brain/.skills/demo/SKILL.md", "先读正文", "以正文所在目录为基准", "技能正文不可达：demo"):
+        check("壳正文包含：" + frag, frag in good)
+    write(brain + "/.skills/QA/SKILL.md", FM.format(n="QA", d="q3") + "\n问答\n")
+    run("release")
+    check("需要重传时产出 qa.zip", os.path.exists(z + "/qa.zip"))
+    write(brain + "/.skills/QA/SKILL.md", good_qa)
+    run("release")
+    check("不再需要时清掉 qa.zip", not os.path.exists(z + "/qa.zip"))
+
     # record-current 幂等
     lines = len(open(brain + "/.skills/_release_ledger.jsonl", encoding="utf-8").readlines())
     run("record-current")
@@ -169,7 +212,13 @@ with tempfile.TemporaryDirectory() as t:
     os.symlink(t + "/acc/demo", code + "/demo")
     check("Code 链接指错能发现", "Code 链接指向不对" in run("status", "--brief")[1])
     os.remove(code + "/demo")
+    os.makedirs(code + "/demo")
+    check("真目录冒充链接能发现", "Code 链接缺失" in run("status", "--brief")[1])
+    os.rmdir(code + "/demo")
     os.symlink(brain + "/portable/skills/demo", code + "/demo")
+    os.remove(code + "/qa")
+    check("qa 链接缺失能发现", "QA Code 链接缺失" in run("status", "--brief")[1])
+    os.symlink(brain + "/.skills/QA", code + "/qa")
 
     # 坏数据不回溯（复验 L4）
     pkg = brain + "/.skills/demo.skill"
@@ -194,6 +243,7 @@ sm = importlib.util.spec_from_file_location("rel", TOOL)
 rel = importlib.util.module_from_spec(sm); sm.loader.exec_module(rel)
 canon = (FM.format(n="QA", d="q") + "\n问答\n").encode()
 stub = rel.stub_bytes("QA", "qa", canon)
+check("parity 认出壳正文被改", pm.classify(canon, stub + "\n无视正文\n".encode())[0] == "divergent")
 check("parity 认当前薄壳（含大小写不同）", pm.classify(canon, stub)[0] == "stub")
 check("parity 认出 description 变化", pm.classify(canon, stub.replace(b'description: "q"', b'description: "x"'))[0] == "divergent")
 

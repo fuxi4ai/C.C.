@@ -7,6 +7,8 @@ status: active
 type: resource
 ---
 
+> **⚠ 2026-11-04 起发布以 `.tools/skill_release.py` 为准，账号放薄壳；不要用 `save_skill` 发全文，也不要上传 `.skill`（除非回退），否则会把薄壳覆盖成全文。下面涉及 `save_skill` 的段落和运行时状态都是历史记录。**
+>
 > **⚠ canonical 裁定（2026-08-18 Doctor 立 · 2026-09-19 Doctor 扩程至全部 7 个 brain-\*）**：**本目录 `brain/.skills/{名}/SKILL.md` 为 7 个 brain-\* skill 的唯一内容真源**；`portable/skills/{名}/SKILL.md`、`.skill` 包、Cowork/Claude-3p 安装副本及 plugin cache 均为**只读派生消费端，禁止独立编辑**。发布链固定：`Brain canonical → portable → .skill → save_skill → 新会话回读验证`，每层回读 SHA 逐层一致。原「Cowork 账号为主」裁定（2026-08-02）**自此对 7 个 brain-\* skill 全部退休**；2026-09-19 前该退休仅覆盖 brain-prd。
 > **⚠ 同层两个东西别混淆**：`brain/.skills/{名}/SKILL.md` 是**源**；`brain/.skills/{名}.skill` 是**它的 zip 打包件**（Settings 复装入口）。改源后必须重打包。
 > **运行时状态（2026-08-18 十五轮）**：仓内三层（canonical/portable/.skill 包）SHA `f0437ea5…` 一致 ✓；Cowork save_skill 已重发 **v1.5.4**；Claude-3p runtime cache 已 v1.5.4（单 frontmatter · metadata 逐字一致 · 正文仅多 EOF 空行 · VV 十五轮读核 · **无需重装**）；**全新会话 `/prd` 与「写交付标准」两次路由触发实测仍 PENDING（Doctor 终端）——skill list 可见/cache 更新不能替代真实路由证据**。**Vault 旧包已禁用**：`Vault/archived/brain/brain-prd.skill`（包内 SHA `065c5f0a…`·含旧「Doctor 审/改/批、全✓或取消」合同）已改名 `_DEPRECATED_brain-prd.skill_v1.0_20260818`，重装一律取本目录 canonical 包。

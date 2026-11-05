@@ -40,8 +40,15 @@ STUB_BODY = """
 """
 
 
+CHANNELS = {"release", "code-only", "canonical-only", "portable-only"}
+
+
 def registry():
-    return json.loads((SKILLS / "_registry.json").read_text(encoding="utf-8"))["skills"]
+    skills = json.loads((SKILLS / "_registry.json").read_text(encoding="utf-8"))["skills"]
+    bad = [f"{s}={c.get('channel')}" for s, c in skills.items() if c.get("channel") not in CHANNELS]
+    if bad:
+        raise ValueError("注册表 channel 不合法：" + "、".join(bad))
+    return skills
 
 
 def account_root():
@@ -61,7 +68,7 @@ def rename_fm(raw: bytes, old: str, new: str) -> bytes:
 
 
 def keep(rel: pathlib.PurePath) -> bool:
-    return rel.name != ".DS_Store" and ".bak" not in rel.name and "__pycache__" not in rel.parts
+    return rel.name != ".DS_Store" and not re.search(r"\.bak(_|$)", rel.name) and "__pycache__" not in rel.parts
 
 
 def dir_tree(root: pathlib.Path) -> dict:
@@ -163,6 +170,8 @@ def account_state(src, cfg, root, seen, tree, canon, cur):
         return "待上传（账号落后）" if a in seen.get(src, set()) else "待上传（账号副本不是任何已发布版本）"
     if STUB_MARKER not in acc:
         return "待上传（账号还不是薄壳）"
+    if set(acc_tree) != {"SKILL.md"}:
+        return "待上传（账号目录有多余文件）"
     if acc.rstrip(b"\n") == stub_bytes(src, name, canon).rstrip(b"\n"):
         return SYNCED
     if rename_fm(frontmatter(acc), name, src) != frontmatter(canon):
@@ -225,7 +234,10 @@ def check_valid(src, raw):
     # yaml 依赖只有发布时才需要，status 不受它影响
     spec = importlib.util.spec_from_file_location("parity", HERE / "check_skill_parity.py")
     parity = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(parity)
+    try:
+        spec.loader.exec_module(parity)
+    except SystemExit as e:  # 缺 PyYAML 时 parity 会退出；别和「账号读不到」的退出码 2 混淆
+        raise RuntimeError("发布校验需要 PyYAML") from e
     text = raw.decode("utf-8", "replace")
     fm, err = parity.parse_fm(text)
     if err:
