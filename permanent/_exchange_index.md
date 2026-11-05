@@ -1,9 +1,9 @@
 # CC 侧经验对侧索引（薄 · 供 VV 只读 · 可重建 · 非事实源）
 
-> 生成：2026-11-05 00:45 · 生成器 brain/.tools/build_experience_index.py（v2）
+> 生成：2026-11-05 03:55 · 生成器 brain/.tools/build_experience_index.py（v2）
 > 正文真源在 CC 侧 canonical（brain/ 各项目 GOTCHAS.md + Projects/ 下白名单 GOTCHAS + permanent/通用教训.md + permanent/经验库.md），本文件只含定位指针，供跨系统预警与复验。
 
-## 摘要（1151 条）
+## 摘要（1159 条）
 结构与 permanent/经验索引.md 相同（对侧对 brain 只读可直取）。
 
 ## 机器闸清单（六字段：路径/SHA/可见性/重放命令/预期通过/最近运行）
@@ -41,13 +41,13 @@
   - 预期通过: name↔code 无告警
   - 最近运行: 2026-09-01 渊图批（日志实据） · ⚠用法未在本场实跑
 - Database/行业研究/consumers/龙鱼五力/check_ds_evidence.py
-  - sha256[:16]=4066dfcf07c1209f
+  - sha256[:16]=7360c735aafd4c25
   - 可见性: Doctor 侧路径 · VV 可见范围外
   - 重放: python3 check_ds_evidence.py --date 2026-08-29
   - 预期通过: 有 ⚠ 即 exit 1（设计）；输出三档计数+锚出处
   - 最近运行: 2026-09-03 本场实跑（109 只 · ⚠69）
 - Database/行业研究/consumers/龙鱼五力/test_check_ds_evidence.py
-  - sha256[:16]=a3b9a508e11f4551
+  - sha256[:16]=59bed57632aacb48
   - 可见性: Doctor 侧路径 · VV 可见范围外
   - 重放: python3 test_check_ds_evidence.py
   - 预期通过: 5/5 PASS · exit 0

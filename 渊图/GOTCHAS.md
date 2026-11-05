@@ -1205,3 +1205,70 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **预防门禁**: 新手术脚本落盘前手工跑 `python3 rules/check_caliber_conflicts.py`。
 **来源**: 2026-11-05 审核者 subagent 复核报告（NOTE-20260926-001 落签附注）。
 **追记（同日 · 事务性部分已做）**: `CLAUDE.md` 质检清单表补第 16–18 项行、表头 14→18 项、L141「7 项」→「8 项」（备份 `CLAUDE.md.bak_2026-11-05_qatable`）。手术脚本挂闸与 CLI `main()` 图根层扫描仍待裁。
+
+## [NOTE-20261105-003] 帕米尔 25 篇批：存量 description/aliases/source_span/weight 被 LLM 整段改写，`check_desc_shrink` 只比长度报绿
+**状态**: ✅ 数据面已修复（未参与实施的审核者代签 · 2026-11-05 · 判定：canonical `e061db7b6d454abd` 对入库前备份，旧 desc 不被包含仅余 `concept_DomesticDSPVendorStatus`〔ASR 订正〕，别名丢失 0，非空 source_span 覆写 0，weight_multiplier/created_by 非空改值 0）；🔄 门禁面仍开放：`rules/check_desc_shrink.py` 仍只比长度，`kg_ingest._protect_stock_fields` 未扩字段，`company_Anthropic` trend ↑→↑↑ 未复原
+**优先级**: 🔴 高
+**触发**: 2026-11-05 渊图入库独立复验（未参与实施的审核者），新 canonical（sha256 前 16 位 `ad0f034c877edc6b`）对比入库前备份 `backups/行业知识图谱_完整数据库.json.bak_pre_promote_20261105_023028`（`f0e7c4eaf4621ab0`）。
+**硬证据/最小复现**: 存量 description 变化 79 处，其中 73 处为旧文前缀＋追加，6 处旧文不再被包含：`company_Unimicron`（丢「IC 载板及 PCB 制造商、BT 载板主要供应商、受益 Rubin CCL 升级」）、`material_SubmicronSphericalSilica`（「爆燃法……粒径 0.5 微米以上」改成「液相法」）、`concept_ABFFilmDomesticVerificationOpportunity`（丢寒武纪/海光/沐曦/平头哥与莲花二供三供）、`metric_ABFFilmPriceByApplication`（售价节点的 desc 变成成本占比与垄断句）、`metric_ABFSubstratePriceByApplication`、`concept_DomesticDSPVendorStatus`（诚科微→橙科微，属可接受的 ASR 订正）。`python3 rules/check_desc_shrink.py <旧> <新>` 仍报 `desc 不缩减 ✓（0 处）`、rc=0。aliases 丢失 4 节点：`company_Huazheng`（丢 `Huazheng`、`company_HuazhengNewMaterial`）、`material_SubmicronSphericalSilica`（丢 `爆燃法硅微粉`、`亚微米球硅`）、`company_Unimicron`、`company_Anthropic`。另有 `source_span` 非空被覆写 2 节点（`company_Anthropic`、`concept_ABFFilmDomesticVerificationOpportunity`），`weight_multiplier` 改值 2 节点（Anthropic 1.0→1.5、`metric_XinsenABFSubstrateCapacity2026` 1.1→1.0），`created_by` 覆写 3 节点。properties 新增 288 键、删除 0、改值 0；name/created_at/type 零变化。
+**根因**: `kg_ingest._protect_stock_fields` 只保护节点 created_at 与边 created_at/weight，其余字段由 update 整字段替换；第 11 项判据只比长度（缩短 >10% 且 >30 字），等长改写过闸。手术脚本 `surgery_20261105_pamir25.py` 只硬编码恢复 `company_Huazheng`。
+**影响面**: 硅微粉节点身份漂移，而存量边 `rel_Lianrui_SubmicronSilica_Supply`（「爆燃法」）与 `rel_RawMaterialCostDecline_Boosts_Margin` 仍按爆燃法连接；旧 span 失去溯源。wiki 与消费端已读到改写后文本。
+**建议修法**: 按备份恢复上述 5 处旧 desc（旧文＋【增量】），aliases 取并集，恢复被覆写的 source_span/weight_multiplier/created_by；硅微粉是否拆爆燃法与液相法两节点属方向选择，请 Doctor 裁。第 11 项增加「旧文不被新文包含」的报告；`_protect_stock_fields` 扩到 aliases/source_span/weight_multiplier/created_by。
+**预防门禁**: promote 前统计存量节点 old_desc ∉ new_desc 与 old_alias − new_alias，清单非空须人工过目。
+**来源**: 2026-11-05 审核者复验，实跑实读。同根 NOTE-20260815-001 复发（第二次）。
+
+## [NOTE-20261105-004] 手术 cite 过滤漏新节点、复检先于手术：裁定未全覆盖，3 个节点 name↔status 失配且时效被已剔 cite 抬高
+**状态**: ✅ 已修复主项（未参与实施的审核者代签 · 2026-11-05 · 判定：本批新增 cite 107 条全部合规；3 节点 name/_meta 与入库前一致；data_sources 未变而 updated_at 漂移 0；原 13 个时效虚长节点消除）；🔄 残留见 NOTE-20261105-006（`metric_BTSubstrateGrossMargin` 时效仍虚长；时间状态停在 10-26 口径待下次复检）；手术后复检对账的门禁未立
+**优先级**: 🔴 高
+**触发**: 同上复验。
+**硬证据/最小复现**: ① `surgery_20261105_pamir25.py` cite 循环 `if not o: continue` 跳过新节点。canonical 新节点上 14 条本批 cite，10 条不满足 Doctor 裁定：`concept_HWAscend950DTABFSubstrate`、`concept_NVVeraRubinCPUABFSubstrate`（CCL 篇）、`concept_DomesticABFSubstrateCompetitiveLandscapeExpanded`、`concept_EmbeddedCapacitorHDIRubinUltra`、`concept_UpstreamMaterialTightnessBTCCLCarrierCopper`、`concept_XinsenABFSubstrateCustomerMix2026`、`concept_HBMGap2026_2027`（词元部分）；`concept_AIDDLabMarketSpace`、`concept_WetLabFeedbackLoop`（覆盖 0.0，挂 ABF 载板篇）、`concept_CPOOrganicABFCarrierBoard`（未见）。存量节点上 103 条全部合规。② `quarterly_recheck` 在手术前运行（批量日志 02:27:16），`last_updated` 取自后被剔除的 cite：18 个 last_updated 变化节点中 13 个 data_sources 无任何新增，如 `concept_ABFSubstrateCycle` 2026-09-28→2026-11-02，expiry 2026-12-27→2027-01-31。③ 手术「复原 name」撤销了复检的 曾· 改名：`concept_BTSubstratePriceHike2025to2026`、`concept_TaiwanCCLPriceHike2026` 现为 name 带 曾·、status=active、market_signal.categories 非空（入库前 status=ever 且无 market_signal 键）；`concept_CWLaserShortage` 现为 status=ever、categories 空、name 无 曾·。在 scratch 副本重跑 `quarterly_recheck`：两涨价节点回 ever 但 categories 仍非空，CWLaser 仍无 曾·，不会自愈。④ 存量 updated_at 变化 493 节点，其中 339 个 data_sources 未变（`updated_at` 单字段变化 326 个）。
+**根因**: 复检读 data_sources 派生时效，手术又改 data_sources，顺序错；name 复原未区分 LLM 覆写与复检改名；cite 过滤只写了存量分支。
+**影响面**: 无新来源的信号被复活，前端可能仍渲染特效；时效窗口虚长，下游按 updated_at/expiry 判新鲜度会高估。
+**建议修法**: 剔除新节点上 10 条违规 cite；对无新增来源节点恢复入库前 `_meta` 与 updated_at；修正 3 节点 name/status/categories 后，在手术版数据上重跑一次复检。
+**预防门禁**: 凡改 data_sources 的手术，必须在其后重跑复检并对账 name 前缀、status、categories 三者一致。
+**来源**: 2026-11-05 审核者复验，实跑实读。
+
+## [NOTE-20261105-005] 帕米尔 25 篇批源文抽查：边方向反转、产能单位差 10 倍、价格层越界、主角公司漏建与字节芯片错并
+**状态**: ✅ 已修复列明条目（未参与实施的审核者代签 · 2026-11-05 · 判定：3 条反向边、`_kwpm` 8 值、无源边、Meta 股价行、M8 行、字节家族拆回均对原文核过；latest.json 与重建一致）；🔄 仍开放：全批新边方向未普查，价格分流未加股价拒收，3 个补建公司字段与 mRNA 平台节点命名见 NOTE-20261105-006；⚠️ 本条 ⑥ 的「同芯片」是审核者推断，Ada2 与 Ada 2S 的时间线矛盾见 NOTE-20261105-006
+**优先级**: 🟡 中
+**触发**: 同上复验，抽查 5 篇（兴森、HBM 11.02、存储 10.30、云顶新耀、AI 算力 11.03）对原文。
+**硬证据/最小复现**: ① 方向反转（抽查 57 条边中 3 条）：`metric_BTSubstratePriceHike2026Q4 causes concept_BTSubstrateMSAPMaterialOverlap`（边自身 desc 是重合度推高价格）；`concept_DomesticGPUCostHighSpotHBM causes concept_HBMPriceHighCycle2028`（原文是高价 HBM 抬升成本）；`concept_DRAMCapacityByVendor2026 evolves_from concept_DRAMCapacityReduction2027`。② 单位：`concept_HBMCapacityByVendor2026`、`concept_DRAMCapacityByVendor2026` 的 `*_kwpm` 值 20/18/8/1.2、58/66/35/30，原文单位为「万片」，差 10 倍；同批 `dalian_capacity_current_kwpm`=100（10 万片）是对的。③ 无源：`concept_NANDPriceChinaUSDivergence causes concept_NAND_HBM` 的「促使关注 NAND 基 HBM」，原文无此句。④ 价格层：`Meta股价 648.85 美元/股`（2026-10-22）违反 `prices/PRICE_LAYER.md`「股价不进」；`px_M8覆铜板_M8等级_现货_20261105` 的 as_of 落入库日而源文为 2026-10-27，unit 为 null，price_low 为空串（原文「1200 元/张以上」）。⑤ 主角公司无 company 节点：致尚科技、剂泰医药、药明生物（grep name/aliases 全 0，且为 index subject）。⑥ 合并：`company_ByteDance_AI_Chip` 是字节自研芯片家族描述，被并入 `product_BytedanceAda2S`，使第三代性能键和别名「字节自研芯片」落到二代节点，该别名现与 `product_BytedanceSelfDesignChip`、`product_ByteDanceSICKCHIP` 三方碰撞；存量 `concept_BytedanceAda2Chip` 与 `product_BytedanceAda2S` 带相同的 deployment/shipment/unit_cost 属性，是同芯片漏并。
+**根因**: LLM 抽取未校验边方向与单位键；价格分流未拦股价；手术按 id/名近似配对，未核实体粒度。
+**影响面**: 下游图距和经济传导读到反向边；按 `_kwpm` 取数偏差 10 倍；抽查比例约 5%，全批 264 条新边未普查。
+**建议修法**: 订正列明条目并普查全批新边方向；`company_ByteDance_AI_Chip` 内容按代际拆回、Ada2S 双节点合并；补 3 个公司节点；删或迁出 Meta 股价行。
+**预防门禁**: 新增边 desc 与方向一致性抽检进入转录语料断言核查；价格分流加「股价」拒收。
+**来源**: 2026-11-05 审核者复验，实跑实读。
+
+## [NOTE-20261105-006] 帕米尔 25 篇批二轮修复后残留：药明康德节点混入药明生物内容、平台节点仍错标 TCE、补建公司字段不全、1 节点时效虚长
+**状态**: ✅ 已修复 ①②④⑥（未参与实施的审核者代签 · 2026-11-05 · 判定：canonical `7cb478bdbfcb8fcb` 对 `e061db7b` 逐节点逐边 diff 无超范围改动；Ada2 拆开互指、药明生物内容迁出、`concept_MrnaLNPPlatformAdvantage`、BT 毛利时效均对原文或重跑复检核过）；③ 仅修 `company_WuXiBiologics` stock_code 与 3 条边描述。🔄 仍开放：致尚 id 与 stock_code，3 家公司 category/region，致尚与剂泰 source_span 未标 span_note；⑤ 时间状态未重跑复检（`concept_CWLaserShortage` 信号仍激活）；wiki 卡 `concept_bytedanceada2chip.md`、`concept_ascend950m7cclsupply.md` 未刷新，前者仍显示 Ada 2S 合并内容（低度节点 `wiki_autogen` 不重写；上轮「wiki 全一致」只比了 desc 前 40 字，据此更正）；价格行 `px_华为昇腾950DT训练芯片_950DT_现货_20261103`、`px_保偏FAU__现货_20261103` 的 node_id 指向已并入的旧 id；手术后复检对账与命名等门禁未立
+**优先级**: 🟡 中
+**触发**: 2026-11-05 对 `surgery2_20261105_pamir25_auditfix.py` 的独立复验（canonical `e061db7b6d454abd`，7578 节点 / 8182 边）。
+**硬证据/最小复现**: ① `concept_WuXiSmallMoleculeCapacityPlan`（药明康德小分子 CDMO 产能规划）的 description 含「本批补充：药明生物产能扩张……收购杭州奕安济世 CDMO 资产……子公司药明合联在欧洲寻求产能收购」，data_sources 含 `2026.10.29-帕米尔研究：药明生物外资观点总结.md`；CXO 调研原文无奕安、合联、药明生物。同内容已有 `concept_WuXiBiologicsHangzhouAcquisition`。② `concept_MrnaLNPPlatformTCEAdvantage`（名「mRNA/LNP平台TCE方向优势」）的 span 是「mRNA/LNP平台的三大优势」，云顶原文 TCE 只在平台清单出现 1 次，未说这些优势属 TCE 方向。③ `company_ZhishangTechnology`、`company_METiSPharma`、`company_WuXiBiologics` 无 category、region、stock_code；`rules/bare_alias_check.py` [2] 把 `company_ZhishangTechnology` 列为裸拼音简称；index 已有药明生物 ticker `02269.HK` 未写入。前两个公司的 source_span 借自目标节点，是拼接摘要、非原文子串（`s in raw` 为 False），节点未带 span_note，也不含公司名；边 desc 都是占位句「是该事项的主体」，边无 weight。④ `metric_BTSubstrateGrossMargin` 的 `_meta.temporal.last_updated` 为 2026-11-02、expiry 2027-01-31，而现存来源最新 2026-10-26；scratch 副本重跑 `quarterly_recheck` 算出 2026-10-26。⑤ 时间状态：整节点复原使 264 个节点回到 `last_rechecked=2026-10-26`，副本重跑显示 expiring→expired 10、active→expiring 5、`concept_CWLaserShortage` expiring→ever；后者 expiry 2026-10-28 已过，当前 categories 仍非空。⑥ `concept_BytedanceAda2Chip` 同时存 `production_start_earliest_2027q4=2027-10`（9-13 芯原篇「第二代产品 Ada2」）与 `mass_production_2026q4=true`（11-03「第二代 Ada 2S 今年四季度部署」），单价 7000 美金与单卡成本 1 万美金并存，旧句未标时效。Ada2 与 Ada 2S 是否同一颗，现有原文无法确认。
+**根因**: LLM 把跨篇内容按「同行业词」追加到相近节点；修复脚本补建公司时只写最小字段；时效只恢复了来源完全不变的节点，未在修复后重跑复检；合并按属性重复判定同实体。
+**影响面**: 药明康德产能节点读者会读到药明生物的收购；公司节点无 region/stock_code，按代码查询或国别统计漏掉；CWLaser 信号在下次复检前仍激活。
+**建议修法**: 从药明康德节点移除该句与对应 data_source；平台节点改名「mRNA/LNP平台优势」；补 3 个公司的 category/region，核后写 stock_code，source_span 标 span_note；在修复后的数据上重跑一次复检并对账 name/status/categories。Ada2 与 Ada 2S 是拆还是加时效标记，属方向选择，请 Doctor 裁。
+**预防门禁**: 新增的「本批补充」若主语公司与节点名公司不同即报告；手术补建公司必须过命名铁律与 `bare_alias_check`；改 data_sources 的手术后必须重跑复检。
+**来源**: 2026-11-05 审核者复验，实跑实读。
+
+## [NOTE-20261105-007] cite 全量复核：与原文结论相反的条目判定不一致，HBM 价格顶被 drop；兴森 ABF 新值键无口径锚，第 18 项扫不到
+**状态**: ①HBM 价格顶恢复 cite 并并列、②兴森 8 亿改锚键且第 18 项实扫到、④五节点并列标注 —— ✅ 已修复（未参与实施的审核者代签 · 2026-11-05 · 判定：PASS_WITH_LIMITS · canonical `599d6a9095cd8c6c`）。③兴森四值 —— 主口径已标，残留转 NOTE-20261105-008，🔄 仍开放。建议修法「复查判相反的 drop」—— `拿不准` 35 条全进复判；`concept_ClaudeF5CostIncrease`（note「方向相反，未提F5」）未进复判，🔄 仍开放。把握偏低未处理的 5 处冲突（`concept_AnthropicComputeScalingStrategy`、`concept_M10CCLMaterialRoute`、`concept_HBM3DomesticMassProduction2025H2`、`concept_HBMGap2026_2027`、`concept_ABFFilmDomesticCarrierScarcity`）节点未标注，🔄 仍开放。预防门禁三条未实装，🔄 仍开放。
+**优先级**: 🟡 中
+**触发**: 2026-11-05 对 `surgery4_20261105_pamir25_citerestore.py` 的独立复验（canonical `fa2d783b7f1faa69`，基线 `7cb478bdbfcb8fcb`）。
+**硬证据/最小复现**: ① `concept_HBMPricePeak2027Q4`（`price_peak_quarter_undated`=2027Q4）在 `outputs/cite_recheck/` 判 drop，note 为「原文断言相反」；`2026.11.02-帕米尔研究：HBM调研` 第 9 问写「2027年不会出现明显高点，涨价趋势将延续至2028年」。同样结论相反的 `concept_BTSubstrateLineConvertMSAP` 判 keep 并在 description 并列。② `metric_XinsenABFRevenue2026E` 新键 `abf_revenue_2026e_rmb_yi_2026_10_26` 不含 `_caliber_`；该节点锚键 0 个，`rules/check_caliber_conflicts.py` rc=0 属未扫描，不是校验通过。③ 兴森 2026 ABF 营收口径并存：本节点 22 亿与 8 亿；`metric_XinsenABFSubstrateRevenueTarget2026` 为 `revenue_target_2026e_rmb_mn`=1000、`revenue_target_2026e_rmb_bn`=12；`metric_XinsenABFSubstrateRevenue2027E` 为 `revenue_2026e_rmb_bn`=12、`revenue_2026e_rmb_mn`=800。本节点 `_review_20260812` 已写「以10亿节点为主口径」，本轮只改了 22 亿节点。④ keep 的 note 自述数值不一致而节点未标注：`concept_3dot2TPCBTechEvolution`（15μm/17μm）、`concept_BTSubstratePriceHike2025to2026`（5800-6000 元/4400→5500 元）、`concept_ABFSubstrateMarginUpsideScenario`（41%/37-38%）、`concept_MSAPCoreEquipmentSupplyChain`（两年/8-10 个月）、`concept_Ascend950M7CCLSupply`（50:50/40:60/4:4:2）。
+**根因**: 复核标准只写「是否同一事物」，未规定结论相反时判 keep 还是 drop；手术只处理了人工挑出的两处冲突；新键沿用日期后缀，未按「数字口径标注规范」第 1、6 条带 scope。
+**影响面**: HBM 价格见顶节点仍单独呈现 2027Q4，读者看不到 11-02 的相反口径；按属性取兴森 2026 ABF 营收可得 22、12、10、8 亿四个值；第 18 项对无锚键的多值并存不报警。
+**建议修法**: 恢复 HBM 价格顶的 cite 并并列相反口径；复查全部判相反或拿不准的 drop（`拿不准` 35 条）；兴森 8 亿改用带 `_caliber_` 的键，四值由 Doctor 定主口径；对 ④ 按规范第 5、6 条逐条核对后标注。
+**预防门禁**: 复核提示词明确「同一事物、结论相反＝keep 且列入冲突清单」；手术脚本由 note 含数值不一致的 keep 生成待处理清单；手术新增数值属性时断言键含 `_caliber_`。
+**来源**: 2026-11-05 审核者复验，实跑实读（抽样 keep 20、drop 30，种子 20261105）。
+
+
+## [NOTE-20261105-008] 帕米尔 25 篇批第五轮残留：兴森 10 亿目标时点标错、旧 review 字段仍称 10 亿为主口径；系统概览结构校验行未随批更新
+**状态**: 🔄 待修复
+**优先级**: 🟢 低
+**触发**: 2026-11-05 对 `surgery5_20261105_pamir25_conflicts.py` 的独立复验（canonical `599d6a9095cd8c6c`，上一版 `fa2d783b7f1faa69`）。
+**硬证据/最小复现**: ① `metric_XinsenABFSubstrateRevenueTarget2026` 新增句标「[2026-08 目标口径]」；10 亿目标出自 `2026.05.14-帕米尔研究：头部载板公司（兴森科技）再更新…` 第 91 行，节点 created_at 为 2026-05-16，2026-08 只是另一节点 review 字段的日期。同节点 `revenue_target_2026e_rmb_bn`=12 不见于该源，12 亿出自 `2026.07.01-帕米尔研究：封装载板…` 第 117 行。② `metric_XinsenABFRevenue2026E` 顶层 `_review_20260812` 仍写「以10亿节点为主口径」，与同节点 description「主口径」8 亿冲突。③ 同族单位问题：`metric_XinsenABFSubstrateRevenue2027E` 的 `revenue_2027e_rmb_bn`=40、`revenue_from_ascend_950_2027e_rmb_bn`=24，原文单位均为亿元（第 117 行），键名写 bn，本轮只注明了 `revenue_2026e_rmb_bn`=12。④ `brain/渊图/architecture/系统概览.md` 第 49 行在「当前数字（2026-11-05）」表内仍写「2026-10-26 … `total_nodes/total_edges` 已归正 7294/7917」；canonical metadata 实读 7579/8182。⑤ 本轮改动的 16 节点中，`updated_at` 未更新；除 3 个已是 2026-11-05 外，其余停在旧日期或无此字段（如 `concept_HBMPricePeak2027Q4` 为 2026-10-01）。
+**根因**: 手术脚本的时点标签手写，未回源；替换主口径时只改 description，未查节点其余字段；概览只改了节点、边等行；手术脚本不维护 `updated_at`。
+**影响面**: 读 10 亿目标会把 5 月口径当 8 月口径；读 `_review_20260812` 会得到与 Doctor 裁定相反的主口径；按键名单位换算兴森营收差 10 倍；概览结构校验行不反映本批。不影响节点数、边数、第 11、16、17、18 项结果。
+**建议修法**: 「[2026-08 目标口径]」改为 2026-05-14 并写明 10 亿；`_review_20260812` 保留原文，加时效标记并指向 8 亿主口径；`_bn` 键按口径规范新增正确单位键，旧键不改名；概览第 49 行按本批实测重写；`updated_at` 是否随手术更新请先查 kg_merge 时戳闸的影响。
+**预防门禁**: 手术脚本写入的时点标签须能对上该节点 data_sources 的 vintage；改主口径时全文检索节点所有字段的「主口径」字样；概览更新批次时逐行核对「当前数字」表。
+**来源**: 2026-11-05 审核者复验，实跑实读。
