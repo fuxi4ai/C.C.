@@ -1281,18 +1281,20 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **硬证据/最小复现**: `python3 tests/test_gates_20261105.py` 修复后 82 PASS / 0 FAIL；`KG_CODE_ROOT=<HEAD 代码> python3 tests/test_gates_20261105.py` 31 PASS / 51 FAIL。① 夹具里 `created_at` 被改的 9 个节点说明改写不走 `update_nodes`：update 闸早就剥 created_at，只有 `add_nodes` 撞存量 id（`kg_merge` 转成 update）才带得进来。② `_fix_asr_misnames` 无条件写 `n["name"] = nm.replace(...)`，update 条目不带 name 时写入空串，合并后清空存量 name（`concept_DomesticDSPVendorStatus`）。③ cite 灌水不止本批：`行业知识图谱_完整数据库.json.bak_pre_promote_20261026_070413`→`行业知识图谱_完整数据库.json.bak_pre_promote_20261105_023028` 这一窗口新增 cite 279 条，单篇最多 119 条（实读备份对比，未逐条复核）。
 **根因**: 保护闸只看 `update_nodes`，而 merge 把撞 id 的 add 也当 update；第 11 项原先不在任何写盘链上。
 **影响面**: 历史批次的改写和灌水未回溯普查；存量里可能还有同类改写与灌水 cite。
-**仍在的限制**（审核者实跑）: ① 删 `_gate_stamp.json` 即静默回到引导，印章也可伪造，第 21 项只防疏忽。② 灌水条目带 `note`、`evidence`、priority 变更或新 property 时不算只加来源，仍能过；同窗口另一篇改过节点内容时，一键门也认不出。③ `updated_at` 早于存量的条目，来源进队列，reason 写的是 `evidence_insufficient`，易误读（25 篇批 493 条变化中 5 条非当日）。④ 合并清单只核 properties 键，不核值，原值靠墓碑。⑤ 拉丁短别名无词边界（TEL 命中 Intel），泛化别名（「芯片」）算全名档；全图实测每篇误命中 0–4 个。⑥ `is_stock_quote` 仍漏 `PE为30倍`、无单位 `target price`、`估值`，note 提及股价的商品会误拒；存量 1274 行实测 5 个品名命中全对。⑦ 存量价格层里这 5 个股价类品名（宇树IPO发行价、兆易H股发行价、英伟达股价目标价、东方电缆股票、北方华创股票）未清理，闸只拦新增。⑧ 分类器翻转 `properties.region` 会被第 20 项拦，须在清单声明 `properties.region`。⑨ 回放夹具 gitignore，缺失时测试报 SKIP，`run_all` 仍算通过。⑩ 未验证：真 LLM 的 `--batch`、`tag_market_signals`、写盘中途失败（只实读）。
+**仍在的限制**（审核者实跑）: ① 删 `_gate_stamp.json` 即静默回到引导，印章也可伪造，第 21 项只防疏忽。② 灌水条目带 `note`、`evidence`、priority 变更或新 property 时不算只加来源，仍能过；同窗口另一篇改过节点内容时，一键门也认不出。③ `updated_at` 早于存量的条目，来源进队列，reason 写的是 `evidence_insufficient`，易误读（25 篇批 493 条变化中 5 条非当日）。④ 合并清单只核 properties 键，不核值，原值靠墓碑。⑤ 泛化别名（「芯片」）算全名档；拉丁别名的词边界已于同日修复，见 NOTE-20261105-010 追记。⑥ `is_stock_quote` 仍漏 `PE为30倍`、无单位 `target price`、`估值`，note 提及股价的商品会误拒；存量 1274 行实测 5 个品名命中全对。⑦ 存量价格层里这 5 个股价类品名（宇树IPO发行价、兆易H股发行价、英伟达股价目标价、东方电缆股票、北方华创股票）未清理，闸只拦新增。⑧ 分类器翻转 `properties.region` 会被第 20 项拦，须在清单声明 `properties.region`。⑨ 回放夹具 gitignore，缺失时测试报 SKIP，`run_all` 仍算通过。⑩ 未验证：真 LLM 的 `--batch`、`tag_market_signals`、写盘中途失败（只实读）。
 **建议修法**: ②③ 加无效键白名单、单篇来源总量告警、kept_base 独立 reason；⑦ 是否清理请 Doctor 定；历史回溯另立专场。
 **预防门禁**: `tests/run_all.py`；第 11、19–21 项见 `CLAUDE.md`。
 **来源**: 2026-11-05 Code 标签会话，实跑实读；审核者脚本 `/private/tmp/claude-501/aud/`（临时目录）。
 
 ## [NOTE-20261105-010] kg_ingest PDF 通道必然失败：`file_text` 未赋值，每篇报「未知错误，已跳过」
-**状态**: 🔄 待修复
+**状态**: ✅ 已修复（未参与实施的审核者代签 · 2026-11-05 · 判定 PASS_WITH_LIMITS · 复验 FAIL→修→PASS_WITH_LIMITS→修→PASS_WITH_LIMITS）；真 API 的 PDF 附件调用未验证，限制见本条追记
 **优先级**: 🟡 中
 **触发**: 2026-11-05 加固门禁时读 `extract_from_file`。
 **硬证据/最小复现**: 假 LLM 加最小 PDF 调 `extract_from_file`，实跑返回 `{}`，日志 `✗ 未知错误，已跳过: cannot access local variable 'file_text' where it is not associated with a value`。PDF 分支只赋 `file_b64`，而 `_validate_source_span(patch, file_text)` 无条件引用 `file_text`。实读 `index.json`：124 篇 PDF，最新日期 2026-06-09。
-**根因**: 2026-08-16 溯源校验只考虑文本通道（`git log` 未核，时点为推断）；异常被通用 except 吞掉，只表现为跳过。
-**影响面**: 外资 PDF 放进 `raw/Industrial Analysis pdfs/` 不会入库，也不会标 processed，只烧一次 API。CLAUDE.md 的「PDF 通道」描述与实际不符。
+**根因**: 溯源校验只考虑文本通道（`git log -S` 实查：该调用随 2026-08-17 的 provenance 提交进入）；异常被通用 except 吞掉，只表现为跳过。
+**影响面**: 外资 PDF 放进 `raw/Industrial Analysis pdfs/` 不会入库，也不会标 processed，只烧一次 API。实查该目录 124 个 PDF 全在 `index.json`，故未积压待入库文件。CLAUDE.md 的「PDF 通道」描述与实际不符。
 **建议修法**: PDF 分支先抽文本（或显式 `file_text = None` 并让 span 校验跳过），同时决定 PDF 的 cite 证据口径：现在无文本时全部进待复核队列，抽出文本才能自动登记。
 **预防门禁**: 给 PDF 通道加 `extract_from_file` 冒烟测试。
 **来源**: 2026-11-05 Code 标签会话，实跑。
+**追记（同日 · 修复）**: PDF 分支用 `kg_gates.read_pdf_text` 抽文字层（pypdf，抽不到再试 pdfplumber），模型仍读附件，文字层只用于 span 与 cite 校验；抽不到时 span 不校验不打标、cite 全部进队列。第 19 项一键门也能读 PDF。修复中审核者查出：拉丁短别名子串假命中（`SiN` 命中 `Using`，PDF 每篇可达百余个）、纯数字别名假命中、连字和康熙部首对不上，均已修（词边界、纯数字不算证据、NFKC），md 通道同受益；25 篇回放不变（552→登记 103，被复核剔除 0）。`tests/test_gates_20261105.py` 105 PASS / 0 FAIL；真实 PDF 124 篇全部抽得到文字。
+**限制**（审核者实跑）: ① 真 API 的 PDF 附件调用未验证，含 DeepSeek 兼容端点是否接受 document 块；index 里最新 PDF 为 2026-06-09，下批首篇 PDF 请盯日志。② 英文散文跨行 span 误标约 3.5%、中文约 5.4%（含栏序因素），只打标不拦。③ 漏判进队列：`GPU`/`GPUs`、`CoWoS`/`Co-WoS`、`PCIe5.0`/`PCIe 5.0`、跨行断词。④ 误放：大小写不敏感（`Arm`/`arm`、`TEL`/`tel`），42 篇 PDF 每篇 0–8 个，`R&D` 命中 `rd`；词元高覆盖档在个别 PDF 全图可达 653 个，受单篇上限 40 约束。⑤ docx/xlsx 单篇入库经 ingest 后，第 19 项读不到其原文会被拦（批量不扫这两类）；docx 未实跑。⑥ 真 CID 字体、超大 PDF（无超时保护）未验证。
