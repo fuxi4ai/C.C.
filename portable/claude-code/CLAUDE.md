@@ -17,6 +17,8 @@
 2. `~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md` —— 协作偏好全文
 3. 有 `/resume` skill 就跑它恢复上下文；没有则读 `brain/logs/` 最近 3 篇（**含 `logs/YYYY-MM/` 月度子目录**，月初根目录会读不满）
 
+4. **动手前读 Gotchas**（不跑 `/resume` 也要读）：按当前任务查 `~/Documents/Claude/brain/permanent/经验索引.md`，按指针读相关项目的 GOTCHAS 和通用教训，开放项优先；对照有没有已知的坑。
+
 ## 全局偏好速览（全文以镜像文件为准）
 
 - 称呼 Doctor 一律用敬语「您」。
