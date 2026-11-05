@@ -44,7 +44,7 @@ def read_pack_single(gitdir, sha):
                 break
         if found is None:
             continue
-        off_base = start + n * 20
+        off_base = start + n * 24  # idx v2：sha 表之后是 CRC 表（n*4），再之后才是偏移表
         off = struct.unpack('>I', idxdata[off_base + found * 4: off_base + found * 4 + 4])[0]
         if off & 0x80000000:
             big_idx = off & 0x7fffffff
@@ -56,15 +56,16 @@ def read_pack_single(gitdir, sha):
         sz = b0 & 15
         shift = 4
         i = off + 1
-        while True:
+        b = b0
+        while b & 0x80:  # 首字节最高位为 0 时，size 没有后续字节
             b = pack[i]; i += 1
             sz |= (b & 0x7f) << shift
             shift += 7
-            if not (b & 0x80):
-                break
         if typ in (6, 7):
             raise RuntimeError('pack delta object, cannot verify: ' + sha)
-        return zlib.decompressobj().decompress(pack[i:])
+        # 补对象头，与 read_loose 返回同一形态（commit_tree_sha 靠首个 NUL 定位正文）
+        name = {1: b'commit', 2: b'tree', 3: b'blob', 4: b'tag'}[typ]
+        return name + b' %d\x00' % sz + zlib.decompressobj().decompress(pack[i:])
     return None
 
 def read_obj(gitdir, sha):
@@ -143,20 +144,32 @@ def index_nested_tree(entries):
     return build(entries).hex()
 
 def blob_hash(path):
-    content = open(path, 'rb').read()
+    # 符号链接在 git 里存的是链接目标串，不跟进目标内容
+    content = os.fsencode(os.readlink(path)) if os.path.islink(path) else open(path, 'rb').read()
     return hashlib.sha1(b'blob %d\x00' % len(content) + content).hexdigest()
 
 def unpushed(gitdir):
     """比较 refs/heads/* 与 refs/remotes/*/*；无远端返回 None"""
     heads_dir = os.path.join(gitdir, 'refs', 'heads')
     remotes_dir = os.path.join(gitdir, 'refs', 'remotes')
-    heads = {}
+    heads, remotes = {}, {}
+    # 先读 packed-refs，下面的松散 ref 更新、会覆盖它（pack-refs/gc 后 ref 只在这里，G-X83）
+    pr = os.path.join(gitdir, 'packed-refs')
+    if os.path.exists(pr):
+        for line in open(pr):
+            parts = line.split()
+            if len(parts) != 2 or line[0] in '#^':
+                continue
+            sha, ref = parts
+            if ref.startswith('refs/heads/'):
+                heads[ref[len('refs/heads/'):]] = sha
+            elif ref.startswith('refs/remotes/'):
+                remotes[ref[len('refs/remotes/'):].split('/', 1)[-1]] = sha
     for root, dirs, files in os.walk(heads_dir):
         for f in files:
             p = os.path.join(root, f)
             rel = os.path.relpath(p, heads_dir)
             heads[rel] = open(p).read().strip()
-    remotes = {}
     if os.path.isdir(remotes_dir):
         for root, dirs, files in os.walk(remotes_dir):
             for f in files:
@@ -181,16 +194,14 @@ def check(repo):
     mods = []
     for e in entries:
         p = os.path.join(repo, e['name'])
-        if not os.path.exists(p):
+        if not os.path.lexists(p):
             mods.append(e['name'] + ' [MISSING]')
             continue
-        if os.path.islink(p):
+        if e['mode'] == 0o160000:  # 子模块条目是目录，没有 blob 可比
             continue
-        st = os.stat(p)
-        # 挂载层 sub-second mtime 会与 index 整秒缓存误报 → stat 不一致时用内容哈希定夺
-        if int(st.st_mtime) != e['mtime'] or st.st_size != e['size']:
-            if blob_hash(p) != e['sha'].hex():
-                mods.append(e['name'])
+        # 一律比内容，不用 mtime/size 跳过（G-X83）
+        if blob_hash(p) != e['sha'].hex():
+            mods.append(e['name'])
     print('worktree modified (内容级): %d' % len(mods), mods[:20] if mods else '')
     up = unpushed(gitdir)
     if up is None:
