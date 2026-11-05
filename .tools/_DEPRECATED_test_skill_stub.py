@@ -27,5 +27,10 @@ with tempfile.TemporaryDirectory() as d:
     check("巡检判为薄壳", m.classify(canon, stub)[0] == "stub")
     check("description 不同报分歧", m.classify(canon, stub.replace(b'description: "', b'description: "X', 1))[0] == "divergent")
     check("无标记的改动仍报分歧", m.classify(canon, canon + b"\nextra\n")[0] == "divergent")
+with tempfile.TemporaryDirectory() as d:
+    subprocess.run([sys.executable, os.path.join(H, "build_skill_stub.py"), "QA", d], check=True, capture_output=True)
+    z = zipfile.ZipFile(os.path.join(d, "qa.zip"))
+    s = z.read("qa/SKILL.md").decode()
+    check("QA 账号名用小写、正文路径用原目录", 'name: "qa"' in s and ".skills/QA/SKILL.md" in s)
 print("\n全部通过" if not fails else f"\n{len(fails)} 项失败")
 sys.exit(1 if fails else 0)

@@ -62,8 +62,9 @@ type: resource
 
 ## 安装
 
-> **2026-11-04 Doctor 定**：Code 用 `~/.claude/skills` 的链接（指向 portable，`qa` 指向 `.skills/QA`），Cowork 用账号副本，须在 Customize > Skills 手动上传。两边同名并存属预期；改完跑 `.tools/check_skill_parity.py` 比对账号副本。下述双击 `.skill` 为旧流程，以此为准。
+> **2026-11-04 Doctor 定**：Code 用 `~/.claude/skills` 的链接（指向 portable，`qa` 指向 `.skills/QA`），Cowork 用账号副本，须在 Customize > Skills 手动上传。两边同名并存属预期；改完跑 `.tools/skill_release.py status`。下述双击 `.skill` 为旧流程，以此为准。
 > `the-conch-maiden` 以本地 `~/.claude/skills/the-conch-maiden` 为准（2026-11-04 Doctor 定）；`~/.cc-switch/skills/` 里的同名副本不再作参照。
+> **薄壳与版本治理（2026-11-04 Doctor 立）**：账号放薄壳，正文读 canonical；安全靠版本比对，不把运行时「读不到就停」当防线。注册表 `_registry.json`，发布台账 `_release_ledger.jsonl`，工具 `.tools/skill_release.py`。改技能：改 canonical → 跑 `skill_release.py release`（同步 portable、重打 `.skill`、记台账）→ 只上传它列出的 zip。只改正文无需上传；改 `description`、壳版本变化才要。`.skill` 是完整版，用于回退。`gsap-frontend` 有附属文件，账号放完整副本。失败路径与云端班路径未实测。
 
 ### 方式 A · Finder 双击 .skill 文件
 

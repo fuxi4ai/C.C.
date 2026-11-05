@@ -1,0 +1,21 @@
+{
+  "_note": "技能版本治理注册表（2026-11-04 Doctor 立）。channel: release=发布到账号（默认放薄壳，account=full 放完整副本）；code-only=只在 ~/.claude/skills；canonical-only=只留源文件未安装；portable-only=只在 portable 未入 canonical。工具：.tools/skill_release.py",
+  "skills": {
+    "brain-anchors": {"channel": "release", "portable": true},
+    "brain-consolidate": {"channel": "release", "portable": true},
+    "brain-note": {"channel": "release", "portable": true},
+    "brain-prd": {"channel": "release", "portable": true},
+    "brain-resume": {"channel": "release", "portable": true},
+    "brain-save": {"channel": "release", "portable": true},
+    "brain-todo": {"channel": "release", "portable": true},
+    "damper": {"channel": "release", "portable": true},
+    "QA": {"channel": "release", "portable": false, "account_name": "qa"},
+    "gsap-frontend": {"channel": "release", "portable": false, "account": "full"},
+    "audit": {"channel": "canonical-only"},
+    "handshake-consumer": {"channel": "canonical-only"},
+    "equity-thesis": {"channel": "portable-only"},
+    "the-conch-maiden": {"channel": "code-only"},
+    "dream": {"channel": "code-only"},
+    "graphify": {"channel": "code-only"}
+  }
+}
