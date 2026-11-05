@@ -18,7 +18,7 @@
 | 项 | 判据 | 可信度 |
 |---|---|---|
 | 已跟踪但内容变了 | 对每个 index 条目**重算 git blob sha1**（`sha1("blob <len>\\0" + 内容)`）并与 index 内记录值比对 | **精确**（不是 mtime/size 近似） |
-| index 有记录但盘上没了 | 条目路径 `os.path.exists` 为假 | 精确 |
+| index 有记录但盘上没了 | 条目路径 `os.path.lexists` 为假（断链符号链接不算删除） | 精确 |
 | 未跟踪 | 走遍工作区，取不在 index 路径集里的文件 | **见下方 ignore 限制** |
 | 工作区文件数 / index 条目数 | 计数 | 精确 |
 
@@ -98,8 +98,11 @@ def parse_index(path: pathlib.Path):
 
 
 def blob_sha1(fp: pathlib.Path) -> str:
-    """git blob sha1 —— sha1("blob <len>\\0" + 内容)。这是 git 自己的定义，可逐位复算。"""
-    d = fp.read_bytes()
+    """git blob sha1 —— sha1("blob <len>\\0" + 内容)。这是 git 自己的定义，可逐位复算。
+
+    符号链接在 git 里存的是链接目标串，所以用 readlink，不跟进目标内容（G-X83 · 2026-11-05 修）。
+    """
+    d = os.fsencode(os.readlink(fp)) if fp.is_symlink() else fp.read_bytes()
     h = hashlib.sha1()
     h.update(b"blob %d\0" % len(d))
     h.update(d)
@@ -152,7 +155,7 @@ def collect(root: pathlib.Path, ignore_filter: bool = True) -> dict:
     modified, gone = [], []
     for e in ents:
         fp = root / e["path"]
-        if not fp.exists():
+        if not os.path.lexists(fp):
             gone.append(e["path"])
             continue
         try:
@@ -274,6 +277,22 @@ def self_test() -> int:
         r5 = collect(root)
         cases.append(("T8 仅 mtime 变、内容未变 ⇒ **不**报 M（本器与 mtime 法之别）",
                       "c.txt" not in r5["modified"]))
+
+        # 符号链接：比链接目标串，不跟进目标内容；断链不算删除（G-X83）
+        (root / "t1.txt").write_text("target one\n", encoding="utf-8")
+        (root / "l_ok").symlink_to("t1.txt")
+        (root / "l_broken").symlink_to("no_such_file")
+        (root / "l_moved").symlink_to("t1.txt")
+        (gi / "index").write_bytes(b"DIRC" + struct.pack(">II", 2, 3) +
+                                   mk_entry("l_broken", b"no_such_file") +
+                                   mk_entry("l_moved", b"other_target") +
+                                   mk_entry("l_ok", b"t1.txt"))
+        r6 = collect(root)
+        cases.append(("T8b 符号链接目标串未变 ⇒ 不报 M（不跟进目标内容）", "l_ok" not in r6["modified"]))
+        cases.append(("T8c 符号链接改指向 ⇒ 报 M", "l_moved" in r6["modified"]))
+        cases.append(("T8d 断链符号链接 ⇒ 不报 D、不报读失败",
+                      "l_broken" not in r6["missing_from_worktree"]
+                      and not any("l_broken" in x for x in r6["modified"])))
 
         # v4 index ⇒ 明确拒绝，不静默
         (gi / "index").write_bytes(b"DIRC" + struct.pack(">II", 4, 0))

@@ -174,7 +174,7 @@ project: 龙鱼五力
 **2026-09-12 实施（Doctor 问答板批「VV 建议修法」）**：`_facts_from_pack` 已改 pack 结构分流——①顶层含 engine_facts（已提取包）→ 直取并保留合法空值（0/""/False）；②无 engine_facts 但有原始引擎段 → 委托 `_ss._facts`；③未知结构 → raise 拒绝（不静默写全 None）。冒烟 5/5 实跑通过（已提取包取真值 / 原始包 fin_score=3.2/5 / 未知结构 raise / 不存在包 {} / 非对象 raise）。**09-10 批次 23 条回填**：同股同刻原包绑定（`_packs_claude/{ts}.json`·`_extracted_at=2026-09-10`）23/23 成功 · 备份 `records_backup_20260912_pre_backfill.tar.gz`（23 文件）· 复验 broken 残留 0 · 抽样 300308 pe_ttm=51.26 全 19 键非空 + `_meta.engine_facts_backfill` 标记。回填脚本 `outputs/cc_backfill_engine_facts_20260912.py`（fail-closed：路径错/空扫即拒）。状态 🔄 已修待验（实施者不自标 ✅）· 独立验收归未参与实施的 subagent/Doctor。
 
 ## [ERR-20261105-001] `TushareClient` 过带账号的代理时不发认证头 → 407，引擎全部取数失败
-**状态**: 🔄 已修待验（2026-11-05 Doctor「能」后按建议实施；✅ 落签走分轨）
+**状态**: ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS_WITH_LIMITS）
 **优先级**: 🟡 中
 **触发场景**: 2026-11-04 夜 Code 标签沙箱验证 G-X244，真实调用引擎。
 **硬证据/最小复现**: `client.call` 返回「Tunnel connection failed: 407 Proxy Authentication Required」；`HTTPS_PROXY` 带用户名和密码（只核了有无，未读值）。
@@ -183,14 +183,18 @@ project: 龙鱼五力
 **修复/建议修法**: 代理 URL 带用户名时发 Basic 认证头。修后真实调用成功。commit `50c3ffd9`。无持久化回归测试。
 **预防门禁**: 暂无；若复发，先核代理 URL 是否带账号。
 **来源**: 2026-11-04 Code 标签会话。
+**追记（2026-11-05 · GAI 错题本积压场 · 补持久化回归测试）**: 新增 `test_tushare_proxy_auth.py`（纯离线·不建连）8 项：带账号发 `Proxy-Authorization` / 隧道目标为 Tushare / 对端为代理 / 百分号转义账号解码 / 无账号不发头 / 无账号仍走隧道 / 无代理直连 / 无代理无隧道——实跑 8/8 PASS rc=0；故障注入（临时树删认证头行＝旧行为）→ 2 项 FAIL rc=1。修复代码本身未动。✅ 仍待未参与实施的审核者落签。
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS —— `diff five_forces_engine_v3.py <.bak_2026-11-04_updateflag>` 认证相关仅 `import base64` ＋ `_connect` 内 headers 段（其余 hunk 为 G-X244 update_flag 改动）；逻辑核对：仅 `p.username` 非空才发头、`unquote` 解码、隧道目标 Tushare、对端为代理、无代理走直连。`python3 test_tushare_proxy_auth.py` **8/8 rc=0**。临时副本故障注入 3 种：去掉 `headers=`（旧行为）→ 2 FAIL rc=1；去掉 `unquote` → 1 FAIL rc=1；无账号也发头 → 异常 rc=1，均被抓。限制：纯离线，未经真实带账号代理做 407→200 往返（以实施方「修后真实调用成功」为准，本审核未复现）；测试读 CPython 私有属性 `_tunnel_headers`/`_tunnel_host`；小写 `https_proxy` 优先于大写的分支未覆盖；commit `50c3ffd9` 未核（不跑 git）。
 
 ## [ERR-20261105-002] `test_check_ds_evidence.py` 正向用例「谷歌长协锁产能」失败，疑因锚点过期
-**状态**: ⚠️ 已知风险
+**状态**: ✅ 已闭（2026-11-05 · 未参与实施的审核者独立核验 PASS_WITH_LIMITS）
 **优先级**: 🟢 低
 **触发场景**: 2026-11-04 夜回归引擎修改时顺带跑。
-**硬证据/最小复现**: `[FAIL] 正向-谷歌长协锁产能: kinds=['旧锚'] (期望含 [])`。
-**根因**: 假设：用例依赖 08-20 建的锚点仍算新鲜，随时间变成旧锚。未逐行确认。撤回条件：查明判定逻辑另有原因。
-**影响面**: 只影响这项测试的可信度；`check_ds_evidence.py` 不引用五力引擎，与 G-X244 修复无关。
-**修复/建议修法**: 用例固定判定日期，或用不随时间过期的夹具。
+**硬证据/最小复现**: `[FAIL] 正向-谷歌长协锁产能: kinds=['旧锚'] (期望含 [])`。2026-11-05 实跑复现（`Database/行业研究/consumers/龙鱼五力/`）；只替换 `date.today()` 的探针：10-19 → `[]`，10-20 → `['旧锚']`，11-05 → `['旧锚']`。五个用例在 10-19 全过，在 11-05 和 2030-01-01 都只有这一项失败。
+**根因**: 已确认（2026-11-05，原假设成立）。用例唯一的最高分锚是 `concept_OpticalModuleLongTermSupplyAgreement`（共现 13，`created_at` 2026-08-20），11-05 时 77 天，超过 `OLD_DAYS = 60`。`anchor_age_days` 用 `date.today()` 计龄，所以用例从 2026-10-20 起必然失败，检测逻辑本身没有回归。
+**影响面**: 只影响这项测试的可信度；`check_ds_evidence.py` 不引用五力引擎，与 G-X244 修复无关。另有一项同源观察：实跑全库 rc=1，115 只报 79 条（旧锚 51 · 无锚引用 22 · P3当事实 6）；改按各条目 `analysis_date` 计龄，旧锚仍有 45 条，所以固定测试日期不会减少生产告警。锚龄只读 `created_at`，后续补料不会刷新锚龄（读码所得，未逐节点统计）。该脚本在 `references/scheduled-live-mirror` 零命中，云端 prompt 未核。
+**修复/建议修法**: 测试内固定判定日期（2026-10-19 已验证五项全过），用例仍依赖实时 `mapping/latest.json`，这一点未解决。生产侧旧锚判据和 rc=1 语义是否调整，属方向性事项，归 Doctor。
 **预防门禁**: 涉及新鲜度的测试不依赖当前日期。
-**来源**: 2026-11-04 Code 标签会话。
+**来源**: 2026-11-04 Code 标签会话；2026-11-05 同标签 `/brain-resume` 后定因。
+**追记（2026-11-05 · GAI 错题本积压场 · 根因确证＋已修待验）**: 根因由假设转实读确证——`check_ds_evidence.py` `anchor_age_days` 以 `datetime.date.today()` 计龄、`OLD_DAYS=60`；用例锚 `concept_OpticalModuleLongTermSupplyAgreement` 08-20 建，至 11-05 已 77 天 → 判旧锚。修法：检测器加 `REF_DATE = None` 钩子（None=今天·生产行为不变），测试固定 `ce.REF_DATE = date(2026, 8, 31)`（立卷日）。改前实跑 1 FAIL rc=1 → 改后 5/5 PASS rc=0（`HOME` 桥到挂载盘跑）。备份 `check_ds_evidence.py.bak_2026-11-05_refdate` / `test_check_ds_evidence.py.bak_2026-11-05_refdate`。**隐患（不在本修范围）**：`--date` 回放历史 ds 条目时旧锚仍以今天计龄——回放 60 天前条目会整片报旧锚；是否把基准日改为 analysis_date 属检测语义变更，归 Doctor。✅ 待未参与实施的审核者落签。
+**✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS —— 与 `*.bak_2026-11-05_refdate` 对 diff：检测器仅加 `REF_DATE = None` 一行 ＋ `anchor_age_days` 一行改为 `(REF_DATE or today)`；测试仅加 `import datetime` ＋ 注释 ＋ `ce.REF_DATE = date(2026, 8, 31)`。实跑（HOME 桥到挂载盘）：新测试 **5/5 rc=0**；旧测试＋旧检测器、旧测试＋新检测器均 1 FAIL（正向-谷歌长协锁产能 kinds=['旧锚']）rc=1。生产等价：旧／新检测器全库实跑 stdout 逐字节相同（sha256 `0519a33b…`），均为 115 只 · 79 条（旧锚 51 · 无锚引用 22 · P3当事实 6）rc=1。根因实证：该句最高共现锚唯一为 `concept_OpticalModuleLongTermSupplyAgreement`（分 13，`created_at` 2026-08-20，`OLD_DAYS=60`），REF_DATE 10-19 → []、10-20 → ['旧锚']、11-05 → ['旧锚']（77 天）。限制：用例仍读实时 `mapping/latest.json`，图谱后续改动仍可能改变判定；`--date` 回放仍以今天计龄（实施方已列，归 Doctor）。

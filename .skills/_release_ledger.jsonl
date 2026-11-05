@@ -19,3 +19,5 @@
 {"ts": "2026-11-04T22:56:20-08:00", "skill": "damper", "version": "2026-11-04-b3c1f9a2", "sha256": "b3c1f9a23f9cba8e1c169a2383ad10ab6bf55e0dfb41ee8c094a30526ccb6efc", "note": "release"}
 {"ts": "2026-11-04T22:56:20-08:00", "skill": "QA", "version": "2026-11-04-dbc8ce54", "sha256": "dbc8ce54949c37a88e9e977059f1a25c960adfd004e9cf38bfe6df240d79d767", "note": "release"}
 {"ts": "2026-11-04T22:56:20-08:00", "skill": "gsap-frontend", "version": "2026-11-04-3307a283", "sha256": "3307a283ab168183e8f362a78f7df067db4ab6ceef5eed6d80c9d56b9d8e45b1", "note": "release"}
+{"ts": "2026-11-05T00:51:04-08:00", "skill": "brain-resume", "version": "2026-11-05-f7ce9737", "sha256": "f7ce9737d5d8306d78f3250ce9d7cdbeee7f782e4410109455b6356a17200f69", "note": "release"}
+{"ts": "2026-11-05T00:54:50-08:00", "skill": "brain-resume", "version": "2026-11-05-8b9b8b14", "sha256": "8b9b8b14b32aeb5148d058294ca53688c2ce67c1dbf4e4c90bfb13b1857facad", "note": "release"}
