@@ -118,6 +118,7 @@ project: 风险日报
 **修复**: Doctor 2026-11-05 裁：归风险日报、改名改位置、旧文件归档、判断进提案队列。① 迁到 `Projects/风险日报/alarm/`，旧目录归档 `行业研究/archived/2026-11-05/watch_迁至风险日报/`（只读），原处只留 `MOVED.md`；消费端只认新路径，无回退。② 冻结输入改名 `legacy/alarm_watchlist_frozen_v1.jsonl`，权限 444。③ `alarm_proposals.py`（check/build）与 `proposals/`。④ `test_no_drift.py`。⑤ Cowork 改班名与提示词（`inbox/Cowork请求二-…`）。
 **限制**（审核者实跑）: ① 人工复核只靠班次提示词，程序不阻止谁跑 import，revision 也不记 proposal_id。② 阈值和指标由提案自定，恒真阈值只能靠人看摘要。③ `test_no_drift` 只防疏忽，只在周班收尾跑；不查 `.claude` 内容、`MOVED.md` 内容、alarm 根杂文件和 drift 证据；`ALARM_WATCH_DIR` 可指向归档（实搜无人设置）。④ 未被引用的 source 能进 pack，摘要不显示（低）。⑤ `~/.codex/skills/equity-thesis` 副本仍写旧路径，读不到时会报错。⑥ Gateway 同名班正文仍是旧版写文件步骤，须保持停用。⑦ 未验证：云端 prompt、真实班次运行、真实 import、`build_risk_daily` 全链路。
 **预防门禁**: `python3 -B alarm/test_no_drift.py`；迁移权威数据时同批迁写者。
+**追记（同日 · 发版）**: Doctor 复核摘要后发 `r-7d1bb3b6…`，父版 `r-a52c…`。r5、r7 回源后判 `signal_observed`，不沿用漂移版的 `triggered`；旧记录的 ¥5.34T 对不上，弃用。发版副作用（实读 `narrative_score.py`）：评估绑定 revision，错配即 HARD，普通构建沿用上次有效评估并标陈旧，下次带复核构建自动重绑。遗留：两班第 3 步以 `legacy.status` 为基线，而 legacy 永久冻结，发版也更新不了它，会每周重复报升级，已请 Cowork 改为比当前 revision 的信号状态。EAL 研究页仍钉旧 revision。
 **追记（同日）**: Cowork 实测云端 VM 里冻结文件权限为 600，只读检查必然失败，周班会每次误报。已改为只提示；防漂移判据是内容 SHA，权限不随 git 走。本机 444 仅防手滑，云端无此保护。
 **来源**: 2026-11-05 Code 标签会话，实跑实读。
 

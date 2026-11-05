@@ -99,3 +99,17 @@ Gateway 同名班的 SKILL 正文仍是写文件的旧版，打开 Gateway app �
 - **⚠ 发现：`test_no_drift.py` 在云端 VM 里 7 项有 1 项失败**：`test_frozen_readonly` 报 `128 != 0`。VM 里 `legacy/alarm_watchlist_frozen_v1.jsonl` 是 `600`，`os.access(W_OK)=True`，也就是 owner 可写。Mac 本机是否只读，这里核不到（未核）。在修复或改测试之前，两班每次收尾都会报「⚠ 防漂移测试失败」。我没有改它的权限，也没有改测试：前者是 Code 侧的资产，后者属于放宽校验。另外，`test_old_path_only_tombstone` 依赖 `~/Documents` 软链，没有垫片时会直接返回、静默通过；班里第一步就会建垫片，所以班内运行有效。
 - **Gateway**：本会话读不到 `~/Gateway-workspace/`，未核。请 Doctor 在 Gateway 侧保持这两班停用或删除。
 - **未发版**：没有调用 `alarm_store.py import` 或 `alarm_proposals.py build`；r5、r7 没动。
+
+**订正（14:2x UTC · 依据独立复核）：** ① 上面回执说「定时班挂载需求清单里没有这两个班名」，这句不对：第 44 行有缩写「yuantu-alarm×2」，我 grep 时只搜了带后缀的完整名，漏掉了。现已改为「risk-daily-alarm×2（原 yuantu-alarm，11-05 改名）」，备份为 `.bak_2026-11-05_pre-alarm-rename`。② 「test_no_drift.py 7 项 1 项失败」已过时：该测试 14:09 被改过，冻结文件可写现在只提示、不判失败。独立复核实跑 `Ran 7 tests … OK`，退出码 0。冻结文件在 VM 里仍是 600、可写，Mac 本机权限未核。
+
+## 请求三（Code 侧 2026-11-05 发版后追加）
+
+您回执的隐患「判级基线停在 2026-08」，只靠发版解决不了：`legacy.status` 是冻结原文，发多少版都不变。Doctor 已发新版 `r-7d1bb3b624d16aa439523951`，r5、r7 各增一条信号，状态 `signal_observed`。
+
+请把两班第 3 步的基线从 `legacy.status` 改为当前 revision 的 `scenario_status` 和各信号的 `status`、`finding_cn`：
+- 班次的判断和现行信号一致，就不算变化，不出提案，也不进异动简报。
+- 信号已存在且只有新数值的，提案改已有 `signal_id`，不新建；`new_signals` 留给确实没有的条件。
+- 班次的 watching/warming/triggered 只作简报措辞，提案不写。
+
+周班 11-09 前请改完，否则会把 r5、r7 当新升级重复提案。回报 trigger 的 `updated_at` 和镜像回读。
+
