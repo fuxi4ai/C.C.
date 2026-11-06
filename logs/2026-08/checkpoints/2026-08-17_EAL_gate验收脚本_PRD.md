@@ -79,3 +79,4 @@ template_version: v1.0
 - 2026-11-06 CC（续）: Doctor 终端 `uv venv --python 3.10` 建 `~/.venvs/eal-repro-v23`（3.10.20）+ lock 装齐 → 沙箱同机复跑 **gate 8/8 PASS · exit 0**（3 分 04 秒），审核限制「1/2/3 PASS 路径未实跑」已消。剩：VV 审阅判据集 v1.1 + 终验签字；self-test 两模式复跑结果见 GOTCHAS 追记。
 - 2026-11-06 CC（续二）: Doctor 终端原生实跑 `python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py` → **8/8 PASS · exit 0**，输出与沙箱复跑逐行一致（沙箱层一致结论成立）。§四 该项证据齐、`[✓]` 待 Doctor 落；剩 VV 审阅 v1.1 + 终验签字。
 - 2026-11-06 CC（续三）: §四「Doctor Mac 原生跑 exit 0」由 Doctor 口令「代落 ✓」落 `[✓]`（证据＝Doctor 终端实跑输出 8/8 PASS · exit 0），CC 代记。§四 剩一项：VV 审阅判据集 v1.1 + 终验签字。
+- 2026-11-06 CC（续四）: venv 就位后 `test_gate_self.py` 真环境复跑：普通与 -O 均 **5/5 PASS · exit 0**（每用例实跑完整 gate；此前无环境时的 5/5 属弱证据，本次为硬证据）。本专场收口：§四 剩 VV 审阅 v1.1 + 终验签字一项。
