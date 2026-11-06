@@ -84,6 +84,8 @@ project: 剑酒青丘
 
 **追记二（2026-11-06 · Doctor 终端建 venv 后沙箱复跑 · 实跑）**：Doctor 按命令块以 uv 建 `~/.venvs/eal-repro-v23`（**CPython 3.10.20**，非 README 所记 3.10.12；lock 10 包逐一装齐：numpy 2.2.6 / pandas 2.3.3 / scipy 1.15.3 / statsmodels 0.14.6 …）→ 沙箱同机复跑 `eal_gate_check.py`：**gate 8/8 PASS · exit 0**（3 分 04 秒）。判据 1 证据行「python 3.10.20（.venvs/eal-repro-v23/bin/python · 判据集 python_cmd）∈ >=3.10,<3.14 · statsmodels 0.14.6」；判据 2「estimate_m4.py exit 0 · 17 期望串全在」——即 3.10.20 + 同 lock 逐位复得 09-18 的全部数值串；判据 3 普通与 -O 双模式 exit 0。至此 PRD §四「Mac 原生跑 exit 0」的机器判据已达（venv 由 Doctor 终端建、脚本在同机沙箱跑；Doctor 终端再跑一遍只是形式复核）；VV 审阅 v1.1 与 ✅ 落签仍待。**Doctor 终端原生实跑（2026-11-06 贴回）：8/8 PASS · exit 0，与沙箱逐行一致**——PRD §四「Mac 原生跑」证据齐、`[✓]` 待 Doctor 落。self-test 在真环境下复跑（venv 就位后，每用例实跑完整 gate 含 estimate_m4）：普通与 -O **均 5/5 PASS · exit 0**——此前环境缺失时的 5/5 是「反正 exit 1」的弱证据，本次各用例因注入破坏本身而 FAIL，证据才算硬。
 
+**追记三（2026-11-06 · VV 独立审阅回执 · CC 代记）**：VV 审阅 v1.1 结论 **REQUEST_CHANGES 退回修订**，本条维持 🔄 不转 ✅。四项（CC 实读代码属实）：R1·P1 判据 6 mirror 未执行 denylist（v1 即有，隔离注入 `建议上修` 仍 8/8 PASS）；R2·P2 判据 5 指路路径检查未剥 frontmatter；R3·P2 `_frontmatter` 不剥行尾注释致 `type: pointer # 注释` 判非 pointer；R4·P2 self-test 子进程未传 `-O`。三裁点：版本范围保留但不得宣称 3.11～3.13 已验；不加启发式兜底；条件第 9 项可留须补输出契约。回执 `4AI/Shake hands/to CC/VV致CC-EAL-gate判据集v1.1独立审阅回执-20261106.md` · 证据 Codex `042f57a7`。
+
 ## 跨项目通用教训
 
 - 跨项目脚本靠相对层级（`../×N` / `parents[N]`）回推根目录的，一律换「探测含标志子目录的祖先」——见 [[通用教训]] G-X88（平铺挂载路径族）。

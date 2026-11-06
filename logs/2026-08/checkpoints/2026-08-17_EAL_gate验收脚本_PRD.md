@@ -34,14 +34,14 @@ template_version: v1.0
 
 ### B. gate 检查项（判据集 v1·全部源自 VV 四轮终验原文）
 
-1. **环境**：python3 为 3.10.x；`statsmodels.__version__ == 0.14.6`。
+1. **环境**：python3 为 3.10.x；`statsmodels.__version__ == 0.14.6`。〔现行 v1.1（2026-11-06 Doctor 批）：解释器按 env `EAL_GATE_PYTHON` → 判据集 `python_cmd` → PATH 解析；版本须 ∈ `>=3.10,<3.14`（候选运行范围，仅 3.10.20 已验，3.11～3.13 未验、不得宣称支持）；statsmodels 0.14.6 不变。〕
 2. **复现**：实跑 `estimate_m4.py` 退出 0，输出含 M4 n=115·R²=.747183·adjR²=.737989·AIC=156.538；G5 AIC 190.116/191.996/194.667/198.225；φ=0.0327·p=0.6946；score .123814/.101065/.082497/.069569；`full: 4/4 converged, retry=0`；`rolling: expected=61, common=61`；`retry/failure/exception=0/0/0`。
-3. **fail-fast**：实跑 `test_failfast.py` 10/10 绿。
+3. **fail-fast**：实跑 `test_failfast.py` 10/10 绿。〔现行：该件已扩至 13 例，判据为普通与 `-O` 双模式 exit 0（2026-11-06 VV 实读 13/13）。〕
 4. **SHA**：`shasum -a 256 -c SHA256SUMS` 八项全 OK（不自哈希）。
 5. **canonical 指纹**：台账 md 正向指纹（+0.1774/−2.7087/开放簇·截至 8/14/0 净（2 raw）/四项 AIC/四项 score/121 个似然贡献/冻结环境独立复得/仅机械描述/constructed-regressor/双截止日/CAR [0,+3] 已统一）全在；denylist（−4.92/+2.39/唯一持续类/建议上修/与 VV 逐位一致/190.115/rev8 未限定）零命中，历史语境带勘误标签的豁免清单放行。
-6. **载体一致**：mirror `index.html` 同套指纹/denylist 校验（黑盒）；`_artifacts_manifest.txt` 该行 bytes/sha12 与盘上文件一致。
+6. **载体一致**：mirror `index.html` 同套指纹/denylist 校验（黑盒）；`_artifacts_manifest.txt` 该行 bytes/sha12 与盘上文件一致。〔2026-11-06 VV R1：v1/v1.1 实现漏掉 mirror 侧 denylist，脚本修订后补齐，豁免语义同台账（`<h2+>` 段级 / 行级关键字）。〕
 7. **快照真源**：`scheduler_snapshot.py` 静态检查 `ARTIFACTS_TREE` 指向 Gateway-workspace（防回滚）。
-8. **发布器保险丝**：静态检查 `--write` 禁用分支与 previewRoot containment 存在；冒烟跑 `--preview` 越界路径 exit=1。
+8. **发布器保险丝**：静态检查 `--write` 禁用分支与 previewRoot containment 存在；冒烟跑 `--preview` 越界路径 exit=1。〔现行（2026-09-18 Doctor 裁改 v3 形态）：静态检查 `execute_registry_promotion.py` 含 `preflight only` 与 `--authorization-token` 两标记（默认 preflight-only + 授权 token 必填）；原 `--write`/previewRoot 字面随 v2.3 退役。〕
 
 ### C. 分层与可运行面
 
@@ -52,7 +52,8 @@ template_version: v1.0
 
 - 每项 PASS/WARN/FAIL；FAIL 给出精确证据行（文件:行号:匹配内容）。
 - 汇总行：`gate: 8/8 PASS → 可声明"A 阶段完成"（VV 终审仍必需）`；任一 FAIL → 退出码非零，输出「不可声明完成」。
-- gate 自身的 fail-fast：注入破坏（改一个指纹值/删一行 panel/篡改 denylist 豁免）后 gate 必报 FAIL——固化为 `test_gate_self.py` 冒烟（3 用例：指纹缺失必 FAIL·denylist 命中必 FAIL·manifest 失配必 FAIL）。
+- gate 自身的 fail-fast：注入破坏（改一个指纹值/删一行 panel/篡改 denylist 豁免）后 gate 必报 FAIL——固化为 `test_gate_self.py` 冒烟（3 用例：指纹缺失必 FAIL·denylist 命中必 FAIL·manifest 失配必 FAIL）。〔现行：2026-11-06 v1.1 升 5 例（＋ledger_md 指回 stub、指路链断裂）；同日 VV R1～R4 后升 **10 例**（＋mirror denylist 命中 FAIL、mirror 勘误语境豁免正向、真本路径仅在 frontmatter FAIL、`type: pointer # 注释` 判 pointer、`type: "pointer` 不可解析 FAIL）；子进程显式传播 `-O` 并起手实测子进程 optimize（R4）。〕
+- 条件项「9. 路径有效性」：判据集 `paths.*` 指向的 `.md`（`ledger_md` 之外、键不在 `pointer_keys`）若 frontmatter `type: pointer` 或 type 声明不可解析 → 以第 9 行 FAIL 输出并退出非零；正常成功路径仍为 8 项、不出现此行（2026-11-06 VV 裁可留，须在此补明出现条件）。
 
 ## §三 · 非交付项
 
@@ -67,7 +68,7 @@ template_version: v1.0
 - [✓] Doctor Mac 原生跑同脚本 exit 0（含沙箱层一致结论）——**2026-11-06 Doctor 终端实跑贴回：8/8 PASS · exit 0，判据 1 走 `~/.venvs/eal-repro-v23` 3.10.20 · 与同日沙箱复跑逐行一致 · Doctor 同日口令「代落 ✓」· CC 代记留痕**；原注：**2026-11-06 核明前置**：本机无 Python 3.10、无 statsmodels（任何解释器），须先按 `repro_v23/requirements.lock.txt` 建 venv（默认落点 `~/.venvs/eal-repro-v23`，或 `export EAL_GATE_PYTHON=`解释器）再跑 `python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py`；命令块见 2026-11-06 专场交付
 - [~] 2026-11-06 Doctor 终端建 venv（uv · CPython 3.10.20 · lock 10 包）后沙箱同机复跑：**gate 8/8 PASS · exit 0**（判据 1/2/3 真 PASS 路径已实跑覆盖：17 期望串逐位复得）——实施者自验 · `[✓]` 归 Doctor/VV
 - [~] 2026-11-06 判据集 v1.1 沙箱复跑：**5 PASS · 0 WARN · 3 FAIL · exit 1**——判据 5 转 PASS（指路 stub 有效 + 真本 18 指纹全在）；FAIL 1/2/3 全为「复现环境未就绪」（机器级前置，见上行）；`test_gate_self.py` **5/5** 普通与 -O 双模式 exit 0（实施者自验 · 独立审核结论见 §五 2026-11-06 行）
-- [ ] VV 审阅判据集 **v1.1** 完整性并终验签字（gate 全绿是必要不充分条件的第一次实战）——判据集 v1.1 待 VV 审阅（v1 → v1.1 改动面见 §五 2026-11-06 行）
+- [ ] VV 审阅判据集 **v1.1** 完整性并终验签字（gate 全绿是必要不充分条件的第一次实战）——判据集 v1.1 待 VV 审阅（v1 → v1.1 改动面见 §五 2026-11-06 行）——**2026-11-06 VV 独立审阅：REQUEST_CHANGES 退回修订 R1～R4（见 §五 同日 VV 行），本项保持 `[ ]`**
 - [~] 判据集增补流程首演：VV 下一轮任一新判据 → CC 代收落 json+PRD 变更记录 → Doctor 批——本场两处漂移+判据 8 形态变迁即首演素材（Doctor 2026-09-18 已裁：判据按现文修订〔156.538→156.5·删双截止日·mirror 侧 156.4 冻结口径适配〕+判据 8 改 v3 形态〔默认 preflight-only+授权 token〕）
 
 ## §五 · 变更记录
@@ -80,3 +81,5 @@ template_version: v1.0
 - 2026-11-06 CC（续二）: Doctor 终端原生实跑 `python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py` → **8/8 PASS · exit 0**，输出与沙箱复跑逐行一致（沙箱层一致结论成立）。§四 该项证据齐、`[✓]` 待 Doctor 落；剩 VV 审阅 v1.1 + 终验签字。
 - 2026-11-06 CC（续三）: §四「Doctor Mac 原生跑 exit 0」由 Doctor 口令「代落 ✓」落 `[✓]`（证据＝Doctor 终端实跑输出 8/8 PASS · exit 0），CC 代记。§四 剩一项：VV 审阅判据集 v1.1 + 终验签字。
 - 2026-11-06 CC（续四）: venv 就位后 `test_gate_self.py` 真环境复跑：普通与 -O 均 **5/5 PASS · exit 0**（每用例实跑完整 gate；此前无环境时的 5/5 属弱证据，本次为硬证据）。本专场收口：§四 剩 VV 审阅 v1.1 + 终验签字一项。
+- 2026-11-06 VV: 独立审阅判据集 v1.1 → **REQUEST_CHANGES（退回修订，本次不落终验 `[✓]`，NOTE-20261106-001 暂不转 ✅）**。VV 实跑：三文件与 `3e788d4` 一致、CPython 3.10.20 + lock 10 包匹配、真实完整 gate 8/8 PASS exit 0（103.7 s）、test_failfast 普通/-O 各 13/13。需修四项：**R1·P1** 判据 6 mirror 未执行 denylist（PRD §二 B.6 要求同套；隔离 mirror 注入 `<p>建议上修</p>` 并重算 manifest 后仍 8/8 PASS）；**R2·P2** 判据 5 指路正文检查读了整文件，真本路径只在 frontmatter `note:` 也通过；**R3·P2** `_frontmatter` 不剥行尾注释，`type: pointer # 注释` 被判非 pointer；**R4·P2** `test_gate_self.py` 子进程只传 `sys.executable` 未传 `-O`，「-O 5/5」只证父进程模式。三裁点答复：版本范围可保留 `>=3.10,<3.14` 作候选但不得宣称 3.11～3.13 已验；pointer 不加文件大小/关键词启发式、先修 R2 R3；条件第 9 项可留，须在输出契约补明出现条件与非零退出。另请同步 PRD 中版本、self 用例数与判据 8 现行描述。回执 `4AI/Shake hands/to CC/VV致CC-EAL-gate判据集v1.1独立审阅回执-20261106.md`；审阅证据 Codex `Project Mirror/剑酒青丘/research/EAL-gate-v1.1审阅-20261106/`（远端 `042f57a7`）。VV 未改任何受审文件。
+- 2026-11-06 CC（续五）: 实读 `eal_gate_check.py` L93/L219/L294 与 `test_gate_self.py` L39，R1～R4 四项**属实**（CC 代记退回结论；修订待 Doctor 裁定场次后按边界④进行）。

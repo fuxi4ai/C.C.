@@ -8,6 +8,10 @@
 判据 2/3 不空跑、直接 FAIL（fail-closed，不降 WARN）。
 指路门禁（v1.1）：判据集 paths.* 指向的 .md 若 frontmatter `type: pointer` 且键不在 pointer_keys → 判失效 FAIL；
 判据 5 为双判据：ledger_pointer 指路有效（type: pointer + 正文含真本相对路径）+ ledger_md 真本指纹。
+脚本修订 2026-11-06（VV 独立审阅 R1～R4 · 判据集 json 逐字未动）：R1 判据 6 mirror 执行同套 denylist 与两级豁免；
+R2 指路正文检查剥离 frontmatter 后再核；R3 frontmatter 标量正确处理引号与行尾注释，type 声明不可解析 → FAIL 不放行；
+R4 见 test_gate_self.py（子进程显式传播 -O）。
+判据 9「路径有效性」为条件项：仅当 ledger_md 之外的 paths.* md 命中指路门禁时出现，出现即 FAIL、退出非零；正常成功路径仍为 8 项。
 输出契约：每项 [PASS/FAIL/WARN] + FAIL 精确证据行；汇总行；任一 FAIL → exit 1。
 WARN 不改变退出码，但汇总行明示「未达全 PASS，不可声明完成」——仅按 exit code 判读的调用方须注意。
 用法：python3 eal_gate_check.py [--checks /path/to/json]
@@ -81,7 +85,28 @@ def _in_range(ver, spec):
 # ---- 指路门禁（v1.1）----
 _FM_RE = re.compile(r"\A---\s*\n(.*?)\n---", re.S)
 
+def _yaml_scalar(raw):
+    """frontmatter 标量取值（VV 2026-11-06 R3）：返回 (ok, value)。
+    处理两种允许形态——带引号（"…" / '…'，引号后只能跟行尾注释）与裸值（去 ` #…` 行尾注释）。
+    流式/块式/锚点等本脚本不解析的形态（[ { | > & * ! 开头）或引号不闭合 → ok=False（调用方须判 FAIL，不得默认放行）。"""
+    s = raw.strip()
+    if not s:
+        return True, ""
+    if s[0] in "\"'":
+        q = s[0]
+        end = s.find(q, 1)
+        if end < 0:
+            return False, raw
+        rest = s[end + 1:].strip()
+        if rest and not rest.startswith("#"):
+            return False, raw
+        return True, s[1:end]
+    if s[0] in "[{|>&*!%@`":
+        return False, raw
+    return True, re.split(r"\s+#", s, 1)[0].strip()
+
 def _frontmatter(path):
+    """返回 {key: (ok, value)}；无 frontmatter → {}；不可读 → None"""
     try:
         head = open(path, encoding="utf-8").read(4096)
     except OSError:
@@ -91,26 +116,84 @@ def _frontmatter(path):
         return {}
     fm = {}
     for ln in m.group(1).splitlines():
-        if ":" in ln:
+        if ":" in ln and not ln.lstrip().startswith("#"):
             k, _, v = ln.partition(":")
-            fm[k.strip()] = v.strip().strip('"').strip("'")
+            fm[k.strip()] = _yaml_scalar(v)
     return fm
 
-def _is_pointer(path):
+def _ptr_state(path):
+    """pointer / plain / bad / missing（R3：type 声明不可靠解析＝bad，不默认放行为真本）"""
     fm = _frontmatter(path)
-    return bool(fm) and fm.get("type") == "pointer"
+    if fm is None:
+        return "missing"
+    if "type" not in fm:
+        return "plain"
+    ok, val = fm["type"]
+    if not ok:
+        return "bad"
+    return "pointer" if val == "pointer" else "plain"
+
+def _is_pointer(path):
+    return _ptr_state(path) == "pointer"
 
 def _pointer_violations(cfg, root):
-    """paths.* 指向 .md 且键不在 pointer_keys：若 type: pointer → 判据集失效"""
+    """paths.* 指向 .md 且键不在 pointer_keys：type: pointer → 判据集失效；type 声明不可解析 → 同样失效（R3）。
+    返回 [(key, rel, reason)]"""
     allow = set(cfg.get("pointer_keys", []))
     out = []
     for key, rel in cfg["paths"].items():
         if key in allow or not str(rel).endswith(".md"):
             continue
         ap = _p(root, rel)
-        if os.path.isfile(ap) and _is_pointer(ap):
-            out.append((key, rel))
+        if not os.path.isfile(ap):
+            continue
+        st = _ptr_state(ap)
+        if st == "pointer":
+            out.append((key, rel, "指向指路 stub（frontmatter type: pointer）"))
+        elif st == "bad":
+            out.append((key, rel, "frontmatter type 声明不可解析（引号不闭合或非标量形态）"))
     return out
+
+def _strip_frontmatter(text):
+    m = _FM_RE.match(text)
+    return text[m.end():] if m else text
+
+_H_RE = re.compile(r"<h([1-6])[^>]*>(.*?)</h\1>", re.S | re.I)
+
+def _scan_denylist(text, fp, kind):
+    """同套 denylist + 两级豁免（段级：标题含 exempt_section_keywords → 整段不查；行级：命中行含 exempt_line_keywords → 放行）。
+    kind='md'：`##`/`###` 标题开段、`# ` 复位；kind='html'：<h2+> 开段、<h1> 复位（VV 2026-11-06 R1：mirror 须执行同套 denylist）。
+    返回命中证据行列表。"""
+    sec_kw = fp["exempt_section_keywords"]
+    line_kw = fp["exempt_line_keywords"]
+    deny = fp["denylist"]
+    hits = []
+    in_exempt = False
+    for i, ln in enumerate(text.splitlines(), 1):
+        s = ln.strip()
+        if kind == "md":
+            if s.startswith("##"):
+                in_exempt = any(k in s for k in sec_kw)
+                continue
+            if s.startswith("# "):
+                in_exempt = False
+                continue
+        else:
+            m = _H_RE.search(ln)
+            if m:
+                if m.group(1) == "1":
+                    in_exempt = False
+                else:
+                    in_exempt = any(k in m.group(2) for k in sec_kw)
+                ln = ln[:m.start()] + ln[m.end():]   # 同行余下正文仍扫
+        if in_exempt:
+            continue
+        if any(k in ln for k in line_kw):
+            continue
+        for kw in deny:
+            if kw in ln:
+                hits.append(f"{kw!r} @ L{i}: {ln.strip()[:80]}")
+    return hits
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
@@ -126,7 +209,8 @@ def main(argv=None):
 
     results = []  # (num, name, status, evidence)
     violations = _pointer_violations(cfg, root)
-    viol_keys = {k for k, _ in violations}
+    viol_keys = {k for k, _, _ in violations}
+    viol_reason = {k: r for k, _, r in violations}
 
     # ---- 1. 环境 ----
     py, py_src = _resolve_python(cfg, root)
@@ -202,7 +286,7 @@ def main(argv=None):
     ledger = _p(root, cfg["paths"]["ledger_md"])
     pre_fail = []
     if "ledger_md" in viol_keys:
-        pre_fail.append(f"ledger_md 指向指路 stub（frontmatter type: pointer）→ 判据集路径失效: {cfg['paths']['ledger_md']}")
+        pre_fail.append(f"ledger_md {viol_reason['ledger_md']}→ 判据集路径失效: {cfg['paths']['ledger_md']}")
     ptr_rel = cfg["paths"].get("ledger_pointer")
     if ptr_rel:
         ptr = _p(root, ptr_rel)
@@ -211,14 +295,18 @@ def main(argv=None):
         for _ in range(up):
             eal_root = os.path.dirname(eal_root)
         want_rel = _nfc(os.path.relpath(ledger, eal_root))
-        if not os.path.isfile(ptr):
+        pst = _ptr_state(ptr) if os.path.isfile(ptr) else "missing"
+        if pst == "missing":
             pre_fail.append(f"ledger_pointer 不存在: {ptr_rel}")
-        elif not _is_pointer(ptr):
+        elif pst == "bad":
+            pre_fail.append(f"ledger_pointer frontmatter type 声明不可解析（引号不闭合或非标量形态）: {ptr_rel}")
+        elif pst != "pointer":
             pre_fail.append(f"ledger_pointer 非指路 stub（frontmatter 无 type: pointer）: {ptr_rel}")
         else:
-            body = _nfc(open(ptr, encoding="utf-8").read())
+            # R2：只核正文——frontmatter 里出现真本路径不算指路
+            body = _nfc(_strip_frontmatter(open(ptr, encoding="utf-8").read()))
             if want_rel not in body:
-                pre_fail.append(f"ledger_pointer 正文未含真本相对路径 {want_rel!r}（指路链断裂）")
+                pre_fail.append(f"ledger_pointer 正文（已剥 frontmatter）未含真本相对路径 {want_rel!r}（指路链断裂）")
         if not os.path.isfile(ledger):
             pre_fail.append(f"ledger_md 真本不存在: {cfg['paths']['ledger_md']}")
     text = None
@@ -236,27 +324,8 @@ def main(argv=None):
             if c < minc:
                 pos_fail.append(f"{s!r}={c}<{minc}")
         # 豁免两级：段级（##/### 标题含 exempt_section_keywords → 整段不查）
-        #         + 行级（命中行本身含 exempt_line_keywords → 该行放行）
-        sec_kw = cfg["ledger_fingerprints"]["exempt_section_keywords"]
-        line_kw = cfg["ledger_fingerprints"]["exempt_line_keywords"]
-        denylist_hits = []
-        lines = text.splitlines()
-        in_exempt = False
-        for i, ln in enumerate(lines, 1):
-            s = ln.strip()
-            if s.startswith("##"):
-                in_exempt = any(k in s for k in sec_kw)
-                continue
-            if s.startswith("# "):
-                in_exempt = False
-                continue
-            if in_exempt:
-                continue
-            if any(k in ln for k in line_kw):
-                continue
-            for kw in cfg["ledger_fingerprints"]["denylist"]:
-                if kw in ln:
-                    denylist_hits.append(f"{kw!r} @ L{i}: {ln.strip()[:80]}")
+        #         + 行级（命中行本身含 exempt_line_keywords → 该行放行）——实现见 _scan_denylist
+        denylist_hits = _scan_denylist(text, cfg["ledger_fingerprints"], "md")
         if not pos_fail and not denylist_hits:
             ptr_note = f" · 指路 stub 有效（{os.path.basename(ptr_rel)} → {want_rel}）" if ptr_rel else ""
             results.append((5, "canonical 指纹", "PASS",
@@ -296,15 +365,19 @@ def main(argv=None):
             ovr = cfg["ledger_fingerprints"].get("mirror_positive_overrides", {})
             pos_fail = [s for s, minc in cfg["ledger_fingerprints"]["positive"]
                         if mtext.count(ovr.get(s, s)) < minc]
-            if m_ok and not pos_fail:
+            # R1：mirror 执行同套 denylist（PRD §二 B.6「同套指纹/denylist」）· 豁免语义同台账（<h2+> 段级 / 行级关键字）
+            m_deny = _scan_denylist(mtext, cfg["ledger_fingerprints"], "html")
+            if m_ok and not pos_fail and not m_deny:
                 results.append((6, "载体一致", "PASS",
-                                f"manifest 行对拍（{mbytes} B · {sha12}）· 指纹同套全在"))
+                                f"manifest 行对拍（{mbytes} B · {sha12}）· 指纹同套全在 · denylist 零命中"))
             else:
                 ev = []
                 if not m_ok:
                     ev.append(f"{os.path.basename(manifest)} 失配: 盘 {mbytes}/{sha12} vs 行 {row[1] if len(row)>1 else '?'}/{row[2] if len(row)>2 else '?'}")
                 if pos_fail:
                     ev.append(f"{os.path.basename(mirror)} 指纹缺失: {pos_fail[:5]}")
+                if m_deny:
+                    ev.append(f"{os.path.basename(mirror)} denylist 命中: " + " / ".join(m_deny[:5]))
                 results.append((6, "载体一致", "FAIL", " | ".join(ev)))
         else:
             results.append((6, "载体一致", "FAIL", f"manifest 无 {key!r} 行"))
@@ -342,10 +415,10 @@ def main(argv=None):
                             f"静态标记缺失: {missing}（{os.path.basename(pub)}）"))
 
     # ---- 指路门禁兜底：ledger_md 之外的 paths.* md 若为 pointer，单列 FAIL（当前判据集无此类键，仅防未来增补漏查）----
-    other = [(k, r) for k, r in violations if k != "ledger_md"]
+    other = [(k, r, why) for k, r, why in violations if k != "ledger_md"]
     if other:
         results.append((9, "路径有效性", "FAIL",
-                        "paths.* 指向指路 stub（type: pointer）→ 判据集失效: " + " / ".join(f"{k}={r}" for k, r in other)))
+                        "条件项（仅命中时出现 · 退出非零）paths.* 判据集失效: " + " / ".join(f"{k}={r}（{why}）" for k, r, why in other)))
 
     # ---- 汇总 ----
     n_pass = sum(1 for r in results if r[2] == "PASS")
