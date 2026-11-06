@@ -101,14 +101,21 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 
 > ⚠ **必须带上 `logs/YYYY-MM/` 子目录**：`meditation.fold_logs` 每月 1 号把上月日志折进子目录，月初根目录可能不足 3 篇——只扫根目录会在**每月 1 号前后静默读不满 3 篇**。刻意不用 `find` 全递归：那会把 `checkpoints/`（PRD）和 `checkups/`（体检报告）混进"最近会话日志"。
 
-### Step 1.5 · 读经验索引定向检索（2026-09-03 经验系统改造第一阶段立 · 堵召回断点）
+### Step 1.5 · 读经验索引定向检索（2026-09-03 经验系统改造第一阶段立 · 堵召回断点 · 2026-11-06 P3 瘦身：整文件 cat 改 grep 开放行）
+
+**不再 `cat` 整个索引**（329KB，开放行只 ~90 条；实测召回 0/3 的根因是整文件读入后按项目过滤漏掉）。先按 Step 2 的规则从 Step 1 日志取活跃项目名 `P`（可多个、逐个跑），再只取**状态字段**为开放（🔄/⚠/⏳）的行：
 
 ```bash
-cat ~/Documents/Claude/brain/permanent/经验索引.md
+IDX=~/Documents/Claude/brain/permanent/经验索引.md; P="{活跃项目名}"
+# ① 活跃项目段开放行（含同前缀子段，如 渊图 + 渊图·DB实时坑库）
+awk -v P="$P" '/^## /{on=(index($0,"## " P)==1)} on && /· (🔄|⚠|⏳) ·/' "$IDX"
+# ② 通用教训段开放行前 10 条
+awk '/^## /{on=($0=="## 通用教训")} on && /· (🔄|⚠|⏳) ·/' "$IDX" | head -10
 ```
-- 按 Step 2 识别的活跃项目，取该项目索引条目：**开放状态（🔄/⚠/⏳）优先**，列前 3-5 条（ID+标题一行），相关则按证据指针进 GOTCHAS 正文只读。
-- 通用教训栏若含与当前任务类型相关的 G-X → 摘要提示一行。
-- 摘要加一行「**经验召回**：{项目} 开放 {N} 条 · 已载 {M} 条」。
+- 匹配的是条目的**状态字段**（`· 🔄 ·` 形），不是正文里任意出现的 ⚠——文件头的状态闭集说明与「⚠ 编号重复」提示行不会混进来。
+- 项目段开放行多于 10 条时只列前 10（ID+标题一行），其余只报计数；相关则按证据指针进 GOTCHAS 正文只读。
+- 通用教训 10 条只做与当前任务类型相关的一行摘要提示，不逐条展开。
+- 摘要加一行「**经验召回**：{项目} 开放 {N} 条 · 已载 {M} 条 · 通用教训开放 {K} 条」——N/K 现读现数（命令后接 `wc -l`），不凭印象。
 - 索引缺失 → 提示「⚠ 经验索引不存在（运行 brain/.tools/build_experience_index.py 重建）」，不阻塞。
 - 本场采用任何经验/Gotchas 条目 → 结束前按五阶段回执 append `permanent/_consumption_receipts.jsonl`（见 Step 3.5）。
 
@@ -125,9 +132,41 @@ cat ~/Documents/Claude/brain/permanent/经验索引.md
 
 **⚠ 系统概览缺失是已知状态**（2026-11-06 实核余 **4** 个：MiroFish · 数灵转移 · 星空 · 称象；原写「8 个」为 2026-07-31 对表，剑酒青丘/烛照九阴/白泽大宗/风险日报已补建——动手前仍按 `ls -d */architecture/系统概览.md` 与项目总览重取差集）——缺了就明确报一行「⚠ {项目}/architecture/系统概览.md 不存在」，**不建、不猜、不静默跳过**。
 
-### Step 3 · 扫 TODO 顶部
+### Step 3 · 扫 TODO（2026-11-06 P3 瘦身：不读整段，过滤后只列 10 条）
 
-读 `~/Documents/Claude/brain/TODO.md` 的"待办"段。
+`TODO.md` 待办段 145KB、百余条，整段读入只会挤掉真正要看的。按「到期 ≤7 天 ∪ 活跃项目 ∪ 阻断方＝CC」过滤，列前 10 条，其余只报计数：
+
+```bash
+python3 - {活跃项目名 可多个} <<'PY'
+import re, sys, datetime, pathlib
+ACTIVE = sys.argv[1:]
+txt = (pathlib.Path.home()/"Documents/Claude/brain/TODO.md").read_text(encoding="utf-8")
+sec = txt.split("\n## 待办", 1)[1].split("\n## ", 1)[0]
+items = re.findall(r"(?m)^- \[ \] .*(?:\n(?!- \[|## ).*)*", sec)
+today = datetime.date.today(); soon = today + datetime.timedelta(days=7)
+def ymd(s):
+    m = re.search(r"(20\d\d)-(\d\d)-(\d\d)", s or "")
+    return datetime.date(*map(int, m.groups())) if m else None
+def md(m, d):
+    try: return datetime.date(today.year, int(m), int(d))
+    except ValueError: return None
+hit, rest, old = [], [], 0
+for it in items:
+    head = it.splitlines()[0]
+    g = re.search(r"（[^）]*挂", head); hung = ymd(g.group(0)) if g else None
+    due = "到期" in head or any(dd and today <= dd <= soon for dd in
+          [md(m, d) for m, d in re.findall(r"(?<![\d-])(\d\d)-(\d\d)(?!\d)", it)])
+    proj = any(a in head[:40] for a in ACTIVE)
+    cc = bool(re.search(r"待 CC|由 CC|CC 侧|阻断方[:：=]\s*CC", it)) and "待 Doctor" not in head
+    (hit if (due or proj or cc) else rest).append(head[:120])
+    if hung and (today - hung).days > 30: old += 1
+for h in hit[:10]: print(h)
+print(f"—— 命中 {len(hit)} 条，列前 {min(10, len(hit))}；另有 {len(items) - min(10, len(hit))} 条未列、{old} 条挂起超 30 天（共 {len(items)} 条）")
+PY
+```
+- 粗筛口径（TODO 无结构化字段，**不做清洗**）：「挂起日」取标题括号里的 `YYYY-MM-DD 挂`；「到期」＝条目内任一 `MM-DD` 落在今日起 7 天内，或标题含「到期」；「活跃项目」＝标题前 40 字含项目名；「阻断方＝CC」＝条目含「待 CC / 由 CC / CC 侧」且标题不含「待 Doctor」。
+- 摘要只列命中前 10 条的标题；末行照抄脚本输出的「另有 N 条未列、M 条挂起超 30 天」，不自己数。
+- 要看全量时再 `sed -n '/^## 待办/,/^## /p' ~/Documents/Claude/brain/TODO.md`，不默认读。
 
 ### Step 3.5 · 五阶段消费回执检查（2026-09-03 经验系统改造第一阶段立）
 
@@ -148,12 +187,12 @@ tail -5 ~/Documents/Claude/brain/permanent/_consumption_receipts.jsonl
 ```
 **上次工作**：{项目名} · {日期}
 
-**经验召回**：{项目} 开放 {N} 条 · 已载 {M} 条（Step 1.5）
+**经验召回**：{项目} 开放 {N} 条 · 已载 {M} 条 · 通用教训开放 {K} 条（Step 1.5）
 
 **关键决策**（最多 3 条）：
 - ...
 
-**遗留待办**（最多 5 条）：
+**遗留待办**（Step 3 过滤后前 10 条内挑最多 5 条 · 末行「另有 N 条、M 条超 30 天」照抄）：
 - [ ] ...
 
 **建议下一步**（3 条具体动作）：
