@@ -3,11 +3,16 @@
 
 一键跑完整验收链：gate 全绿是「A 阶段完成」声明的**必要不充分条件**（VV 仍终审）。
 路径解析：优先 env EAL_DOCUMENTS_ROOT（沙箱覆盖），缺省 ~（Mac 原生）。
+解释器解析（判据集 v1.1 · 2026-11-06 Doctor 批）：env EAL_GATE_PYTHON → 判据集 environment.python_cmd
+（相对 root·存在才用）→ PATH python3；判据 1/2/3 统一用解析出的解释器。环境不就绪 → 判据 1 FAIL，
+判据 2/3 不空跑、直接 FAIL（fail-closed，不降 WARN）。
+指路门禁（v1.1）：判据集 paths.* 指向的 .md 若 frontmatter `type: pointer` 且键不在 pointer_keys → 判失效 FAIL；
+判据 5 为双判据：ledger_pointer 指路有效（type: pointer + 正文含真本相对路径）+ ledger_md 真本指纹。
 输出契约：每项 [PASS/FAIL/WARN] + FAIL 精确证据行；汇总行；任一 FAIL → exit 1。
 WARN 不改变退出码，但汇总行明示「未达全 PASS，不可声明完成」——仅按 exit code 判读的调用方须注意。
 用法：python3 eal_gate_check.py [--checks /path/to/json]
 """
-import json, os, re, sys, subprocess, hashlib, argparse
+import json, os, re, sys, subprocess, hashlib, argparse, unicodedata
 
 EXIT_OK = 0
 EXIT_FAIL = 1
@@ -27,13 +32,85 @@ def _run(cmd, cwd, timeout, env=None):
         r = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True,
                            timeout=timeout, env=env)
         return r.returncode, r.stdout, r.stderr
-    except FileNotFoundError as e:
-        return -127, "", f"command not found: {e}"
+    except OSError as e:  # FileNotFoundError / PermissionError（非可执行或目录路径）等一律不崩溃、给证据
+        return -127, "", f"command not runnable: {e}"
     except subprocess.TimeoutExpired:
         return -124, "", f"timeout after {timeout}s"
 
 def _lines_ok(text):
     return len(re.findall(r": OK$", text, re.M))
+
+def _nfc(s):
+    return unicodedata.normalize("NFC", s)
+
+# ---- 解释器解析（v1.1）----
+def _resolve_python(cfg, root):
+    """返回 (interpreter, source)。顺序：env EAL_GATE_PYTHON → cfg python_cmd（相对 root，存在才用）→ PATH python3"""
+    env = os.environ.get("EAL_GATE_PYTHON")
+    if env:
+        return env, "env EAL_GATE_PYTHON"
+    rel = cfg.get("environment", {}).get("python_cmd")
+    if rel:
+        cand = rel if os.path.isabs(rel) else _p(root, rel)
+        if os.path.isfile(cand) and os.access(cand, os.X_OK):
+            return cand, f"判据集 python_cmd（{rel}）"
+    return "python3", "PATH python3"
+
+def _ver_tuple(s):
+    parts = re.findall(r"\d+", s)
+    return tuple(int(x) for x in parts[:3]) + (0,) * (3 - len(parts[:3]))
+
+def _in_range(ver, spec):
+    """spec 形如 '>=3.10,<3.14'；只支持 >=,>,<=,<,==,!= 的逗号合取（不引入 packaging 依赖）"""
+    v = _ver_tuple(ver)
+    for clause in spec.split(","):
+        clause = clause.strip()
+        m = re.match(r"(>=|<=|==|!=|>|<)\s*([\d.]+)$", clause)
+        if not m:
+            return False
+        op, bound = m.group(1), _ver_tuple(m.group(2))
+        n = len(re.findall(r"\d+", m.group(2)))
+        vv = v if op in (">=", ">", "<=", "<") else v[:n]
+        bb = bound if op in (">=", ">", "<=", "<") else bound[:n]
+        ok = {">=": vv >= bb, ">": vv > bb, "<=": vv <= bb, "<": vv < bb,
+              "==": vv == bb, "!=": vv != bb}[op]
+        if not ok:
+            return False
+    return True
+
+# ---- 指路门禁（v1.1）----
+_FM_RE = re.compile(r"\A---\s*\n(.*?)\n---", re.S)
+
+def _frontmatter(path):
+    try:
+        head = open(path, encoding="utf-8").read(4096)
+    except OSError:
+        return None
+    m = _FM_RE.match(head)
+    if not m:
+        return {}
+    fm = {}
+    for ln in m.group(1).splitlines():
+        if ":" in ln:
+            k, _, v = ln.partition(":")
+            fm[k.strip()] = v.strip().strip('"').strip("'")
+    return fm
+
+def _is_pointer(path):
+    fm = _frontmatter(path)
+    return bool(fm) and fm.get("type") == "pointer"
+
+def _pointer_violations(cfg, root):
+    """paths.* 指向 .md 且键不在 pointer_keys：若 type: pointer → 判据集失效"""
+    allow = set(cfg.get("pointer_keys", []))
+    out = []
+    for key, rel in cfg["paths"].items():
+        if key in allow or not str(rel).endswith(".md"):
+            continue
+        ap = _p(root, rel)
+        if os.path.isfile(ap) and _is_pointer(ap):
+            out.append((key, rel))
+    return out
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
@@ -48,45 +125,70 @@ def main(argv=None):
     root = _root()
 
     results = []  # (num, name, status, evidence)
+    violations = _pointer_violations(cfg, root)
+    viol_keys = {k for k, _ in violations}
 
     # ---- 1. 环境 ----
-    rc, out, err = _run(["python3", "--version"], cwd="/tmp", timeout=30)
-    py_ok = cfg["environment"]["python_prefix"] in (out + err)
-    rc, out, err = _run(["python3", "-c",
-                         "import statsmodels;print(statsmodels.__version__)"],
+    py, py_src = _resolve_python(cfg, root)
+    envc = cfg["environment"]
+    spec = envc.get("python_range") or envc.get("python_prefix", "")
+    rc, out, err = _run([py, "-c", "import platform;print(platform.python_version())"],
+                        cwd="/tmp", timeout=30)
+    py_ver = (out or "").strip().splitlines()[-1] if (out or "").strip() else None
+    if py_ver is None:
+        py_ok = False
+    elif envc.get("python_range"):
+        py_ok = _in_range(py_ver, spec)
+    else:  # 兼容 v1 的 python_prefix 字面前缀（如 "Python 3.10"）：去 "Python " 后按版本号前缀比
+        py_ok = py_ver.startswith(spec.replace("Python", "").strip())
+    rc, out, err = _run([py, "-c", "import statsmodels;print(statsmodels.__version__)"],
                         cwd="/tmp", timeout=60)
     sm_ver = (out + err).strip().splitlines()[-1] if (out + err).strip() else "?"
-    sm_ok = sm_ver == cfg["environment"]["statsmodels"]
-    if py_ok and sm_ok:
-        results.append((1, "环境", "PASS", f"python 3.10.x · statsmodels {sm_ver}"))
+    sm_ok = sm_ver == envc["statsmodels"]
+    env_ready = py_ok and sm_ok
+    if env_ready:
+        results.append((1, "环境", "PASS",
+                        f"python {py_ver}（{py} · {py_src}）∈ {spec} · statsmodels {sm_ver}"))
     else:
-        results.append((1, "环境", "FAIL",
-                        f"python_prefix={'OK' if py_ok else 'FAIL'} · "
-                        f"statsmodels={sm_ver}（期望 {cfg['environment']['statsmodels']}）"))
+        ev = (f"复现环境未就绪：解释器 {py}（{py_src}）· python={py_ver or '不可运行:' + err.strip()[:60]}"
+              f"（期望 {spec}）{'OK' if py_ok else 'FAIL'} · statsmodels={sm_ver}（期望 {envc['statsmodels']}）"
+              f"{'OK' if sm_ok else 'FAIL'}；建环境见 repro_v23/README.md + requirements.lock.txt，"
+              f"或 export EAL_GATE_PYTHON=<解释器>")
+        results.append((1, "环境", "FAIL", ev))
 
     repro = _p(root, cfg["paths"]["repro_dir"])
     env_full = dict(os.environ)
     env_full.setdefault("EAL_DOCUMENTS_ROOT", root)
 
+    def _with_py(cmd):
+        return [py if c == "python3" else c for c in cmd]
+
     # ---- 2. 复现 ----
-    rc, out, err = _run(cfg["repro"]["cmd"], cwd=repro,
-                        timeout=cfg["repro"]["timeout_s"], env=env_full)
-    missing = [s for s in cfg["repro"]["expected"] if s not in out]
-    if rc == 0 and not missing:
-        results.append((2, "复现", "PASS", f"estimate_m4.py exit 0 · {len(cfg['repro']['expected'])} 期望串全在"))
+    if not env_ready:
+        results.append((2, "复现", "FAIL", "前置判据 1 未过（复现环境未就绪）· 未实跑 estimate_m4.py"))
     else:
-        results.append((2, "复现", "FAIL",
-                        f"exit={rc} · 缺失 {len(missing)} 串: {missing[:6]}{'…' if len(missing)>6 else ''}"))
+        rc, out, err = _run(_with_py(cfg["repro"]["cmd"]), cwd=repro,
+                            timeout=cfg["repro"]["timeout_s"], env=env_full)
+        missing = [s for s in cfg["repro"]["expected"] if s not in out]
+        if rc == 0 and not missing:
+            results.append((2, "复现", "PASS", f"estimate_m4.py exit 0 · {len(cfg['repro']['expected'])} 期望串全在（{py}）"))
+        else:
+            results.append((2, "复现", "FAIL",
+                            f"exit={rc} · 缺失 {len(missing)} 串: {missing[:6]}{'…' if len(missing)>6 else ''}"
+                            f"{' · stderr: ' + err.strip().splitlines()[-1][:120] if rc != 0 and err.strip() else ''}"))
 
     # ---- 3. fail-fast ----
-    rc1, out1, err1 = _run(cfg["failfast"]["cmd"], cwd=repro,
-                           timeout=cfg["failfast"]["timeout_s"], env=env_full)
-    rc2, out2, err2 = _run(cfg["failfast"]["cmd_o"], cwd=repro,
-                           timeout=cfg["failfast"]["timeout_s"], env=env_full)
-    if rc1 == 0 and rc2 == 0:
-        results.append((3, "fail-fast", "PASS", "test_failfast.py 普通与 -O 双模式 exit 0"))
+    if not env_ready:
+        results.append((3, "fail-fast", "FAIL", "前置判据 1 未过（复现环境未就绪）· 未实跑 test_failfast.py"))
     else:
-        results.append((3, "fail-fast", "FAIL", f"普通 exit={rc1} · -O exit={rc2}"))
+        rc1, out1, err1 = _run(_with_py(cfg["failfast"]["cmd"]), cwd=repro,
+                               timeout=cfg["failfast"]["timeout_s"], env=env_full)
+        rc2, out2, err2 = _run(_with_py(cfg["failfast"]["cmd_o"]), cwd=repro,
+                               timeout=cfg["failfast"]["timeout_s"], env=env_full)
+        if rc1 == 0 and rc2 == 0:
+            results.append((3, "fail-fast", "PASS", "test_failfast.py 普通与 -O 双模式 exit 0"))
+        else:
+            results.append((3, "fail-fast", "FAIL", f"普通 exit={rc1} · -O exit={rc2}"))
 
     # ---- 4. SHA ----
     rc, out, err = _run(cfg["sha"]["cmd"], cwd=repro, timeout=120)
@@ -96,13 +198,37 @@ def main(argv=None):
     else:
         results.append((4, "SHA", "FAIL", f"exit={rc} · OK 行 {n_ok}/{cfg['sha']['expect_lines_ok']}"))
 
-    # ---- 5. canonical 指纹 ----
+    # ---- 5. canonical 指纹（v1.1 双判据：指路有效 + 真本指纹）----
     ledger = _p(root, cfg["paths"]["ledger_md"])
-    try:
-        text = open(ledger, encoding="utf-8").read()
-    except OSError as e:
-        results.append((5, "canonical 指纹", "FAIL", f"台账不可读: {e}"))
-        text = None
+    pre_fail = []
+    if "ledger_md" in viol_keys:
+        pre_fail.append(f"ledger_md 指向指路 stub（frontmatter type: pointer）→ 判据集路径失效: {cfg['paths']['ledger_md']}")
+    ptr_rel = cfg["paths"].get("ledger_pointer")
+    if ptr_rel:
+        ptr = _p(root, ptr_rel)
+        up = int(cfg.get("pointer_contract", {}).get("pointer_root_up", 1))
+        eal_root = os.path.dirname(ptr)
+        for _ in range(up):
+            eal_root = os.path.dirname(eal_root)
+        want_rel = _nfc(os.path.relpath(ledger, eal_root))
+        if not os.path.isfile(ptr):
+            pre_fail.append(f"ledger_pointer 不存在: {ptr_rel}")
+        elif not _is_pointer(ptr):
+            pre_fail.append(f"ledger_pointer 非指路 stub（frontmatter 无 type: pointer）: {ptr_rel}")
+        else:
+            body = _nfc(open(ptr, encoding="utf-8").read())
+            if want_rel not in body:
+                pre_fail.append(f"ledger_pointer 正文未含真本相对路径 {want_rel!r}（指路链断裂）")
+        if not os.path.isfile(ledger):
+            pre_fail.append(f"ledger_md 真本不存在: {cfg['paths']['ledger_md']}")
+    text = None
+    if not pre_fail:
+        try:
+            text = open(ledger, encoding="utf-8").read()
+        except OSError as e:
+            pre_fail.append(f"台账不可读: {e}")
+    if pre_fail:
+        results.append((5, "canonical 指纹", "FAIL", " | ".join(pre_fail)))
     if text is not None:
         pos_fail = []
         for s, minc in cfg["ledger_fingerprints"]["positive"]:
@@ -132,8 +258,9 @@ def main(argv=None):
                 if kw in ln:
                     denylist_hits.append(f"{kw!r} @ L{i}: {ln.strip()[:80]}")
         if not pos_fail and not denylist_hits:
+            ptr_note = f" · 指路 stub 有效（{os.path.basename(ptr_rel)} → {want_rel}）" if ptr_rel else ""
             results.append((5, "canonical 指纹", "PASS",
-                            f"正向 {len(cfg['ledger_fingerprints']['positive'])} 项全在 · denylist 零命中"))
+                            f"真本 {os.path.basename(ledger)} 正向 {len(cfg['ledger_fingerprints']['positive'])} 项全在 · denylist 零命中{ptr_note}"))
         else:
             ev = []
             if pos_fail:
@@ -213,6 +340,12 @@ def main(argv=None):
         else:
             results.append((8, "发布器保险丝", "FAIL",
                             f"静态标记缺失: {missing}（{os.path.basename(pub)}）"))
+
+    # ---- 指路门禁兜底：ledger_md 之外的 paths.* md 若为 pointer，单列 FAIL（当前判据集无此类键，仅防未来增补漏查）----
+    other = [(k, r) for k, r in violations if k != "ledger_md"]
+    if other:
+        results.append((9, "路径有效性", "FAIL",
+                        "paths.* 指向指路 stub（type: pointer）→ 判据集失效: " + " / ".join(f"{k}={r}" for k, r in other)))
 
     # ---- 汇总 ----
     n_pass = sum(1 for r in results if r[2] == "PASS")

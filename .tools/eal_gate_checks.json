@@ -1,19 +1,27 @@
 {
-  "_usage": "EAL gate 判据集 v1（外置·PRD 2026-08-17 §二 B 原文机器化·2026-09-18 专场落盘）。判据集增补=VV 提新判据→CC 代收落本文件+PRD 变更记录→Doctor 批后生效；CC 不得自主增补（PRD 边界裁定 4）。",
-  "version": "v1",
-  "updated": "2026-09-18",
+  "_usage": "EAL gate 判据集 v1.1（外置·PRD 2026-08-17 §二 B 原文机器化·2026-09-18 专场落盘 v1·2026-11-06 修订 v1.1）。判据集增补=VV/CC 提新判据→CC 代收落本文件+PRD 变更记录→Doctor 批后生效；CC 不得自主增补（PRD 边界裁定 4）。v1.1 三项修订均经 Doctor 2026-11-06 AskUserQuestion 批：① 判据 5 改双判据（ledger_pointer 指路有效 + ledger_md 真本指纹）；② environment 改版本区间 + 可配置解释器（python_cmd / env EAL_GATE_PYTHON）；③ paths.* 指向 md 若 frontmatter type: pointer（且键不在 pointer_keys）即判失效。",
+  "version": "v1.1",
+  "updated": "2026-11-06",
   "paths": {
     "repro_dir": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/repro_v23",
-    "ledger_md": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/frameworks/事件归因台账.md",
+    "ledger_md": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/archive/frameworks-retired-2026-11/事件归因台账.md",
+    "ledger_pointer": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/frameworks/事件归因台账.md",
     "mirror_index": "Documents/Claude/brain/references/scheduled-live-mirror/artifacts/event-attribution-ledger/index.html",
     "manifest": "Documents/Claude/brain/references/scheduled-live-mirror/artifacts/_artifacts_manifest.txt",
     "snapshot_script": "Documents/Claude/brain/.tools/scheduler_snapshot.py",
     "publisher": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_v3/coding_work/_vv_staging/registry_promotion_dry_run/execute_registry_promotion.py",
     "manifest_key": "event-attribution-ledger"
   },
+  "pointer_keys": ["ledger_pointer"],
+  "pointer_contract": {
+    "_note": "ledger_pointer 必须是 frontmatter type: pointer 的指路 stub，正文须含 ledger_md 相对 EAL 根（= pointer 所在目录的上级）的路径；ledger_md 必须存在且不是 pointer。任一不成立 → 判据 5 FAIL。",
+    "pointer_root_up": 1
+  },
   "environment": {
-    "python_prefix": "Python 3.10",
-    "statsmodels": "0.14.6"
+    "python_range": ">=3.10,<3.14",
+    "statsmodels": "0.14.6",
+    "python_cmd": ".venvs/eal-repro-v23/bin/python",
+    "_note": "解释器解析顺序：env EAL_GATE_PYTHON → 本项 python_cmd（相对 root，存在才用）→ PATH python3。判据 1/2/3 统一用解析出的解释器。复现环境＝repro_v23/requirements.lock.txt（Python 3.10.12 快照；3.11~3.13 同 lock 亦在区间内，数值期望串不放宽）。环境不就绪 → 判据 1 FAIL、2/3 不空跑直接 FAIL（fail-closed）。"
   },
   "repro": {
     "cmd": ["python3", "estimate_m4.py"],

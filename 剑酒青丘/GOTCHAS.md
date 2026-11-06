@@ -78,7 +78,11 @@ project: 剑酒青丘
 
 **来源**: 2026-11-06 清账场（剑酒青丘 5 处待验收批量落签 · 审计中硬证据确认的实错 · 只登记不修）；PRD 2026-08-17_EAL_gate验收脚本；commit `bb1a092`。
 
-**状态**: 🔄 待修复（2026-11-06 登记 · 同日 Doctor AskUserQuestion 裁「先修判据集再终验（推荐）」—— 判据集修订专场已提案〔EAL gate 判据集修订与终验专场〕，修订按 PRD 边界④ 走 Doctor 批）
+**状态**: 🔄 已修待验（2026-11-06 判据集修订专场落盘 · 实施者不自标 ✅ · 终验归 Doctor Mac 原生跑 + VV 审阅）
+
+**追记一（2026-11-06 · 判据集修订专场 · 实施者留痕）**：Doctor 同日 AskUserQuestion 三项全批（a 双判据 / b 版本区间+可配置解释器 / c 通用 pointer 门禁）→ 判据集升 **v1.1**（`eal_gate_checks.json`：`paths.ledger_md` 改指 `EAL/archive/frameworks-retired-2026-11/事件归因台账.md` 真本、新增 `paths.ledger_pointer` 指 frameworks stub、`pointer_keys`/`pointer_contract`、`environment` 改 `python_range ">=3.10,<3.14"` + `python_cmd ".venvs/eal-repro-v23/bin/python"`；数值期望串/denylist/豁免/mirror override/publisher 标记逐字未动）；`eal_gate_check.py` 加解释器解析（env `EAL_GATE_PYTHON` → json `python_cmd` → PATH python3，判据 1/2/3 统一用）、`_is_pointer`/`_pointer_violations` 门禁、判据 5 双判据（指路有效 + 真本指纹）、环境不就绪时 2/3 不空跑直接 FAIL（fail-closed）；`test_gate_self.py` 3→5 用例（④ ledger_md 指回 stub 必 FAIL · ⑤ ledger_pointer 非 pointer 必 FAIL）。**沙箱复跑（实跑）**：gate **5 PASS · 0 WARN · 3 FAIL · exit 1**——判据 5 转 PASS（证据行「真本 事件归因台账.md 正向 18 项全在 · denylist 零命中 · 指路 stub 有效（→ archive/frameworks-retired-2026-11/事件归因台账.md）」）；余 FAIL 1/2/3 全为「复现环境未就绪」：**本机无任何 Python 3.10、无任何 statsmodels**（系统 3.9/3.13/3.14、Homebrew、Codex 三 venv 全核），repro README 所称 3.10.12 venv 盘上不存在，09-18 的 8/8 系当时 Cowork Linux 沙箱——故此三项与「沙箱/原生」无关，是机器级前置；self 5/5 普通与 -O 两模式 exit 0。沙箱内建 venv 两次受阻同根（pip/uv 均 TLS `OSStatus -26276`，沙箱代理证书），按纪律停止、venv 交 Doctor 终端。**根因②补正**：原写「换壳即假红」——实情是本机根本没有复现环境，换判据写法也救不了，判据 1 现在把这一点说成明文证据而非假红。**遗留**：3.11~3.13 同 lock 是否复得期望数值串**未核**（PyPI 实查 statsmodels 0.14.6 有 cp310~cp314 macOS arm64 wheel）；若 3.13 跑出不同位数，报 Doctor、不改期望串。 **独立审核（未参与实施 subagent）**：PASS_WITH_LIMITS——合同三项成立、期望串逐字一致；两处边缘缺陷（`_run` 未捕 PermissionError · v1 `python_prefix` 兼容分支死路）同场修复复验；限制＝判据 1/2/3 PASS 路径未被实跑覆盖（本机无复现环境）。
+
+**追记二（2026-11-06 · Doctor 终端建 venv 后沙箱复跑 · 实跑）**：Doctor 按命令块以 uv 建 `~/.venvs/eal-repro-v23`（**CPython 3.10.20**，非 README 所记 3.10.12；lock 10 包逐一装齐：numpy 2.2.6 / pandas 2.3.3 / scipy 1.15.3 / statsmodels 0.14.6 …）→ 沙箱同机复跑 `eal_gate_check.py`：**gate 8/8 PASS · exit 0**（3 分 04 秒）。判据 1 证据行「python 3.10.20（.venvs/eal-repro-v23/bin/python · 判据集 python_cmd）∈ >=3.10,<3.14 · statsmodels 0.14.6」；判据 2「estimate_m4.py exit 0 · 17 期望串全在」——即 3.10.20 + 同 lock 逐位复得 09-18 的全部数值串；判据 3 普通与 -O 双模式 exit 0。至此 PRD §四「Mac 原生跑 exit 0」的机器判据已达（venv 由 Doctor 终端建、脚本在同机沙箱跑；Doctor 终端再跑一遍只是形式复核）；VV 审阅 v1.1 与 ✅ 落签仍待。self-test 两模式复跑结果另记。
 
 ## 跨项目通用教训
 

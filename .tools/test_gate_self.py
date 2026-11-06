@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """eal_gate_check.py 自身 fail-fast（PRD 2026-08-17 §二 D：注入破坏后 gate 必报 FAIL）
 
-三用例：① 指纹缺失必 FAIL · ② denylist 命中必 FAIL · ③ manifest 失配必 FAIL。
+五用例：① 指纹缺失必 FAIL · ② denylist 命中必 FAIL · ③ manifest 失配必 FAIL
+· ④ ledger_md 指回指路 stub（type: pointer）必 FAIL（判据集 v1.1 指路门禁 · 2026-11-06 Doctor 批）
+· ⑤ ledger_pointer 指向非 pointer 文件（指路链断裂）必 FAIL（v1.1 双判据负向）。
 每例：/tmp 篡改判据集副本 → 以 --checks 指向副本跑 gate → 断言 exit 非零且输出含 FAIL。
 框架自身不用 assert 语句（-O 会剥离）；判定一律显式 raise AssertionError。
 Run: python3 test_gate_self.py（普通与 -O 都应 exit 0）。
@@ -70,8 +72,20 @@ def case3_manifest_mismatch():
         cfg["paths"]["manifest_key"] = "gate-self-missing-key"
     _expect_fail("③ manifest 失配必 FAIL", edits, "manifest")
 
+def case4_ledger_points_to_stub():
+    def edits(cfg):
+        cfg["paths"]["ledger_md"] = cfg["paths"]["ledger_pointer"]
+    _expect_fail("④ ledger_md 指回指路 stub 必 FAIL", edits, "指路 stub")
+
+def case5_pointer_chain_broken():
+    def edits(cfg):
+        cfg["paths"]["ledger_pointer"] = cfg["paths"]["ledger_md"]  # 真本不是 pointer → 指路无效
+    _expect_fail("⑤ ledger_pointer 非指路 stub 必 FAIL", edits, "非指路 stub")
+
 if __name__ == "__main__":
     case1_fingerprint_missing()
     case2_denylist_hit()
     case3_manifest_mismatch()
-    print("test_gate_self: 3/3 PASS")
+    case4_ledger_points_to_stub()
+    case5_pointer_chain_broken()
+    print("test_gate_self: 5/5 PASS")
