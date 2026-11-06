@@ -43,7 +43,7 @@ project: 渊图
 
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
-> 实时操作日志写在项目目录的 `Projects/渊图/GOTCHAS.md`；这里是沉淀+索引。
+> 实时操作日志写在 `Database/行业研究/渊图_GOTCHAS.md`（原写 `Projects/渊图/GOTCHAS.md`，该目录不存在 · 2026-11-05 审计订正）；这里是沉淀+索引。
 
 ## 格式
 
@@ -591,7 +591,7 @@ project: 渊图
 - 同一数字若所有二次传播都能回溯到同一篇，即为**单源**，**不因传播广度升级**。
 **配套**: 与「高时效数据不入 canonical」铁律配套——高时效数字即便只入 props 注记，**限定词与信源类型也须一并写入**。
 **同批次副产**: 同一核实还撞出**分部口径矛盾**——2025H1 分部「新型智能产品」72.09 亿（其中数据中心相关 10 亿）vs FY2025 年报分部「AI 算力基础设施」9.43 亿，H1 已 10 亿而全年 9.43 亿，必非同口径。教训：**跨期引用分部数据前先确认分部划分未变**，公司常在年报重划分部。属 FIX-20260626-001（粒度/时效错配）族系。
-**详**: `Database/行业研究/raw/核实/2026-07-18-比亚迪杀入光模块传闻核实札记.md`
+**详**: `Database/行业研究/raw/archived/光通信_20260813/核实/2026-07-18-比亚迪杀入光模块传闻核实札记.md`
 
 **追记（2026-09-19 · 同根复发第 2 例 → 按合同⑤登记「应升格通用教训」，不由实施者闭环）**
 **触发**: Doctor 提交一张网传「大摩 Nvidia NVL72 Bill of Materials（Exhibit 3）」图，问大摩近期研报是否真有此表。核实本体结论：**表为真**（摩根士丹利 2026-05-20 研报《亚太大中华科技硬件：Rubin机架物料清单、组件含量及ODM附加值分析》·17 页 · Exhibit 3），**最早公开出现 2026-05-21**（wccftech `datePublished 2026-05-21T05:15:16Z`）。8 月下旬至 9 月中旬的「大摩近期研报」二次流传，触发点＝彭博 2026-08-22 报道英伟达通知客户 2027 年初出货机型涨价 >15%，各家转载一律写「此前估算」。
@@ -1302,10 +1302,10 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **限制**（审核者实跑）: ① 真 API 的 PDF 附件调用未验证，含 DeepSeek 兼容端点是否接受 document 块；index 里最新 PDF 为 2026-06-09，下批首篇 PDF 请盯日志。② 英文散文跨行 span 误标约 3.5%、中文约 5.4%（含栏序因素），只打标不拦。③ 漏判进队列：`GPU`/`GPUs`、`CoWoS`/`Co-WoS`、`PCIe5.0`/`PCIe 5.0`、跨行断词。④ 误放：大小写不敏感（`Arm`/`arm`、`TEL`/`tel`），42 篇 PDF 每篇 0–8 个，`R&D` 命中 `rd`；词元高覆盖档在个别 PDF 全图可达 653 个，受单篇上限 40 约束。⑤ docx/xlsx 单篇入库经 ingest 后，第 19 项读不到其原文会被拦（批量不扫这两类）；docx 未实跑。⑥ 真 CID 字体、超大 PDF（无超时保护）未验证。
 
 ## [NOTE-20261105-011] Anthropic 财务 props 停在帕米尔转述的 Q2 口径，SpaceX 租约等多处已被 S-1/A 更新
-**状态**: 🔄 待修复（是否入图及入图范围待 Doctor 裁；本条只登记，未改图）
+**状态**: 🔄 已修待验（2026-11-05 Doctor 批追加；patch `mapping/_v3_20261105_AnthropicS1A口径_manual.json` 及 `…补正_manual.json` 已落 canonical）。未参与实施的审核者对首个 patch 判 PASS_WITH_LIMITS，事实与结构可代落，整条不可关闭；补正 patch 仅实施者差异回读加闸与测试，未再过审。Nscale、Lambda 节点未建，「P0 公开即复核」的门禁未实装；`company_Anthropic` 仍保留旧键 40 与注记并存
 **优先级**: 🟡 中
 **触发**: 2026-11-05 Code 标签解读 Anthropic 招股书，把渊图节点与 S-1/A No.1（2026-11-02）对读。
-**硬证据/最小复现**: ① `company_SpaceX` 的 `anthropic_lease` 记 $1.25B/月、总值约 $40B；S-1/A 为满载约 $3.1B/月、上限 $120.5B。② `concept_AnthropicComputeCommitmentMismatch` 记 265.6/321.4/245.0/21.0、RPO 10.8（6 月底及之后）；S-1/A 为总盘 $895.4B、09-30 RPO $13.8B。③ `company_Anthropic` 的 `compute_efficiency_ratio_2026q2`=2.08、`adjusted_operating_margin_2026q2_pct`=19 未错，但无 Q3 值（实算 1.72、15%），读者易当作现值。④ `product_AMDMI450` 相关边仍为「积极测试」；S-1/A 载 2026-07 已签 Hardware Supply Agreement（2027 首批 >$20B）。⑤ Nscale（约 $44.6B）、Lambda（约 $41.3B）无节点。⑥ `concept_ClaudeOverseasRevenueDropRisk` 的海外断崖假设：S-1/A 与 S-1 相减得 Q3 国际收入 $5,249M、占比 31.0%，高于 H1 的 27.8%。⑦ `event_Claude5Shutdown18Days` 写「Claude 5」；招股书称出口限制对象为 Fable 5 和 Mythos 5。⑧ `enterprise_api_market_share_2025_pct` 等 40/27/21 三键来自帕米尔，S-1/A 全文未检索到对应表述。
+**硬证据/最小复现**: ① `company_SpaceX` 的 `anthropic_lease` 记 $1.25B/月、总值约 $40B；S-1/A 为满载约 $3.1B/月、上限 $120.5B。② `concept_AnthropicComputeCommitmentMismatch` 记 265.6/321.4/245.0/21.0、RPO 10.8（6 月底及之后）；S-1/A 为总盘 $895.4B、09-30 RPO $13.8B。③ `company_Anthropic` 的 `compute_efficiency_ratio_2026q2`=2.08、`adjusted_operating_margin_2026q2_pct`=19 未错，但无 Q3 值（1.72 为实算，15% 为原文读数），读者易当作现值。④ `product_AMDMI450` 相关边仍为「积极测试」；S-1/A 载 2026-07 已签 Hardware Supply Agreement（2027 年取得首批容量，全额采购时合约期内 >$20B）。⑤ Nscale（约 $44.6B）、Lambda（约 $41.3B）无节点。⑥ `concept_ClaudeOverseasRevenueDropRisk` 的海外断崖假设：S-1/A 与 S-1 相减得 Q3 国际收入 $5,249M、占比 31.0%，高于 H1 的 27.8%。⑦ `event_Claude5Shutdown18Days` 写「Claude 5」；招股书称出口限制对象为 Fable 5 和 Mythos 5。⑧ `enterprise_api_market_share_2025_pct` 等 40/27/21 三键来自帕米尔，S-1 与 S-1/A 均无对应市场份额表述（图片未 OCR）。⑨ `csp_channel_revenue_share_2026h1_pct`=40；S-1 的 H1 值约 48%（帕米尔写「40% 以上」，入图取了下限）。
 **根因**: 帕米尔专栏（10-27）基于 10-26 版 S-1，一周后 S-1/A 更新；P1 转述入图后没有「P0 原文公开即复核」的动作，08-15 札记写明的触发器「S-1 公开 → 复核全部数字口径」未执行。
 **影响面**: 引用这些 props 的 wiki、风险判断与下游会读到 Q2 口径；结论方向（错配）不变，规模和趋势判断偏差大。风险日报 `narrative_events.json` 已用 S-1/A，与渊图不一致。
 **建议修法**: 手工 patch 按时点分层追加（不覆盖旧值，沿「绝对值仅 props」先例），来源升 P0；补 AMD 事实；Nscale、Lambda 是否建节点由 Doctor 裁。注意高时效铁律：财务季报本不入事实层。
