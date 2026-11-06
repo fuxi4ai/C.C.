@@ -108,3 +108,14 @@ project: 司南
 **独立复核（2026-11-05 · 未参与实施的审核者 subagent）**: PASS_WITH_LIMITS — 本批 A-D 共 18 项复验：28 份 .bak 齐、diff 无越界、新指向全部在盘、三套测试全绿、镜像两班与云端 prompt 逐段一致、台账 NF==9 且 ⑧⑨⑩⑪→㉒㉓㉔㉕ 无误，17 项 ✓；第 11 项中 3 处「历史叙述路径」被当死链误换致语义反转（`DVA/architecture/决策记录.md` L200 与 `permanent/经验库.md` L473 的孤儿路径 `~/Documents/Claude/Documents/Database/` 本是故意写错的历史实例、现与「多一层 /Claude/」自相矛盾；`白泽大宗/周日工作流-接手指南.md` L122 把现役单一真源 `Database/宏观-大宗商品/business_breakdown.db` 写成「已归档·不再使用」，正确指向应为 `data/archived/business_breakdown.db.项目本地遗留_20260615`），须从同名 .bak 回滚该 3 行；限制：① 镜像比对为逐段目视、非机器 difflib；② 索引总条数实跑 1156（声明 1155，差 1 条疑为本批后他处新增，无基线快照不可归因）；③ DVA 索引仍判 BUG-20260819-001 为 🔄 系 status_of 既有 mark 优先序（🔄 先于 ✅）、非本批回归，但 DVA「开放 4」因此虚高 ≥1；④ 「24 班」计数未逐一复核（list_triggers 现为 26 条含 1 条一次性提醒与 11-05 07:05 新建的 Sessions monthly audit）；⑤ us-close 镜像开头双 frontmatter 为既有、未在本批范围。状态行保持 🔄（③ scheduler-weekly-audit 分叉待 Doctor）。
 **复核后处置（2026-11-05 · 实施者）**: 第 11 项 3 处语义反转已处理——`DVA/architecture/决策记录.md` L200 与 `permanent/经验库.md` L473 的故意记录的错位路径从 `.bak_2026-11-05_auditfix` 逐行回滚；`白泽大宗/周日工作流-接手指南.md` L122 改指归档实名 `data/archived/business_breakdown.db.项目本地遗留_20260615`（在盘）。此三处订正由实施者自做，未经第二轮独立复核。
 **独立复核 ②（2026-11-05 · 未参与实施的审核者 subagent）**: PASS_WITH_LIMITS — 问答板 12 项执行批（1A·2A·3A·4A·5A·6ABC·7A·8A·9A·10A·11A·12A）逐项实读实跑全 ✓，无 FAIL 项；③ 镜像↔云端对拍 零差异（list_triggers 实取 trig_011UyLtY1qyiTT1YbdJ5Q6Hz prompt · updated_at 2026-11-06T04:49:21Z · 去前置段后与镜像去 frontmatter 正文 112 行逐行 difflib 零差异 · 镜像含「0. 云端任务体检」「PushNotification」「ERR-20261104-005」）；限制：① 12A STL-168 consumer 第 1 项所指 `渊图/architecture/决策记录.md` 在落签后又被 11-05 法案入图批顶部插入 8 行，现 sha256 前16 为 3383cc8f（受理时值 dd2aafc1 经去插入行重算可复现）、所引 L2793 现为 L2801——回执为时点快照、指针已漂；② 12A STL-169 `outcome_observed:true` 偏满：原行 evidence 预告的「Fuxi 回线后冻结体系复跑」尚未发生（仅「加仓侧研究引用」支满足），建议改 null、未改文件；③ 6B 原位残留除 11-04/11-05 命名件外另有 `references/scheduled-live-mirror/official_pre_sync_2026-10-21/**/SKILL.md.bak_*` 9 件（冻结快照目录内、未动）；④ 1A 星空 Projects 指针 frontmatter 含两行 `updated:` 重复键；白泽大宗并入段较 Projects 备份少末尾 1 个空行（strip 后逐字节相等）；⑤ 4A updatedfill 备份实数 58（含 .skills/portable brain-save 两件）非 56；⑥ 2A 云端 prompt 系由 list_triggers 返回 JSON 人工转录入 /tmp 再比，非程序直取。
+
+## [NOTE-20261105-001] 状态行写「✅ 已闭 ← 原：🔄 已修待验」会被经验索引判为开放
+**状态**: ⚠️ 已知风险（方向待裁：改写法 or 改生成器 mark 优先序）
+**优先级**: 🟢 低
+**触发场景**: 2026-11-05 五维审计重建索引后，`DVA/GOTCHAS.md` `BUG-20260819-001` 等条正文状态行为「✅ 已闭（2026-11-05 …）← 原：🔄 已修待验（…）」，索引仍判 🔄，DVA「开放 4」虚高 ≥1。
+**硬证据/最小复现**: `.tools/build_experience_index.py` `status_of()`：取状态行后按 `("🔄","⚠","✅","⏳","📌")` 顺序逐个 `in` 判，🔄 先命中即返回；`project_status()` 同理（OPEN_TOKENS 先于 CLOSED_TOKENS），注释自述「同一行既有开放词又有闭合词时判开放：宁可多报，不低报」。
+**根因**: 生成器把「状态行里出现过的词」当「当前状态」，而落签惯例喜欢在同一行保留旧状态作沿革（「← 原：🔄」）。两者各自合理、合起来必误判。
+**影响面**: 所有在状态行内保留旧状态词的 ✅ 条目（DVA 至少 2 条）；/resume Step 1.5 的「开放 N 条」计数。
+**修复/建议修法**: 甲 · 写法侧——落签时把旧状态移到下一行「**沿革**:」，状态行只留当前 mark（不改生成器、不改设计初衷）；乙 · 生成器侧——状态行若含「← 原」/「原：」分隔，只取分隔符之前的部分判 mark。二者取一，归 Doctor 裁；本条只登记。
+**来源**: 2026-11-05 五维审计（审计员 D 发现 · 独立复核 ① 第 15 项确认非本批回归）。
+
