@@ -2,7 +2,6 @@
 name: scheduler-weekly-audit
 description: 定时任务四执行面周巡检（只读）：跑 scheduler_snapshot.py + S3 快照写后自证 + audit 未验行附报；exit 0 且自证前进且 audit 无 🔄 才完全静默不打扰；异常才把 🔴 清单报给 Doctor。本班不执行修复、不 commit、不碰调度器。沙箱无法执行时贴 Doctor 终端命令（巡检；镜像 rsync 已于 2026-11-04 停用，原并班裁定见2026-08-11 Doctor 裁定并班）并读上次快照出兜底简报（2026-09-30 问答板 Q14A 裁定）
 ---
-
 你是 Doctor（全程用敬语「您」）的定时任务巡检班。每次运行都是全新会话，以下自包含。
 
 ## 这个班存在的理由（先读，它决定了你该怎么做）
@@ -12,6 +11,20 @@ description: 定时任务四执行面周巡检（只读）：跑 scheduler_snaps
 本班的职责是**发现结构性破损**，不是汇报近况。**它最重要的特性是：正常时完全不出声。**
 
 ## 步骤
+
+**0. 云端任务体检（2026-11-04 Doctor 批「甲」· 本步在云端即可完成：先于第 1 步做，且无论第 1 步能否执行都要做）**
+
+真正在跑的定时任务已迁到官方云端，第 1 步的脚本扫的是已全停的 Gateway store，看不到它们。本步补上这一面：
+
+1. 用 ToolSearch 加载 `mcp__claude-code-remote__list_triggers`。加载不到 → 记一条异常「云端体检不可用：list_triggers 不在本会话」，跳到第 1 步。
+2. 调 `list_triggers`（limit=100，有 `next_cursor` 就翻页取完）。逐个检查，命中任一条即记为异常（每条一行：任务名 · 命中原因 · 关键字段原值）：
+   - `enabled=true` 且 `suspension_reason` 非空（被平台挂起）；
+   - `last_run.status` 存在且不是 `ROUTINE_RUN_STATUS_SUCCEEDED`；
+   - `enabled=true`、有 `cron_expression`、日字段与月字段都是 `*`（日频/周频班），而 `last_fired_at` 缺失或距今超过 8 天（漏跑）；
+   - `enabled=true`、有 `cron_expression`，而 `next_run_at` 早于当前时刻 1 小时以上（排期卡住）。
+3. 用 device_bash 把结果覆盖写入 `~/Documents/Claude/brain/permanent/_cloud_trigger_health.json`：`{"generated_at": "<当前 UTC ISO>", "total": N, "enabled": N, "anomalies": [{"name": "...", "reason": "...", "fields": {...}}]}`。这是机器记录，不算「出声」。
+4. 口径：`last_run.status=SUCCEEDED` 只说明平台把这次运行派发成功，**不代表班把事做成了**（会话里的失败只写在转录里）。本步只抓平台层的失败、挂起与漏跑，不对各班业务结果下结论。
+5. 有异常 → 第 4 步的「静默退出」不成立，进第 5 步，异常清单加来源 ④「云端任务体检」；无异常 → 本步不出声。
 
 **1. 跑巡检脚本（在 Doctor 的 Mac 上，不是沙箱）**
 
@@ -29,7 +42,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py --triggered-by sch
 
 ⚠️ 必须带 `--triggered-by scheduled`——脚本默认 manual，不带则快照写 manual，验收判据「generated_at 前进且 triggered_by=scheduled」永远不满足（2026-08-31 首验教训）。
 
-⚠️ 该脚本必须在 Mac 原生跑——沙箱只挂 `~/Documents`，读不到 `~/Claude's workspace/`（Cowork live 树）与 `~/Library/LaunchAgents/`（launchd 装机位）。若你在沙箱环境且跑不了，**不要**改用别的方式凑合、**不要**猜测结果，报「本班无法在当前环境执行」——**但退出前把下面的命令原样贴给 Doctor 终端**再干净退出：
+⚠️ 该脚本必须在 Mac 原生跑——沙箱只挂 `~/Documents`，读不到 `~/Claude's workspace/`（Cowork live 树）与 `~/Library/LaunchAgents/`（launchd 装机位）。若你在沙箱环境且跑不了，**不要**改用别的方式凑合、**不要**猜测结果，报「本班无法在当前环境执行」——**但退出前把下面这条命令原样贴给 Doctor 终端**再干净退出（2026-11-04 Doctor 裁：删去原先同车的 Gateway→镜像 `rsync --delete`——镜像 `references/scheduled-live-mirror/live/` 已是云端推看板班的正文真源，再 rsync 会用 Gateway 旧版覆盖它）：
 
 ```
 python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py --triggered-by scheduled
@@ -69,13 +82,16 @@ osascript -e 'display notification "定时任务巡检发现 N 项异常" with t
 
 **为什么要这一步**：本班刻意关闭了 `notifyOnCompletion`（否则每周一条「跑完了」的通知会把静默设计毁掉）。系统通知是异常唯一的送达路径——**没有它，报告写了也没人看得到**。
 
-然后出简报：异常清单按来源分列——① 脚本 stderr 的 🔴 条目原样转给 Doctor；② S3 自证失败（若有）；③ audit 未验行（若有）。附 `~/Documents/Claude/brain/permanent/_scheduler_snapshot.md` 路径。
+**云端补充（2026-11-04 Doctor 批「甲」）**：上面的 `osascript` 在云端虚拟机里必然失败，不能当送达路径。改用 `PushNotification`（2026-11-04 实测本环境可加载）：告警时调用一次，标题「巡检告警」，正文「发现 N 项异常，详见本会话」。第 1 步走兜底路径时同样推送一次，正文「本周快照需您在终端跑一次巡检脚本，命令见本会话」——兜底意味着快照不会自己前进，这条推送是 S1 命令送到 Doctor 手上的唯一路径。加载不到 `PushNotification` 就跳过，不阻塞。
+
+然后出简报：异常清单按来源分列——① 脚本 stderr 的 🔴 条目原样转给 Doctor；② S3 自证失败（若有）；③ audit 未验行（若有）；④ 云端任务体检异常（若有）。附 `~/Documents/Claude/brain/permanent/_scheduler_snapshot.md` 路径。
 
 ```
 【定时任务巡检】发现 N 项异常
 <原样贴 stderr 的 🔴 条目>
 <S3 自证失败行（若有）>
 <audit 未验行摘要（若有）>
+<云端任务体检异常行（若有）>
 详见 permanent/_scheduler_snapshot.md
 建议：<每条一句话，说清「这意味着什么」，不给修复动作>
 ```
@@ -87,6 +103,7 @@ osascript -e 'display notification "定时任务巡检发现 N 项异常" with t
 - **本班不碰调度器**：不调 `create_scheduled_task` / `update_scheduled_task` / `delete_scheduled_task`。
   - 理由：巡检器一旦获得写权限，它自己就成了需要被巡检的东西。
   - 白名单内的 F3 description 修复豁免只属于 CC 在 /resume 场按授权调用形态执行的范畴，不属本班。
+  - 第 0 步只读调用 `list_triggers`，不在此禁令内；`create_trigger` / `update_trigger` / `delete_trigger` / `fire_trigger` 同属禁令。
 - **绝不编造**。脚本没跑成就说没跑成，不要凭 `_scheduler_snapshot.md` 的旧内容推测现状——那个文件可能是上周的。（**兜底简报是唯一例外**：它明确标注「基于上次快照、非本轮实跑」，陈述的不是现状而是上次快照的存档，2026-09-30 Q14A。）
 - 不做行情判读、不碰任何项目数据。
 

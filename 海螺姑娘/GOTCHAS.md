@@ -2,7 +2,7 @@
 title: 海螺姑娘 · GOTCHAS（已知坑）
 tags: [海螺姑娘, gotchas]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-10-23
 status: active
 type: resource
 project: 海螺姑娘

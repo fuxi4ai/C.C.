@@ -2,7 +2,7 @@
 title: O MY HTML · GOTCHAS（已知坑）
 tags: [O MY HTML, gotchas]
 created: 2026-05-14
-updated: 2026-07-06
+updated: 2026-08-26
 status: active
 type: resource
 project: O MY HTML

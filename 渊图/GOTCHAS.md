@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-09-26
+updated: 2026-11-05
 status: active
 type: resource
 project: 渊图

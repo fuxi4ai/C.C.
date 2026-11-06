@@ -94,6 +94,7 @@ type: permanent       # permanent | fleeting | log | resource | decision
 ### /save
 收到此命令时：
 1. 在 `logs/YYYY-MM-DD-主题.md` 创建会话日志（格式见模板）
+   - **日志引用约定（2026-11-05 Doctor 裁 5A）**：`logs/` 每月 1 号由 meditation 把上月日志折进 `logs/YYYY-MM/`（`checkpoints/`、`checkups/` 随月走）。文内引用日志**一律省略月目录**写 `logs/YYYY-MM-DD-主题.md`，读者按日期自推；脚本消费端用 `.tools/resolve_log_path.py`（先试根目录，再试 `logs/YYYY-MM/`）解析，不要求存量引用改写。
 2. 记录：做了什么、决策、遗留问题、相关笔记链接
 3. 更新相关项目目录下的 progress.md（如果存在）
 

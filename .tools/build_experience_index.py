@@ -45,14 +45,14 @@ def status_of(body, title=""):
         s = title
     else:
         s = body[:600]
-    for mark in ("🔄", "⚠", "✅", "⏳"):
+    for mark in ("🔄", "⚠", "✅", "⏳", "📌"):  # 2026-11-05 Doctor 裁 9A：📌 常驻 入闭集，与「—未标」区分
         if mark in s:
             return mark
     return "—"
 
 # Projects/ 来源专用（brain 来源仍走 status_of，旧条目判定不变）。
 # 同一行既有开放词又有闭合词时判开放：宁可多报，不低报（海螺 GOTCHA-20260819-001 同类教训）。
-OPEN_TOKENS = (("🔄", "🔄"), ("⚠", "⚠"), ("⏳", "⏳"), ("已知风险", "⚠"), ("已修待验", "🔄"), ("待修复", "🔄"),
+OPEN_TOKENS = (("🔄", "🔄"), ("⚠", "⚠"), ("⏳", "⏳"), ("📌", "📌"), ("已知风险", "⚠"), ("已修待验", "🔄"), ("待修复", "🔄"),
                ("未修复", "🔄"), ("待执行", "🔄"), ("待核", "🔄"), ("待裁", "🔄"), ("待老师", "🔄"), ("待验", "🔄"))
 CLOSED_TOKENS = ("✅", "已解决", "已修复", "已修", "已裁", "已定性", "已登记", "已验证", "已复核", "并修复")
 
@@ -148,6 +148,11 @@ for d in sorted(os.listdir(BRAIN)):
     # H3 格式（剑酒青丘）
     for m in re.finditer(r"^### \[([^\]]+)\]\s*(.*)$", txt, re.M):
         add(d, m.group(1), m.group(2).strip(), seg_until(txt, m.end(), r"^### \[|^## \[|^## "), f"{d}/GOTCHAS.md")
+    # 无方括号 H2/H3 格式（2026-11-05 并入：白泽大宗 `### GOTCHA-NNN: 标题`、星空 `### G-NN · 标题`；照 Projects 分支写法）
+    for m in re.finditer(r"^#{2,3} ((?:GOTCHA|G)-\d+)\s*[:：·—-]+\s*(.*)$", txt, re.M):
+        body = seg_until(txt, m.end(), r"^#{2,3} ")
+        # 这两种格式只经并入进 brain，状态多为表格行/文字开放词（如「待老师核订」），沿用并入前 Projects 分支的 project_status 判法，不改判
+        add(d, m.group(1), m.group(2).strip(), body, f"{d}/GOTCHAS.md", status=project_status(body, m.group(2).strip()))
     # 列表粗体格式（白泽大宗 G-01 等）
     for m in re.finditer(r"^- \*\*(G-\d+)\s+(.*?)\*\*", txt, re.M):
         add(d, m.group(1), m.group(2).strip(), seg_until(txt, m.end(), r"^- \*\*G-\d+|^## |^# "), f"{d}/GOTCHAS.md")
@@ -160,14 +165,15 @@ for d in sorted(os.listdir(BRAIN)):
 #     条目格式：`[ID]` 标题、`GOTCHA-NNN:`／`G-NNN —` 标题、`- **EAL-M001 · …**` 列表。
 #     `### [ ] 待办勾选` 不算条目；带状态行却解析不了的标题会写进索引头，不静默跳过。
 PROJECT_SOURCES = [
-    ("白泽大宗", "Projects/Financial/白泽大宗/GOTCHAS.md"),
     ("白泽观星", "Projects/Financial/白泽观星/GOTCHAS.md"),
-    ("风险日报", "Projects/风险日报/GOTCHAS.md"),
-    ("星空", "Projects/星空/GOTCHAS.md"),
     ("海螺姑娘", "Projects/海螺姑娘/GOTCHAS.md"),
     ("EAL", "Projects/Financial/宏观研究体系/EAL/GOTCHAS.md"),
+    ("渊图·DB实时坑库", "../Database/行业研究/渊图_GOTCHAS.md"),  # 2026-11-05 Doctor 裁 10A：渊图实时坑库（28 条，19 条 brain 无）
 ]
+# 2026-11-05 Doctor 裁 1A：白泽大宗 / 风险日报 / 星空 三项目 Projects 侧 GOTCHAS 已逐字并入 brain 侧「自 Projects 侧并入」节，
+#     Projects 侧退为指针，故从白名单移除（brain 分支已补 `### GOTCHA-NNN:` / `### G-NN ·` 无方括号标题解析以守恒条数）。
 NOT_COVERED = ("Projects/DVA（含 yt-dlp；历史副本，真源在 Codex 镜像仓）、Projects/Financial/烛照九阴（退役指针，含 news）、"
+               "Projects/{风险日报,星空,Financial/白泽大宗}（2026-11-05 已并入 brain 侧 canonical）、"
                "Projects/PEC（brain 已有全表索引）、Projects/O MY HTML 与 Projects/Financial/剑酒青丘/*（无编号格式）、"
                "EAL/backtest/eal_v3（只读保留件）")
 PROJECT_ENTRY_RES = [
@@ -257,7 +263,7 @@ lines = [
     "",
     f"> 生成：{now} · 生成器 brain/.tools/build_experience_index.py（v2）· 重跑幂等",
     "> 字段 10 项（**2026-09-29 加第 10 项「触发条件」** · 承 Doctor 批）：条目ID · 类型 · 日期 · 状态 · 机器化 · 标题 · 证据指针 · 来源主体（节头） · 对侧状态（- 未见 / 👁已扫描未命中 / ⚑已预警 / ✓已复验）。",
-    "> 状态闭集：✅已修复/已沉淀 · 🔄待修复/已修待验 · ⚠已知风险 · ⏳旧状态词 · —未标。**触发条件＝从条目自带的「警报信号／判据／做法／强制问询／预防门禁」抽一行**（2026-09-29 起；原为「＝标题摘要」，已取代）；正文按指针取。",
+    "> 状态闭集：✅已修复/已沉淀 · 🔄待修复/已修待验 · ⚠已知风险 · ⏳旧状态词 · 📌常驻（长期有效的提醒，不计开放也不计未标 · 2026-11-05 Doctor 裁 9A）· —未标。**触发条件＝从条目自带的「警报信号／判据／做法／强制问询／预防门禁」抽一行**（2026-09-29 起；原为「＝标题摘要」，已取代）；正文按指针取。",
     "> 覆盖：brain 各项目 GOTCHAS（H2/H3/列表粗体/表格四格式）+ Projects/ 下白名单 GOTCHAS（" + "、".join(n for n, _ in PROJECT_SOURCES) + "）+ 通用教训 + 经验库 EXP。Projects 来源的证据指针相对 brain/。",
     "> 未纳入：" + NOT_COVERED + "。**「开放 0」只表示已入索引的条目中无开放项；「未标」＝条目无可判定状态，不等于已闭。**",
     *[f"> ⚠ {w}" for w in SOURCE_WARNINGS],
@@ -269,7 +275,8 @@ for proj in sorted(by_proj):
     es = by_proj[proj]
     n_open = sum(1 for e in es if e["status"] in ("🔄", "⚠", "⏳"))
     n_unmarked = sum(1 for e in es if e["status"] == "—")
-    lines.append(f"- {proj}: {len(es)} 条（开放 {n_open} · 未标 {n_unmarked}）")
+    n_pin = sum(1 for e in es if e["status"] == "📌")
+    lines.append(f"- {proj}: {len(es)} 条（开放 {n_open} · 未标 {n_unmarked}" + (f" · 常驻 {n_pin}" if n_pin else "") + "）")
 for proj in sorted(by_proj):
     lines.append(f"\n## {proj}")
     for e in by_proj[proj]:

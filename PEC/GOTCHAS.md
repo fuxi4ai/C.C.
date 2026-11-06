@@ -2,7 +2,7 @@
 title: PEC · GOTCHAS（已知坑）
 tags: [PEC, gotchas]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-09-01
 status: active
 type: resource
 project: PEC

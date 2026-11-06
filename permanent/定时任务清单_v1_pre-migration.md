@@ -2,7 +2,7 @@
 title: 定时任务清单
 tags: [scheduled, cron, 自动化, index, 维护, gateway迁移]
 created: 2026-06-30
-updated: 2026-07-30
+updated: 2026-08-02
 status: archived
 type: permanent
 ---

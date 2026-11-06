@@ -2,7 +2,7 @@
 title: 龙鱼五力 · GOTCHAS（已知坑）
 tags: [龙鱼五力, gotchas]
 created: 2026-05-14
-updated: 2026-08-20
+updated: 2026-11-05
 status: active
 type: resource
 project: 龙鱼五力

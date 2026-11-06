@@ -3,7 +3,7 @@ title: Doctor 协作偏好
 abstract: "方向性/判断性/无既定最优解的改动须 propose-then-confirm：先出具体改动清单 → Doctor 批准 → 才执行（方向+方案已批且无实质偏离不再二次机械确认）；分级批准、可逆优先（重要文件只归档不删）；事务性/文件性/存在最佳解且无需判断的 TODO 适用常驻自动授权；2026-08-29 吸收 V.V. 工作约定（金融真实性/授权不扩张/修复闭环/风险分级/subagent 复验/删除与归档细化）"
 tags: [偏好, 协作, workflow]
 created: 2026-05-23
-updated: 2026-09-26
+updated: 2026-11-05
 status: active
 type: permanent
 ---
@@ -158,6 +158,7 @@ Doctor 明示（原话）：「以后禁止用"腿"来形容」。
 - **替换**：通道 / 支路 / 管线 / 分路。
 - **边界**：既有文档/日志里的历史「腿」字是历史原文，不主动批量改（引用时加引号或改述）；Doctor 若要求术语统一迁移，属另裁，先 propose-then-confirm。
 - **来源**：logs/2026-08-30-XBoard老毛停更诊断与外发授权.md（X-Board 诊断会话中 Doctor 当场纠正）。
+- **2026-11-05 递进（Doctor 问答板 7A 选 A）**：替换词扩为「评分器 / 数据线 / 分项 / 通道」（11-04 立）；五维审计实测存量 73 件现行文 + 2 班云端 prompt（guanxing-fed-daily「Fed 腿」、us-close-backfill「美股腿/macro 腿/读数语义腿」）仍用旧词——裁定：新文一律新词；存量由 /save /consolidate 触碰时顺手改；两班 prompt 下次改 prompt 时一并换，不单独为此 update_trigger。
 
 ## 表述约定：同一文件内，一个词不许指两件事（2026-09-28 立 · 原话）
 

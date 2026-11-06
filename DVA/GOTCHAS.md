@@ -2,7 +2,7 @@
 title: DVA · GOTCHAS（已知坑 · 索引）
 tags: [DVA, gotchas, index]
 created: 2026-05-14
-updated: 2026-09-30
+updated: 2026-11-05
 status: active
 type: resource
 project: DVA

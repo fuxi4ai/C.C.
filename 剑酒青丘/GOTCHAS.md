@@ -2,7 +2,7 @@
 title: 剑酒青丘 · GOTCHAS（已知坑 · 索引）
 tags: [剑酒青丘, gotchas, index]
 created: 2026-07-24
-updated: 2026-08-17
+updated: 2026-11-01
 status: active
 type: resource
 project: 剑酒青丘

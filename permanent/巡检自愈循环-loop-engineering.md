@@ -3,7 +3,7 @@ title: 巡检治理 · 四执行面快照与自愈循环
 abstract: "定时任务巡检治理四合一现状版（2026-09-17 Doctor 批 consolidate 方案②）：Mac 侧四执行面快照+git diff 变更检测 · 周班悖论两层解法 · 自愈循环 L0-L3（白名单/审计层/永不自动清单）· 任务清单「不变」架构与铁律 · 诊断卡模板附录。历史底稿：定时任务巡检机制_v1_pre-migration · 定时任务清单_v1_pre-migration · 巡检诊断卡模板_v1_pre-migration · 本文件_v2_pre-migration"
 tags: [巡检, 自愈循环, 治理, 定时任务, brain]
 created: 2026-08-29
-updated: 2026-09-17
+updated: 2026-09-27
 status: active
 type: permanent
 related: [通用教训, Doctor协作偏好, _scheduler_snapshot]

@@ -2,7 +2,7 @@
 title: GlobalPercent · GOTCHAS（已知坑）
 tags: [GlobalPercent, gotchas, Financial]
 created: 2026-06-29
-updated: 2026-08-01
+updated: 2026-11-01
 status: archived
 type: resource
 project: GlobalPercent

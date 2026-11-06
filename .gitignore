@@ -38,6 +38,8 @@ __pycache__/
 
 # 本地快照与散件（不进版本 · 2026-08-09 集中清扫立 · Doctor 裁）
 backups/
+_bak/
+# ↑ 2026-11-05 补（Doctor 裁 6C）：_bak/ 内 `TODO.md.bak-doctor-*` 等短横命名逃过 *.bak_* 规则
 *.bak_2*
 *.bak_*
 logs/.wtest

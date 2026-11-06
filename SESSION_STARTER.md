@@ -2,7 +2,7 @@
 title: SESSION STARTER — CC 快速唤醒模板
 tags: [brain]
 created: 2026-05-14
-updated: 2026-05-22
+updated: 2026-11-05
 status: active
 type: bootstrap
 ---

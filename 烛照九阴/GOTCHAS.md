@@ -2,7 +2,7 @@
 title: 烛照九阴 · GOTCHAS（已知坑）
 tags: [烛照九阴, gotchas]
 created: 2026-07-19
-updated: 2026-10-17
+updated: 2026-11-05
 status: active
 type: resource
 project: 烛照九阴

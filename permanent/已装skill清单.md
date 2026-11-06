@@ -2,7 +2,7 @@
 title: 已装 skill 清单
 tags: [skill, index, 维护, 真源镜像, 重装手册]
 created: 2026-06-30
-updated: 2026-09-19
+updated: 2026-11-04
 status: active
 type: permanent
 ---
