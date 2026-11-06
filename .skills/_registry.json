@@ -1,5 +1,5 @@
 {
-  "_note": "技能版本治理注册表（2026-11-04 Doctor 立）。channel: release=发布到账号（默认放薄壳，account=full 放完整副本）；code-only=只在 ~/.claude/skills；canonical-only=只留源文件未安装；portable-only=只在 portable 未入 canonical。工具：.tools/skill_release.py",
+  "_note": "技能版本治理注册表（2026-11-04 Doctor 立）。2026-11-06 约定：description 冻结为稳定触发短句，版本号/Step 变更只写正文与 v 历史、不写进 description，免得每次改 skill 都触发账号薄壳重传（第四跳）。channel: release=发布到账号（默认放薄壳，account=full 放完整副本）；code-only=只在 ~/.claude/skills；canonical-only=只留源文件未安装；portable-only=只在 portable 未入 canonical。工具：.tools/skill_release.py",
   "skills": {
     "brain-anchors": {"channel": "release", "portable": true},
     "brain-consolidate": {"channel": "release", "portable": true},

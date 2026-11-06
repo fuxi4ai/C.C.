@@ -13,6 +13,8 @@ type: log
 
 > **〔2026-11-04 /todo 移除 · Doctor 统一授权〕** 原「⏸ fuxi 离线（云南出行 · 至 2026-10-31）」注记失效——本场 CC 已 ssh 实连 fuxi-station 并完成 Get-FileHash 三包核验（回线实证）；受影响四项：① xboard 要点通道＝幂等键自动补发，无需手工 ② DVA 镜像回流＝长期观察跟踪 ③ fuxi 备份归档类＝随各条目 ④ kex 探针＝已撤销故障定性。
 
+- [ ] **金融线 · 项目级 TODO/GOTCHAS/INDEX 归档待对账（2026-11-06 脑暴 F2 挂）**：8 件已指针化并整件归档到各项目 `archived/`（剑酒 TODO 未勾 1、白泽大宗 TODO 未勾 10、观星 TODO 未勾 5、剑酒 docs/GOTCHAS 未勾 6）；未勾条是否逐条并入本文件由 Doctor 定，默认保留在归档件内。
+- [ ] **金融线 · 项目内行情库待迁（2026-11-06 脑暴 F1 挂）**：`剑酒青丘/回调级别判别/index_research.db`（1.7MB，index_daily 与 market_data.cn_index_daily 同类）、`风险日报/data/taco_components.db` 按新例外③应落 Database 层；迁移牵涉读取路径，待各项目专场处理。
 - [ ] **基建 · 经验索引生成器不识别「同条订正」（2026-11-06 /consolidate A3 挂）**：`permanent/经验库.md` `EXP-20261020-005-T` 已于 11-01 追记「⚠ 同条订正（NOTE-20261101-001）」，但 `build_experience_index.py` v2 重跑后索引行（L900）仍显旧标题、状态 `—`；需让生成器识别「⚠ …订正」追记并在索引行标「已订正→指向」。事务性，可由句芒做。
 - [ ] **EAL · 目录标准收尾（2026-11-05 挂 · 源 `logs/2026-11-05-EAL定位厘清与目录文件格式标准三批.md`）**：①~~PRD 待 Doctor ✓~~（2026-11-05 Doctor ✓ · delivered）；② `研究材料/机构方法论提炼.md` 改完后补 frontmatter、从 `.tools/check_eal_frontmatter.py` 白名单移除并复跑 rc=0；③ 校验脚本收紧（研究材料 status 词表、空值写法）；④ 非交付项另议：backtest/README 覆盖率 17/62、GOTCHAS 三套编号、数据根 7 份 G-0xx 拟稿、raw 索引缺 `us_daily_20261105`；⑤ `backtest/EAL_STARFIELD.html` 未提交改动归属未核。
 - [ ] **风险日报 · Alarm 上线首验（2026-11-05 挂）**：① Cowork 回报请求三（两班判级基线改当前 revision），须 11-09 周班前；② 11-09 17:06 UTC 周班后查简报，r5、r7 不应重复提案，`python3 -B alarm/test_no_drift.py` 通过，补验收第 5 项；③ 下次带复核日更：日志有 `REVIEW_ACCEPTED`，未被 4d 误拒，面板切 `r-7d1bb3b6`、不再标陈旧；④ 确认 Gateway 两个同名班保持停用（旧正文仍写文件）。见 `风险日报/GOTCHAS.md` ERR-20261105-101、102。
@@ -409,4 +411,3 @@ type: log
 > **已完成 / 已取消条目** → [[TODO-已完成归档]]（`references/TODO-已完成归档.md`）。
 > 2026-07-30 `/consolidate` 拆出：本文件此前 70% 体积是已完成条目，而 `/resume` 每场都要整篇读进来。
 > **完成即迁**：勾掉一条后把它整块移进归档文件，别就地留着——这是 `brain-save` v3.1 的规矩。
-

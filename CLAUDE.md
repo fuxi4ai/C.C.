@@ -259,6 +259,9 @@ CC 创建/保存任何文件时，按以下规则选位置：
 - ⚠️ **"Projects/Financial/" 是 `Claude/Projects/Financial/` 的简写**（家谱/索引常省 `Claude/` 前缀）——金融代码与 CC 开发项目**同在 `Claude/Projects/` 下**，金融归 `Financial/` 子目录，**并非另一套命名空间**。`Documents/根/Projects/` 下若出现同名目录＝**误落**，非正主。
 - ⚠️ **tier 甄别**：代码项目自带的 `data/` 工作产物（中间 json、审核台账 md 等）**属代码项目、留在项目内**，不算 DB 层数据、**不迁 Database**。只有 recap.db 这类结构化库 + Raw-Recap 原始语料才落 Database。（2026-06-28 教训：误把烛照九阴 `data/待人工复核-仓位.md` 当 DB 数据移进 Database，实则它是代码项目 data/ 的台账产物）
 
+- ⚠️ **三条布局例外（2026-11-06 脑暴 F1 · Doctor 批）**：① 渊图 monorepo 的代码（`Database/行业研究/` 根下 `kg_*.py`、`consumers/龙鱼五力/` 引擎）与 `Database/龙鱼-标的分析库/` 的服务脚本**留在 Database 层**，是 Doctor 定调的例外；② `Database/剑酒青丘/`（独立 git 仓）是剑酒青丘的**第四落点**（冻结回测库与 DB 侧 README）；③ **项目目录内不再新立行情库**——存量 `剑酒青丘/回调级别判别/index_research.db`、`风险日报/data/taco_components.db` 登记待迁（见 TODO）。
+- **系统概览「入口」节只写指针不写路径事实**（2026-11-06 F3）：路径、文件名以代码仓 README 为真源，概览只写「代码：`Projects/…/{项目}/`（见其 README）」，避免双写漂移（烛照概览曾写错 recap.db 落点）。
+
 **文件健康总索引**：建 / 移 / 删 / 审计文件前，先扫 [[文件健康要素集合]]（三层要素：静态规约 / 动态维护 / 踩坑防御 + 定期体检清单 + 权威出处指针）。
 
 ---

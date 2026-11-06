@@ -233,7 +233,7 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 
 ## K · Code 标签实装对照（2026-11-06 /consolidate 实核 `ls -l ~/.claude/skills`）
 
-> 本清单此前无 Code 环境列，致 dream / graphify 漏登、the-conch-maiden 状态陈旧（复核方 2026-11-06 逮出）。本段按盘上链接逐项对照，后续改动同步此表。
+> 本清单此前无 Code 环境列，致 dream / graphify 漏登、the-conch-maiden 状态陈旧（复核方 2026-11-06 逮出）。本段按盘上链接逐项对照，后续改动同步此表。**description 冻结约定（2026-11-06 P6）**：触发短句稳定，版本变更不写进 description，账号薄壳只在触发文案真变时重传。
 
 | 链接名 | 指向 | 状态 | 备注 |
 |---|---|---|---|
