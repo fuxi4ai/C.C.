@@ -2,7 +2,7 @@
 title: 已装 skill 清单
 tags: [skill, index, 维护, 真源镜像, 重装手册]
 created: 2026-06-30
-updated: 2026-11-04
+updated: 2026-11-06
 status: active
 type: permanent
 ---
@@ -230,3 +230,16 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 > **⚠ 订正⑨（2026-10-03 23:2x · CC 沙箱回读 · 第四跳复装核验·续）**：**brain-resume `3c49eab8`（23:24 装）与 brain-consolidate `1a0b73ae`（23:25 装）均已四端逐字节一致** ✅——本夜四件复装（damper 22:42 · brain-anchors 22:54 · resume 23:24 · consolidate 23:25）**全部销账**。
 
 > **⚠ 订正⑩（2026-10-04 01:2x · CC 沙箱回读 · brain-resume 默认声线切换重发布）**：**Doctor 裁「设为默认吧，之前的保存为备选」**——Settings 朗读条默认音色 C.C. → **Hiddleston-CN**（`FVvcH2MAGGpovILJcXEv` · v2 去朗读腔日常版 · Doctor 网站生成）；C.C. 降备选。**brain-resume §Step 0.5 已改并重发布**：canonical ＝ portable ＝ 包内件 ＝ **`7d97ca3553eab9f4…` / 16703 B / 187 行**（`cmp` 逐字节一致）· 包 `brain/.skills/brain-resume.skill` 重打 **`cff4b3143e003429…` / 8737 B**（包内件与 canonical `cmp` 零差异）· **save_skill 已发布**（`overwrite: true` · 返回 `{"skill":{"id":"brain-resume"}}` · 本会话技能列表已实时刷新＝第一层消费证据）。**Settings 待 Doctor 重贴**（下一场新会话逐行 diff 验证）。镜像注记与 `CC声音档案` 已同步。
+
+## K · Code 标签实装对照（2026-11-06 /consolidate 实核 `ls -l ~/.claude/skills`）
+
+> 本清单此前无 Code 环境列，致 dream / graphify 漏登、the-conch-maiden 状态陈旧（复核方 2026-11-06 逮出）。本段按盘上链接逐项对照，后续改动同步此表。
+
+| 链接名 | 指向 | 状态 | 备注 |
+|---|---|---|---|
+| brain-anchors / brain-consolidate / brain-note / brain-prd / brain-resume / brain-save / brain-todo / damper | `brain/portable/skills/{名}` | ✅ 在用 | canonical 在 `brain/.skills/{名}/SKILL.md`，改完跑 `skill_release.py release` |
+| qa | `brain/.skills/QA` | ✅ 在用 | 问答板（A 段已记） |
+| graphify | 本地安装 | ✅ 在用 | 知识图谱查询（brain/CLAUDE.md「图谱导航规则」消费），此前未登记 |
+| the-conch-maiden | 本地安装 | ✅ 在用 | 2026-11-05 Doctor 裁「以本地为准」，cc-switch 副本不再参照；F 段「未作 skill 装」为 Cowork 时点陈述 |
+| dream | `~/.cc-switch/skills/dream` | 🚫 已退（2026-11-06 Doctor 裁撤链接） | 正文 9 处依赖 `MEMORY.md`，与 2026-11-04「记忆只用 Brain」反向；功能由 brain-consolidate 取代。撤链接命令交 Doctor 终端（`~/.claude/skills` 沙箱禁写） |
+| gsap-frontend | — | ⚠ Code 未装 | B 段标 ✅ 系 Cowork 侧；Code 侧 `ls` 无此链接 |

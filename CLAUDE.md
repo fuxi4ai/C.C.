@@ -2,7 +2,7 @@
 title: Brain Vault — CC 全局记忆与知识库
 tags: [brain, bootstrap, index]
 created: 2026-05-14
-updated: 2026-06-02
+updated: 2026-11-06
 status: active
 type: bootstrap
 ---
@@ -86,17 +86,14 @@ type: permanent       # permanent | fleeting | log | resource | decision
 ## CC 命令
 
 ### /resume
-收到此命令时：
-1. 读取 `logs/` 中最近 3 篇会话日志
-2. 读取当前项目的 architecture/decisions.md（如果存在）
-3. 输出：当前状态摘要 + 待办清单
+按 `.skills/brain-resume/SKILL.md`（canonical）执行：全局偏好载入 → 巡检快照新鲜度 → 最近 3 篇日志（含 `logs/YYYY-MM/`）→ 经验索引定向检索 → 活跃项目的 系统概览/决策记录/GOTCHAS → TODO 与回执 → 结构化摘要。（2026-11-06 consolidate：原「读 architecture/decisions.md」三步法已落后于 skill，撤。）
 
 ### /save
 收到此命令时：
 1. 在 `logs/YYYY-MM-DD-主题.md` 创建会话日志（格式见模板）
    - **日志引用约定（2026-11-05 Doctor 裁 5A）**：`logs/` 每月 1 号由 meditation 把上月日志折进 `logs/YYYY-MM/`（`checkpoints/`、`checkups/` 随月走）。文内引用日志**一律省略月目录**写 `logs/YYYY-MM-DD-主题.md`，读者按日期自推；脚本消费端用 `.tools/resolve_log_path.py`（先试根目录，再试 `logs/YYYY-MM/`）解析，不要求存量引用改写。
 2. 记录：做了什么、决策、遗留问题、相关笔记链接
-3. 更新相关项目目录下的 progress.md（如果存在）
+3. 按 `.skills/brain-save/SKILL.md` Step 4 更新该项目 `architecture/系统概览.md` 的「最后活跃」与 `updated`（不存在则明报、不建 stub）；记忆分拣走 Step 3.5。（2026-11-06 consolidate：原「更新 progress.md」已废。）
 
 ### /note [主题]
 收到此命令时：
@@ -106,16 +103,7 @@ type: permanent       # permanent | fleeting | log | resource | decision
 
 ## 项目列表
 
-| 项目 | 目录 | 状态 | 最后工作 |
-|------|------|------|----------|
-| 渊图（行业知识图谱） | `渊图/` | 🟢 活跃 | 2026-08-10 |
-| DVA（抖音视频分析） | `DVA/` | 🟢 活跃 | 2026-07-02 |
-| 龙鱼五力（行业五力分析） | `龙鱼五力/` | 🟢 活跃 | 2026-06-10 |
-| PEC | `PEC/` | 🟢 活跃 | 2026-06-11 |
-| 海螺姑娘（Conch 项目护航） | `海螺姑娘/` | 🟡 维护 | 2026-05-19 |
-| O MY HTML（设计师工具箱） | `O MY HTML/` | 🟡 维护 | 2026-06-11 |
-| 司南（项目护航方法论） | `司南/` | 📋 参考 | 2026-07-02 |
-| 数灵转移（云端agent→本地subagent） | `数灵转移/` | 🟢 活跃 | 2026-06-05 |
+项目清单唯一真源＝`permanent/项目总览.md`（19 行 · 含路径、状态、核心文件）。本处原有 8 行带日期的表自 2026-08 起失同步，2026-11-06 consolidate 撤表改指针；「最后活跃」看各项目 `architecture/系统概览.md`。
 
 ## 👪 数灵唤名（全局默认 · 2026-06-02）
 

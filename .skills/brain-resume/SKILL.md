@@ -123,7 +123,7 @@ cat ~/Documents/Claude/brain/permanent/经验索引.md
 ~/Documents/Claude/brain/{项目名}/GOTCHAS.md
 ```
 
-**⚠ 系统概览缺失是已知状态**（8 个项目目录没有它，见 `brain/TODO.md`）——缺了就明确报一行「⚠ {项目}/architecture/系统概览.md 不存在」，**不建、不猜、不静默跳过**。
+**⚠ 系统概览缺失是已知状态**（2026-11-06 实核余 **4** 个：MiroFish · 数灵转移 · 星空 · 称象；原写「8 个」为 2026-07-31 对表，剑酒青丘/烛照九阴/白泽大宗/风险日报已补建——动手前仍按 `ls -d */architecture/系统概览.md` 与项目总览重取差集）——缺了就明确报一行「⚠ {项目}/architecture/系统概览.md 不存在」，**不建、不猜、不静默跳过**。
 
 ### Step 3 · 扫 TODO 顶部
 

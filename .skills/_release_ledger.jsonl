@@ -28,3 +28,6 @@
 {"ts": "2026-11-05T15:13:28+00:00", "skill": "brain-save", "version": "2026-11-05-7d98a47f", "sha256": "7d98a47f211c0a0747bb32c9c8d460fb7423c3545b16f0088bfc562c898197b0", "note": "release"}
 {"ts": "2026-11-06T04:54:19+00:00", "skill": "brain-anchors", "version": "2026-11-06-7fe4f2f6", "sha256": "7fe4f2f60f383b96d6a6f2ad0b8224db157da9cd9a0f5b7ddfb7c69c4fcc9dfa", "note": "release"}
 {"ts": "2026-11-06T04:54:19+00:00", "skill": "brain-save", "version": "2026-11-06-ec58d1e9", "sha256": "ec58d1e9b580c7b47485ae8660979476e0d7223abc6dfc5b51160aaab4af2c81", "note": "release"}
+{"ts": "2026-11-06T01:15:02-08:00", "skill": "brain-anchors", "version": "2026-11-06-9e106503", "sha256": "9e106503dbe1384e601b8242139dcab14f5601ba618cef5c3984c2519eed6346", "note": "release"}
+{"ts": "2026-11-06T01:15:02-08:00", "skill": "brain-resume", "version": "2026-11-06-e3b34b8c", "sha256": "e3b34b8c295106c90082038597a6bc15c5adf3b906f9225da89a36a28801d32e", "note": "release"}
+{"ts": "2026-11-06T01:15:02-08:00", "skill": "brain-save", "version": "2026-11-06-316a0187", "sha256": "316a0187f59a51a6a7ced3a28f0bb617ce37eb593b57be30a5cc5721565767ce", "note": "release"}

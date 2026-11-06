@@ -27,10 +27,10 @@ if not BRAIN_ROOT.exists():
     BRAIN_ROOT = SCRIPT_DIR.parent  # fallback：从 .tools/ 推算
 
 REQUIRED_FIELDS = ["title", "tags", "created", "updated", "status", "type"]
-VALID_STATUS = {"active", "archived", "draft", "失败"}
+VALID_STATUS = {"active", "archived", "draft", "失败", "retired"}  # 2026-11-06 +retired
 VALID_TYPE = {"permanent", "fleeting", "log", "resource", "decision", "spec", "index", "reference", "handoff", "bootstrap",
               # 2026-06-14 consolidate：纳入项目内复用的中文文档分类，保留 Doctor 的分类法
-              "提案", "实施记录", "检查报告", "checkup", "stub"}
+              "提案", "实施记录", "检查报告", "checkup", "stub", "architecture", "case"}  # 2026-11-06 /consolidate E8：5 份系统概览用 architecture、案例件用 case
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 # 跳过这些目录（非笔记内容）
@@ -40,7 +40,7 @@ SKIP_DIRS = {".git", ".obsidian", ".index", ".tools", ".skills", ".hooks", "grap
              "agents", "checkpoints", "_DEPRECATED", "_TRASH",
              # 2026-08-02 /consolidate 白名单：导出层与镜像不按 Zettelkasten frontmatter 约定
              "portable",              # Claude Code skill/bootstrap 格式（name/description）
-             "scheduled-live-mirror"} # Cowork live 逐字镜像——绝不能为过校验改内容
+             "scheduled-live-mirror", ".tmp", "backups", "checkups"}  # 2026-11-06 E8：临时件/备份/复验报告非正文层 # Cowork live 逐字镜像——绝不能为过校验改内容
 
 # 颜色
 RED = "\033[91m"
@@ -110,7 +110,7 @@ def check_file(path: Path):
 def walk_md(root: Path):
     for p in sorted(root.rglob("*.md")):
         parts = p.relative_to(root).parts
-        if any(seg in SKIP_DIRS or seg.startswith("_DEPRECATED") or seg.startswith("_TRASH") for seg in parts):
+        if any(seg in SKIP_DIRS or seg.startswith("_DEPRECATED") or seg.startswith("_TRASH") for seg in parts) or parts[-1].startswith("_") or parts[-1] == "经验索引.md":  # 2026-11-06 E8：permanent/_* 与 经验索引.md 为生成视图，无 frontmatter 属设计
             continue
         if p.name == "_scheduler_snapshot.md":   # 周更机器快照，非笔记（2026-08-02）
             continue
