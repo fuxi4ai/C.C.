@@ -2,7 +2,7 @@
 title: 剑酒青丘 · GOTCHAS（已知坑 · 索引）
 tags: [剑酒青丘, gotchas, index]
 created: 2026-07-24
-updated: 2026-11-01
+updated: 2026-11-06
 status: active
 type: resource
 project: 剑酒青丘
@@ -61,6 +61,24 @@ project: 剑酒青丘
 **来源**: 2026-10-21 烛照日报班日志「日报与 Artifact」段 + CC 本场排查（实读 adjustment_grade.py / gen_daily_report.py A6 段 / AI4ME 盘面 / 9-07 迁移日志）。
 
 **状态**: ✅ 已修复（2026-10-21 迁址重建＋原件找回·全链闭环）（✅ 2026-10-23 错题本消化 · 未参与实施的审核 subagent 落签 · Doctor 2026-10-23 问答板授权 · 证据：`剑酒青丘/回调级别判别/` 迁址在盘〔index_research.db+outputs+scripts+立项报告〕· index_research.db 实读 index_daily 12136 行 max=20261022 · universe_fixed.json 实读顶层 list 长度 729 · adjustment_grade.py L43-44 RES 改锚 剑酒青丘/回调级别判别〔docstring L8 记 2026-10-21 Doctor 裁〕· AI4ME/剑酒青丘-outputs/回调级别判别/ 与 AI4ME/回调级别判别 均不存在〔空壳已删〕）——① **管线迁址** `剑酒青丘/回调级别判别/`（Doctor 裁「AI4ME 属可删目录，量化回测资产归剑酒青丘」）；双消费者路径改锚剑酒青丘。② **db 重建**：`scripts/rebuild_index_db.py` 三指数 2010 起全量（4077/4077/3979 行至 20261021 · integrity ok）。③ **原件找回**（Doctor 终端 find）：10-04 07:03 的「AI4ME 迁出」动作（执行者=Codex/VV 域，CC 日志零命中）把全套资产迁至 `Codex/Project Mirror/剑酒青丘/research/AI4ME迁出/回调级别判别/` 但未通知消费者——outputs 六件（universe_fixed.json 精确 729 · episodes csv · features pkl · nn_profiles · backtest_results）＋ scripts 五件＋立项报告已复制回剑酒青丘仓。④ **演练全绿**：adjustment_grade --json 恢复读数（L3 慢磨型·confirm）；生成器 A6/B6 双灯恢复（量能分位 p17 · 浮盈集中度·环境·静），「级别读数不可用」占位退场。⑤ **兜底工具**：`scripts/rebuild_universe.py`（按口径重算 universe · 带 729 锚负向检验）留仓备用。⑥ **空壳清理**：AI4ME/剑酒青丘-outputs/回调级别判别/ 空壳已删（Doctor 裁 2026-10-21 · 删前终核 0 文件）。✅ 已由未参与实施的审核 subagent 落签（2026-10-23 错题本消化 · Doctor 2026-10-23 问答板授权 · 证据见状态行）。
+
+### [NOTE-20261106-001] EAL gate 验收脚本判据集失效——11-05 台账退役改指路 stub 后「canonical 指纹」判据零命中；沙箱 Python 3.13 与环境判据不合（2026-11-06 清账场实跑发现）
+
+**触发**: 2026-11-06 清账场核 PRD `logs/2026-08/checkpoints/2026-08-17_EAL_gate验收脚本_PRD.md`（status=awaiting_acceptance · 剩 Doctor Mac 原生跑 + VV 审阅判据集）时，沙箱实跑 `brain/.tools/eal_gate_check.py`：**gate 4 PASS · 0 WARN · 4 FAIL · exit 1**（09-18 专场记录为 8/8 PASS exit 0）。
+
+**硬证据**（实跑实读）: ① 判据 5「canonical 指纹」FAIL：`eal_gate_checks.json` paths.ledger_md 指 `宏观研究体系/EAL/frameworks/事件归因台账.md`，该路径现为 391 B 指路 stub（frontmatter `status: retired · type: pointer · updated: 2026-11-05`；commit `bb1a092` 2026-11-05「EAL：定位改归因研究三层；目录/索引/文件格式标准三批」），正向指纹 '+0.1774' / '−2.7087' / '开放簇' / '0 净（2 raw）' / '190.116' 计数全 0；真本在 `EAL/archive/frameworks-retired-2026-11/事件归因台账.md`（grep '0.1774' 命中）。② 判据 1「环境」FAIL：判据集期望 `Python 3.10` + statsmodels 0.14.6，本沙箱 python3=`/Library/Frameworks/Python.framework/Versions/3.13`，statsmodels ModuleNotFoundError；判据 2「复现」exit 1 缺 17 串、判据 3「fail-fast」普通/-O 均 exit 1——推断与判据 1 同源（repro 依赖 statsmodels），未单独定性。③ 判据 4 SHA / 6 载体一致 / 7 快照真源 / 8 发布器保险丝 PASS。
+
+**根因**: ① 判据集 v1 的 ledger_md 为硬路径，11-05 台账退役改指路时未同步判据集（2026-11-05 EAL 目录标准 PRD 全文 grep "gate" 0 命中，gate 不在其改动面）；② 判据 1 把解释器版本写死为 09-18 通过时的环境，换壳即假红。
+
+**影响面**: 该 PRD 剩余两项（Doctor Mac 原生跑 exit 0 · VV 审阅判据集）在判据集修订前无法达成——Mac 原生跑判据 5 必 FAIL；gate 失去「A 阶段完成声明」的机器判据能力。EAL 生产链不受影响（台账 08-19 已裁退役为历史真源 · 推断）。
+
+**建议修法**（归 Doctor 裁 · 本条只登记）: 走 PRD 边界④ 判据集增补流程（VV/CC 提 → Doctor 批）：a) ledger_md 改指 archive 真本，或改为「stub 指路有效 + 真本指纹」双判据；b) 判据 1 环境改为 Mac 原生 python_prefix 或版本区间，并标注沙箱不适用；c) 修订后沙箱 + Mac 各复跑一次再交 VV 审阅。
+
+**预防门禁**: 凡移动/退役被 `eal_gate_checks.json` paths.* 引用的文件，同批必跑 `python3 brain/.tools/eal_gate_check.py` 并把结果写进该批 PRD；判据集路径项建议加「目标文件 `type: pointer` 即判失效」的显式检查。
+
+**来源**: 2026-11-06 清账场（剑酒青丘 5 处待验收批量落签 · 审计中硬证据确认的实错 · 只登记不修）；PRD 2026-08-17_EAL_gate验收脚本；commit `bb1a092`。
+
+**状态**: 🔄 待修复（2026-11-06 登记 · 同日 Doctor AskUserQuestion 裁「先修判据集再终验（推荐）」—— 判据集修订专场已提案〔EAL gate 判据集修订与终验专场〕，修订按 PRD 边界④ 走 Doctor 批）
 
 ## 跨项目通用教训
 

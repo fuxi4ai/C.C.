@@ -119,7 +119,7 @@ project: 龙鱼五力
 ---
 
 ## [NOTE-20260819-001] ds 腿引用未证实/错链数字（第二例）——应升格通用教训
-**状态**: 🔄 待修复（2026-08-20 错题本消化拆两子项：① 升格通用教训——**已落盘** `permanent/通用教训.md` G-X153〔Doctor 裁起草·「龙鱼批」落〕；② 检测机制 TODO 已补挂〔brain/TODO.md「ds 腿引用数字检测机制」条〕· 待闭环）
+**状态**: ✅ 已修复（✅ 2026-11-06 未参与实施的审核 subagent 实跑实读落签 · 证据：check_ds_evidence.py 三档检测在盘〔2026-08-31 立〕+ 2026-11-06 接入 run_dual_scorer_batch.py 末尾调用〔只告警不阻断·输出进批跑日志 · git diff 33 插入〔复验订正：rc 小改后 37 插入/0 删除〕/0 删除〕+ test_run_dual_scorer_batch_check.py 4/4 PASS exit 0 + test_check_ds_evidence.py 5/5 PASS exit 0 + 审核者补探 rc=3/超时两分支均只告警返回 None · 与 NOTE-20260830-001 L147「检测机制实装」口径对齐 · 限制：周更班 SKILL 走逐只 score_subitems 不经批跑脚本，班内接入待 Doctor 终端 SHA 往返〔TODO L152 残余 ①〕）——原：🔄 待修复（2026-08-20 错题本消化拆两子项：① 升格通用教训——**已落盘** `permanent/通用教训.md` G-X153〔Doctor 裁起草·「龙鱼批」落〕；② 检测机制 TODO 已补挂〔brain/TODO.md「ds 腿引用数字检测机制」条〕· 待闭环）
 **优先级**: 🟡 中
 **触发**: 2026-08-19 校正队列销账场对海光 688041 复核：ds 腿供需端 16 分依据「中芯产能排期满至 2027 年」——canonical 全图检索零命中，且中芯为华为链，海光 x86 代工为三星（concept_SamsungFoundryCPUConstraint2026 在案），属错链引用。同族第一例：08-15 华工 ds 腿把 P3「2万样机」当事实（Doctor 裁校正 63.5）。
 **根因**: ds 腿自下而上判分时引用训练记忆/外部印象中的具体数字，未对 canonical stage/P 级做存在性校验；检测机制尚未实装（08-15 渊图场已挂 TODO）。
@@ -127,6 +127,7 @@ project: 龙鱼五力
 **建议修法**: ds evidence 中的具体数字（产能/订单/营收额/市占率）必须能在 canonical 或 engine_facts 找到同源，找不到则标 P3 降权或不采；机制化 = 08-15 挂的「ds 引用未证实数字检测」TODO。
 **预防门禁**: 校正/销账审计对 ds 腿 evidence 逐句对 canonical；同族第二例已现，按合同登记「应升格通用教训」，升格由 Doctor 裁。
 **⇒ 2026-08-30 第三次复发（实读实据）**: 08-29 周更班海光 688041 ds 腿供需端 evidence 再现「中芯代工产能排满至 2027 年显示供给约束下的强需求兑现」——同标的、同句。**⇒ 2026-08-30 复核推翻「错链」定性（同场实读 canonical）**：该引用在 canonical **有锚**——`rel_Haiguang_SMIC_South`（company_Haiguang → company_SMIC_South · requires · 帕米尔 2026-04-29 · P1）desc 原文「海光CPU产能依赖中芯国际代工，产能排期已满至2027年，供应紧张」与 ds 引用逐字吻合。故 ds 非凭空编造，是引用了 canonical 内**未退役的旧锚**；同主题更新叙事已在库（concept_SamsungFoundryCPUConstraint2026「海光CPU 2026年三星代工产能受限·从台积电转三星·良率不佳」· 05-16 建 · 07-21/08-16 追源）但旧边未标时效/未退役——canonical 内部时序冲突是根因之一。08-19 本条目「canonical 全图检索零命中、中芯为华为链」的裁定基础需复核（结论「海光双分共存销账」不受影响，归因「错链锚为抬分」不成立）。同族第一例（08-15 华工「2万样机」）是否同型旧锚待查。**同族第二次实质复发→应升格——已升格 G-X163（2026-08-31 /save 场 Doctor 勾选落盘 · permanent/通用教训.md）**，08-19 裁定复核与 canonical 旧边处置仍归 Doctor 裁。
+**⇒ 2026-11-06 接入批跑（CC 实施 · 审核 subagent 核验）**：run_dual_scorer_batch.py 末尾一次性调 check_ds_evidence.py（--date 当日；指定标的时逐只 --ts），⚠ 清单原样进批跑 stdout；rc≠0/1、异常、超时只告警不阻断。自测 4 例（全库日/指定标的/无条目日回退最新/脚本缺失）。
 **来源**: logs/2026-08-15-渊图15篇入库与光通信龙鱼重打分.md（第一例）+ 2026-08-19 专项校正场（第二例·销账留痕）+ 2026-08-29 周更班 records 实读（第三次）
 
 ---
