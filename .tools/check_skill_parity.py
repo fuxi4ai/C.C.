@@ -139,7 +139,10 @@ def pack_member(pkg: pathlib.Path) -> tuple[bytes | None, str]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="brain-* skill 四端对拍（只读）")
-    ap.add_argument("--docs", default=os.environ.get("DOCS_DIR") or os.path.expanduser("~/Documents"))
+    _docs_default = os.environ.get("DOCS_DIR") or os.path.expanduser("~/Documents")
+    if not os.path.isdir(os.path.join(_docs_default, "Claude/brain")) and os.path.isdir(os.path.expanduser("~/mnt/Documents/Claude/brain")):
+        _docs_default = os.path.expanduser("~/mnt/Documents")  # 2026-11-05：云端 VM 挂载在 ~/mnt/Documents
+    ap.add_argument("--docs", default=_docs_default)
     ap.add_argument("--runtime", default=os.environ.get("SKILL_RUNTIME_DIR") or "")
     ap.add_argument("--name", action="append", default=[], help="只核指定 skill（可多次）")
     ap.add_argument("--all", action="store_true",
@@ -212,7 +215,7 @@ def main() -> int:
             in_repo, in_repo_note = True, ""
         else:
             in_repo = False
-            tiers = {"canonical": sha(c)[:8], "portable": sha(p)[:8], "包内": sha(z)[:8]}
+            tiers = {"canonical": sha(c)[:8], "portable": (sha(p)[:8] if p else "—"), "包内": (sha(z)[:8] if z else "—")}  # 2026-11-05：缺端不再显示空串哈希 e3b0c442
             uniq = set(tiers.values())
             in_repo_note = " / ".join(f"{k}={v}" for k, v in tiers.items()) if len(uniq) > 1 else "差异"
 

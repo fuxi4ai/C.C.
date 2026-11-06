@@ -191,7 +191,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 ---
 
-## [ERR-20260722-001] `market_data.db` 中断写留下热日志(-journal) → 只读(mode=ro)打开报 `attempt to write a readonly database`,日报 regen 取数当场崩
+## [ERR-20260722-004] `market_data.db` 中断写留下热日志(-journal) → 只读(mode=ro)打开报 `attempt to write a readonly database`,日报 regen 取数当场崩
+> 原编号 ERR-20260722-001 与 L54 条撞号（内容无关），2026-11-05 审计订正 改号为 -004（-002/-003 已占用）。
 
 **状态**: ✅ 已解决(2026-07-22 · Doctor 终端 `sqlite3 <db> "PRAGMA quick_check;"` 触发自动回滚,-journal 清除,regen 跑通)
 
@@ -902,7 +903,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS——① diff 对备份 `adjustment_grade.py.bak_2026-11-05_resfix` 仅一处（原 L43 单行 `RES=_mnt(...)` → `_find_res()` 三级候选，其余零动）；② `test_adjustment_grade_res.py` 新版 3/3 rc=0，指向备份 → 平铺用例 FAIL rc=1；③ 整盘实跑 `--json` 新/旧 rc=0/0、输出 587 B 逐字节一致（_ROOT=Documents，RES=canonical `剑酒青丘/回调级别判别`）；④ `gen_daily_report --output /tmp --no-archive --no-deploy`（ZZJY_MNT_ROOT 指临时垫片、防 --update 写真库）rc=0、成品 0 处「级别读数不可用」。解析顺序复核：gen_daily_report 以 `PROJECT_ROOT.parent/剑酒青丘/…` 调真脚本 → HERE 上溯即 canonical；env 优先仅在 env 根下整树址真实存在时生效（与旧垫片语义同，env 指向旧副本时读副本属显式覆盖、非新风险）；盘上另一 `回调级别判别` 仅在 Codex 镜像、其旁无本脚本，不会误绑。残余观察：平铺挂载的生产班尚未自然跑过（临时树用例已覆盖该形态）。
 
 ## [ERR-20261104-002] closure_engine 选行 `WHERE status != 'retired'` 漏掉 status 为 NULL 的行 → 2026-08-23 四条 industry_signals 永不重算 gap_status
-**状态**: 🔄 已修待验（2026-11-04 Doctor 批「选行时把空值也算进去」→ CC 实施；✅ 落签走分轨）
+**状态**: ✅ 已修已验（2026-11-05 未参与实施的 subagent 独立复核 PASS 代签：2026-11-05 10:00 班 5c-4 closure_engine --apply 自然首评 1611–1614 → dormant/no_anchor/dormant/closing，退役 29 行 gap_* 零变化；原 2026-11-04 Doctor 批修复）
 **优先级**: 🟢 低（4 行，均为历史行）
 **触发场景**: 2026-11-04 官方端迁移场，独立复核 subagent 只读查 recap.db 时发现；主会话 CC 复核实读确认。
 **硬证据/最小复现**: `sqlite3 'file:recap.db?mode=ro'` → `select id,date,status,gap_status from industry_signals where status is null` 返回 1611–1614（date 2026-08-23，status NULL，gap_status NULL，info_gap_level 3/3/3/2）；`tools/closure_engine.py` 约 L319–320 选行为 `WHERE status != 'retired'`，SQL 三值逻辑下 `NULL != 'retired'` 为 NULL → 这 4 行被排除。
@@ -913,3 +914,4 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **独立复核（2026-11-04 · 未参与实施的 subagent）**: PASS_WITH_LIMITS——diff 仅三处谓词+1 注释；自建隔离根 dry-run 新旧 TSV 只差 1611–1614；retired 29 行两版均排除；真库 md5/mtime 前后不变。限：原静态正则漏 `<>`/表别名/双引号/`NOT IN` → 已扩正则并以七种写法注入验证（五种违规 rc=1、COALESCE 与 gap_status rc=0），测试改 with-open 消 ResourceWarning。✅ 待次日 apply 后只读复查 1611–1614 gap_status 已填再落。
 **预防门禁**: 带不等式的 SQL 过滤对可空列一律显式处理 NULL；入库写 status 默认值。
 **来源**: 2026-11-04 官方端迁移场 · 独立复核 subagent 发现 + CC 实读复核。
+**验收（2026-11-05）**: PASS —— ①代码：closure_engine.py L321 与 gen_daily_report.py L1085/L1090 均为 `COALESCE(status, '') != 'retired'`；全仓 grep `status *!=`/`<>`/`NOT IN` 及 `!= 'retired'` 除 tests/test_retired_filter_null.py 的说明/对照用例外零命中（_bak 除外）。②数据（真库只读副本 md5 ee6b95cd…）：1611–1614 gap_status = dormant/no_anchor/dormant/closing（全非空，status 仍 NULL）；date='2026-11-04' 共 11 行、gap_status 空 0 行；status='retired' 29 行 gap_status 全为 'open'，与班前回滚锚 recap.db.bak_2026-11-05_predaily 逐行比 14 个 gap_* 字段 0 行变化。③自然运行：烛阴日志 2026-11-05-行情拉取与日报.md（mtime 18:11 UTC）5c-4 closure_engine --apply rc=0、首评 15 条；留痕 docs/兑现变更_20261105_1809.md「首评（NULL → 首评）」表列 1611–1614；班前锚中这 4 行 gap_status 全 NULL、11-04 行 11/11 空，recap.db mtime 2026-11-05 18:09:42 UTC 与班次吻合 → 由班自然重算。

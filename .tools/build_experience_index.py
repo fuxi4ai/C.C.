@@ -38,7 +38,7 @@ def sha256(p):
 
 def status_of(body, title=""):
     """状态行 → 标题内嵌（白泽等格式·🔄 在 ✅ 前按出现序） → 正文头部窗口。"""
-    m = re.search(r"\*\*状态\*\*:?\s*([^\n*]+)", body)
+    m = re.search(r"\*\*状态[:：]?\*\*\s*[:：]?\s*([^\n*]+)", body)  # 2026-11-05：兼容 `**状态：**`（DVA 6 条曾落 —）
     if m:
         s = m.group(1)
     elif title:
@@ -80,9 +80,18 @@ def machine_hint(body):
 
 entries = []
 
+SEEN_IDS = {}
+SOURCE_WARNINGS = []
 def add(proj, eid, title, body, fname, status=None):
     if "YYYYMMDD" in eid or "NNN" in eid:
         return
+    # 2026-11-05 审计：同来源同 ID 不再双计（PEC 表格+列表双写 14 条、通用教训「G-X2 补」追记、烛照撞号曾被静默双计）；标题不同才告警
+    key = (proj, eid)
+    if key in SEEN_IDS:
+        if SEEN_IDS[key] != title:
+            SOURCE_WARNINGS.append(f"编号重复（保留先出现者）：{proj}/{eid} @ {fname}")
+        return
+    SEEN_IDS[key] = title
     entries.append({
         "proj": proj, "id": eid, "title": title.replace("|", "｜")[:64],
         "type": type_of(eid), "date": date_of(eid), "status": status or status_of(body, title),

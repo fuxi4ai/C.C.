@@ -25,20 +25,20 @@ description: 每交易日由句芒增量更新Market-Data行情到最近已收�
 **任务：增量更新到"最近已收盘交易日"（傍晚跑通常=当日收盘）**
 1. 查 market_data.db 里 `stock_daily.trade_date` 的**最大日期** = lastDate。
 2. 目标 = 最近一个**已收盘交易日**（A股仅周一~周五交易；周末/节假日无行情）。**本任务北京 16:30 跑（收盘 15:00 后、Tushare 15-16点入库后）→ 目标通常=当日**（周一即本周一；节假日顺延到最近交易日）。取 lastDate 到目标日的缺失交易日；若某日 Tushare 晚发拉空，防空壳跳过、次日按缺口自动补回。
-3. 取 lastDate 之后到目标日的**缺失交易日**数据（含 stock_daily / daily_market / north_flow；sector_daily 已退役不取），用 `Projects/Financial/剑酒青丘` 里的取数脚本（`09-tushare-pro` / `01-scripts`），**Tushare Pro 为唯一源**（mootdx 已弃用删除：环境未装、只能取当前交易日不能回补）。
+3. 取 lastDate 之后到目标日的**缺失交易日**数据（含 stock_daily / daily_market / north_flow；sector_daily 已退役不取），取数沿用 2026-10-23 起的成熟做法：**直连 HTTP POST `https://api.tushare.pro`**（api_name 在 body；trade_cal / daily / moneyflow_hsgt），临时取数脚本写 `/tmp`、收尾随 /tmp 清理，细节见句芒近期日志「取数方式说明」节（原写的 `09-tushare-pro` / `01-scripts` 目录已不存在 · 2026-11-04 订正），**Tushare Pro 为唯一源**（mootdx 已弃用删除：环境未装、只能取当前交易日不能回补）。
 4. **去重**：按 (ts_code, trade_date) / (trade_date) `INSERT OR IGNORE`，已存在日期不重复插。
 5. **防空壳（重要 GOTCHA）**：若某次拉取返回空/异常，**绝不**用空数据覆盖已有库；更新后校验各表行数**只增不减**、非空，异常则回报不写。
 
 **派生表聚合（沙箱必做，不依赖网络 · 2026-06-10 新增）**
 6. 取数成败与否，都要跑句芒聚合管线把 daily_market 可派生列补齐到 stock_daily 的 max 日期：
-   `python3 ~/Documents/Claude/Projects/Financial/剑酒青丘/infrastructure/取数工具/aggregate_derived.py --dry-run` 核对拟补内容后去掉 --dry-run 实跑。
+   `python3 ~/Documents/Claude/Projects/Financial/剑酒青丘/infrastructure/取数工具/aggregate_derived.py --db "$MARKET_DATA_DIR/market_data.db" --dry-run` 核对拟补内容后去掉 --dry-run 实跑（**必带 `--db`**：平铺挂载下脚本默认路径算不对 · 2026-11-04 试跑实测）。
    口径与边界（脚本内已强制，勿绕过）：
    - **口径闸**：只处理 stock_daily 覆盖 ≥5000 只的交易日（20260603 前为 ~840 只旧池，池内口径≠全市场，绝不混写）。
    - 涨跌停=涨停价精确法，无 ST 名单误差界 ±2 家；指数列(sh/sz/cyb)与北向**不再等 Mac cron**——见第 7 步；该步也失败才留 NULL——绝不编。
    - 只填空不覆盖、只增不减校验、写后 quick_check。
 
 **指数/北向补缺（2026-06-11 新增，第 7 步——消 Mac 依赖）**
-7. 跑 `python3 ~/Documents/Claude/Projects/Financial/剑酒青丘/infrastructure/取数工具/fill_index_north.py --dry-run` 核对拟补内容后去掉 --dry-run 实跑：
+7. 跑 `MARKET_DB="$MARKET_DATA_DIR/market_data.db" DOTENV="<Database 挂载点>/.env" python3 ~/Documents/Claude/Projects/Financial/剑酒青丘/infrastructure/取数工具/fill_index_north.py --dry-run` 核对拟补内容后去掉 --dry-run 实跑（**必带两个 env**：脚本默认 `parents[6]` 经软链解析后落到 `/`，不带会找不到库 · 2026-11-04 试跑实测）：
    - 北向：从本库 north_flow 回填 daily_market.north_money（纯本地，零网络）；
    - 指数：Tushare HTTP API（index_daily，P0）拉 sh/sz/cyb，**只填 NULL 列**；无 token/网络不通 → 优雅跳过留 NULL；
    - 脚本已分段提交（北向一段、每指数一段），降低大事务在挂载盘 commit I/O 错的风险；若仍 I/O 错，按下条 GOTCHA 的 /tmp 路径处理。

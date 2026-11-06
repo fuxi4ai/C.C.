@@ -11,7 +11,7 @@ project: 司南
 # 司南 · GOTCHAS（已知坑）
 
 > 排查超过一轮的问题都该记录在这里。CC 遇到报错并解决后**立即**回写，无需 Doctor 提示。
-> 实时操作日志写在项目目录的 `Projects/司南/GOTCHAS.md`；这里是沉淀+索引。
+> 本文件即权威（原写「实时操作日志在 `Projects/司南/GOTCHAS.md`」，该文件不存在 · 2026-11-05 审计订正）。
 
 ## 格式
 
@@ -94,3 +94,16 @@ project: 司南
 **修复/建议修法**: 从 `06bb8e8` 取回旧版写回备份文件（`~/.claude/` 不在 CC 写入范围，由 Doctor 终端执行）。
 **预防门禁**: 给 Doctor 的备份命令用不覆盖写法（`cp -n`）或带时间戳的文件名；声称「可重跑」前，逐段核对命令每一步在第二次执行时的结果。
 **来源**: 2026-11-04 Code 标签会话。
+
+## [ERR-20261105-001] 内联型云端班改 prompt 不回写 `live/` 镜像：3 班镜像落后云端（scheduler-weekly-audit 双向分叉）
+**状态**: 🔄 已修待验（market-data-daily-update / us-close-backfill 两班已以云端为准回写镜像；scheduler-weekly-audit 分叉待 Doctor 裁）
+**优先级**: 🟡 中
+**触发场景**: 2026-11-05 五维审计（双源漂移维度）：`list_triggers` 实读 24 班云端 prompt，与 `references/scheduled-live-mirror/live/<班>/SKILL.md` 去 frontmatter 逐行 diff。15 个内联型班中 12 班零差异，3 班有差。
+**硬证据/最小复现**: ① `market-data-daily-update`：云端步骤 3/6/7 为 11-04 试跑订正（直连 api.tushare.pro、`--db`、`MARKET_DB`/`DOTENV` env），镜像 mtime 10-16 仍写已不存在的 `09-tushare-pro`/`01-scripts`；② `us-close-backfill`：云端「前置〇」已改官方云端口径，镜像仍写 `request_cowork_directory` + `/sessions/*/mnt/烛照九阴`；③ `scheduler-weekly-audit`：云端（updated 11-05T04:41Z）含「0. 云端任务体检」整节 + PushNotification 段，镜像（mtime 11-05 05:46Z，**晚于云端**）无这两段但独有 ERR-20261104-005 引用句——两侧各有对方没有的内容。
+**根因**: 引用型 9 班的真源在镜像、改镜像即生效；内联型 15 班的真源在云端 prompt，`update_trigger` 改完没有「回写镜像」这一步（Step 0 系从 `.tmp/scheduler-audit-step0-draft-2026-11-04.md` 草稿贴上云，草稿未并入镜像）。
+**影响面**: 镜像是「24 班操作说明（只读参考）」与 Doctor 终端 SHA 往返的基准；失真后按镜像跑必失败（①②），或审计对拍时误判（③）。
+**修复/建议修法**: ①② 已于 2026-11-05 以云端实读文本覆盖镜像对应段（备份 `.bak_2026-11-05_auditfix`）。③ 两选项：(a) 以云端为真源覆盖镜像并把 ERR-20261104-005 句并入；(b) 把该班改成引用型（wrapper 指镜像），此后只改镜像——需 `update_trigger`，属调度变更禁手，归 Doctor。
+**预防门禁**: 凡 `update_trigger` 改内联型班的 prompt，同一轮必须回写 `live/<班>/SKILL.md` 并跑一次 diff（可复用本次 `/tmp/cmp.py` 思路：去 frontmatter + 去统一前置段后 difflib）；长期解法＝内联型班逐步改引用型，消灭第二真源。
+**来源**: 2026-11-05 五维审计（审计员 A 只读报告 + 主会话 `list_triggers` 实读回写）。
+**独立复核（2026-11-05 · 未参与实施的审核者 subagent）**: PASS_WITH_LIMITS — 本批 A-D 共 18 项复验：28 份 .bak 齐、diff 无越界、新指向全部在盘、三套测试全绿、镜像两班与云端 prompt 逐段一致、台账 NF==9 且 ⑧⑨⑩⑪→㉒㉓㉔㉕ 无误，17 项 ✓；第 11 项中 3 处「历史叙述路径」被当死链误换致语义反转（`DVA/architecture/决策记录.md` L200 与 `permanent/经验库.md` L473 的孤儿路径 `~/Documents/Claude/Documents/Database/` 本是故意写错的历史实例、现与「多一层 /Claude/」自相矛盾；`白泽大宗/周日工作流-接手指南.md` L122 把现役单一真源 `Database/宏观-大宗商品/business_breakdown.db` 写成「已归档·不再使用」，正确指向应为 `data/archived/business_breakdown.db.项目本地遗留_20260615`），须从同名 .bak 回滚该 3 行；限制：① 镜像比对为逐段目视、非机器 difflib；② 索引总条数实跑 1156（声明 1155，差 1 条疑为本批后他处新增，无基线快照不可归因）；③ DVA 索引仍判 BUG-20260819-001 为 🔄 系 status_of 既有 mark 优先序（🔄 先于 ✅）、非本批回归，但 DVA「开放 4」因此虚高 ≥1；④ 「24 班」计数未逐一复核（list_triggers 现为 26 条含 1 条一次性提醒与 11-05 07:05 新建的 Sessions monthly audit）；⑤ us-close 镜像开头双 frontmatter 为既有、未在本批范围。状态行保持 🔄（③ scheduler-weekly-audit 分叉待 Doctor）。
+**复核后处置（2026-11-05 · 实施者）**: 第 11 项 3 处语义反转已处理——`DVA/architecture/决策记录.md` L200 与 `permanent/经验库.md` L473 的故意记录的错位路径从 `.bak_2026-11-05_auditfix` 逐行回滚；`白泽大宗/周日工作流-接手指南.md` L122 改指归档实名 `data/archived/business_breakdown.db.项目本地遗留_20260615`（在盘）。此三处订正由实施者自做，未经第二轮独立复核。

@@ -21,6 +21,8 @@ type: bootstrap
 
 ## 目录结构
 
+> 示意、非穷举（2026-11-05 审计订正）：树里只画了 `渊图/` 一例；实际 18 个项目目录与 `agents/ portable/ backups/ _bak/ archived/ .skills/ .tools/ .tmp/` 以盘上为准，项目清单唯一真源＝`permanent/项目总览.md`。
+
 ```
 brain/
 ├── CLAUDE.md           ← 本文件，CC 全局指令

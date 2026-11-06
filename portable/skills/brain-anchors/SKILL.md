@@ -11,9 +11,9 @@ description: "Auto-load full project context — or summon a 数灵 by name — 
 
 | 关键词 | 触发读取（按顺序） |
 |--------|-------------------|
-| `dva` / `DVA` | **轻量 stub**：`brain/DVA/DVA.md`（index，含项目定位 + 深读入口）<br>深读触发：Doctor 显式说"深入 DVA" / "细读 DVA" / 进入 `Projects/DVA/` 实际工作时<br>深读时再加载：`brain/DVA/architecture/系统概览.md` · `决策记录.md` · `GOTCHAS.md` · `Projects/DVA/CLAUDE.md` · `Projects/DVA/GOTCHAS.md` |
-| `龙鱼五力` | **轻量 stub**：`brain/龙鱼五力/龙鱼五力.md`（index 文件，含项目定位 + 深读入口）<br>触发深读条件：Doctor 显式说"深入龙鱼五力" / "细读龙鱼五力" / 进入 `Projects/龙鱼五力/` 实际工作时<br>深读时再加载：`brain/龙鱼五力/architecture/系统概览.md` · `决策记录.md` · `GOTCHAS.md` · `Projects/龙鱼五力/RULES.md` |
-| `自检` | `Projects/龙鱼五力/RULES.md`（严格用户视角标准化检查流程） |
+| `dva` / `DVA` | **轻量 stub**：`brain/DVA/DVA.md`（index，含项目定位 + 深读入口）<br>深读触发：Doctor 显式说"深入 DVA" / "细读 DVA" / 进入 `Projects/DVA/` 实际工作时<br>深读时再加载：`brain/DVA/architecture/系统概览.md` · `决策记录.md` · `GOTCHAS.md` · `Projects/DVA/README.md` · `Projects/DVA/GOTCHAS.md` |
+| `龙鱼五力` | **轻量 stub**：`brain/龙鱼五力/龙鱼五力.md`（index 文件，含项目定位 + 深读入口）<br>触发深读条件：Doctor 显式说"深入龙鱼五力" / "细读龙鱼五力" / 进入 `Database/行业研究/consumers/龙鱼五力/` 实际工作时<br>深读时再加载：`brain/龙鱼五力/architecture/系统概览.md` · `决策记录.md` · `GOTCHAS.md` · `Database/行业研究/consumers/龙鱼五力/RULES.md` |
+| `自检` | `Database/行业研究/consumers/龙鱼五力/RULES.md`（严格用户视角标准化检查流程） |
 | `天工开物` | `Vault/天工开物.md`（设计项目启动咒语） |
 | `渊图` / `行业图谱` | `brain/渊图/architecture/系统概览.md`<br>`brain/渊图/architecture/决策记录.md`<br>`brain/渊图/GOTCHAS.md`<br>`Database/行业研究/CLAUDE.md`（若存在） |
 | `海螺姑娘` / `Conch` | `brain/海螺姑娘/architecture/系统概览.md`<br>`brain/海螺姑娘/architecture/项目概要.md`（若存在）<br>`brain/海螺姑娘/GOTCHAS.md` |

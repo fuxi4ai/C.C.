@@ -32,18 +32,17 @@ description: 美股收盘补数班的只读看门狗——写库已迁本机 lau
 4. **失败要看得见**。库打不开/状态文件缺失 → 在简报里明写，不要静默跳过。
 5. 不生成日报、不碰 artifact、不做任何行情判读。
 
-## 前置〇：挂载（先确认；沙箱平铺挂载 · G-X45，默认只挂 brain，够不到 Database/Projects）
+## 前置〇：运行环境（官方云端 Cowork · 2026-11-04 改）
 
-- 本班需要两个挂载：`~/Documents/Database`（market_data.db 所在）、`~/Documents/Claude/Projects/Financial/烛照九阴`（config.py / ops 状态文件 / logs）。缺哪个就用 `mcp__cowork__request_cowork_directory` 申请哪个。
-- 挂好后 `ls /sessions/*/mnt/` 确认挂载点，项目目录经 `cd /sessions/*/mnt/烛照九阴` 进入。
-- **若挂载被拒/挂不上** → 不要硬跑：按铁律 #4 在简报里明写「本轮挂载缺失（缺哪个）、无法核对」，并提示 Doctor 在 app 侧给本班加授权，然后停。无人值守时宁可失明可见，不可静默跳过。
+- 本班绑定 Doctor 的 Mac，文件夹 `~/Documents` 已随任务挂载，运行时位于 `$HOME/mnt/Documents`。用 `mcp__remote-devices__device_bash` 执行所有命令；**不要调用 `request_cowork_directory`**（新环境无此工具）。
+- 开工先 `ls -d "$HOME/mnt/Documents"`。不存在 → 按铁律 #4 在简报里明写「本轮挂载缺失、无法核对」（多半是 Mac 休眠或 app 未开），然后停。
 
 ## 前置：路径
 
 ```bash
-cd /sessions/*/mnt/烛照九阴 2>/dev/null || cd ~/Documents/Claude/Projects/Financial/烛照九阴
+cd "$HOME/mnt/Documents/Claude/Projects/Financial/烛照九阴"
 python3 -c "import config; print('DB:', config.MARKET_DB)"
-# 若报错或路径不含 Database/Market-Data，export ZZJY_DATABASE_ROOT=<真实 Database 路径> 后重试
+# 期望输出含 /mnt/Documents/Database/Market-Data/market_data.db；不符则在简报里明写，不硬跑
 ```
 
 ## Step 1 · 读 launchd 班的自述状态
