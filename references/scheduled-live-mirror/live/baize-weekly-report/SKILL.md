@@ -30,7 +30,7 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
 [3] 龙鱼 batch：ts_code 清单取法同 weekly_local_prep.sh L49（从 stocks_fundamentals.json 提取，即大宗受益榜）。**★ 常更标的不并入此处**——由独立「**龙鱼标的库周更任务**」负责双 scorer 周更（deepseek 子项 + claude top-down），见接手指南「常更标的接入」节；白泽只评自己的大宗受益公司。**每条 bash 调用跑一只**：`cd Database/行业研究/consumers/龙鱼五力 && timeout 43 python3 batch_score.py <一只ts_code>`（timeout_ms 设 45000；超时的股重试一次，仍失败则该股标『待引擎』继续）。**增量阈值＝『过龄≥1周』**（2026-06-25 Doctor 定）：查 reports/，**最新 five_forces_data 产物分龄 <7 天的股跳过、≥7 天（或无产物）才重核**——慢变量周更，跳本周内重复、杀每周全量重跑的浪费。注意：引擎 `_connect` 已支持 https_proxy 隧道（2026-06-11 补丁）——若见成批 ENGINE_FAILED/「找不到标的」，先怀疑代理/网络而非 ts_code（GOTCHA-013 变体：鉴权/网络失败会被吞成"找不到标的"）。
 [2][4] 已于 2026-06-11 加白名单（hq.smm.cn / api.deepseek.com），但**先自检再跑**（白名单是会话启动快照，403 即回退）：
 `curl -s -o /dev/null -w '%{http_code}' --connect-timeout 8 https://hq.smm.cn/` 与同法测 `https://api.deepseek.com/`——非 000/403 才继续。
-[2] SMM 现货：`cd PROJ && python3 scripts/data_collection/fetch_smm_h5.py --fetch --merge`（纯 stdlib urllib，自动走代理）。自检失败 → 钨/稀土并入 Stage 1 web 补价。
+[2] SMM 现货：`cd PROJ && python3 scripts/data_collection/fetch_smm_h5.py --fetch --merge`（纯 stdlib urllib，自动走代理）。自检失败 → 钨/稀土并入 Stage 1 web 补价。**2026-11-07 Doctor 裁 12A：钨 SMM h5 退役（smm_h5_map.json mappings 已置空），钨与稀土一律走 Stage 1 web 补价（中钨在线/生意社 P1），[2] 零映射跑出「未取到可写现货价」rc 0 属预期、不算 SMM ✗。**
 [4] 六维 LLM（**沙箱自动化跑分落龙鱼库**）：对 reports/ 里有 five_forces_data 但 **llm_score 缺失或最新分龄≥7 天**（同『过龄≥1周』阈值）的股，**每条 bash 调用评一只**：
 `cd 龙鱼五力 && KG_API_KEY=$(grep '^KG_API_KEY=' ~/Documents/Database/.env | cut -d= -f2-) timeout 43 python3 score_with_llm_apiyi.py <ts> --engine-json $(ls -t reports/five_forces_data_<ts>_*.json | head -1) --api-key-env KG_API_KEY --base-url https://api.deepseek.com/anthropic --model deepseek-v4-pro --save`
 `score_with_llm` 评完即 `record_writer.upsert_analysis` **落龙鱼库 records**（公司级真源）——这就是新受益公司六维进库的唯一通路。单票历史耗时 30-45s 贴上限：超时重试一次，仍超时该股留『待跑分』继续，不阻塞。
@@ -77,13 +77,9 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
 写成 PROJ/data/weekly/crossval.json，schema 见 PROJ/data/weekly/crossval.sample.json：{"generated":"YYYY-MM-DD","companies":[{"name","commodity","verdict":"成立|存疑|证伪","confidence":"高|中|低","divergence":"...","support":[{"tier":"P1|P2","text","source"}],"refute":[{...}]}]}。
 > **web 不可用时（2026-07-01 实跑遇 WebSearch 拒返）**：绝不编造新闻面。按下面**三级降级**处理：
 > 1. **首选 WebSearch**：成立面/证伪面各搜 2-3 条（原流程）。
-> 2. **WebSearch 拒返时 → 改走 web_fetch 公告兜底（2026-07-01 新增·已验证）**：WebSearch 在 CLI/gateway 常被拦，但 `mcp__workspace__web_fetch` 通。改抓**东方财富公告 API**（服务端 JSON·交易所披露＝**P1**，比一般 web 更权威）：
->    - ① 生成 URL 清单：`cd PROJ && python3 scripts/data_collection/fetch_announcement_evidence.py urls`（按需 `--names a,b` 或 `--limit N` 只取榜上公司）。脚本打印 `code6<TAB>name<TAB>url` 并写 `data/weekly/_ann_manifest.json`。
->    - ② 对清单每个 url 调 `mcp__workspace__web_fetch`，响应**原样**存到 `data/weekly/_ann_raw/<code6>.txt`。
->    - ③ 解析为 P1 证据：`python3 scripts/data_collection/fetch_announcement_evidence.py parse --days 30` → 出 `data/weekly/ann_evidence.json`（按利多/利空关键词分桶）。
->    - ⚠️ **关键词分桶只是线索**：务必逐条**读标题原文**再定性（脚本已带否定语境过滤如「解除质押」，但仍可能误判）；公告只覆盖**披露事件面**（减持/质押/扩产/订单/计提/业绩预告等），**媒体观点面仍 best-effort**。据此填 crossval 的 support/refute（标 P1 + source + 披露日）。
->    - 巨潮 cninfo 公告查询可作第二 P1 源（同理 web_fetch JSON）；前端渲染站（财联社/雪球等 Next.js）抓回是空壳，**别抓门户首页、只抓服务端 JSON 接口**。
-> 3. **web_fetch 也拿不到时 → 沿用旧 crossval**：若既有 crossval.json 仍新鲜（≤7 天、带 P1/P2 来源、过校验 gate）且本周价格数据同源，可沿用既有裁决并在收尾摘要里**如实说明「本轮 web 未刷新、沿用 N 天龄 crossval」**；下轮恢复再刷新。
+> 2. **WebSearch 拒返时 → 先用 WebSearch 取到公告页 URL → WebFetch 直取（2026-11-07 Doctor 裁 11A 改·10-11 已有 21 份公告实取）**：沙箱 web_fetch 有 provenance 闸（ERR-20260719-001：脚本自拼的东财/巨潮 API URL 不在 provenance 集内，直接 fetch 必被拒）。改法：用 WebSearch 搜「公司名 公告 减持/扩产/业绩预告」等，**只对 WebSearch 结果里出现过的公告页 URL** 调 WebFetch 直取；取到的公告按利多/利空逐条**读标题原文**定性后填 crossval 的 support/refute（标 P1 + source + 披露日）。WebSearch 取不到公告 URL 的公司 → **按原 fail-visible 报缺**：该公司新闻面留空、标『待核验』，收尾摘要如实列出报缺名单；**不得**自拼 URL 硬 fetch，也不得编造。
+>    - 旧路（`fetch_announcement_evidence.py urls` 生成 URL → 逐条 web_fetch）在本环境不成立，仅当 URL 已出现在 WebSearch 结果中时 `parse --days 30` 解析步仍可复用。
+> 3. **WebSearch/WebFetch 均拿不到时 → 沿用旧 crossval**：若既有 crossval.json 仍新鲜（≤7 天、带 P1/P2 来源、过校验 gate）且本周价格数据同源，可沿用既有裁决并在收尾摘要里**如实说明「本轮 web 未刷新、沿用 N 天龄 crossval」**；下轮恢复再刷新。
 > 无论走到哪级，**绝不编造**：查不到的公司新闻面留空、标『待核验』。
 
 【Stage 2.5 · crossval 校验 gate（2026-06-24 新增·必跑）】写完 crossval.json 立即校验：`cd PROJ && python3 scripts/reports/validate_crossval.py`。退出 0=合格放行；退出 1=不合格（漏 name/verdict/divergence、support/refute 缺 tier/text/source 引用、verdict=成立/证伪 却缺正反面）→ 按打印的逐条问题**补全 crossval.json 后重校**，再进 Stage 3。（build_weekly_report 已内置同一 gate：crossval 存在但不合格会**中止 build**、拒绝静默渲染「待补」；crossval 缺失则允许·留空待补。）

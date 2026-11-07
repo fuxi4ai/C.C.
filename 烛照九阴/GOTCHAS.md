@@ -719,6 +719,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 
 **来源**: 2026-09-22 /resume 场 · `logs/mac_marketdata_20260922.log` · `/tmp/ipo_rolling.err` · Doctor 终端 `dig` 实跑
 
+**追记 2026-11-07（审计追记）**: 10-06/10-28/10-29 第 4～6 次复发（`logs/mac_marketdata_2026{1006,1028,1029}.log` Errno 8 各 52/54/54 行，`ops/.last_run_status` FAIL 10-28/10-29）；11-04～11-06 OK（三日 log Errno 8 均 0 行）；Doctor 裁维持 ⚠。
+
 ## [NOTE-20260922-001] 判「排期那刻机器在不在」必须读 pmset 事件史——`kern.boottime` 会掩盖真漏跑（2026-09-22 实撞）
 
 **状态**: ✅ 已实装（面③ `machine_state_at()` + 纯函数 `classify_machine_state()`，见 `brain/.tools/scheduler_snapshot.py`）
@@ -917,7 +919,8 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **验收（2026-11-05）**: PASS —— ①代码：closure_engine.py L321 与 gen_daily_report.py L1085/L1090 均为 `COALESCE(status, '') != 'retired'`；全仓 grep `status *!=`/`<>`/`NOT IN` 及 `!= 'retired'` 除 tests/test_retired_filter_null.py 的说明/对照用例外零命中（_bak 除外）。②数据（真库只读副本 md5 ee6b95cd…）：1611–1614 gap_status = dormant/no_anchor/dormant/closing（全非空，status 仍 NULL）；date='2026-11-04' 共 11 行、gap_status 空 0 行；status='retired' 29 行 gap_status 全为 'open'，与班前回滚锚 recap.db.bak_2026-11-05_predaily 逐行比 14 个 gap_* 字段 0 行变化。③自然运行：烛阴日志 2026-11-05-行情拉取与日报.md（mtime 18:11 UTC）5c-4 closure_engine --apply rc=0、首评 15 条；留痕 docs/兑现变更_20261105_1809.md「首评（NULL → 首评）」表列 1611–1614；班前锚中这 4 行 gap_status 全 NULL、11-04 行 11/11 空，recap.db mtime 2026-11-05 18:09:42 UTC 与班次吻合 → 由班自然重算。
 
 ## [ERR-20261106-001] 隔日关注摘录文件写成紧凑日期名 `daily_integration_20261028.json` → 生成器按横杠名读漏 → 10-28 日报「隔日关注」渲染「今日无」（5 条摘录实存却不显）
-**状态**: 🔄 已修·独立复核 PASS_WITH_LIMITS（2026-11-06 未参与实施的 subagent：diff 3 hunk 全在声明区、10-28 重渲 5 条摘录在场/「今日无」0、正向两例与源独立对拍一致、上游 mtime 未动；局限＝EAL「无」未带 DB 新鲜度、并存文件不告警——两点已由 CC 复核后小改并自验，**未再独立复验**；写回副作用与坏 json 路径见下）
+**状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：docs/ 紧凑名文件 0 个、`integration_slots.py --check-names` rc=0、`--date 2026-10-28 --dry-run` rc=0 且 10-28 json md5 不变含 5 notes+eal/starry_ne；11-06 自然班成品 `AI4ME/烛照九阴-outputs/烛照九阴日报_20261106.html` 「固定槽位」2 处、当日 json 已补两键 · 残留：SKILL 5.5 步 / ensure_slots try 已挂问答板）
+**沿革**: 🔄 已修·独立复核 PASS_WITH_LIMITS（2026-11-06 未参与实施的 subagent：diff 3 hunk 全在声明区、10-28 重渲 5 条摘录在场/「今日无」0、正向两例与源独立对拍一致、上游 mtime 未动；局限＝EAL「无」未带 DB 新鲜度、并存文件不告警——两点已由 CC 复核后小改并自验，**未再独立复验**；写回副作用与坏 json 路径见下）
 **优先级**: 🟡 中（单日静默漏显；契约违反无任何告警）
 **触发场景**: 2026-10-28 班摘录步落盘用了 `YYYYMMDD` 文件名；`tools/gen_daily_report.py` L1118 以 `iso(data_day)`（`YYYY-MM-DD`）拼路径 → `exists()` 为假 → `D["integration"]=None` → 渲染「今日无」。
 **硬证据/最小复现**（2026-11-06 实跑）: `python3 tools/gen_daily_report.py --date 20261028 --output <scratch> --no-archive --no-deploy` → 产物 `sec-intg` 段仅「今日无」；`ls docs/` 同时见 `daily_integration_2026-10-27.json`、`daily_integration_20261028.json`、`daily_integration_2026-10-29.json`，10-28 文件 5 条 notes 实存（风险日报/白泽观星/剑酒青丘/白泽哨兵/白泽周报）。`git ls-files docs` 证明紧凑名已入库（commit 2f5d66c）。
@@ -927,3 +930,4 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 班摘录步落盘后跑 `python3 scripts/integration_slots.py --date <YYYY-MM-DD>`（含文件名断言 + 补槽位；rc≠0 即红字）——该行须加进 Cowork 侧 `zhuzhao-market-fetch-daily-report` SKILL 步骤 5.5（prompt 改动走 Doctor 终端，本场未改）。
 **独立复核（2026-11-06 · 未参与实施的 subagent）**: PASS_WITH_LIMITS。局限：① 生成器 `write_back=True` 无开关，任何 `--date` 测试跑都会给当日 docs json 补两键（幂等，但属 docs/ 副作用；现存 10-21～11-05 其余 json 下次各日重跑时会被补键）；② `ensure_slots` 读 json 未包 try，坏 json 走生成器 except → 卡显「无（槽位未计算）」、原因只在 warning 日志；③ 回退子查询 `ORDER BY metric_code LIMIT 1` 多指标事件取法任意（当前数据未触发）；④「仅紧凑文件」场景在生成器层仅凭条件推断未实跑。复核后 CC 小改两处（EAL「无」note 追加 `DB 最新发布 {max(release_date)}`；横杠/紧凑并存时生成器也 warning），10-28 重渲自验通过，未再独立复验。
 **来源**: 2026-11-06 金融线脑暴17项 L3 专场 · CC 实跑实核 · 独立复核 subagent 落签 PASS_WITH_LIMITS。
+**追记 2026-11-07**: 残留 ①② 已按 Doctor 裁 15A 实施，待独立复验——① 班正文镜像 `brain/references/scheduled-live-mirror/live/zhuzhao-market-fetch-daily-report/SKILL.md` 于 5.6 摘录之后、步骤 6 之前加 **5.7**（问答板写作 5.5，因 5.5 已为 market_health 占用）`python3 scripts/integration_slots.py --date <YYYY-MM-DD>`（参数按 `--help` 实读：--date/--dry-run/--check-names）；② `scripts/integration_slots.py` `ensure_slots` 的 `json.loads` 包 try/except(ValueError, OSError)：解析失败 stderr 红字报文件名、info 记 json_error、返回 None 跳过该件不写回。实跑：`py_compile` 过；`--check-names` rc=0；`--date 2026-10-28 --dry-run` rc=0 且 10-28 json md5 前后一致（e8e739a3…）；坏 json 临时件（/tmp）走 except 路径返回 None 并报文件名。备份 `scripts/_bak/integration_slots.py.bak_2026-11-07_15A`、镜像 `_bak/SKILL.md.bak_2026-11-07_15A`。prompt 实体（Cowork 定时任务）改动仍归 Doctor 终端。 → 2026-11-07 审核者复验 PASS（镜像 diff 仅 L108-109 新增 5.7；脚本 diff 仅 L179→L179-185 try/except；`--check-names` rc 0、`--date 2026-10-28 --dry-run` rc 0 且 10-28 json md5 e8e739a3… 前后不变；/tmp 坏 json 走 except → stderr 红字报文件名、info.json_error 记、返回 None、坏件未被改写。限：坏 json 时 CLI 进程 rc 仍为 0，仅 stderr 可见）

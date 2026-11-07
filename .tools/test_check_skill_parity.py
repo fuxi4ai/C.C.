@@ -126,11 +126,11 @@ def _nort_strict(root):
     return r.returncode == 1, r
 
 
-@case("--name 过滤生效")
+@case("--name 过滤生效（命中 0 个 → rc 2 · 不打绿）")  # 2026-11-07 Doctor 裁 30A①：原期望 rc 0 即「0 个也打绿」，已改
 def _filter(root):
     docs, rt = build(root)
     r = run(docs, rt, "--name", "brain-y")
-    return r.returncode == 0 and "brain-x" not in r.stdout, r
+    return r.returncode == 2 and "0 个 ⚠ 未核任何技能" in r.stdout and "brain-x" not in r.stdout, r
 
 
 def main() -> int:

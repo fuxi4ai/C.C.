@@ -105,6 +105,8 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
 - **落盘**：写 `~/Documents/Claude/Projects/Financial/烛照九阴/docs/daily_integration_{YYYY-MM-DD}.json`（数据日用横杠格式）——结构 `{"date":"YYYY-MM-DD","notes":[{"text":"一句话要点","source":"来源项目","as_of":"数据时刻"}]}`。今日无增量 → `{"date":"...","notes":[]}`。docs 写不进（挂载缺失）→ 日志记「摘录落盘失败」、跳过本步**不阻断**（生成器缺件自动渲染「今日无」）。
 - **降级**：任一上游缺失 → 跳过该源；全部缺失 → 空数组或文件不写；本步失败**绝不阻断步骤 6 出报**。摘录结果记入第 7 步日志。
 
+**5.7 隔日关注文件名断言 + 固定槽位补键（2026-11-07 Doctor 裁 15A · ERR-20261106-001 预防门禁；问答板写作「5.5 步」，因 5.5 已为 market_health 占用，落位 5.7）**：摘录落盘后、步骤 6 之前跑 `cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 scripts/integration_slots.py --date <当日 YYYY-MM-DD>`——含 docs/ 文件名格式断言（紧凑 `YYYYMMDD` 名即红字 rc≠0，须改名为横杠名后重跑）+ 给当日 `daily_integration_{YYYY-MM-DD}.json` 补 `eal` / `starry_ne` 两固定键（只读上游 attribution.db `mode=ro` 与星空 render-archive，无当日产物写「无」带 note，不编数）。只想看不写用 `--dry-run`；只断言文件名用 `--check-names`（参数以 `python3 scripts/integration_slots.py --help` 为准）。rc≠0 → 日志红字记明原因；当日 json 不存在（摘录步无增量/落盘失败）→ 脚本不代建、仅算槽位，属预期**不阻断步骤 6**。结果记入第 7 步日志。
+
 6. 生成正式日报：`cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 tools/gen_daily_report.py`（v2 暖色范式；正式输出到 `~/Documents/AI4ME/烛照九阴-outputs/`，同名旧报会自动先存档到 archived/，永不删）。**沙箱设了 ZZJY_OUTPUT_ROOT（见前置）即直写正式目录、归档逻辑照常，无需再 `--output` 到 /tmp 手动搬归档——G-X45 已修。** 测试或排障时仍可用 `--output /tmp/zhuzhao-daily-test --no-archive`，不碰正式目录。
 6.5 **同步侧栏 Artifact**（id=`zhuzhao-jiuyin-daily`，2026-06-12 老师定）：把当日新报转 Artifact 兼容版后调 `mcp__cowork__update_artifact`（deferred 则先 ToolSearch `select:mcp__cowork__update_artifact`）。流程：
    - 源文件 = `~/Documents/AI4ME/烛照九阴-outputs/` 下 `ls -t 烛照九阴日报_*.html | head -1`（最新一期）；

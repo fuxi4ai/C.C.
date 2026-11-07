@@ -45,6 +45,9 @@ def status_of(body, title=""):
         s = title
     else:
         s = body[:600]
+    # 2026-11-07 Doctor 裁 1A（司南 NOTE-20261105-001）：先切掉「← 原 / 原：/（原：」之后的旧状态词，再按首个 mark 判——
+    # 使「✅ 已修复（原：🔄 待验）」判 ✅、「🔄 已修待验（…✅ 归 Doctor）」仍判 🔄。mark 优先序不变。
+    s = re.split(r"[←（(]\s*原[:：]?|←\s*原|原[:：]", s)[0]
     for mark in ("🔄", "⚠", "✅", "⏳", "📌"):  # 2026-11-05 Doctor 裁 9A：📌 常驻 入闭集，与「—未标」区分
         if mark in s:
             return mark
@@ -86,10 +89,11 @@ def add(proj, eid, title, body, fname, status=None):
     if "YYYYMMDD" in eid or "NNN" in eid:
         return
     # 2026-11-05 审计：同来源同 ID 不再双计（PEC 表格+列表双写 14 条、通用教训「G-X2 补」追记、烛照撞号曾被静默双计）；标题不同才告警
+    # 2026-11-07 Doctor 裁 2A：去重键＝「来源节 + ID」复合键——仅同来源同 ID 才算重复；跨来源撞号（如 ERR-20260907-001 在 EAL / 烛照九阴 各一条）各自入索引、不互相覆盖
     key = (proj, eid)
     if key in SEEN_IDS:
         if SEEN_IDS[key] != title:
-            SOURCE_WARNINGS.append(f"编号重复（保留先出现者）：{proj}/{eid} @ {fname}")
+            SOURCE_WARNINGS.append(f"编号重复（同来源 · 保留先出现者）：{proj}/{eid} @ {fname}")
         return
     SEEN_IDS[key] = title
     entries.append({
@@ -194,8 +198,8 @@ for proj, rel in PROJECT_SOURCES:
     starts = {m.start() for m in matches}
     seen = {e["id"] for e in entries if e["proj"] == proj}
     for i, m in enumerate(matches):
-        if m.group(1) in seen:
-            SOURCE_WARNINGS.append(f"编号重复（保留先出现者）：{proj}/{m.group(1)} @ {rel}")
+        if m.group(1) in seen:  # seen 按来源分键（proj 内），跨来源撞号不在此拦
+            SOURCE_WARNINGS.append(f"编号重复（同来源 · 保留先出现者）：{proj}/{m.group(1)} @ {rel}")
             continue
         seen.add(m.group(1))
         end = matches[i + 1].start() if i + 1 < len(matches) else len(txt)
@@ -264,7 +268,7 @@ lines = [
     f"> 生成：{now} · 生成器 brain/.tools/build_experience_index.py（v2）· 重跑幂等",
     "> 字段 10 项（**2026-09-29 加第 10 项「触发条件」** · 承 Doctor 批）：条目ID · 类型 · 日期 · 状态 · 机器化 · 标题 · 证据指针 · 来源主体（节头） · 对侧状态（- 未见 / 👁已扫描未命中 / ⚑已预警 / ✓已复验）。",
     "> 状态闭集：✅已修复/已沉淀 · 🔄待修复/已修待验 · ⚠已知风险 · ⏳旧状态词 · 📌常驻（长期有效的提醒，不计开放也不计未标 · 2026-11-05 Doctor 裁 9A）· —未标。**触发条件＝从条目自带的「警报信号／判据／做法／强制问询／预防门禁」抽一行**（2026-09-29 起；原为「＝标题摘要」，已取代）；正文按指针取。",
-    "> 覆盖：brain 各项目 GOTCHAS（H2/H3/列表粗体/表格四格式）+ Projects/ 下白名单 GOTCHAS（" + "、".join(n for n, _ in PROJECT_SOURCES) + "）+ 通用教训 + 经验库 EXP。Projects 来源的证据指针相对 brain/。",
+    "> 覆盖：brain 各项目 GOTCHAS（H2/H3/列表粗体/表格四格式）+ Projects/ 下白名单 GOTCHAS（" + "、".join(n for n, _ in PROJECT_SOURCES) + "）+ 通用教训 + 经验库 EXP。Projects 来源的证据指针相对 brain/。**去重键＝来源节＋条目ID**（2026-11-07 Doctor 裁 2A）：仅同来源同 ID 才合并，跨来源撞号各自成条（引用须带来源）。",
     "> 未纳入：" + NOT_COVERED + "。**「开放 0」只表示已入索引的条目中无开放项；「未标」＝条目无可判定状态，不等于已闭。**",
     *[f"> ⚠ {w}" for w in SOURCE_WARNINGS],
     "",

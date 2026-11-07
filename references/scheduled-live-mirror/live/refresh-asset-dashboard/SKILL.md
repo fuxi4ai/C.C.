@@ -40,7 +40,17 @@ description: 重扫并刷新海螺姑娘全局资产看板（survey→重建HTML
 2. **重建看板 HTML**：在 `Claude/Projects/海螺姑娘/dashboard/` 下（同一 bash 调用内带全三个 env）跑
    `python3 build_asset_dashboard.py`
    （把刷新后的 manifest 重新嵌进 `dashboard/asset-dashboard.html`）。建成后必验注入数：
-   `grep -o '"update_health"' asset-dashboard.html | wc -l` 应 = 6（**用 `-o` 计次数，勿用 `-c` 计行——内嵌 manifest 为单行，`-c` 恒报 1 造成假警报**）；
+   先自推导应注入数 N（2026-11-07 Doctor 裁 7A：不再写死数字——N = manifest 里 `health_file` 非空、且按 build 同一解析规则能读到含时刻的 `_health.json` 的节点数；在 `dashboard/` 目录、三个 env 在场的同一 bash 调用内跑）：
+   `N=$(python3 -c 'import json,os,re,pathlib;D=pathlib.Path.cwd().resolve().parents[3];R=re.compile(r"^\$\{([A-Z_][A-Z0-9_]*)\}/(.+)$");n=0
+for x in json.load(open("../data/asset_manifest.json",encoding="utf-8"))["nodes"]:
+  hf=x.get("health_file")
+  if x.get("kind")!="database" or not hf: continue
+  m=R.match(hf); p=(pathlib.Path(os.environ[m.group(1)])/m.group(2)) if (m and os.environ.get(m.group(1))) else (None if m else D/hf)
+  try: d=json.load(open(p,encoding="utf-8")) if p and p.exists() else None
+  except Exception: d=None
+  if d and (d.get("updated_at") or d.get("generated") or d.get("checked_at")): n+=1
+print(n)'); echo "N=$N"`
+   再断言 `grep -o '"update_health"' asset-dashboard.html | wc -l` **== N**（N 应 ≥ 5；N=0 即 env/挂载没带上）（**用 `-o` 计次数，勿用 `-c` 计行——内嵌 manifest 为单行，`-c` 恒报 1 造成假警报**）；
    另验 `grep -o '"scanned": true' asset-dashboard.html | wc -l` 应 ≥ 14。任一不达标即视为 build 失败、回查 env，勿以「HTML 生成成功」当成功。
 
 3. **推送到 artifact**：用 `update_artifact` 工具，id=`global-asset-inventory`，html_path 指向 `Claude/Projects/海螺姑娘/dashboard/asset-dashboard.html`，update_summary 写「重扫刷新 · {今天日期}」。

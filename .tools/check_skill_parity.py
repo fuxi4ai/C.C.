@@ -146,7 +146,7 @@ def main() -> int:
     ap.add_argument("--runtime", default=os.environ.get("SKILL_RUNTIME_DIR") or "")
     ap.add_argument("--name", action="append", default=[], help="只核指定 skill（可多次）")
     ap.add_argument("--all", action="store_true",
-                    help="核 .skills/ 下全部目录（含非 brain-* 家族；它们无 portable 链，差异属信息性）")
+                    help="核 .skills/ 下全部含 SKILL.md 的目录（含尚无 .skill 包者；portable 链实存与否按目录逐一核，不预设）")
     ap.add_argument("--strict", action="store_true", help="runtime 不可达也算失败")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
@@ -161,10 +161,14 @@ def main() -> int:
     names = sorted(d.name for d in skills_dir.iterdir()
                    if d.is_dir() and (d / "SKILL.md").is_file())
     if not args.all:
-        # 默认只核 7 个 brain-*（canonical 裁定的射程）；其余家族无 portable 链、不属本对拍
-        names = [n for n in names if n.startswith("brain-") and not n.startswith("_DEPRECATED_")]
+        # 2026-11-07 Doctor 裁 30A②：射程＝「.skills/<名>.skill 包实存」（原按 brain-* 前缀过滤，漏掉 damper 等已打包家族）
+        names = [n for n in names if (skills_dir / f"{n}.skill").is_file() and not n.startswith("_DEPRECATED_")]
     if args.name:
         names = [n for n in names if n in set(args.name)]
+        if not names:
+            # 2026-11-07 Doctor 裁 30A①：--name 命中 0 个不得打绿
+            print("# brain-* skill 四端对拍 · 0 个 ⚠ 未核任何技能（--name 未命中射程内任何 skill）")
+            return 2
 
     rt_root = None
     if args.runtime:
@@ -187,6 +191,7 @@ def main() -> int:
                     break
 
     problems: list[str] = []
+    rt_seen: set[str] = set()  # 2026-11-07 Doctor 裁 30A③：记录实际核过的 runtime 结果类，结论行据此生成
     print(f"# brain-* skill 四端对拍 · {len(names)} 个")
     print(f"# docs     = {brain}")
     print(f"# runtime  = {rt_root if rt_root else '⚠ 不可达（本跑只核仓内三端）'}")
@@ -226,6 +231,7 @@ def main() -> int:
             rt_cls, rt_note = "missing", "runtime 缺该 skill"
         else:
             rt_cls, rt_note = classify(c, rt)
+        rt_seen.add(rt_cls)
 
         verdict = ("仓内三端一致" if in_repo else "✗ 仓内不一致")
         if rt_cls == "identical":
@@ -277,7 +283,15 @@ def main() -> int:
     if rt_root is None and args.strict:
         print("✗ runtime 不可达（--strict）→ 未完成四端核验")
         return 1
-    print("✓ 无实质分歧：仓内三端逐字节一致；runtime 仅余已知的末端空行归一化；各端 frontmatter 可解析。")
+    # 2026-11-07 Doctor 裁 30A③：结论行按实际核过的端集生成，不再无条件打「四端」绿
+    parts = [f"{len(names)} 个 skill 仓内三端逐字节一致"]
+    if rt_root is None or rt_seen <= {"n/a"}:
+        parts.append("runtime 未核（不可达）")
+    else:
+        rt_desc = {"identical": "逐字一致", "eof-only": "仅差末端空行", "stub": "薄壳 ✓"}
+        parts.append("runtime " + "／".join(rt_desc.get(k, k) for k in sorted(rt_seen - {"n/a"})))
+    parts.append("各已核端 frontmatter 可解析")
+    print("✓ 无实质分歧：" + "；".join(parts) + "。")
     return 0
 
 

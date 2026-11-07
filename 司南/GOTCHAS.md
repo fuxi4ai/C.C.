@@ -30,7 +30,7 @@ project: 司南
 <!-- 在下方追加新条目 -->
 
 ## [ERR-20261104-001] 官方壳 Code 标签与 Cowork 标签是两个执行面，适配卡只按 Cowork 写
-**状态**: 🔄 待修复/已修待验
+**状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：指令卡 L32 已有「〇 · 执行面订正」节、L93 云端启用 22 为独立审核者 list_triggers 实读口径）
 **优先级**: 🟡 中
 **触发场景**: 2026-11-04 Doctor 在官方订阅的 Code 标签要求核查 Gateway→官方迁移，指令卡的注册表、skill、artifact 步骤均按 Cowork 写。
 **错误信息**: Code 标签 `list_scheduled_tasks` 返回 0；`list_artifacts`（claude-artifacts）返回空；工具集无 `update_artifact`、`request_cowork_directory`；工具说明写明任务存于 `~/.claude/scheduled-tasks/`；24 个活班 prompt 中 16 个依赖 Cowork 工具或沙箱路径（镜像关键词扫描，未实跑）。
@@ -49,7 +49,7 @@ project: 司南
 **进展（2026-11-04 10:4x PST）**: 显式传 `model_id=eleven_v4` 的 A/B 段 Doctor 回听「没问题」⇒ 音色差异来自默认模型，env `ELEVENLABS_MODEL_ID` 未作默认生效（原因未核；对策＝调用一律显式传 model_id，Settings 本已写明）。指令卡第三步第 3 项已按正确顺序订正并注执行结果；TODO 模式切换条 ⑥ 同步。待未参与实施的审核者独立核验后落签。
 
 ## [ERR-20261104-003] 混合方案（云端 14 班 + Gateway 留 10 班）与「两壳只能单开」冲突：官方 app 开着时 Gateway 班不跑
-**状态**: ⚠️ 已知风险
+**状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：混合方案已被 Doctor 裁「留官方、推看板班也上云」取代，指令卡 L60 与 TODO.md L48 同载「Gateway 24 班已全停、云端已启用」，余项归 TODO L48）
 **优先级**: 🔴 高
 **触发场景**: 2026-11-04 迁移完整性检查（/resume 场 · 只读）。指令卡〇c 定「推看板 8 班＋巡检周班＋sessions 盘点留 Gateway」，同时云端 14 班绑本机 Mac、须官方 app 在线（device bridge）。brain 既有铁律「两壳只能单开」（`司南/Gateway-Official适配/Gateway-Official适配.md` 八律 #3、`回切操作卡.md` L45）。
 **错误信息（硬证据 · 盘上 mtime 实读 UTC）**: Gateway 班今日产物全部停在 15:08–15:31（＝07:08–07:31 PST，烛阴日志自述「定时触发 07:09 PST，早于 cron 名义 10:00」＝开 app 补跑昨日漏班）：recap 课件入库 15:08 · 课件审核 15:08 · 句芒行情 15:08 · 烛照日报 15:13 · cockpit.db 15:19 · risk-daily.html 15:31。此后 cron 名义 09:00/09:30/10:00/11:00 PT 各班均无追加（日志「同日二次触发追加复核段」未见、mtime 未动）；guanxing Gateway 班（07:30 PT）当日无产物。⇒ 推断 07:3x PST 起 Gateway app 未运行（与官方 app 单开），留 Gateway 的 10 班当日起实际停摆。**单开的成因（app 级互斥 vs 习惯性单开）未核**。
@@ -73,7 +73,7 @@ project: 司南
 
 
 ## [ERR-20261104-005] 「停用 Gateway→镜像」只改了文档，`scheduler_snapshot.py` 每次运行仍覆盖 live/ 与 artifacts/
-**状态**: 🔄 已修待验（2026-11-04 依 Doctor 既有裁定与「推进适配问题」实施；✅ 落签走分轨）
+**状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：scheduler_snapshot.py L493 MIRROR_ENABLED=False、两镜像函数提前返回，test_scheduler_snapshot_no_mirror.py 实跑 6/6 PASS）
 **优先级**: 🔴 高
 **触发场景**: 2026-11-04 夜核对适配未闭项。指令卡写明 `live/<班>/SKILL.md` 是云端班正文真源、须停用 Gateway→镜像，并作废了 1.1 的 rsync。
 **硬证据/最小复现**: 旧版 `main()` 无条件调用 `mirror_live_tree()`（从 `~/Gateway-workspace/Scheduled` 覆盖 live/，并 unlink Gateway 没有的文件）与 `mirror_artifacts()`。20:50 快照自述「Artifacts：10 个（拷 4）」；工作区 4 个 artifacts/index.html 的 SHA 与 Gateway 全等。`test_scheduler_snapshot_no_mirror.py` 对旧版 5 项 FAIL。
@@ -110,7 +110,8 @@ project: 司南
 **独立复核 ②（2026-11-05 · 未参与实施的审核者 subagent）**: PASS_WITH_LIMITS — 问答板 12 项执行批（1A·2A·3A·4A·5A·6ABC·7A·8A·9A·10A·11A·12A）逐项实读实跑全 ✓，无 FAIL 项；③ 镜像↔云端对拍 零差异（list_triggers 实取 trig_011UyLtY1qyiTT1YbdJ5Q6Hz prompt · updated_at 2026-11-06T04:49:21Z · 去前置段后与镜像去 frontmatter 正文 112 行逐行 difflib 零差异 · 镜像含「0. 云端任务体检」「PushNotification」「ERR-20261104-005」）；限制：① 12A STL-168 consumer 第 1 项所指 `渊图/architecture/决策记录.md` 在落签后又被 11-05 法案入图批顶部插入 8 行，现 sha256 前16 为 3383cc8f（受理时值 dd2aafc1 经去插入行重算可复现）、所引 L2793 现为 L2801——回执为时点快照、指针已漂；② 12A STL-169 `outcome_observed:true` 偏满：原行 evidence 预告的「Fuxi 回线后冻结体系复跑」尚未发生（仅「加仓侧研究引用」支满足），建议改 null、未改文件；③ 6B 原位残留除 11-04/11-05 命名件外另有 `references/scheduled-live-mirror/official_pre_sync_2026-10-21/**/SKILL.md.bak_*` 9 件（冻结快照目录内、未动）；④ 1A 星空 Projects 指针 frontmatter 含两行 `updated:` 重复键；白泽大宗并入段较 Projects 备份少末尾 1 个空行（strip 后逐字节相等）；⑤ 4A updatedfill 备份实数 58（含 .skills/portable brain-save 两件）非 56；⑥ 2A 云端 prompt 系由 list_triggers 返回 JSON 人工转录入 /tmp 再比，非程序直取。
 
 ## [NOTE-20261105-001] 状态行写「✅ 已闭 ← 原：🔄 已修待验」会被经验索引判为开放
-**状态**: ⚠️ 已知风险（方向待裁：改写法 or 改生成器 mark 优先序）
+**状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS_WITH_LIMITS 代签 · 证据：备份 diff 改动面仅限 status_of 切分/2A 文案/30A 射程与 rc 2，自写 8 例 status_of 全对，test_build 23/23、test_parity 9/9，`--name damper` rc 0 / `--name zzz_not_exist` rc 2，DOCS_DIR 重建后司南 1104-001/003/005、龙鱼 0819-001、海螺 0708-001、烛照 1008-003/1104-001、风险 1103-001、DVA 0819-001、EAL G-020/021/024 索引均 ✅；限：默认射程改后 `check_skill_parity.py` 无参跑因 QA/gsap-frontend/handshake-consumer 无 portable 而 rc 1，project_status() 未改仍靠写法甲）
+**沿革**: 🔄 已修待验（2026-11-07 Doctor 裁乙·改生成器，实施者自验 6/6，待独立复验）
 **优先级**: 🟢 低
 **触发场景**: 2026-11-05 五维审计重建索引后，`DVA/GOTCHAS.md` `BUG-20260819-001` 等条正文状态行为「✅ 已闭（2026-11-05 …）← 原：🔄 已修待验（…）」，索引仍判 🔄，DVA「开放 4」虚高 ≥1。
 **硬证据/最小复现**: `.tools/build_experience_index.py` `status_of()`：取状态行后按 `("🔄","⚠","✅","⏳","📌")` 顺序逐个 `in` 判，🔄 先命中即返回；`project_status()` 同理（OPEN_TOKENS 先于 CLOSED_TOKENS），注释自述「同一行既有开放词又有闭合词时判开放：宁可多报，不低报」。

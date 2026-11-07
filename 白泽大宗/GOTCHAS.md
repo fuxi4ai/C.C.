@@ -155,7 +155,8 @@ type: resource
 | **根因（三层）** | ① demo-first 脚手架占位跑通后没拆；② `data_collection/` 抓取层从未接入主分析流（主脚本读内嵌常量）；③ 沙箱连不上 Tushare（403/无 MCP）〔注 2026-06-25：该 403 限当时；约 06-11 白名单开放后沙箱经 localhost:3128 代理 + token 已可连，见本档 GOTCHA「tushare 白名单已通」〕，"先写死让它跑"成惯性 |
 | **铁律** | **宁可缺数，不可假数**：无新鲜可核验真值→留空(`—`/`待核验`)，绝不占位填充；占位数据**不入库**（含 business_breakdown.db）、**不进最终报告**；取数受阻→报"数据缺失"交 Doctor 跑真实管线，不得退化为硬编码 |
 | **正确操作** | ① 主脚本价格改为从 data_collection 实时结果读取，缺失则置空+标注；② 样本仅限 dev/sample 专区且显式标"样本·非真实"；③ 每个数值带 source+asof；④ 交付前自检：报告内是否还有答不出来源的数 |
-| **状态** | 🔒 铁律已立（全局 CLAUDE.md + permanent/通用教训.md）；⚠️ 白泽代码层的占位→留空/实时改造待执行（见下方"待执行"）；✅ **库数据层占位已收口（2026-08-09 P0）**——`commodity_prices`/`price_increases` 全表 26 行 `is_current` 1→0、DROP `latest_prices`/`price_trend` 两视图、行保留考古未删（脚本 `quarantine_legacy_price_data_20260809.py` · commit `08fafdc` · 快照 `bak_p0quarantine_20260809_213249`） |
+| **状态** | ✅ 铁律常驻 · 代码层 06-07 已改造 · 库层 08-09 收口（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：`run_full_analysis_v4_1.py` L36-41 注明 COMMODITY_DATA/AI_HARDWARE_DATA 已外化、全仓 `COMMODITY_DATA =` 仅 archive/_archived 旧件命中） |
+| **沿革** | 🔒 铁律已立（全局 CLAUDE.md + permanent/通用教训.md）；⚠️ 白泽代码层的占位→留空/实时改造待执行（见下方"待执行"）；✅ **库数据层占位已收口（2026-08-09 P0）**——`commodity_prices`/`price_increases` 全表 26 行 `is_current` 1→0、DROP `latest_prices`/`price_trend` 两视图、行保留考古未删（脚本 `quarantine_legacy_price_data_20260809.py` · commit `08fafdc` · 快照 `bak_p0quarantine_20260809_213249`） |
 | **发现时间** | 2026-06-02 首轮标记 → 2026-06-07 升格为铁律 |
 
 > 完整铁律见 `~/Documents/Claude/brain/CLAUDE.md`「🔒 数据真实性铁律」与 `permanent/通用教训.md`「数据治理」。
@@ -182,7 +183,8 @@ type: resource
 | **现象** | Notion Token、飞书 appSecret 明文写死在 shell 脚本和 JSON 配置中 |
 | **根因** | 写脚本时顺手写死，后续没意识到风险。跟模型能力无关，纯粹是习惯 |
 | **正确操作** | 凭证一律走 `.secrets/*.env` 或环境变量，`.gitignore` 第一时间配好 |
-| **状态** | ✅ 代码层已修复；⚠️ 但导出 zip 仍把 .secrets 打了进去（见 GOTCHA-010），密钥轮换需手动 |
+| **状态** | ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：项目内 secret/token 字面量与 40-64 位 hex grep 0 命中，`.secrets/`、`scripts/notion/`、`configs/feishu-config.json` 盘上不存在，.gitignore 四类在列；所引 GOTCHA-010 已闭环且 token 已轮换） |
+| **沿革** | ✅ 代码层已修复；⚠️ 但导出 zip 仍把 .secrets 打了进去（见 GOTCHA-010），密钥轮换需手动 |
 | **发现时间** | 2026-05-23 |
 
 ### GOTCHA-010: 导出/打包不遵守 .gitignore，把密钥打进 zip
@@ -245,7 +247,8 @@ type: resource
 | **现象** | 接龙鱼个股库后，按 ts_code 查分会把 **雅化集团(002497.SZ)** 的财务/估值贴到 **赣锋锂业** 头上 |
 | **根因** | `data/stocks_fundamentals.json` 碳酸锂池中赣锋锂业 ts_code 记为 `002497.SZ`（雅化集团代码）；赣锋锂业 A 股应为 **002460.SZ** |
 | **正确操作** | ①渲染层已加「名称一致性闸」(`score_of`)：ts_code 命中但分值条目记名 ≠ 本公司则退『待引擎』，绝不张冠李戴；②**待老师核**：用 `sync_longyu_universe.py --expand-universe` 以正确 ts_code(002460.SZ)修正赣锋，或确认是否本就想跟踪雅化集团 |
-| **状态** | 🟡 渲染层已防误贴；源数据 ts_code 待老师核订 |
+| **状态** | ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：`data/stocks_fundamentals.json` 赣锋锂业 ts_code=002460.SZ，L58 note「由 002497.SZ 订正为 002460.SZ · 2026-06-07」） |
+| **沿革** | 🟡 渲染层已防误贴；源数据 ts_code 待老师核订 |
 
 ### GOTCHA-017: latest.json 可能指向失败重跑；逐股 reports/ 才是可用真值
 
@@ -346,7 +349,8 @@ type: resource
 | **现象** | 沙箱 curl 抓 hq.smm.cn/h5/* 返回 200 + 百 KB 响应，但 grep 中文/价格全空，疑似 JS 空壳。**2026-06-14 复发升级**：`fetch_smm_h5.py --fetch` 钨/稀土全『未解析到，跳过』，一度误判「SMM 改版/登录墙」。**2026-09 再复发（gzip 修复后新态）**：`--fetch --merge` 对钨页报「未解析到 黑钨精矿≥65% 均价，跳过」，稀土摘除后仅钨仍挂失败——连续三周（09-13/09-20/09-27 周报 health 实据）走 web 补价兜底（中钨在线/生意社），说明页面结构或 row_match 模式又变，与 gzip 无关 |
 | **根因** | curl 默认带 `Accept-Encoding` 时服务器返回 gzip 流，落盘是二进制；并非页面无数据——价格其实以内嵌 JSON（`product_name/average/renew_date`）直出。**2026-06-14 升级**：SMM h5 如今对**裸 urllib（不声明 Accept-Encoding）也无条件返回 gzip**——GOTCHA-024 原假设「urllib 路径通常不受影响」已不成立；`fetch_smm_h5._get` 只 `r.read().decode('utf-8')` 不解 gzip → 二进制硬解成乱码 → row_match 找不到「黑钨精矿」→ 误判页面无内容 |
 | **正确操作** | curl 探页一律加 `--compressed`；**所有 urllib 取 SMM 的函数都必须按 `Content-Encoding`/gzip 魔数(`\x1f\x8b`)解压**——`fetch_smm_h5._get` 已补（2026-06-14，gzip+deflate 容错）。诊断口诀：SMM 返 200 却解析空时，**先怀疑 gzip 未解，别先怀疑改版/登录墙**（白泽 6/14 首验差点栽这） |
-| **状态** | ⚠️ 已知风险（gzip 容错已修·2026-06-14 验证通过；但 2026-09-13 起钨页 row_match 再度失配·连续三周 web 兜底·待抓新页面样本定位·追记 2026-09-27） |
+| **状态** | ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：diff `configs/_bak/smm_h5_map.json.bak_2026-11-07_12A` 仅 mappings→[] / 钨整条入 `_retired_mappings` / 新增 `_变更_20261107` 注；审核者独立实跑 `python3 -B scripts/data_collection/fetch_smm_h5.py --fetch` → 「未取到可写现货价」rc 0，`data/weekly/smm_fill.csv`、`smm_history.jsonl` mtime/size 前后不变） |
+| **沿革** | 🔄 已修待验（2026-11-07 Doctor 裁 12A：钨 SMM h5 退役、以 web 源为记录源——`configs/smm_h5_map.json` mappings 置空、钨条目移入 `_retired_mappings` 留档（仅改配置、不改代码）；沙箱实跑 `fetch_smm_h5.py --fetch` 零映射→「未取到可写现货价」rc 0、不再对钨报 SMM ✗；钨价按 SKILL Stage 1 web 补价（中钨在线/生意社 P1）。gzip 容错已修·2026-06-14 验证通过；09-13 起钨页 row_match 失配史见上） |
 
 ### GOTCHA-026: SMM 稀土 row_match『氧化镨钕』先命中 SEO 文章标题 → 抓到错数
 
@@ -411,7 +415,8 @@ type: resource
 - 防御: build_weekly_report 渲染后自动 `node --check` 内嵌 JS(语法坏则🟥告警)；改模板新增顶层 const 前先 grep 既有声明。
 
 ## [ERR-20260719-001] 沙箱 web_fetch provenance 限制封死东方财富公告 API 兜底路
-**状态**: ⚠️ 已知风险（2026-09-14 状态词归一 · web_fetch provenance 限制仍在 · 按既定降级绕过中）
+**状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：diff `live/baize-weekly-report/_bak/SKILL.md.bak_2026-11-07_11A`→`_12A` 仅 L80-86→L80-82 降级链段；`_12A`→现行仅 L33 一句 12A 注；全文已无「web_fetch 东财 API 自拼」路径为主路、旧路仅作 parse 复用注）
+**沿革**: 🔄 已修待验（2026-11-07 Doctor 裁 11A：环境已变、SKILL 降级链已改——baize-weekly-report/SKILL.md Stage 2 第 2 级改为「WebSearch 取到公告页 URL → WebFetch 直取；取不到按原 fail-visible 报缺」；10-11 已有 21 份公告实取）
 **优先级**: 🟡 中
 **触发场景**: Stage 2 双面交叉验证，WebSearch 可用但欲用 P1 公告面兜底，按 SKILL 走 `fetch_announcement_evidence.py urls` → 对打印的 url 调 `mcp__workspace__web_fetch`。
 **错误信息**: `URL not in provenance set. web_fetch can only retrieve URLs that appeared in a user message, a prior web_fetch result, or a WebSearch result.`
@@ -474,7 +479,8 @@ build_warehouse.py 同法替换 `Path("/tmp/baize_warehouse")`。两步替换后
 3. `build_weekly_report.py:_recent_returns` 已用 `tempfile.gettempdir()`（认 TMPDIR），是正确写法，可作改造样板。
 
 ## [ERR-20260802-002] web_fetch provenance 闸复发 —— 公告面兜底路仍不通（ERR-20260719-001 的第二次实测）
-**状态**: ⚠️ 已知风险（2026-09-14 状态词归一 · 公告面兜底路仍不通 · 按既定第 1 级降级绕过中）
+**状态**: ✅ 已并入 ERR-20260719-001（重复登记 · 2026-11-07 审核者订正）
+**沿革**: ⚠️ 已知风险（2026-09-14 状态词归一 · 公告面兜底路仍不通 · 按既定第 1 级降级绕过中）
 **优先级**: 🟡 中
 **触发场景**: 2026-08-02 周任务 Stage 2，复现 ERR-20260719-001：`fetch_announcement_evidence.py urls` 生成 29 条东财公告 API URL，逐条调 `mcp__workspace__web_fetch` 全部被拒。
 **错误信息**: `URL not in provenance set. web_fetch can only retrieve URLs that appeared in a user message, a prior web_fetch result, or a WebSearch result. Retries will fail.`
@@ -494,7 +500,7 @@ build_warehouse.py 同法替换 `Path("/tmp/baize_warehouse")`。两步替换后
 ## [NOTE-20260809-001] 中际旭创 1.6T 营收占比库内双值冲突——benefit_relations 0.4 vs history 0.15，标「待核验」不改值
 **状态**: ⚠️ 已知风险（2026-09-14 状态词归一 · Doctor 08-09 裁「标待核验·暂不改值」语义保留）
 **优先级**: 🟡 中
-**现象**: 同标的同产品（中际旭创 300308.SZ · 光模块-1.6T）两表取值不一：`benefit_relations` id 941 = `revenue_ratio 0.4`（40%·源=投资者问答·披露 2026-03-15·P0）；`business_breakdown_history` 当前 v2 = 0.15（`update_log` id6：2026-04-11 由 0.10→0.15·源=投资者问答·note「Q3 批量出货」）。P1 改动①立 benefit_relations 为真源后，若不标注会把存疑的 0.4 一并供为真理。
+**现象**: 同标的同产品（中际旭创 300308.SZ · 光模块-1.6T）两表取值不一：`benefit_relations` id 1949〔2026-11-07 实读订正，原记 941〕 = `revenue_ratio 0.4`（40%·源=投资者问答·披露 2026-03-15·P0）；`business_breakdown_history` 当前 v2 = 0.15（`update_log` id6：2026-04-11 由 0.10→0.15·源=投资者问答·note「Q3 批量出货」）。P1 改动①立 benefit_relations 为真源后，若不标注会把存疑的 0.4 一并供为真理。
 **研判（非结论·待核原始问答/渊图）**: 1.6T 2025Q3 才放量，FY2025 占总营收 40% 偏高、15% 更贴合时间线；但 0.4 或为「占光模块收入」的不同分母——两值或非同口径，未必谁错。
 **处置**: benefit_relations 无 note/status/credibility 列（列仅 commodity…data_source…priority…raw_json），无法行内打 flag，故「待核验」落本错题本、库值 0.4 不动；核清分母口径（总营收 vs 光模块收入）后回写统一。若要行内 flag 需 ALTER TABLE 加列，另案。
 **预防**: 真源裁定（表级）与单值存疑（行级）解耦——表立为真源 ≠ 每行已核；行级存疑单列待核验。
@@ -527,7 +533,8 @@ build_warehouse.py 同法替换 `Path("/tmp/baize_warehouse")`。两步替换后
 **修复（2026-08-21 · Doctor 批 · CC 实施 · 建议修法①）**: L251 转换处同步落 `e["window_day"] = elapsed`——转换日显示 elapsed（=CONFIRM_D），与 active 分支 L272 口径一致。验证：`python3 -m py_compile` exit 0；结构实读 L251 新行在盘、L272/L324 未动；转换日逻辑走查（pending_confirm→active 当日 window_day 已落 → L324 不再打印"?"）。运行时回归＝下个信号确认日实跑（转换日场景自然复现），待独立验收。
 
 ## [NOTE-20260819-001] signal_ledger.jsonl 缺席≠路径错——append-only 台账在首个窗口关闭前不存在（审计须知）
-**状态**: ⚠️ 已知风险（审计须知 · 非代码错误）｜ **优先级**: 🟢
+**状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：`data/weekly/signal_ledger.jsonl` 已存在 3 行、首行黄金 C2 exit_date=20260918——「首个闭窗前不存在」前提已于 09-18 自然失效；审计须知保留：ledger 首条随首个闭窗事件产生）｜ **优先级**: 🟢
+**沿革**: ⚠️ 已知风险（审计须知 · 非代码错误）
 **现象**: 只读审计发现 `data/weekly/signal_ledger.jsonl` 盘上不存在，一度误判「任务书路径与脚本现状有出入」。
 **根因**: 台账系 append-only，仅三处写入（B 记账窗到期 L269 / rejected A 回填 L279 / C2 离场 L308），且 gated 事件不入生命周期（L218 pend 只含 pending_confirm/active）。截至 2026-08-19 尚无事件闭窗（黄金 8/11 建档仍 active、原油 8/18 gated），故文件尚未诞生——与 sentinel_state.json（活状态）是两本账，互不替代。
 **影响面**: 未来哨兵/审计若见该文件缺席，勿再误报为路径错或断链。
@@ -563,7 +570,8 @@ build_warehouse.py 同法替换 `Path("/tmp/baize_warehouse")`。两步替换后
 
 ## [ERR-20260925-001] tushare 拒绝明文 HTTP → 哨兵期货腿与生命周期推进全失败（api.tushare.pro 硬编码 http://）
 
-**状态**：🔄 已修待验（2026-09-25 Doctor 授权修复 · CC 实施：`breakout_sentinel.py` / `compute_persistence.py` / `compute_realized_beta.py` 三处 `http://api.tushare.pro` → `https://api.tushare.pro`，各一处最小改动；自验：哨兵重跑 4 期货腿 + 事件生命周期推进全部恢复、无 ⚠️ 行、exit 0、三文件 py_compile 过。✅ 落签归 Doctor）
+**状态**：✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：grep `api.tushare.pro` 排 bak 仅 3 处且全为 https（breakout_sentinel L50 / compute_persistence L57 / compute_realized_beta L38）；`sentinel_state.json` mtime 11-06、4 期货腿 asof=20261106 均 checked——09-28 起自然班持续取数成功）
+**沿革**：🔄 已修待验（2026-09-25 Doctor 授权修复 · CC 实施：`breakout_sentinel.py` / `compute_persistence.py` / `compute_realized_beta.py` 三处 `http://api.tushare.pro` → `https://api.tushare.pro`，各一处最小改动；自验：哨兵重跑 4 期货腿 + 事件生命周期推进全部恢复、无 ⚠️ 行、exit 0、三文件 py_compile 过。✅ 落签归 Doctor）
 **优先级**：🔴 高（哨兵全期货腿断供）
 **触发/硬证据**：2026-09-25 哨兵班（baize-breakout-sentinel）输出 4 条「⚠️ 取数失败：HTTP Error 400」+「事件生命周期推进失败」。对照探针（同 token、同 payload、同秒）：`http://api.tushare.pro` → HTTP 400；`https://api.tushare.pro` → code 0 正常返回 trade_cal 数据。token 有效（56 字节，与 Database/.env 一致，写入无尾换行）。
 **根因**：tushare 服务端已停止接受明文 HTTP，仅 HTTPS 可用；三个脚本 `_api()` 均硬编码 `http://api.tushare.pro`（urllib 直连，非 SDK）。
