@@ -131,3 +131,24 @@ project: DVA
 **处置**: shim + dummy env 属临时措施，**下次换 runtime 会再丢**；根治三选项待 Doctor/VV 裁（回流 Mac 源 / install 脚本内置 / 发布后 diff 哨兵），已写入移交 VV 件。
 **预防门禁**: bundle 构建前 diff fuxi runtime 与 Mac 源关键文件；或部署后跑 single_one 冒烟清单。
 **来源**: 2026-08-20 部署现场（152429Z python3 ENOENT → shim；152204Z DASHSCOPE 拦截 → dummy）
+
+## DVA 现行链身份与自检（2026-11-06）
+
+### [NOTE-20261106-001] GAI 看板 DVA-Database 节点测的是冻结的 watchlist → 对活链报 D 37（资产身份过期 · 假警报）
+**状态**: ✅ 已修复（2026-11-06 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：只读实跑 dva_health.py v2 两产物 overall=ok/update_ok=true、空 DVA_DOUYIN_ROOT 时 overall=fail rc=1，运行前后 Database/Douyin 全部 111312 文件 mtime 无变化；manifest 两节点 A 与看板内嵌 JSON 一致、SHA-256 9590169d…）
+**优先级**: 🟠 高（看板最差榜首连续数日，掩盖真实状态）
+**触发**: 2026-11-06 例行自查：`DVA-Database/_health.json` 由 `dva_health.py v1` 按 `indexes/watchlist.json.updatedAt`（2026-09-26）判 stale → 新鲜度 27 / 自检 50 → D 37。实读权威库 `DVA-Inventory/videos.sqlite3`：`incremental_pipeline_runs` 近 7 天 56 次 run 零失败、镜像回执 `dva-mirror-20261106T143300Z` 当日落 Mac——链是活的。
+**硬证据**: `dy_downloader.db` 末次 download_time 2026-09-14 09:15Z；`watchlist.json.updatedAt` 2026-09-26；`global-index.json` 老毛最新 create_time 2026-09-13（`updatedAt=2026-10-31` 系空壳刷新）；而 `authors/<sec_uid>/videos.json` 老毛最新 2026-11-04 16:05Z，与 `videos.published_at` 逐秒一致。
+**根因**: 09-18 回流改走 `dva-mac` 增量通道后，`DVA-Database/` 成为**混合层**（覆盖层日更 · db/indexes 冻结），但自检脚本与 GAI manifest 节点仍钉在冻结件上；`permanent/DVA自愈链.md` §二虽早已注明「旧 dy_downloader.db 未被替换、读的人易误判」，没有任何机器把这句话变成判据。
+**影响面**: GAI 看板（假 D）· `UPDATE_HEALTH_派工_v2.md` ④「gap_days 40（真实信号）」判断失实 · 任何按 watchlist 判 DVA 新鲜度的读者。
+**修法（已实施）**: ① `Projects/DVA/tools/fuxi/dva_health.py` v2：测现行链（镜像回执 + `incremental_pipeline_runs`）→ `Projects/DVA/_health/dva-inventory_health.json`；第二产物 `dva-database-overlay_health.json` 测覆盖层（watchlist 作者 `videos.json` 最大 create_time 对拍权威库，download-only 作者不计）。产物落 `Projects/DVA/_health/`，**不落 `Database/Douyin/`**（FROZEN-20260724 守卫 + 镜像面）。② GAI manifest：新增 `DVA-Inventory` 数据库节点（expect_days 3）；`DVA-Database` 改题「分析覆盖层」、health_file 指第二产物；边改指。③ 看板重推。首轮按原批 P0-A 曾把 DVA-Database 标 archived，实读覆盖层后订正（Doctor 裁丙）。备份 `tools/fuxi/_bak/dva_health.py.bak_2026-11-06_pre_inventory` · `海螺姑娘/data/_bak/asset_manifest.bak_2026-11-06_dva-inventory.json`。
+**预防门禁**: ① 数据库节点的 health_file 指向什么，必须能回答「这个文件由现行链的哪一步写」——写不出来的就是退役件；② 自检产物无定时触发者时，conch F3 会按 expect_days 自然降 stale，这是正确行为，不要为消灯把 expect_days 调大。
+**遗留**: 两份自检产物目前无定时触发（`dva-refresh.sh` 09-18 退役）——嵌入点归 DVA 链（派工卡见 `海螺姑娘/dashboard/UPDATE_HEALTH_派工_v2.md` ④ 2026-11-06 追记）；`Database/Douyin/DVA-Database/scripts/dva_health.py` 是 fuxi bundle 乘客（INFRA-20260807-003），仍为 v1，勿改勿用。
+**来源**: 2026-11-06 Cowork 会话（Doctor 令「审查并修复抖音作者分析库」）· 实读 sqlite ro/immutable · 实跑 v2 正向+负向（根缺失 → fail rc=1）
+
+### [NOTE-20261106-002] DVA-Database 冻结件清单（只记不修 · 归发布链专场）
+**状态**: ⚠️ 已知风险
+**优先级**: 🟢 低
+**现象**: ① watchlist 8 人 → `global-index.json` 40 位作者仅 26 位有目录、7 个目录仅 `info.json`；② `global-index.json` `updatedAt=2026-10-31` 而内容止于 09-13——写者未核；③ `_DEPRECATED_dva.db` 0 B、`dy_downloader.db-shm/-wal` 10-16 遗留、`_health.json.bak_2026-11-04_pre_rerun` 带 ACL；④ `transcript_job` 89 行全 failed（已登记 INFRA-20260831-001）。
+**边界**: `Database/Douyin/` 为 fuxi 镜像消费面、FROZEN-20260724 常驻禁写，Mac 侧改了也会被每日回流冲掉——修复点只在 fuxi 侧，随 TODO「DVA · 发布链三洞根治专场」处理。
+**来源**: 2026-11-06 Cowork 会话实读
