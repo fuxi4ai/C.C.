@@ -86,6 +86,13 @@ project: 剑酒青丘
 
 **追记三（2026-11-06 · VV 独立审阅回执 · CC 代记）**：VV 审阅 v1.1 结论 **REQUEST_CHANGES 退回修订**，本条维持 🔄 不转 ✅。四项（CC 实读代码属实）：R1·P1 判据 6 mirror 未执行 denylist（v1 即有，隔离注入 `建议上修` 仍 8/8 PASS）；R2·P2 判据 5 指路路径检查未剥 frontmatter；R3·P2 `_frontmatter` 不剥行尾注释致 `type: pointer # 注释` 判非 pointer；R4·P2 self-test 子进程未传 `-O`。三裁点：版本范围保留但不得宣称 3.11～3.13 已验；不加启发式兜底；条件第 9 项可留须补输出契约。回执 `4AI/Shake hands/to CC/VV致CC-EAL-gate判据集v1.1独立审阅回执-20261106.md` · 证据 Codex `042f57a7`。
 
+**追记四（2026-11-06 · R1～R4 修订 · 实施者留痕）**：Doctor 裁本场修。两脚本修订（判据集 json 未动）：mirror 同套 denylist＋两级豁免、指路正文剥 frontmatter、frontmatter 标量引号/行尾注释处理＋不可解析即 FAIL、自测显式传播 `-O` 并实测子进程 optimize；自测 5 → 10 例。沙箱自验 gate 8/8 exit 0 · self 普通/-O 各 10/10 exit 0。状态维持 🔄，待独立审核与 VV 复审；详见 PRD §五 续六。
+
+**追记五（2026-11-06 · 独立审核 PASS_WITH_LIMITS · 回稿 VV）**：未参与实施的审核者 22 次隔离探针 + 完整 gate 100 s，R1～R4 均代码级属实、判据集逐字未动；限制：HTML 行级豁免在 minified 产物下可被滥用（判据语义层，留 VV 裁）、`_frontmatter` 4096 B 预存。`re.split` 告警同场改 `maxsplit=1`。回稿 `CC致VV-EAL-gate-R1R4修订回稿-20261106.md`，状态维持 🔄 待 VV 复审。
+
+**追记六（2026-11-06 · VV 二轮复审 REQUEST_CHANGES · 二轮修订留痕）**：R2/R4 通过；R1 同行多标题段状态只按首个迁移（同行 `<h2>勘误注</h2><h2>现行结论</h2>` 后命中放行）、R3 双引号转义 `"po\u0069nter"` 判 plain、frontmatter 未闭合/闭合超 4096 返回 {} 判 plain——三例均误报 8/8。二轮修：逐标题迁移状态、YAML 转义解码、起始 `---` 无闭合 → bad → FAIL、闭合分隔符须独占一行；自测 10 → 17 例、加 `--only`。状态维持 🔄；实跑与独立审核见 PRD §五 续七及后续行。
+**追记七（2026-11-06 · 二轮修订实跑 + 独立审核）**：完整 gate 8/8 · exit 0；self `--only 11..17` 普通/-O 各 7/7；全集普通/-O 各 17/17（Mac 原生 3.13 驱动，判据 2/3 走 venv 3.10.20）。独立审核 **PASS_WITH_LIMITS**：R1/R3 残余均代码级真实修复；限制：`FM_READ_LIMIT` 实为 4096 字符非字节（口径待改）、无闭合 frontmatter 但正文 4096 字符内有 `---` 水平线会被当闭合、标题内文本不扫、BOM 开头判 plain。状态维持 🔄；回稿 `4AI/Shake hands/to VV/CC致VV-EAL-gate-二轮R1R3修订回稿-20261106.md`，待 VV 第三轮。
+
 ## 跨项目通用教训
 
 - 跨项目脚本靠相对层级（`../×N` / `parents[N]`）回推根目录的，一律换「探测含标志子目录的祖先」——见 [[通用教训]] G-X88（平铺挂载路径族）。

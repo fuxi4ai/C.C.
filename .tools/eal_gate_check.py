@@ -11,6 +11,9 @@
 脚本修订 2026-11-06（VV 独立审阅 R1～R4 · 判据集 json 逐字未动）：R1 判据 6 mirror 执行同套 denylist 与两级豁免；
 R2 指路正文检查剥离 frontmatter 后再核；R3 frontmatter 标量正确处理引号与行尾注释，type 声明不可解析 → FAIL 不放行；
 R4 见 test_gate_self.py（子进程显式传播 -O）。
+二轮（VV 2026-11-06 第二轮复审）：R1 同一行多个标题按出现顺序迁移段状态、标题间正文各按当时状态扫；
+R3 双引号标量按 YAML 转义解码（\\uXXXX/\\xXX/\\UXXXXXXXX 与单字符转义，未知转义 → bad）、单引号 '' 转义，
+有起始 `---` 但读取上限（4096 B）内无闭合分隔符 → bad → FAIL（不降成「已确认非 pointer」）。
 判据 9「路径有效性」为条件项：仅当 ledger_md 之外的 paths.* md 命中指路门禁时出现，出现即 FAIL、退出非零；正常成功路径仍为 8 项。
 输出契约：每项 [PASS/FAIL/WARN] + FAIL 精确证据行；汇总行；任一 FAIL → exit 1。
 WARN 不改变退出码，但汇总行明示「未达全 PASS，不可声明完成」——仅按 exit code 判读的调用方须注意。
@@ -83,7 +86,7 @@ def _in_range(ver, spec):
     return True
 
 # ---- 指路门禁（v1.1）----
-_FM_RE = re.compile(r"\A---\s*\n(.*?)\n---", re.S)
+_FM_RE = re.compile(r"\A---[ \t]*\n(.*?)\n---[ \t]*(?:\n|\Z)", re.S)   # 闭合分隔符须独占一行
 
 def _yaml_scalar(raw):
     """frontmatter 标量取值（VV 2026-11-06 R3）：返回 (ok, value)。
@@ -92,28 +95,73 @@ def _yaml_scalar(raw):
     s = raw.strip()
     if not s:
         return True, ""
-    if s[0] in "\"'":
-        q = s[0]
-        end = s.find(q, 1)
-        if end < 0:
-            return False, raw
-        rest = s[end + 1:].strip()
+    if s[0] == '"':
+        # 双引号：按 YAML 转义序列解码（VV 二轮 R3：`"pointer"` 的标量值是 pointer）；不支持的转义 → bad
+        out, j, n = [], 1, len(s)
+        while j < n:
+            ch = s[j]
+            if ch == '"':
+                break
+            if ch == "\\":
+                j += 1
+                if j >= n:
+                    return False, raw
+                e = s[j]
+                simple = {"0": "\0", "a": "\a", "b": "\b", "t": "\t", "\t": "\t", "n": "\n", "v": "\v",
+                          "f": "\f", "r": "\r", "e": "\x1b", " ": " ", '"': '"', "/": "/", "\\": "\\",
+                          "N": "\x85", "_": "\xa0", "L": " ", "P": " "}
+                if e in simple:
+                    out.append(simple[e]); j += 1; continue
+                width = {"x": 2, "u": 4, "U": 8}.get(e)
+                if width is None:
+                    return False, raw
+                hexs = s[j + 1:j + 1 + width]
+                if len(hexs) != width or not re.fullmatch(r"[0-9A-Fa-f]+", hexs):
+                    return False, raw
+                try:
+                    out.append(chr(int(hexs, 16)))
+                except (ValueError, OverflowError):
+                    return False, raw
+                j += 1 + width
+                continue
+            out.append(ch); j += 1
+        else:
+            return False, raw            # 未闭合
+        rest = s[j + 1:].strip()
         if rest and not rest.startswith("#"):
             return False, raw
-        return True, s[1:end]
+        return True, "".join(out)
+    if s[0] == "'":
+        # 单引号：唯一转义是 '' → '
+        out, j, n = [], 1, len(s)
+        while j < n:
+            if s[j] == "'":
+                if j + 1 < n and s[j + 1] == "'":
+                    out.append("'"); j += 2; continue
+                break
+            out.append(s[j]); j += 1
+        else:
+            return False, raw
+        rest = s[j + 1:].strip()
+        if rest and not rest.startswith("#"):
+            return False, raw
+        return True, "".join(out)
     if s[0] in "[{|>&*!%@`":
         return False, raw
-    return True, re.split(r"\s+#", s, 1)[0].strip()
+    return True, re.split(r"\s+#", s, maxsplit=1)[0].strip()
+
+FM_READ_LIMIT = 4096
 
 def _frontmatter(path):
-    """返回 {key: (ok, value)}；无 frontmatter → {}；不可读 → None"""
+    """返回 {key: (ok, value)}；无 frontmatter → {}；不可读 → None；
+    有起始 `---` 但在读取上限内找不到闭合分隔符（未闭合或闭合位置超限）→ 'bad'（VV 二轮 R3：解析失败不得降成「已确认非 pointer」）"""
     try:
-        head = open(path, encoding="utf-8").read(4096)
+        head = open(path, encoding="utf-8").read(FM_READ_LIMIT)
     except OSError:
         return None
     m = _FM_RE.match(head)
     if not m:
-        return {}
+        return "bad" if re.match(r"\A---[ \t]*\n", head) else {}
     fm = {}
     for ln in m.group(1).splitlines():
         if ":" in ln and not ln.lstrip().startswith("#"):
@@ -126,6 +174,8 @@ def _ptr_state(path):
     fm = _frontmatter(path)
     if fm is None:
         return "missing"
+    if fm == "bad":
+        return "bad"
     if "type" not in fm:
         return "plain"
     ok, val = fm["type"]
@@ -179,13 +229,27 @@ def _scan_denylist(text, fp, kind):
                 in_exempt = False
                 continue
         else:
-            m = _H_RE.search(ln)
-            if m:
+            # VV 二轮 R1：同一行可有多个标题——按出现顺序逐个迁移段状态，标题之间的正文各按当时状态扫，
+            # 后续行继承最后一个标题的状态（段级合同不变，只修状态迁移）。
+            segs = []          # [(text, in_exempt_at_that_point)]
+            pos = 0
+            for m in _H_RE.finditer(ln):
+                segs.append((ln[pos:m.start()], in_exempt))
                 if m.group(1) == "1":
                     in_exempt = False
                 else:
                     in_exempt = any(k in m.group(2) for k in sec_kw)
-                ln = ln[:m.start()] + ln[m.end():]   # 同行余下正文仍扫
+                pos = m.end()
+            segs.append((ln[pos:], in_exempt))
+            for seg, ex in segs:
+                if ex or not seg.strip():
+                    continue
+                if any(k in seg for k in line_kw):
+                    continue
+                for kw in deny:
+                    if kw in seg:
+                        hits.append(f"{kw!r} @ L{i}: {seg.strip()[:80]}")
+            continue
         if in_exempt:
             continue
         if any(k in ln for k in line_kw):
