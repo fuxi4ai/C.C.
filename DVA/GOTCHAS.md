@@ -106,7 +106,8 @@ project: DVA
 **✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS——① Mac 源 `dyd/asr_local_qwen3.py` 含 ffprobe>900s → 450s 分段 → 逐段 CLI → 拼接（L50-58 / L95-208）；② `dist/dva-runtime-20260820T150155Z.tar.gz`（sha256 `ae008d4e4377…`＝本条所记部署包）与 `dva-runtime-20260909T123945Z.tar.gz`（`7c3f105392c1…`＝09-09 会话日志所记 install 包）内 `dyd/asr_local_qwen3.py`（sha `6bbaa6613198`）及其单测与 Mac 源逐字一致；③ `python3 -m pytest -q -p no:cacheprovider tests/test_asr_local_qwen3.py` 9 passed rc=0；④ Doctor 快验证据在 `docs/移交VV_ASR长音频分段修复_20260820.md`（single-20260820-152826Z · 32.5min · wav≈1949s>900s 走分段 · 10314 字 · exit=0 无 OOM · asr_status=success）。限：fuxi 生产日志（08-22 起 refill 班是否再现 OOM）盘上不可达未核；VV 独立端到端补验无回执；`Projects/DVA/GOTCHAS.md` 同条副本仍为 🔄（本签只落 brain 件）。
 
 ### [NOTE-20260820-001] single_one.ps1 BOM 丢失复发——修复被覆盖＝发布链有洞
-**状态**: ⚠️ 已知风险
+**状态**: 🔄 已修待部署验证（2026-11-07 Doctor 批 P1-a：Mac 源已改 `tools/fuxi/build_runtime_bundle.py:110-123` 新增 `check_ps1_bom()`、`main()`（L182-198）入包前校验首三字节≠EF BB BF 即 rc=2 拒绝打包、`--skip-bom-check` 逃生开关；P2 `tools/fuxi/install_dva_fuxi.ps1` 第 8 段换入后对 `tools\fuxi\*.ps1` 首三字节逐文件打印 ✓/⚠；自测 Mac 源 11 个 ps1 0 错、无 BOM 负例 rc=2；验收＝下次 build_runtime_bundle → fuxi install 后 single_one/harvest_one 冒烟零人工补件 · 2026-11-07 未参与实施的审核者 subagent 复验 Mac 源改动 PASS）
+**沿革**: ⚠️ 已知风险（2026-08-20 登记）
 **优先级**: 🟡 中
 **触发**: 2026-08-20 调研情报局单视频任务：single_one.ps1 解析错误（PS5.1 按 GBK 读无 BOM 的 UTF-8 → 字符串缺终止符等 parser 错）。字节证据：首三字节 `23 20 73`（"# s"）无 BOM；对照 harvest_one.ps1 首三字节 `EF BB BF` 正常。08-14 VV 已修过 BOM 并首跑验证成功——本次发现修复被后续 scp 覆盖。
 **根因**: fuxi 脚本发布链无 BOM 校验门禁——修复靠人记，覆盖后无哨兵。
@@ -115,7 +116,8 @@ project: DVA
 **来源**: 2026-08-20 调研情报局单视频任务（字节证据 23 20 73 → EF BB BF）
 
 ### [NOTE-20260820-002] runtime 整体换入丢 `dyd\config.yml`——harvest-links 硬编码路径（发布链洞②）
-**状态**: ⚠️ 已知风险
+**状态**: 🔄 已修待部署验证（2026-11-07 Doctor 批 P1-b：Mac 源已改 `harvest-links.js:229` 认 env `DVA_DYD_CONFIG`（报错信息提示「或设置 DVA_DYD_CONFIG」）；`tools/fuxi/install_dva_fuxi.ps1` 第 4.5 段换入后 `dyd\config.yml` 缺失则从 `runtime.bak.$ts` 补拷、两者皆无只 ⚠ 提示不 throw；第 8 段对照打印在位与否；验收＝下次 build_runtime_bundle → fuxi install 后 single_one/harvest_one 冒烟零人工补件 · 2026-11-07 未参与实施的审核者 subagent 复验 Mac 源改动 PASS）
+**沿革**: ⚠️ 已知风险（2026-08-20 登记）
 **优先级**: 🟡 中
 **触发**: 2026-08-20 分段修复部署（bundle `dva-runtime-20260820T150155Z`）：install 整体换 runtime 后 single_one 报「❌ 找不到 DYD 配置：E:\AI\DVA\runtime\dyd\config.yml」（exit=1）。
 **根因**: `harvest-links.js` L221 硬编码 `path.join(__dirname,'dyd','config.yml')`，不读 `DVA_DYD_CONFIG` env（dva.js 读、harvest-links 不读）；bundle 因含秘密刻意排除 config.yml；install 脚本换入后无补件步骤。
@@ -124,7 +126,8 @@ project: DVA
 **来源**: 2026-08-20 部署现场（single-20260820-151105Z exit=1 → 拷贝后复跑通过）
 
 ### [NOTE-20260820-003] fuxi runtime 补丁不在 Mac 源——换 runtime 即丢（发布链洞③ · 同族升格）
-**状态**: ⚠️ 已知风险
+**状态**: 🔄 已修待部署验证（2026-11-07 Doctor 批 P1-c：Mac 源已改 `harvest-links.js:47` 新增 `PYTHON_BIN = process.env.PYTHON_BIN || 'python3'`、L310/L322/L410 三处 spawnSync 改用之、spawn ENOENT 时打印 error 而非「(无输出)」；`harvest-links.js:258-262` 云凭证检查条件化——`DVA_ASR_BACKEND === 'local-qwen3'`（核自 `dyd/dva_asr.py:88-90` 与 `tools/fuxi/single_one.ps1:35`）时跳过 DASHSCOPE_KEY/TOS_AK/TOS_SK；`install_dva_fuxi.ps1` 第 8 段对照 harvest-links.js 含 PYTHON_BIN/DVA_DYD_CONFIG 字样；验收＝下次 build_runtime_bundle → fuxi install 后 single_one/harvest_one 冒烟零人工补件 · 2026-11-07 未参与实施的审核者 subagent 复验 Mac 源改动 PASS）
+**沿革**: ⚠️ 已知风险（2026-08-20 登记）
 **优先级**: 🟡 中
 **触发**: 同场部署连续两坑：① 旧 runtime 的 harvest-links.js 用 `PYTHON_BIN` 变量、新 bundle（Mac 源）硬编码 `python3` → fuxi 无 python3 命令（spawnSync 失败 stderr 空、报「(无输出)」），现场建 venv python3.exe shim + PATH 前置绕过；② 旧 runtime 的 DASHSCOPE_KEY/TOS_AK/TOS_SK 前置检查被 fuxi 侧绕过、Mac 源无条件检查 → local 后端本不需云凭证却被拦，现场塞 dummy 值绕过。
 **根因**: fuxi 生产 runtime 长期积累的运维态补丁从未回流 Mac 源——「修复靠人记、覆盖后无哨兵」的 NOTE-20260820-001 同族**第三次复发**（BOM / config.yml / runtime 补丁）。**应升格通用教训**：异地部署点补丁必须回流源仓，或发布链加换入后 diff 哨兵。
@@ -147,7 +150,8 @@ project: DVA
 **来源**: 2026-11-06 Cowork 会话（Doctor 令「审查并修复抖音作者分析库」）· 实读 sqlite ro/immutable · 实跑 v2 正向+负向（根缺失 → fail rc=1）
 
 ### [NOTE-20261106-002] DVA-Database 冻结件清单（只记不修 · 归发布链专场）
-**状态**: ⚠️ 已知风险
+**状态**: 📌 常驻（2026-11-07 Doctor 裁：作为缺陷作废；规则「DVA-Database 为混合层·冻结件以 DVA-Inventory 为准」已写入 Database/Douyin/SNAPSHOT-INFO.md 与 FROZEN-20260724.md；清理项随发布链专场在 fuxi 侧处理）
+**沿革**: ⚠️ 已知风险（2026-11-06 登记）
 **优先级**: 🟢 低
 **现象**: ① watchlist 8 人 → `global-index.json` 40 位作者仅 26 位有目录、7 个目录仅 `info.json`；② `global-index.json` `updatedAt=2026-10-31` 而内容止于 09-13——写者未核；③ `_DEPRECATED_dva.db` 0 B、`dy_downloader.db-shm/-wal` 10-16 遗留、`_health.json.bak_2026-11-04_pre_rerun` 带 ACL；④ `transcript_job` 89 行全 failed（已登记 INFRA-20260831-001）。
 **边界**: `Database/Douyin/` 为 fuxi 镜像消费面、FROZEN-20260724 常驻禁写，Mac 侧改了也会被每日回流冲掉——修复点只在 fuxi 侧，随 TODO「DVA · 发布链三洞根治专场」处理。
