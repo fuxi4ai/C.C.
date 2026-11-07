@@ -109,7 +109,9 @@ project: 风险日报
 <!-- 在下方追加新条目 -->
 
 ## [ERR-20261105-101] AI Tech Alarm 冻结输入被定时班改写：v2 迁移没迁班次，权威 revision 两个月无供料
-**状态**: ⚠️ 已知风险（迁移、归档、提案队列已做，未参与实施的审核者判 PASS_WITH_LIMITS · 2026-11-05；下列限制未修，云端 prompt 与 11-09 周班未验证）
+**状态**: ⏳ 待 2026-11-09 周班自然验（修复已全部落地：迁移/归档/提案队列 11-05 · 两班判级基线改 revision + 云端 prompt 改引镜像 11-07；验后由未参与实施的审核者落 ✅）
+**沿革**: ⚠️ 已知风险（迁移、归档、提案队列已做，未参与实施的审核者判 PASS_WITH_LIMITS · 2026-11-05；下列限制未修，云端 prompt 与 11-09 周班未验证）
+**预防门禁（2026-11-07 Doctor 批 P1 · 由审核者限制 ①③ 提炼）**: ① `alarm_store.py import` 是唯一发版入口——发版前须有对应 `proposals/pending/*.json` 经 `alarm_proposals.py check` 通过并由 Doctor 复核，不得直接 import 手写 revision（程序级 proposal_id 关联属功能性改动，另裁）；② 任何改动 alarm/ 的会话收尾必跑 `python3 -B alarm/test_no_drift.py`，不只在周班跑。
 **优先级**: 🔴 高
 **触发场景**: 2026-11-05 渊图门禁加固提交时发现 `watch/alarm_watchlist.jsonl` 工作树与 HEAD 不同。
 **硬证据/最小复现**: HEAD 版 sha `ce6ce1bb…`，规定的冻结 SHA `e47732e8…`；把漂移版放入隔离副本实跑 `alarm_store.py verify` 得 `legacy SHA-256 mismatch`，rc=2。`build_risk_daily.py` 读不了 revision 时 AI 面板缺失（实读；10 月到 11-04 面板是否真的缺失未核）。当前 revision 的 `as_of` 仍为 2026-09-07。
@@ -224,7 +226,8 @@ CANDIDATES = [
 **追记 2026-11-07**: 残留 ②③ 已按 Doctor 裁 17A 实施，待独立复验——（**旁证 2026-11-07 11:34Z**：正式目录带复核 build 在本沙箱 rc=0 · REVIEW_ACCEPTED · market_sessions us/cn=2026-11-06，即 ② 的沙箱 glob 兜底在生产路径实跑通过；非代签）② `market_pressure.py` 新增 `_default_documents_root()`（env `RISK_DAILY_DOCUMENTS_ROOT` → `~/Documents`（含 Database 才取）→ `/sessions/*/mnt/Documents` glob 取最新，与 `ops/check_starfield_freshness.py` `_resolve` 同款），`snapshot()` 默认根改走它、显式 `documents` 优先；③ `narrative_review.py` `prepare()` 加 `documents=None` 透传 `market_snapshot(documents=…)`，CLI `prepare [out] --model M --documents ROOT`（原无 argparse，仅 prepare 分支加 argparse；apply 分支未动）、`-h/--help` 显示两参数。验证：两件 `py_compile` 过；`--help`/`prepare --help` 均列 --model/--documents；沙箱 `env -u RISK_DAILY_DOCUMENTS_ROOT` 下 `_default_documents_root()` 解析到 `/sessions/…/mnt/Documents`、snapshot us/cn 均 available(2026-11-06)；`prepare /tmp/… --model test-model --documents <挂载点>` rc=0、包内 binding.model=test-model。备份 `_bak/market_pressure.py.bak_2026-11-07_17A`、`_bak/narrative_review.py.bak_2026-11-07_17A`。 → 2026-11-07 审核者复验 PASS（两件 compile 过；`--help`/`prepare --help` 列 --model/--documents；`env -u RISK_DAILY_DOCUMENTS_ROOT` 下解析到 `/sessions/…/mnt/Documents`〔本 VM `~/Documents` 为挂载点 symlink 走第二级；另以 HOME=/tmp/fakehome 验 glob 第三级同样解析到挂载点〕；snapshot 默认根 us/cn 可取）
 
 ## [ERR-20261107-001] narrative_events.json 字段自相矛盾：`crwv-leverage-0630` precision=day 但 published="2026-08"（月粒度）
-**状态**: ⚠️ 已知风险（2026-11-07 独立审查者 subagent 发现 · CC 登记 · 事件内容修订不在 PRD 2026-11-07_叙事消化度 范围）
+**状态**: 🔄 已修待验（2026-11-07 Doctor 批 P0①②：① `data/narrative_events.json` crwv-leverage-0630 precision day→month（备份 `data/_bak/…bak_2026-11-07_precision`）；② `narrative_score.py` validate_events 加 precision↔published 粒度一致性门禁（只报不剔·避免改评分样本）+ `test_narrative_score.py` 2p/2p' 负向用例，57/57；待未参与实施的审核者复验代签）
+**沿革**: ⚠️ 已知风险（2026-11-07 独立审查者 subagent 发现 · CC 登记 · 事件内容修订不在 PRD 2026-11-07_叙事消化度 范围）
 **优先级**: 🟢 低（叙事消化度模块靠 `len(published)<10` 兜住并计入 excluded，结果正确；但 `dates.precision` 不可信）
 **触发场景**: `narrative_digestion.load_events` 读 `data/narrative_events.json` actors.funding.events[]，事件 `crwv-leverage-0630` 的 `dates`={published:"2026-08", precision:"day"}。
 **硬证据**: 实读 json；模块输出 `excluded=[crwv-leverage-0630: precision='day' published='2026-08'（非日/分钟精度）]`；独立审查 R3 对账 confirming 19 = 簇内 18 + excluded 1。
