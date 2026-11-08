@@ -40,6 +40,8 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
 2. （AI Tech Alarm 事件源定向回源更新 · 信息自纠正第一步 · 2026-11-03 四目标优化接入）在沙箱：
    - 先读 `~/Documents/Claude/Projects/风险日报/data/narrative_events.json`（四维度：demand/returns/funding/delivery）逐事件核对 `next_check_utc` 是否已到期/三日内到期，再按四维度观察点定向 WebSearch 回源 P0/P1（机构评论用于选指标，公司/交易披露确认事实）：现金回报→大云财报/FCF/折旧指引；融资信用→发债定价与交割、OpenAI first close、Anthropic IPO、CoreWeave 再融资；付费需求→云收入/合同转收入；交付→可计费容量/交付延期。
    - **核到新事实或反证（P0/P1 可读源）才更新事件层**：新事件追加（event_id 唯一）、事实/时间/生命周期（developing/confirmed/cleared）更新、同一风险命题的新一代以 supersedes 覆盖旧代；更新后立即跑 `python3 ~/Documents/Claude/Projects/风险日报/narrative_score.py` 自检校验。**未核到合格源 → 原事件一字不动**，输出一行「事件源更新: 本轮无新 P0/P1 事实」。
+   - **v4 事件登记合同（2026-11-08 Doctor 批 · 违反即被校验剔除、整次评分回退）**：新事件必须按 `~/Documents/Claude/Projects/风险日报/docs/事件登记合同-v4.md` 填 `fact_status`（occurred/forecast/contingent）；occurred 必填 `evidence_basis`（primary/market_data/report），report 型 claim 写「据〔源〕〔日期〕报道：…」，market_data 须注明数据来源（ICE/Tradeweb/交易所/发行公告/评级机构）；forecast 型 claim 写「〔谁〕于〔日期〕发布…」；contingent 必填 trigger_condition/lands_in/next_check_utc/on_expiry。融资维违约/重组、头部实验室融资确认失败、投资级借款人恶化按合同标 `transmission_channel`。一个源材料含多个原子事实时**拆成多条**并共享 family。写入后跑 `python3 ~/Documents/Claude/Projects/风险日报/narrative_score.py` 自检，errors 非空不得进入步骤 3。
+   - contingent 事件若本轮核到一手官方文件（法案 bill number、FCC 文件、规则原文）→ 按政策阶梯改为 occurred·policy_stage=proposed（或更高），不得继续挂在提示区。
    - **范围只限 narrative_events.json**；绝不碰 `~/Documents/Claude/Projects/风险日报/alarm/` 下的 `legacy/`（冻结输入）、`current.json`、`revisions/`。
 
 3. 运行后端构建脚本（含 AI Tech Alarm 四维度模型复核）：在沙箱跑
