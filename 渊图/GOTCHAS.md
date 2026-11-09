@@ -1322,3 +1322,15 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **来源**: 本次会话实读 SEC 原文；报告 `AI4ME/Anthropic招股书解读-20261105.md`。
 **追记（2026-11-07 Doctor 裁 24A/24B · 🔄 已修待验）**: ⑤ 建 `company_Nscale`、`company_Lambda`（type=company · category=公司 · region=其他）与 `rel_Nscale_supplies_Anthropic`、`rel_Lambda_supplies_Anthropic`（supplies · weight 0.8）；**数值只取自** `AI4ME/Anthropic招股书解读-20261105.md` 第六节表「SpaceXAI 1,205 + Nscale 446 + Lambda 413」（亿美元）与 canonical `concept_AnthropicComputeCommitmentMismatch` 既有 S-1/A props（44.6/41.3 usd_bn）——props 键 `anthropic_commitment_up_to_caliber_official_usd_bn`=44.6 / `anthropic_commitment_caliber_official_usd_bn`=41.3 带 `_src`/`_unit`，边与节点 data_sources 用既有 S-1/A web: 源并 note 引用路径，edge.properties.source_note 写明来源；本地无 S-1/A 原文（`raw/核实/2026-11-05-Anthropic招股书S-1A核实札记.md` 不含金额），未另编数值。span 取解读表格行并标 span_note 非招股书原文子串。走候选件 promote 过门，canonical 7580/8183→7582/8185。24B：P0 触发器已挂 `brain/TODO.md` 待办段（「渊图 · Anthropic P0 触发器…（2026-11-07 Doctor 裁 24B）」）。
 **附（工具行为）**: curl 取 sec.gov 对未声明身份的 UA 返回 403（`Your Request Originates from an Undeclared Automated Tool`）；内置浏览器在 sec.gov 页面内 fetch 可取 14MB 原文，DOMParser 转文本后可正则定位。
+
+
+## [NOTE-20261108-001] 包一层 Python 跑 track_update 时，subprocess.run 中断会强杀子进程并残留 .lock；Terminal 工具的 command 只收 ASCII
+**状态**: 🔄 已修待验
+**优先级**: 🟡 中
+**触发场景**: 为 `/update research files` 新增 `track_update.py dual`，由父进程依次拉起两轮 `run`，并在 Claude Code 里经 `run_in_terminal` 运行。
+**硬证据/最小复现**: 独立审核者用假后端发进程组 SIGINT，后端收信号后 0.7 秒才退出时，`.lock` 残留 4/5；单发 SIGTERM 给父进程时，子进程和后端继续运行。`run_in_terminal` 的 schema 要求 `command` 为可打印 ASCII，含「行业研究」的 `cd` 命令会被拒收（依 schema 实读，未实跑）。
+**根因**: `subprocess.run` 收到 KeyboardInterrupt 后只等 0.25 秒就 SIGKILL 子进程，子进程的 finally 来不及释放锁；父进程未转发 SIGTERM/SIGHUP。
+**影响面**: `dual` 被中断后下一次运行报「已有批次在运行」；子进程失控时继续消耗额度。中文路径的命令无法直接经 Terminal 工具下发。
+**修复/建议修法**: 父进程改用 `Popen`，转发 SIGTERM/SIGHUP，SIGINT 用空处理函数（不能用 SIG_IGN，会被子进程继承）；`run` 的信号处理在首次触发后忽略后续信号。Terminal 工具用 `cwd` 传中文目录。
+**预防门禁**: `tests/test_track_update.py::test_dual_forwards_stop_signal_and_releases_lock`。
+**来源**: 2026-11-08 `/update research files` 注册，未参与实施的审核者实测。
