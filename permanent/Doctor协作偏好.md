@@ -3,7 +3,7 @@ title: Doctor 协作偏好
 abstract: "方向性/判断性/无既定最优解的改动须 propose-then-confirm：先出具体改动清单 → Doctor 批准 → 才执行（方向+方案已批且无实质偏离不再二次机械确认）；分级批准、可逆优先（重要文件只归档不删）；事务性/文件性/存在最佳解且无需判断的 TODO 适用常驻自动授权；2026-08-29 吸收 V.V. 工作约定（金融真实性/授权不扩张/修复闭环/风险分级/subagent 复验/删除与归档细化）"
 tags: [偏好, 协作, workflow]
 created: 2026-05-23
-updated: 2026-11-06
+updated: 2026-11-09
 status: active
 type: permanent
 ---
@@ -95,6 +95,7 @@ type: permanent
 - **诚实边界**：方案的局限直说（如级联复查只覆盖 wikilink 依赖）。
 - **git / 网络硬约束**：CC 不在沙盒跑任何 git 子命令（含 status/log——会留 index.lock；仓况用 ls/cat 读 `.git/` 纯文本·G-X97）、不在沙盒跑下载/ASR——构造命令贴给 Doctor 在 Mac 终端跑。**⇒ 2026-11-06 递进（Doctor 裁 · /consolidate E4）**：该硬约束的技术根因（`index.lock` 残留，ERR-20260718-002）只在 Cowork 沙箱的 FUSE 环境成立；**Code 标签 / Mac 原生**跑只读 git（`status/log/diff/show`，加 `--no-optional-locks`）允许，仓况探针据此分环境取法（见 brain-resume「git 待办」段）；**commit/push 仍一律交 Doctor 终端**（多会话并发提交是事故源，与环境无关）。此前该例外只写在 `portable/claude-code/CLAUDE.md` 而本件零落点，属通则缺成员，今补。
   - **多仓合并提交（2026-06-14 立）**：当一次会话同时改了**项目仓 + brain 仓**（或任意 ≥2 个 git 仓）时，给 Doctor 一段**合并的「多仓改动」命令**——一个 code block 内按仓分段（每段 `cd <仓路径>` → `git add <具体文件>` → `git commit -m "..."`），各仓独立 add/commit、commit message 各自贴切，让 Doctor 一次复制全跑完，不要拆成多条零散贴。范式即本条立案当次对话（白泽大宗项目仓 + brain 仓两段连发）。
+  - **无接次顺序的命令合并（2026-11-09 立 · 原话「没有接次顺序的terminal命令尽量合并给我」）**：给 Doctor 的终端命令，彼此没有先后依赖的（如两个仓的 `git push`），合并成一条命令一次贴出，用 `;` 连接，前一条失败不影响后一条。有先后依赖的用 `&&` 串联。需要 Doctor 先确认前一条结果才能决定下一条的，才分开给。
 - **待裁事项的呈现方式（通用 · 含 /save 升格分拣 Step 3.5）**：凡需 Doctor 拍板的事项（升格分拣候选、案件裁定、方案选择…），一律「**详细信息在对话正文 + 精简选项在选择题**」——
   - **正文**：每条候选/选项的「**推荐 / 不推荐 + 理由**」讲清楚（升格类用难复得三问），让 Doctor 看着理由判；
   - **选择题**：用 AskUserQuestion 作配套，**多选**（事项互不排斥时）；选项**保持精简**，理由别只埋在 option 描述里；
