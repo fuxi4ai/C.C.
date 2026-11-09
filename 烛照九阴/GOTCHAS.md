@@ -720,6 +720,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **来源**: 2026-09-22 /resume 场 · `logs/mac_marketdata_20260922.log` · `/tmp/ipo_rolling.err` · Doctor 终端 `dig` 实跑
 
 **追记 2026-11-07（审计追记）**: 10-06/10-28/10-29 第 4～6 次复发（`logs/mac_marketdata_2026{1006,1028,1029}.log` Errno 8 各 52/54/54 行，`ops/.last_run_status` FAIL 10-28/10-29）；11-04～11-06 OK（三日 log Errno 8 均 0 行）；Doctor 裁维持 ⚠。
+**追记 2026-11-09（复发）**: 按本条计数第 7 次复发。`logs/mac_marketdata_20261109.log` Errno 8 共 54 行，stock_daily、ks50_index 等步骤 ❌，末行横幅 `完成但有 ❌`，`ops/.last_run_status` 末行 `FAIL 2026-11-09 02:47:53`。同一日志里 `trade_cal 落表失败` 只是 ⚠，时钟落后 3 天未超阈值 3，收尾仍打印「✅ 各表均达到」，属 ERR-20261026-001 预防门禁所说的共模假绿，未修。`~/.zshrc` 自 2026-11-08 起导出 FlClash 代理变量，launchd 环境没有，与本次失败是否相关未核。来源：`/update market data` 路由审核实读。
 
 ## [NOTE-20260922-001] 判「排期那刻机器在不在」必须读 pmset 事件史——`kern.boottime` 会掩盖真漏跑（2026-09-22 实撞）
 

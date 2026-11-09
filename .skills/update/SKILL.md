@@ -1,25 +1,34 @@
 ---
 name: update
-description: 更新持续追踪研究。Doctor 输入 `/update research files` 时触发，也可用「更新追踪研究」「跑一遍追踪研究更新」。用 track_update.py 的双模型流程检索 Database/行业研究 索引内到期研究的最新进展：DeepSeek 先出线索，Claude 自行核实并写入增量更新记录，再由未参与实施的 subagent 回源核验。
-argument-hint: research files [预览] [强制] [ids=a,b]
+description: 更新入口。Doctor 输入 `/update` 时弹问答框选择更新对象；`/update research files`（或「更新追踪研究」「跑一遍追踪研究更新」）用双模型流程更新 Database/行业研究 的持续追踪研究；`/update market data`（或「手动更新行情库」）运行本机行情落库编排器更新 market_data.db。完成后由未参与实施的 subagent 独立核验。
+argument-hint: "research files [预览] [强制] [ids=a,b] 或 market data，留空弹问答框"
 ---
 
-# update research files — 更新持续追踪研究
+# update — 更新入口
+
+## 路由
+
+| 输入 | 行为 |
+|---|---|
+| `/update`（无参数） | 用 AskUserQuestion 弹问答框，选项依次为 `research files`、`market data`。Doctor 选中后进入对应流程；未作答或选其他内容时不运行任何更新 |
+| `/update research files …` | 进入「research files」流程 |
+| `/update market data` | 进入「market data」流程 |
+| 「更新追踪研究」等自然语言 | 按 `research files` 处理，先报告到期清单，Doctor 确认后再运行 |
+| 「手动更新行情库」等自然语言 | 按 `market data` 处理，先报告预检结果，Doctor 确认后再运行 |
+| 其他参数 | 说明本命令支持 `research files` 和 `market data`，然后停止 |
+
+## research files
 
 工作目录：`~/Documents/Database/行业研究`。登记表 `追踪研究索引.md`，写法 `追踪研究更新格式标准.md`，程序 `track_update.py`。
 
-## 参数
+`research files` 后的附加参数：
 
-第一段参数必须是 `research files`。其他参数说明本命令只支持 `research files`，然后停止。
-
-| 参数 | 含义 | 程序参数 |
+| 附加参数 | 含义 | 程序参数 |
 |---|---|---|
 | 无 | 更新全部到期研究并写入 | `dual --apply` |
 | `预览` | 两阶段都跑，只出提案，不写文件 | 去掉 `--apply` |
 | `强制` | 不看到期日，暂停项也跑 | 加 `--force` |
 | `ids=a,b` | 只跑指定研究 | 加 `--ids a,b` |
-
-## 流程
 
 ### 1. 预检
 
@@ -91,10 +100,66 @@ git -C ~/Documents/Database/行业研究 --no-pager diff --stat
 cd ~/Documents/Database/行业研究 && git add -- 追踪研究索引.md <本次研究文件> && git commit -m "追踪研究：YYYY-MM-DD 增量更新" -- 追踪研究索引.md <本次研究文件>
 ```
 
+## market data
+
+运行已有的本机编排器 `烛照九阴/ops/mac_daily_marketdata.py`，按序更新 stock_daily、派生表、烛照各表和外围指数，写入目标是 `~/Documents/Database/Market-Data/market_data.db`。这是高风险金融数据，取数和写库逻辑都不在本 skill 内改动。
+
+### 1. 预检
+
+只读运行，可在 Bash 里跑：
+
+- 按 `brain/permanent/经验索引.md` 查「烛照九阴」和 `market_data` 的开放项。
+- 查 `~/Documents/Database/Market-Data/.market-data-writer.lock`。这是目录，内含 `owner` 文件。存在说明有班在写，或是遗留死锁：报告 owner 和 mtime 并停止，不删除、不改名。
+- 只读打开库（`mode=ro`），记录这些表的行数和最新日期，作为核验基线：stock_daily、daily_market、theme_etf_daily、market_amount_daily、limit_list_daily、margin_daily、us_anchor_daily、intl_index_daily、cn_index_daily（以上用 `trade_date`），margin_guarantee_ratio（用 `stat_date`），以及 `trade_cal` 的最新开市日。
+- 核对本机时间。编排器不占写锁，其他写库班也看不到手动运行。本机时间接近下列时点时，先报告 Doctor 再运行：编排器周一至周五 02:30，usclose 周一至周五 14:00，ipo-rolling 每日 09:00，句芒 Cowork 班约 01:30、烛阴 Cowork 班约 10:05 开始抢锁并持锁数分钟（后两项取自 11-02 至 11-06 的锁记录）。Cowork 班用快照写完后整库放回，时段重叠时手动写入可能被覆盖。
+
+### 2. 运行
+
+用 ToolSearch 加载 `mcp__terminal__run_in_terminal`，`cwd` 传 `~/Documents/Claude/Projects/Financial/烛照九阴`，`command` 只写：
+
+```bash
+/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13 ops/mac_daily_marketdata.py
+```
+
+不放进 Bash 沙箱，也不换用其他 Python。工具不可用时，把带 `cd ~/Documents/Claude/Projects/Financial/烛照九阴 && ` 前缀的同一命令贴给 Doctor 运行。
+
+- 正常约半分钟至 3 分钟，DNS 故障时可达 15 至 90 分钟，不要过早判定挂起。用 `mcp__terminal__read_terminal` 的 `wait_for_output_ms` 等待，完成与否以第 3 步的日志横幅为准。
+- 该解释器的完全磁盘访问授权只在 launchd 下确认过，Terminal 面板下未核。若报 `Operation not permitted` 且没有日志，按 Permission 失败报告，不换解释器。
+- 面板带 shell 的代理变量，launchd 没有。手动成功不能证明 02:30 定时班健康，回报时写明。
+
+### 3. 读结果
+
+`run_in_terminal` 取不到退出码，以日志为准。读 `烛照九阴/logs/mac_marketdata_YYYYMMDD.log`（日期取本机当天）里最后一个 `Mac 原生行情落库 开始` 标记之后的内容：
+
+- 末尾横幅是 `全部完成 · 无 ❌` 或 `完成但有 ❌`。没有横幅按未完成或失败处理。
+- `ops/.last_run_status` 只作旁证。手动运行会追加一行，末行可能盖过当日定时班的 FAIL；发生时在回报里写明。
+- 必读项：每个 ❌ 步骤、`trade_cal 落表失败`、`市场时钟` 的落后天数、零写入（日志写法有 `写 0 行`、`写入 0 行`、`写入/更新 0 行`、`0 日新增`）、`缺 N/M` 中 N 大于 0 的行（`缺 0/9` 是正常）、陈旧判定。某步标 ✅ 或「各表均达到」都不足以证明数据落地。
+
+失败处理：
+
+- `guarantee_ratio` 失败不算硬失败，单独报告。
+- 其他 ❌ 或硬档位陈旧：按 Tool-Use Discipline 报告失败点，不自动重跑。重跑不产生重复行，但部分外围指数腿用 `INSERT OR REPLACE`，会按取数时点覆盖收盘值，所以确认原因已解决后由 Doctor 决定是否再跑。
+- 不得用占位值补数。失败或部分写入时，第 4 步的只读核验照做。
+
+### 4. 独立核验
+
+派一个未参与实施的 subagent，只读核对：
+
+- 第 1 步列出的各表行数只增不减。
+- 最新日期按本次日志打印的 D0、D1 和编排器 `STALE_POLICY` 分档判断，不一律对齐最近交易日。stock_daily 不在 `STALE_POLICY` 内，按 D0 判断。`cn_index_daily` 没有成文档位，只报告日期，且日期带横杠，比较前先去掉。`us_anchor_daily` 由 usclose 班写，本流程不要求它前进。
+- 日志出现 `trade_cal 落表失败` 时，标明市场时钟不可靠，相关判断写「未核」。
+- 新增交易日的行数大于 0，日期格式与存量一致，`PRAGMA integrity_check` 为 ok。
+- 抽查 3 只股票的最新日线，与 Tushare 原始返回或其他独立来源比对。日志没有个股行情，取不到独立来源时写「未核」。
+
+### 5. 回报
+
+按「结果 → 证据 → 核过没有 → 隐患 → 后续」回报各表更新前后的日期和行数、失败步骤、核验结论。只报告数据状态，不解读行情。
+
 ## 边界
 
-- 只写索引表「上次核查」、研究文件的增量更新记录区，以及核验后追加的修正块。
-- 数据底稿、渊图 canonical、价格层、wiki 不由本流程写入。
+- research files 只写索引表「上次核查」、研究文件的增量更新记录区，以及核验后追加的修正块。
+- market data 只通过编排器写 `market_data.db`，不手工改库，不删除、不移动 `.bak_*`、`pre-zhuzhao-*` 和写锁。
+- 数据底稿、渊图 canonical、价格层、wiki 不由 research files 流程写入。
 - 不执行 commit、push，不发布看板，不建定时任务。
 - 不打印、不转述密钥。
 - 不给个股交易或仓位建议。
