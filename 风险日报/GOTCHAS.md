@@ -109,8 +109,8 @@ project: 风险日报
 <!-- 在下方追加新条目 -->
 
 ## [ERR-20261105-101] AI Tech Alarm 冻结输入被定时班改写：v2 迁移没迁班次，权威 revision 两个月无供料
-**状态**: ⏳ 待 2026-11-09 周班自然验（修复已全部落地：迁移/归档/提案队列 11-05 · 两班判级基线改 revision + 云端 prompt 改引镜像 11-07；验后由未参与实施的审核者落 ✅）
-**沿革**: ⚠️ 已知风险（迁移、归档、提案队列已做，未参与实施的审核者判 PASS_WITH_LIMITS · 2026-11-05；下列限制未修，云端 prompt 与 11-09 周班未验证）
+**状态**: ✅ 已修复（未参与实施的审核者代签 · 2026-11-10 · PASS_WITH_LIMITS；依据 11-09 周班自然运行的盘上实据，简报原文未读，限制见文末「追记 2026-11-10」）
+**沿革**: ⏳ 待 2026-11-09 周班自然验（修复已全部落地：迁移/归档/提案队列 11-05 · 两班判级基线改 revision + 云端 prompt 改引镜像 11-07；验后由未参与实施的审核者落 ✅）〔2026-11-08 至 11-10 的状态原文〕← ⚠️ 已知风险（迁移、归档、提案队列已做，未参与实施的审核者判 PASS_WITH_LIMITS · 2026-11-05；下列限制未修，云端 prompt 与 11-09 周班未验证）
 **预防门禁（2026-11-07 Doctor 批 P1 · 由审核者限制 ①③ 提炼）**: ① `alarm_store.py import` 是唯一发版入口——发版前须有对应 `proposals/pending/*.json` 经 `alarm_proposals.py check` 通过并由 Doctor 复核，不得直接 import 手写 revision（程序级 proposal_id 关联属功能性改动，另裁）；② 任何改动 alarm/ 的会话收尾必跑 `python3 -B alarm/test_no_drift.py`，不只在周班跑。
 **优先级**: 🔴 高
 **触发场景**: 2026-11-05 渊图门禁加固提交时发现 `watch/alarm_watchlist.jsonl` 工作树与 HEAD 不同。
@@ -124,6 +124,7 @@ project: 风险日报
 **追记（同日）**: Cowork 实测云端 VM 里冻结文件权限为 600，只读检查必然失败，周班会每次误报。已改为只提示；防漂移判据是内容 SHA，权限不随 git 走。本机 444 仅防手滑，云端无此保护。
 **来源**: 2026-11-05 Code 标签会话，实跑实读。
 **追记 2026-11-07**: Doctor 裁 18A：两班判级基线已改 revision（`live/risk-daily-alarm-weekly` 与 `risk-daily-alarm-earnings-season` 镜像步骤 1/3：基线＝`alarm_store.py export` 当前 revision 的 `scenario_status` 与 `signals[].status`，`legacy.status` 退为历史参考；回执 `brain/inbox/Cowork回执-请求三-判级基线改revision-2026-11-07.md`；云端 prompt 同步归 Doctor），待 11-09 周班自然验。
+**追记 2026-11-10（独立核验代签 · 审核者未参与实施 · PASS_WITH_LIMITS）**: 11-09 周班自然运行的盘上实据——① 实读 `alarm/proposals/pending/2026-11-09_r6-shovelseller.json`：`created_by=risk-daily-alarm-weekly`、`created_at_utc=2026-11-09T17:11:28Z`（文件 mtime 11-09 09:11 PST 相符）、`base_revision_id=r-7d1bb3b624d16aa439523951`＝现行 revision；pending 仅此一件，无 r5、r7 提案。② 实跑（只读）`alarm_store.py verify` rc=0、`"verified":true`；`export` 得 r5-grid、r7-yencarry 均 `signal_observed`（`r5-grid-pjm-shortfall`、`r7-yencarry-mof-weekly` 为 met）；`alarm_proposals.py check proposals/pending/*.json` rc=0。③ 实跑 `python3 -B alarm/test_no_drift.py`：7 项 OK、rc=0；冻结输入 SHA 前 16 位 `e47732e86d245746`。④ 班只写了提案：alarm/ 其余文件 mtime 均停在 11-05，`git status -- alarm` 仅该提案一件未跟踪。**限制**：(a) 周班简报原文在云端会话里，本机读不到，「首行报 revision_id」未核，只有提案的 `base_revision_id` 作旁证；`_repair_audit.md` ts=2026-11-07T03:27 行以简报首行为判据，故该行未代签、仍 🔄。(b)「判级按 `signals[].status` 比较」属推断：r6 冻结 `legacy.status` 为 triggered 而班仍相对 revision 的 unknown 出了提案，r5、r7 未重复出；仅一次运行，属负向观察。(c) 云端 prompt 现文读不到（本环境读云端班列表得 0 条，不作任何方向的证据）。(d) earnings-season 班尚无自然运行证据。(e) 提案内容（8-K、10-Q 数值）未外核，是否发版归 Doctor。(f) 原「限制」①–⑥ 未修，仍然有效；⑦ 中「真实 import」之后的周班真实运行已见，其余未核。
 
 ## [ERR-20261105-102] test_narrative_score 第 4d 条失败（行情变化拒绝且评估未改）
 **状态**: ✅ 已修复（未参与实施的审核者代签 · 2026-11-05 · 判定 PASS_WITH_LIMITS；真实带复核 build 未跑）
@@ -248,3 +249,16 @@ CANDIDATES = [
 **建议修法**: ① 比对前要求 `_mx['meeting']` 与观星 json 中对应会期一致（观星 json 现无会期字段 → 以 `date <= meeting` 的最后一份读数为准），否则不打分；或 ② outcome 过期（下一场会前窗开启）即只显结果、不显 ✓/✗。
 **预防门禁**: 跨文件比对一律先对齐键（会期/日期），再比值。
 **来源**: 2026-11-06 金融线脑暴17项 L1 专场 · 独立复核 subagent（未参与实施）发现 · CC 实读确认。
+
+## [ERR-20261110-001] AI 复核多次采样有效率过低：近三次带复核构建有效样本 1/3、1/3、0/3（今日两次全灭→REVIEW_REJECTED）
+**状态**: 🔄 已修待验（2026-11-10 同日诊断＋修复，见文末「诊断与修复」；验收归 Doctor）
+**优先级**: 🔴 高
+**触发**: 2026-11-10 实施投资级恶化利差阈值后改了 `narrative_events.json`（Meta 事件补 `ig_signal`）→ events_hash 变 → 须带复核构建重绑。连跑两次均 `REVIEW_REJECTED: 全部复核样本无效`，面板转「待重检（沿用有效评估）」，AI 61.6 沿用 11-09 评估。
+**硬证据**: `data/narrative_review_samples.jsonl`——11-08 17:09Z `n_valid=1`、11-09 17:13Z `n_valid=1`（各 3 份请求）；今日两次构建日志 `/tmp/rd_build.log`、`/tmp/rd_build2.log`（拒绝的构建不落 samples 日志）。
+**失败形态（两类，均早于今日改动）**: ① `model_entry.py` 退出码 5＝模型输出非法 JSON（第 133–139 行，疑截断或混入非 JSON 文本，未取原文核）；② 校验拒绝：`funding critical_basis 含非字符串元素` 并带出 HARD「市场担忧引用须来自本轮有效维度依据」。
+**影响面**: ① 多次采样形同单样本——11-08 班只有 1 份有效样本却按「多数票」定判级，chosen funding=82（该份是否判 critical 未核）；② 事件表一改就易长期陈旧；③ 日更 AI 读数实际由偶然通过的那一份决定。
+**根因**: 未定位（未取模型原始输出）。候选：输出长度仍超限；模型把 critical_basis 写成对象；v22 指令后输出结构更复杂。
+**建议修法（待 Doctor 裁）**: 先落盘失败样本原文（stderr/截断片段）再定修法；可选方向——有效样本 <2 时补采、或 n_valid=1 不得单独判 critical。
+**预防门禁**: 带复核构建报告须含 n_valid；n_valid<2 连续两班即告警。
+**来源**: 2026-11-10 风险日报投资级恶化阈值实施场 · CC 实读样本日志与构建日志。
+**诊断与修复（2026-11-10 · Doctor 裁「先诊断再定」后批三项）**: 失败样本原文落 `data/narrative_review_failures.jsonl`（新增诊断日志，model_entry 在非法 JSON 时输出 stop_reason/usage/首尾片段）。三类根因：① 截断——模型回抄事件 facts/evidence，写满 8000 token（`stop_reason=max_tokens`）→ 适配层加「只写 event_id、不得回抄事件内容」，上限 12000；② 依据写成 `{event_id, transmission_channel}` 对象 → `repair_sample` 只取 id；③ 融资维判 critical 但依据无生效通道 → 连带整份作废 → 改为只去掉 critical、分数压到 74（Doctor 裁）。修后首跑 `REVIEW_ACCEPTED`、有效 2/3、两份样本均触发融资降级（模型引 Oracle 发债定价与 CoreWeave 收益率作 critical 依据，二者未标通道）；仍有 1 份在 12000 上限下截断（28.6k 字符），回抄未根绝。测试 143/0。
