@@ -1,6 +1,6 @@
 ---
 name: update
-description: 更新入口。Doctor 输入 `/update` 时弹问答框选择更新对象；`/update research files`（或「更新追踪研究」「跑一遍追踪研究更新」）用双模型流程更新 Database/行业研究 的持续追踪研究；`/update market data`（或「手动更新行情库」）运行本机行情落库编排器更新 market_data.db；`/update Event Attribution Ledger - SOX/KC50`（或 `/update eal`、「跑今天的 EAL」）按每日范式记录隔夜 SOX、次日科创50、机构主流归因和跟随性。完成后由未参与实施的 subagent 独立核验。
+description: 更新入口。Doctor 输入 `/update` 时弹问答框选择更新对象；`/update research files`（或「更新追踪研究」「跑一遍追踪研究更新」）用双模型流程更新 Database/行业研究 的持续追踪研究；`/update market data`（或「手动更新行情库」）运行本机行情落库编排器更新 market_data.db；`/update Event Attribution Ledger - SOX/KC50`（或 `/update eal`、「跑今天的 EAL」）按每日范式记录隔夜 SOX、次日科创50、机构主流归因和跟随性，并批量更新 EAL 持续追踪（量化锚、个案检验节点、FedWatch 与 Polymarket 政策路径快照，双模型对照）。完成后由未参与实施的 subagent 独立核验。
 argument-hint: "research files [预览] [强制] [ids=a,b]、market data，或 Event Attribution Ledger - SOX/KC50 [date=YYYY-MM-DD]；留空弹问答框"
 ---
 
@@ -13,7 +13,7 @@ argument-hint: "research files [预览] [强制] [ids=a,b]、market data，或 E
 | `/update`（无参数） | 用 AskUserQuestion 弹问答框，选项依次为 `research files`、`market data`、`Event Attribution Ledger - SOX/KC50`。Doctor 选中后进入对应流程；未作答或选其他内容时不运行任何更新 |
 | `/update research files …` | 进入「research files」流程 |
 | `/update market data` | 进入「market data」流程 |
-| `/update Event Attribution Ledger - SOX/KC50 [date=YYYY-MM-DD]`，简写 `/update eal` | 进入「Event Attribution Ledger - SOX/KC50」流程；未给日期时，默认取命令发出时已能取得信息的最新交易日 |
+| `/update Event Attribution Ledger - SOX/KC50 [date=YYYY-MM-DD]`，简写 `/update eal` | 进入「Event Attribution Ledger - SOX/KC50」流程；未给日期时走批量模式（四类到期项一起更新，每日台账补到命令发出时已能取得信息的最新交易日）；给了日期时只做该日台账 |
 | 「更新追踪研究」等自然语言 | 按 `research files` 处理，先报告到期清单，Doctor 确认后再运行 |
 | 「手动更新行情库」等自然语言 | 按 `market data` 处理，先报告预检结果，Doctor 确认后再运行 |
 | 「跑今天的 EAL」「更新 SOX/KC50 账本」等自然语言 | 按 `Event Attribution Ledger - SOX/KC50` 处理，先报告预检结果，Doctor 确认后再写入 |
@@ -163,6 +163,18 @@ cd ~/Documents/Database/行业研究 && git add -- 追踪研究索引.md <本次
 
 **记录的主线**：U 日 SOX 的走势和主流解释，传到 T 日科创50 的开盘、收盘和主流解释。**机构主流归因是被记录的对象，不是结论。**
 
+### 批量模式（默认）
+
+格式真源：`EAL/frameworks/持续追踪更新标准.md`；程序 `EAL/backtest/tracking/eal_track.py`，对象登记在同目录 `registry.json`。下面命令的 `cwd` 均为 `~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/tracking`，前缀 `PYTHONDONTWRITEBYTECODE=1 python3 -B`。给了 `date=` 时只做该日的每日台账，按后面第 0–8 步。
+
+1. **列到期项**：`eal_track.py check`，再 `eal_track.py list`。四类：每日台账缺行、量化锚待回看或待终判、检验节点到期、政策快照到期。没有到期项就报告后结束。
+2. **量化锚**：`eal_track.py fetch-ohlc`（Tushare，需外网），再 `eal_track.py anchor --id ID` 演练。`problems` 非空时停下报告；两个低点结论不一致时请 Doctor 裁定。演练结果交一个未参与实施的 subagent 核对（OHLC 与东财或新浪日线对拍、判据转写与 anchors.jsonl 原文和补充裁定对照），通过后再运行 `--write --verified-by "核对者与结论"`。库内未入的日子不写，等行情库更新。
+3. **政策路径**：按标准 §7 在内置浏览器读 FedWatch（cmegroup.com 主页，拒绝非必要 Cookie，视口 1200×1500，滚到组件，截图放大，读完恢复视口），把读数写成 JSON 放 scratchpad，运行 `eal_track.py policy --fedwatch 读数.json` 演练；回算判「一致」时加 `--write`。判「分歧」时先重看截图，仍分歧的报告 Doctor，不加 `--accept-gap` 自行放行。读不到时不写，记 unavailable。
+4. **双模型**：每日台账与事件型检验节点用 `eal_track.py dual`，在 Terminal 面板运行（调用真实 `claude` CLI 和 DeepSeek，不放进 Bash 沙箱，`command` 只收 ASCII）。先不带 `--apply`，读 `tracking/runs/最新目录/report.json` 和各项结果；结果为「一致」或「分歧→裁决」的确认后再带 `--apply` 重跑，或按 annotation 走第 6 步写入。「单模型」「分歧→未决」不写入，按第 4–5 步由会话补做或报告。
+5. **价格型节点**（`kind: price`）不交模型，由会话读库计算后在回报里列出。
+6. **独立核验**：写入后派未参与实施的 subagent 回源核验，范围同第 7 步，另加锚与政策快照。
+7. **回报**：按「结果 → 证据 → 核过没有 → 隐患 → 后续」，逐类列出写入了什么、哪些因分歧或缺数未写。
+
 ### 0. 消费 VV 成果，不足时搜索补充
 
 本流程消费 VV（Codex `usdjpy-15`，EAL 全量采集，每日 06:30、18:30）写入 `attribution.db` 的成果，只读，不重跑、不改写 VV 的任务和表。
@@ -245,7 +257,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B build_row.py --date YYYY-MM-DD --annotation
 ## 边界
 
 - research files 只写索引表「上次核查」、研究文件的增量更新记录区，以及核验后追加的修正块。
-- Event Attribution Ledger - SOX/KC50 只写 `Database/宏观研究体系/EAL/daily_tracking/` 下的年度台账和开盘价旁表，不改 `attribution.db`、`market_data.db`。
+- Event Attribution Ledger - SOX/KC50 只写 `Database/宏观研究体系/EAL/daily_tracking/` 下的年度台账和开盘价旁表、`EAL/tracking/` 下的旁表与结果行，以及 `quant_anchors/anchors.jsonl` 中已登记锚的 review 和终判（先留 `.bak`）；不改 `attribution.db`、`market_data.db`、个案正文和框架件。
 - market data 只通过编排器写 `market_data.db`，不手工改库，不删除、不移动 `.bak_*`、`pre-zhuzhao-*` 和写锁。
 - 数据底稿、渊图 canonical、价格层、wiki 不由 research files 流程写入。
 - 不执行 commit、push，不发布看板，不建定时任务。
