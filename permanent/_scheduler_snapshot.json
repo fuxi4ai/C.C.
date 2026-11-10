@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated_at": "2026-11-04T20:50:16-08:00",
+  "generated_at": "2026-11-10T01:29:51-08:00",
   "triggered_by": "scheduled",
   "host": "yuetudeMacBook-Air.local",
   "generator": "brain/.tools/scheduler_snapshot.py",
@@ -418,7 +418,7 @@
     "runtime": {
      "loaded": true,
      "state": "not running",
-     "last_exit_code": "0"
+     "last_exit_code": "(never exited)"
     }
    },
    "com.zhuzhao.usclose": {
