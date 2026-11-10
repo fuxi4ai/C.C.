@@ -474,16 +474,38 @@ MOUNT_MARKERS = [
     ("brain", ["Claude/brain/TODO.md"]),
 ]
 
-def scan_mounts():
-    """检查定时班关键目录是否挂载。挂载是会话级、非任务级固化（2026-08-13 治理结论），
-    缺挂载则定时班阻塞或静默失败。探测挂载根：$HOME/mnt/Documents/ 或 /sessions/*/mnt/Documents/。"""
+def _mount_roots():
+    """会话挂载根：$HOME/mnt/Documents/ 或 /sessions/*/mnt/Documents/。
+    以 `mnt` 目录是否存在判「是不是会话环境」，不以 `Documents` 是否存在判——
+    会话里 Documents 整个没挂上是最严重的缺挂，必须仍报缺而不是落进「不适用」。"""
     import glob as _g
-    roots = [HOME / "mnt" / "Documents"]
-    roots += [Path(p) / "Documents" for p in _g.glob("/sessions/*/mnt")]
+    mnts = [HOME / "mnt"] + [Path(p) for p in _g.glob("/sessions/*/mnt")]
+    return [m / "Documents" for m in mnts if m.is_dir()]
+
+
+def scan_mounts(roots=None):
+    """检查定时班关键目录是否挂载。挂载是会话级、非任务级固化（2026-08-13 治理结论），
+    缺挂载则定时班阻塞或静默失败。
+
+    返回 {名: True/False/None}。None＝不适用：一个会话挂载根都不存在（Mac 原生终端即如此），
+    此时没有挂载可测，不得报「缺」——否则读数恒为缺、与真实状态无关（通用教训 G-X190 追记 2026-11-10）。"""
+    if roots is None:
+        roots = _mount_roots()
+    if not roots:
+        return {name: None for name, _ in MOUNT_MARKERS}
     found = {}
     for name, markers in MOUNT_MARKERS:
         found[name] = any((r / m).exists() for r in roots for m in markers)
     return found
+
+
+def mounts_verdict(mt):
+    """面⑤ 的单一判词（人读版与终端输出共用）。返回 (kind, missing)：
+    kind ∈ {"na", "ok", "missing"}；全为 None＝na；空 dict 沿旧行为算 ok。"""
+    if mt and all(v is None for v in mt.values()):
+        return "na", []
+    missing = [k for k, ok in mt.items() if ok is False]
+    return ("missing" if missing else "ok"), missing
 
 # ───────────────────── 异常检测 ─────────────────────
 
@@ -779,8 +801,10 @@ def main():
 
     mt = snap["mounts"]
     L.append(f"\n## 面⑤ 挂载检查（2026-08-13 看门狗挂载治理）\n")
-    missing = [k for k, ok in mt.items() if not ok]
-    if not missing:
+    _mt_kind, missing = mounts_verdict(mt)
+    if _mt_kind == "na":
+        L.append("➖ 不适用：本机没有会话挂载根（`~/mnt/Documents`、`/sessions/*/mnt/Documents` 均不存在），原生环境不判挂载")
+    elif _mt_kind == "ok":
         L.append("✅ 关键目录全部挂载（Database/烛照九阴/剑酒青丘/白泽大宗/brain）")
     else:
         L.append(f"⚠ **缺挂载 {len(missing)} 个**：{'、'.join(missing)}——定时班跑前需补挂，否则阻塞/静默失败")
@@ -815,8 +839,9 @@ def main():
           + (f"（内容分叉 {len(d['content_diverged'])}）" if d.get("content_diverged") else ""))
     print(f"面③ launchd      : 源 {len(lg['sources'])} · 装机 {len(lg['installed'])}"
           + (f" · ⚠ 一致性问题 {len(lg['consistency'])} 处" if lg["consistency"] else " · ✅ 一致"))
-    _mt_missing = [k for k, ok in snap["mounts"].items() if not ok]
-    print(f"面⑤ 挂载          : {'⚠ 缺 ' + '、'.join(_mt_missing) if _mt_missing else '✅ 关键目录全挂载'}")
+    _mt_kind2, _mt_missing = mounts_verdict(snap["mounts"])
+    print("面⑤ 挂载          : " + ("➖ 不适用（原生环境无会话挂载根）" if _mt_kind2 == "na"
+                                   else "⚠ 缺 " + "、".join(_mt_missing) if _mt_missing else "✅ 关键目录全挂载"))
     print(f"面④ crontab      : {cr['note']}")
     if lg["consistency"]:
         print("\n⚠ launchd 源↔装机不一致（＝死树分叉的 launchd 版）：")
