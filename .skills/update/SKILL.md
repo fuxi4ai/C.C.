@@ -1,7 +1,7 @@
 ---
 name: update
-description: 更新入口。Doctor 输入 `/update` 时弹问答框选择更新对象；`/update research files`（或「更新追踪研究」「跑一遍追踪研究更新」）用双模型流程更新 Database/行业研究 的持续追踪研究；`/update market data`（或「手动更新行情库」）运行本机行情落库编排器更新 market_data.db；`/update Event Attribution Ledger - SOX/KC50`（或 `/update eal`、「跑今天的 EAL」）按每日范式记录隔夜 SOX、次日科创50、机构主流归因和跟随性，并批量更新 EAL 持续追踪（量化锚、个案检验节点、FedWatch 与 Polymarket 政策路径快照，双模型对照）。完成后由未参与实施的 subagent 独立核验。
-argument-hint: "research files [预览] [强制] [ids=a,b]、market data，或 Event Attribution Ledger - SOX/KC50 [date=YYYY-MM-DD]；留空弹问答框"
+description: 更新入口。Doctor 输入 `/update` 时弹问答框选择更新对象；`/update all` 先检查三项各自是否已更新到最新可得信息，只执行没更新到位的（行情库已入最新可得交易日就跳过；EAL 检验节点和追踪研究不看到期日，从上次核查日起查边际变化）；`/update research files`（或「更新追踪研究」「跑一遍追踪研究更新」）用双模型流程更新 Database/行业研究 的持续追踪研究；`/update market data`（或「手动更新行情库」）运行本机行情落库编排器更新 market_data.db；`/update Event Attribution Ledger - SOX/KC50`（或 `/update eal`、「跑今天的 EAL」）按每日范式记录隔夜 SOX、次日科创50、机构主流归因和跟随性，并批量更新 EAL 持续追踪（量化锚、个案检验节点、FedWatch 与 Polymarket 政策路径快照，双模型对照）。完成后由未参与实施的 subagent 独立核验。
+argument-hint: "all、research files [预览] [强制] [ids=a,b]、market data，或 Event Attribution Ledger - SOX/KC50 [date=YYYY-MM-DD]；留空弹问答框"
 ---
 
 # update — 更新入口
@@ -11,13 +11,14 @@ argument-hint: "research files [预览] [强制] [ids=a,b]、market data，或 E
 | 输入 | 行为 |
 |---|---|
 | `/update`（无参数） | 用 AskUserQuestion 弹问答框，选项依次为 `research files`、`market data`、`Event Attribution Ledger - SOX/KC50`。Doctor 选中后进入对应流程；未作答或选其他内容时不运行任何更新 |
+| `/update all` | 进入「all」流程：按 market data → EAL → research files 的顺序检查，只执行没更新到位的项 |
 | `/update research files …` | 进入「research files」流程 |
 | `/update market data` | 进入「market data」流程 |
 | `/update Event Attribution Ledger - SOX/KC50 [date=YYYY-MM-DD]`，简写 `/update eal` | 进入「Event Attribution Ledger - SOX/KC50」流程；未给日期时走批量模式（四类到期项一起更新，每日台账补到命令发出时已能取得信息的最新交易日）；给了日期时只做该日台账 |
 | 「更新追踪研究」等自然语言 | 按 `research files` 处理，先报告到期清单，Doctor 确认后再运行 |
 | 「手动更新行情库」等自然语言 | 按 `market data` 处理，先报告预检结果，Doctor 确认后再运行 |
 | 「跑今天的 EAL」「更新 SOX/KC50 账本」等自然语言 | 按 `Event Attribution Ledger - SOX/KC50` 处理，先报告预检结果，Doctor 确认后再写入 |
-| 其他参数 | 说明本命令支持 `research files`、`market data` 和 `Event Attribution Ledger - SOX/KC50`，然后停止 |
+| 其他参数 | 说明本命令支持 `all`、`research files`、`market data` 和 `Event Attribution Ledger - SOX/KC50`，然后停止 |
 
 ## research files
 
@@ -254,9 +255,56 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B build_row.py --date YYYY-MM-DD --annotation
 
 按范式 §10 的固定格式回报。周五额外汇总本周 H1、H2。候选只提示，QCR 立案由 Doctor 决定。只记录行情和归因，不做预测或交易建议。
 
+## all
+
+一次检查三项，只执行还没更新到位的。顺序固定为 market data → EAL → research files，因为 EAL 的每日台账要用行情库里的科创50。2026-11-11 Doctor 立。
+
+### 1. 预检
+
+只读，三项一起查，先出一张表：每项写「执行」或「跳过」，并附判据和读数。
+
+| 项 | 判为「已更新到位、跳过」的条件 | 否则 |
+|---|---|---|
+| market data | `stock_daily` 和 `cn_index_daily`（`idx_code='000688.SH'`）的最新日期都不早于目标日，且 `烛照九阴/ops/.last_run_status` 末行以 `OK` 开头 | 按 market data 第 1–5 步执行 |
+| EAL | 不整项跳过：每日台账、量化锚、政策快照按各自到期规则判断；事件型检验节点不看到期日，当天已核查过的除外 | 按 EAL 批量模式执行，`dual` 加 `--all-nodes`；批量模式第 1 步「没有到期项就结束」在这里不适用 |
+| research files | 不整项跳过：状态不是「暂停」、且窗口起点早于今天的研究都跑；一项都没有时整项跳过 | 按 research files 第 1–5 步执行，第 1 步「没有到期项就结束」在这里不适用 |
+
+**market data 的目标日**：北京时间不早于 18:30 时，取今天及以前最近的开市日；早于 18:30 时，取今天以前（不含今天）最近的开市日。18:30 是冬令时定时班的北京时间（夏令时为 17:30），届时 `daily`、`index_daily`、`fund_daily` 和涨跌停表都已可得。开市日以 `trade_cal`（`is_open=1`，日期无横杠）为准；`cn_index_daily` 的日期带横杠，比较前先去掉。`trade_cal` 只写到上一次运行当天，今天不在表里时按周一至周五推断，并在预检表写明「日历未覆盖，按工作日推断」。节假日会因此误判为待更新，此时编排器写 0 行，不算失败，照实回报。
+
+```bash
+sqlite3 'file:/Users/lunarabbit/Documents/Database/Market-Data/market_data.db?mode=ro' "select max(cal_date) from trade_cal where is_open=1" "select max(trade_date) from stock_daily" "select max(trade_date) from cn_index_daily where idx_code='000688.SH'"
+```
+
+`.last_run_status` 末行以 `FAIL` 开头时，即使两张表已到目标日也执行，因为涨跌停、两融等步骤可能没写全。重跑不产生重复行，但部分外围指数腿会按取数时点覆盖收盘值，见 market data 第 3 步。market data 第 1 步的写锁和定时班时点检查照做。写锁存在、或本机时间接近定时班时点时，这一项不执行，回报原因；EAL 按已入库的最新日继续。
+
+**EAL 检验节点**：`eal_track.py dual --all-nodes` 跑全部未关闭的事件型节点，检索窗口从该节点最近一次核查日开始，没有核查记录时从 registry 的 `since` 开始。两者都没有的节点，以及当天（北京日期）已核查过、窗口为空的节点跳过，程序会打印原因。到期日之前的核查不会让节点结束，到期后仍按原规则再查。价格型节点读库计算后列进回报，不写入。
+
+**research files**：从 `track_update.py list` 取状态不是「暂停」、且「窗口起点」早于今天的研究 ID（「今天」以 `list` 打印的为准，即本机日期；EAL 节点用北京日期，两边口径不同），运行 `python3 -B track_update.py dual --apply --force --ids <这些 ID>`。`--force` 会同时忽略到期和暂停两种状态，所以必须用 `--ids` 把暂停的研究排除在外。程序的检索窗口从索引表「上次核查」和研究文件 frontmatter `updated` 中较晚的一天开始，只记录这之后的边际变化。
+
+### 2. 执行
+
+预检表出来后不再等确认，逐项执行。`/update all` 这条命令本身就是执行授权，各子流程内部的停点不变：
+
+- 核验与修正按各子流程的规则处理：research files、EAL 双模型和 market data 是先写入后核验，出错时按各自写法追加修正或报告；量化锚是核验通过后才写入。
+- 量化锚两个低点结论不一致、FedWatch 回算仍有分歧、研究正文要吸收或重判，这几类都交 Doctor 决定。
+- 失败按 Tool-Use Discipline 处理。某一项失败时，后面的项照常执行，失败项在回报里单列。
+
+模型阶段都在 Terminal 面板跑，同一时间只跑一个长任务，各项串行。research files 最长可能超过 3 小时，用 `read_terminal` 的 `wait_for_output_ms` 等待。
+
+成本提示：除当天已核查的项外，每次都会把全部研究和事件型节点跑一遍。研究每项每个模型的刹车线约 5 美元，EAL 节点约 3 美元。
+
+### 3. 回报
+
+把三项合在一份回报里，按「结果 → 证据 → 核过没有 → 隐患 → 后续」写：
+
+- 每项执行了还是跳过，以及判据。
+- 执行了的写明写入内容和核验结论。
+- 合并成一条提交命令交给 Doctor：每个仓分段写，只列本次改动的文件，并做路径限定。
+
 ## 边界
 
 - research files 只写索引表「上次核查」、研究文件的增量更新记录区，以及核验后追加的修正块。
+- all 不另设写入范围，只按所调用子流程的边界写入。
 - Event Attribution Ledger - SOX/KC50 只写 `Database/宏观研究体系/EAL/daily_tracking/` 下的年度台账和开盘价旁表、`EAL/tracking/` 下的旁表与结果行，以及 `quant_anchors/anchors.jsonl` 中已登记锚的 review 和终判（先留 `.bak`）；不改 `attribution.db`、`market_data.db`、个案正文和框架件。
 - market data 只通过编排器写 `market_data.db`，不手工改库，不删除、不移动 `.bak_*`、`pre-zhuzhao-*` 和写锁。
 - 数据底稿、渊图 canonical、价格层、wiki 不由 research files 流程写入。
