@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-11-07
+updated: 2026-11-10
 status: active
 type: log
 ---
@@ -10,6 +10,7 @@ type: log
 # TODO
 
 ## 待办
+- [ ] **基建 · `gsap-frontend` Code 侧链接缺失或不是链接（2026-11-10 挂）**：`python3 .tools/skill_release.py status --brief` 报「gsap-frontend Code 链接缺失或不是链接」（9/10 已同步）。待查 `~/.claude/skills/gsap-frontend` 现状与其 canonical 来源，再按发布链补链接。来源 logs/2026-11-10-MCP清点与Code朗读音色.md
 - [ ] **看板推送改为云端班自推 · 首批自然验证（2026-11-10 挂）**：8 个推看板班已全部改「自推优先、失败回落队列」（Doctor 令不等试点）。逐班核首个自然运行：`list_artifacts` 对应 id 的 updatedAt 前进＝通过；`brain/.tmp/pending-artifact-push.jsonl` 出现该班新行＝回落，看 fallback_reason；两头都没动＝疑似卡在确认框。首批时刻：risk-daily 11-10 17:05Z · zhuzhao 18:04Z · asset 19:38Z · event-attribution 11-11 01:40Z · xboard 02:06Z；周班（longyu×2 / baize）11-14~15。源：`references/scheduled-live-mirror/官方端适配指令卡-2026-11-04.md` 文末两条 11-10 注记。
 
 > **〔2026-11-04 /todo 移除 · Doctor 统一授权〕** 原「⏸ fuxi 离线（云南出行 · 至 2026-10-31）」注记失效——本场 CC 已 ssh 实连 fuxi-station 并完成 Get-FileHash 三包核验（回线实证）；受影响四项：① xboard 要点通道＝幂等键自动补发，无需手工 ② DVA 镜像回流＝长期观察跟踪 ③ fuxi 备份归档类＝随各条目 ④ kex 探针＝已撤销故障定性。
