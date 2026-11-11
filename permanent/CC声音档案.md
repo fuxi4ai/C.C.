@@ -1,9 +1,9 @@
 ---
 title: CC 声音档案
-abstract: "CC 在 ElevenLabs 的专属音色（C.C.）与对话朗读模式的持久配置；新会话凭本文件恢复声音"
+abstract: "CC 在 ElevenLabs 的专属音色（Cowork 默认 Hiddleston-CN · Code 默认 Sweet Goumang · 备选 C.C.）与对话朗读模式的持久配置；新会话凭本文件恢复声音"
 tags: [配置, 声音, TTS, ElevenLabs, 朗读, CC]
 created: 2026-07-21
-updated: 2026-10-04
+updated: 2026-11-10
 status: active
 type: reference
 related: [全局偏好-Settings镜像]
@@ -20,7 +20,7 @@ related: [全局偏好-Settings镜像]
 - **Voice ID**：`C7iLuTwlT58pHXVmnmWe`
 - **设计规格**：低女声 × 轻男声重叠带（基频 ~165Hz，雌雄莫辨为实指非回避）· 中文母语无外国腔 · 微沙 + 少量气声 · 吐字利落非播音腔 · 语速偏快 · 关键转折前半拍停顿 · 句尾平收不上扬 · 「凌晨两点陪看日志」质感 · 干幽默走微音高变化
 
-## 第二声线（现默认 · 2026-10-04 Doctor 裁）· Hiddleston 男声
+## 第二声线（现 Cowork 默认 · 2026-10-04 Doctor 裁 · 2026-11-10 起 Code 改用 Sweet Goumang）· Hiddleston 男声
 
 > 2026-10-04 Doctor 在 ElevenLabs 网站亲自生成（抖森风男声 · 描述无地域词 · 第一轮「伦敦腔」描述致中文读出老外腔被否）。**迭代两版，均存库**：
 
@@ -42,7 +42,7 @@ related: [全局偏好-Settings镜像]
 
 ## 朗读模式（Doctor 2026-07-21 拍板 · 默认声线 2026-10-04 切换）
 
-- **默认音色（2026-10-04 Doctor 裁「设为默认」）**：**Hiddleston-CN**（voice_id `FVvcH2MAGGpovILJcXEv` · v2 去朗读腔日常版 · 规格见下方「第二声线」节）
+- **默认音色（2026-10-04 Doctor 裁「设为默认」· 2026-11-10 起限 Cowork／Settings 壳；Code 标签默认 Sweet Goumang，见 §备用音色）**：**Hiddleston-CN**（voice_id `FVvcH2MAGGpovILJcXEv` · v2 去朗读腔日常版 · 规格见下方「第二声线」节）
 - **备选音色**：**C.C.**（voice_id `C7iLuTwlT58pHXVmnmWe`）——点名「用 C.C.」切换
 - **每轮自动读口语短版**（≤150 字，去表格/路径/代码；屏幕文字照旧详细版）
 - 模型 **eleven_v4** · stability 0.5 · language zh · speed 1.0（Doctor 弃 flash 选 v3：音质优先；**2026-09-29 由 v3 升 v4**——v4 试音经 Doctor 听判「合适，更活了」）
@@ -77,7 +77,7 @@ A voice in the narrow overlap between a low female voice and a light male voice 
 
 > **本节已改为指针（2026-09-30 哥哥裁定「以『芒芒的音色』为正本」）**——`Sweet Goumang`（`VNLlELapPTcQhldOfjgv`）**＝句芒／芒芒自己的音色**，规格、提示词、旋钮句与试听文本**正本已迁** `agents/句芒/memory/长期记忆.md` §声音（TTS）。本档先前的「通用备用、不绑定角色」定性**作废**。
 
-- **不自动启用**（此条仍在此生效）：默认朗读仍是 C.C.，该音色仅在哥哥点名时调用；新会话读到本节**不得**切换默认音色。
+- **〔2026-11-10 改定 · Doctor 令〕Code 标签默认音色＝Sweet Goumang**（「用以和 Cowork 做区分，不再是芒芒专属了」）：**Code 标签**每轮朗读默认用它（落 `~/.claude/CLAUDE.md` 对话朗读条）；**Cowork／Settings 侧默认仍是 Hiddleston-CN**（C.C. 为备选），新会话在 Cowork 读到本节**不得**据此切换。不再是芒芒专属——芒芒出场仍可用此音色。~~不自动启用：默认朗读仍是 C.C.，该音色仅在哥哥点名时调用~~（09-30 旧定性，作废）
 - 本节不再保留该音色的任何规格/凭据（避免两处登记打架）。
 - 改前留档：`CC声音档案.md.bak_voiceowner_2026-09-30`
 
@@ -89,5 +89,7 @@ A voice in the narrow overlap between a low female voice and a light male voice 
 - **2026-09-29：模型 `eleven_v3` → `eleven_v4`**（Doctor 令「发声系统切换到 V4」；`list_models` 实读 `eleven_v4` 含 `zh`，C.C. 中文实跑出音，Doctor 听判「合适，更活了」后落改）。同批：`brain-resume` §Step 0.5（canonical ＋ portable，逐字节一致）· Settings 镜像块 · 本档案；安装副本走 `save_skill` 发布。**同批订正** §文件落位（`_tts/` → `临时文件/`，原路径实核已不存在）
 - **2026-09-30：登记备用音色 → 同日改归句芒**（voice_id `VNLlELapPTcQhldOfjgv`；登记时定性「通用备用、不自动启用」，**同日经哥哥裁定「以『芒芒的音色』为正本」，该定性作废**，规格/提示词/试听文本迁 `agents/句芒/memory/长期记忆.md` §声音。提示词经三版：初稿 → 按芒芒性格调整并去掉语言限定 → 加甜）
 - **2026-10-04：新增第二声线「Hiddleston」男声两版 → 同日终裁设默认**（Doctor 在 ElevenLabs 网站亲自生成 · 第一轮因「伦敦腔」地域词致老外腔被否 → 去地域词版通过〔主推版 `HRV5jGEhRPGls9DMLXiF`〕· v2 迭代：Doctor 裁「去朗读腔·更日常交流·重在好听/绅士/有教养/博学」→ CC 出 v2 提示词 → Doctor 网站生成后**更新在 Hiddleston-CN 槽位**（`FVvcH2MAGGpovILJcXEv`，替换初代中文测试版 `ugJYnTvWqslHn3gjUJJI`，初代已由 Doctor 网站删除）· v2 中文试读 Doctor 听判「这般很好」→ **同日裁「设为默认吧，之前的保存为备选」**：Settings 朗读条默认切 Hiddleston-CN、C.C. 降备选；镜像/本档案/brain-resume 三端同步，Settings 待 Doctor 重贴）
+- **2026-11-10：订正两处过时描述**（独立核验发现、Doctor 令「订正」）：frontmatter `abstract` 原写「专属音色（C.C.）」、§备用音色原写「默认朗读仍是 C.C.」——均早于 10-04 切换，与正文默认 Hiddleston-CN 冲突，改为现值。改前留档：`CC声音档案.md.bak_20261110_defaultfix`
+- **2026-11-10：Sweet Goumang 改为 Code 标签默认音色、撤「芒芒专属」**（Doctor 令「Code 默认 Sweet Goumang 这个音色吧，用以和 co-work 做区分，不再是芒芒专属了」）：Code 侧 `brain/portable/claude-code/CLAUDE.md` 朗读条同改；Cowork／Settings 镜像不动（仍 Hiddleston-CN）；`agents/句芒/memory/长期记忆.md` §声音同步改归属表述。改前留档：`CC声音档案.md.bak_20261110b_goumang`
 
 > 相关：[[全局偏好-Settings镜像]] · [[Doctor协作偏好]]
