@@ -17,6 +17,7 @@
     "the-conch-maiden": {"channel": "code-only"},
     "dream": {"channel": "code-only"},
     "update": {"channel": "code-only"},
+    "console": {"channel": "code-only"},
     "graphify": {"channel": "code-only"}
   }
 }
