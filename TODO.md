@@ -11,9 +11,10 @@ type: log
 
 ## 待办
 
-- [ ] **剑酒青丘 · 买点进化研究收尾（2026-11-11 挂）**：① PRD `logs/checkpoints/2026-11-11_仓位买点加仓点进化_PRD.md` 原则轨 4 项待 Doctor（左侧六条是否入候选池 · §3.3/§二B 结论 · 机构节点降观察标记/A3 豁免 · 两项命名）；② 预注册验证：11-06 组/下一次新低是否再满足左侧六条、芯碁微装 11-03 低点 20 日结局（12-01 前后回看 `outputs/buypoint_evo_20261111/stock_reversal.json`）；③ `round_profile.py`/`left_side_ledger.py` 补单元测试、`north_money` 单位核、复权第三方对拍；④ GOTCHAS KS50-TEST-002/EVAL-002/DATA-001 待未参与实施者核验落签。
+- [ ] **剑酒青丘 · 买点进化研究收尾（2026-11-11 挂 · 08:40 更新）**：① 原则轨六项 Doctor 已裁（B2 入候选池 · L7 加分＋前兆提示 · 右侧键结论接受 · 机构节点观察标记 · 两处改名）→ 待 Doctor 终端 `git mv` 两文件并在 PRD `logs/checkpoints/2026-11-11_仓位买点加仓点进化_PRD.md` 对 R4/R6 等落 `[✓]`（CC 不代打）；② 预注册验证：11-06 组/下一次新低是否再满足 B2（结构 L2∧L4 ＋ 点火 ≥3/5）、L7 前兆提示是否先于 Ⅱ型出现、芯碁微装 11-03 低点 20 日结局（12-01 前后回看 `outputs/buypoint_evo_20261111/stock_reversal.json`）；③ `round_profile.py`/`left_side_ledger.py` 补单元测试、`north_money` 单位核、复权第三方对拍、EAL events FOMC 日历对 Fed 官方日历、五中全会公报日事前可知性；④ GOTCHAS KS50-TEST-002/EVAL-002/DATA-001 待未参与实施者核验落签；⑤ 候选池 ≠ 定版——接生产须另立 PRD（含 A3 豁免期专项）。
 - [ ] **基建 · `gsap-frontend` Code 侧链接缺失或不是链接（2026-11-10 挂）**：`python3 .tools/skill_release.py status --brief` 报「gsap-frontend Code 链接缺失或不是链接」（9/10 已同步）。待查 `~/.claude/skills/gsap-frontend` 现状与其 canonical 来源，再按发布链补链接。来源 logs/2026-11-10-MCP清点与Code朗读音色.md
 - [ ] **看板推送改为云端班自推 · 首批自然验证（2026-11-10 挂）**：8 个推看板班已全部改「自推优先、失败回落队列」（Doctor 令不等试点）。逐班核首个自然运行：`list_artifacts` 对应 id 的 updatedAt 前进＝通过；`brain/.tmp/pending-artifact-push.jsonl` 出现该班新行＝回落，看 fallback_reason；两头都没动＝疑似卡在确认框。首批时刻：risk-daily 11-10 17:05Z · zhuzhao 18:04Z · asset 19:38Z · event-attribution 11-11 01:40Z · xboard 02:06Z；周班（longyu×2 / baize）11-14~15。源：`references/scheduled-live-mirror/官方端适配指令卡-2026-11-04.md` 文末两条 11-10 注记。
+  - **x-board 核验（2026-11-11 · FAIL）**：班本应 11-11 02:06Z 跑，实际延迟到 05:39:54Z 才触发（同窗 10 个绑 Mac 的日班一并延迟，烛阴/句芒日志自记「晚约 11.5–12h」）；生成了页面，但 ToolSearch 两次找不到 `update_artifact`/`list_artifacts`，05:40:42Z 回落登记 `.tmp/pending-artifact-push.jsonl`；队列至今未消费，updatedAt 前进（16:19:45Z）是主会话手推，不算班的功劳。risk-daily/zhuzhao/asset 三班同因回落，event-attribution 推送结果未核。与 fuxi 下线无关（fuxi 只影响抖音数据新鲜度）。——未参与实施的审核者 subagent
 
 > **〔2026-11-04 /todo 移除 · Doctor 统一授权〕** 原「⏸ fuxi 离线（云南出行 · 至 2026-10-31）」注记失效——本场 CC 已 ssh 实连 fuxi-station 并完成 Get-FileHash 三包核验（回线实证）；受影响四项：① xboard 要点通道＝幂等键自动补发，无需手工 ② DVA 镜像回流＝长期观察跟踪 ③ fuxi 备份归档类＝随各条目 ④ kex 探针＝已撤销故障定性。
 
