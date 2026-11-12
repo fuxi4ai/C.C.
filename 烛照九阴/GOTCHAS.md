@@ -2,7 +2,7 @@
 title: 烛照九阴 · GOTCHAS（已知坑）
 tags: [烛照九阴, gotchas]
 created: 2026-07-19
-updated: 2026-11-05
+updated: 2026-11-12
 status: active
 type: resource
 project: 烛照九阴
@@ -932,3 +932,29 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **独立复核（2026-11-06 · 未参与实施的 subagent）**: PASS_WITH_LIMITS。局限：① 生成器 `write_back=True` 无开关，任何 `--date` 测试跑都会给当日 docs json 补两键（幂等，但属 docs/ 副作用；现存 10-21～11-05 其余 json 下次各日重跑时会被补键）；② `ensure_slots` 读 json 未包 try，坏 json 走生成器 except → 卡显「无（槽位未计算）」、原因只在 warning 日志；③ 回退子查询 `ORDER BY metric_code LIMIT 1` 多指标事件取法任意（当前数据未触发）；④「仅紧凑文件」场景在生成器层仅凭条件推断未实跑。复核后 CC 小改两处（EAL「无」note 追加 `DB 最新发布 {max(release_date)}`；横杠/紧凑并存时生成器也 warning），10-28 重渲自验通过，未再独立复验。
 **来源**: 2026-11-06 金融线脑暴17项 L3 专场 · CC 实跑实核 · 独立复核 subagent 落签 PASS_WITH_LIMITS。
 **追记 2026-11-07**: 残留 ①② 已按 Doctor 裁 15A 实施，待独立复验——① 班正文镜像 `brain/references/scheduled-live-mirror/live/zhuzhao-market-fetch-daily-report/SKILL.md` 于 5.6 摘录之后、步骤 6 之前加 **5.7**（问答板写作 5.5，因 5.5 已为 market_health 占用）`python3 scripts/integration_slots.py --date <YYYY-MM-DD>`（参数按 `--help` 实读：--date/--dry-run/--check-names）；② `scripts/integration_slots.py` `ensure_slots` 的 `json.loads` 包 try/except(ValueError, OSError)：解析失败 stderr 红字报文件名、info 记 json_error、返回 None 跳过该件不写回。实跑：`py_compile` 过；`--check-names` rc=0；`--date 2026-10-28 --dry-run` rc=0 且 10-28 json md5 前后一致（e8e739a3…）；坏 json 临时件（/tmp）走 except 路径返回 None 并报文件名。备份 `scripts/_bak/integration_slots.py.bak_2026-11-07_15A`、镜像 `_bak/SKILL.md.bak_2026-11-07_15A`。prompt 实体（Cowork 定时任务）改动仍归 Doctor 终端。 → 2026-11-07 审核者复验 PASS（镜像 diff 仅 L108-109 新增 5.7；脚本 diff 仅 L179→L179-185 try/except；`--check-names` rc 0、`--date 2026-10-28 --dry-run` rc 0 且 10-28 json md5 e8e739a3… 前后不变；/tmp 坏 json 走 except → stderr 红字报文件名、info.json_error 记、返回 None、坏件未被改写。限：坏 json 时 CLI 进程 rc 仍为 0，仅 stderr 可见）
+
+## [ERR-20261111-001] 云端 Cowork 新环境下 `config.connect_write` 护栏按路径含 `/sessions/` 误拒 VM 本地副本 → 课件班 `dedup_kejian.py record` 在 `$HOME/dbroot` 副本上报 RuntimeError
+**状态**: 🔄 待修复（九儿实施者登记·不自标 ✅）
+**优先级**: 🟡 中（fail-closed 不伤数据，但让「$HOME/dbroot」这条班内绕法对写库不可用；与 /tmp/dbroot 属主漂移叠加时，班内只剩换 /tmp 新根一条路）
+**触发场景**: 2026-11-11 17:04 UTC 九儿课件入库班（同日二次触发）。早班（05:39）因 `/tmp/dbroot` 属 nobody 不可写改用 `$HOME/dbroot`，当时零写入未暴露；本班有 2 份新课件，在 `$HOME/dbroot/烛照九阴/recap.db` 副本完成 dim 表插入后跑 `ZZJY_DATABASE_ROOT=$HOME/dbroot python3 tools/dedup_kejian.py record --all-new`。
+**硬证据/最小复现**（实跑）: 报 `RuntimeError: [connect_write] 拒绝直写挂载盘真盘: /sessions/rcw-…/dbroot/烛照九阴/recap.db`，exit=1。该路径在 VM 本地 home（`$HOME=/sessions/rcw-…`），并非挂载盘（挂载盘在 `$HOME/mnt/…`）。`config.py` L118-127：`if (("/sessions/" in s) or ("/mnt/" in s)) and not ZZJY_ALLOW_MOUNT_WRITE: raise`。同环境 `/tmp/dbroot` 属 nobody:nogroup、本班不可写。
+**根因**: 护栏以子串 `/sessions/` 识别「沙箱挂载盘」——旧沙箱挂载点形如 `/sessions/<会话>/mnt/<名>`，新云端 VM 的整个 home 都在 `/sessions/…` 下，`/sessions/` 不再等价于挂载盘，判定过宽。
+**影响面**: 所有在 `$HOME`（非 mnt）下建副本、经 `config.connect_write` 写库的班（课件入库 record、凡走 connect_write 的写脚本）；数据无损（拒写＝fail-closed）。
+**本班处置**: 将副本 cp 至 `/tmp/dbroot2/烛照九阴/recap.db`（integrity ok）后 record 成功（exit 0，复扫待处理 0），随后整库放回真库（integrity ok · 34 表 0 mismatch）。未设 `ZZJY_ALLOW_MOUNT_WRITE`。
+**建议修法**: 判定改为「解析后路径位于挂载根之下」——例如 `s` 含 `/mnt/` 段，或 `Path(s).is_relative_to(Path.home()/'mnt')`，去掉裸 `/sessions/` 子串；或在班 prompt 统一写死 `/tmp/<自有新根>`（并处理 /tmp 属主漂移，见本文件 dedup 输入/输出解耦条目里的 nobody 追记）。改护栏属中风险（写入口安全面），须负向测试：mnt 下路径仍拒、`$HOME/dbroot` 与 `/tmp/x` 放行。
+**预防门禁**: 护栏改后加持久化负向/正向测试各一例；班 prompt「写前」步骤明写副本根须在 /tmp 且可写（`touch` 探测，不可写换新根）。
+**来源**: 2026-11-11 九儿课件入库班实跑（日志 `agents/烛阴/logs/2026-11-11-课件入库.md` 复核段）。
+
+---
+
+## [ERR-20261112-001] 日报上云拆分器只认 echarts 版本串、不钉内联库哈希；题图缺失也照发
+**状态**: 🔄 待修复（修法待 Doctor 裁——拆分器「只跑不改」）
+**优先级**: 🟡 中
+**触发**: 2026-11-12 独立复验 `brain/.tools/artifact_split_zhuzhao.py`（未参与实施的 subagent · 结论 PASS_WITH_LIMITS）做负向测试时发现。
+**硬证据（复验实跑）**: 12 个坏输入里 9 个 exit 1、零产物；**3 个放行**——① 内联库版本串改成 9.9.9、② 改成 5.5.0、③ 库体被改而版本串不变，均 exit 0 并写出产物。另：题图缺失时 exit 0、照发无图页。今天的实际产物无误（cdnjs 5.6.0 的 echarts.min.js 与原件内联源码逐字节相同，1,034,102 字节，sha bf4a2235）。
+**根因**: 拆分器把「内联的是 echarts 5.6.0」当作前提，只在手动 `--check-cdn` 时才比字节；常规运行不核内联块哈希。班规里写的「逐字节相同」没有机器把关。
+**影响面**: 生成器哪天换了 echarts 版本或内联库被改，云端页会静默改用 cdnjs 5.6.0，图表可能渲染不同而班报成功。本地原件不受影响。
+**建议修法**: 常规运行钉内联块 sha256（不符 exit 1、不写产物）；题图解码失败或缺失即 exit 1。
+**预防门禁**: 负向测试用例落盘（现只在复验的临时目录 `$HOME/verify`）。
+**同批另记（复验发现 · 属已知风险）**: ① 拆分器不核原件是否当日新生成——上游没写新文件时会把旧报重发并报成功；② manifest 的 `source` 带会话绝对路径，跨会话不逐字节相同。
+**来源**: 2026-11-12 看板上云场 · 独立复验报告（摘要见 `brain/TODO.md`「看板推送改为云端班自推」zhuzhao 子行）。

@@ -2,7 +2,7 @@
 title: 风险日报 · GOTCHAS（已知坑）
 tags: [风险日报, gotchas]
 created: 2026-07-27
-updated: 2026-11-05
+updated: 2026-11-12
 status: active
 type: resource
 project: 风险日报
@@ -262,3 +262,39 @@ CANDIDATES = [
 **预防门禁**: 带复核构建报告须含 n_valid；n_valid<2 连续两班即告警。
 **来源**: 2026-11-10 风险日报投资级恶化阈值实施场 · CC 实读样本日志与构建日志。
 **诊断与修复（2026-11-10 · Doctor 裁「先诊断再定」后批三项）**: 失败样本原文落 `data/narrative_review_failures.jsonl`（新增诊断日志，model_entry 在非法 JSON 时输出 stop_reason/usage/首尾片段）。三类根因：① 截断——模型回抄事件 facts/evidence，写满 8000 token（`stop_reason=max_tokens`）→ 适配层加「只写 event_id、不得回抄事件内容」，上限 12000；② 依据写成 `{event_id, transmission_channel}` 对象 → `repair_sample` 只取 id；③ 融资维判 critical 但依据无生效通道 → 连带整份作废 → 改为只去掉 critical、分数压到 74（Doctor 裁）。修后首跑 `REVIEW_ACCEPTED`、有效 2/3、两份样本均触发融资降级（模型引 Oracle 发债定价与 CoreWeave 收益率作 critical 依据，二者未标通道）；仍有 1 份在 12000 上限下截断（28.6k 字符），回抄未根绝。测试 143/0。
+
+---
+
+## [ERR-20261112-001] 云端托管页小字发细发淡：云端加载到 Google 在线字体，侧栏加载不到、回退本机思源宋体
+**状态**: 🔄 已修待验（2026-11-12 同日修复；Doctor 目验「通过」；拆分器独立复验进行中，结论见 `brain/TODO.md`「看板推送改为云端班自推」子行）
+**优先级**: 🟡 中
+**触发**: 2026-11-12 风险日报三页（主页 / AI Tech Alarm / EAL 星空）首次推上 claude.ai 托管页，Doctor 目验发现正文小字（9.5–11px）比侧栏版细、淡。
+**硬证据**: ① 容器内 playwright 逐文本节点对拍：原件 vs 「外壳+片段」，字号/字重/字色/行高设定值差异 0（主页 165 条、AI 560 条、EAL 17 条）；② 旧片段 `document.fonts` 载入 `Noto Serif SC 400/600/700`，删引用后载入列表为空；③ Doctor 两张截图（侧栏＝正确、云端＝错误小字）；④ 八个托管页中只有这三页引用 `fonts.googleapis.com`。
+**根因**: 页面 `<head>` 引 Google Fonts 的 Noto Serif SC。侧栏（桌面端）内容安全策略不放行，字体栈落到本机已装的思源宋体——这才是一直以来的「正确观感」；托管页放行 fonts.googleapis.com / fonts.gstatic.com，实际用了 Google 下发的同款字体文件，笔画更细。设定值相同、字体文件不同。
+**影响面**: 仅云端托管页观感；本地原件与侧栏不受影响。
+**修法（Doctor 点头）**: `brain/.tools/artifact_split_risk_daily.py` 加 `strip_webfont()`，三页片段删掉 Google Fonts 的三条 `<link>`（两条 preconnect + 一条样式表），不是恰好三条或删后仍有残留即 exit 1、三页都不写。原件不动。备份 `.bak_2026-11-12_pre-localfont`。
+**预防门禁**: 新看板上云前查是否引用在线字体；对拍只比设定值查不出这类差异，必须有人眼目验或比 `document.fonts` 载入列表。
+**已知限制**: 未装思源宋体的设备（如手机）落到 Songti SC / 系统衬线体，粗细可能与电脑不同。
+**来源**: 2026-11-12 看板上云场 · Doctor 目验 + CC 实跑对拍。
+
+## [ERR-20261112-002] EAL 事件星空「数据与阅读方式」弹窗里夹一处字面 `...`
+**状态**: 🔄 待修复
+**优先级**: 🟢 低
+**触发**: 2026-11-12 发布前通读 EAL 星空子页时发现；弹窗两个 `<section class="detail-section">` 之间原样显示三个点。
+**硬证据**: `risk-daily.html` 的 `EAL_HTML` 常量解码后即含 `…回测。</p></section>...<section class="detail-section"><h3>行情与版本</h3>`（实读解码文档，1 处）；托管页同位置同文。**原件就有，不是拆分上云造成的。**
+**根因**: 未定位。疑为生成 EAL 星空页的模板/拼接处留下的省略占位。
+**影响面**: 侧栏与云端都会显示；纯观感。
+**建议修法**: 查 EAL 星空页生成器对应模板，删掉占位。
+**预防门禁**: 生成后 grep `</section>...<section`。
+**附 · 待核（不是已证实的错）**: 同页行情更新到 2026-11-09，但带日期的事件最晚是 2026-09-30，默认视窗内没有事件星。是事件线断更还是本就无新事件，未核。
+**来源**: 2026-11-12 看板上云场 · 发布前通读（subagent）+ CC 实读原件复核。
+
+## [ERR-20261112-003] 子页里的相对链接在托管页上是死链（AI Alarm 三条、EAL 星空「研究台」两处）
+**状态**: ⚠️ 已知风险（修不修、怎么修待 Doctor 裁）
+**优先级**: 🟢 低
+**触发**: 2026-11-12 三页拆出上云后，子页成为独立托管页。
+**硬证据**: AI Tech Alarm 页脚本把 `lnk-research` / `lnk-desk` / `lnk-eal-db` 的 href 设为 `../Financial/宏观研究体系/EAL/backtest/*.html`（实读片段）；EAL 星空页两处 `href="/research"`（实读）。均为原件既有写法。
+**根因**: 这些链接假定页面从本地文件系统或研究台服务打开；托管页（以及侧栏 iframe）里没有这些路径。
+**影响面**: 点了打不开；不影响其余内容。
+**可选修法**: ① 云端版隐藏这几条链接；② 目标页也上云后改指托管地址；③ 保持现状。
+**来源**: 2026-11-12 看板上云场 · 发布前通读（subagent）+ CC 实读复核。
