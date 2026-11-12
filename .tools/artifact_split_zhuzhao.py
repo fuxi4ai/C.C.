@@ -30,6 +30,13 @@ DEFAULT_SRC = "AI4ME/烛照九阴-outputs/artifact/zhuzhao-jiuyin-daily.html"  #
 CDN_FMT = "https://cdnjs.cloudflare.com/ajax/libs/echarts/%s/echarts.min.js"
 BIG_URI_CHARS = 50000   # 整个 data URI 达到这个字符数才外置
 LIB_MIN_CHARS = 200000  # echarts 库块的下限，防止把别的带许可注释的小脚本认成库
+# 钉死「哪个版本的内联库源码长什么样」（2026-11-12 独立复验发现缺口 · Doctor 裁「修」· GOTCHAS ERR-20261112-001）：
+# 只认版本串不够——版本串被改、或库体被改而版本串不变，都会静默改用 CDN 上的另一份代码。
+# 值＝内联库源码（<script> 标签内文本，UTF-8）的 sha256；该份已用 --check-cdn 核过与 cdnjs 同版本文件逐字节相同。
+# 生成器换 echarts 版本时：先跑 --check-cdn（该模式不查本名单）核对新版本，通过后在这里加一行。
+PINNED_LIB_SHA256 = {"5.6.0": "bf4a223524e40b77c304bec67e1222cf551f14880cf42c69dc046558e11c07b1"}
+CHECK_PIN = True        # --check-cdn 模式下置 False：核对新版本时还没有登记
+MIN_ASSETS = 1          # 日报固定带一张题图；一张大图都没有＝上游缺图，不发无图页
 EXT = {"image/jpeg": "jpg", "image/png": "png", "image/gif": "gif", "image/webp": "webp", "image/svg+xml": "svg"}
 URI = re.compile(r"data:(image/[a-z0-9.+-]+);base64,([A-Za-z0-9+/]+={0,2})")
 SCRIPT = re.compile(r"<script\b([^>]*)>(.*?)</script>", re.S | re.I)
@@ -62,7 +69,15 @@ def find_echarts(html):
     vers = sorted(set(VERSION.findall(m.group(2))))
     if len(vers) != 1:
         die("从 echarts 库源码里解析不到唯一版本号（找到：%s）" % (", ".join(vers) or "无"))
-    return m.start(), m.end(), m.group(2), vers[0]
+    ver, lib = vers[0], m.group(2)
+    if not CHECK_PIN:
+        return m.start(), m.end(), lib, ver
+    if ver not in PINNED_LIB_SHA256:
+        die("内联 echarts 版本 %s 不在已核对名单（%s）；先跑 --check-cdn 核对后再登记" % (ver, ", ".join(sorted(PINNED_LIB_SHA256))))
+    got = hashlib.sha256(lib.encode("utf-8")).hexdigest()
+    if got != PINNED_LIB_SHA256[ver]:
+        die("内联 echarts %s 的源码指纹 %s 与已核对的 %s 不符（库体被改或不是官方构建）" % (ver, got[:16], PINNED_LIB_SHA256[ver][:16]))
+    return m.start(), m.end(), lib, ver
 
 
 def slim_doc(html):
@@ -144,6 +159,9 @@ def main():
         html = raw.decode("utf-8")
     except UnicodeDecodeError as ex:
         die("原件不是 UTF-8：%s" % ex)
+    if a.check_cdn:
+        global CHECK_PIN
+        CHECK_PIN = False
     doc, info, assets, lib = slim_doc(html)
     if a.check_cdn:
         check_cdn(lib, info)
@@ -154,6 +172,8 @@ def main():
     srcs = re.findall(r'<script\b[^>]*\bsrc=["\']([^"\']+)', frag, re.I)
     if srcs != [info["cdn_url"]]:
         die("片段里的外链脚本不是恰好一个 echarts CDN：%s" % srcs)
+    if len(assets) < MIN_ASSETS:
+        die("原件里没有可外置的大图（题图缺失）：应至少 %d 张，实际 %d 张" % (MIN_ASSETS, len(assets)))
     for rel in assets:
         if frag.count(rel) < 1:
             die("片段里找不到外置图引用：%s" % rel)

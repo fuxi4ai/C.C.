@@ -22,6 +22,7 @@
   删改后主页仍残留对它们的引用、子文档里又套了 iframe、color-scheme 的 meta 写法不认识、build() 拒绝、
   任一页超过通读上限、链接卡片不是恰好两张、托管页地址与 hosted-pages.json 登记不一致。
   Google Fonts 的 <link> 不是恰好三条或删后仍有残留（三页都删在线字体，回退本机字体，2026-11-12）。
+  子页死链形态与预期不符（AI 页三条本地入口、EAL 页 /research 链接；云端只加样式中和，2026-11-12）。
   三页全部在内存里算完、检查完，才开始第一次写盘。
 - 不删任何文件，不改原件，不改 artifact_fragment.py。
 用法：python3 artifact_split_risk_daily.py [--src <原件.html>] [--max-chars 300000]
@@ -112,6 +113,27 @@ def strip_webfont(frag, what):
     return out
 
 
+# 死链中和（2026-11-12 Doctor 裁「修」· GOTCHAS ERR-20261112-003）：两个子页里有几条链接假定页面从本地文件系统
+# 或研究台服务打开，托管页上点了打不开。云端片段末尾补一条样式：AI 页三条入口保留文字、不可点；EAL 页
+# 指向 /research 的链接隐藏。只加样式、不删改正文与脚本；原件不动。形态与预期不符即 fail-closed。
+DEADLINK = {
+    AI_ID: ("#lnk-research,#lnk-desk,#lnk-eal-db{pointer-events:none;cursor:default;color:inherit;text-decoration:none}",
+            (('getElementById("lnk-research").href="../Financial/', 1), ('getElementById("lnk-desk").href="../Financial/', 1),
+             ('getElementById("lnk-eal-db").href="../Financial/', 1), ('id="lnk-research"', 1), ('id="lnk-desk"', 1),
+             ('id="lnk-eal-db"', 1))),
+    EAL_ID: ('a[href^="/research"]{display:none!important}',
+             (('href="/research"', 2), ("research_url.startsWith('/research#')", 1))),
+}
+
+
+def neutralize_deadlinks(frag, bid):
+    css, needs = DEADLINK[bid]
+    for need, n in needs:
+        if frag.count(need) != n:
+            die("%s 的死链形态与预期不符：「%s」应恰好 %d 处，实际 %d 处" % (bid, need, n, frag.count(need)))
+    return frag + "\n<style data-cloud-deadlink>" + css + "</style>"
+
+
 def build(doc, max_chars, what):
     """调 artifact_fragment.build()；它拒绝时把是哪一页补进报错，照旧 exit 1。"""
     try:
@@ -150,6 +172,7 @@ def split(html, max_chars):
         main = ppat.sub(lambda m: m.group(1) + card + m.group(2), main, count=1)
         frag = build(neutralize(sub, const), max_chars, "子页面 %s" % bid)
         frag = strip_webfont(frag, "子页面 %s" % bid)
+        frag = neutralize_deadlinks(frag, bid)
         out[bid] = (frag, {"from_constant": const, "constant_literal_chars": len(hits[0]),
                            "decoded_doc_chars": len(sub),
                            "decoded_doc_sha256": hashlib.sha256(sub.encode("utf-8")).hexdigest()})

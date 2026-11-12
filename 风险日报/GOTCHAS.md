@@ -278,7 +278,7 @@ CANDIDATES = [
 **来源**: 2026-11-12 看板上云场 · Doctor 目验 + CC 实跑对拍。
 
 ## [ERR-20261112-002] EAL 事件星空「数据与阅读方式」弹窗里夹一处字面 `...`
-**状态**: 🔄 待修复
+**状态**: 🔄 已修待验（2026-11-12 Doctor 裁「修」：源头 `Projects/Financial/宏观研究体系/EAL/backtest/starfield_view.js` 第 250 行删掉两个 section 之间的字面 `...`，备份 `.bak_2026-11-12_pre-ellipsis`。派生的 `EAL_STARFIELD.html` 与 `risk-daily.html` 未手工改，下次构建后生效——**届时须回读确认 `...` 已消失**）
 **优先级**: 🟢 低
 **触发**: 2026-11-12 发布前通读 EAL 星空子页时发现；弹窗两个 `<section class="detail-section">` 之间原样显示三个点。
 **硬证据**: `risk-daily.html` 的 `EAL_HTML` 常量解码后即含 `…回测。</p></section>...<section class="detail-section"><h3>行情与版本</h3>`（实读解码文档，1 处）；托管页同位置同文。**原件就有，不是拆分上云造成的。**
@@ -290,7 +290,7 @@ CANDIDATES = [
 **来源**: 2026-11-12 看板上云场 · 发布前通读（subagent）+ CC 实读原件复核。
 
 ## [ERR-20261112-003] 子页里的相对链接在托管页上是死链（AI Alarm 三条、EAL 星空「研究台」两处）
-**状态**: ⚠️ 已知风险（修不修、怎么修待 Doctor 裁）
+**状态**: 🔄 已修待验（2026-11-12 Doctor 裁「修」，取修法①：拆分器 `neutralize_deadlinks()` 给云端片段末尾加一条样式——AI 页三条本地入口保留文字、不可点；EAL 页 `a[href^="/research"]` 隐藏。只加样式，不删改正文脚本，原件不动；形态不符即 fail-closed；备份 `.bak_2026-11-12_pre-deadlink`）｜2026-11-12 独立复验 PASS_WITH_LIMITS（未参与实施的 subagent）
 **优先级**: 🟢 低
 **触发**: 2026-11-12 三页拆出上云后，子页成为独立托管页。
 **硬证据**: AI Tech Alarm 页脚本把 `lnk-research` / `lnk-desk` / `lnk-eal-db` 的 href 设为 `../Financial/宏观研究体系/EAL/backtest/*.html`（实读片段）；EAL 星空页两处 `href="/research"`（实读）。均为原件既有写法。

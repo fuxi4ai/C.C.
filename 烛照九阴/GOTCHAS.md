@@ -948,7 +948,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 ---
 
 ## [ERR-20261112-001] 日报上云拆分器只认 echarts 版本串、不钉内联库哈希；题图缺失也照发
-**状态**: 🔄 待修复（修法待 Doctor 裁——拆分器「只跑不改」）
+**状态**: 🔄 已修待验（2026-11-12 Doctor 裁「修」：拆分器加 `PINNED_LIB_SHA256` 钉内联库源码指纹、`MIN_ASSETS=1` 题图必有，`--check-cdn` 模式不查名单；持久化负向测试 `brain/.tools/test_artifact_split_guards.py` 8 例全过；备份 `.bak_2026-11-12_pre-pin`。「不核原件是否当日新生成」「manifest 带会话路径」两条未动，仍属已知风险）｜2026-11-12 独立复验 PASS_WITH_LIMITS（未参与实施的 subagent）
 **优先级**: 🟡 中
 **触发**: 2026-11-12 独立复验 `brain/.tools/artifact_split_zhuzhao.py`（未参与实施的 subagent · 结论 PASS_WITH_LIMITS）做负向测试时发现。
 **硬证据（复验实跑）**: 12 个坏输入里 9 个 exit 1、零产物；**3 个放行**——① 内联库版本串改成 9.9.9、② 改成 5.5.0、③ 库体被改而版本串不变，均 exit 0 并写出产物。另：题图缺失时 exit 0、照发无图页。今天的实际产物无误（cdnjs 5.6.0 的 echarts.min.js 与原件内联源码逐字节相同，1,034,102 字节，sha bf4a2235）。
