@@ -5,14 +5,14 @@ description: Use this skill ONLY when the user explicitly types the slash comman
 
 # Conch（海螺姑娘）· 项目整理
 
-> 版本 1.1.1（2026-11-13）。正文真源＝`~/Documents/Claude/brain/.skills/the-conch-maiden/SKILL.md`；安装形态：`~/.claude/skills/the-conch-maiden` 为指向本目录的链接（2026-11-12 起，由 Doctor 终端改链接；改好之前 `/conch` 仍加载旧版），不在那里改。
+> 版本 1.2.0（2026-11-13）。正文真源＝`~/Documents/Claude/brain/.skills/the-conch-maiden/SKILL.md`；安装形态：`~/.claude/skills/the-conch-maiden` 为指向本目录的链接（2026-11-12 起，由 Doctor 终端改链接；改好之前 `/conch` 仍加载旧版），不在那里改。
 > 引擎：`~/Documents/Claude/Projects/海螺姑娘/conch_engine.py`。项目档案：`brain/海螺姑娘/`；坑库：`Projects/海螺姑娘/GOTCHAS.md`。
-> v 历史：1.0.0 以 v0.2 引擎版为底重写，替换 2026-04-30 的提示词版（GOTCHA-20261112-001）；同日修引擎两处误判（-002 新旧判反、-003 日期在前的备份被当无语义 .bak）。1.1.0 引擎 `scan`/`archive` 加 `--all` 全量清单与「合计待移」行，`protect: []` 与行内列表可正确解析（-004）。1.1.1 第 1 步加禁区：`Codex/Project Mirror` 不作为目标（Doctor 定）；同日引擎修 GOTCHA-20261113-001～005（现行版本、小数版本、空文件、引用检查、中段 `_old_`）。
+> v 历史：1.0.0 以 v0.2 引擎版为底重写，替换 2026-04-30 的提示词版（GOTCHA-20261112-001）；同日修引擎两处误判（-002 新旧判反、-003 日期在前的备份被当无语义 .bak）。1.1.0 引擎 `scan`/`archive` 加 `--all` 全量清单与「合计待移」行，`protect: []` 与行内列表可正确解析（-004）。1.1.1 第 1 步加禁区：`Codex/Project Mirror` 不作为目标（Doctor 定）；同日引擎修 GOTCHA-20261113-001～005（现行版本、小数版本、空文件、引用检查、中段 `_old_`）。1.2.0 归档件改名 `<原文件名>.archived_YYYY-MM-DD` 平铺 `archived/`，同名循环查重、rollback 不覆盖（-006，Doctor 定）。
 
 ## 原则
 
 - **默认只预演**。不带 `--apply` 只跑只读的 `detect` / `scan`，报完即停。
-- **只移不删**。归档＝引擎把文件移进 `archived/<日期>/` 并写 `.conch_audit.log`，可按 session 回滚。
+- **只移不删**。归档＝引擎把文件移进目标目录（`--scope`，即项目根）下的 `archived/`，改名为 `<原文件名>.archived_YYYY-MM-DD`（同日同名加 -2、-3，不覆盖），并写 `.conch_audit.log`，可按 session 回滚。
 - **本技能只做归档**。不改代码、不改 GOTCHAS 状态、不覆盖已有文件、不写记忆。修复、补文件、记忆分拣走各自的常规流程（GOTCHAS 自动登记规则、`/save`），不在这里顺手做。
 - 判定交给引擎；Doctor 不同意某个判定时，用 `explain` 给理由，不自行改判。
 
@@ -52,7 +52,7 @@ cd "$TMPDIR" && python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine
    cd "<目标>" && python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine.py --scope "<目标>" archive --apply --yes
    ```
    `cd` 到目标目录再跑，稳妥起见（GOTCHA-20261106-003 的相对路径问题已修，这里仍保持同一习惯）。
-4. 回读：`ls archived/<日期>/` 核对移走的文件数与清单一致；从输出或 `.conch_audit.log` 末行取 session_id。
+4. 回读：数 `.conch_audit.log` 末行 `moved` 的条数（`tail -1 .conch_audit.log | python3 -c 'import json,sys;print(len(json.load(sys.stdin)["moved"]))'`），核对与清单一致，并抽查 `archived/` 下对应的 `.archived_<日期>` 文件确实存在（按日期 grep 会把同日早先的归档也算进去，不能用来计数）；从输出或 `.conch_audit.log` 末行取 session_id。
 5. 只跑一次。失败就报错误原文并停止，不重试。
 
 ## 其他模式
@@ -71,7 +71,7 @@ cd "$TMPDIR" && python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine
 扫描 <N> 个文件 · 拟归档 <N> · 版本链超额 <N>
 拟归档：
   - <文件> — <理由>
-（预演，未改动任何文件）｜ 已归档 <N> 个 → archived/<日期>/ · session <id>
+（预演，未改动任何文件）｜ 已归档 <N> 个 → archived/（*.archived_<日期>）· session <id>
 开放 GOTCHAS：<N> 条（只读统计）　缺少标准文件：<列表或「无」>
 ```
 
