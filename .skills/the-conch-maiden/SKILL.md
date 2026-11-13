@@ -5,9 +5,9 @@ description: Use this skill ONLY when the user explicitly types the slash comman
 
 # Conch（海螺姑娘）· 项目整理
 
-> 版本 1.1.0（2026-11-12）。正文真源＝`~/Documents/Claude/brain/.skills/the-conch-maiden/SKILL.md`；安装形态：`~/.claude/skills/the-conch-maiden` 为指向本目录的链接（2026-11-12 起，由 Doctor 终端改链接；改好之前 `/conch` 仍加载旧版），不在那里改。
+> 版本 1.1.1（2026-11-13）。正文真源＝`~/Documents/Claude/brain/.skills/the-conch-maiden/SKILL.md`；安装形态：`~/.claude/skills/the-conch-maiden` 为指向本目录的链接（2026-11-12 起，由 Doctor 终端改链接；改好之前 `/conch` 仍加载旧版），不在那里改。
 > 引擎：`~/Documents/Claude/Projects/海螺姑娘/conch_engine.py`。项目档案：`brain/海螺姑娘/`；坑库：`Projects/海螺姑娘/GOTCHAS.md`。
-> v 历史：1.0.0 以 v0.2 引擎版为底重写，替换 2026-04-30 的提示词版（GOTCHA-20261112-001）；同日修引擎两处误判（-002 新旧判反、-003 日期在前的备份被当无语义 .bak）。1.1.0 引擎 `scan`/`archive` 加 `--all` 全量清单与「合计待移」行，`protect: []` 与行内列表可正确解析（-004）。
+> v 历史：1.0.0 以 v0.2 引擎版为底重写，替换 2026-04-30 的提示词版（GOTCHA-20261112-001）；同日修引擎两处误判（-002 新旧判反、-003 日期在前的备份被当无语义 .bak）。1.1.0 引擎 `scan`/`archive` 加 `--all` 全量清单与「合计待移」行，`protect: []` 与行内列表可正确解析（-004）。1.1.1 第 1 步加禁区：`Codex/Project Mirror` 不作为目标（Doctor 定）；同日引擎修 GOTCHA-20261113-001～005（现行版本、小数版本、空文件、引用检查、中段 `_old_`）。
 
 ## 原则
 
@@ -25,6 +25,7 @@ description: Use this skill ONLY when the user explicitly types the slash comman
 1. 有 `--scope` 就用它。
 2. 没有就看本会话实际读写过的项目目录（含 `.git/`、`CLAUDE.md`、`GOTCHAS.md`、`README.md` 之一的目录）：恰好一个直接用；多个用 AskUserQuestion 让 Doctor 选；一个都没有就问 Doctor 要路径，**不要猜**。
 3. 绝不以 `~`、`~/Documents` 或 `~/Documents/Claude` 这类根目录为目标。
+4. 绝不以 `~/Documents/Codex/Project Mirror` 及其下任何子目录为目标（2026-11-13 Doctor 定）：那是 V.V. 的项目桥与镜像工作区，里面的审计、回测产物按对照组命名，引擎会误判。`--scope` 指向那里，或会话里只碰过那里，就告诉 Doctor 不做，然后停。
 
 宣布：`🐚 目标目录：<路径>`
 
