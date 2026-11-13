@@ -6,6 +6,9 @@ v2（2026-09-03 独立审查修复）：①覆盖 4 种条目格式（H2/H3/列�
   python3 build_experience_index.py          # Mac 终端（DOCS_DIR 默认 ~/Documents）
   DOCS_DIR=/sessions/xxx/mnt/Documents python3 build_experience_index.py   # 沙箱
 产物: brain/permanent/经验索引.md + brain/permanent/_exchange_index.md
+  （2026-11-13 加：环境变量 EXP_INDEX_OUT / EXP_EXCH_OUT 可把两件产物改写到别处——验证用，不覆盖正式索引；默认不变）
+同条订正（2026-11-13 加 · TODO「经验索引生成器不识别同条订正」）：条目正文若有 `**⚠ … 同条订正（NOTE-…）…**：…` 追记，
+  索引行标「已订正→指向 <NOTE 编号>」，标题显示订正句首句（原标题括注于后），状态取订正段可判定的状态、判不出则沿用原判。
 原则: 索引只含指针与状态摘要，正文真源=各项目 GOTCHAS.md / 通用教训.md / 经验库.md；索引可随时重建。
 """
 import os, re, hashlib, datetime, json
@@ -13,8 +16,8 @@ import os, re, hashlib, datetime, json
 DOCS = os.environ.get("DOCS_DIR") or os.path.expanduser("~/Documents")
 BRAIN = os.path.join(DOCS, "Claude/brain")
 PERM = os.path.join(BRAIN, "permanent")
-OUT = os.path.join(PERM, "经验索引.md")
-EXCH = os.path.join(PERM, "_exchange_index.md")
+OUT = os.environ.get("EXP_INDEX_OUT") or os.path.join(PERM, "经验索引.md")
+EXCH = os.environ.get("EXP_EXCH_OUT") or os.path.join(PERM, "_exchange_index.md")
 
 MACHINE_GATES = [
     "Database/行业研究/rules/kg_promote.py",
@@ -85,6 +88,21 @@ entries = []
 
 SEEN_IDS = {}
 SOURCE_WARNINGS = []
+# 同条订正追记：`**⚠ 2026-11-01 同条订正（NOTE-20261101-001 · 追记不新建）**：订正正文…`
+CORR_RE = re.compile(r"^\*\*⚠[^*\n]*?同条订正\s*[（(]\s*(NOTE-\d{8}-\d{3})[^*\n]*\*\*\s*[:：]?\s*(.*)$", re.M)
+
+
+def correction_of(body):
+    """返回 (NOTE 编号, 订正首句, 订正段状态) 或 None。订正首句＝订正正文到第一个「——」或「。」为止，去 ** 与反引号。"""
+    m = CORR_RE.search(body or "")
+    if not m:
+        return None
+    rest = m.group(2)
+    head = re.split(r"——|。", rest, maxsplit=1)[0]
+    head = re.sub(r"\*\*|`", "", head).strip()
+    return m.group(1), head, status_of(rest)
+
+
 def add(proj, eid, title, body, fname, status=None):
     if "YYYYMMDD" in eid or "NNN" in eid:
         return
@@ -96,9 +114,18 @@ def add(proj, eid, title, body, fname, status=None):
             SOURCE_WARNINGS.append(f"编号重复（同来源 · 保留先出现者）：{proj}/{eid} @ {fname}")
         return
     SEEN_IDS[key] = title
+    st = status or status_of(body, title)
+    corr = correction_of(body)
+    if corr:
+        note, head, cst = corr
+        if head:
+            title = f"{head}（原：{title}）"
+        if cst != "—":
+            st = cst
     entries.append({
         "proj": proj, "id": eid, "title": title.replace("|", "｜")[:64],
-        "type": type_of(eid), "date": date_of(eid), "status": status or status_of(body, title),
+        "corr": corr[0] if corr else "",
+        "type": type_of(eid), "date": date_of(eid), "status": st,
         "mach": "✓" if machine_hint(body) else "-",
         "ptr": fname, "xside": "-", "body": body,
         "trig": trigger_of(body),
@@ -284,7 +311,7 @@ for proj in sorted(by_proj):
 for proj in sorted(by_proj):
     lines.append(f"\n## {proj}")
     for e in by_proj[proj]:
-        lines.append(f"- `{e['id']}` · {e['type']} · {e['date']} · {e['status']} · 闸{e['mach']} · {e['title'][:56]} · **触发**：{e['trig']} · → {e['ptr']} · 对侧{e['xside']}")
+        lines.append(f"- `{e['id']}` · {e['type']} · {e['date']} · {e['status']} · 闸{e['mach']} · {('已订正→指向 ' + e['corr'] + ' · ') if e.get('corr') else ''}{e['title'][:56]} · **触发**：{e['trig']} · → {e['ptr']} · 对侧{e['xside']}")
 open(OUT, "w", encoding="utf-8").write("\n".join(lines) + "\n")
 
 GATES_META = {

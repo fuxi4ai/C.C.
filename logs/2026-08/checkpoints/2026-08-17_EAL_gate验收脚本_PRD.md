@@ -3,7 +3,7 @@ title: PRD · EAL gate 验收脚本（VV 判据机器化）
 tags: [prd, acceptance, 剑酒青丘]
 created: 2026-08-17
 updated: 2026-11-06
-status: awaiting_acceptance
+status: accepted
 doctor_decision: 待
 type: prd
 project: 剑酒青丘（EAL）
@@ -68,7 +68,7 @@ template_version: v1.0
 - [✓] Doctor Mac 原生跑同脚本 exit 0（含沙箱层一致结论）——**2026-11-06 Doctor 终端实跑贴回：8/8 PASS · exit 0，判据 1 走 `~/.venvs/eal-repro-v23` 3.10.20 · 与同日沙箱复跑逐行一致 · Doctor 同日口令「代落 ✓」· CC 代记留痕**；原注：**2026-11-06 核明前置**：本机无 Python 3.10、无 statsmodels（任何解释器），须先按 `repro_v23/requirements.lock.txt` 建 venv（默认落点 `~/.venvs/eal-repro-v23`，或 `export EAL_GATE_PYTHON=`解释器）再跑 `python3 ~/Documents/Claude/brain/.tools/eal_gate_check.py`；命令块见 2026-11-06 专场交付
 - [~] 2026-11-06 Doctor 终端建 venv（uv · CPython 3.10.20 · lock 10 包）后沙箱同机复跑：**gate 8/8 PASS · exit 0**（判据 1/2/3 真 PASS 路径已实跑覆盖：17 期望串逐位复得）——实施者自验 · `[✓]` 归 Doctor/VV
 - [~] 2026-11-06 判据集 v1.1 沙箱复跑：**5 PASS · 0 WARN · 3 FAIL · exit 1**——判据 5 转 PASS（指路 stub 有效 + 真本 18 指纹全在）；FAIL 1/2/3 全为「复现环境未就绪」（机器级前置，见上行）；`test_gate_self.py` **5/5** 普通与 -O 双模式 exit 0（实施者自验 · 独立审核结论见 §五 2026-11-06 行）
-- [ ] VV 审阅判据集 **v1.1** 完整性并终验签字（gate 全绿是必要不充分条件的第一次实战）——判据集 v1.1 待 VV 审阅（v1 → v1.1 改动面见 §五 2026-11-06 行）——**2026-11-06 VV 独立审阅：REQUEST_CHANGES 退回修订 R1～R4（见 §五 同日 VV 行），本项保持 `[ ]`**
+- [✓] VV 审阅判据集 **v1.1** 完整性并终验签字（V.V. 2026-11-07 正式签字 PASS_WITH_LIMITS · CC 2026-11-13 依回执代记）（gate 全绿是必要不充分条件的第一次实战）——判据集 v1.1 待 VV 审阅（v1 → v1.1 改动面见 §五 2026-11-06 行）——**2026-11-06 VV 独立审阅：REQUEST_CHANGES 退回修订 R1～R4（见 §五 同日 VV 行），本项保持 `[ ]`**
 - [~] 判据集增补流程首演：VV 下一轮任一新判据 → CC 代收落 json+PRD 变更记录 → Doctor 批——本场两处漂移+判据 8 形态变迁即首演素材（Doctor 2026-09-18 已裁：判据按现文修订〔156.538→156.5·删双截止日·mirror 侧 156.4 冻结口径适配〕+判据 8 改 v3 形态〔默认 preflight-only+授权 token〕）
 
 ## §五 · 变更记录
@@ -90,3 +90,4 @@ template_version: v1.0
 - 2026-11-06 CC（续八 · 二轮修订实跑回填 · 实施者留痕 · 待独立验收）: 后台串行实跑（Mac 原生 python3 3.13 驱动，判据 2/3 子进程走 `.venvs/eal-repro-v23` 3.10.20）：完整 gate **8/8 PASS · exit 0**（06:27）；`test_gate_self.py --only 11..17` 普通 **7/7**、-O **7/7**（子进程 optimize 实测 0/1）；全集普通 **17/17**、-O **17/17**（06:52～07:48）。日志 `scratchpad/gate_run2_20261106.log`（会话临时区）。改动面：`.tools/eal_gate_check.py` sha256 前 12 位 `8f4efbea3cc7`、`.tools/test_gate_self.py` `27c40a972bac`；`eal_gate_checks.json` `2255badb30c2` 与 `9aaafc8` 一致（git diff 零改动）。独立审核结果另行追记。
 - 2026-11-06 独立审核（二轮 · 未参与实施的审核者 subagent · 只读 + 单元探针，未重跑完整 gate）: **PASS_WITH_LIMITS**。R1 同行多标题：`finditer` 逐标题迁移属实（同行正/反序、`<h1>` 复位、`<h3>` 子节、大小写+属性标题、VV 原例同行/分行均各 1 命中；真实 mirror 注入 ⑯/⑰ 片段各 1 命中、基线 0）；R3 转义：`\x`/`\u`/`\U`/单引号 `''` 解码正确，未知转义、hex 不足、未闭合、引号后余文、流指示符均 bad，`pointer#x` 保持原值；R3 无闭合/超限：无闭合→bad、`----`→bad、`--- `（尾空格）与 `---` 紧接 EOF 算闭合、`note: a---b` 不误切、5000 字符填充→bad；七例构造属实（⑬ 闭合在第 5730 字符；期望串均来自 gate 真实输出；两脚本无 `assert`）；3.10 解释器 `py_compile` + import 探针结果一致；`eal_gate_checks.json` 零 diff。**限制（不阻断 · 留 VV/Doctor 裁）**：① `FM_READ_LIMIT=4096` 为文本模式 4096 **字符**而非字节（真实台账 4096 字符≈8207 B），文档/用例名「4096 B」口径不精确；② 无闭合但正文 4096 字符内恰有 `---` 水平线会被当闭合判 plain（YAML frontmatter 固有歧义，⑫ 成立依赖真实台账前 4096 字符无 `---` 行）；③ 标题内文本不扫（新 html 分支剔除全部标题正文，旧版只剔首标题）；跨行标题 `<h2>\n…</h2>` 不识别为标题（fail-closed 方向）；缩进 `  type: pointer` 当顶层键（fail-closed）；BOM 开头判无 frontmatter→plain。审核者披露：3.10 探针刷新了 `.tools/__pycache__/*.cpython-310.pyc`（git 忽略，未删）。
 - 2026-11-07 Doctor（终端原生复跑 · `1dd1ddf` 入库并推送后）: 按回稿 §四 四条复验入口逐条实跑——完整 gate **8/8 PASS**（判据 1 `python 3.10.20（.venvs/eal-repro-v23）`、判据 5 指路 stub 有效、判据 6 `178304 B · 32b5ec422fd3 · denylist 零命中`）；self `--only 11..17` 普通 **7/7**；`-O --only 16,17` **2/2**（子进程 optimize=1 实测）；全集普通 **17/17**。与 CC 沙箱侧 11-06 实跑逐行一致。实跑证据由 Doctor 粘贴终端输出提供。
+- 2026-11-13 CC（代记 V.V. 第三轮回执 · 原样转引）: 回执 `4AI/Shake hands/to CC/VV致CC-EAL-gate第三轮复审通过回执-20261107.md` 原句——「正式签字：2026-11-07 V.V.：判据集 v1.1 及 R1～R4 修订（最终版本 `1dd1ddf`）复审通过，适用边界如上。」V.V. 授权：§四末项可落 [✓]、NOTE-20261106-001 可转 ✅。适用边界：行/段豁免与已披露的解析限制保留；`4096` 为**字符**上限（文案「4096 B」应统一为「4096 字符」，未改）；V.V. 自陈 Gateway active 与 3.11～3.13 数值复现未核。代记依据＝2026-11-13 /todo 未参与实施的审核者只读核得回执在盘。

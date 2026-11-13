@@ -90,12 +90,13 @@ template_version: v1.2
 **审查员背书记录（Step 7.5 · 2026-10-15）**：审查者＝未参与实施的 general-purpose subagent（agentId `a4c761bf8300cf44b`）· 总判定 **PASS_WITH_LIMITS**。验证动作（实跑）：A 改动面对账——7 件逐对 difflib 实跑、统计与申报逐件一致、**未点名差异 0 件**＋mtime 全面扫描归属核（09:40 后仅 7 点名件＋build 产物）· B 测试套件重放 20/20 OK rc=0（MARKET_DB 实跑）· C adapter 实跑四行顺序断言＋免责串在场 · D 消费端回读——grep V2.5-ET双波=1／科创50 V1=0、四串 index 严格单调、卡片数字与 signal json 逐项一致、现盘 build sha 与 meta 独立复算一致 · E 禁改面——protected_hashes 19/19 全 OK＋四禁改件全 match · F 班 staging 内容正确（两命令/红字语义/MARKET_DB 处理）、已装件仍 V1（待 Doctor 终端·预期）。**Limits 两条**：① verification.json hashes 段两条过期（market.json/signal json 系 T2 链重跑产物·已申报·verification.json 本身按禁改未动——本 PRD T2 证据栏补过期指针注）；② 消费端 ImportError 降级分支文案无重建提示（观察项，不动）。审查者不代签不落勾（G-X4）。
 
 - 客观轨总签（覆盖 R*/N*/X* 中机器可判项）：
-  - covered_requirement_ids: []
-  - authority: 
-  - designation_source_ref: 
-  - signed_at: 
-  - result: 
-  - reviewer_evidence_ref: 2026-10-15 独立复核（agentId a4c761bf8300cf44b · PASS_WITH_LIMITS · 验证动作见上）
+  - covered_requirement_ids: [R1, R2, R3, R4, R5, N1, X1]（X2/X3 见下方 2026-11-13 补签行）
+  - authority: 独立验收方（未参与实施 subagent · Doctor 2026-11-13 指派）
+  - designation_source_ref: Doctor 2026-11-13 /todo 会话 AskUserQuestion「先补二审和诊断，客观轨派验收方签（推荐）」
+  - signed_at: 2026-11-13
+  - result: PASS_WITH_LIMITS（覆盖上列 7 条；X2/X3 以现盘判 FAIL、不覆盖，锚定交付时点还是现盘待 Doctor 裁）— limits: ①R4 仅核 staging SHA=fd3a1210… 与 11-12 班运行痕迹（signal 17:07:31Z → html 17:10:59Z），正式装班件与「1.6 步」班日志未读到；②N1 免责字面「仅供参考，不构成投资建议」命中 0，现文案「模型账参考，不构成投资建议」（adapter:87），等义接受归 Doctor；③R3 套件同名用例因写死 93.52% 现 FAIL，以只读探针（stale / 坏 sha / 缺失三态均「信号不可用」）替代；④套件现 19/23（3 例日期钉死夹具 + 1 例 sha 漂移）；⑤X2 FAIL：meta sha fc5be848… ≠ 现盘 build 055f9d6e…（build mtime 11-10）；X3 FAIL：verification.json hashes 5/12 不符（含 3 代码件 10-22 改）+ README:454 / INDEX:374 同义残留
+  - reviewer_evidence_ref: 2026-11-13 独立验收（只读）：risk-daily.html grep / 四锚点 index；signal json 字段对拍；test_v25_et_daily 23 例重放；adapter 三态探针；verification.json 12 件 sha 现算；README / INDEX / 策略说明 grep ｜ 前序：2026-10-15 独立复核（agentId a4c761bf8300cf44b · PASS_WITH_LIMITS）
+  - 2026-11-13 补签 X2/X3：PASS_WITH_LIMITS（X2、X3 均以现盘判 PASS；独立验收方未参与实施，只读；Doctor 2026-11-13 裁「以现盘为准，先补齐再签」）— limits: ①10-15 build 原件 fc5be848… 无平面备份，10-15→11-02 无冲突靠现盘比补丁仅多 5 行 glob 兜底＋11 份备份 V2.5 段逐字一致间接证明；②测试夹具由现盘 market.json 截至 10-15 的前缀重建，非 10-15 冻结原件；collector 用例放宽为前缀相等（同日仍全等）；③PRD 原文「hashes 8 件」按精神判：现 pinned 10/10 一致，market.json / signal json 作日更滚动件移出不钉；④protected_hashes 14/19 属 §三 禁改面、不在 X3 判据内，5 件经 path_migration.json 核实为 10-22 命名迁移，重钉待 Doctor 裁；⑤11-13 重同步未写入迭代记录.md — evidence: build sha 055f9d6e…＝meta；L1074/1085 经 risk_daily_v25_adapter.render 消费；risk-daily.html（11-12 17:10:59Z）V2.5 卡 1 / 信号不可用 0；verification hashes 10/10 现算一致；三文档同义残留 0；迭代记录 10-15 三条在场；test_v25_et_daily 23/23；测试前后 2658 件快照 0 增 0 删 0 改
 - 原则轨（结论/裁定类）共 0 条：展示格式由 Doctor 开发中已拍板（四行顺序在原始指令中给定），按 v1.4 不列原则轨。
 
 ---

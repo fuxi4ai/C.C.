@@ -263,6 +263,10 @@ CANDIDATES = [
 **来源**: 2026-11-10 风险日报投资级恶化阈值实施场 · CC 实读样本日志与构建日志。
 **诊断与修复（2026-11-10 · Doctor 裁「先诊断再定」后批三项）**: 失败样本原文落 `data/narrative_review_failures.jsonl`（新增诊断日志，model_entry 在非法 JSON 时输出 stop_reason/usage/首尾片段）。三类根因：① 截断——模型回抄事件 facts/evidence，写满 8000 token（`stop_reason=max_tokens`）→ 适配层加「只写 event_id、不得回抄事件内容」，上限 12000；② 依据写成 `{event_id, transmission_channel}` 对象 → `repair_sample` 只取 id；③ 融资维判 critical 但依据无生效通道 → 连带整份作废 → 改为只去掉 critical、分数压到 74（Doctor 裁）。修后首跑 `REVIEW_ACCEPTED`、有效 2/3、两份样本均触发融资降级（模型引 Oracle 发债定价与 CoreWeave 收益率作 critical 依据，二者未标通道）；仍有 1 份在 12000 上限下截断（28.6k 字符），回抄未根绝。测试 143/0。
 
+**追记（2026-11-13 /todo · 未参与实施的审核者诊断 · 状态维持 🔄）**: 修复后 4 次带复核构建 n_valid＝2/3、2/3、**1/3（11-11 17:10）**、**1/3（11-12 17:10）**，两次 1/3 是两种失败模式。**模式 A 截断（修法未击中）**：failures.jsonl 第 3–6 行均 `stop_reason=max_tokens`、output 12000，head 以 `"input": {"prepared_at_utc"…"binding"` 开头、tail 为事件对象——模型把整个精简输入包抄进顶层 `input`；因指令要求 input「逐字等于 input_template」（narrative_review.py:146）而 `model_entry.py:72-75` 精简包白名单不含 `input_template`，适配层又写「绑定字段必须原样回填」（:71/:84）；11-10 的「不得回抄 claim/facts」只管依据字段，上限 8000→12000 只推迟截断；指令「8000 token 内闭合」（:148）已与 12000 不一致（置信度：机制高、主因中高）。**模式 B 日间限幅拒绝（新）**：11-12 三样本 demand 54/42/42，锚点为 11-11 选中的单样本 58，42 超 ±15 一分；加速豁免要求 refuting 事件发布日晚于旧评估 UTC 日（`_published_between` :170-180/:205-212），CRWV 11-10 发布不算新；F16 去锚（previous_assessment=None）而 bounded_check 逐样本对单样本锚比 ⇒ 正常采样离散被随机拒（置信度高）。**影响**：11-12 唯一有效样本判 funding critical 82，面板由 11-11 非 critical 跳红 82，同日另两份无原文可核（bounded 失败不写 failures.jsonl、被拒构建不写 samples.jsonl）。**建议修法（未实施，方向性归 Doctor）**：① 由系统填 `input`、不要模型回显（退一步：把 input_template 送进精简包并明说勿复制）；② bounded_check 移到共识之后或以上一轮多样本中位为锚；③ bounded 失败与被拒构建也落诊断；④ n_valid<2 补采、n_valid=1 不得单独判 critical。
+
+**修复与验收（2026-11-13 · Doctor 批「四项一起修」）**: 实施者 subagent 改 `narrative_review.py` / `model_entry.py` / `narrative_score.py`（备份 `.bak_2026-11-13_sampling`）：① input 由系统写入、模型不回显，token 上限统一为常量 12000；② bounded_check 移到共识后只核选中样本，锚为上一轮多样本中位（`bounded_anchor`）；③ bounded 失败与所有拒绝出口均落诊断 / rejected 行；④ n_valid<2 补采（≤2 份）、补采后仍 1 份则降为非 critical 并留痕（分数不动）。测试 180/0、data/ 前后 0 差。未参与实施的验收者 **PASS_WITH_LIMITS**，无硬阻断；限制：截断是否根除待首个真实班次看 failures.jsonl；下一班中位锚实际等于 11-12 单样本（来源标签 `prev_median` 有误导，宜加记 n_valid）；单样本降级口径 Doctor 2026-11-13 裁「维持分数不动」（与 11-10「缺通道压到 74」分属不同情形）；最坏 5 份请求约 15 分钟、班次外层超时未核。状态：🔄 已修待验（功能性，最终验收归 Doctor）。
+
 ---
 
 ## [ERR-20261112-001] 云端托管页小字发细发淡：云端加载到 Google 在线字体，侧栏加载不到、回退本机思源宋体
@@ -298,3 +302,29 @@ CANDIDATES = [
 **影响面**: 点了打不开；不影响其余内容。
 **可选修法**: ① 云端版隐藏这几条链接；② 目标页也上云后改指托管地址；③ 保持现状。
 **来源**: 2026-11-12 看板上云场 · 发布前通读（subagent）+ CC 实读复核。
+
+---
+
+## [ERR-20261113-001] `test_narrative_score.py` 测试 4d 非封闭：跑一次就联网改写生产缓存 `data/bbb_oas.json`
+
+**状态**: ✅ 已修复（2026-11-13 实施者 subagent 修：4d 段与 _stage14 替换 `BBB_OAS_FILE` 并打桩 `refresh_bbb_oas`，新增 16a 封闭性断言；未参与实施的验收者 PASS——180/0、M2 变异可被 16a 抓到、整仓快照 0 差；事实性非功能修复由验收 subagent 代签）
+**优先级**: 🟡 中
+**触发**: 2026-11-13 /todo 审核者为 PRD F14–F17 二审实跑 `python3 -B test_narrative_score.py`，`data/bbb_oas.json` 被改写（mtime 11-13 10:12:01Z，`fetched_at_utc` 变 11-13，`last_date` 11-11）。
+**硬证据**: 测试 4d（test_narrative_score.py:230/237）调 `nr.run_model` → `prepare()` → `ns.refresh_bbb_oas()`（narrative_score.py:311 起）；该路径未替换 `BBB_OAS_FILE`（替换补丁到第 629 行才生效），故真实联网拉 FRED 并覆盖生产文件；旧版本（11-12 拉取）已被覆盖、无备份。
+**影响面**: 任何人跑测试都会改写生产缓存；本次内容为同一序列新拉，当日班次会跳过，无数值事故。
+**建议修法**: 4d 段同样替换 `BBB_OAS_FILE`，或替换 `refresh_bbb_oas`；补一条断言「测试前后生产 data/ 目录无改动」。
+**预防门禁**: 测试套件开跑前后对 `data/` 做 mtime/sha 快照比对，有差即 FAIL。
+**来源**: 2026-11-13 /todo 未参与实施的审核者实跑发现（其足迹自报）。
+
+---
+
+## [ERR-20261113-002] F14 market_data 来源校验用不分大小写子串匹配：`ICE` 命中 price / notice / service，`TRACE` 命中 retrace
+
+**状态**: 🔄 已修待验（2026-11-13 实施者 subagent 改 `narrative_score.py:56-69` 词边界＋全大写缩写大小写敏感，:218 调用；验收者 PASS_WITH_LIMITS——负例全拒、正例全过、生产事件无误拒；限制：偏严会误拒 ICEBofA / S&P500 / 8-Ks 等连写，小写 moody / fitch 放行；改变校验行为，最终验收归 Doctor）
+**优先级**: 🟡 中
+**触发**: 2026-11-13 /todo PRD F14–F17 二次独立审查。
+**硬证据**: `narrative_score.py:198-203` 校验 claim/facts/locator 中写明 `MARKET_DATA_VENDORS`（:55）来源；审核者内存探测（不落盘）：claim 写「某公司债券 price 大跌」「notice 显示走阔」「service 指标」时 `_v4_event_error` 返回 None（放行），去掉这些词才拒。
+**影响面**: 未写真实行情供应商的 market_data 事件可通过校验，进而具备 critical_eligible（:256-259）资格；当前生产两条（Tradeweb / ICE）为真实来源，未见误放行实例。
+**建议修法**: 改词边界或大小写敏感匹配；补负向测试（price / notice / service / retrace 均须拒）。
+**预防门禁**: 供应商名单匹配一律走词边界正则，并纳入测试。
+**来源**: 2026-11-13 /todo 未参与实施的审核者只读审查。

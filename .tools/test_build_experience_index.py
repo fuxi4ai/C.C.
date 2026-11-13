@@ -124,6 +124,28 @@ def main():
         idx2 = build(docs2)
         check("来源解析为 0 在索引头显形", "⚠ 来源解析为 0 条：Projects/海螺姑娘/GOTCHAS.md" in idx2)
 
+    # 2026-11-13：经验库「同条订正」追记识别（TODO「经验索引生成器不识别同条订正」）
+    with tempfile.TemporaryDirectory() as docs3:
+        os.makedirs(os.path.join(docs3, "Claude/brain/permanent"))
+        write(docs3, "Claude/brain/permanent/经验库.md",
+              "# 经验库\n\n## cases\n\n"
+              "### [EXP-20261020-005-T] 旧标题：确定性复用可靠\n**做法**：旧做法写得足够长的一行\n"
+              "**⚠ 2026-11-01 同条订正（NOTE-20261101-001 · 追记不新建）**：本条的「复用」实为**巧合**——顺序一变全图重排。\n"
+              "**来源**：x\n\n"
+              "### [EXP-20261020-006-T] 未订正条\n**做法**：普通做法写得足够长的一行\n"
+              "**⚠ 警示**：这只是普通警示，不是订正\n\n"
+              "### [EXP-20261020-007-T] 订正带状态\n"
+              "**⚠ 2026-11-02 同条订正（NOTE-20261102-009）**：结论已撤回。状态 ✅ 已沉淀\n")
+        idx3 = build(docs3)
+        row3 = lambda eid: next((l for l in idx3.splitlines() if l.startswith(f"- `{eid}`")), "")
+        r5 = row3("EXP-20261020-005-T")
+        check("同条订正：索引行标「已订正→指向 NOTE-20261101-001」", "已订正→指向 NOTE-20261101-001" in r5)
+        check("同条订正：标题显示订正首句、原标题括注", "本条的「复用」实为巧合" in r5 and "（原：旧标题" in r5)
+        check("同条订正：订正段无状态 → 沿用原判 —", " · — · " in r5)
+        check("非订正的 ⚠ 追记不误标", "已订正" not in row3("EXP-20261020-006-T") and "未订正条" in row3("EXP-20261020-006-T"))
+        r7 = row3("EXP-20261020-007-T")
+        check("同条订正：订正段有状态 → 显示订正后状态 ✅", "已订正→指向 NOTE-20261102-009" in r7 and " ✅ " in r7)
+
     print(f"\n{'全部通过' if not fails else f'{len(fails)} 项失败'}")
     return 1 if fails else 0
 

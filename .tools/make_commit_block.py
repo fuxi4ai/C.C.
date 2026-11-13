@@ -25,6 +25,10 @@ make_commit_block.py —— 把「探针输出 → 提交命令块」这一步**
 ⑥ 块内 `git status --short` 必须排在 `git add` **之前**（给人留闸 · 加固①）。
 ⑦ 块**幂等**：重跑结果相同（提交前置 `git diff --cached --quiet` 闸；不用 append 类写入 · G-X120）。
 ⑧ **块内不用 `cd`，一律 `git -C <仓>`**（2026-09-27 新增）。原因见下。
+⑨ **默认不推送**（2026-11-13 改 · TODO「09-28/09-29 场遗留漏挂批」④）：默认块只到
+   `git add … && git commit -m …`；显式加 `--push` 才在 commit 后追加 `&& git push`。
+   原因：本工具原先无条件附 `&& push`，而风险日报仓**无 remote**（Doctor 裁定本地-only）
+   ⇒ 对无远端仓产出跑不通的命令。推不推交给调用者按目标仓是否有远端决定。
 
 ⑧ 为什么禁 `cd`（2026-09-27 实测事故形态 · G-X134 同族）
 -------------------------------------------------------
@@ -43,6 +47,7 @@ make_commit_block.py —— 把「探针输出 → 提交命令块」这一步**
 ====
     python3 make_commit_block.py <repo> [<repo2> ...] [--msg "提交信息"] [--max-untracked 30]
     python3 make_commit_block.py <repo> --include 新文件.py --include 另一个.py   # 人工核过的未跟踪件
+    python3 make_commit_block.py <repo> --msg "…" --push   # 仅对**有远端**的仓：commit 后追加 && git push
     python3 make_commit_block.py --selftest          # 输出不变量自检（含负向），任何一项不过 exit 1
 
 注意：`--msg` 只填一次、复用到所有仓；跨仓批量时**逐仓分开写块**（加固③），本工具已按此输出。
@@ -180,8 +185,11 @@ def _sh_repo(path_disp: str) -> str:
 
 
 def render_block(repo: pathlib.Path, M, D, U, msg: str,
-                 max_untracked: int = 30, include=None, head: str | None = None) -> str:
+                 max_untracked: int = 30, include=None, head: str | None = None,
+                 push: bool = False) -> str:
     """把探针结论渲染成一个提交命令块。纯字符串拼接，无副作用。
+
+    `push`：默认 False ⇒ 只生成 `git commit`；True 才追加 `&& git push`（2026-11-13 · 无远端仓不得默认推）。
 
     `include` = 人工**显式核过**的未跟踪件（相对仓路径），才会进 scoped add；
     其余未跟踪件一律只作「候选」列出、不自动入册（G-X83 2026-09-23）。
@@ -245,9 +253,11 @@ def render_block(repo: pathlib.Path, M, D, U, msg: str,
     add("")
 
     add(f"# ── 提交信息须覆盖暂存清单的**全部文件族**（加固②）：本条探到 M={len(M)} / D={len(D)} / 候选={len(U)} / include={len(inc)} ──")
-    add("# 幂等：无暂存变化则不提交、不推送——重跑本块结果相同（G-X120）")
+    add("# 幂等：无暂存变化则不提交" + ("、不推送" if push else "") + "——重跑本块结果相同（G-X120）")
+    if not push:
+        add("# 默认不推送（未给 --push）：仓有远端且要推时，确认后另跑 git push 或重生成块加 --push")
     add(f'if ! {G} diff --cached --quiet; then')
-    add(f'  {G} commit -m {q(msg)} && {G} push')
+    add(f'  {G} commit -m {q(msg)}' + (f' && {G} push' if push else ''))
     add("else")
     add('  echo "无暂存变化，跳过提交"')
     add("fi")
@@ -257,9 +267,10 @@ def render_block(repo: pathlib.Path, M, D, U, msg: str,
     return "\n".join(L)
 
 
-def emit_repo(repo: pathlib.Path, msg: str, max_untracked: int = 30, include=None) -> str:
+def emit_repo(repo: pathlib.Path, msg: str, max_untracked: int = 30, include=None,
+              push: bool = False) -> str:
     _idx, M, D, U = worktree_state(repo)
-    return render_block(repo, M, D, U, msg, max_untracked, include, head_sha(repo))
+    return render_block(repo, M, D, U, msg, max_untracked, include, head_sha(repo), push=push)
 
 
 # ─────────────────────────── 自检（含负向守卫） ───────────────────────────
@@ -333,6 +344,14 @@ def selftest() -> int:
                   not any("set -e" in ln for ln in gitlines)
                   and not any(ln == "exit" or ln.startswith("exit ") for ln in gitlines)))
 
+    # ⑲⑳ 2026-11-13：默认不推送；--push 才追加（无远端仓不得产出跑不通的 push）
+    cases.append(("⑲ 默认块不含 git push（只到 commit）",
+                  not any(" push" in ln for ln in gitlines) and "commit -m" in block))
+    pb = render_block(fake, ["a.md"], [], [], "m", 30, push=True)
+    cases.append(("⑳ push=True 时 commit 后追加 && git -C … push",
+                  any(("commit -m" in ln and ln.rstrip().endswith(" push") and "&& git -C " in ln)
+                      for ln in pb.splitlines())))
+
     # ⑱ 活体：解析本工具所在仓的 index（只读，不跑 git）。
     #    自 __file__ 逐级向上找含 .git/index 的目录 —— 本工具被复制到别处跑时（如负向探针）
     #    不应因「/tmp 下没有仓」而误红（2026-09-27 首版就这么误红过一次）。
@@ -368,6 +387,8 @@ def main(argv=None) -> int:
     ap.add_argument("--max-untracked", type=int, default=30)
     ap.add_argument("--include", action="append", default=[],
                     help="人工**显式核过**的未跟踪件（相对仓路径），才会进 scoped add；可重复")
+    ap.add_argument("--push", action="store_true",
+                    help="commit 后追加 && git push（默认不推；仅对有远端的仓使用）")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args(argv)
 
@@ -400,7 +421,7 @@ def main(argv=None) -> int:
                       file=sys.stderr)
             inc.append(x)
         print("```bash")
-        print(render_block(repo, M, D, U, a.msg, a.max_untracked, inc, head_sha(repo)))
+        print(render_block(repo, M, D, U, a.msg, a.max_untracked, inc, head_sha(repo), push=a.push))
         print("```")
         print()
     return 0

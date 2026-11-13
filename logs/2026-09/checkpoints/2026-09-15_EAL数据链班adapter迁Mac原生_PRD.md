@@ -94,12 +94,12 @@ template_version: v1.2
 ### 分轨签核（v1.3 · 客观轨总 ✓ + 审查员背书）
 
 - 客观轨总签（覆盖 R1-R4/N1-N2/X1-X2）：
-  - covered_requirement_ids: []
-  - authority:
-  - designation_source_ref:
-  - signed_at:
-  - result:
-  - reviewer_evidence_ref: 独立审查员（未参与实施 subagent · 2026-09-16）· 验证动作=result/evidence/shift-log/FORMAT/plist/SKILL 实读+逐参数对拍+SHA 实跑 · 判定 PASS_WITH_LIMITS（6 PASS/2 限度·无 FAIL）
+  - covered_requirement_ids: [R1, R2, R3, R4, N1, N2, X1, X2]
+  - authority: 独立验收方（未参与实施 subagent · Doctor 2026-11-13 指派）
+  - designation_source_ref: Doctor 2026-11-13 /todo 会话 AskUserQuestion「先补二审和诊断，客观轨派验收方签（推荐）」
+  - signed_at: 2026-11-13
+  - result: PASS_WITH_LIMITS — limits: ①R1 判据键 permission_guard_completed 不在 result 顶层（G-024 漂移，改以 v2 evidence permission_guard 实读）；②R2 updatedAt 未经 list_artifacts 实读，依 shift-log-20261113:30-31；③R4 20261111.result.json 因 run_step7_native.py:84-126 只跳过 success 而每 5 分钟重跑覆写（截至 11-13 10:09Z 852 loop_dir，合计约 13.5MB〔2026-11-13 订正：原写 102M 为整个 sealed 目录体积〕，原终态 05:51:22Z 仅存于 root-cause / shift-log），止血待 Doctor 裁；④X1 未跑 launchctl，以 loop_dir 5 分钟节律为触发证据；⑤X2 store 端不可读，真源现 SHA=17e769b1… ≠ 交付时 cacf0b6f，需 Doctor 终端重对拍
+  - reviewer_evidence_ref: 2026-11-13 独立验收（只读）：37 件 result.json 逐件解析（36 success / 1 failed）；evidence v2 抽核 20261113 + 852 件 rejected 全量 permission_guard（852/852 restored）；SKILL:164-171；run_step7_native.py:84-126；shift-log-20261111/12/13；shift-root-cause-20261111.md ｜ 前序：独立审查员（未参与实施 subagent · 2026-09-16）PASS_WITH_LIMITS
 - 原则轨（结论/裁定类）共 0 条（开发中分叉裁定走变更记录 · 2026-08-15 Doctor 立）
 
 ---

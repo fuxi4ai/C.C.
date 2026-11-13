@@ -296,8 +296,8 @@ cd ~/Documents/Claude/brain && \
 2. **★ ignore 前置探测**(v3.5 新增 · 硬闸 · **早于**生成 add 清单)：本仓 `raw/`、`outputs/` 这类目录**常常是仓主有意 ignore 的**（渊图 `Database/行业研究` 即如此：`.gitignore` 明写「研报源文件（版权敏感 + 体积大）**raw/**」，`outputs/` 整目录亦忽略）。把 ignore 路径列进 `git add`，后果不是"报个错"那么简单——**git 会拒绝该条，整条命令链随之静默走偏**：`add` 报 `The following paths are ignored by one of your .gitignore files`，`commit` 因暂存区为空而**根本不生成 commit**，`push` 空转打印 `Everything up-to-date`——**看回执很容易误以为成功了**。
 
    **做法**：生成 add 清单**之前**，对**清单里每一个路径**先过一遍目标仓的 ignore 判据——
-   - 读目标仓 `.gitignore`（+ `.git/info/exclude`），**并读该仓 `CLAUDE.md` / README 里的 git 段**（惯例常写在那儿，如「⚠ outputs/ 整目录被 gitignore——别列进 add 清单」）；
-   - **一律读 `.gitignore` 手判**（＋ 读该仓 `CLAUDE.md`/README 的 git 段；或读 `.git/index` 看该路径是否**曾被跟踪**（被 .gitignore 命中且从未跟踪 ⇒ 按仓规 local-only））；**⚠ 沙箱内禁跑任何 git 子命令 —— 含 `git check-ignore`**（本条原写「有 git 环境者跑 `git check-ignore -v`」，而**沙箱装得有 git ⇒ 字面读法即许违反 Step 5 铁律**；2026-10-03 实测踩中一次，危害为零但违规成立 ⇒ 订正为"一律手判"）；
+   - 读目标仓 `.gitignore`（+ `.git/info/exclude`）**只作线索、不作定论**（定论交 `git check-ignore -v`，沙箱内用 `repo_state.py` 简化判定并标明，见下条），**并读该仓 `CLAUDE.md` / README 里的 git 段**（惯例常写在那儿，如「⚠ outputs/ 整目录被 gitignore——别列进 add 清单」）；
+   - **ignore 定论交 `git check-ignore -v <路径…>`**（v3.10 · 取代原「一律读 `.gitignore` 手判」）：在 **Doctor 终端 / Mac 原生环境**对清单里每个路径跑 `git check-ignore -v <路径…>`——有输出即命中（输出带命中规则的「文件:行号:模式」），无输出即未命中；**⚠ 沙箱内禁跑任何 git 子命令 —— 含 `git check-ignore`**（2026-10-03 实测踩中一次 ⇒ 沙箱内不得自跑）。**沙箱内**改用 `python3 -B .tools/repo_state.py --root <仓根>` 的「简化 ignore 命中」组作初筛（＋ 读该仓 `CLAUDE.md`/README 的 git 段；或读 `.git/index` 看该路径是否**曾被跟踪**——被 ignore 命中且从未跟踪 ⇒ 按仓规 local-only），回报里该判定**必须明标「简化判定、定论交 Doctor 终端 check-ignore」**，并把 `git check-ignore -v <路径…>` 命令排在 add 之前一并贴给 Doctor；**不再手读 `.gitignore` 下定论**（2026-09-23 实证手判漏三条规则、27 条被 ignore 路径写进命令致 commit 未生成而 push 空转 · G-X83）；
    - **命中 → 从清单剔除**，并在 Step 6 回报里明写一行：「该产物按本仓规 local-only（`.gitignore` 命中），不入版本控制」。**不要改用 `-f` 强带**——那是绕过仓主的设计意图，须 Doctor 明批。
 
 > **活体教训(2026-09-18)**：/save 场 CC 给 `行业研究` 仓的命令，把 `raw/核实/…札记.md` 与 `outputs/gs/*.json` 列进 `git add`。Doctor 终端实跑 → git 拒绝 → 该仓 **commit 未生成、push 空转**。**根因不是不知道这个坑**：渊图 GOTCHAS `FIX-20260617-001` 早在 2026-06-17 就登记过「raw/ 被 .gitignore 忽略」，该仓 `CLAUDE.md` 也写着「别列进 add 清单」——**规矩停在「文档 + 人脑」两层，而 CC 起草命令时既不读目标仓 `.gitignore`，也不回读该仓 CLAUDE.md 的 git 段**。形态比首次更重：首次是**自动流程撞墙**，这次是 **CC 主动把 ignore 路径写成了命令**。见渊图 GOTCHAS `FIX-20260617-001` 追记（同根复发第 2 次）。
@@ -404,7 +404,7 @@ git push
 - **Step 4 遇 `architecture/系统概览.md` 不存在 → 明确报告,禁静默跳过、禁自动补建 stub**(v3.2)
 - **引用 Step 4 那张缺口表前先自己跑命令重取差集,别照抄表**(v3.2.1)
 - **Step 4.5 宏观方法论增量=条件式:有新材料才追加、无则跳过,只追加不修改正文**(v3.4)
-- **列 `git add` 清单前必先过目标仓的 ignore 判据**(v3.5)——读该仓 `.gitignore` + 该仓 `CLAUDE.md`/README 的 git 段;命中即从清单剔除并在回报里明写「按本仓规 local-only」;**禁 `-f` 强带**(绕过仓主设计意图,须 Doctor 明批)。**任何目标仓都适用**——不止 brain,项目仓同样(渊图 `行业研究` 的 `raw/`+`outputs/` 即实例)
+- **列 `git add` 清单前必先过目标仓的 ignore 判据**(v3.5 · v3.10 改判据)——定论用 Doctor 终端 / Mac 原生 `git check-ignore -v <路径…>`;沙箱内禁 git,用 `.tools/repo_state.py` 简化判定并明标「简化判定、定论交 Doctor 终端 check-ignore」;另读该仓 `CLAUDE.md`/README 的 git 段;命中即从清单剔除并在回报里明写「按本仓规 local-only」;**禁 `-f` 强带**(绕过仓主设计意图,须 Doctor 明批)。**任何目标仓都适用**——不止 brain,项目仓同样(渊图 `行业研究` 的 `raw/`+`outputs/` 即实例)
 - **Step 3.5 提案前必带「查重栏 ＋ 编号回源栏 ＋ 越界栏」，缺栏即不提案**(v3.7)——**语义**查重、非字面查重；带编号者先 `grep` 该编号标题再写；落点若越进历史层须自报
 
 ## v 历史
@@ -433,3 +433,4 @@ git push
 - **v3.7**(2026-09-26 · Doctor 批 · AskUserQuestion 选「乙」):**Step 3.5 新增「提议前必做：查重栏 ＋ 编号回源栏 ＋ 越界栏」硬闸**。**触发案**——同日 /save 场，CC 提的三条候选里**两条的实质早已在库中**：①「引用编号前先回源」＝`permanent/通用教训.md` 的 **`[G-X101]`**（2026-07-28 即立），②「index 算式禁加外层取模」**就写在 `EXP-20260923-001-T` ① 条内**（连正确算式与"必错写法"都在）；**且同场给 Doctor 的另一道选择题，其推荐项查下来也是已有内容** ⇒ **三类三中**。**根因与 v3.0 同构**：v3.0 补了「写到哪」，本条补的是**「先查它是不是已经有了」**——两者都是**默认动作缺省**，不是知识缺失。**新规三条**：① 每条候选必带「**检索词 / 命中数 / 判定（新 or 旧）**」，对**目标文件**做**同义**检索（核心词＋近义词，**不只查条目名字面**），命中即改提「追记既有条目」；② 带编号者先 `grep` 该编号在 canonical 的**标题**再写进候选，标题抄进证据栏（`G-X101`：语义印象对不等于编号对）；③ 落点越进**历史层/只读段**须在候选里自报。**并加一条元纪律**：**Doctor 勾选 ≠ 前提已核**——**候选描述本身是受控对象**，写「本场新发现」前先确认它真是新的。**同批**：Settings 块一补「带编号的引用同样是实指」孪生条（该条与本 skill 同源于同一次事故，互为纵深）。发布：canonical → portable → .skill 三端（`save_skill` 第四跳因正文 42KB 改由 Doctor 用 `.skill` 包安装，遵 2026-09-26 brain-prd 先例）。
 - **v3.8**（2026-11-06 · /consolidate 蒸馏 · Doctor 批 A1）：Step 3.5 新增「无人值守场的降级」——定时班/自主场的记忆分拣候选只落当日日志专段、不开控件、不写 permanent，由下一场有人值守的 /save 或 /consolidate 回收；GOTCHAS 直写不受影响。把龙鱼周更班五场的既成做法写成条文。
 - **v3.9**（2026-11-06 · 金融线脑暴 P4）：Step 3.5 提案栏加一句「先过 `permanent/动手前卡.md`」——十条最高频通则（引用扫全部出现点 / 断言「无」前先枚举 / YAML 引号与行尾注释 / 编号先 grep / 日期横杠 / 改前读盘 / 计数现读现数 / 移动文件先扫相对链接 / 改 skill 走发布链 / commit 交 Doctor）压成 ≤15 行一页卡；damper §五「开始」同批挂接。description 未改。
+- **v3.10**（2026-11-13 · Doctor 批「一场全做」工具链五项之 ① · TODO「两处 skill 的 git 探针文本该改」② ＋ G-X83）：Step 5 第 2 步 ignore 判据由「一律读 `.gitignore` 手判」改为——Doctor 终端 / Mac 原生环境用 `git check-ignore -v <路径>` 定论；沙箱内仍禁 git，改用 `.tools/repo_state.py` 简化判定并明标「简化判定、定论交 Doctor 终端 check-ignore」。同批（复核补订）：恢复「被 ignore 命中且从未跟踪 ⇒ 按仓规 local-only」语义；L299 读 `.gitignore` 降为「只作线索、不作定论」；「边界」节 v3.5 条判据同步为新口径。其余正文与 description 未改。

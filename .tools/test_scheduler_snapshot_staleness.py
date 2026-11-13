@@ -130,7 +130,7 @@ def test_classify_machine_state():
         #   「机器没开」并掩盖真漏跑**；按事件史判则是「exp 时机器在运行」⇒ 真漏跑 ⇒ 红。
         ("★ exp 后重启过，但 exp 时机器在运行 → on（不得被最近一次开机骗到）",
          [(datetime(2026, 9, 20, 22, 0), "Start"), (datetime(2026, 9, 21, 6, 50), "Start")], "on"),
-        ("空事件 → unknown（不猜）", [], "unknown"),
+        ("空事件 → unknown_window（日志窗口外·无法判定，不猜 · 2026-11-13 由 unknown 改）", [], "unknown_window"),
     ]
     for desc, ev, want in cases:
         got, why = SS.classify_machine_state(E, ev)
@@ -221,6 +221,7 @@ def test_scan_launchd(tmproot: Path):
     (tmproot / "night.log").write_text("x")
     os.utime(tmproot / "night.log", (old, old))     # mtime 明显落后；机器若在运行就该判红
     for st, want_lvl in [("on", "red"), ("unknown", "red"),
+                         ("unknown_window", "yellow"),   # 2026-11-13：日志窗口外·无法判定 → 黄
                          ("asleep", "yellow"), ("off", "yellow")]:
         SS.machine_state_at = lambda exp, s=st: (s, f"测试桩：{s}")
         r5 = SS.scan_launchd()

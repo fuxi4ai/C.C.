@@ -70,6 +70,7 @@ TCC_PROTECTED = (HOME / "Documents", HOME / "Desktop",
                  HOME / "Downloads")                           # TCC 隐私保护区（2026-09-27 加）：stdio 落此处＝launchd 静默停摆的风险位（判据见 tcc_suspect）
 OPS_DIRS = [                                                   # plist 源文件所在处
     HOME / "Documents/Claude/Projects/Financial/烛照九阴/ops",
+    HOME / "Documents/Claude/Projects/Financial/宏观研究体系/EAL/调度/eal-post-event-native",  # 2026-11-13 补登记 EAL（TODO「判词方向中立化 ＋ sources 段补登记 eal」）
 ]
 OUT_JSON = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.json"
 OUT_MD = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.md"
@@ -257,14 +258,17 @@ def expected_last_fire(sched, now):
 #     on        → 🔴 真·应跑未跑（机器在运行却没跑）
 #     asleep    → ⚠ 机器当时在睡眠（launchd 未点火，非脚本故障）——**仍报出**，只是不判红
 #     off       → ⚠ 机器当时未运行（开机前）——**仍报出**，只是不判红
-#     unknown   → 🔴 原因未能查明（宁可按漏跑报，不静默）
+#     unknown   → 🔴 原因未能查明（宁可按漏跑报，不静默）——现仅剩「pmset 不可读」这一种
+#     unknown_window → ⚠ pmset 日志窗口覆盖不到 exp（日志窗口外·无法判定）——**仍报出**，不判红
+#                  （2026-11-13 Doctor 批 · TODO「面③ unknown 判红盲区」：窗口外判红是噪音；
+#                   窗口内事件史确属「机器在运行」仍走 on → 🔴）
 PMSET_LOOKBACK_DAYS = 30
 
 
 def machine_state_at(exp):
     """exp 时刻本机是否具备点火条件。返回 (state, detail)。
 
-    state ∈ {'on', 'asleep', 'off', 'unknown'}
+    state ∈ {'on', 'asleep', 'off', 'unknown', 'unknown_window'}
 
     **为什么不用 kern.boottime**：它只给**最近一次**开机。若 exp 之后机器重启过，
     「最近一次开机晚于 exp」既可能是「exp 时本没开」，也可能是「exp 处在一个已被重启
@@ -272,13 +276,18 @@ def machine_state_at(exp):
     给出的可复现负例）。故改读 pmset 日志的 Start/Sleep/Wake 事件史，取「exp 之前最后
     一个事件」来定当时状态。
 
-    残余盲区（如实标注）：pmset 日志滚动窗口有限；窗口外的历史取不到 → 返回 unknown。
+    残余盲区（如实标注）：pmset 日志滚动窗口有限；窗口外的历史取不到 → 返回 unknown_window
+    （2026-11-13 前返回 unknown 并判红）。pmset 本身不可读仍返回 unknown。
     """
     try:
-        out = subprocess.run(["pmset", "-g", "log"], capture_output=True,
-                             text=True, timeout=30).stdout
+        proc = subprocess.run(["pmset", "-g", "log"], capture_output=True,
+                              text=True, timeout=30)
     except Exception as e:
         return "unknown", f"pmset 不可读（{type(e).__name__}）"
+    # 2026-11-13 验收补：返回码非 0 或无输出同属「pmset 不可读」，仍判红，不得落到窗口外黄
+    if proc.returncode != 0 or not (proc.stdout or "").strip():
+        return "unknown", f"pmset 不可读（returncode={proc.returncode}，stdout 为空={not (proc.stdout or '').strip()}）"
+    out = proc.stdout
     pat = re.compile(r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) ([+-]\d{4})\s+"
                      r"(Start|DarkWake|Wake|Sleep)\b")
     floor = exp - timedelta(days=PMSET_LOOKBACK_DAYS)
@@ -291,7 +300,8 @@ def machine_state_at(exp):
         if t >= floor:
             ev.append((t, m.group(3)))
     if not ev:
-        return "unknown", f"pmset 日志近 {PMSET_LOOKBACK_DAYS} 天内无 Start/Sleep/Wake 记录"
+        return "unknown_window", (f"日志窗口外·无法判定（pmset 日志近 {PMSET_LOOKBACK_DAYS} 天内"
+                                  f"无 Start/Sleep/Wake 记录）")
     return classify_machine_state(exp, ev)
 
 
@@ -302,13 +312,14 @@ def classify_machine_state(exp, events):
     """
     ev = sorted(events)
     if not ev:
-        return "unknown", "无任何 Start/Sleep/Wake 事件可判"
+        return "unknown_window", "日志窗口外·无法判定（无任何 Start/Sleep/Wake 事件可判）"
     before = [e for e in ev if e[0] <= exp]
     if not before:
         first_t, first_k = ev[0]
         if first_k == "Start":
             return "off", f"机器在 exp 之后才开机（{first_t:%Y-%m-%d %H:%M}）"
-        return "unknown", f"exp 前无事件、其后首事件为 {first_k}（{first_t:%Y-%m-%d %H:%M}）"
+        return "unknown_window", (f"日志窗口外·无法判定（exp 前无事件、其后首事件为 {first_k}"
+                                  f"（{first_t:%Y-%m-%d %H:%M}）——exp 早于 pmset 日志覆盖起点）")
     t, kind = before[-1]
     if kind == "Sleep":
         return "asleep", f"exp 前最后事件＝{t:%Y-%m-%d %H:%M} Sleep（机器在睡眠）"
@@ -353,7 +364,8 @@ def scan_launchd():
     # 一致性：源 ↔ 装机（这是 launchd 版的「双树分叉」）
     # ⚠ 只查**本项目自有**的 label。系统与第三方 Agent（Google Updater / 网盘 /
     #   com.apple.* 等）本就不该有项目内源文件，混进来只会淹没真信号。
-    OURS = ("com.zhuzhao.", "com.globalpercent.", "com.baize.", "com.yuantu.")
+    OURS = ("com.zhuzhao.", "com.globalpercent.", "com.baize.", "com.yuantu.",
+            "com.eal.")   # 2026-11-13 加 EAL：源目录已进 OPS_DIRS，须同进前缀才真正参与源↔装机比对与应跑未跑
     findings = []
     for label in sorted(set(sources) | set(installed)):
         if not label.startswith(OURS):
@@ -366,7 +378,7 @@ def scan_launchd():
         elif s["src_sha12"] != i["installed_sha12"]:
             findings.append({"label": label,
                              "issue": f"❌ 源↔装机不一致（src {s['src_sha12']} vs installed {i['installed_sha12']}）"
-                                      f"——改了源没重装，等同死树分叉"})
+                                      f"——源与装机件不一致（方向未判：可能改了源未重装，也可能只改了装机件未回写源；先 diff 再定处置），等同死树分叉"})
     # ── 应跑未跑（2026-09-22 加）────────────────────────────────────────────
     # 动机：本面原来只看 `last exit code`，**看不出「排期到了却根本没点火」**。
     #   实撞 2026-09-22：com.zhuzhao.marketdata 的脚本自管日志在 09-17/09-18/09-21
@@ -393,7 +405,8 @@ def scan_launchd():
             continue
         # 先查原因：exp 时刻机器在不在（2026-09-22 Doctor 裁定「改回要报漏跑，只是原因先查
         # 是不是没开机」）。归因定级，见文件头注：
-        #   on → 🔴 真故障；unknown → 🔴（查不出原因也按漏跑报，不静默）；
+        #   on → 🔴 真故障；unknown（pmset 不可读）→ 🔴（查不出原因也按漏跑报，不静默）；
+        #   unknown_window（日志窗口外·无法判定）→ ⚠ 仍报出、不判红（2026-11-13 Doctor 批）；
         #   asleep / off → ⚠ **仍然报出**，只是不判红（原因已查明，不是脚本故障）。
         state, why = machine_state_at(exp)
         lvl = "red" if state in ("on", "unknown") else "yellow"
