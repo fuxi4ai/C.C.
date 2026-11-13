@@ -1242,6 +1242,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **建议修法**: 订正列明条目并普查全批新边方向；`company_ByteDance_AI_Chip` 内容按代际拆回、Ada2S 双节点合并；补 3 个公司节点；删或迁出 Meta 股价行。
 **预防门禁**: 新增边 desc 与方向一致性抽检进入转录语料断言核查；价格分流加「股价」拒收。
 **来源**: 2026-11-05 审核者复验，实跑实读。
+**追记（2026-11-13 · 同根复发 · 帕米尔六篇批）**: 状态维持 🔄。batch 产物在 promote 前被逮出同族错误，均已在候选件改正后才写 canonical（7652/8230 · 印章 `aa10e31f…`）：① 单位量级：Lumentum「明年300-400万只」记成 `shipment_2026e_million_units`=300/400（放大 100 倍）；立讯「年产能1100—1200万只、单线约100多万只」记成 `_k`=1100/1200/100（缩小 10 倍）。② 年份：立讯篇文件日期 2026.11.09 被解析成 2025-11-09（19 条 data_vintage/reference、index date），连带属性键年份标成 2025；富创、长鑫两篇解析日期正确，但 LLM 仍把「今年/明年」标成 2025/2026。③ 边语义：5 条删除（凭空因果、张冠李戴、送样写成 supplies），4 条改类型或改端点。新现象：batch 的「解析日期≠文件日期」告警只打印、不拦，年份错会顺着属性键名扩散。建议加门禁：解析日期与文件名日期相差 ≥1 年即 fail-closed；新增数值键的单位后缀与源文量词（万/千/百万）做一致性抽检。证据：`raw/核实/2026-11-13-帕米尔六篇批QA核实札记.md`、`outputs/surgery{,2,3}_20261113_pamir6*.py`；独立复验两轮（FAIL → PASS_WITH_LIMITS），实施者自查与修复，本追记不自签。
 
 ## [NOTE-20261105-006] 帕米尔 25 篇批二轮修复后残留：药明康德节点混入药明生物内容、平台节点仍错标 TCE、补建公司字段不全、1 节点时效虚长
 **状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：pre_promote 备份对 canonical `8e739b2b…`（sha256 与 `_gate_stamp.json` 一致、`kg_gates.py status` ok）逐节点逐边 diff：改动集合恰为 3 公司节点+21C 五节点+1 metric+新增 Nscale/Lambda+2 supplies 边，无超范围；致尚 301486.SZ 由 `market_data.db`（ro+immutable）stock_daily/limit_list_daily/ipo_daily 独立查得；图内 17 个 .HK 公司 region 全为「港」与药明生物一致；三节点 `s in raw` 实核 True/False/False 与 span_note 相符。残留→见问答板/TODO：⑤ quarterly_recheck 结果未写入 canonical（方向待裁）、wiki 卡刷新未在本轮核）
