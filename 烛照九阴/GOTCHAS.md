@@ -958,3 +958,17 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 负向测试用例落盘（现只在复验的临时目录 `$HOME/verify`）。
 **同批另记（复验发现 · 属已知风险）**: ① 拆分器不核原件是否当日新生成——上游没写新文件时会把旧报重发并报成功；② manifest 的 `source` 带会话绝对路径，跨会话不逐字节相同。
 **来源**: 2026-11-12 看板上云场 · 独立复验报告（摘要见 `brain/TODO.md`「看板推送改为云端班自推」zhuzhao 子行）。
+
+## [ERR-20261112-002] `xiaobao_extractor.write_to_db` 用 INSERT OR REPLACE 写 emotion_cycle → 整行重建，情绪分清零、created_at 重置
+**状态**: ✅ 已修并经独立核验（PASS_WITH_LIMITS · 2026-11-12 22:55 PST · 落签者＝未参与实施的审核者 subagent · 见末行注记）；「已知风险」与「同批另记」未修
+**优先级**: 🟡 中
+**触发**: 2026-11-12 剑酒青丘/仓位管理策略 KS50-PIT-004 独立核验（未参与实施的 subagent）追查 emotion_cycle 的写入方时实读发现。
+**硬证据（实读＋临时库实跑）**: `tools/xiaobao_extractor.py:285` 原为 `INSERT OR REPLACE INTO emotion_cycle (date, limit_up, limit_down, seal_rate, total_volume, up_down_ratio, updated_at)`；REPLACE 先删后插，未列出的 emotion_score 回到列默认 0、emotion_season 等回到 NULL，created_at 取当前时刻。修后在临时库实跑：已有行（分数 44、季节「秋」、created_at 2026-11-03 18:08:35）经 `write_to_db` 写入后三者保持不变，只更新涨跌停等 5 列与 updated_at。
+**根因**: 两个写入方（本脚本写市场数据、`emotion_engine_v2.py` 写评分）共用一张表，本脚本用整行替换而非按列更新。
+**影响面**: 课件入库若晚于评分引擎运行，当日情绪分变 0，下游按「≤50 为低位」的判据（仓位管理策略 L5）会误亮，直到引擎下次整表回填；created_at 被重置后「该分数何时可得」的判断也失真。窗口 2026-07-01~11-10 的 89 行 id 随日期单调，未见事后重写痕迹（实跑），是否发生过未证实。
+**修复**: 改为 `INSERT … ON CONFLICT(date) DO UPDATE SET` 只更新本脚本负责的 5 列与 updated_at。
+**已知风险（未修）**: 本脚本先于引擎为新日期建行时，emotion_score 仍是列默认 0、created_at 是建行时刻而非评分时刻——下游读到的是「0 分、已可得」。根治需把列默认改为 NULL 或由引擎独占建行，属表结构改动，未动。
+**预防门禁**: 多写入方共用的表一律按列 upsert，禁整行 REPLACE；`_legacy/scripts/migrate_base_tables.py:146` 另有同形写法（遗留脚本，未动）。
+**来源**: 2026-11-12 仓位管理策略 GOTCHAS KS50-PIT-004 独立核验注记。
+**独立核验注记（2026-11-12 22:55 PST · 只读 · 临时库实跑）**: 真实表 `date TEXT NOT NULL UNIQUE`（462 行 462 个日期），ON CONFLICT(date) 有支撑；用真实建表语句建临时库、拷入 11-03 真实行后执行 `write_to_db`：只变 limit_up / limit_down / seal_rate / total_volume / up_down_ratio / updated_at，id、emotion_score 44.3、季节「秋」、created_at 及其余列不变；新日期可插入（分数为列默认 0.0）；dry_run=True 仍以读写方式开库并执行全部 INSERT、只是不提交（不落库，但会短暂持写锁，库不存在时会新建文件）。非归档目录里对 emotion_cycle 的写入只剩本脚本与 `emotion_engine_v2.py:328`，均按列更新。限制：只在临时库验证，未经 `extract_from_file` 全链路、未在真实库上跑。
+**同批另记（核验发现 · ⚠️ 已知风险 · 未修）**: ① `xiaobao_extractor.py:305` 的 `INSERT OR REPLACE INTO hot_sectors` 因表上没有 (date, rank) 唯一约束而等同普通插入，同一日期重跑会使 hot_sectors 与 industry_signals（:324 普通 INSERT）各多一份重复行（临时库实跑）；② `:291-296` 课件没提取到的字段用 `.get(..., 0)` 写 0，会覆盖已有非零值，其中 limit_up / limit_down 也是评分引擎的写入列，谁后写谁生效。
