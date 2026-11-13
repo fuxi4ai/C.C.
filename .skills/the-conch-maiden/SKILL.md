@@ -5,9 +5,9 @@ description: Use this skill ONLY when the user explicitly types the slash comman
 
 # Conch（海螺姑娘）· 项目整理
 
-> 版本 1.0.0（2026-11-12）。正文真源＝`~/Documents/Claude/brain/.skills/the-conch-maiden/SKILL.md`；安装形态：`~/.claude/skills/the-conch-maiden` 为指向本目录的链接（2026-11-12 起，由 Doctor 终端改链接；改好之前 `/conch` 仍加载旧版），不在那里改。
+> 版本 1.1.0（2026-11-12）。正文真源＝`~/Documents/Claude/brain/.skills/the-conch-maiden/SKILL.md`；安装形态：`~/.claude/skills/the-conch-maiden` 为指向本目录的链接（2026-11-12 起，由 Doctor 终端改链接；改好之前 `/conch` 仍加载旧版），不在那里改。
 > 引擎：`~/Documents/Claude/Projects/海螺姑娘/conch_engine.py`。项目档案：`brain/海螺姑娘/`；坑库：`Projects/海螺姑娘/GOTCHAS.md`。
-> v 历史：1.0.0 以 v0.2 引擎版为底重写，替换 2026-04-30 的提示词版（GOTCHA-20261112-001）；同日修引擎两处误判（-002 新旧判反、-003 日期在前的备份被当无语义 .bak）。
+> v 历史：1.0.0 以 v0.2 引擎版为底重写，替换 2026-04-30 的提示词版（GOTCHA-20261112-001）；同日修引擎两处误判（-002 新旧判反、-003 日期在前的备份被当无语义 .bak）。1.1.0 引擎 `scan`/`archive` 加 `--all` 全量清单与「合计待移」行，`protect: []` 与行内列表可正确解析（-004）。
 
 ## 原则
 
@@ -43,10 +43,9 @@ cd "$TMPDIR" && python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine
 
 ## 第 3 步 · 归档（仅 `--apply`）
 
-1. 把第 2 步的拟归档清单逐条列给 Doctor（文件 + 引擎理由），用 AskUserQuestion 确认：全部归档 / 剔除部分后归档 / 取消。
-   - `scan` 只显示前 30 条，`archive` 却会移走全部。拟归档超过 30 条时清单不完整，**不得一次归档**：改用更小的 `--scope` 分批，或先用 `protect:` 压到 30 条以内。
+1. 先跑 `... --scope "<目标>" scan --all` 取全量清单（`archive` 移走的是「拟归档 ∪ 版本链超额」两张清单的并集，默认输出各有截断）。把两张清单逐条列给 Doctor（文件 + 引擎理由），并核对**去重后**的文件数与输出末行「archive --apply 将移走合计: N」一致（同一文件可能同时出现在两张清单里，行数之和会大于合计）；对不上就停下报告。然后用 AskUserQuestion 确认：全部归档 / 剔除部分后归档 / 取消。
    - 清单里有 `_vN` 文件、`.bak_*` 备份、或被代码/文档引用的文件（`grep -rn <文件名> <目标>` 有命中）→ 单独标出，提醒逐条看。
-2. Doctor 要剔除的文件写进目标目录 `.conchconfig.yml` 的 `protect:`（没有该文件就先 `init`，见下）。`init` 生成的是 `protect: []`，要把它改成多行列表（`protect:` 换行后逐行 `  - "<glob>"`），直接在 `[]` 下追加会被静默忽略。改完重跑 `scan`，确认清单已变。
+2. Doctor 要剔除的文件写进目标目录 `.conchconfig.yml` 的 `protect:`（没有该文件就先 `init`，见下）。写成多行列表（`protect:` 换行后逐行 `  - "<glob>"`）。改完重跑 `scan --all`，确认清单和合计都已变。
 3. 执行：
    ```bash
    cd "<目标>" && python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine.py --scope "<目标>" archive --apply --yes
