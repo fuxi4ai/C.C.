@@ -618,7 +618,7 @@ build_warehouse.py 同法替换 `Path("/tmp/baize_warehouse")`。两步替换后
 
 ## [ERR-20261113-001] 持续性模块跳过空快照、把三个月前的旧同比当本周值——氦气「结构性确认·连续11周>20%」实为 06-14～08-09 冻结值
 
-**状态**：🔄 已修待验（2026-11-13 登记为 ⚠️；同日 Doctor 令「现在修」→ CC 实施，见下「修复」行；待独立验收）
+**状态**：✅ 已修已验（2026-11-13 登记为 ⚠️；同日 Doctor 令「现在修」→ CC 实施，见下「修复」行；独立审核 PASS_WITH_LIMITS 后补正；**2026-11-13 Doctor 验收通过**（功能性修复·Doctor 亲裁，CC 代记）；线上生效待下次周班 Stage 1.6 重算）
 **优先级**：🟡 中（误导观察区持续性标签与分档；不进受益榜）
 **触发/硬证据**：`data/weekly/persistence_metrics.json`（generated 2026-11-08）氦气 `yoy_now 58.6 · persist_weeks 11 · weeks_observed 11 · label 结构性确认 · asof 2026-11-08`；warehouse `price_snapshots` 氦气行实读：2026-06-14～08-09 共 11 期 `change_yoy` 恒为 58.6，08-16～11-08 共 15 期全为 NULL。即近 3 个月无任何同比，模块仍以 asof=本周输出旧值，看板挂「结构性」标签；`_invest_tier` 用 `persist_yoy_now` 优先于 `change_yoy`，旧值还会挡住应进静默档的判定。
 **根因**：`scripts/analysis/compute_persistence.py` 快照类分支读取时跳过 NULL（实读 L135-136 SQL `where change_yoy is not null`），取「最后一个非空值」当当前值（`seq[-1][1]`），且 asof 写运行日（L148 `asof=today`）而非该值的快照日；无陈旧度门禁。另 06-14～08-09 的 58.6 本身是旧「管束高纯氦」口径的冻结值（周周相同），可信度存疑。
