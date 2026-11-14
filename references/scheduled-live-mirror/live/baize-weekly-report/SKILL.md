@@ -59,10 +59,12 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
    ② `PROJ/data/commodity_prices_live.json` 里 `yoy_comparable=false` 的品种（现为六氟化钨）——找**同源、同规格、去年同期**的基期价（如隆众/Mysteel 5N 出厂自提价去年同期）；
    ③ 「产品迭代」五组（800G→1.6T、HVLP3→HVLP4、M8→M9 二代布/Q 布、GB300→VR200）的**迭代渗透率／出货占比／需求量的现值与预期值**，M9 与 VR200 目前没有百分比，优先补；
    ④ 上周看板「数据缺口」区里其他写着待核验的项。
+   ⑤ **光模块本体**（800G／1.6T）同规格两期价或直报涨幅（2026-11-14 ERR-20261114-002）：只认光模块本身（如 800G DR8、1.6T FR8 的模块单价），**PCB／mSAP 载板／DSP／光引擎／AOC 等组件或配套价一律不当光模块涨价**；Transceiver USA 渠道价已由脚本周抓，LLM 只补其他渠道。
+   **可选免费渠道（2026-11-14 核过一轮，见 `PROJ/docs/大宗信源图谱_20260607.md`「四·补3」）**：高多层板缺口可查 FRED 裸 PCB 行业 PPI（PCU3344123344120），但它是全行业指数、对不上 40-60 层，**只写 web_probe 注记、不填 mom_ref/yoy_ref**；存储（DRAMeXchange／DiskPrices 等）白泽尚未入池，本步不检索。查到的数据进不进弹性按每个数据点的现有分档判，不按信源。
    **写盘规则（只写数字原文明确给出的，不推算；推算须写 calc；查不到就不写，绝不编）**：
    - ③ 写 `PROJ/data/weekly/iteration_search.json`（整文件覆盖·`ensure_ascii=False`·用 device_bash 的 python 写到 Mac，勿用 Write）：`{"searched_at":"YYYY-MM-DD","items":{"<迭代标签，须与看板「产品迭代」卡标签逐字一致>":[{"kind":"渗透率|出货占比|需求量","caliber":"口径说明","unit":"%","now":{"value":数字,"year":"2026"},"expected":{"value":数字,"year":"2027E"},"source_url":"https://…","source_date":"YYYY-MM-DD","quote":"原文摘句≤30字","calc":"推算时写算式，否则省略"}]},"notes":{"<标签>":[{"text":"无数字但有用的定性信息","source":"https://…","date":"YYYY-MM-DD"}]}}`。缺 source_url／source_date／quote 或数值非数字的条目，脚本会丢弃。
-   - ①② 查到的价格照 2) 的 CSV 规则写（`yoy_comparable` 只有同源同频同单位同品级才填 yes；②找到同源同期基期才可改 yes），无洁净同比的照 2b) 写进 web_probe 注记；本体规格不明的一律不比。
-   - 收尾摘要列一行「缺口检索：①… ②… ③… 命中 N 条／未命中 M 项」。
+   - ①②⑤ 查到的价格照 2) 的 CSV 规则写（`yoy_comparable` 只有同源同频同单位同品级才填 yes；②找到同源同期基期才可改 yes），无洁净同比的照 2b) 写进 web_probe 注记；本体规格不明的一律不比。
+   - 收尾摘要列一行「缺口检索：①… ②… ③… ⑤… 命中 N 条／未命中 M 项」。
 2c) **渊图价格层取数（2026-09-11 Doctor 裁「方案A」·AI硬件无信源回退）**：`cd PROJ && python3 scripts/data_collection/fetch_yuantu_prices.py`——按白泽消费契约（price-coupling-v1 · `Database/行业研究/prices/PRICE_LAYER.md`）读价格层 `latest.json`（路径经 `BAIZE_DATABASE_ROOT` 或脚本内 Documents 祖先解析）：仅取 scope=commodity、horizon≠预测、ttl 时效内点位，产出 `data/weekly/yuantu_price_layer.json`（fresh 标记；品种映射表在脚本内 BAIZE_TO_YUANTU）。渲染由 build_weekly_report 自动带出（MD 三·附2 + 看板「渊图价格层取数」折叠条·P1 参考不入弹性）。**铁律**：取不到/源缺失写空 items+注明，绝不编数；本步失败仅警告不阻塞。（2026-11-13 增）脚本另从全量序列 `commodity_prices.jsonl` 产出 `ref_changes`（同规格四键全等的两期点价参考涨幅，含回溯闸与排除统计 `ref_stats`），build 据此把对应 AI 硬件标「代理价」；算不出者展示为「结构观察」（AI 硬件无现货指数·按设计留白），周期品缺价仍标「待核验」。
 3) 运行 cd PROJ && python3 scripts/analysis/run_full_analysis_v4_1.py 生成当日分析报告(确认 live 模式、受益榜正确)。
 
