@@ -618,11 +618,13 @@ build_warehouse.py 同法替换 `Path("/tmp/baize_warehouse")`。两步替换后
 
 ## [ERR-20261113-001] 持续性模块跳过空快照、把三个月前的旧同比当本周值——氦气「结构性确认·连续11周>20%」实为 06-14～08-09 冻结值
 
-**状态**：⚠️ 已知风险（2026-11-13 登记，未修；登记≠授权修复）
+**状态**：🔄 已修待验（2026-11-13 登记为 ⚠️；同日 Doctor 令「现在修」→ CC 实施，见下「修复」行；待独立验收）
 **优先级**：🟡 中（误导观察区持续性标签与分档；不进受益榜）
 **触发/硬证据**：`data/weekly/persistence_metrics.json`（generated 2026-11-08）氦气 `yoy_now 58.6 · persist_weeks 11 · weeks_observed 11 · label 结构性确认 · asof 2026-11-08`；warehouse `price_snapshots` 氦气行实读：2026-06-14～08-09 共 11 期 `change_yoy` 恒为 58.6，08-16～11-08 共 15 期全为 NULL。即近 3 个月无任何同比，模块仍以 asof=本周输出旧值，看板挂「结构性」标签；`_invest_tier` 用 `persist_yoy_now` 优先于 `change_yoy`，旧值还会挡住应进静默档的判定。
 **根因**：`scripts/analysis/compute_persistence.py` 快照类分支读取时跳过 NULL（实读 L135-136 SQL `where change_yoy is not null`），取「最后一个非空值」当当前值（`seq[-1][1]`），且 asof 写运行日（L148 `asof=today`）而非该值的快照日；无陈旧度门禁。另 06-14～08-09 的 58.6 本身是旧「管束高纯氦」口径的冻结值（周周相同），可信度存疑。
 **影响面**：所有走 warehouse 快照的品种（稀土/钨/六氟化钨/氦气）在断更期都可能出现同型「旧值冒充当期」；氦气已确认。2026-11-13 氦气切回管束口径（-7.8%）后，下次周班快照入库预计使氦气序列重置，但缺陷本身仍在。
-**建议修法**：①当前值须取自最新一期快照，最新一期为 NULL 即输出 yoy_now=None / label「断更」；②asof 写该值所在快照日；③连续周数遇 NULL 断开计数。（待 Doctor 定）
+**建议修法**：①当前值须取自最新一期快照，最新一期为 NULL 即输出 yoy_now=None / label「断更」；②asof 写该值所在快照日；③连续周数遇 NULL 断开计数。~~（待 Doctor 定）~~ 2026-11-13 Doctor 令「现在修」。
+**修复（2026-11-13 · 已修待验）**：`compute_persistence.py` 快照类分支抽为纯函数 `_snapshot_metrics(rows)`：SQL 去掉 `where change_yoy is not null`、NULL 行一并读入；①最新一期为 NULL → `yoy_now=None`、`stale=True`、label「断更」（label 循环里先于「数据不足」判）、`breakout=False`；②`asof` 写该值所在快照日，另带 `last_valid_yoy/last_valid_asof` 溯源；③连续周数沿用 `_persist_weeks`（遇 None 即断，现序列保留 NULL）；④最新连续 ≥4 期同值 → `frozen_weeks` 告警（只告警不改判）。期货类分支未动。备份 `scripts/analysis/_bak/compute_persistence.py.bak_2026-11-13_stale-snapshot`（与 HEAD 字节一致）。持久化测试 `tests/test_persistence_snapshot.py` 6/6 OK；故障注入（换回旧语义）4 FAIL。真库只读对拍：yoy_now/prev_yoy/连续周数/可观测周数/breakout/stale 六项中仅氦气有差异（58.6%·11周·结构性确认 → 断更·末个有效值 08-09），其余 7 品种逐项一致（asof 按设计 8 品种均由运行日改为快照日）；冻结告警命中六氟化钨（13 期同为 246.1%；与周班 SKILL 对六氟化钨的规定相符——事件驱动品种，45 天内无新公开报价即原样不动；留观）。
+**独立审核（2026-11-13 · 未参与实施的 subagent）**：PASS_WITH_LIMITS——无阻断实错；限：①prev 语义未申报；②4 处单点变异测试仍全绿；③同日 NULL/有效混存去重与旧版不一致（真库现无此重复）；④stdout 打印「yoy None%」；⑤本条两处措辞（「仅氦气变化」说宽、SKILL 转述套引号）。**同日补正**：①prev 改为「上一期（可为 NULL）」系有意语义——断更后恢复首期不判 ⚡新突破，已在代码注释申报；②label 判档抽为 `_label(r)` 可单测，补 5 条用例（frozen 遇 NULL 中止 / 恢复首期不判突破 / stale 守卫防 TypeError / 同日有效值优先 / 断更先判），测试 11/11 OK，审核报告的 4 个存活变异＋去重变异共 5 个全部转红；③同日去重改为有效值优先于 NULL；④stdout 改印「—」；⑤措辞已订正。补正后真库对拍结果不变。仍为待验：补正部分未经二次独立复核。另记（改前即有、不在本次范围）：persist_weeks 按快照**期数**计，真库有周中加采期（06-30/07-01/08-31/11-04），「连续 N 周」实为「连续 N 期」。副本重渲染：氦气由观察区「连续11周>20%·结构性确认」转入静默区「实测同比 -7.8% ≤5%」。真盘 `persistence_metrics.json` 未重算，待下次周班 Stage 1.6 生效。
 **预防门禁**：持续性/状态类指标必须带「值的日期」而非「运行日期」；对「N 期取值完全相同」做冻结告警。
 **来源**：2026-11-13 白泽大宗「待核验」专场（①氦气切口径自验时发现）· CC 实读 warehouse。
