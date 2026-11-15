@@ -267,10 +267,18 @@ CANDIDATES = [
 
 **修复与验收（2026-11-13 · Doctor 批「四项一起修」）**: 实施者 subagent 改 `narrative_review.py` / `model_entry.py` / `narrative_score.py`（备份 `.bak_2026-11-13_sampling`）：① input 由系统写入、模型不回显，token 上限统一为常量 12000；② bounded_check 移到共识后只核选中样本，锚为上一轮多样本中位（`bounded_anchor`）；③ bounded 失败与所有拒绝出口均落诊断 / rejected 行；④ n_valid<2 补采（≤2 份）、补采后仍 1 份则降为非 critical 并留痕（分数不动）。测试 180/0、data/ 前后 0 差。未参与实施的验收者 **PASS_WITH_LIMITS**，无硬阻断；限制：截断是否根除待首个真实班次看 failures.jsonl；下一班中位锚实际等于 11-12 单样本（来源标签 `prev_median` 有误导，宜加记 n_valid）；单样本降级口径 Doctor 2026-11-13 裁「维持分数不动」（与 11-10「缺通道压到 74」分属不同情形）；最坏 5 份请求约 15 分钟、班次外层超时未核。状态：🔄 已修待验（功能性，最终验收归 Doctor）。
 
+**自然证据追记（2026-11-15 · CC 实读 `data/narrative_review_samples.jsonl` 末两行与 `data/narrative_review_failures.jsonl` 末 4 行 · 状态维持 🔄）**: 修后两次真实日更班均 `accepted`、`n_valid=2`——11-13 17:10Z 首轮只得 1 份、补采 2 份（`n_requested=5`、`n_topup=2`）后过；11-14 17:08Z 首轮 3 中 2、未补采。**截断已不再出现**：两班 4 条失败均非 `max_tokens`（2 条 `invalid`、1 条网络 `RemoteDisconnected` exit 4、另 1 条 `invalid`）；补采班最后样本落盘 17:10:50Z，未见超时迹象。**残留失败模式（新形态，未修）**：3 条 `invalid` 中 2 条为模型把**报道级事件**（`openai-first-close-1106`、`openai-round-target-cut`）写进 funding critical_basis——校验剔除该 id 后，`outlook.event_ids` 仍引用它，连带触发 HARD「市场担忧引用须来自本轮有效维度依据」，整份作废；另 1 条为 HARD「缺市场担忧、延续、定价或证伪条件」。同期 `funding_critical_downgraded` 分别为 2、1。**是否改为「剔除后同步从 outlook 引用里去掉、不整份作废」属校验语义变更，待 Doctor 裁。**
+
+**残留形态修复（2026-11-15 · Doctor 裁「改为剔除不作废」· CC 实施，待独立复验与 Doctor 功能验收）**: 读码订正机制：作废并非担忧段引用本身出错，而是 `validate_assessment`（narrative_score.py:713-715）见 critical_basis 含不可撑事件即 `continue` **整维剔除**，担忧段引用的融资维事件随之不在有效依据内，才连带 HARD。故修法落在修复层、不改校验：`narrative_review.py` `repair_sample()` 新增一段——critical=true 时把本维内不可撑 critical 的 id 从 critical_basis 去掉（basis_confirming 不动，报道型仍可作维度依据），计入 repaired；非融资维去空则 critical 改否、分数不动；融资维去空或去后无生效通道的交既有「缺通道降级」（压到 74）；不存在的 id、非字符串元素不动、仍交校验拒绝。只走 run_model 路径，手工 apply 不经此处。担忧段引用无须另改。测试新增 12f–12k，186/0、生产 data/ 与 dashboard/ 前后 0 差（16a）；变异两处（删整段 → 12h/12i/12j 失败；删「非融资维去空改否」→ 12j 失败）。备份 `_bak/narrative_review.py.bak_2026-11-15_weakstrip`、`_bak/test_narrative_score.py.bak_2026-11-15_weakstrip`。**自然验证**：下一次日更（11-15 17:05Z 起）看 samples.jsonl 的 `input_repaired` 与 failures.jsonl 是否还出现「不可撑 critical」型 invalid。
+
+**独立复验（2026-11-15 · 未参与实施的审核者 subagent）**: PASS_WITH_LIMITS——① 改动面：`diff` 对 `_bak/*.bak_2026-11-15_weakstrip`，`narrative_review.py` 仅 `repair_sample()` 内新增 18 行、测试仅追加 12f–12k，无其他改动；生产调用点仅 `narrative_review.py:427`（run_model 采样路径），手工 apply 不经此处。② 机制：读 `validate_assessment` 确认原链条为「critical_basis 含不可撑 id → 整维 `continue` → 担忧段引用不在有效依据 → HARD → 任一 errs 即整份作废」；修复在校验前剔 id，切断该链，校验本身未改。③ 内存重放（真实事件表、以现 `narrative_assessment.json` 为底，不写盘）：11-14 s3 形态 cb=[crwv-cds-peak-1015, openai-round-target-cut, cloud-meta-outlook-negative] 修前 HARD、修后剔 openai-round-target-cut、funding 82 critical 保留（cloud-meta 提供 ig_deterioration 通道）、整份 0 错；11-13 s2 形态（含 openai-first-close-1106）同样修后通过；仅报道型、报道型+无通道强证据两例均走缺通道降级 74。④ 负向：非字符串元素、跨维 id、本维不存在 id、critical=false 带弱 cb、重复强 id 均不动、仍被校验拒绝。⑤ 实跑 `python3 -B test_narrative_score.py` 186 PASS / 0 FAIL，16a 通过；临时副本 5 种变异（删整段、去融资豁免、幽灵 id 也剔、一律改否、连 basis_confirming 一起剔）各被 12h/12i/12j/12k 至少一条抓到，副本已删。**限制**：(a) 剔除只判「本维存在且不可撑」，不判是否在 basis_confirming 内——弱 id 在 critical_basis 但不在 basis_confirming、或弱 id 重复时，原本另报的子集/去重错误被一并消解（实跑两例修后通过）；结果方向保守（只少不多），但属轻微超出「只剔不可撑」字面；(b) 剔除计数并入 `repaired` → samples.jsonl 的 `input_repaired`，与依据对象→id 的形状修复混计，自然验证时无法单凭该字段区分，需对照 failures.jsonl；(c) 11-13 s1「缺市场担忧、延续、定价或证伪条件」型失败不在本修复范围；(d) 真实班次效果待 11-15 17:05Z 起自然验证。功能验收仍归 Doctor。
+
+**复验限制①收口（2026-11-15 · CC）**: 剔除前加结构闸——critical_basis 有重复或含不在 basis_confirming 内的 id 时修复层不动、照旧交校验拒绝，不再顺带消掉这两类结构错。新增 12l/12m，188/0；变异（删结构闸）→ 12l、12m 失败。限制②（剔除计数与形状修复同计 `input_repaired`）未改：自然验证以 failures.jsonl 不再出现「不可撑 critical」型 invalid 为准。状态维持 🔄（功能验收归 Doctor）。
+
 ---
 
 ## [ERR-20261112-001] 云端托管页小字发细发淡：云端加载到 Google 在线字体，侧栏加载不到、回退本机思源宋体
-**状态**: 🔄 已修待验（2026-11-12 同日修复；Doctor 目验「通过」；拆分器独立复验进行中，结论见 `brain/TODO.md`「看板推送改为云端班自推」子行）
+**状态**: ✅ 已验收（2026-11-15 · 未参与实施的审核者 subagent 独立核验：`strip_webfont()` 在两子页循环与主页各调用一次、条数≠3 或删后残留即 `die()` 且写盘在全部校验之后，负向两例实跑 exit 1；对现原件（sha 8a7d8ecb，内含 6 处 googleapis）内存重放三页 sha 5892bf87/58b2f9c4/d1be339e ＝ 盘上 artifact/manifest/published.json，三页 `fonts.googleapis.com`/`fonts.gstatic.com` 均 0 处；事实性非功能修复由审核者代签）（原：🔄 已修待验 · 2026-11-12 同日修复；Doctor 目验「通过」；拆分器复验 PASS_WITH_LIMITS 见 `brain/TODO.md`「看板推送改为云端班自推」子行）
 **优先级**: 🟡 中
 **触发**: 2026-11-12 风险日报三页（主页 / AI Tech Alarm / EAL 星空）首次推上 claude.ai 托管页，Doctor 目验发现正文小字（9.5–11px）比侧栏版细、淡。
 **硬证据**: ① 容器内 playwright 逐文本节点对拍：原件 vs 「外壳+片段」，字号/字重/字色/行高设定值差异 0（主页 165 条、AI 560 条、EAL 17 条）；② 旧片段 `document.fonts` 载入 `Noto Serif SC 400/600/700`，删引用后载入列表为空；③ Doctor 两张截图（侧栏＝正确、云端＝错误小字）；④ 八个托管页中只有这三页引用 `fonts.googleapis.com`。
@@ -282,7 +290,7 @@ CANDIDATES = [
 **来源**: 2026-11-12 看板上云场 · Doctor 目验 + CC 实跑对拍。
 
 ## [ERR-20261112-002] EAL 事件星空「数据与阅读方式」弹窗里夹一处字面 `...`
-**状态**: 🔄 已修待验（2026-11-12 Doctor 裁「修」：源头 `Projects/Financial/宏观研究体系/EAL/backtest/starfield_view.js` 第 250 行删掉两个 section 之间的字面 `...`，备份 `.bak_2026-11-12_pre-ellipsis`。派生的 `EAL_STARFIELD.html` 与 `risk-daily.html` 未手工改，下次构建后生效——**届时须回读确认 `...` 已消失**）
+**状态**: ✅ 已验收（2026-11-15 · 未参与实施的审核者 subagent 独立核验：源头 11-12 02:38 PT 修改后，`EAL_STARFIELD.html`（11-13 21:09 PT 重建）与 `risk-daily.html`（11-14 09:08 PT 构建）正常形 `</section>...<section` 与转义形 `<\/section>...<section` 均 0 处，「行情与版本」各 1 处且其前紧接 `</section><section`（转义形同），备份含 1 处、现源头 0 处；事实性非功能修复由审核者代签）（原：🔄 已修待验 · 2026-11-12 Doctor 裁「修」，源头第 250 行删字面 `...`，备份 `.bak_2026-11-12_pre-ellipsis`，派生文件待下次构建后回读）
 **优先级**: 🟢 低
 **触发**: 2026-11-12 发布前通读 EAL 星空子页时发现；弹窗两个 `<section class="detail-section">` 之间原样显示三个点。
 **硬证据**: `risk-daily.html` 的 `EAL_HTML` 常量解码后即含 `…回测。</p></section>...<section class="detail-section"><h3>行情与版本</h3>`（实读解码文档，1 处）；托管页同位置同文。**原件就有，不是拆分上云造成的。**
@@ -294,7 +302,7 @@ CANDIDATES = [
 **来源**: 2026-11-12 看板上云场 · 发布前通读（subagent）+ CC 实读原件复核。
 
 ## [ERR-20261112-003] 子页里的相对链接在托管页上是死链（AI Alarm 三条、EAL 星空「研究台」两处）
-**状态**: 🔄 已修待验（2026-11-12 Doctor 裁「修」，取修法①：拆分器 `neutralize_deadlinks()` 给云端片段末尾加一条样式——AI 页三条本地入口保留文字、不可点；EAL 页 `a[href^="/research"]` 隐藏。只加样式，不删改正文脚本，原件不动；形态不符即 fail-closed；备份 `.bak_2026-11-12_pre-deadlink`）｜2026-11-12 独立复验 PASS_WITH_LIMITS（未参与实施的 subagent）
+**状态**: ✅ 已验收（2026-11-15 Doctor 裁「接受残留并落签」· 已知限制：AI 页三条入口只挡鼠标，键盘 Tab 聚焦后回车仍会跳死链——按 11-12「只加样式、不改脚本」口径接受）｜原：🔄 已修待验（2026-11-12 Doctor 裁「修」，取修法①：拆分器 `neutralize_deadlinks()` 给云端片段末尾加一条样式——AI 页三条本地入口保留文字、不可点；EAL 页 `a[href^="/research"]` 隐藏。只加样式，不删改正文脚本，原件不动；形态不符即 fail-closed；备份 `.bak_2026-11-12_pre-deadlink`）｜2026-11-12 独立复验 PASS_WITH_LIMITS（未参与实施的 subagent）
 **优先级**: 🟢 低
 **触发**: 2026-11-12 三页拆出上云后，子页成为独立托管页。
 **硬证据**: AI Tech Alarm 页脚本把 `lnk-research` / `lnk-desk` / `lnk-eal-db` 的 href 设为 `../Financial/宏观研究体系/EAL/backtest/*.html`（实读片段）；EAL 星空页两处 `href="/research"`（实读）。均为原件既有写法。
@@ -320,7 +328,7 @@ CANDIDATES = [
 
 ## [ERR-20261113-002] F14 market_data 来源校验用不分大小写子串匹配：`ICE` 命中 price / notice / service，`TRACE` 命中 retrace
 
-**状态**: 🔄 已修待验（2026-11-13 实施者 subagent 改 `narrative_score.py:56-69` 词边界＋全大写缩写大小写敏感，:218 调用；验收者 PASS_WITH_LIMITS——负例全拒、正例全过、生产事件无误拒；限制：偏严会误拒 ICEBofA / S&P500 / 8-Ks 等连写，小写 moody / fitch 放行；改变校验行为，最终验收归 Doctor）
+**状态**: ✅ 已验收（2026-11-15 Doctor 裁「按现状验收」· 偏严误拒连写一项接受，生产出现连写形态时再补白名单）｜原：🔄 已修待验（2026-11-13 实施者 subagent 改 `narrative_score.py:56-69` 词边界＋全大写缩写大小写敏感，:218 调用；验收者 PASS_WITH_LIMITS——负例全拒、正例全过、生产事件无误拒；限制：偏严会误拒 ICEBofA / S&P500 / 8-Ks 等连写，小写 moody / fitch 放行；改变校验行为，最终验收归 Doctor）
 **优先级**: 🟡 中
 **触发**: 2026-11-13 /todo PRD F14–F17 二次独立审查。
 **硬证据**: `narrative_score.py:198-203` 校验 claim/facts/locator 中写明 `MARKET_DATA_VENDORS`（:55）来源；审核者内存探测（不落盘）：claim 写「某公司债券 price 大跌」「notice 显示走阔」「service 指标」时 `_v4_event_error` 返回 None（放行），去掉这些词才拒。
@@ -331,7 +339,7 @@ CANDIDATES = [
 
 ## [ERR-20261115-001] `Codex/风险日报/AI Tech Alarm/` 是 11-05 迁移前的旧副本，按名字搜 AI Tech Alarm 会先撞到它
 
-**状态**: 🔄
+**状态**: ✅ 已验收（2026-11-15 · 未参与实施的审核者 subagent 核：原位置 `ls` 报不存在，`archived/AI Tech Alarm.archived_2026-11-15` 存在、`find -type f` 31 个、`du` 1.8M，按名搜 `*tech*alarm*`（排除 archived/.git）不再命中 Codex 下目录，现行 `Projects/风险日报/alarm/`（含 `研究/`）在，班次镜像与 `Projects/风险日报` 无旧路径引用；事实性处置由审核者代签）｜原：已处置待核（2026-11-15 Doctor 裁「移入 archived」：CC 将旧目录整体移至 `~/Documents/Codex/风险日报/archived/AI Tech Alarm.archived_2026-11-15`，移前移后均 31 个文件、1.8M；移前查过班次镜像、`Projects/风险日报` 代码与 LaunchAgents，均无引用。注：移前该目录 mtime 为 2026-11-15 03:30，当日有过写入，来源未核）
 **触发**: 2026-11-15 Doctor 令把两篇研究稿移入「AI Tech Alarm」并核有无独立文件夹；`find -iname "*tech*alarm*"` 只命中 `Codex/风险日报/AI Tech Alarm/`（含 `研究/` 子目录），现行目录 `Claude/Projects/风险日报/alarm/` 名字不含 tech，按名搜不到。
 **硬证据**: `git -C ~/Documents/Codex status` 显示该目录整批未跟踪（`??`）、末次提交 `bfdc90eb` 2026-11-04；`brain/风险日报/architecture/系统概览.md` 写明「AI Tech Alarm 自 2026-11-05 归本项目（`Projects/风险日报/alarm/`）」。
 **根因**: 11-05 迁移只迁了数据和代码，旧目录未归档也未加弃用标记；目录名比现行目录更「像」。
