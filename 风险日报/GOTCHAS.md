@@ -2,7 +2,7 @@
 title: 风险日报 · GOTCHAS（已知坑）
 tags: [风险日报, gotchas]
 created: 2026-07-27
-updated: 2026-11-12
+updated: 2026-11-15
 status: active
 type: resource
 project: 风险日报
@@ -328,3 +328,14 @@ CANDIDATES = [
 **建议修法**: 改词边界或大小写敏感匹配；补负向测试（price / notice / service / retrace 均须拒）。
 **预防门禁**: 供应商名单匹配一律走词边界正则，并纳入测试。
 **来源**: 2026-11-13 /todo 未参与实施的审核者只读审查。
+
+## [ERR-20261115-001] `Codex/风险日报/AI Tech Alarm/` 是 11-05 迁移前的旧副本，按名字搜 AI Tech Alarm 会先撞到它
+
+**状态**: 🔄
+**触发**: 2026-11-15 Doctor 令把两篇研究稿移入「AI Tech Alarm」并核有无独立文件夹；`find -iname "*tech*alarm*"` 只命中 `Codex/风险日报/AI Tech Alarm/`（含 `研究/` 子目录），现行目录 `Claude/Projects/风险日报/alarm/` 名字不含 tech，按名搜不到。
+**硬证据**: `git -C ~/Documents/Codex status` 显示该目录整批未跟踪（`??`）、末次提交 `bfdc90eb` 2026-11-04；`brain/风险日报/architecture/系统概览.md` 写明「AI Tech Alarm 自 2026-11-05 归本项目（`Projects/风险日报/alarm/`）」。
+**根因**: 11-05 迁移只迁了数据和代码，旧目录未归档也未加弃用标记；目录名比现行目录更「像」。
+**影响面**: 任何按名定位 AI Tech Alarm 的会话或分支，可能把产物写进旧副本或读到过期数据。本次已在动手前核出，未误写。
+**建议修法**: 旧目录按归档规矩移入 `archived/` 或改名加 `_DEPRECATED_`（须 Doctor 批，属 Codex 仓）；或在其根下放一份 README 指向现行目录。
+**预防门禁**: 定位 AI Tech Alarm 一律从 `风险日报/architecture/系统概览.md` 取路径，不按目录名搜。
+**来源**: 2026-11-15 AI 中控台会话（`logs/2026-11-15-todo分流与AI中控台G3算力经济账.md`）。
