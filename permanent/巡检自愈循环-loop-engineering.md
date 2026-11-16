@@ -43,7 +43,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 
 输出两份**固定文件名**：`brain/permanent/_scheduler_snapshot.json`（机器 / git diff）· `_scheduler_snapshot.md`（人）。**只读保证**：除自己这两个输出外不写任何东西；不跑 git 子命令；`launchctl print` 与 `crontab -l` 都是只读查询。
 
-### 四个执行面（均在 Mac）
+### 四个执行面（均在 Mac · 2026-11-16 补 ⑥ Code 本机班，见表末）
 
 | 面 | 位置 | 记什么 |
 |---|---|---|
@@ -51,6 +51,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 | ② Documents 死树 | `~/Documents/Claude/Scheduled/`（Kimi 主壳时代为 live 位） | 目录数 · 与 live 同名者 · 仅死树有 · 内容分叉 |
 | ③ launchd | `ops/*.plist`（源）↔ `~/Library/LaunchAgents/`（装机） | 排期 · 入口程序 · 源↔装机 sha · 实际加载态与 last exit code |
 | ④ crontab | `crontab -l` | 是否真为空 |
+| ⑥ Code 本机班（2026-11-16 /consolidate 补 · 限期 · 快照脚本的面⑤是挂载检查，故编 ⑥） | `~/.claude/scheduled-tasks/`（现仅 `update-all-tech-reversal-watch`，2026-11-11 Doctor 批） | 快照脚本尚未覆盖此面，暂按 `TODO.md` 停班条件人工核 |
 
 ### 三类一致性（价值所在）
 
@@ -126,7 +127,7 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 
 **悖论第二叉（有写权就变成需要被巡检的东西）靠三条同时成立的约束消解**：
 
-> (a) **写权受限**：只允许执行 §5.2 预注册白名单内修复动作，且只碰「巡检机制自己」的资产。技术性强制靠「授权调用形态」——每个动作写明可用工具与参数形状（如 F3 只允许 `update_scheduled_task` 且只传 description 参数、taskId 必须 exact-pin 字面值），§7 负向测试把越权形态做成非零拒绝；白名单外一律 fail-closed 回「只报告」。射程＝调用形态收敛＋事后留痕，不是结构保证。
+> (a) **写权受限**：只允许执行 §5.2 预注册白名单内修复动作，且只碰「巡检机制自己」的资产。技术性强制靠「授权调用形态」——每个动作写明可用工具与参数形状（如 F3 只允许 `update_scheduled_task`（2026-11-04 起云端 trigger 为 `update_trigger`，Doctor 2026-11-16 裁、射程不变） 且只传 description 参数、taskId 必须 exact-pin 字面值），§7 负向测试把越权形态做成非零拒绝；白名单外一律 fail-closed 回「只报告」。射程＝调用形态收敛＋事后留痕，不是结构保证。
 > (b) **写必留痕**：每次修复动作写一行 append-only audit log（`brain/permanent/_repair_audit.md`，schema 见 §5.4），含时间戳/触发证据/动作/回退点/验收判据/实施者/状态。audit 经 Doctor commit 后于 git diff 显形；**读侧以文件本体为准，不依赖 git**。
 > (c) **留痕必被读——且读有双通道，不与叉一同死**：① 人读通道＝brain-resume Step 0.6 读 audit 尾段并报新鲜度；② 机器读通道＝周班 prompt 读 audit 尾段，存在 🔄 未验行则列入异常清单附报（走 exit 1 通道，不破坏「正常零输出」契约）。
 
@@ -153,10 +154,12 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 | F1a 快照超期**且**周班停摆 | `generated_at`>8天 **且** `lastRunAt`>8天 | 先 read_transcript 查死因（悬挂/权限/零产物）；确诊后才修；修不了（平台层）→ 只报告 | 下次周窗（周日 20:00 PDT ±24h）内 lastRunAt 前进 + 快照刷新 **且 triggered_by=scheduled** | 无写动作，天然可退 |
 | F1b 快照超期**但**周班在跑（班内落盘失效） | `generated_at`>8天 **且** `lastRunAt`≤8天 | 诊断写路径（脚本写失败/落错位/G-X118 同款）→ S3 自证步加装（若尚未装）+ 贴 Doctor 命令重跑快照恢复基线 | 下次周班跑后 generated_at 前进 且 triggered_by=scheduled | 无沙箱写动作 |
 | F2 班消失 | 快照 diff 出现减号 | 🔴 **只报告，永不自动重建**（建班=权限扩张） | Doctor 裁定 | — |
-| F3 description 漂移 | `list_scheduled_tasks` 的 description 与镜像 SKILL.md frontmatter description 比对不一致（diff 落诊断卡） | `update_scheduled_task` **仅传 description 参数**、taskId exact-pin；pre-image＝list 逐字返回入 audit | post-image＝再 list 逐字比对一致 | 再 update 回 pre-image 原值 |
+| F3 description 漂移 | `list_scheduled_tasks` 的 description 与镜像 SKILL.md frontmatter description 比对不一致（diff 落诊断卡） | `update_scheduled_task`（云端为 `update_trigger` · 2026-11-16 Doctor 裁）**仅传 description 参数**、taskId exact-pin；pre-image＝list 逐字返回入 audit | post-image＝再 list 逐字比对一致 | 再 update 回 pre-image 原值 |
 | F3p prompt 本体改动（含 S3 步插入） | 方案批准/设计变更 | **一律 Doctor 终端**：取回 store SKILL.md 全文+SHA → 沙箱改 → 贴回或 Doctor 执行 → 再取回+SHA 复验（G-X162 判据④既定路径）。**沙箱禁传 prompt 参数**（读不到本体=盲写，G-X118+一字之差族合体） | 取回 SHA 与贴回内容逐字比对 | Doctor 侧持原文可回退 |
 | F4 launchd 源↔装机不一致 | 快照 🔴 | 只报告+贴命令（沙箱碰不到装机位） | Doctor 执行 | — |
 | F5 死树分叉 | 快照 🟡 | 不动（已知无害存量，08-02 已判） | 快照持续亮灯 | — |
+
+> **验收判据补注（2026-11-16 /consolidate 收入 · Doctor 2026-11-10 裁）**：周班「Doctor 手机收到推送」**不作**验收判据（Doctor 原话转述「不需要推送手机」，见 `permanent/_repair_audit.md` L392）；验收只看上表机器证据（`generated_at` / `lastRunAt` 前进、`_cloud_trigger_health.json` 出现）。
 
 ### 5.4 L3 · 验收（实施与验收分权）+ 审计层
 
@@ -217,6 +220,8 @@ python3 ~/Documents/Claude/brain/.tools/scheduler_snapshot.py
 - **prompt 文案「中立语境」规约**：去钟点/时段措辞（「06:xx」「开盘前」「早安」），只留数据逻辑；不显式标注地域。数据逻辑按「前一交易日」+交易日历判断，不绑钟点。代价：侧栏 description 可扫读性下降——折中＝保留「日更/每交易日/周更/月初」相对频率词。
 
 ### 9.2 双壳几何（2026-08-02 起 · 用清单前必读）
+
+> **2026-11-16 /consolidate 订正：下表为 Gateway/Kimi 主壳时代（08-02～11-04）的历史几何，已不是现状。** 现状：2026-11-04/05 切官方云端——Gateway 24 班全停、云端 trigger 启用（`references/scheduled-live-mirror/官方端适配指令卡-2026-11-04.md`）；班数以 `permanent/_cloud_trigger_health.json` 为准；另有 Code 本机限期班一个（见下文执行面表与 `TODO.md`）。
 
 | | Kimi 壳（主 · 会 fire） | Cowork（备 · 留底牌） |
 |---|---|---|

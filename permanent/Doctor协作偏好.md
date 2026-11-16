@@ -48,7 +48,7 @@ type: permanent
 4. 方案涉及真实价值取舍；
 5. 继续尝试已不能产生新证据。
 
-**巡检自愈循环豁免（2026-08-29 Doctor 批）**：上条「调度安装或变更」禁手对预注册修复动作豁免——仅限 `scheduler-weekly-audit` 一个 taskId、仅 `update_scheduled_task` 的 description 参数（prompt/cron/enabled 不经沙箱，prompt 改动走 Doctor 终端 SHA 往返）；新增/删班、改排期、启停仍属禁手。修复必落 `_repair_audit.md` 留痕，验收凭机器证据（lastRunAt/generated_at 前进且 triggered_by=scheduled），✅ 落签走分轨：**事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor**。
+**巡检自愈循环豁免（2026-08-29 Doctor 批）**：上条「调度安装或变更」禁手对预注册修复动作豁免——仅限 `scheduler-weekly-audit` 一个 taskId、仅 `update_trigger`（云端 trigger · 原 `update_scheduled_task`）的 description 参数（prompt/cron/enabled 不经沙箱，prompt 改动走 Doctor 终端 SHA 往返）；新增/删班、改排期、启停仍属禁手。修复必落 `_repair_audit.md` 留痕，验收凭机器证据（lastRunAt/generated_at 前进且 triggered_by=scheduled），✅ 落签走分轨：**事务性／事实性的由未参与实施的 subagent 代签；方向性的问 Doctor**。
 
 ## 实施与验收硬约束（2026-08-17 立 · VV 五轮终验治理建议 · Doctor 批「VV 清单全落 + Settings 七条全文贴」）
 
@@ -103,7 +103,7 @@ type: permanent
   - **控件失败即退回纯文字、不卡住（2026-07-03 补）**：`AskUserQuestion` 为**首选**（照常先调），但**一旦返回错误（如 `Tool permission stream closed before response received`），必须在同一轮回复里立即退回纯文字选项**（正文列候选 + 带（推荐/不推荐）标签，Doctor 回编号/关键词），**不空等、不卡住、不要求 Doctor 重试**。该控件在本环境（Cowork/gateway）常 stream closed 失败；载体退化为文字，但「正文讲理由 + 选项带推荐标签」的呈现规则不变。Doctor 明示（2026-07-03）。
 - **/save 主动询问**：会话产出有沉淀价值时（立案/改框架/定偏好等），CC **主动给一道"是否 /save"的单选题 + 理由**（现在存 / 等裁完再存 / 暂不存），不等 Doctor 提。Doctor 明示（2026-06-14）。
   - **硬性：必须用 AskUserQuestion 单选题问，禁用纯文本问（2026-06-14 二次明示）**——凡 CC 问「要不要 save / 落盘」一律走 AskUserQuestion（single-select），不许在正文里用一句话「要不要 save？」带过。反面教材：本次美股锚补跑收尾用纯文本问被 Doctor 纠正。
-- **更新 skill 后打包给 Doctor 直接安装覆盖**：每次改动任何 skill 的源（如 `Claude/Brain/.skills/<name>/SKILL.md`）后，CC 把该 skill 目录**打包成 `.skill`（zip）并用 present_files 贴到对话框**，让 Doctor 点「Save skill」一键安装覆盖、即时生效——不要只让 Doctor 手动去 设置→Capabilities 重新同步。Doctor 明示（2026-06-14）。
+- **更新 skill 后打包给 Doctor 直接安装覆盖**：每次改动任何 skill 的源（如 `Claude/Brain/.skills/<name>/SKILL.md`）后，CC 把该 skill 目录**打包成 `.skill`（zip）并用 present_files 贴到对话框**，让 Doctor 点「Save skill」一键安装覆盖、即时生效——不要只让 Doctor 手动去 设置→Capabilities 重新同步。Doctor 明示（2026-06-14）。 〔2026-11-16 /consolidate 追记：2026-11-04 起 Doctor 立薄壳治理（`.skills/README.md`），本条的打包与 present_files 做法改为——改 canonical 后跑 `python3 ~/Documents/Claude/brain/.tools/skill_release.py release`，只上传它列出的包（只改正文无需上传）；射程以 [[已装skill清单]] 与 `.skills/_registry.json` 为准。〕
 - **gateway 模式下交付 skill 必附"打开目录"命令**（2026-06-30 立）：Cowork/Claude-3p (gateway) 模式下 present_files 卡片不弹"Save skill"按钮，Doctor 必须自己去 Settings 装。此时除 `present_files` 外，**默认附一条 `open -R` 命令**让 Doctor 一键在 Finder 定位 .skill 文件：
   ```bash
   open -R ~/Documents/Claude/Brain/.skills/<name>.skill
@@ -217,6 +217,7 @@ Doctor 原话：「Brain 是 CC 你的记忆和数灵本体；Memory 是我们�
 - **双模式并行**：Doctor 与 CC 在 `</>Code` 模式（CLI）与 Cowork 模式（桌面端）双轨工作，两侧的记忆写入都以 Brain 为准。
 - **Code 标签不用内置记忆目录（2026-11-04 Doctor 立）**：Doctor 原话「记忆使用Brain系统」。需要长记的一律落 Brain；`~/.claude/projects/*/memory/` 空着或读不到都不算缺口。
 - **两侧分工（2026-11-04 Doctor 立）**：Artifacts（看板）与定时任务由 Cowork 管理；日常任务在 Code 标签执行。Doctor 原话：「之后Artifacts和定时任务由Cowork管理，因为那边会把所有的任务会话体现在左侧对话框内，有些乱，日常的任务我就切到code执行了。」
+  - **订正追记（2026-11-16 /consolidate · 按 Doctor 两项后续裁定）**：① 定时任务：2026-11-11 Doctor 选择窗批 Code 本机限期班 `update-all-tech-reversal-watch`（`~/.claude/scheduled-tasks/`，停班条件见 `TODO.md`），是本条的限期例外，规则不变。② 看板：2026-11-12 Doctor 裁「看板上云」——8 块看板另有 claude.ai 托管页（名称带 (Cloud)，登记 `brain/.tmp/artifact-publish/hosted-pages.json`），由定时班自推、Code 会话可按 slug 原地更新、不另建同名页；龙鱼个股库、PEC 星空、渊图星空仍留侧栏、由 Cowork 手推。
 - **/save 双向触发**：Doctor 也会主动执行 /save 帮 CC 落盘，CC 按 brain-save 流程配合（落盘归位铁律照旧）。
 
 ## 工程卫生：一次性产物归档（2026-06-08 立）
@@ -389,7 +390,7 @@ Doctor 原话（同日三次递进，最终精确版）：「尽量不要留 tod
 
 Doctor 原话：「X Board我们来负责，CC你来推送、分析并更新。」
 
-- **归属**：X-Board 管线运维/修复归 Doctor/VV；**推板、要点分析、产物更新由 CC 执行**（含手动推板链：dry-run → extract → gen → update_artifact → 回读）。
+- **归属**：X-Board 管线运维/修复归 Doctor/VV；**推板、要点分析、产物更新由 CC 执行**（含手动推板链：dry-run → extract → gen → update_artifact → 回读；**2026-11-11 首发托管页 X Board (Cloud)，2026-11-12 起拆分器 `Projects/Financial/X-Board/split_publish.py` v3 另产 `publish/artifact.html`** → 定时班自推或 Code 会话按 slug 原地更新 → 回读，见 [[经验库]] EXP-20261111-002-P / 003-T）。
 - **边界**：外发（DeepSeek 提取）仍走「对外发送须 Doctor 明确授权」常设条款，单次授权=单批条目；本分工不覆盖 fuxi 侧采集管线的运维权。
 - **来源**：logs/2026-08-30-XBoard推板执行与停摆销账.md
 
@@ -423,6 +424,7 @@ Doctor 明示：**每次改完（会渲染成 Cowork artifact 的）产物，就
 
 - **含义**：已获批方向的迭代改动，改完即发布，不必每步问"要不要更新"。配合 GOTCHAS G023：脚本 `_deploy_to_artifact` 只写文件、不刷 manifest 时间戳，故出报后须手动 `mcp__cowork__update_artifact` 才让卡片"更新时间"对上。
 - **CC 配合点**：迭代产物改完 → ① 跑生成器出正式报 → ② `update_artifact` 刷新 → ③ 回报。会话间不延续，故落此条兜底。
+- **托管页（2026-11-16 /consolidate 补）**：2026-11-12 看板上云后，托管页用 `edit_version` 或带 slug 的 `publish_files` 原地更新，作用等同本条的 `update_artifact`；侧栏看板仍用 `update_artifact`。
 - **活体**：2026-07-08 烛照九阴日报信号栏连续多轮微调，Doctor 中途明示"每次改完 Artifact 都更新一下"。logs/2026-07-08-烛照九阴日报信号栏改造.md
 
 ## 相关

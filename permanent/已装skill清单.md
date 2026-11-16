@@ -240,6 +240,9 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 | brain-anchors / brain-consolidate / brain-note / brain-prd / brain-resume / brain-save / brain-todo / damper | `brain/portable/skills/{名}` | ✅ 在用 | canonical 在 `brain/.skills/{名}/SKILL.md`，改完跑 `skill_release.py release` |
 | qa | `brain/.skills/QA` | ✅ 在用 | 问答板（A 段已记） |
 | graphify | 本地安装 | ✅ 在用 | 知识图谱查询（brain/CLAUDE.md「图谱导航规则」消费），此前未登记 |
-| the-conch-maiden | 本地安装 | ✅ 在用 | 2026-11-05 Doctor 裁「以本地为准」，cc-switch 副本不再参照；F 段「未作 skill 装」为 Cowork 时点陈述 |
+| the-conch-maiden | `brain/.skills/the-conch-maiden` | ✅ 在用 | 2026-11-12 起真源改为 `.skills/the-conch-maiden/SKILL.md`（`.skills/README.md`）；此前「本地安装、以本地为准，cc-switch 副本不再参照」（2026-11-05 Doctor 裁）为旧时点陈述，其中「cc-switch 副本不再参照」仍有效；F 段「未作 skill 装」为 Cowork 时点陈述 |
 | dream | `~/.cc-switch/skills/dream` | 🚫 已退（2026-11-06 Doctor 裁撤链接） | 正文 9 处依赖 `MEMORY.md`，与 2026-11-04「记忆只用 Brain」反向；功能由 brain-consolidate 取代。撤链接命令交 Doctor 终端（`~/.claude/skills` 沙箱禁写） |
-| gsap-frontend | — | ⚠ Code 未装 | B 段标 ✅ 系 Cowork 侧；Code 侧 `ls` 无此链接 |
+| gsap-frontend | `brain/portable/skills/gsap-frontend` | ✅ 在用 | 2026-11-13 Doctor 终端补建链接（此前「⚠ Code 未装」为 11-06 时点陈述） |
+| console | `brain/.skills/console` | ✅ 在用 | 中控台入口（2026-11-10 立）；`_registry.json` channel＝code-only |
+| update | `brain/.skills/update` | ✅ 在用 | 更新入口（2026-11-09 建链）；`_registry.json` channel＝code-only |
+| synced/ | 账号同步目录（2026-11-13 出现） | ⚠ 性质待核 | 非 skill 链接，内含一个账号桶目录；用途未核，暂不动 |

@@ -2,12 +2,14 @@
 title: Cowork Artifact 存储机制
 tags: [artifact, cowork, claude-desktop, 存储, 机制]
 created: 2026-06-30
-updated: 2026-06-30
+updated: 2026-11-16
 status: active
 type: permanent
 ---
 
 # Cowork Artifact 存储机制
+
+> **2026-11-16 /consolidate 补 · 托管页机制（本文讲的是侧栏 artifact）**：2026-11-12 Doctor 裁「看板上云」后，8 块看板另有 claude.ai 托管页（名称带 (Cloud)）：登记 `brain/.tmp/artifact-publish/hosted-pages.json`；去壳工具 `brain/.tools/artifact_fragment.py`，各拆分器（如 `brain/.tools/artifact_split_risk_daily.py`、`Projects/Financial/X-Board/split_publish.py`）；做法见 [[经验库]] EXP-20261111-002-P、EXP-20261111-003-T，分工见 [[Doctor协作偏好]] 两侧分工条。
 
 > Claude 桌面应用（Anthropic 官方 / Claude-3p / gateway 客户端）的 artifact 体系是**双层结构**：上层 manifest 索引 + 下层 Chromium Partition 真身。摸清机制后才能做手动迁移、调试、跨环境复制等操作。
 

@@ -75,8 +75,8 @@ Doctor 单独发 `～` 或 `～！`（全角），或紧跟在对某提议/方�
 ## 触发示例
 
 - Doctor 说 "DVA 那边视频分析的节点要不要拆开" → 命中 `DVA`，先读 brain/DVA/ 三个核心文件再回答
-- Doctor 说 "帮我用龙鱼五力分析一下宁德时代" → 命中 `龙鱼五力`，读 brain/龙鱼五力/ + Projects/龙鱼五力/RULES.md
-- Doctor 说 "需要走一遍自检" → 命中 `自检`，读 Projects/龙鱼五力/RULES.md
+- Doctor 说 "帮我用龙鱼五力分析一下宁德时代" → 命中 `龙鱼五力`，读 brain/龙鱼五力/ + Database/行业研究/consumers/龙鱼五力/RULES.md
+- Doctor 说 "需要走一遍自检" → 命中 `自检`，读 Database/行业研究/consumers/龙鱼五力/RULES.md
 - Doctor 说 "今天画板上画一个 dashboard" → 命中 `天工开物`（隐式）—— 实际上需要 Doctor 显式喊 `天工开物`；不显式则**不**自动激活设计 skills
 - Doctor 说 "做个暖色·警示页" / "照风险日报范式" → 命中 `暖色·警示页`，读 `warm-warningpage-styleguide.html`（双轴分离/卡色取低/危烈兆/杀伤灯/时间语义/nowcast 免责）
 - Doctor 说 "起一下 MiroFish" / "MiroFish 怎么跑" → 命中 `MiroFish`，读 stub 并**直接贴出启动命令**（`cd ~/Documents/projects/MiroFish && npm run dev`）

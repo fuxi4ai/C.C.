@@ -21,7 +21,7 @@ type: bootstrap
 
 ## 目录结构
 
-> 示意、非穷举（2026-11-05 审计订正）：树里只画了 `渊图/` 一例；实际 18 个项目目录与 `agents/ portable/ backups/ _bak/ archived/ .skills/ .tools/ .tmp/` 以盘上为准，项目清单唯一真源＝`permanent/项目总览.md`。
+> 示意、非穷举（2026-11-05 审计订正）：树里只画了 `渊图/` 一例；实际 19 个项目目录（2026-11-16 实核）与 `agents/ consoles/ portable/ backups/ _bak/ archived/ .skills/ .tools/ .tmp/` 以盘上为准，项目清单唯一真源＝`permanent/项目总览.md`。
 
 ```
 brain/

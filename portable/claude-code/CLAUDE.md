@@ -31,7 +31,7 @@
 - 有观点但不选边、不和稀泥、不谄媚——对 Doctor 自己的命题也做独立审视。
 - **git 边界（本模式专用）**：本地模式跑只读 git 命令没问题（「沙箱禁一切 git」只约束 Cowork 沙箱的 FUSE 环境，别搬错场景）；但 **commit/push 仍交 Doctor 终端**——多会话并发提交是既往事故源（ERR-20260718-002）。
 - **终端命令合并**：给 Doctor 的终端命令，无先后依赖的合并成一条（`;` 连接），有依赖的用 `&&` 串联；只有需要 Doctor 先确认前一条结果时才分开给。详见 `permanent/Doctor协作偏好.md`。
-- Cowork 专属能力在本模式**部分可用**：ElevenLabs 视当前壳的 MCP 连接而定（2026-11-04 官方 Code 标签实测可用，未连接则静默跳过朗读）；Code 标签虽有 `scheduled-tasks` 工具，但与 Cowork 不是同一处（2026-11-06 核：本机并无 `~/.claude/scheduled-tasks/` 目录，原写路径撤）——**读到 0 不代表 Cowork 为空，也不在此建班**，定时与看板推送走 Cowork 侧；**AskUserQuestion 选择窗可用**（2026-09-17 实测成功，转录窗口内另有 3 次成功记录），拍板类问题优先用选择窗、选项 label 尾部带（推荐/不推荐）——与本文件「报裁/批复二通道」条一致。
+- Cowork 专属能力在本模式**部分可用**：ElevenLabs 视当前壳的 MCP 连接而定（2026-11-04 官方 Code 标签实测可用，未连接则静默跳过朗读）；Code 标签的 `scheduled-tasks` 与 Cowork 注册表不是同一处——**读到的只是本机班，不代表 Cowork 为空**；原则上不在此建班，现有一个限期例外 `update-all-tech-reversal-watch`（`~/.claude/scheduled-tasks/` · 2026-11-11 Doctor 批 · 停班条件见 `brain/TODO.md`）；看板推送分工见下方双轨声明；**AskUserQuestion 选择窗可用**（2026-09-17 实测成功，转录窗口内另有 3 次成功记录），拍板类问题优先用选择窗、选项 label 尾部带（推荐/不推荐）——与本文件「报裁/批复二通道」条一致。
 - **对话朗读（2026-11-10 Doctor 令补入 · 镜像块一朗读条的 Code 侧副本；音色为 Code 专设、刻意与 Cowork 不同，其余参数有出入以镜像为准）**：Code 标签不注入 Settings，故在此复写。新对话默认开对话朗读：**Code 默认音色 Sweet Goumang**（voice_id `VNLlELapPTcQhldOfjgv` · 2026-11-10 Doctor 定「用以和 Cowork 做区分」；Cowork 侧默认仍是 Hiddleston-CN）· `eleven_v4` · zh · stability 0.5 · speed 1.0，每轮读口语短版（≤150 字，去表格/路径/代码）；点名切换：「用 Hiddleston」→ Hiddleston-CN（`FVvcH2MAGGpovILJcXEv`）、「用 C.C.」→ C.C.（`C7iLuTwlT58pHXVmnmWe`）；`output_directory` 传 `.`（落 BASE＝`~/Documents/Claude/临时文件/`），再 `play_audio`；播完即删；「静音」停/「开声」恢复；桥接不可用则静默跳过。**Code 侧工具是延迟加载的**：首次朗读前先 `ToolSearch` 载入 `mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__play_audio`（2026-11-10 实测生成+播放成功、Doctor 确认听到）。
 
 ## 实施与验收要点（Code 标签必在子集）
@@ -52,10 +52,10 @@
 
 ## 双轨声明（2026-08-02 Doctor 定 · 2026-11-04 Doctor 改分工）
 
-**日常任务在 Code 标签执行；Artifacts（看板）与定时任务由 Cowork 管理。**（原因：Cowork 会把所有任务会话列在左侧对话框内，日常工作混在其中较乱。）~~官方 Cowork 为主，本（开发者/第三方）模式为备~~ 为 2026-08-02 旧分工，已废。
+**日常任务在 Code 标签执行；定时任务由 Cowork 管理（本机限期班除外）；看板分两类：托管页（名称带 (Cloud)）由定时班自推、Code 会话可原地更新，侧栏看板由 Cowork 管理。**（2026-11-16 consolidate 按 11-11 限期班、11-12 看板上云两项 Doctor 裁定订正）（原因：Cowork 会把所有任务会话列在左侧对话框内，日常工作混在其中较乱。）~~官方 Cowork 为主，本（开发者/第三方）模式为备~~ 为 2026-08-02 旧分工，已废。
 
-- 定时任务只在 Cowork 侧跑；24 个班的操作说明镜像在 `brain/references/scheduled-live-mirror/`（只读参考，改班要去 Cowork 侧）。
-- Code 标签没有 `update_artifact`：不在此推看板、不用 `publish_files` 另建同名页面；要推时请 Doctor 到 Cowork 交互会话说「补推看板」（队列 `brain/.tmp/pending-artifact-push.jsonl`）。
+- 定时任务在 Cowork 侧（官方云端 trigger）跑，班数以 `brain/permanent/_cloud_trigger_health.json` 为准；操作说明镜像在 `brain/references/scheduled-live-mirror/`（只读参考，改班要去 Cowork 侧）。
+- 托管页（登记在 `brain/.tmp/artifact-publish/hosted-pages.json`）按 slug 原地更新（`edit_version`，或 `publish_files` 带 slug），**不另建同名页面**；侧栏看板（龙鱼个股库、PEC 星空、渊图星空）Code 标签没有 `update_artifact`，要推时请 Doctor 到 Cowork 交互会话说「补推看板」（队列 `brain/.tmp/pending-artifact-push.jsonl`）。
 - 同一资产两侧都能写 ⇒ 动手前先看 git 状态有无未提交的并发改动；写完请 Doctor 尽快提交，缩小覆盖窗口。
 
 ## Skills

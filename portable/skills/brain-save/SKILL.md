@@ -1,6 +1,6 @@
 ---
 name: "brain-save"
-description: "Persist the session as a structured log in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **写 `permanent/经验库.md` 或 `通用教训.md` 时必须定位到对应 `##` 节插入、禁 append 文件尾；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；判断性勾项 CC 只搬运已勾的、不代打 ✓（G-X4 · v3.1），客观 TODO 证据硬按常驻授权代勾留痕（G-X136）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。宏观研究体系会话且本场有新材料时，条件增量更新研究材料 机构方法论提炼.md（v3.4）。Step 5 列 add 清单前先探目标仓 .gitignore，命中即从清单剔除、禁 -f 强带（v3.5）。Step 3.5 提案前必带「查重栏 ＋ 编号回源栏 ＋ 越界栏」，缺栏即不提案（v3.7）。** **v3.8 无人值守场（定时班）记忆分拣只落日志专段、不开控件、不写 permanent，待下场回收。**"
+description: "Persist the session as a structured log in the brain vault. Trigger when the user types `/save` or `/save [主题]` or `/save @{数灵} [主题]` or says \"存档本次会话\", \"记一笔\", \"落盘\", \"存档今天\". Fills the session-log template, then writes to `~/Documents/Claude/brain/logs/YYYY-MM-DD-{主题}.md`. **per-agent 模式**：出场者为数灵（白泽/烛阴/句芒）时改落 `agents/{灵}/logs|memory/`，绝不混进 CC 或别的灵。**CC MUST NOT run any git subcommand in sandbox** — provides commit+push commands for Doctor's terminal, and MUST probe for in-progress rebase/merge/cherry-pick first (v2.8). **经验库须定位到对应 `##` 节插入、禁 append 文件尾，`通用教训.md` 按编号追加末尾 G-X 区；编号先 grep 探再取 max+1，禁心算（v3.0）。勾掉的 TODO 条目整块迁入 `references/TODO-已完成归档.md`；判断性勾项 CC 只搬运已勾的、不代打 ✓（G-X4 · v3.1），客观 TODO 证据硬按常驻授权代勾留痕（G-X136）。Step 4 项目状态同步遇 `architecture/系统概览.md` 不存在时必须明确报告、禁静默跳过、禁自动补建 stub（v3.2 · v3.2.1 订正名单）。宏观研究体系会话且本场有新材料时，条件增量更新研究材料 机构方法论提炼.md（v3.4）。Step 5 列 add 清单前先探目标仓 .gitignore，命中即从清单剔除、禁 -f 强带（v3.5）。Step 3.5 提案前必带「查重栏 ＋ 编号回源栏 ＋ 越界栏」，缺栏即不提案（v3.7）。** **v3.8 无人值守场（定时班）记忆分拣只落日志专段、不开控件、不写 permanent，待下场回收。**"
 ---
 
 # brain-save — 把本次会话存档到 brain
@@ -177,6 +177,7 @@ description: "Persist the session as a structured log in the brain vault. Trigge
 | 另有目录但**未进总览** | **风险日报**(2026-07-30 补建 `风险日报.md` stub,总览 15 行里没有它)——**同样缺** |
 | ⇒ 实际无系统概览的目录 | **8 个** |
 | **2026-11-05 审计实核** | 余 **4** 个缺:MiroFish · 数灵转移 · 星空 · 称象（剑酒青丘 · 烛照九阴 · 白泽大宗 · 风险日报 已补建）——本表为历史对表,动手前仍按 L397 重取差集 |
+| **2026-11-16 consolidate 实核** | 余 **4** 个缺:MiroFish · 数灵转移 · 称象 · 宏观研究体系（星空 2026-11-13 已补建；宏观研究体系 11-06 起有 brain 目录、只有决策记录） |
 
 Step 4 对这些项目**一直是无声空转、无人察觉**,`dashboard-snapshot.py` 的项目卡也因此少一个信息源。改法:
 
@@ -434,3 +435,4 @@ git push
 - **v3.8**（2026-11-06 · /consolidate 蒸馏 · Doctor 批 A1）：Step 3.5 新增「无人值守场的降级」——定时班/自主场的记忆分拣候选只落当日日志专段、不开控件、不写 permanent，由下一场有人值守的 /save 或 /consolidate 回收；GOTCHAS 直写不受影响。把龙鱼周更班五场的既成做法写成条文。
 - **v3.9**（2026-11-06 · 金融线脑暴 P4）：Step 3.5 提案栏加一句「先过 `permanent/动手前卡.md`」——十条最高频通则（引用扫全部出现点 / 断言「无」前先枚举 / YAML 引号与行尾注释 / 编号先 grep / 日期横杠 / 改前读盘 / 计数现读现数 / 移动文件先扫相对链接 / 改 skill 走发布链 / commit 交 Doctor）压成 ≤15 行一页卡；damper §五「开始」同批挂接。description 未改。
 - **v3.10**（2026-11-13 · Doctor 批「一场全做」工具链五项之 ① · TODO「两处 skill 的 git 探针文本该改」② ＋ G-X83）：Step 5 第 2 步 ignore 判据由「一律读 `.gitignore` 手判」改为——Doctor 终端 / Mac 原生环境用 `git check-ignore -v <路径>` 定论；沙箱内仍禁 git，改用 `.tools/repo_state.py` 简化判定并明标「简化判定、定论交 Doctor 终端 check-ignore」。同批（复核补订）：恢复「被 ignore 命中且从未跟踪 ⇒ 按仓规 local-only」语义；L299 读 `.gitignore` 降为「只作线索、不作定论」；「边界」节 v3.5 条判据同步为新口径。其余正文与 description 未改。
+- **v3.11**（2026-11-16 · /consolidate 冲突核查 K13 · Doctor 裁「规则改为按编号平铺」）：description 里「写经验库或通用教训时必须定位到对应 `##` 节插入、禁 append 文件尾」把两份文件混写，与正文 Step 3.5「通用教训新条追加到文件末尾的 G-X 区」相反——改为「经验库须定位到对应 `##` 节插入、禁 append 文件尾，`通用教训.md` 按编号追加末尾 G-X 区」（description 1016→1008 字符，仍 ≤1024）。Step 4 缺系统概览对表加 2026-11-16 实核一行（历史行不改）。正文其余未改。
