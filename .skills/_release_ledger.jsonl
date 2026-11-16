@@ -38,3 +38,5 @@
 {"ts": "2026-11-10T23:42:51-08:00", "skill": "brain-resume", "version": "2026-11-10-2f2998b3", "sha256": "2f2998b309f78885ddeecbd1f9aebe8df2dc44cc8f858e012d0abed3516d8156", "note": "release"}
 {"ts": "2026-11-10T23:43:42-08:00", "skill": "brain-resume", "version": "2026-11-10-4d9d9e8c", "sha256": "4d9d9e8c9b7bd35afe7fc6462270e41c276cbcbef8494a2fee1ba305c05dde6d", "note": "release"}
 {"ts": "2026-11-10T23:46:51-08:00", "skill": "brain-save", "version": "2026-11-10-58422c53", "sha256": "58422c53084e1653388bf0e079e388c928a717bdff6fedc56f14df25c99ade85", "note": "release"}
+{"ts": "2026-11-13T12:13:04+00:00", "skill": "brain-save", "version": "2026-11-13-bbbe983b", "sha256": "bbbe983beae97e183942db44ee110099daa5403afec1e50966f98aa67a877315", "note": "release"}
+{"ts": "2026-11-15T19:53:06-08:00", "skill": "brain-resume", "version": "2026-11-15-cb72a959", "sha256": "cb72a9595128fc5ddf01fd2e5e647be80630bba52a009d854fd815d78a7c9b68", "note": "release"}
