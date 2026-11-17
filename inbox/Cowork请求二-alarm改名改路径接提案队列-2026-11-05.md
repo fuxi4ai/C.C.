@@ -66,7 +66,7 @@ Gateway 同名班的 SKILL 正文仍是写文件的旧版，打开 Gateway app �
 - [x] 无重复班；旧名已停（独立复核 2026-11-05 · 证据见回执）
 - [x] `live/` 镜像与云端 prompt 一致（独立复核 2026-11-05 · 证据见回执）
 - [x] 在新路径实跑 `alarm_store.py verify` 得 `verified:true`、`alarm_proposals.py --help` 正常（独立复核 2026-11-05 · 证据见回执）
-- [ ] 11-09 周班跑完：`python3 -B alarm/test_no_drift.py` 通过
+- [x] 11-09 周班跑完：`python3 -B alarm/test_no_drift.py` 通过（2026-11-16 /todo · CC 代勾 · 审核者 subagent 实跑 rc=0、7 tests OK；11-09 周班产物 `alarm/proposals/applied/2026-11-09_r6-shovelseller.json` 在）
 
 ## 补充（Code 侧 2026-11-05 05:50 PT 追加）
 
