@@ -1298,6 +1298,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **预防门禁**: `tests/run_all.py`；第 11、19–21 项见 `CLAUDE.md`。
 **来源**: 2026-11-05 Code 标签会话，实跑实读；审核者脚本 `/private/tmp/claude-501/aud/`（临时目录）。
 **追记（2026-11-07 Doctor 裁 23A · 🔄 已修待验）**: ⑦ 存量 5 条股价类品名行（兆易H股发行价/宇树IPO发行价/英伟达股价目标价/东方电缆股票/北方华创股票）已从 `prices/commodity_prices.jsonl` 迁至 `prices/_tombstones/2026-11-07_stock_quotes.jsonl`（价格层此前无 tombstone 惯例，首例：首行 `_tombstone_meta`，原行加 `_tombstoned_at`/`_tombstone_reason`），jsonl 1274→1269，`latest.json` 重建 1252；`PRICE_LAYER.md` 边界节加「股价不进」与墓碑惯例；`tests/test_gates_20261105.py` ④ 存量普查期望改为 0 命中 + 墓碑含 5 条（106/106 PASS）。备份 `prices/_bak/commodity_prices.jsonl.bak_2026-11-07_qaboard`。
+**追记（2026-11-17 · 第 19 项对「只改来源 reference」的判法）**: `outputs/surgery4_20261117_deepseek_hetero_edgefix.py` 只改了 `concept_DeepSeekHeterogeneousTraining` 一条 web 来源（Epoch）的 reference 括注，节点其余字段未动，`kg_promote` 第 19 项报「1 条 cite 找不到可读原文」拦停（canonical 未动）。根因：`rules/kg_gates.new_cites` 以 (file, reference) 判新旧，改了 reference 即算新来源；节点又满足 `_thin_change`（只动来源），于是不论有无 `provenance_kind` 都按 cite 查原文，而 `web:` 源在 raw 树里找不到。处理：在清单 `cite_overrides` 声明该 web 文件并写实读理由后通过。影响：任何只订正来源 reference 的手术都会撞上；属设计行为但规程未写明。建议（待 Doctor 裁，未实施）：CLAUDE.md 手术规范补一句「只改来源 reference 时，web 源须在 cite_overrides 声明」，或 `new_cites` 对 `web:` 源改为不查 raw。状态维持原条。
 
 ## [NOTE-20261105-010] kg_ingest PDF 通道必然失败：`file_text` 未赋值，每篇报「未知错误，已跳过」
 **状态**: ✅ 已修复（未参与实施的审核者代签 · 2026-11-05 · 判定 PASS_WITH_LIMITS · 复验 FAIL→修→PASS_WITH_LIMITS→修→PASS_WITH_LIMITS）；真 API 的 PDF 附件调用未验证，限制见本条追记
