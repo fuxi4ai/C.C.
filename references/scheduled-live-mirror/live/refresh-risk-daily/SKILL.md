@@ -8,13 +8,13 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
 0. （FedWatch 会前槽自动取数）用 WebSearch 查最新 CME FedWatch 读数——中文一轮（如「CME 美联储观察 加息25个基点概率 维持利率不变概率」+ 当月会议月份词），英文一轮（如「CME FedWatch FOMC rate hike probability」+ 当月会议时间词）；必要时 WebFetch 打开 1-2 个源原文核实（金十 flash / 格隆汇 / 证券之星 / Investing / Nasdaq 等财经媒体转述的 CME 官方读数）。规则：
    - **双源对拍**：≥2 个独立源读数一致（对应档位差 ≤5pp）才写；仅 1 个源或源间冲突 → 不写，输出一行「FedWatch fetch skipped: 原因」。
    - **新鲜度护栏**：最新读数的 as_of 若不新于槽内 as_of（周末/节假日无新读数属常见），跳过不写，输出「FedWatch skip: 无更新（槽内 as_of 已最新）」。
-   - **写盘**：先读 `~/Documents/Claude/Projects/风险日报/fomc_market_exp.json` 现状；只更新 `p_hike` / `p_hold` / `p_cut` / `as_of` / `source` 五个字段；`note` 的**人类叙事段保留不动**，仅在尾部追加一行「🤖 自动取数 YYYY-MM-DD: hold X% / hike Y% / cut Z% · 源A/源B」；机器行只增不删、保留最近 5 行、超出截断最旧机器行。`meeting` / `outcome` / `outcome_note` / `_usage` 一律不碰。
+   - **写盘**：先读 `~/Documents/Claude/Projects/Financial/风险日报/fomc_market_exp.json` 现状；只更新 `p_hike` / `p_hold` / `p_cut` / `as_of` / `source` 五个字段；`note` 的**人类叙事段保留不动**，仅在尾部追加一行「🤖 自动取数 YYYY-MM-DD: hold X% / hike Y% / cut Z% · 源A/源B」；机器行只增不删、保留最近 5 行、超出截断最旧机器行。`meeting` / `outcome` / `outcome_note` / `_usage` 一律不碰。
    - 三档数字必须合计 ≈100；**绝不编数**。source 注明「自动取数·多源转述」口径。
    - 写盘后回读 JSON：可解析、三档合计 100、as_of 已前进，才算完成。
 
-1. （TACO 代理·尽力而为）在沙箱跑 TACO 外部分项取数：`python3 ~/Documents/Claude/Projects/风险日报/scripts/fetch_taco_components.py --fetch`（拉 FRED 房贷 MORTGAGE30US / 汽油 DGASUSGULF·GASREGW / 通胀 EXPINF1YR·T10YIE + VoteHub 特朗普净支持率 → 落 data/taco_components.db，供下一步 build 算 TACO 原子的 6 分项代理 pain）。**不要加 HTTPS_PROXY / HTTP_PROXY=http://localhost:3128**——2026-07-31 实测该端口无人监听，带上必 Connection refused；api.stlouisfed.org 与 api.votehub.com 在沙箱内直连可达。**取不到/超时/报错就记一行「TACO fetch skipped: 原因」并跳过**，绝不阻塞后续构建、绝不编数；build 会自动用已有数据算 N/6 代理并诚实标注分项数。
+1. （TACO 代理·尽力而为）在沙箱跑 TACO 外部分项取数：`python3 ~/Documents/Claude/Projects/Financial/风险日报/scripts/fetch_taco_components.py --fetch`（拉 FRED 房贷 MORTGAGE30US / 汽油 DGASUSGULF·GASREGW / 通胀 EXPINF1YR·T10YIE + VoteHub 特朗普净支持率 → 落 data/taco_components.db，供下一步 build 算 TACO 原子的 6 分项代理 pain）。**不要加 HTTPS_PROXY / HTTP_PROXY=http://localhost:3128**——2026-07-31 实测该端口无人监听，带上必 Connection refused；api.stlouisfed.org 与 api.votehub.com 在沙箱内直连可达。**取不到/超时/报错就记一行「TACO fetch skipped: 原因」并跳过**，绝不阻塞后续构建、绝不编数；build 会自动用已有数据算 N/6 代理并诚实标注分项数。
 
-1.5. （星空快照新鲜度探针 · 2026-09-16 Doctor 批装 · 2026-09-17 双路径修复+复核门禁 · GOTCHAS ERR-20260916-001）在沙箱跑 `python3 ~/Documents/Claude/Projects/风险日报/ops/check_starfield_freshness.py`——读 EAL_STARFIELD.html 内嵌快照的 market_as_of，与 XNYS 冻结日历的「最近已收盘交易日」比对，落后 >1 个交易日即告警（检测滞后从周巡检 7 天缩到 1 天）。探针已修双路径（Mac 原生 HOME/Documents 优先 + 沙箱 /sessions/*/mnt/Documents glob 兜底·多残留取最新，同 r7_yen_watch.py 款），正常时沙箱输出即真值。输出 `STARFIELD_FRESH=OK …` 才无事；`STALE` / `MISSING` / `UNPARSEABLE` / `NO_CALENDAR` / `UNKNOWN` 任一 → **先复核再报**：先用 Glob/Read 文件工具实核 Mac 侧路径 `~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/EAL_STARFIELD.html`（独立于沙箱挂载通道）——文件实存而探针异常，则系挂载/通道问题，记「探针异常·复核实况 OK」不红字（2026-09-16/17 两次 MISSING 均为此类伪报）；确认真异常（文件实缺/STALE/UNPARSEABLE 等）才在当日简报首行红字「⚠️ EAL 星空快照异常：{探针输出原文}」报 Doctor。**本检查非阻断**（恒 exit 0）——星空快照停更不等同风险数据停更，日报本体继续构建，绝不因探针结果跳过后续步骤。
+1.5. （星空快照新鲜度探针 · 2026-09-16 Doctor 批装 · 2026-09-17 双路径修复+复核门禁 · GOTCHAS ERR-20260916-001）在沙箱跑 `python3 ~/Documents/Claude/Projects/Financial/风险日报/ops/check_starfield_freshness.py`——读 EAL_STARFIELD.html 内嵌快照的 market_as_of，与 XNYS 冻结日历的「最近已收盘交易日」比对，落后 >1 个交易日即告警（检测滞后从周巡检 7 天缩到 1 天）。探针已修双路径（Mac 原生 HOME/Documents 优先 + 沙箱 /sessions/*/mnt/Documents glob 兜底·多残留取最新，同 r7_yen_watch.py 款），正常时沙箱输出即真值。输出 `STARFIELD_FRESH=OK …` 才无事；`STALE` / `MISSING` / `UNPARSEABLE` / `NO_CALENDAR` / `UNKNOWN` 任一 → **先复核再报**：先用 Glob/Read 文件工具实核 Mac 侧路径 `~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/EAL_STARFIELD.html`（独立于沙箱挂载通道）——文件实存而探针异常，则系挂载/通道问题，记「探针异常·复核实况 OK」不红字（2026-09-16/17 两次 MISSING 均为此类伪报）；确认真异常（文件实缺/STALE/UNPARSEABLE 等）才在当日简报首行红字「⚠️ EAL 星空快照异常：{探针输出原文}」报 Doctor。**本检查非阻断**（恒 exit 0）——星空快照停更不等同风险数据停更，日报本体继续构建，绝不因探针结果跳过后续步骤。
 
 1.6. （V2.5-ET双波 仓位信号 · 2026-10-15 Doctor 裁「更新集成入 Risk Daily」· 项目接入补丁正式应用）在沙箱跑：
    export MARKET_DB="$(ls -d /sessions/*/mnt/Documents/Database/Market-Data/market_data.db 2>/dev/null | head -1)"
@@ -29,8 +29,8 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
 
 1.7. （股权溢价指数风险原子 · 2026-10-20 Doctor 令「注册进 Risk Daily」· 日频拼接口径）在沙箱跑：
    pip3 install --break-system-packages --quiet tushare akshare pandas 2>&1 | tail -1
-   python3 ~/Documents/Claude/Projects/风险日报/fetch_erp_atom.py
-   python3 ~/Documents/Claude/Projects/风险日报/render_erp_detail.py
+   python3 ~/Documents/Claude/Projects/Financial/风险日报/fetch_erp_atom.py
+   python3 ~/Documents/Claude/Projects/Financial/风险日报/render_erp_detail.py
    - 链：fetch 取 Tushare 沪深300 PE_ttm＋akshare 中国10Y（降级链：akshare→中债官网→前值+陈旧标记）→ 乐咕月频历史（2005-04 起）×1/1.04 校准 → 60 月滚动分位 → data/erp_atom.json；render 生成 dashboard/erp_atom_detail.html（第四标签页「股权溢价指数」srcdoc 源）。
    - 失败语义：取数内部自动降级（前值+陈旧标记）不红字；两脚本任一 rc!=0 → 记一行「ERP atom skipped: 原因」，当日简报红字报 Doctor，**绝不阻塞后续构建**；卡片与详情页自降级（「数据不可用」/前值陈旧标记）。
    - 只写 风险日报/data/erp_*.json|.csv 与 dashboard/erp_atom_detail.html；重跑无害（generated_at 前进）。
@@ -38,22 +38,22 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
    - 沙箱直连 Tushare/akshare，勿设代理（与市场班同通道；akshare 走英为财情）。
 
 2. （AI Tech Alarm 事件源定向回源更新 · 信息自纠正第一步 · 2026-11-03 四目标优化接入）在沙箱：
-   - 先读 `~/Documents/Claude/Projects/风险日报/data/narrative_events.json`（四维度：demand/returns/funding/delivery）逐事件核对 `next_check_utc` 是否已到期/三日内到期，再按四维度观察点定向 WebSearch 回源 P0/P1（机构评论用于选指标，公司/交易披露确认事实）：现金回报→大云财报/FCF/折旧指引；融资信用→发债定价与交割、OpenAI first close、Anthropic IPO、CoreWeave 再融资；付费需求→云收入/合同转收入；交付→可计费容量/交付延期。
-   - **核到新事实或反证（P0/P1 可读源）才更新事件层**：新事件追加（event_id 唯一）、事实/时间/生命周期（developing/confirmed/cleared）更新、同一风险命题的新一代以 supersedes 覆盖旧代；更新后立即跑 `python3 ~/Documents/Claude/Projects/风险日报/narrative_score.py` 自检校验。**未核到合格源 → 原事件一字不动**，输出一行「事件源更新: 本轮无新 P0/P1 事实」。
-   - **v4 事件登记合同（2026-11-08 Doctor 批 · 违反即被校验剔除、整次评分回退）**：新事件必须按 `~/Documents/Claude/Projects/风险日报/docs/事件登记合同-v4.md` 填 `fact_status`（occurred/forecast/contingent）；occurred 必填 `evidence_basis`（primary/market_data/report），report 型 claim 写「据〔源〕〔日期〕报道：…」，market_data 须注明数据来源（ICE/Tradeweb/交易所/发行公告/评级机构）；forecast 型 claim 写「〔谁〕于〔日期〕发布…」；contingent 必填 trigger_condition/lands_in/next_check_utc/on_expiry。融资维违约/重组、头部实验室融资确认失败、投资级借款人恶化按合同标 `transmission_channel`。一个源材料含多个原子事实时**拆成多条**并共享 family。写入后跑 `python3 ~/Documents/Claude/Projects/风险日报/narrative_score.py` 自检，errors 非空不得进入步骤 3。
+   - 先读 `~/Documents/Claude/Projects/Financial/风险日报/data/narrative_events.json`（四维度：demand/returns/funding/delivery）逐事件核对 `next_check_utc` 是否已到期/三日内到期，再按四维度观察点定向 WebSearch 回源 P0/P1（机构评论用于选指标，公司/交易披露确认事实）：现金回报→大云财报/FCF/折旧指引；融资信用→发债定价与交割、OpenAI first close、Anthropic IPO、CoreWeave 再融资；付费需求→云收入/合同转收入；交付→可计费容量/交付延期。
+   - **核到新事实或反证（P0/P1 可读源）才更新事件层**：新事件追加（event_id 唯一）、事实/时间/生命周期（developing/confirmed/cleared）更新、同一风险命题的新一代以 supersedes 覆盖旧代；更新后立即跑 `python3 ~/Documents/Claude/Projects/Financial/风险日报/narrative_score.py` 自检校验。**未核到合格源 → 原事件一字不动**，输出一行「事件源更新: 本轮无新 P0/P1 事实」。
+   - **v4 事件登记合同（2026-11-08 Doctor 批 · 违反即被校验剔除、整次评分回退）**：新事件必须按 `~/Documents/Claude/Projects/Financial/风险日报/docs/事件登记合同-v4.md` 填 `fact_status`（occurred/forecast/contingent）；occurred 必填 `evidence_basis`（primary/market_data/report），report 型 claim 写「据〔源〕〔日期〕报道：…」，market_data 须注明数据来源（ICE/Tradeweb/交易所/发行公告/评级机构）；forecast 型 claim 写「〔谁〕于〔日期〕发布…」；contingent 必填 trigger_condition/lands_in/next_check_utc/on_expiry。融资维违约/重组、头部实验室融资确认失败、投资级借款人恶化按合同标 `transmission_channel`。一个源材料含多个原子事实时**拆成多条**并共享 family。写入后跑 `python3 ~/Documents/Claude/Projects/Financial/风险日报/narrative_score.py` 自检，errors 非空不得进入步骤 3。
    - **投资级恶化细分与利差证据（2026-11-10 Doctor 批）**：标 `transmission_channel: ig_deterioration` 的事件必须同时填 `ig_signal`——`rating_action`（评级/展望下调）、`issuance_pulled`（发债撤回/缩量）、`issuance_concession`（发债明显让价）、`spread`（利差相对 BBB 指数走阔）。缺填不报错，但该事件不算传导通道。
-   - **利差型（`spread`）须附 `spread_evidence`**：`{instrument, maturity_years（8–12 年）, source, observations: [{date, spread_bp, index_oas_bp}] 连续 ≥5 个交易日, baseline?}`。`index_oas_bp` 取 `~/Documents/Claude/Projects/风险日报/data/bbb_oas.json` 同日值（FRED BAMLC0A4CBBB，不得自估）；利差取可读一手源（TRACE/发行公告/评级机构/交易所）。阈值：每日「利差 ÷ 指数 ≥ 2」或「(利差 − 指数) 较 92 天内 baseline 多走阔 ≥ 100bp」，连续 5 日。凑不齐 5 个交易日的数据就不标 `spread`，不得补估。**让价型（`issuance_concession`）须附 `issuance_evidence`**：`{instrument, source, date, spread_bp, index_oas_bp, maturity_years, prior?}`，门槛＝新发利差 ≥ 同日指数 2 倍，或较该发行人上一笔同期限（±2 年）发行多走阔 ≥ 100bp；利差取发行公告/424B2。自检后看快照 `ig_channel_checks` 确认是否生效。
+   - **利差型（`spread`）须附 `spread_evidence`**：`{instrument, maturity_years（8–12 年）, source, observations: [{date, spread_bp, index_oas_bp}] 连续 ≥5 个交易日, baseline?}`。`index_oas_bp` 取 `~/Documents/Claude/Projects/Financial/风险日报/data/bbb_oas.json` 同日值（FRED BAMLC0A4CBBB，不得自估）；利差取可读一手源（TRACE/发行公告/评级机构/交易所）。阈值：每日「利差 ÷ 指数 ≥ 2」或「(利差 − 指数) 较 92 天内 baseline 多走阔 ≥ 100bp」，连续 5 日。凑不齐 5 个交易日的数据就不标 `spread`，不得补估。**让价型（`issuance_concession`）须附 `issuance_evidence`**：`{instrument, source, date, spread_bp, index_oas_bp, maturity_years, prior?}`，门槛＝新发利差 ≥ 同日指数 2 倍，或较该发行人上一笔同期限（±2 年）发行多走阔 ≥ 100bp；利差取发行公告/424B2。自检后看快照 `ig_channel_checks` 确认是否生效。
    - contingent 事件若本轮核到一手官方文件（法案 bill number、FCC 文件、规则原文）→ 按政策阶梯改为 occurred·policy_stage=proposed（或更高），不得继续挂在提示区。
-   - **范围只限 narrative_events.json**；绝不碰 `~/Documents/Claude/Projects/风险日报/alarm/` 下的 `legacy/`（冻结输入）、`current.json`、`revisions/`。
+   - **范围只限 narrative_events.json**；绝不碰 `~/Documents/Claude/Projects/Financial/风险日报/alarm/` 下的 `legacy/`（冻结输入）、`current.json`、`revisions/`。
 
 3. 运行后端构建脚本（含 AI Tech Alarm 四维度模型复核）：在沙箱跑
-   python3 ~/Documents/Claude/Projects/风险日报/narrative_review.py prepare review-input.json
-   python3 ~/Documents/Claude/Projects/风险日报/build_risk_daily.py --review-command ~/Documents/Claude/Projects/风险日报/model_entry.py --review-model deepseek-chat
+   python3 ~/Documents/Claude/Projects/Financial/风险日报/narrative_review.py prepare review-input.json
+   python3 ~/Documents/Claude/Projects/Financial/风险日报/build_risk_daily.py --review-command ~/Documents/Claude/Projects/Financial/风险日报/model_entry.py --review-model deepseek-chat
    - prepare 生成 V17 模型复核输入包（绑定事件哈希/revision 身份/行情收盘/市场哈希）；build 自动调模型入口（stdin 读包 → DeepSeek API 判读 → stdout 出评估回包）→ 严格校验（绑定/时点/引用/权重）→ 落盘评估 → 评分 → 生成 dashboard/risk-daily.html + data/risk_snapshot.json。
    - 失败语义：模型入口失败/超时/回包校验拒绝（倒签、缺字段、引用非法等）或 KG_API_KEY 不可得 → build 自动回退保留上次有效评估并显著标陈旧（fail-visible：_review_errors/stale_fallback 注记在场），**不阻塞日报，保留这次带复核 build 的产物**；**禁止再跑无参 build 覆盖**（无参会清掉本轮失败注记）。
    - 若脚本报错或某原子缺数据，如实贴出错误，**不要用旧数据蒙混、不要编造温度**。
 
-4. 更新 artifact：调用 `mcp__cowork__update_artifact`，id='risk-daily'，html_path='/Users/lunarabbit/Documents/Claude/Projects/风险日报/dashboard/risk-daily.html'，update_summary 写「当日综合风险温度 {值} {带} · {日期}」。
+4. 更新 artifact：调用 `mcp__cowork__update_artifact`，id='risk-daily'，html_path='/Users/lunarabbit/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html'，update_summary 写「当日综合风险温度 {值} {带} · {日期}」。
 
 5. 纪律：
    - 数据真实性铁律（温度全部来自脚本读的真实一手值，无估算冒充）；risk_overlay_not_alpha——只出风险读数，**不出任何交易/仓位/方向建议**。⚠ 仓位卡片属既有例外（Doctor 2026-10-10 令：卡片自带「仅供参考，不构成投资建议」免责标注，只呈现、不做任何方向断言以外的加工）。股权溢价指数原子同纪律：只出读数与历史分位档位，不做方向断言。

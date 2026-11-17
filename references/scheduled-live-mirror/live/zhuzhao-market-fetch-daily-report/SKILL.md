@@ -92,7 +92,7 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
 **5.6 体系提炼摘录（2026-10-21 Doctor 裁「日报接'提炼过的有价值信息'·班内摘录」· PRD `brain/logs/checkpoints/2026-10-21_烛照日报整合上游提炼_PRD.md`）**
 - **只读纪律**：本步只读上游文件，**绝不写上游任何文件/库**；转述**不改判**（结论归属上游项目，不夹带九儿新判断）；**绝不编造**。
 - **候选源清单（提炼产物 · 按判据自选 · 非全摘）**：
-  - 风险日报（09:08 PT 当日新鲜）：`~/Documents/Claude/Projects/风险日报/taco_reading.json`（regime/note）· `geo_reading.json`（phase/note）· `fomc_market_exp.json`（FOMC 预期）
+  - 风险日报（09:08 PT 当日新鲜）：`~/Documents/Claude/Projects/Financial/风险日报/taco_reading.json`（regime/note）· `geo_reading.json`（phase/note）· `fomc_market_exp.json`（FOMC 预期）
   - 仓位信号（09:08 PT 当日新鲜）：剑酒青丘 `v25_et_position_signal.json` 四态信号
   - 白泽哨兵（02:40 PT 当日新鲜）：信号 A/B/C2 生命周期（预注册记账件）
   - 白泽观星（07:30 PT 当日新鲜）：`fed_prediction` 会前读数快照
