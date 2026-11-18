@@ -192,6 +192,7 @@ CANDIDATES = [
 **裁定**: Doctor 2026-08-08——**保持本地仓，不设 GitHub 远端**；离机备份走 **fuxi-station**（首发 tar+scp 至 `F:\Mac_Backup\risk-daily\`，常态化 rsync 待验 fuxi 侧有无 rsync）。
 **⚠ 更正留痕**: 本条初稿误写「备份走旧队列④ rsync 镜像」——那条 rsync 实为 brain scheduled-live-mirror（Gateway store→brain），与本仓无关，当时本仓**没有任何**备份机制；Doctor 首次裁定基于该误述，当晚 CC 回源 08-03 日志原文后自纠、Doctor 重裁得上方结论。（凭二手队列摘要下断言、未回源，G-X111 同族。）
 **操作含义**: ① CC 给本仓构造命令时 **commit 即止、不附 push**；② fuxi 首发备份未跑成前，所有 commit 是 Mac 本地单点——重要修复（如 256e55a）落仓后提醒 Doctor 跑备份；③ 工作树长期压有每日 build 产物（risk-daily.html / risk_snapshot.json / taco_components.db 等），且 docs/、mech-watch/ 尚未入库——本条随 GOTCHAS.md 首次入库。
+**追记（2026-11-18 · conch 文件健康审查）**: 本条的「无远端」已不是现状。`git remote -v` 实读为 `origin https://github.com/fuxi4ai/Risk-Daily.git`，项目 `README.md` 与 `AGENTS.md` 也写了远端；2026-11-18 当日给出的提交命令均带 push。何时、因何改设远端，本次没有查到记录（未核）。给本仓构造命令时按现状附 push，上面「commit 即止、不附 push」不再适用。状态不改。
 
 ## [NOTE-20260913-001] 第三标签「EAL 事件星空」快照冻结+页面按日重锚 → K 线空线 5 天（2026-09-13 修复）
 **状态**: ✅ 已修复（2026-09-13 Doctor 目验通过落签 · CC 代记留痕；班首跑待周一晚自然验证）
