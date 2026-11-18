@@ -25,6 +25,7 @@ cd ~/Documents/Claude/Projects/海螺姑娘 && python3 -B dashboard/optimize_act
 - 第二行是回写（先备份 manifest 到 `_bak/`，再 survey 并重建看板 HTML），属 apply，等七步第 5 步同意。
 - 回写用 `rescan` 动作，不直接跑 `conch_engine.py survey`：`survey` 自身不备份 manifest，备份在 `rescan` 里（`optimize_actions.py` `run_rescan`）。
 - `build_asset_dashboard.py` 不解析参数，**带 `--help` 也会直接重建 HTML**（海螺 GOTCHA-20261117-002）；查用法读源码，不跑 `--help`。
+- 只为刷新某一个节点的分数或策展值，不跑 `rescan`：日更班 `refresh-asset-dashboard` 会整份重写 manifest，手工 `rescan` 重写的是全部节点，还和日更班抢同一个文件；清单里记一句「下一班自然更新」即可。新增节点之后、或 Doctor 要当场看板时才跑（风险日报首例：节点分 73、预览 76，复查建议撤掉回写这一条）。
 - 看板推送不在 `rescan` 内。登记在 `brain/.tmp/artifact-publish/hosted-pages.json` 的托管页按 slug 原地更新，不另建同名页面；未登记的侧栏看板请 Doctor 到 Cowork 说「补推看板」。
 
 ## 第 2 步 · 读结果、交 Doctor
