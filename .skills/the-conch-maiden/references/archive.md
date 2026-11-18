@@ -37,6 +37,14 @@ cd "$TMPDIR" && python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine
 7. 回读：数 `.conch_audit.log` 末行 `moved` 的条数（`tail -1 .conch_audit.log | python3 -c 'import json,sys;print(len(json.load(sys.stdin)["moved"]))'`），核对与清单一致，并抽查 `archived/` 下对应的 `.archived_<日期>` 文件确实存在（按日期 grep 会把同日早先的归档也算进去，不能用来计数）；从输出或 `.conch_audit.log` 末行取 session_id。然后按第 5 步恢复配置（保留误判那几条 protect），回读确认。
 8. 只跑一次。失败就报错误原文，按第 5 步恢复配置后停止，不重试。
 
+## 手工归档单个文件（引擎不判陈旧时）
+
+> 2.1.0 补（X-Board 首例）。引擎的 `archive --apply` 只移走它判为陈旧的文件；审查判定该归档、而引擎不判陈旧的单件（如已执行的一次性补丁），经 Doctor 同意后手工移动：
+
+1. 目标 `<目标>/archived/<原文件名>.archived_YYYY-MM-DD`，已存在就加 -2、-3，不覆盖；`mkdir -p archived` 后 `mv -n`（目标已存在就不移），再 `cmp` 快照里的原件确认字节相同。
+2. 引擎不会为它写 `.conch_audit.log`，不能用 `--rollback` 回滚：在项目迭代记录（或 README 迭代记录）与会话日志里各记一行「原路径 → 归档路径 · 日期 · 理由」；回滚＝把文件移回原路径。
+3. 移动前照常按通用纪律第 4 条扫引用；有现行引用的不归档。
+
 ## 其他模式
 
 - `--explain <相对路径>`：`... --scope "<目标>" explain <相对路径>`，报得分和理由。

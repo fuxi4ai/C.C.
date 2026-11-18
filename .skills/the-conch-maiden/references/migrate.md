@@ -12,6 +12,19 @@
 2. **分段拼接**：旧路径的各段名同时出现在一行或相邻几行（例：同一行同时含 `"宏观研究体系"` 与 `"EAL"`，`os.path.join` / `Path(…) / …`）。
 3. **按层级推算**：`parents[N]`、单层或多层 `.parent`（如 `HERE.parent / "兄弟目录"`）、`dirname(…)`、`../` 相对链接（2026-11-17 风险日报迁移漏过单层 `.parent`，见 `brain/风险日报/GOTCHAS.md` ERR-20261117-002）。凡层级会因这次挪动而变的文件，逐个核对它推算出的根目录。
 
+**现成命令**（`K` 换成要查的旧路径、路径段或文件名；分段拼接与层级推算再按上面第 2、3 项另查）：
+
+```bash
+K='<旧路径或文件名>'
+grep -rIlF --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=_bak --exclude-dir=archived --exclude-dir=archive -e "$K" ~/Documents/Claude ~/Documents/Codex ~/.codex/automations ~/Library/LaunchAgents 2>/dev/null
+find ~/Documents/Database -type f -size -2048k \( -name '*.md' -o -name '*.py' -o -name '*.json' -o -name '*.toml' -o -name '*.sh' -o -name '*.yml' -o -name '*.yaml' \) -not -path '*/backups/*' -not -path '*/_bak/*' -not -path '*/archived/*' -not -path '*/archive/*' -print0 2>/dev/null | xargs -0 grep -lF -e "$K" 2>/dev/null
+```
+
+- 两条都排除了冻结区（`_bak/`、`archived/`、`archive/`）：那里的命中是留痕，不改；需要确认留痕里有没有提到时，去掉排除另跑。同目录的旧式 `*.bak_*` 备份排除不掉，命中了按留痕处理。
+- `-F` 按字面匹配，路径里的 `.`、`[` 不会被当成正则。
+- **看输出，不看退出码**：两条都把报错丢进 `/dev/null`，目录读不了时和「没有消费方」一样是空输出；第二条有命中时退出码也可能是 1。空结果要么用一个确知存在的词做阳性对照（如 `K='market_data.db'`），要么去掉 `2>/dev/null` 看有没有读取报错。
+- `Database/` 只扫小于 2 MiB 的文本文件（`-size -2048k`；BSD find 的 `-size -2M` 会先按 MiB 向上取整，实际只选到 1 MiB 以下，漏掉 1–2 MiB 的文件），跳过 `backups/` 与冻结区。对整个 `Database/` 直接 `grep -r` 会扫进大库与二进制，X-Board 首例实测超过 120 秒被转到后台。按上面两条命令，2026-11-17 实测第一条约 3–25 秒、第二条约 45–60 秒（随文件缓存冷热）；仍然慢时用后台运行，不要重复起第二份。
+
 **扫描范围**：`~/Documents/Claude/`（brain 与全部项目）、`~/Documents/Database/`、`~/Documents/Codex/`（只读，改动走 V.V.）、`~/.codex/automations/`、`~/Library/LaunchAgents/`、Cowork 云端班镜像 `brain/references/scheduled-live-mirror/live/`。
 
 **分类**：

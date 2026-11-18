@@ -10,7 +10,7 @@
 |---|---|---|---|
 | A | 项目类型与陈旧件 | `python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine.py --scope "<目标>" detect`；同上 `scan --all` | 拟归档、版本链超额 |
 | B | 整理线索 | `python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine.py --scope "<目标>" tidy-scan --json` | 版本族（多版本并存）、散落备份、已完成沟通件候选、项目内无引用的回测目录、命名违规 |
-| C | 健康度 | 目标在 `Projects/海螺姑娘/data/asset_manifest.json` 里有节点时：`python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine.py survey --out "$TMPDIR/survey_preview.json"`，读该节点 `score`（五维、总分、A–D）与扣分最多的维度 | 健康度偏低的维度、陈旧自检、策展值失准 |
+| C | 健康度 | 目标不在 `Projects/海螺姑娘/data/asset_manifest.json` 里（按 `path` 查，不按标题）就记一条「清单缺节点」；有节点时：`python3 -B ~/Documents/Claude/Projects/海螺姑娘/conch_engine.py survey --out "$TMPDIR/survey_preview.json"`，读该节点 `score`（五维、总分、A–D）与扣分最多的维度 | 健康度偏低的维度、陈旧自检、策展值失准 |
 | D | 结构与归属 | 读目录树与 README：只装了一个子项目的嵌套层、放错上级的目录、与项目边界不符的研究（如 EAL 边界：凡「事件对行情的影响」都留 EAL） | 迁移候选 |
 | E | 退出候选 | 长期无修改、无 git 新提交、无定时班或 launchd、无消费方的项目、目录、文档；软链接与副本 | 退出候选 |
 | F | 标准文件与坑库 | 缺 README / GOTCHAS / TODO；GOTCHAS 里 🔄/⚠️ 开放条数；正文已落签 ✅ 而状态行未同步的条目（`GAI_MANIFEST="$TMPDIR/survey_preview.json" PYTHONDONTWRITEBYTECODE=1 python3 -B ~/Documents/Claude/Projects/海螺姑娘/dashboard/optimize_actions.py run gotchas_stale_check <节点>`——指向 C 的预览，读当轮数据；不指向就读真 manifest 里上次回写的旧字段。`PYTHONDONTWRITEBYTECODE=1` 防止它 import 引擎时在海螺根写 `__pycache__`） | 补标准文件、状态行同步 |
@@ -22,6 +22,7 @@
 | 问题类型 | 处理手段 | 执行细则 |
 |---|---|---|
 | 陈旧件、版本链超额（确认过期、无人引用） | **归档**：移入 `archived/`，可回滚 | `archive.md` 第 3 步 |
+| 该归档但引擎不判陈旧的单件（如已执行的一次性补丁） | **手工归档**：移入 `archived/`，在迭代记录与日志留痕 | `archive.md`「手工归档单个文件」 |
 | 同一文件多版本并存、逐轮复核稿、散落快照 | **整理·合并归一**：合成一份现行件，文首落迭代记录，再删旧版 | `tidy.md` 规则 1 |
 | 已完成的委托、知会、申请、请求、交付说明 | **整理·删除**（有用的一两句并入结果件迭代记录） | `tidy.md` 规则 2 |
 | 回测目录 | **整理·回测分诊**：有引用的保留，被取代的删除，有历史意义的移入 `archive/` | `tidy.md` 规则 3 |
@@ -29,6 +30,7 @@
 | 嵌套层、放错上级、边界外的研究 | **迁移** | `migrate.md` |
 | 不再使用的项目、目录、文档、软链接 | **退出**：删本地靠远端留底 / 进回收站 / 移入 brain 快照 / 删链接 | `retire.md` |
 | manifest 策展值失准、状态行未同步、缺标准文件 | **确认档优化动作**（`manifest_fix`、`gotchas_status_sync`、`fill_workfiles`） | `health.md` 第 3 步 |
+| 在用的项目或库不在 manifest 里 | **新增清单节点**（手工，先备份） | `health.md` 第 3.5 步 |
 | 看板与 manifest 需要刷新 | **`rescan`**（先备份 manifest，再 survey 与重建看板） | `health.md` 第 1 步 |
 | 任何删除 | **回收站** | `recycle-bin.md` |
 | 引擎误判、工具非预期行为 | 不处理文件，登记海螺 GOTCHAS | SKILL.md 通用纪律第 10 条 |
