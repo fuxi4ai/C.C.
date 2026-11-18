@@ -50,4 +50,4 @@ tidy-scan 不识别以点开头的备份名（文件与目录）；单仓 Financ
 
 ## 回收站上传（同日）
 
-Doctor 终端上传 `F:\Mac_Quarantine\_to_delete_20261118\fin_to_delete_20261118.tar.gz`，远端 SHA-256 全长与本机一致；本机暂存目录与包已删。保留至 2026-12-03。远端 `INDEX.md` 登记行待 Doctor 跑。
+Doctor 终端上传 `F:\Mac_Quarantine\_to_delete_20261118\fin_to_delete_20261118.tar.gz`，远端 SHA-256 全长与本机一致；本机暂存目录与包已删。保留至 2026-12-03。远端 `INDEX.md` 已登记一行（中途因追加命令不幂等、组合命令被重跑而出现重复表格行，改用先删同键行再写的幂等命令修正；G-X120 第四次复发已追记）。
