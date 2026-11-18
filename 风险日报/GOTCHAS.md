@@ -857,3 +857,14 @@ CANDIDATES = [
 **修复/建议修法**: 随分子系统重做一并处理：标签与字段名改正；国产替代另建读数；观察锚页更新或撤下。
 **预防门禁**: 评分口径每改一次，同步改来源标签与历史文件的口径标记；历史序列换口径处留标记行。
 **来源**: 2026-11-18 只读子代理核对报告；主会话转录。
+
+## [NOTE-20261118-017] 用 unittest discover 跑全套测试会把 `test_narrative_score.py` 报成一个导入错误，不是测试失败
+**状态**: ⚠️ 已知行为
+**优先级**: 🟢 低
+**触发场景**: 2026-11-18 改名与归档之后在项目根跑 `python3 -B -m unittest discover -s . -p 'test_*.py'`，结果是「Ran 450 tests … FAILED (errors=1)」。
+**硬证据/最小复现**: 报错是 `ImportError: Failed to import test module: test_narrative_score`，栈底是该文件末尾的 `sys.exit(0 if FAIL == 0 else 1)`，`SystemExit: 0`。单独跑 `python3 -B test_narrative_score.py` 得「188 PASS / 0 FAIL」、退出码 0。其余 449 条通过。三位独立核验者各自重跑，结果相同。
+**根因**: 这个文件是脚本式测试：在导入时就把用例跑完并 `sys.exit`。discover 导入它时接到 `SystemExit`，记成导入错误。
+**影响面**: 只影响读结果的人——容易把「errors=1」当成改坏了。测试本身没有问题；`alarm/` 下的 discover 不受影响。
+**修复/建议修法**: 不必改代码。跑全套时分两步报：discover 的通过数（减去这一条），加 `test_narrative_score.py` 单跑的 PASS/FAIL 计数。要根治就把末尾的 `sys.exit` 放进 `if __name__ == "__main__":`，属代码改动，随下一轮。
+**预防门禁**: 报测试结果时写明两个数字各自的来源，不只报「全部通过」。
+**来源**: CC 主会话 2026-11-18（风险日报改名归档场）；会话日志 `logs/2026-11-18-风险日报改名归档与提案整理.md`。
