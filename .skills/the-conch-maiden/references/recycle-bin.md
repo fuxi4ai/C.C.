@@ -18,3 +18,17 @@
 - **沙箱删不掉的残留**（如 `.git/config`、`.git/hooks`）：报给 Doctor 在终端删，回读确认为 0。
 - **独立核验进行中不删暂存**：先等核验子代理读完；已删的要当场告知它。
 - **期满清理不归 CC**：在 `brain/TODO.md` 对应条写明窗口截止日与精确名单的位置。
+
+## 远端 `INDEX.md` 登记（2.3.0 · 幂等模板）
+
+> Financial 首例（2026-11-18）：CC 给的追加命令没先读 INDEX 格式（写成表格行，旧行是列表式），且与 `git commit` 拼在一起；旧命令被重跑后 INDEX 出现两行重复登记，修了约 4 轮（通用教训 G-X120 第四次复发）。
+
+1. **先回读末尾几行对齐格式**：`ssh fuxi-station "Get-Content -Tail 3 'F:\Mac_Quarantine\INDEX.md'"`。现行格式（2026-11-18 实读）：`- YYYY-MM-DD _to_delete_YYYYMMDD\<包名>.tar.gz  <N> files, <说明>, sha256 <全长小写>, keep until YYYY-MM-DD`，ASCII。
+2. **幂等写法：先删同键行，再写一行**，重跑多少次结果都只有一行。同键＝`暂存目录名\包名.tar.gz`，不能只用目录名（也不要省掉 `.tar.gz`，否则包名互为前缀时同样误删）：`*_to_delete_20261117*` 会把已有的 `_to_delete_20261117b`、`…c` 两行一起删掉（2.3.0 独立核验指出）。PowerShell 的 `-like` 把 `\` 当普通字符：
+
+```bash
+ssh fuxi-station "\$p='F:\Mac_Quarantine\INDEX.md'; \$l=@([IO.File]::ReadAllLines(\$p) | Where-Object { \$_ -notlike '*_to_delete_YYYYMMDD\<包名>.tar.gz*' }); \$l+='- YYYY-MM-DD _to_delete_YYYYMMDD\<包名>.tar.gz  N files, <说明>, sha256 <全长>, keep until YYYY-MM-DD'; [IO.File]::WriteAllLines(\$p,\$l); Get-Content -Tail 3 \$p"
+```
+
+3. **单独成块**（全局偏好「无先后依赖的命令合并成一条」的例外，依据 G-X120）：登记命令不与上传、本地 `git commit` 或任何别的命令拼在同一条里；Doctor 会重跑旧命令，拼在一起的非幂等步骤会被重复执行。
+4. 这条命令重写整个文件（`WriteAllLines` 按 UTF-8 写）；INDEX 若混有非 UTF-8 的中文行可能被改坏，登记行一律只写 ASCII。
