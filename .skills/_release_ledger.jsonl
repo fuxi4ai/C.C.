@@ -45,3 +45,4 @@
 {"ts": "2026-11-16T12:01:18-08:00", "skill": "brain-save", "version": "2026-11-16-8f81ecba", "sha256": "8f81ecbac0e7644eab30fefa4213238a63a5f680841b868ca799a377a2a77c04", "note": "release"}
 {"ts": "2026-11-17T04:30:02-08:00", "skill": "brain-save", "version": "2026-11-17-07bc108c", "sha256": "07bc108c04b50826581ec12f82e325ea493a9d4de449dbae2ad778835b008d07", "note": "release"}
 {"ts": "2026-11-18T04:06:03-08:00", "skill": "brain-anchors", "version": "2026-11-18-77d4ee50", "sha256": "77d4ee50aa0d2c1e24eef23966505cea5e6434790e0eeec2464a67ffd2247a57", "note": "release"}
+{"ts": "2026-11-18T15:09:00-08:00", "skill": "QA", "version": "2026-11-18-4d8356cb", "sha256": "4d8356cb5db9fc7f1e22cc16bdb8b42d2b09057c88a3847d4a99a490faf87d71", "note": "release"}
