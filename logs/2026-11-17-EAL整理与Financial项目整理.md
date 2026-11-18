@@ -73,3 +73,8 @@ project: 宏观研究体系
 - **X-Board 首次 `/conch` 审查**（2.0.0 首例）：dry-run 9 条，子代理复查 PASS_WITH_LIMITS（负责方一条不成立：`Doctor协作偏好.md`「X-Board 分工」有原话）。Doctor 同意五条并已 apply：`split_publish.py.bak_2026-11-12_v2` 移入 `_bak/`；`_patch_xboard_prompt_2026-10-01.py` 归档到 `archived/`；`Financial/README.md` X-Board 负责方改写；海螺资产清单新增 `X-Board` 节点与「科技资讯看板 → X-Board」边（预览 86 分 A；manifest 备份 `Projects/海螺姑娘/_bak/asset_manifest.bak_2026-11-17_xboard-node.json`）；X-Board `README.md` 按现状重写（旧版 `_bak/README.md.bak_2026-11-17_rewrite`）。快照 `brain/backups/xboard-pre-conch-2026-11-17.tar.gz`。apply 后独立核验 PASS_WITH_LIMITS，所提出处、新鲜度日期、`hosted_assets.json` 描述三处已修。
 - **新坑**：海螺 GOTCHA-20261117-002（`build_asset_dashboard.py` 带 `--help` 也会重建 HTML）、-003（`cmd_survey` docstring 过时）。
 - **未决**：抖音要点外发 DeepSeek 按协作偏好须单次授权，而 `xboard-daily-repush` 每日自动跑 `extract_points.py --new-only`——日常班是否算常设授权，待 Doctor 定。
+
+## 后段二（同日晚）：迁移后首跑核对
+
+- **EAL**：17:40 PT 云端班写出 `eal-mac-handoff-20261118.json`（17:43:45），Mac 第 7 步 17:44:04 消费，status success，各环节退出码 0；launchd 新路径、900 秒。stderr 旧路径报错停在 03:52 切换窗口。
+- **风险日报**：09:09 构建产物查出迁移漏网——`build_risk_daily.py` L26 `HERE.parent / "Financial"` 迁入后拼成 `Financial/Financial`，FOMC 日历与白泽观星预测读取失败（fomc 取默认绿色读数并写入 temp_history）。已修（按名字找 Financial，兜底 DOCS 下固定路径），备份 `_bak/build_risk_daily.py.bak_2026-11-17_financial-path`；独立复核 PASS_WITH_LIMITS；登记 `brain/风险日报/GOTCHAS.md` ERR-20261117-002，通用教训 G-X278 追记，conch `references/migrate.md` 第 1 步与「首次实跑」同步。修复待 11-18 09:05 构建实跑确认。

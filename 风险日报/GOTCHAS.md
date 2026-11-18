@@ -645,3 +645,16 @@ CANDIDATES = [
 **追记四（2026-11-17 凌晨，同场）**: Doctor 答「现在做」。新增 `ops/judgment_register.py`（登记的综合档位线、改动前快照的归一、逐点档位比较、源码层换行登记），五份端到端核验都接上，`test_composite_band.py` 加一条按行为取数的测试，另有 `test_judgment_register.py` 13 条。追记二③、追记三两处已修并实跑证实：截到 2026-06-22 的行情库（综合 50）上，旧的宏观核验报 A2、A3 未通过，新的全过；插入 `COMPOSITE_WARN -= 5` 时高位状态核验报 A6b 与单测未通过。仍未动的：追记①（R17 核验 H1 把构建器里新写的注释也算进去）、追记②（流动性核验缺省基线过期）、追记二④（没有综合落在 60 以上的截面）。以后再改综合档位线：改 `COMPOSITE_LINES`，并改写 `KNOWN_JUDGMENT_CHANGES` 的原条目。
 **追记五（2026-11-17 凌晨，同场）**: 共用登记经第三、四两轮独立复核（PASS_WITH_LIMITS），又得两条须知。⑤ 高位状态核验的 E 段依赖「科创 50 已更新到行情库里最新交易日」：每天行情库更新到一半时（本次是 01:32 PST，`daily_market` 已到 11-17、科创 50 还在 11-16）重跑，会有约 12 项与代码无关的未通过。重跑前先查两张表的最新日期，或传一份状态一致的库副本。⑥ 共用登记的逐点比较是在核验进程里执行取出的语句：`SystemExit` 已按取不出处理，`os._exit(0)` 接不住——核验会以退出码 0、零输出结束，所以判定通过要同时看合计行；调用前临时改常量再改回也看不出来。两条都写进了 `ops/judgment_register.py` 的文档串，逻辑未再改。
 **追记六（2026-11-17 /save）**: 已升格通用教训，见 `permanent/通用教训.md` G-X276「「改动前后逐项相同」的回归核验绑着固定基线，只在写它的那一刻成立」（Doctor 在分拣选择窗勾选）。
+
+## [ERR-20261117-002] 迁入 Financial/ 后 `build_risk_daily.py` 的 `FINANCIAL = HERE.parent / "Financial"` 拼成 `Financial/Financial`，FOMC 日历与白泽观星预测读取失败
+
+**状态**: 🔄 已修（2026-11-17 21:4x PST，CC），待下一次定时构建实跑确认与独立复核
+**触发**: 2026-11-17 晚核对风险日报迁入 `Projects/Financial/` 后首次定时构建（09:09 PST 产物）。
+**硬证据**: `data/latest-envelope.json` 的 `unavailable` 为 `fomc_calendar.json 文件不存在`、`fed_prediction_*.json 目录无匹配文件`；`data/risk_snapshot.json` 的 fomc 原子 `detail` 为「FOMC 日历读取失败: [Errno 2] No such file or directory」；迁移前最后一次提交的 envelope（`git show HEAD:data/latest-envelope.json`，11-10 版）`unavailable` 为空。两个文件实际都在（`Financial/烛照九阴/config/fomc_calendar.json` 存在；`白泽观星/reports/daily/` 下 93 个 `fed_prediction_*.json`）。
+**根因**: 第 26 行无 env 分支用 `HERE.parent / "Financial"` 定位兄弟项目——迁移前 `HERE.parent` 是 `Projects/`，迁移后是 `Projects/Financial/`。迁移时的消费方扫描查了完整路径串、分段拼接和 `parents[N]`，这行是单层 `.parent` 拼兄弟目录，三类都没覆盖（同场修过的 6 处是 `parents[3]` 推算 Documents 根）。
+**影响面**: 2026-11-17 这一期（北京 11-18）风险日报的 FOMC 事件时钟说明为读取失败，温度取代码默认值 20 / 尚有余量（显示为绿色「平静」，与当日正确的窗外值碰巧相同），这一行已写入 `data/temp_history.jsonl` 2026-11-18，历史里与真实读数分不出来；白泽观星美联储预期 7 个键缺失、卡面倒计时缺失，页面写「观星预测：待取」易被读成上游没取数。fomc 原子不进综合温度，综合温度 25 不受影响。其余原子的变化都是数据本身变动（独立复核逐个比对）。定时班镜像未设 `RISK_DAILY_DOCUMENTS_ROOT`，本期走的是无 env 分支（已证实）。单独打开 `ai_tech_alarm_tab.html` 时 EAL 链接正确；嵌入 `dashboard/risk-daily.html` 后相对链接按 dashboard/ 解析会错位，这是迁移前就有的问题（另挂 TODO）。
+**修复**: 改为 `FINANCIAL = (DOCS/"Claude"/"Projects"/"Financial") if _documents_root else next((_p for _p in HERE.parents if _p.name == "Financial"), DOCS/"Claude"/"Projects"/"Financial")`（兜底原为 `HERE.parent`，扁平挂载下会静默算错，按独立复核建议改为 DOCS 下的固定路径）；备份 `Projects/Financial/风险日报/_bak/build_risk_daily.py.bak_2026-11-17_financial-path`；py_compile 通过，本机解析出 `Projects/Financial`、FOMC 日历存在、预测文件 93 个。未重跑构建（构建会写产物并由定时班推送）。
+**独立复核**: 2026-11-17 晚，未参与实施的子代理只读复核 PASS_WITH_LIMITS——诊断成立（新增不可用来源只有这两项，均因迁移）；修法在本机、云端无 env、云端有 env 三种情况下路径都对；其余在用脚本未再发现迁移后失效的路径写法。限制：修复未经真实构建验证。
+**另提设计问题（待 Doctor 定）**: FOMC 日历读取失败时用默认绿色读数并写入历史，日后若在事前窗或结清日出同类错会悄悄漏报；可考虑失败时温度记为不可判。
+**预防门禁**: 目录迁移的消费方扫描，「按层级推算」一项要包括单层 `.parent` / `../` 拼兄弟目录的写法，不只 `parents[N]` 与多层（通用教训 G-X278 追记）；迁移后第一次实跑要核 envelope 的 `unavailable` 是否比迁移前多。
+**来源**: `logs/2026-11-17-EAL整理与Financial项目整理.md`。

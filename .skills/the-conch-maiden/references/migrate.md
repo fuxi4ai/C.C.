@@ -10,7 +10,7 @@
 
 1. **完整路径串**：旧路径全串，以及省略前缀的相对写法（如 `宏观研究体系/EAL/`）。
 2. **分段拼接**：旧路径的各段名同时出现在一行或相邻几行（例：同一行同时含 `"宏观研究体系"` 与 `"EAL"`，`os.path.join` / `Path(…) / …`）。
-3. **按层级推算**：`parents[N]`、`.parent.parent`、`dirname(dirname(…))`、`../` 相对链接。凡层级会因这次挪动而变的文件，逐个核对它推算出的根目录。
+3. **按层级推算**：`parents[N]`、单层或多层 `.parent`（如 `HERE.parent / "兄弟目录"`）、`dirname(…)`、`../` 相对链接（2026-11-17 风险日报迁移漏过单层 `.parent`，见 `brain/风险日报/GOTCHAS.md` ERR-20261117-002）。凡层级会因这次挪动而变的文件，逐个核对它推算出的根目录。
 
 **扫描范围**：`~/Documents/Claude/`（brain 与全部项目）、`~/Documents/Database/`、`~/Documents/Codex/`（只读，改动走 V.V.）、`~/.codex/automations/`、`~/Library/LaunchAgents/`、Cowork 云端班镜像 `brain/references/scheduled-live-mirror/live/`。
 
@@ -46,7 +46,7 @@
 
 - **独立核验**：开未参与实施的子代理，把第 1 步三种写法重扫一遍（范围相同），报残留与断链。2026-11-17 首例由核验查出 4 处残留。
 - **git**：仓根整体改名时，所有文件在 git 里显示为「旧路径 → 新路径」。提交命令用改名配对清单 `git add --pathspec-from-file=<清单>`（清单放项目数据根 `backups/`），不用 `git add -A`——工作树里常有别的会话的未提交改动。commit 与 push 交 Doctor 终端。
-- **首次实跑**：切换后第一次定时班跑完，核对产物与日志（新路径是否生效）；记入 TODO 直到核对完。
+- **首次实跑**：切换后第一次定时班跑完，核对产物与日志（新路径是否生效），并比对产物里的「不可用 / 缺数」清单是否比迁移前多；记入 TODO 直到核对完。
 
 ## 不做
 
