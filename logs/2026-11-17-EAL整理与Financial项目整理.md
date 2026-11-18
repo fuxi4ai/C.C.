@@ -72,7 +72,7 @@ project: 宏观研究体系
 - **conch 2.0.0**（Doctor 令「5 种模式合并成 2 种：文件健康审查及整理、代码审计……默认 dry-run，汇报问题与处理方案，同时 subagent 复查，经我同意后 apply」「需要整理的整理，需要归档的归档」；又令「这是 conch 的运行模式」）：SKILL.md 开头立「运行模式」节；新增 `references/file-health.md`（审查清单 A–F、路由表）与 `references/code-audit.md`；`--rollback`、`--init` 也按运行模式走。两轮独立核验修正 4 处实错后差额复核 PASS_WITH_LIMITS，末轮三处措辞小改未送复核。记录：`brain/海螺姑娘/architecture/决策记录.md`、`Projects/海螺姑娘/CHANGELOG.md`。
 - **X-Board 首次 `/conch` 审查**（2.0.0 首例）：dry-run 9 条，子代理复查 PASS_WITH_LIMITS（负责方一条不成立：`Doctor协作偏好.md`「X-Board 分工」有原话）。Doctor 同意五条并已 apply：`split_publish.py.bak_2026-11-12_v2` 移入 `_bak/`；`_patch_xboard_prompt_2026-10-01.py` 归档到 `archived/`；`Financial/README.md` X-Board 负责方改写；海螺资产清单新增 `X-Board` 节点与「科技资讯看板 → X-Board」边（预览 86 分 A；manifest 备份 `Projects/海螺姑娘/_bak/asset_manifest.bak_2026-11-17_xboard-node.json`）；X-Board `README.md` 按现状重写（旧版 `_bak/README.md.bak_2026-11-17_rewrite`）。快照 `brain/backups/xboard-pre-conch-2026-11-17.tar.gz`。apply 后独立核验 PASS_WITH_LIMITS，所提出处、新鲜度日期、`hosted_assets.json` 描述三处已修。
 - **新坑**：海螺 GOTCHA-20261117-002（`build_asset_dashboard.py` 带 `--help` 也会重建 HTML）、-003（`cmd_survey` docstring 过时）。
-- **未决**：抖音要点外发 DeepSeek 按协作偏好须单次授权，而 `xboard-daily-repush` 每日自动跑 `extract_points.py --new-only`——日常班是否算常设授权，待 Doctor 定。
+- **未决 → 已裁**：抖音要点外发 DeepSeek 按协作偏好须单次授权，而 `xboard-daily-repush` 每日自动跑 `extract_points.py --new-only`——日常班是否算常设授权？2026-11-17 晚 Doctor 裁「算」，已写入 `permanent/Doctor协作偏好.md`「X-Board 分工」与 X-Board README。
 
 ## 后段二（同日晚）：迁移后首跑核对
 

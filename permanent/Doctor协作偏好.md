@@ -402,6 +402,7 @@ Doctor 原话：「X Board我们来负责，CC你来推送、分析并更新。�
 
 - **归属**：X-Board 管线运维/修复归 Doctor/VV；**推板、要点分析、产物更新由 CC 执行**（含手动推板链：dry-run → extract → gen → update_artifact → 回读；**2026-11-11 首发托管页 X Board (Cloud)，2026-11-12 起拆分器 `Projects/Financial/X-Board/split_publish.py` v3 另产 `publish/artifact.html`** → 定时班自推或 Code 会话按 slug 原地更新 → 回读，见 [[经验库]] EXP-20261111-002-P / 003-T）。
 - **边界**：外发（DeepSeek 提取）仍走「对外发送须 Doctor 明确授权」常设条款，单次授权=单批条目；本分工不覆盖 fuxi 侧采集管线的运维权。
+- **⇒ 2026-11-17 递进（Doctor 裁 · 原话「算」）**：定时班 `xboard-daily-repush` 每日自动跑 `extract_points.py --new-only`（新篇要点发往 DeepSeek 提取），**算常设授权**，不再逐次请示。本裁只覆盖该定时班的日常增量提取；其余外发（手动推板中的提取、存量回补、其他数据外发）仍按上一条。来源：logs/2026-11-17-EAL整理与Financial项目整理.md（conch 审查 X-Board 时提出的未决项）。
 - **来源**：logs/2026-08-30-XBoard推板执行与停摆销账.md
 
 ## 批准方向+改动已预览时·别再加冗余确认门（2026-06-29 立）
