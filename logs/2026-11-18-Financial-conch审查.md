@@ -47,3 +47,7 @@ tidy-scan 不识别以点开头的备份名（文件与目录）；单仓 Financ
 ## 独立核验
 
 未参与实施的子代理实读核验 PASS_WITH_LIMITS：落盘与声明逐字节一致（7 件 cmp、preV17 diff -r 0、两个 SHA、`.gitignore` 只多 `_bak/`、未跟踪的 `_bak/` 0 条、无因忽略被取消跟踪的文件）。指出 3 处记录不符，已改：GOTCHA 行号补 `tidy_scan()` L1501／L1507；决策记录「进 fuxi 回收站」改为本机暂存待上传；preV17「无引用」改为「无程序读取」并写明剑酒青丘证据的提及（Doctor 裁保持归档）。扫描计数（3,827、459 等）未重跑。
+
+## 回收站上传（同日）
+
+Doctor 终端上传 `F:\Mac_Quarantine\_to_delete_20261118\fin_to_delete_20261118.tar.gz`，远端 SHA-256 全长与本机一致；本机暂存目录与包已删。保留至 2026-12-03。远端 `INDEX.md` 登记行待 Doctor 跑。
