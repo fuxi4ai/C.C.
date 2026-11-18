@@ -3,13 +3,13 @@
   "version": "v1.1",
   "updated": "2026-11-06",
   "paths": {
-    "repro_dir": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/repro_v23",
-    "ledger_md": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/archive/frameworks-retired-2026-11/事件归因台账.md",
-    "ledger_pointer": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/frameworks/事件归因台账.md",
+    "repro_dir": "Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/repro_v23",
+    "ledger_md": "Documents/Claude/Projects/Financial/Event-Attribution-Ledger/archive/frameworks-retired-2026-11/事件归因台账.md",
+    "ledger_pointer": "Documents/Claude/Projects/Financial/Event-Attribution-Ledger/frameworks/事件归因台账.md",
     "mirror_index": "Documents/Claude/brain/references/scheduled-live-mirror/artifacts/event-attribution-ledger/index.html",
     "manifest": "Documents/Claude/brain/references/scheduled-live-mirror/artifacts/_artifacts_manifest.txt",
     "snapshot_script": "Documents/Claude/brain/.tools/scheduler_snapshot.py",
-    "publisher": "Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_v3/coding_work/_vv_staging/registry_promotion_dry_run/execute_registry_promotion.py",
+    "publisher": "Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/eal_v3/coding_work/_vv_staging/registry_promotion_dry_run/execute_registry_promotion.py",
     "manifest_key": "event-attribution-ledger"
   },
   "pointer_keys": ["ledger_pointer"],

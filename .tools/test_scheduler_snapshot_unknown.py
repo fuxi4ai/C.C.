@@ -161,7 +161,7 @@ def test_levels_and_wording(tmproot: Path):
 
 def test_ops_dirs():
     print("\n④ OPS_DIRS 登记 EAL plist 源目录")
-    want = Path.home() / "Documents/Claude/Projects/Financial/宏观研究体系/EAL/调度/eal-post-event-native"
+    want = Path.home() / "Documents/Claude/Projects/Financial/Event-Attribution-Ledger/调度/eal-post-event-native"
     check("OPS_DIRS 含 EAL 源目录（~/Documents 写法）", want in SS.OPS_DIRS, f"{[str(x) for x in SS.OPS_DIRS]}")
     check("原烛照九阴 ops 目录仍在（不误删）",
           Path.home() / "Documents/Claude/Projects/Financial/烛照九阴/ops" in SS.OPS_DIRS)

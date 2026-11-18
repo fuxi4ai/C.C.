@@ -89,4 +89,4 @@ type: fleeting
 - **未核：** Gateway 同名班。本会话只挂了 `~/Documents`，读不到 `~/Gateway-workspace/Scheduled/`。指令卡 11-04 记有 Doctor 告「Gateway 24 班已全部暂停」，但 Gateway 侧 SKILL 正文仍是旧版写文件步骤；打开 Gateway app 补跑漏班时会再写冻结文件。
 - **未发版：** r5、r7 的判断仍待 Doctor 定，本会话没有调用 `alarm_store.py import`。
 
-**⚠ 13:33:36 UTC 补记（回执写完后发现）：** 另一场会话按 Doctor 令把 AI Tech Alarm 迁到了 `~/Documents/Claude/Projects/风险日报/alarm/`。旧 `watch/` 现在只剩 `MOVED.md`，冻结文件改名为 `legacy/alarm_watchlist_frozen_v1.jsonl`；归档件 `archived/2026-11-05/watch_迁至风险日报/alarm_watchlist.jsonl` 实读前 16 位仍是 `e47732e86d245746`。新目录还新增了 `alarm_proposals.py` 提案队列，其 docstring 写「定时班只往 proposals/pending/ 放提案」。⇒ 上面两班新 prompt 里的路径已经失效；下次运行会在第 1 步 `verify` 处找不到文件，报错后停止，不会写任何文件。改指新路径、是否接提案队列，待 Doctor 定。
+**⚠ 13:33:36 UTC 补记（回执写完后发现）：** 另一场会话按 Doctor 令把 AI Tech Alarm 迁到了 `~/Documents/Claude/Projects/Financial/风险日报/alarm/`。旧 `watch/` 现在只剩 `MOVED.md`，冻结文件改名为 `legacy/alarm_watchlist_frozen_v1.jsonl`；归档件 `archived/2026-11-05/watch_迁至风险日报/alarm_watchlist.jsonl` 实读前 16 位仍是 `e47732e86d245746`。新目录还新增了 `alarm_proposals.py` 提案队列，其 docstring 写「定时班只往 proposals/pending/ 放提案」。⇒ 上面两班新 prompt 里的路径已经失效；下次运行会在第 1 步 `verify` 处找不到文件，报错后停止，不会写任何文件。改指新路径、是否接提案队列，待 Doctor 定。

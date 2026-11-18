@@ -160,13 +160,13 @@ cd ~/Documents/Database/行业研究 && git add -- 追踪研究索引.md <本次
 
 ## Event Attribution Ledger - SOX/KC50
 
-规则真源：`~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/frameworks/每日行情追踪范式.md`。工具：同项目 `EAL/backtest/daily_tracking/`。一行一个 A 股交易日 T，配对 T 开盘前最近收盘的美股交易日 U。
+规则真源：`~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/frameworks/每日行情追踪范式.md`。工具：同项目 `EAL/backtest/daily_tracking/`。一行一个 A 股交易日 T，配对 T 开盘前最近收盘的美股交易日 U。
 
 **记录的主线**：U 日 SOX 的走势和主流解释，传到 T 日科创50 的开盘、收盘和主流解释。**机构主流归因是被记录的对象，不是结论。**
 
 ### 批量模式（默认）
 
-格式真源：`EAL/frameworks/持续追踪更新标准.md`；程序 `EAL/backtest/tracking/eal_track.py`，对象登记在同目录 `registry.json`。下面命令的 `cwd` 均为 `~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/tracking`，前缀 `PYTHONDONTWRITEBYTECODE=1 python3 -B`。给了 `date=` 时只做该日的每日台账，按后面第 0–8 步。
+格式真源：`EAL/frameworks/持续追踪更新标准.md`；程序 `EAL/backtest/tracking/eal_track.py`，对象登记在同目录 `registry.json`。下面命令的 `cwd` 均为 `~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/tracking`，前缀 `PYTHONDONTWRITEBYTECODE=1 python3 -B`。给了 `date=` 时只做该日的每日台账，按后面第 0–8 步。
 
 1. **列到期项**：`eal_track.py check`，再 `eal_track.py list`。四类：每日台账缺行、量化锚待回看或待终判、检验节点到期、政策快照到期。没有到期项就报告后结束。
 2. **量化锚**：`eal_track.py fetch-ohlc`（Tushare，需外网），再 `eal_track.py anchor --id ID` 演练。`problems` 非空时停下报告；两个低点结论不一致时请 Doctor 裁定。演练结果交一个未参与实施的 subagent 核对（OHLC 与东财或新浪日线对拍、判据转写与 anchors.jsonl 原文和补充裁定对照），通过后再运行 `--write --verified-by "核对者与结论"`。库内未入的日子不写，等行情库更新。
@@ -208,7 +208,7 @@ cd ~/Documents/Database/行业研究 && git add -- 追踪研究索引.md <本次
 
 ### 2. 补开盘价
 
-用 ToolSearch 加载 `mcp__terminal__run_in_terminal`，`cwd` 传 `~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/daily_tracking`，`command` 写 `PYTHONDONTWRITEBYTECODE=1 python3 -B fetch_ks50_open.py --from YYYYMMDD`（T 前 7 天）。失败时开盘跳空记「未核」，流程继续。
+用 ToolSearch 加载 `mcp__terminal__run_in_terminal`，`cwd` 传 `~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/daily_tracking`，`command` 写 `PYTHONDONTWRITEBYTECODE=1 python3 -B fetch_ks50_open.py --from YYYYMMDD`（T 前 7 天）。失败时开盘跳空记「未核」，流程继续。
 
 ### 3. 生成行情骨架
 

@@ -6,12 +6,12 @@ updated: 2026-08-01
 status: archived
 type: index
 project: GlobalPercent
-code_path: Claude/Projects/Financial/备查区/GlobalPercent/
+code_path: https://github.com/fuxi4ai/GlobalPercent  # 2026-11-17 本地副本删除，原 Claude/Projects/Financial/备查区/GlobalPercent/
 ---
 
 # GlobalPercent
 
-> 情绪温度计（Financial 线）。2026-08-01 已归档到备查区；方法教训继续有效，旧运行时不再启用。
+> 情绪温度计（Financial 线）。2026-08-01 已归档到备查区；2026-11-17 Doctor 裁删除本地副本、靠 GitHub 留底（归档回执移至本目录 `GlobalPercent-归档回执.md`）；方法教训继续有效，旧运行时不再启用。
 
 ## 入口
 

@@ -9,7 +9,7 @@ type: fleeting
 
 # Cowork 回执·请求三：alarm 两班判级基线改 revision（2026-11-07 · Doctor 裁 18A）
 
-> 执行者：Cowork 主会话委派的实施 subagent。关联：[[风险日报]] · `Projects/风险日报/alarm/ALARM_LAYER.md` · GOTCHAS `ERR-20261105-101`。
+> 执行者：Cowork 主会话委派的实施 subagent。关联：[[风险日报]] · `Projects/Financial/风险日报/alarm/ALARM_LAYER.md` · GOTCHAS `ERR-20261105-101`。
 > 原 inbox 位置：alarm/ 下无 inbox 目录，按「Cowork请求二」回执所在 `brain/inbox/` 照放。
 
 ## 改动面（两件镜像 · 改法一致）

@@ -198,7 +198,7 @@ for d in sorted(os.listdir(BRAIN)):
 PROJECT_SOURCES = [
     ("白泽观星", "Projects/Financial/白泽观星/GOTCHAS.md"),
     ("海螺姑娘", "Projects/海螺姑娘/GOTCHAS.md"),
-    ("EAL", "Projects/Financial/宏观研究体系/EAL/GOTCHAS.md"),
+    ("EAL", "Projects/Financial/Event-Attribution-Ledger/GOTCHAS.md"),
     ("渊图·DB实时坑库", "../Database/行业研究/渊图_GOTCHAS.md"),  # 2026-11-05 Doctor 裁 10A：渊图实时坑库（28 条，19 条 brain 无）
 ]
 # 2026-11-05 Doctor 裁 1A：白泽大宗 / 风险日报 / 星空 三项目 Projects 侧 GOTCHAS 已逐字并入 brain 侧「自 Projects 侧并入」节，

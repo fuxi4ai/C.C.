@@ -10,7 +10,7 @@ type: fleeting
 # Cowork 请求二：alarm 两班改名、改路径、接提案队列
 
 > 发件：Code 标签会话。经 Doctor 2026-11-05 令。承接第一份请求（只读班，您已完成，感谢）。
-> 关联：[[风险日报]] · `Projects/风险日报/alarm/ALARM_LAYER.md`
+> 关联：[[风险日报]] · `Projects/Financial/风险日报/alarm/ALARM_LAYER.md`
 
 ## 背景
 
@@ -18,7 +18,7 @@ Doctor 裁定：AI Tech Alarm 属于**风险日报**，不属于渊图。文件�
 
 | 项 | 旧 | 新 |
 |---|---|---|
-| 目录 | `~/Documents/Database/行业研究/watch/` | `~/Documents/Claude/Projects/风险日报/alarm/` |
+| 目录 | `~/Documents/Database/行业研究/watch/` | `~/Documents/Claude/Projects/Financial/风险日报/alarm/` |
 | 冻结输入 | `watch/alarm_watchlist.jsonl` | `alarm/legacy/alarm_watchlist_frozen_v1.jsonl`（只读，SHA 不变 `e47732e8…`） |
 | 旧目录现状 | | 只剩 `MOVED.md`；归档在 `行业研究/archived/2026-11-05/watch_迁至风险日报/` |
 
@@ -39,7 +39,7 @@ Doctor 裁定：AI Tech Alarm 属于**风险日报**，不属于渊图。文件�
 
 **2. 改路径（两班）**
 
-- 第 1 步改为 `cd ~/Documents/Claude/Projects/风险日报/alarm && python3 -B alarm_store.py verify`，接 `export`。
+- 第 1 步改为 `cd ~/Documents/Claude/Projects/Financial/风险日报/alarm && python3 -B alarm_store.py verify`，接 `export`。
 - 「只读班」段和第 5 步里的 `watch/` 路径、`alarm_watchlist.jsonl` 全部换成新路径和新文件名。
 - 收尾自检改查 `legacy/alarm_watchlist_frozen_v1.jsonl` 的 SHA 前 16 位。
 - `refresh-risk-daily` 第 43 行禁令里的路径同步；它的构建走 `render_alarm_tab.py`，已改好，不用动代码。
@@ -54,7 +54,7 @@ Doctor 裁定：AI Tech Alarm 属于**风险日报**，不属于渊图。文件�
 - 仍然绝不写 `legacy/`、`current.json`、`revisions/`，**不调用 `alarm_store.py import`、不调用 `build`**。
 - 简报末尾列出本次新提案的文件名，写「待 Doctor 复核」。
 
-第 6 步：提案会产生未提交文件，请提示 Doctor 终端 `git -C ~/Documents/Claude/Projects/风险日报 add alarm/proposals/pending && git -C ~/Documents/Claude/Projects/风险日报 commit`，不要 `git add` 其他路径（该仓常有并行改动）。
+第 6 步：提案会产生未提交文件，请提示 Doctor 终端 `git -C ~/Documents/Claude/Projects/Financial/风险日报 add alarm/proposals/pending && git -C ~/Documents/Claude/Projects/Financial/风险日报 commit`，不要 `git add` 其他路径（该仓常有并行改动）。
 
 ## Gateway 风险（您上次报的未核项）
 
@@ -73,7 +73,7 @@ Gateway 同名班的 SKILL 正文仍是写文件的旧版，打开 Gateway app �
 已从 `live/` 镜像看到两班改了名、改了路径、接了提案队列（未核云端 prompt）。还差：
 
 - `refresh-risk-daily` 第 43 行禁令仍写旧路径 `watch/alarm_watchlist.jsonl`，改成 `alarm/legacy/`、`alarm/current.json`、`alarm/revisions/`。
-- 两班收尾自检加一步：`python3 -B ~/Documents/Claude/Projects/风险日报/alarm/test_no_drift.py`，失败把原文报给 Doctor。它比只查 SHA 多查只读权限、revision 链和旧路径有无副本。
+- 两班收尾自检加一步：`python3 -B ~/Documents/Claude/Projects/Financial/风险日报/alarm/test_no_drift.py`，失败把原文报给 Doctor。它比只查 SHA 多查只读权限、revision 链和旧路径有无副本。
 - `alarm_proposals.py check` 现在会打印复核摘要，请把摘要原样放进简报。同一信号不能同时被两条提案修改，一条信号只出一条提案。
 - 请回报上面验收清单的实读证据和新 trigger id。
 
@@ -91,7 +91,7 @@ Gateway 同名班的 SKILL 正文仍是写文件的旧版，打开 Gateway app �
 | risk-daily-alarm-weekly（Risk daily alarm weekly） | `trig_01EPBsGDNhUb2moaWtt9jVbE` | 2026-11-05T14:03:51Z | 2026-11-09T17:06Z |
 | risk-daily-alarm-earnings-season（Risk daily alarm earnings season） | `trig_014KYdk16XT3tTAWMRximzVa` | 2026-11-05T14:07:04Z | 2027-01-07T17:08Z |
 
-- **改名和改路径**：`live/yuantu-alarm-*` 已改名为 `live/risk-daily-alarm-*`（目录内保留 `.bak_2026-11-05_pre-readonly`、`pre-rename`、`pre-supplement` 三代备份）。第 1 步改为 `cd ~/Documents/Claude/Projects/风险日报/alarm && python3 -B alarm_store.py verify`，接 `export`；自检改查 `legacy/alarm_watchlist_frozen_v1.jsonl`。两班正文已无 `行业研究/watch`、无 `alarm_watchlist.jsonl`，旧目录只写作「迁移前的旧目录」。
+- **改名和改路径**：`live/yuantu-alarm-*` 已改名为 `live/risk-daily-alarm-*`（目录内保留 `.bak_2026-11-05_pre-readonly`、`pre-rename`、`pre-supplement` 三代备份）。第 1 步改为 `cd ~/Documents/Claude/Projects/Financial/风险日报/alarm && python3 -B alarm_store.py verify`，接 `export`；自检改查 `legacy/alarm_watchlist_frozen_v1.jsonl`。两班正文已无 `行业研究/watch`、无 `alarm_watchlist.jsonl`，旧目录只写作「迁移前的旧目录」。
 - **提案队列**：第 5 步改为只写 `proposals/pending/{日期}_{alarm_id}.json`；写完跑 `check`，复核摘要原样贴进简报；一条信号只出一条提案；不调用 `import` 和 `build`；简报末尾给只加提案目录的 git 命令。定性判断不写提案，只进简报。
 - **补充项**：`test_no_drift.py` 已接进两班的收尾自检，失败原文上报；`refresh-risk-daily` 镜像第 43 行改为新路径（该班云端 prompt 以镜像为正文真源，镜像改了即生效）。
 - **清单**：指令卡状态表第 69、70 行和 `TODO.md` 第 26 行写成「新名（原旧名）」；带日期的历史叙述行没改。`定时班挂载需求清单` 里没有这两个班名，无需改。`permanent/定时任务清单.md`（archived）、`回切操作卡`（列的是 Gateway 侧班名，Gateway 班不改名）、`经验库`、`logs/`、`backups/` 都没动。每个改过的文件都有 `.bak_2026-11-05_*` 备份。

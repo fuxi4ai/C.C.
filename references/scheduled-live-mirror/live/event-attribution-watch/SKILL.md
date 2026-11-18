@@ -21,10 +21,10 @@ description: EAL v3 数据链日更班：行情更新→sealed 快照→manifest
 ## 环境
 
 - 主库：`~/Documents/Database/宏观研究体系/EAL/attribution.db`（v2.3 旧表 + `prices_daily` / `prices_intraday`；行数每班实读，不写死历史值）
-- v3 包：`~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_v3/`（仅标准库；声明支持与本轮实际 Python 版本必须分别记录，不把未覆盖运行时说成已验收）
+- v3 包：`~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/eal_v3/`（仅标准库；声明支持与本轮实际 Python 版本必须分别记录，不把未覆盖运行时说成已验收）
 - 封存目录惯例：`~/Documents/Database/宏观研究体系/EAL/eal_v3_sealed_YYYYMMDD/`
-- consumer config 模板：`~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_scheduled_consumer_v1/config-template.v1.json`（bytes=`1736`，SHA-256=`045e0792bb3da6ce514611fe5733a7fae2d00bc116487842bc2b87fa4220169f`）
-- XNYS 冻结日历：`~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_v3/coding_work/_vv_staging/phase4_inputs/calendar-xnys-frozen-20261231.v2.csv`（bytes=`13764`，SHA-256=`ddb4367c02acc21815680155298c102ec2408a65fe579661f1f58a877f8a8e97`）
+- consumer config 模板：`~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/eal_scheduled_consumer_v1/config-template.v1.json`（bytes=`1736`，SHA-256=`045e0792bb3da6ce514611fe5733a7fae2d00bc116487842bc2b87fa4220169f`）
+- XNYS 冻结日历：`~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/eal_v3/coding_work/_vv_staging/phase4_inputs/calendar-xnys-frozen-20261231.v2.csv`（bytes=`13764`，SHA-256=`ddb4367c02acc21815680155298c102ec2408a65fe579661f1f58a877f8a8e97`）
 - token：`~/Documents/Database/.env`（`update_attribution_db.py` 自行读取，勿打印 token）
 
 ## 每班流程（按序，任一步失败即停并简报）
@@ -32,7 +32,7 @@ description: EAL v3 数据链日更班：行情更新→sealed 快照→manifest
 ### 1 · 行情写库（含缺口回补）
 
 ```bash
-python3 ~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/update_attribution_db.py
+python3 ~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/update_attribution_db.py
 ```
 
 Yahoo 日线近 10 天自动回补缺口（如 08-19/20）、15m 回看 3 天、Massive/Polygon 补 USDJPY 15m、FRED（DGS2/DGS10）由外部通道另行增补。exit 0 且新鲜度验收通过才算数；若 Yahoo 当日日线未出（盘中 finality 不足），如实记录并继续用可得的已收盘数据，`CALENDAR_INCOMPLETE` 等 exclusion 由引擎诚实输出。读回核验：`prices_daily` 的 MAX(trade_date) 应达到最近已收盘美股交易日。
@@ -48,8 +48,8 @@ Yahoo 日线近 10 天自动回补缺口（如 08-19/20）、15m 回看 3 天、
 **严禁用 glob、目录排序或“最新日期版”选择 registry。** 每班先运行 Gateway 侧只读 selector；它从 `CURRENT_SHA256SUMS` 解析下列唯一、精确的 consumer pin，并回读 manifest 全树、target bytes/SHA、regular-file/non-symlink、JSON schema、38 行与 EAL runtime contract。若 manifest 缺项/重复、hash 漂移、schema/行数不符，或目录出现同日/更新但未获本 consumer pin 明确授权的 registry，均以非零退出并立即停班。
 
 ```bash
-selector_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B ~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/调度/event-attribution-watch/resolve_registry_from_manifest.py \
-  --eal-root ~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_v3 \
+selector_json="$(PYTHONDONTWRITEBYTECODE=1 python3 -B ~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/调度/event-attribution-watch/resolve_registry_from_manifest.py \
+  --eal-root ~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/eal_v3 \
   --expected-registry-rel coding_work/frozen-event-registry-v3.2-20260827_vv.jsonl \
   --expected-sha256 283c947d4c93b1e26813895040d92af1ae8f9759a0bb2b1e3246589c370dfc92 \
   --expected-bytes 102899 \
@@ -75,7 +75,7 @@ test -n "$registry_jsonl" || exit 2
 先验证 consumer config 模板 bytes/SHA；create-only 写 `$snapshot_dir/config-frozen-YYYYMMDD.json`。只允许替换四处动态值：`market_data_as_of_utc`、`market_data_snapshot.snapshot_id`、`market_data_snapshot.database_sha256`、`market_data_snapshot.observed_at_utc`；前后删除这四处后 JSON 必须 exact 相等。所有时间为同一个本班 UTC 观测时刻，snapshot SHA 必须等于 sealed 回读 SHA。
 
 ```bash
-eal_root=~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/backtest/eal_v3
+eal_root=~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/backtest/eal_v3
 calendar_csv="$snapshot_dir/calendar-frozen-$(date +%Y%m%d).csv"
 config_json="$snapshot_dir/config-frozen-$(date +%Y%m%d).json"
 cd "$eal_root"
@@ -115,7 +115,7 @@ python3 -B scripts/load_eal_v3_results.py \
 
 ### 7 · 交接 Mac 原生执行（2026-09-15 Doctor 裁方案①「adapter 移 Mac 原生」· 守卫零弱化）
 
-本班不再在沙箱内跑 post-event loop 与 production 写库——沙箱 FUSE 挂载面 fchmod 不落地（mode 恒 0o600）致 zero-write guard permission 组件同族七连 REJECTED（NOTE-20260911-001）。Step 7 三段（guard 包裹 loop / verify_run_manifest / eal_post_event adapter）已整体迁 Mac 原生执行体：`~/Documents/Claude/Projects/Financial/宏观研究体系/EAL/调度/eal-post-event-native/run_step7_native.py`（launchd `com.eal.postevent-native` · 每日 18:35 PT · 命令逐参数与原 Step 7 一致）。本班改为：落交接清单 → 轮询结果留痕 → 成功续 Step 8 / 超时或失败停班。格式见同目录 `FORMAT.md`。
+本班不再在沙箱内跑 post-event loop 与 production 写库——沙箱 FUSE 挂载面 fchmod 不落地（mode 恒 0o600）致 zero-write guard permission 组件同族七连 REJECTED（NOTE-20260911-001）。Step 7 三段（guard 包裹 loop / verify_run_manifest / eal_post_event adapter）已整体迁 Mac 原生执行体：`~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/调度/eal-post-event-native/run_step7_native.py`（launchd `com.eal.postevent-native` · 每日 18:35 PT · 命令逐参数与原 Step 7 一致）。本班改为：落交接清单 → 轮询结果留痕 → 成功续 Step 8 / 超时或失败停班。格式见同目录 `FORMAT.md`。
 
 #### 7a · 落交接清单
 

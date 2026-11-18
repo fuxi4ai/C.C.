@@ -70,7 +70,7 @@ TCC_PROTECTED = (HOME / "Documents", HOME / "Desktop",
                  HOME / "Downloads")                           # TCC 隐私保护区（2026-09-27 加）：stdio 落此处＝launchd 静默停摆的风险位（判据见 tcc_suspect）
 OPS_DIRS = [                                                   # plist 源文件所在处
     HOME / "Documents/Claude/Projects/Financial/烛照九阴/ops",
-    HOME / "Documents/Claude/Projects/Financial/宏观研究体系/EAL/调度/eal-post-event-native",  # 2026-11-13 补登记 EAL（TODO「判词方向中立化 ＋ sources 段补登记 eal」）
+    HOME / "Documents/Claude/Projects/Financial/Event-Attribution-Ledger/调度/eal-post-event-native",  # 2026-11-13 补登记 EAL（TODO「判词方向中立化 ＋ sources 段补登记 eal」）
 ]
 OUT_JSON = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.json"
 OUT_MD = HOME / "Documents/Claude/brain/permanent/_scheduler_snapshot.md"

@@ -33,7 +33,7 @@ sys.dont_write_bytecode = True  # import 同目录模块时不往 .tools/__pycac
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import artifact_fragment  # noqa: E402
 
-DEFAULT_SRC = "Projects/风险日报/dashboard/risk-daily.html"  # 相对 <Documents>/Claude；清单里也按相对路径记，不带会话目录
+DEFAULT_SRC = "Projects/Financial/风险日报/dashboard/risk-daily.html"  # 相对 <Documents>/Claude；清单里也按相对路径记，不带会话目录
 MAIN_ID, AI_ID, EAL_ID = "risk-daily", "risk-daily-ai-alarm", "risk-daily-eal-starfield"
 # 三个托管页地址（2026-11-12 建，登记在 brain/.tmp/artifact-publish/hosted-pages.json；两处不一致即 fail-closed）
 URLS = {MAIN_ID: "https://claude.ai/artifact/HksT4v7iLnd6wwNNcgBQoD",

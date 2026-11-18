@@ -64,7 +64,7 @@ def main():
         write(docs, "Claude/brain/司南/GOTCHAS.md",
               "# x\n\n## [ERR-20260606-001] brain 纯文字\n**状态**: 待修复\n\n"
               "## [ERR-20260606-002] brain 混合\n**状态**: ⏳ 治本未做 · ✅ 本轮已修\n")
-        write(docs, "Claude/Projects/Financial/宏观研究体系/EAL/GOTCHAS.md",
+        write(docs, "Claude/Projects/Financial/Event-Attribution-Ledger/GOTCHAS.md",
               "# x\n\n- **EAL-M001 · 列表闭合（已验证）**：正文\n"
               "- **EAL-UI008 · 列表开放（⚠ 已知风险）**：正文\n\n"
               "## [ERR-20260303-001] 纯文字状态\n\n状态: 已知风险\n\n"
