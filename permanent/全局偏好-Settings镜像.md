@@ -93,6 +93,8 @@ related: [Doctor协作偏好, 通用教训]
 > **⚠ 2026-11-16 · 块二「巡检自愈循环豁免」条工具名 `update_scheduled_task` → `update_trigger`（Doctor 裁 · /consolidate K12）**：`scheduler-weekly-audit` 自 2026-11-04 起是云端 trigger（`references/scheduled-live-mirror/官方端适配指令卡-2026-11-04.md` 启用记录），改班走 `update_trigger`，原工具名使豁免实际失效；射程不变（仍只限该班 description）。同步改 [[Doctor协作偏好]] 同名条。**待 Doctor 重贴 Settings**（连同 11-06、11-13 两批未重贴的 4 句）。
 
 > **⚠ 2026-11-18 · 「金融真实性与时效」条补一句「金融项目禁止编造数据，禁止使用编造数据试算」（Doctor 令 · 原话）**：canonical 在 `brain/CLAUDE.md`「数据真实性铁律」第 6 条；`portable/claude-code/CLAUDE.md`「金融真实性」条与 [[Doctor协作偏好]]「回测/数据研究一律真实数据」节同步。块内行数不变。**待 Doctor 重贴 Settings**（连同 11-06、11-13、11-16 三批）。
+>
+> **✅ 2026-11-18 晚 Doctor 报「done」（重贴动作已做 · 粘贴源＝本镜像待粘贴块机械抽出的 39 行文件，用后已删）· ⏳ 待下场 Cowork 新会话起手逐行比对验证**：本场核不了（Code 标签不注入 Settings，且注入在会话开始时定格）。验证范围＝四批：11-06 与 11-13 的 4 句、11-16 的一处工具名、11-18 的一句。
 
 ```
 逻辑清晰，切中要点；情感陪伴，幽默风趣。
