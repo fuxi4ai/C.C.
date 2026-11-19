@@ -309,6 +309,8 @@ type: log
 - [ ] **基建 · 事件归因台账渲染脚本旧路径悬空（2026-11-19 由 /todo 漏挂对账补挂 · 源：`logs/checkups/2026-11-15-数灵记忆体检.md` ③（体检里已连续 11 周））**：`.tools/render-event-attribution-artifact.mjs` L15 仍硬写 `剑酒青丘/frameworks/事件归因台账.md`；修法方向待 Doctor 定。
 - [ ] **基建 · 体检三个小尾巴（2026-11-19 由 /todo 漏挂对账补挂 · 源：`logs/checkups/2026-11-15-数灵记忆体检.md`「上周遗留复查」）**：① G-X45 环境坑追记未落（`permanent/通用教训.md` 检索 `Stale file handle`、`brain_root.parent` 0 命中）；② `references/scheduled-live-mirror/官方端适配指令卡-2026-11-04.md` L48「后者只挂 brain」与实际挂载不符；③ `.tools/build-backlinks.py` L73/L90 仍是裸 rglob。①② 为 CC 小快灵。
 - [ ] **治理 · 第 25 个云端班是哪个（2026-11-19 由 /todo 漏挂对账补挂 · 源：`logs/2026-11-16-consolidate记忆固化-11月上中旬.md` W1）**：`permanent/_cloud_trigger_health.json` 写 total 25、enabled 25 但不列班名；本机镜像 `references/scheduled-live-mirror/live/` 现有 25 个目录。CC 可先对照 11-04 的 24 班清单缩小范围，最终需 Cowork 侧 list_triggers 实查。
+- [ ] **风险日报 · 拆分器复验顺带两件（2026-11-19 挂 · 源 `logs/2026-11-19-todo分流与风险日报拆分器修复.md` · 低优先）**：① 本机看板 `dashboard/risk-daily.html` 里三条 EAL 链接（`../Event-Attribution-Ledger/backtest/…`）相对 `风险日报/` 根写成，嵌进 srcdoc 后按 `dashboard/` 解析会 404（修复前即存在，托管页已中和）——修不修、改渲染器还是改链接，方向待 Doctor；② `.tools/test_artifact_split_guards.py` 只判「exit≠0 且无产物」、不判拦在哪道守卫，11-17 起三项负向用例全被死链检查提前拦下仍显示 PASS——建议每个负向用例加预期报错子串（改测试文件，CC 可做，待批）。
+- [ ] **conch 技能提案 · 手工归档前查 `archived/` 是否被 gitignore（2026-11-19 /save 记忆分拣 Doctor 勾选 · 源 `logs/2026-11-19-DVA-conch审查.md`）**：DVA 复查查出 `archived/` 被 `.gitignore:41` 忽略，手工归档等于把文件移出 git 跟踪，且冻结账本里的引用会断链。提案在 `brain/.skills/the-conch-maiden/references/archive.md`「手工归档单个文件」加一条：移动前查目标 `archived/` 是否被忽略，被忽略时在汇报里写明并改为原位加注或另议。改 skill 走 canonical → portable → skill_release 发布链，实改待 Doctor 批。
 
 ## 长期观察
 
