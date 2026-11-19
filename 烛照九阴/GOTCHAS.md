@@ -1159,3 +1159,14 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 「缺数不补值」要用「应有的集合」来判（日历、固定篮子），再写一条删掉基准行的负例。黑名单式的拦截先问「还有哪些字段会被人读到」，按整份文件设边界，并明说拦不住改写。校验值之外要核身份（类型、日期、版本）。人工填的结论要记下它依据的版本。转引的出处，在别人会据此判断的文件里，回原文核一遍；课件与我方补定分开标。
 **来源**: 本会话；V.V. 复核（EAL 工作日志）；子代理回原文核对回报。
 **追记 2026-11-17 22:46**: Doctor 裁「三项都补」。记录格式加了传导链与商业暴露、完备度（观察或条件草案）、前轮承接；校验器逐条核对上一期的每条记录都有去向。测试 49 项。明天的芒芒班是新格式第一次在班上跑：它要先读上一期（11-17，旧格式）的五条记录并逐条给出去向，校验不过会按报错改。
+
+## [NOTE-20261119-001] `intl_index_daily` 新加 SOX（kind=overnight）后，美股收盘班的验收清单没有它——SOX 单条缺数不会报 ❌；另：给这张表加序列不能跑全清单 `--from` 回补
+**状态**: ⚠️ 已知风险（未修；要不要把 SOX 列进验收清单属于改编排器行为，归 Doctor 定）
+**优先级**: 🟢 低
+**触发场景**: 2026-11-19 Doctor 裁「公共行情库加序列」，句芒在 `scripts/fetch_intl_index.py` 的 `INDICES` 加 SOX（`^SOX`，kind=`overnight`，只供风险日报读数、不入烛照日报展示）并只回补这一条。动手前通读按 kind 取数的消费端时发现。
+**硬证据/最小复现**: 实读 `ops/mac_us_close_backfill.py`：第 51 行 `US_LEG_CODES = {"NASDAQ", "SPCX", "NVDA", "AVGO", "LITE"}`、第 52 行 `US_LEG_KINDS = ("overnight", "us_stock")`；`verify()` 只在 `US_LEG_CODES - got` 非空时报 ❌，所以多出来的 SOX 不会误报，但 SOX 某天没取到也不会被这一班发现。`probe()` 的水位是 `MAX(trade_date) WHERE kind IN (overnight, us_stock)`，SOX 现在算在里面（与其余美股标的同一次取数、同一末日，20261118）。脚本第 47–49 行自己写着「改票池时记得同步这里」。其余消费端（`tools/gen_daily_report.py`、`tools/calibrate_risk_factors.py`、`config/risk_factors.json` 的 `semi_codes`、风险日报各脚本）实读都是按明确 code 取，不按 kind，不受影响。
+**根因**: 验收清单是手写的固定集合，与取数清单 `INDICES` 分开维护；新加序列时没有任何闸门提醒两边要对一下。
+**影响面**: 只影响「SOX 缺数能不能被班次自己发现」。SOX 的下游是风险日报资金结构状态机的「跟随」读数；若雅虎单独对 `^SOX` 失败，取数脚本会记一行 `✗ SOX(^SOX): 无数据 → 标缺`，退出码仍是 0，收盘班回读核对不报 ❌，下游读到的是前一日的末行。
+**修复/建议修法**: 未修。两种做法归 Doctor 定：① 把 `SOX` 加进 `US_LEG_CODES`（收盘班会对它验收，等于改了编排器的验收行为）；② 不动编排器，由消费方（风险日报）自己核对 SOX 末行日期是否等于其余美股标的的末行日期，陈旧就标缺。
+**预防门禁**: 给 `INDICES` 加序列时三件事一起做——先搜一遍按 kind 取数的地方（`grep -rn "overnight\|us_stock"`）；对一下 `mac_us_close_backfill.py` 的验收清单；**回补只针对新加的那一条**（引入脚本的 `fetch_yf` 单取单写）。不能直接跑 `fetch_intl_index.py --from <起点>`：写入是 `INSERT OR REPLACE`，会把 JP_FUT / US10Y / US30Y / BRENT 这几条「取数时点快照」的历史读数整段覆盖成现在取到的值。
+**来源**: 2026-11-19 句芒实施场（CC 转 Doctor 交办）；`agents/句芒/logs/2026-11-19-SOX序列加入与回补.md`。
