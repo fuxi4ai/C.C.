@@ -2,7 +2,7 @@
 title: 渊图 · GOTCHAS（已知坑）
 tags: [渊图, gotchas]
 created: 2026-05-14
-updated: 2026-11-14
+updated: 2026-11-19
 status: active
 type: resource
 project: 渊图
@@ -1299,6 +1299,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **来源**: 2026-11-05 Code 标签会话，实跑实读；审核者脚本 `/private/tmp/claude-501/aud/`（临时目录）。
 **追记（2026-11-07 Doctor 裁 23A · 🔄 已修待验）**: ⑦ 存量 5 条股价类品名行（兆易H股发行价/宇树IPO发行价/英伟达股价目标价/东方电缆股票/北方华创股票）已从 `prices/commodity_prices.jsonl` 迁至 `prices/_tombstones/2026-11-07_stock_quotes.jsonl`（价格层此前无 tombstone 惯例，首例：首行 `_tombstone_meta`，原行加 `_tombstoned_at`/`_tombstone_reason`），jsonl 1274→1269，`latest.json` 重建 1252；`PRICE_LAYER.md` 边界节加「股价不进」与墓碑惯例；`tests/test_gates_20261105.py` ④ 存量普查期望改为 0 命中 + 墓碑含 5 条（106/106 PASS）。备份 `prices/_bak/commodity_prices.jsonl.bak_2026-11-07_qaboard`。
 **追记（2026-11-17 · 第 19 项对「只改来源 reference」的判法）**: `outputs/surgery4_20261117_deepseek_hetero_edgefix.py` 只改了 `concept_DeepSeekHeterogeneousTraining` 一条 web 来源（Epoch）的 reference 括注，节点其余字段未动，`kg_promote` 第 19 项报「1 条 cite 找不到可读原文」拦停（canonical 未动）。根因：`rules/kg_gates.new_cites` 以 (file, reference) 判新旧，改了 reference 即算新来源；节点又满足 `_thin_change`（只动来源），于是不论有无 `provenance_kind` 都按 cite 查原文，而 `web:` 源在 raw 树里找不到。处理：在清单 `cite_overrides` 声明该 web 文件并写实读理由后通过。影响：任何只订正来源 reference 的手术都会撞上；属设计行为但规程未写明。建议（待 Doctor 裁，未实施）：CLAUDE.md 手术规范补一句「只改来源 reference 时，web 源须在 cite_overrides 声明」，或 `new_cites` 对 `web:` 源改为不查 raw。状态维持原条。
+**追记（2026-11-19 · 规则之间的张力 · ⚠️ 待裁）**: DeepSeek 第二轮入图的首验审核者指出：CLAUDE.md「provenance 时点规范」第 ① 条要求二次转述源补 `provenance_kind: "cite"`，但第 19 项把带该字段的新来源一律按 cite 去 raw 树找原文，`web:` 源在 raw 里没有 ⇒ 补字段就被拦，除非逐条写 `cite_overrides`。全图 300 多条 `web:` 源都未带该字段（实情是规范第 ① 条对 web 源从未执行）。本批四条 web 源未补该字段，转述关系写在 reference/note 里（如「21 世纪经济报道（据媒体报道）」「《财经》（经凤凰网科技、金融界转述）」）。修法候选（待 Doctor 裁，未实施）：① 规范第 ① 条限定为 raw 内文件；② 或 `new_cites` 对 `web:` 源不查 raw、改为要求 note 写明实读方式。状态维持原条。
 
 ## [NOTE-20261105-010] kg_ingest PDF 通道必然失败：`file_text` 未赋值，每篇报「未知错误，已跳过」
 **状态**: ✅ 已修复（未参与实施的审核者代签 · 2026-11-05 · 判定 PASS_WITH_LIMITS · 复验 FAIL→修→PASS_WITH_LIMITS→修→PASS_WITH_LIMITS）；真 API 的 PDF 附件调用未验证，限制见本条追记
@@ -1349,6 +1350,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **修复/建议修法**: 落盘前对高影响数字用 WebFetch 回到具体页面；找不到页面的标「摘要，页面未定位」，不挂编号。
 **预防门禁**: 落盘后由未参与撰写的审核者逐条回源，并检查孤儿来源。
 **来源**: 2026-11-09 追踪件 v2 独立审核。
+**追记（2026-11-19 · 同根复发第 2 次 · 跨项目第 2 例 → 应升格通用教训）**: DeepSeek 第二轮融资追踪，核实札记 `raw/核实/2026-11-19-DeepSeek第二轮融资追踪核实札记.md` §三 写「首轮投后另一说约 500 亿美元」，该说只出自本场 WebSearch 汇总，所读四篇原文均无；21 经济同篇「估值约500亿美元」说的是月之暗面（未参与实施的审核者 curl 回读查出，已撤）。同场另一形态：WebFetch 返回的是小模型改写的摘要，把出资主体「上海珩岫」写成「恒岫」、「中移投资」写成「中移资本」，curl 原文后才订正。根因同上：汇总/摘要层把多页信息合并改写，数字与主体名和具体页面脱钩。入图部分未受影响——手术脚本对每句入图原话做 `assert q in 原文摘录`（摘录来自 curl 原页），首验时数字已全部可回源。跨项目同族：风险日报 ERR-20261118-004（检索摘要的说法挂到不含它的来源上）。建议修法（补充）：① 入图或落札记的数字、主体名一律以 curl 原文为准，WebSearch/WebFetch 摘要只作线索；② 札记里来自摘要、未回到原页的说法标「摘要·页面未定位」，不与已核口径并列成「两说」。状态维持原条。
 
 ## [NOTE-20261110-001] 只读取数时查到 4 项、涉及 5 个节点的内部自相矛盾：属性键单位后缀与数值差千倍或十倍、描述与名称/属性互斥
 **状态**: 🔄 已修待验（2026-11-10 修复，见文末追记；长鑫市值多口径等「仍开」项未处理）
