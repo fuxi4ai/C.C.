@@ -2,7 +2,7 @@
 title: Gateway-Official适配（司南子项目）
 tags: [司南, Gateway-Official适配, 模式切换, index]
 created: 2026-10-21
-updated: 2026-11-05
+updated: 2026-11-19
 status: active
 type: index
 project: 司南/Gateway-Official适配
@@ -71,6 +71,8 @@ project: 司南/Gateway-Official适配
 **2026-11-04 补记**：官方订阅已开通，Doctor 裁定定时班与看板留 Cowork 标签，Code 标签不建班（见 `references/scheduled-live-mirror/官方端适配指令卡-2026-11-04.md` §〇 与 `司南/GOTCHAS.md` ERR-20261104-001）。Cowork 注册表现状待该标签实读；上段「待官方订阅开通」与下节「官方订阅壳：当前非常态」为历史口径，正式切后再改。
 
 ## 引擎格局（2026-11-01 Doctor 定版）
+
+> 历史口径（2026-11-19 /conch 司南 补注）：本节是 11-01 的定版，整节（含「CC 主引擎」「官方订阅壳：当前非常态」两行）都早于 11-04 切到官方订阅（见上方补记与全局 `~/.claude/CLAUDE.md` 双轨声明），未改写。现行引擎分工这次没有核。
 
 - **CC 主引擎**：Claude Desktop（Gateway）映射 DeepSeek API——artifact 班 + 日常交互
 - **Claude 补充**：APIYI 转接（目标态）——dualscorer claude 腿、仲裁位；**适配未做**（当前 APIYI key 仅图像模型；提案见 checkpoints）
