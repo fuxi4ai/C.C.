@@ -738,8 +738,8 @@ CANDIDATES = [
 
 ## [NOTE-20261118-007] 托管页拆分器期望「研究」链接以 `../Financial/` 开头，迁目录后页面过不了拆分器（子代理实跑，主会话未复核）
 
-**状态**: ⚠️ 已知风险（未修；是否已影响生产的托管页推送未核）
-**优先级**: 🟡 中
+**状态**: 🔄 已修待验（2026-11-19 CC 实施；已影响生产，见下方追记；✅ 待未参与实施的审核者落，实施者不自标）
+**优先级**: 🔴 高（托管页 11-17 起停更）
 **触发场景**: 2026-11-18 温度计迭代实施中，改 `temp_history` 的子代理跑 `ops/verify_marginal_e2e.py`，H1、H2 两项失败。
 **硬证据/最小复现**: 子代理回报（实跑）：拆分器 `brain/.tools/artifact_split_risk_daily.py` 期望 `lnk-research` 的 href 以 `../Financial/` 开头，而 2026-11-17 迁入 `Financial/` 之后渲染器写的是 `../Event-Attribution-Ledger/…`；它用真实拆分器对真实项目现有页面只读试跑（假 BRAIN_ROOT），报同一句错。主会话没有重跑。
 **根因**: 未查实。假设：2026-11-17 项目目录迁入 `Financial/` 时，页面里的相对链接改了，拆分器的内置检查没有跟着改（同族：海螺姑娘 GOTCHA-20261117-001 的迁移漏网）。撤回条件：主会话或他方重跑拆分器通过。
@@ -747,6 +747,7 @@ CANDIDATES = [
 **修复/建议修法**: 先由未参与的人只读复现；属实则改拆分器的检查（或渲染器的链接），并核对 11-17 以来托管页的实际推送记录。
 **预防门禁**: 目录迁移的消费方清单里加上「对页面内容做内置检查的工具」。
 **来源**: 2026-11-18 子代理回报（温度计迭代 · 边际变化模块同步），主会话转录。
+**追记（2026-11-19 · /todo 现核 · CC 实跑实读）**: 已影响生产——回落队列 `brain/.tmp/pending-artifact-push.jsonl` 11-17T17:10Z、11-18T17:10Z 两班 refresh-risk-daily 均记「拆分器 exit 1：…「getElementById(\"lnk-research\").href=\"../Financial/」应恰好 1 处，实际 0 处」；`dashboard/risk-daily.html` 三条链接实为 `../Event-Attribution-Ledger/backtest/…`（ALARM_EAL_RESEARCH.html、EAL_VALUATION_DESK.html×2）。根因坐实：2026-11-17 迁目录后拆分器 DEADLINK 期望串未跟改。修复：`.tools/artifact_split_risk_daily.py:121-122` 三处期望前缀改为 `../Event-Attribution-Ledger/`（备份 `.tools/_bak/artifact_split_risk_daily.py.bak_2026-11-19_eal-prefix`）。自验：`.tools/test_artifact_split_guards.py` 修前「风险日报·原件」FAIL、修后全部通过（原件 exit 0 产物 3；三项负向测试各拦在自己的守卫上，修前它们都提前拦在死链检查）。未核：下一班（2026-11-19T17:10Z）实际推送结果；线上托管页仍停在 11-16 直到下一次成功推送（2026-11-19 get_artifact 实读 Risk Daily (Cloud) version `1794849605-af6a`，前缀换算为 2026-11-16 17:20:05Z；version 前缀即发布时间戳为推断）。独立复验 PASS_WITH_LIMITS（未参与实施的子代理：diff 只三处、原件干跑 exit 0 三页生成、负向测试各拦在自身守卫、无别处旧前缀检查）。
 
 ## [NOTE-20261118-008] `ops/calc_high_states.py` 的 `load` 在查询报错时不关连接；成交状态模块复用它，连带依赖英伟达那张表
 

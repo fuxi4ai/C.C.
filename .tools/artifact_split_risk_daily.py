@@ -118,8 +118,8 @@ def strip_webfont(frag, what):
 # 指向 /research 的链接隐藏。只加样式、不删改正文与脚本；原件不动。形态与预期不符即 fail-closed。
 DEADLINK = {
     AI_ID: ("#lnk-research,#lnk-desk,#lnk-eal-db{pointer-events:none;cursor:default;color:inherit;text-decoration:none}",
-            (('getElementById("lnk-research").href="../Financial/', 1), ('getElementById("lnk-desk").href="../Financial/', 1),
-             ('getElementById("lnk-eal-db").href="../Financial/', 1), ('id="lnk-research"', 1), ('id="lnk-desk"', 1),
+            (('getElementById("lnk-research").href="../Event-Attribution-Ledger/', 1), ('getElementById("lnk-desk").href="../Event-Attribution-Ledger/', 1),
+             ('getElementById("lnk-eal-db").href="../Event-Attribution-Ledger/', 1), ('id="lnk-research"', 1), ('id="lnk-desk"', 1),
              ('id="lnk-eal-db"', 1))),
     EAL_ID: ('a[href^="/research"]{display:none!important}',
              (('href="/research"', 2), ("research_url.startsWith('/research#')", 1))),
