@@ -3,7 +3,7 @@ title: CC 声音档案
 abstract: "CC 在 ElevenLabs 的专属音色（Cowork 默认 Hiddleston-CN · Code 默认 Sweet Goumang · 备选 C.C.）与对话朗读模式的持久配置；新会话凭本文件恢复声音"
 tags: [配置, 声音, TTS, ElevenLabs, 朗读, CC]
 created: 2026-07-21
-updated: 2026-11-10
+updated: 2026-11-19
 status: active
 type: reference
 related: [全局偏好-Settings镜像]
@@ -51,6 +51,17 @@ related: [全局偏好-Settings镜像]
 - 调用链：`text_to_speech`（voice_id 按默认/点名，output_directory 如下）→ `play_audio`
 - 前提：Doctor 桌面端 Claude 打开（ElevenLabs MCP 走本机桥接）
 
+## 语气标签（2026-11-19 · Doctor 试听判「效果很好」）
+
+- eleven_v4 支持音频标签：方括号写一句声音指示，放在要变语气的地方，如 `[happy]`、`[sighs]`、`[whispers]`
+- 实测：Sweet Goumang · eleven_v4 · zh · stability 0.5，中文句里插英文标签能演出来、不被念出（2026-11-19）；Hiddleston-CN、C.C. 未测
+- 用法三条：
+  1. 少用：每轮朗读最多 2～3 个，只在语气真变的地方加
+  2. 只写声音：情绪、音量、呼吸、笑；不写动作或场景（`[standing]`、`[music]` 之类）
+  3. 配音色：标签要合音色性格；标签被念出来，就说明这个音色接不住这种语气，改用省略号、破折号
+- 停顿靠标点：v4 不支持 SSML `<break>`
+- 来源：ElevenLabs 官方 Text to Speech 产品说明页、Best practices · Prompting Eleven v4
+
 ## 文件落位
 
 - 朗读音频统一落 `~/Documents/Claude/临时文件/`，不散 Documents 根
@@ -91,5 +102,6 @@ A voice in the narrow overlap between a low female voice and a light male voice 
 - **2026-10-04：新增第二声线「Hiddleston」男声两版 → 同日终裁设默认**（Doctor 在 ElevenLabs 网站亲自生成 · 第一轮因「伦敦腔」地域词致老外腔被否 → 去地域词版通过〔主推版 `HRV5jGEhRPGls9DMLXiF`〕· v2 迭代：Doctor 裁「去朗读腔·更日常交流·重在好听/绅士/有教养/博学」→ CC 出 v2 提示词 → Doctor 网站生成后**更新在 Hiddleston-CN 槽位**（`FVvcH2MAGGpovILJcXEv`，替换初代中文测试版 `ugJYnTvWqslHn3gjUJJI`，初代已由 Doctor 网站删除）· v2 中文试读 Doctor 听判「这般很好」→ **同日裁「设为默认吧，之前的保存为备选」**：Settings 朗读条默认切 Hiddleston-CN、C.C. 降备选；镜像/本档案/brain-resume 三端同步，Settings 待 Doctor 重贴）
 - **2026-11-10：订正两处过时描述**（独立核验发现、Doctor 令「订正」）：frontmatter `abstract` 原写「专属音色（C.C.）」、§备用音色原写「默认朗读仍是 C.C.」——均早于 10-04 切换，与正文默认 Hiddleston-CN 冲突，改为现值。改前留档：`CC声音档案.md.bak_20261110_defaultfix`
 - **2026-11-10：Sweet Goumang 改为 Code 标签默认音色、撤「芒芒专属」**（Doctor 令「Code 默认 Sweet Goumang 这个音色吧，用以和 co-work 做区分，不再是芒芒专属了」）：Code 侧 `brain/portable/claude-code/CLAUDE.md` 朗读条同改；Cowork／Settings 镜像不动（仍 Hiddleston-CN）；`agents/句芒/memory/长期记忆.md` §声音同步改归属表述。改前留档：`CC声音档案.md.bak_20261110b_goumang`
+- **2026-11-19：新增 §语气标签**（Doctor 令查 ElevenLabs 官网语气用法 → Sweet Goumang 中文带 `[happy]`/`[sighs]`/`[whispers]` 试读，Doctor 听判「效果很好」→ 裁「照草案写」）：Code 侧 `brain/portable/claude-code/CLAUDE.md` 朗读条加一句指针；Cowork／Settings 镜像不动（Hiddleston-CN 未测标签）。改前留档：`_bak/CC声音档案.md.bak_2026-11-19_audio-tags`
 
 > 相关：[[全局偏好-Settings镜像]] · [[Doctor协作偏好]]
