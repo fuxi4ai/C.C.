@@ -24,6 +24,7 @@ find ~/Documents/Database -type f -size -2048k \( -name '*.md' -o -name '*.py' -
 - `-F` 按字面匹配，路径里的 `.`、`[` 不会被当成正则。
 - **看输出，不看退出码**：两条都把报错丢进 `/dev/null`，目录读不了时和「没有消费方」一样是空输出；第二条有命中时退出码也可能是 1。空结果要么用一个确知存在的词做阳性对照（如 `K='market_data.db'`），要么去掉 `2>/dev/null` 看有没有读取报错。
 - `Database/` 只扫小于 2 MiB 的文本文件（`-size -2048k`；BSD find 的 `-size -2M` 会先按 MiB 向上取整，实际只选到 1 MiB 以下，漏掉 1–2 MiB 的文件），跳过 `backups/` 与冻结区。对整个 `Database/` 直接 `grep -r` 会扫进大库与二进制，X-Board 首例实测超过 120 秒被转到后台。按上面两条命令，2026-11-17 实测第一条约 3–25 秒、第二条约 45–60 秒（随文件缓存冷热）；仍然慢时用后台运行，不要重复起第二份。
+- **要查的名字很多时（上百个备份名、文件名）用两段法**：先用第一条命令的同一范围与排除项，把 `-e "$K"` 换成 `-e '.bak'`（或名字共有的片段）并加 `--include='*.md' --include='*.py' --include='*.json'` 等文本类型，筛出候选文件清单（PEC 首例 936 个，约 1 秒）；再对清单 `xargs -0 grep -oHF -f <名字清单>` 逐名匹配（约 90 秒）。不要把几百个模式用 `grep -roF -f` 直接扫整个 `~/Documents/Claude`：2026-11-19 `/conch PEC` 实测十多分钟不出结果，输出卡在 16 KB 的缓冲上，审查者把截断的结果当成扫完了，复查判 FAIL 才发现。扫完用一个确知被引用的名字做阳性对照，并核对结果文件的末行完整。
 
 **扫描范围**：`~/Documents/Claude/`（brain 与全部项目）、`~/Documents/Database/`、`~/Documents/Codex/`（只读，改动走 V.V.）、`~/.codex/automations/`、`~/Library/LaunchAgents/`、Cowork 云端班镜像 `brain/references/scheduled-live-mirror/live/`。
 
