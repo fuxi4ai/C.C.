@@ -1,6 +1,6 @@
 ---
 name: refresh-risk-daily
-description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号 → 股权溢价指数原子 → AI Tech Alarm 事件源定向回源更新（四维度 P0/P1·未核保留）→ prepare V17 包→model_entry DeepSeek 判读→build 校验落盘·失败回退标陈旧）→ update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写
+description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号 → 股权溢价指数原子 → 股票供给增发检索（尽力而为·不完整即不可计算） → AI Tech Alarm 事件源定向回源更新（四维度 P0/P1·未核保留）→ prepare V17 包→model_entry DeepSeek 判读→build 校验落盘·失败回退标陈旧）→ update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写
 ---
 
 每日刷新「风险日报」artifact。自包含步骤：
@@ -34,8 +34,35 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
    - 链：fetch 取 Tushare 沪深300 PE_ttm＋akshare 中国10Y（降级链：akshare→中债官网→前值+陈旧标记）→ 乐咕月频历史（2005-04 起）×1/1.04 校准 → 60 月滚动分位 → 两把尺分数（相对尺：分位 50/25/0 记 0/75/100 分；绝对尺：溢价 4.7/2.8/−2.48 记 0/75/100 分；取较大；不进综合温度；取数陈旧、文件生成超过 6 小时、取数日落后于行情库时不出分并写明原因）→ data/erp_atom.json；逐日留存追加到 data/erp_atom_history.jsonl；render 生成 dashboard/erp_atom_detail.html（第四标签页「股权溢价指数」srcdoc 源）。
    - 失败语义：取数内部自动降级（前值+陈旧标记）不红字；两脚本任一 rc!=0 → 记一行「ERP atom skipped: 原因」，当日简报红字报 Doctor，**绝不阻塞后续构建**；卡片与详情页自降级（「数据不可用」/前值陈旧标记）。
    - 只写 风险日报/data/erp_*.json|.csv、data/erp_atom_history.jsonl（逐日留存：只追加，同一取数日只留一条）与 dashboard/erp_atom_detail.html；重跑无害（generated_at 前进；同日重跑不重复写留存）。
+   - 另：第 3 步构建器本身另外会读写 `data/erp_zone_alerts.jsonl`（股权溢价分区提示的已提示记录，只追加）。
    - pip 安装耗时约 1-2 分钟属正常；装失败 → 记「ERP atom skipped: pip 失败」并继续。
    - 沙箱直连 Tushare/akshare，勿设代理（与市场班同通道；akshare 走英为财情）。
+
+1.8. （股票供给 · 增发检索（尽力而为）· 2026-11-20 Doctor 令「股票供给接入日报」· 生产接入登记第二项）在沙箱联网检索，产出增发读数文件，供第 3 步构建器（`build_risk_daily.py` 自己调用 `stock_supply.py`）读取。数据日＝公共行情库 `daily_market` 有成交额的最新交易日（北京日期，yyyymmdd）。
+   - 检索：联网检索数据日当天申购报价（或缴款）的上市公司向特定对象发行股票、非公开发行。可查的出处：巨潮资讯、上交所、深交所、北交所公告，以及公开报道。查询词举例：「向特定对象发行 认购邀请书 申购报价 <日期>」「发行期首日」「发行情况报告书 申购报价日」。
+   - 每找到一笔申购日恰为数据日的，记下：公司、代码、申购日、按公告的拟募资上限估算的金额（元）、出处链接。
+   - 以下几类标为不计（`counted: false`）并写明原因（`exclude_reason`）：发行对象是大股东及其关联方；认购方含财政部（已裁定的四笔大行增发同类）；小额快速融资（简易程序，拟募资不超过 3 亿元）。
+   - 只有能说明当天没有遗漏时才写 `coverage: "complete"`；否则写 `"incomplete"`，并在 `gaps` 里写明缺什么（例如「认购邀请书未公开，无法确认当日是否有申购报价」）。认购邀请书一般只定向发给投资者、事先不公告，多数日子会是 incomplete，属预期结果。**不确定就写 incomplete，不编数、不用后来披露的金额倒填。**
+   - 写盘：`~/Documents/Claude/Projects/Financial/风险日报/data/supply_placement_reading.json`，一次整文件覆写，**不用临时文件改名**（见第 5 节：挂载盘只许 truncate 写，不许 rename/unlink）；写完回读一遍，确认 JSON 能解析、`data_date` 是当天的数据日。构建器只认数据日相同、生成于 24 小时内的这份文件。
+   - 读数文件格式（`schema` 必须原样；下例中的代码与金额只示意字段写法，不是行情）：
+     ```json
+     {
+       "schema": "supply_placement_reading/v1",
+       "data_date": "20261120",
+       "generated_at": "2026-11-20T09:05:00-08:00",
+       "coverage": "incomplete",
+       "gaps": "认购邀请书未公开，无法确认当日是否有申购报价",
+       "searched_sources": ["巨潮资讯 当日公告检索：认购邀请书、发行期首日、发行情况报告书"],
+       "items": [
+         {"ts_code": "000000.SZ", "name": "示例", "apply_date": "20261120", "est_amount_yuan": 500000000,
+          "basis": "拟募资上限", "counted": true, "sources": ["https://..."]},
+         {"ts_code": "000001.SZ", "name": "示例二", "apply_date": "20261120", "est_amount_yuan": 300000000,
+          "counted": false, "exclude_reason": "小额快速融资", "sources": ["https://..."]}
+       ]
+     }
+     ```
+   - 失败语义：检索不可用就不写文件（或写 incomplete），记一行「股票供给增发检索 skipped: 原因」，继续后续构建。构建器会把增发一项写成缺口，分数显示「不可计算」，**不阻塞日报**。
+   - 另：第 3 步构建器构建时会用 Tushare 取当期减持预案（只读；取不到或返回的表缺列都写「减持资料不足」，不阻塞），取到的原始行追加进本机文件 `data/supply_reduction_plans.jsonl`（不入库）。本步不执行这些，只写上面的读数文件。
 
 2. （AI Tech Alarm 事件源定向回源更新 · 信息自纠正第一步 · 2026-11-03 四目标优化接入）在沙箱：
    - 先读 `~/Documents/Claude/Projects/Financial/风险日报/data/narrative_events.json`（四维度：demand/returns/funding/delivery）逐事件核对 `next_check_utc` 是否已到期/三日内到期，再按四维度观察点定向 WebSearch 回源 P0/P1（机构评论用于选指标，公司/交易披露确认事实）：现金回报→大云财报/FCF/折旧指引；融资信用→发债定价与交割、OpenAI first close、Anthropic IPO、CoreWeave 再融资；付费需求→云收入/合同转收入；交付→可计费容量/交付延期。
