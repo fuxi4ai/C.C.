@@ -2,7 +2,7 @@
 title: Codex 自动化层（真源结构与判读）
 tags: [codex, automation, 环境, 参考]
 created: 2026-09-22
-updated: 2026-10-04
+updated: 2026-11-20
 status: active
 type: reference
 ---
@@ -11,6 +11,7 @@ type: reference
 
 > **一句话**：Codex 的定时任务/自愈 heartbeat 的真源是 `~/.codex/automations/{id}/automation.toml`；那本 2.8 MB 的 `.codex-global-state.json` **是状态不是配置**。
 > 2026-09-22 定位（DVA 自愈链诊断场 · 全链只读实读）。
+> **可读性分环境（2026-11-20 追记）**：本文与 [[DVA自愈链]] 里「`~/.codex` 沙箱不可达、由审计方本机核验」只对 Cowork／云端沙箱成立；**Code 标签（Mac 原生沙箱）可直接读** `~/.codex/automations/{id}/automation.toml`——2026-11-20 实读 `dva-mac` 的 `rrule`、`created_at` 即在 Code 标签内完成（见 `logs/2026-11-20-DVA回流班排期订正与提交命令合并规则.md`）。toml 不带时区字段，`BYHOUR` 按本机时区（PST/PDT）解读。
 
 ## 一、真源在哪（别找错地方）
 
@@ -76,7 +77,7 @@ created_at / updated_at           # 毫秒 epoch
 | ~~`dva-fuxi-mac`~~ | heartbeat | **已退役**（2026-09-29 前后配置不再存在） |
 | `eal-shadow-only-18-10` | cron | **PAUSED** |
 
-⚠ **DVA 一组已重组（2026-09-29 架构级取代）**：由上表的 `dva-fuxi-mac` 自愈闭环，改为**增量链**——`Fuxi-DVA-数据库驱动更新`（id `fuxi-dva` · 每日 00:00 PT）＋ `DVA Mac 增量成果回流`（id `dva-mac` · 每日 06:30 PT）＋ `DVA Fuxi 健康告警`（PAUSED）。**新组 id 与时刻 2026-10-04 本机配置实读已核**（此前为「转述未核」；`~/.codex` 沙箱不可达、由审计方本机核验——旧文「每小时 :30」系未核态笔误，现为 06:30 PT），其**效果层**已实测；详见 [[DVA自愈链]]。
+⚠ **DVA 一组已重组（2026-09-29 架构级取代）**：由上表的 `dva-fuxi-mac` 自愈闭环，改为**增量链**——`Fuxi-DVA-数据库驱动更新`（id `fuxi-dva` · 每日 00:00 PT）＋ `DVA Mac 增量成果回流`（id `dva-mac` · 每日 06:30 PT）＋ `DVA Fuxi 健康告警`（PAUSED）。**新组 id 与时刻 2026-10-04 本机配置实读已核**（此前为「转述未核」；`~/.codex` 沙箱不可达、由审计方本机核验——旧文「每小时 :30」系未核态笔误，现为 06:30 PT〔2026-11-20 订正注：「笔误」说法不准——该班 2026-09-30 安装时确为每小时 :30，2026-10-01 按 Doctor 要求改为每日（DVA 镜像仓 `README.md:14`）；本机 `automation.toml` 2026-11-20 实读仍为 `FREQ=DAILY;BYHOUR=6;BYMINUTE=30`〕），其**效果层**已实测；详见 [[DVA自愈链]]。
 
 ## 相关
 
