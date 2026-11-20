@@ -1,6 +1,6 @@
 # 定时任务 · 四执行面现状快照
 
-> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-11-10T01:29:51-08:00（triggered_by=scheduled），**只读**。
+> 由 `brain/.tools/scheduler_snapshot.py` 生成于 2026-11-19T22:41:53-08:00（triggered_by=manual），**只读**。
 
 > **本文件纳入 git；跑完 `git diff` 即知自上次快照以来什么变了** —— 无论改动来自 Doctor、别的会话还是 CC 自己。
 
@@ -43,17 +43,17 @@
 
 ✅ ✅ 不存在
 
-## 面③ launchd（源 3 · 装机 9）
+## 面③ launchd（源 4 · 装机 9）
 
 | Label | 排期 | 已加载 | last exit | 装机 mtime |
 |---|---|---|---|---|
-| `com.eal.postevent-native` | — | True | 0 | 2026-10-14 00:24 |
+| `com.eal.postevent-native` | — | True | 0 | 2026-11-17 03:58 |
 | `com.fuxi4ai.audit-harness.dispatch` | — | True | 0 | 2026-10-10 09:53 |
 | `com.google.GoogleUpdater.wake` | — | False | — | 2026-07-01 09:22 |
 | `com.google.keystone.agent` | — | False | — | 2026-07-01 09:22 |
 | `com.google.keystone.xpcservice` | — | False | — | 2026-07-01 09:22 |
 | `com.zhuzhao.ipo-rolling` | {"Hour": 9, "Minute": 0} | True | 0 | 2026-10-14 00:14 |
-| `com.zhuzhao.marketdata` | [{"Weekday": 1, "Hour": 2, "Minute": 30}, {"Weekday": 2, "Hour": 2, "Minute": 30}, {"Weekday": 3, "Hour": 2, "Minute": 30}, {"Weekday": 4, "Hour": 2, "Minute": 30}, {"Weekday": 5, "Hour": 2, "Minute": 30}] | True | (never exited) | 2026-10-14 00:14 |
+| `com.zhuzhao.marketdata` | [{"Weekday": 1, "Hour": 2, "Minute": 30}, {"Weekday": 2, "Hour": 2, "Minute": 30}, {"Weekday": 3, "Hour": 2, "Minute": 30}, {"Weekday": 4, "Hour": 2, "Minute": 30}, {"Weekday": 5, "Hour": 2, "Minute": 30}] | True | 0 | 2026-10-14 00:14 |
 | `com.zhuzhao.usclose` | [{"Weekday": 1, "Hour": 14, "Minute": 0}, {"Weekday": 2, "Hour": 14, "Minute": 0}, {"Weekday": 3, "Hour": 14, "Minute": 0}, {"Weekday": 4, "Hour": 14, "Minute": 0}, {"Weekday": 5, "Hour": 14, "Minute": 0}] | True | 0 | 2026-10-14 00:14 |
 | `netdisk_service` | — | False | — | 2025-03-15 02:42 |
 
@@ -69,4 +69,4 @@
 
 ## 面⑤ 挂载检查（2026-08-13 看门狗挂载治理）
 
-⚠ **缺挂载 5 个**：Database、烛照九阴、剑酒青丘、白泽大宗、brain——定时班跑前需补挂，否则阻塞/静默失败
+➖ 不适用：本机没有会话挂载根（`~/mnt/Documents`、`/sessions/*/mnt/Documents` 均不存在），原生环境不判挂载

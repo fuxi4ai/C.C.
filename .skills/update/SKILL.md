@@ -68,7 +68,7 @@ python3 -B track_update.py dual --apply
 
 ### 3. 读结果
 
-读 `outputs/track_updates/` 最新两个目录的 `report.md`，以及对应 `*.proposal.json`。再运行：
+读 `outputs/track_updates/` 最新两个目录（按修改时间取，不按目录名排序：2026-11-20 起目录名改为横杠日期，与旧紧凑格式并存时按名排序会排错）的 `report.md`，以及对应 `*.proposal.json`。再运行：
 
 ```bash
 git -C ~/Documents/Database/行业研究 --no-pager diff --stat
