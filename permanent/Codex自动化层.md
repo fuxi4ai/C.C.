@@ -44,14 +44,14 @@ created_at / updated_at           # 毫秒 epoch
 
 ## 三、`rrule` 的写法规律（判「能不能触发」的关键）
 
-**在跑的四家一律用裸 RRULE，时间写在 `BYHOUR`/`BYMINUTE` 里，按 Mac 本地时间解释**：
+**在跑的四家〔2026-11-20 订正注：`after-hours-2` 已不存在，表中现存三家；全量现状见 §5 末〕一律用裸 RRULE，时间写在 `BYHOUR`/`BYMINUTE` 里，按 Mac 本地时间解释**：
 
 | id | rrule |
 |---|---|
 | `automation` | `FREQ=DAILY;BYHOUR=5,17;BYMINUTE=30` |
 | `usdjpy-15` | `FREQ=DAILY;BYHOUR=6,18;BYMINUTE=30` |
 | `dva-2` | `FREQ=WEEKLY;BYDAY=WE,SA;BYHOUR=7;BYMINUTE=0` |
-| `after-hours-2` | `FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH;BYHOUR=18;BYMINUTE=45` |
+| `after-hours-2` | `FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH;BYHOUR=18;BYMINUTE=45`〔2026-11-20 订正注：本机 `~/.codex/automations/after-hours-2/` 已不存在，见 §5 末〕 |
 
 - **本地时间实证**：`automation` 的 5:30/17:30 与既有记录「Codex automation 05:30/17:30 **PT**」严丝合缝。
 - ⚠ **`DTSTART;TZID=…` 前缀的写法与在跑者不同形**——`dva-fuxi-mac`（**现已退役**）原本写作
@@ -70,7 +70,7 @@ created_at / updated_at           # 毫秒 epoch
 | id | kind | status |
 |---|---|---|
 | `automation` | heartbeat | ACTIVE |
-| `after-hours-2` | heartbeat | ACTIVE |
+| `after-hours-2` | heartbeat | ACTIVE〔2026-11-20 订正注：配置已不存在〕 |
 | `usdjpy-15` | heartbeat | ACTIVE |
 | `dva-2` | heartbeat | ACTIVE |
 | `dva-fuxi` | cron | **PAUSED** |
@@ -78,6 +78,23 @@ created_at / updated_at           # 毫秒 epoch
 | `eal-shadow-only-18-10` | cron | **PAUSED** |
 
 ⚠ **DVA 一组已重组（2026-09-29 架构级取代）**：由上表的 `dva-fuxi-mac` 自愈闭环，改为**增量链**——`Fuxi-DVA-数据库驱动更新`（id `fuxi-dva` · 每日 00:00 PT）＋ `DVA Mac 增量成果回流`（id `dva-mac` · 每日 06:30 PT）＋ `DVA Fuxi 健康告警`（PAUSED）。**新组 id 与时刻 2026-10-04 本机配置实读已核**（此前为「转述未核」；`~/.codex` 沙箱不可达、由审计方本机核验——旧文「每小时 :30」系未核态笔误，现为 06:30 PT〔2026-11-20 订正注：「笔误」说法不准——该班 2026-09-30 安装时确为每小时 :30，2026-10-01 按 Doctor 要求改为每日（DVA 镜像仓 `README.md:14`）；本机 `automation.toml` 2026-11-20 实读仍为 `FREQ=DAILY;BYHOUR=6;BYMINUTE=30`〕），其**效果层**已实测；详见 [[DVA自愈链]]。
+
+**2026-11-20 全量实读（Code 标签 · 逐个读 `~/.codex/automations/*/automation.toml`，共 8 个）**——上表原文保留，现状以此为准：
+
+| id | name | kind | status | rrule（本机 PT） | 建班 |
+|---|---|---|---|---|---|
+| `automation` | 科技资讯看板定时刷新 | heartbeat | ACTIVE | `FREQ=DAILY;BYHOUR=5,17;BYMINUTE=30` | 2026-07-30 |
+| `usdjpy-15` | EAL全量采集 | heartbeat | ACTIVE | `FREQ=DAILY;BYHOUR=6,18;BYMINUTE=30` | 2026-08-07 |
+| `dva-2` | DVA 设计素材每周读取 | heartbeat | ACTIVE | `FREQ=WEEKLY;BYDAY=WE,SA;BYHOUR=7;BYMINUTE=0` | 2026-06-18 |
+| `fuxi-dva` | Fuxi-DVA-数据库驱动更新 | heartbeat | ACTIVE | `FREQ=DAILY;BYHOUR=0;BYMINUTE=0` | 2026-09-29 |
+| `dva-mac` | DVA Mac 增量成果回流 | heartbeat | ACTIVE | `FREQ=DAILY;BYHOUR=6;BYMINUTE=30` | 2026-09-30 |
+| `dva-mac-2` | DVA Mac 月度备份归档 | heartbeat | ACTIVE | `FREQ=MONTHLY;BYMONTHDAY=1;BYHOUR=9;BYMINUTE=30` | 2026-11-19 |
+| `dva-fuxi` | DVA Fuxi 健康告警 | cron | **PAUSED** | `FREQ=HOURLY;INTERVAL=1` | 2026-08-15 |
+| `eal-shadow-only-18-10` | EAL Shadow-Only 18:10 | cron | **PAUSED** | `FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=18;BYMINUTE=10` | 2026-08-28 |
+
+- **新增**：`dva-mac-2`——prompt 为每月在 Codex `Project Mirror/DVA` 跑 `runtime/tools/fuxi/archive_dva_mac_backups.py plan`，「根据发布回执核定 `.dva-mirror/backups/` 内最近 7 代及更早的候选」（原词），有候选时用同一脚本的 `archive` 子命令外移到 `fuxi-station:F:/Mac_Backup/dva-mirror/monthly/`；**只归档、不跑 prune，每批本地移除须 Doctor 另批**。对应 `DVA/architecture/决策记录.md` 2026-11-14「由 VV 装月度归档班」——该条第 34 行写的是「先归档、核验通过再 prune」，实装班不含 prune，两者有出入（VV 回执 `4AI/Shake hands/to CC/VV致CC-Database磁盘与备份保留回执-2026-11-19.md` 同述「月班只做归档」）。
+- **已不存在**：`after-hours-2`（§3、§5 上表仍列，已加订正注）；何时、为何移除未核。
+- 「建班」由 `created_at`（毫秒 epoch）按本机时区换算。
 
 ## 相关
 
