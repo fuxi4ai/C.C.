@@ -31,9 +31,9 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
    pip3 install --break-system-packages --quiet tushare akshare pandas 2>&1 | tail -1
    python3 ~/Documents/Claude/Projects/Financial/风险日报/fetch_erp_atom.py
    python3 ~/Documents/Claude/Projects/Financial/风险日报/render_erp_detail.py
-   - 链：fetch 取 Tushare 沪深300 PE_ttm＋akshare 中国10Y（降级链：akshare→中债官网→前值+陈旧标记）→ 乐咕月频历史（2005-04 起）×1/1.04 校准 → 60 月滚动分位 → data/erp_atom.json；render 生成 dashboard/erp_atom_detail.html（第四标签页「股权溢价指数」srcdoc 源）。
+   - 链：fetch 取 Tushare 沪深300 PE_ttm＋akshare 中国10Y（降级链：akshare→中债官网→前值+陈旧标记）→ 乐咕月频历史（2005-04 起）×1/1.04 校准 → 60 月滚动分位 → 两把尺分数（相对尺：分位 50/25/0 记 0/75/100 分；绝对尺：溢价 4.7/2.8/−2.48 记 0/75/100 分；取较大；不进综合温度；取数陈旧、文件生成超过 6 小时、取数日落后于行情库时不出分并写明原因）→ data/erp_atom.json；逐日留存追加到 data/erp_atom_history.jsonl；render 生成 dashboard/erp_atom_detail.html（第四标签页「股权溢价指数」srcdoc 源）。
    - 失败语义：取数内部自动降级（前值+陈旧标记）不红字；两脚本任一 rc!=0 → 记一行「ERP atom skipped: 原因」，当日简报红字报 Doctor，**绝不阻塞后续构建**；卡片与详情页自降级（「数据不可用」/前值陈旧标记）。
-   - 只写 风险日报/data/erp_*.json|.csv 与 dashboard/erp_atom_detail.html；重跑无害（generated_at 前进）。
+   - 只写 风险日报/data/erp_*.json|.csv、data/erp_atom_history.jsonl（逐日留存：只追加，同一取数日只留一条）与 dashboard/erp_atom_detail.html；重跑无害（generated_at 前进；同日重跑不重复写留存）。
    - pip 安装耗时约 1-2 分钟属正常；装失败 → 记「ERP atom skipped: pip 失败」并继续。
    - 沙箱直连 Tushare/akshare，勿设代理（与市场班同通道；akshare 走英为财情）。
 
@@ -56,7 +56,7 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
 4. 更新 artifact：调用 `mcp__cowork__update_artifact`，id='risk-daily'，html_path='/Users/lunarabbit/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html'，update_summary 写「当日综合风险温度 {值} {带} · {日期}」。
 
 5. 纪律：
-   - 数据真实性铁律（温度全部来自脚本读的真实一手值，无估算冒充）；risk_overlay_not_alpha——只出风险读数，**不出任何交易/仓位/方向建议**。⚠ 仓位卡片属既有例外（Doctor 2026-10-10 令：卡片自带「仅供参考，不构成投资建议」免责标注，只呈现、不做任何方向断言以外的加工）。股权溢价指数原子同纪律：只出读数与历史分位档位，不做方向断言。
+   - 数据真实性铁律（温度全部来自脚本读的真实一手值，无估算冒充）；risk_overlay_not_alpha——只出风险读数，**不出任何交易/仓位/方向建议**。⚠ 仓位卡片属既有例外（Doctor 2026-10-10 令：卡片自带「仅供参考，不构成投资建议」免责标注，只呈现、不做任何方向断言以外的加工）。股权溢价指数原子同纪律：只出读数、历史分位档位与两把尺分数（分数不进综合温度），不做方向断言。
    - **挂载盘 SQLite 铁律（2026-07-31 事故后立）**：`~/Documents` 是 FUSE 挂载，**不支持 unlink**（实测 EPERM）。SQLite 回滚日志的原子提交点正是删除 `-journal`，所以在挂载盘上直接开 rw 连接（`sqlite3.connect(path)` 不带 `mode=ro`）必然 `disk I/O error`，并留下 hot journal，反复累积即 `database disk image is malformed`（07-27/28/29 连续三天损坏的根因）。
      → 任何写库一律「拷到 /tmp 本地副本 → 在副本上 rw → 自检 integrity ok → 整库覆写回挂载」（truncate 写允许，rename/unlink 不允许）。fetch_taco_components.py 已按此改造（`_stage()` / `_commit_back()`）。纯 `mode=ro` 读挂载盘是安全的，无需改。
    - 若发现 `data/` 下残留 `*-journal` 文件，说明有人绕过了上一条：**报告给 Doctor，不要自行删**（沙箱也删不掉），并在当日输出里标明。

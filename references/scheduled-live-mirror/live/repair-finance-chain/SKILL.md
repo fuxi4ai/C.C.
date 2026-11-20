@@ -25,7 +25,7 @@ description: 看板星图「审查并修复」按钮触发：诊断金融数据�
 
 **不可自动、转交 Doctor（构造命令/方案，不执行）：**
 - 烛照九阴-复盘 / 剑酒青丘-行情 行情库 stale：给 Doctor「手动补跑对应 daily 任务」的命令或建议在 Scheduled 面板重跑，不在本任务里拉 Tushare/改库。
-- DVA-视频：给 Doctor `update-all` 补库命令（`~/Documents/Claude/Projects/DVA/run-update-all.sh`），**不**自动跑（含下载/ASR）。
+- DVA-视频：生产只在 fuxi（Codex 自动化 `Fuxi-DVA-数据库驱动更新`；Mac 只经 `DVA Mac 增量成果回流` 收成果），判读按 `~/Documents/Claude/brain/permanent/DVA自愈链.md`。只报陈旧时长与查到的根因，请 Doctor 到 fuxi / Codex 侧核查；不给 Mac 侧补库命令（`run-update-all.sh` 已退役），**不**自动跑（含下载/ASR）。
 - 任何需要 git commit/push、删文件、改写历史、或根因不在上述白名单的情形。
 
 ## Step 3 · 收尾
