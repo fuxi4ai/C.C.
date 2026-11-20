@@ -56,3 +56,10 @@ project: 海螺姑娘（对 Database 上层目录跑 conch）
 - [[CC声音档案]]
 - [[通用教训]]
 - [[文件健康要素集合]]
+
+## 追加 · `/conch Douyin-2nd`（同日晚）
+
+- 目标 `~/Documents/Database/Douyin-2nd`（26 个文件、166MB，DVA 单视频 Mac 本地第二线产物）。引擎 scan 陈旧件 0，tidy-scan 只报 5 件命名；manifest 与实物一一对应，transcript 成对齐全。
+- 问题 2 条：① 5 个 `_单链接字幕汇总_YYYYMMDD-HHMMSS.md` 紧凑日期（存量，早于 2026-08-22 横杠规矩）；生成代码 `Projects/DVA/harvest-links.js` 第 428–432 行仍按紧凑格式，且它也打包在 fuxi 线运行（`tools/fuxi/build_runtime_bundle.py:35`、`single_one.ps1:69`），V.V. 的 Project Mirror 另有分叉副本——只改 Mac 5 件会两线分格式。② `harvest-links.js:375` 与 `DVA单视频最佳实践.md` 第 43、65 行写 `<作者>/post/…`，单视频实际不建 `post/`（DYD `video_downloader.py:50` 不带 mode；主页链接 `user_downloader.py:142` 才建）。
+- 复查子代理 PASS_WITH_LIMITS：纠正我「镜像也没有 post/」为错（镜像 46 个作者目录 11 个有）；补出消费方三处——Codex `Design Reference` 三个成品包按绝对路径引用 NONO 三个视频（「originals remain in Database/Douyin-2nd」，CC 抽查原文属实）、Codex `Morning Post` 钉了 7646680066071530788 的 sha256、dyd 库 `aweme.file_path` 登记了这里的路径 ⇒ 目录只能留在原处。
+- Doctor 选择框定「挂 TODO 随 DVA 下批改」：不动文件，brain TODO 挂一条。
