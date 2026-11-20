@@ -91,11 +91,18 @@ print(n)'); echo "N=$N"`
 
 4. **conch 清空/盘点（两纪律目录 · 2026-09-12 Doctor 立 · 2026-09-19 迁至 `~/Documents/Claude/` 下）**：用 `mcp__cowork__request_cowork_directory` 挂**两个叶子目录**——`~/Documents/Claude/临时文件` 与 `~/Documents/Claude/散落归档文件`（单目录挂载可行）。**切勿改挂 `~/Documents/Claude` 整层**——那会把 brain vault 与 `.sandbox-ssh/`（SSH 私钥）一并暴露给无人值守班，属权限扩张；亦勿整挂 Documents。挂完用 `ls /sessions/*/mnt/` 现场查两个挂载路径。
    - **清空 `临时文件/`**（纪律=落时即确认可删 · 随 conch 周期清空 · 不需逐件审批）：先 `ls -A` 记下件数；然后
-     `find "<临时文件挂载路径>" -mindepth 1 ! -name 'README.md' -exec rm -rf {} +`
+     **清空前引用检查（2026-11-20 Doctor 批 · 海螺 GOTCHA-20261120-001：曾有被现行文档按路径引用的原始史料与证据件落在这里）**：
+     先定扫描根：`C="$HOME/mnt/Documents/Claude"; [ -d "$C" ] || C="$HOME/Documents/Claude"`（云端前置挂在 `$HOME/mnt/Documents`，本机在 `~/Documents`）；下面命令里的 `~/Documents/Claude` 一律换成 `"$C"`。
+     ⓪ 固定保留、不查不删：`README.md`、`_bak/`、以 `.` 开头的项（`.DS_Store`、`.claude/` 等）。
+     ① 两道阳性对照，任一不命中就**整轮跳过清空**，回报「引用检查不可用」：`grep -rIlF -e '临时文件/skill-stub' ~/Documents/Claude/brain/.tools/` 须命中 `skill_release.py`；`grep -rIlF -e '临时文件/剑酒青丘-已完成委托书' ~/Documents/Claude/Projects/Financial/` 须命中 `文件命名规范.md`。
+     ② 其余每个顶层项按名字扫两处，**不丢弃报错**：`grep -rIlF --exclude-dir=.git --exclude-dir=_bak --exclude-dir=archived --exclude-dir=archive --exclude-dir=backups --exclude-dir=logs --exclude-dir=临时文件 -e "<顶层项名>" ~/Documents/Claude`，以及 `grep -rIlF -e "<顶层项名>" ~/Documents/Claude/brain/logs/checkpoints`（PRD 在这里，属现行文件）。两条的 stderr 收进同一个文件；stderr 里出现 `Permission denied`、`Operation not permitted` 或 `No such file` 就**整轮跳过清空**并回报原文（读不全时宁可不删）。
+     ③ 有命中＝该项仍被引用，**跳过不删**，回报里列出项名与命中文件；无命中的才删：`rm -rf "<临时文件挂载路径>/<顶层项名>"`。
+     ④ 有被跳过的项，回报末尾写一句「临时文件里有被引用件 N 件，请 Doctor 安排迁出（conch）」。
+     （原整目录清空命令 `find … -mindepth 1 ! -name 'README.md' -exec rm -rf {} +` 自 2026-11-20 停用。）
      （README.md 是纪律正文，保留；**rm 若报 Operation not permitted，不得调用 `allow_cowork_file_delete`**——2026-09-16 实例：该工具在无人值守班会话里无人批准，会令整班静默卡死。此时**直接跳过本轮清空**，把「清空前 N 件 → 残留 M 件 + EPERM」如实记入回报，下轮自然重试）
-     删后 `ls -A` 复验：应只剩 README.md 或为空。
+     删后 `ls -A` 复验：应只剩第⓪条的保留件与第③条跳过的件，逐项对得上。
    - **盘点 `散落归档文件/`**（纪律=只进不出 · 只归档不删）：只读——`ls -A` 记录件数与最旧 mtime，**不移动、不删除、不送 fuxi**（送 fuxi 的归档批次机制待 Doctor 立；本班只盘点并在回报中列件数）。
-   - 回报：临时文件清空前 N 件 → 清空后残留 M 件（应 0 或仅 README）；散落归档现积压 K 件。
+   - 回报：临时文件清空前 N 件 → 清空后残留 M 件（应＝保留件＋跳过件，列出跳过件与命中文件）；散落归档现积压 K 件。
 
 完成后用一两句话回报：各状态分布（healthy / stale / needs_repair / broken 各几个）、有没有节点 overall=fail（即真出问题的库/管线）、有没有节点因自检超期被降 stale（附 age/expect）、本轮未扫描项数、**brain 摘要（todos/gotchas 非零项目数 + 错题本告警≥3 名单 + 活跃度回写了几项）**、**conch 摘要（临时文件清空件数/残留、散落归档积压件数）**。若某步失败，如实说明哪步、什么错，不要假装成功。
 
