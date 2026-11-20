@@ -55,7 +55,7 @@
 
 **日常任务在 Code 标签执行；定时任务由 Cowork 管理（本机限期班除外）；看板分两类：托管页（名称带 (Cloud)）由定时班自推、Code 会话可原地更新，侧栏看板由 Cowork 管理。**（2026-11-16 consolidate 按 11-11 限期班、11-12 看板上云两项 Doctor 裁定订正）（原因：Cowork 会把所有任务会话列在左侧对话框内，日常工作混在其中较乱。）~~官方 Cowork 为主，本（开发者/第三方）模式为备~~ 为 2026-08-02 旧分工，已废。
 
-- 定时任务在 Cowork 侧（官方云端 trigger）跑，班数以 `brain/permanent/_cloud_trigger_health.json` 为准；操作说明镜像在 `brain/references/scheduled-live-mirror/`（只读参考，改班要去 Cowork 侧）。
+- 定时任务在 Cowork 侧（官方云端 trigger）跑，班数以 `brain/permanent/_cloud_trigger_health.json` 为准；镜像在 `brain/references/scheduled-live-mirror/`：**推看板的 8 个班（如 refresh-risk-daily），云端 prompt 只含运行环境前置与看板推送，正文就是 `live/<班>/SKILL.md`，改这份文件就是改线上班**（见官方端适配指令卡「单一真源」一条）；其余班整篇写在云端，镜像只是参考，改班要去 Cowork 侧。（2026-11-19 Doctor 批「按草稿改」）
 - 托管页（登记在 `brain/.tmp/artifact-publish/hosted-pages.json`）按 slug 原地更新（`edit_version`，或 `publish_files` 带 slug），**不另建同名页面**；侧栏看板（龙鱼个股库、PEC 星空、渊图星空）Code 标签没有 `update_artifact`，要推时请 Doctor 到 Cowork 交互会话说「补推看板」（队列 `brain/.tmp/pending-artifact-push.jsonl`）。
 - 同一资产两侧都能写 ⇒ 动手前先看 git 状态有无未提交的并发改动；写完请 Doctor 尽快提交，缩小覆盖窗口。
 
