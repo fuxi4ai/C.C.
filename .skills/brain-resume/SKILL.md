@@ -101,6 +101,17 @@ ls -t ~/Documents/Claude/brain/logs/*.md \
 
 > ⚠ **必须带上 `logs/YYYY-MM/` 子目录**：`meditation.fold_logs` 每月 1 号把上月日志折进子目录，月初根目录可能不足 3 篇——只扫根目录会在**每月 1 号前后静默读不满 3 篇**。刻意不用 `find` 全递归：那会把 `checkpoints/`（PRD）和 `checkups/`（体检报告）混进"最近会话日志"。
 
+### Step 1.2 · Dream 状态（2026-11-19 立 · 配合 brain-dream）
+
+```bash
+bash -c 'shopt -s nullglob; B=~/Documents/Claude/brain
+echo "上次运行: $(python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get(\"last_run\",\"无\"))" $B/permanent/_dream_state.json 2>/dev/null || echo 无)"
+c=$(grep -c "^- 状态：待批" $B/permanent/_dream_proposals.md 2>/dev/null); echo "待批提案: ${c:-0}"
+f=( $B/logs/checkups/*_consolidate_Step2拟改动清单_*.md ); n=${#f[@]}; [ $n -gt 0 ] && echo "最近周清单: ${f[$((n-1))]}" || echo "最近周清单: 无"'
+```
+
+读出三项进摘要：上次 Dream 运行时间（取 `_dream_state.json`，报告文件在失败时也会写，不作准；超过 2 天单列一行告警）、提案队列里「待批」条数、最近一份 consolidate 拟改动清单（7 天内、且日志里没有 Doctor 批过该清单的记录，算待批）。
+
 ### Step 1.5 · 读经验索引定向检索（2026-09-03 经验系统改造第一阶段立 · 堵召回断点 · 2026-11-06 P3 瘦身：整文件 cat 改 grep 开放行）
 
 **不再 `cat` 整个索引**（329KB，开放行只 ~90 条；实测召回 0/3 的根因是整文件读入后按项目过滤漏掉）。先按 Step 2 的规则从 Step 1 日志取活跃项目名 `P`（可多个、逐个跑），再只取**状态字段**为开放（🔄/⚠/⏳）的行：
@@ -189,6 +200,8 @@ tail -5 ~/Documents/Claude/brain/permanent/_consumption_receipts.jsonl
 **上次工作**：{项目名} · {日期}
 
 **经验召回**：{项目} 开放 {N} 条 · 已载 {M} 条 · 通用教训开放 {K} 条（Step 1.5）
+
+**Dream**：上次 {日期} · 待批提案 {N} 条 · 本周 consolidate 清单 {待批/无}（Step 1.2）
 
 **关键决策**（最多 3 条）：
 - ...

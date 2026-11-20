@@ -85,7 +85,7 @@ description: "Persist the session as a structured log in the brain vault. Trigge
 - 决策(为什么这么定) → `{项目}/architecture/决策记录.md`
 - 坑 / 错误 + 解法 → 对应 `GOTCHAS.md`(注:踩坑通常已按 CLAUDE.md「GOTCHAS 自动记录规则」即时写入,这里只补漏)
 - 成功 / 可复用经验(工具心得 / 打法 / 流程范式) → `permanent/经验库.md`(cases / patterns / tools / strategies)
-- **规则 / skill / 流程 该改(v2.4)** → `permanent/通用教训.md` 新 G-X 条 / 对应 skill 源 / `CLAUDE.md` 规则段。**只提案不直改**(重大改动走 propose-then-confirm);一条纠正不一定立规则——先问"是一次性还是模式?"(对照 G-X10「规则从失败里长 + 别提前写」)
+- **规则 / skill / 流程 该改(v2.4)** → `permanent/通用教训.md` 新 G-X 条 / 对应 skill 源 / 对应的 permanent 规则笔记（`brain/CLAUDE.md` 只是索引，2026-11-19 起不再放规则正文）。**只提案不直改**(重大改动走 propose-then-confirm);一条纠正不一定立规则——先问"是一次性还是模式?"(对照 G-X10「规则从失败里长 + 别提前写」)
 - 半永久领域知识(原子概念) → `permanent/{概念}.md`
 - 表述 / 协作偏好 → 对应规范(如 `permanent/中文表述语域规范.md` / `permanent/Doctor协作偏好.md`)
 
@@ -220,6 +220,21 @@ Step 4 对这些项目**一直是无声空转、无人察觉**,`dashboard-snapsh
 **无信号 → 跳过,不写**。不制造空更新(条件式 · Doctor 2026-09-16 AskUserQuestion 裁)。
 
 **边界**:该笔记是研究资产、不是生产判定;增量同样不接生产、不构成投资建议;引用素材数字前回溯对应 raw 的 source.json/校注。
+
+---
+
+### Step 4.6 · 真相层（原始会话）新鲜度检查（v3.12 · 2026-11-19 Doctor 批 · 抽取本身由每日任务负责）
+
+日志照常写，不改日志的行为。真相层（原始会话）存放在 `brain/chats/transcripts/`，由本机 launchd 每日任务 `com.brain.transcript-ingest` 每天 03:40 增量抽取（源文件 `.tools/launchd/com.brain.transcript-ingest.plist`）。**/save 不跑抽取**，只做一次秒级检查，防止每日任务悄悄停摆——Claude Code 的原始记录只保留 30 天，停摆超过这个期限就会永久丢记录。
+
+- **检查**：读 `brain/chats/transcripts/_state.json` 的 `last_run`。
+- **回报一行**：
+  - 48 小时以内：「真相层（原始会话）：上次抽取 {时间}」
+  - 超过 48 小时：「⚠ 真相层（原始会话）已 {N} 天未抽取，每日任务可能停了」，并附一条手动补跑命令 `python3 -I ~/Documents/Claude/brain/.tools/transcript_ingest.py` 和日志位置 `~/Library/Logs/brain-transcript-ingest/`。
+  - 文件不存在，或环境读不到（例如定时班、云端沙箱）：「真相层（原始会话）：本环境不可读，跳过」。
+- **不进 git**：`chats/transcripts/` 已在 `.gitignore`，Step 5 的 add 清单不得带它，也不得 `-f` 强带。
+- **会话清理之前先补跑**：任何本地会话清理、冷归档到 fuxi 的动作之前，先手动跑一次抽取，确认退出码 0 再清理。
+- 说明与检索方法见 `brain/chats/README.md` 的 transcripts 节；PRD 见 `logs/checkpoints/2026-11-19_真相层_PRD.md`。
 
 ---
 
@@ -373,6 +388,7 @@ git push
 
 {若同步了独立项目 git:补贴该项目的 commit+push 命令}
 {若 Step 4 探到 architecture/系统概览.md 不存在:补贴那一行 ⚠ 空转报告}
+真相层（原始会话）:{Step 4.6 的一行结果}
 
 一句话摘要:{20 字内}
 ```
@@ -406,6 +422,7 @@ git push
 - **引用 Step 4 那张缺口表前先自己跑命令重取差集,别照抄表**(v3.2.1)
 - **Step 4.5 宏观方法论增量=条件式:有新材料才追加、无则跳过,只追加不修改正文**(v3.4)
 - **列 `git add` 清单前必先过目标仓的 ignore 判据**(v3.5 · v3.10 改判据)——定论用 Doctor 终端 / Mac 原生 `git check-ignore -v <路径…>`;沙箱内禁 git,用 `.tools/repo_state.py` 简化判定并明标「简化判定、定论交 Doctor 终端 check-ignore」;另读该仓 `CLAUDE.md`/README 的 git 段;命中即从清单剔除并在回报里明写「按本仓规 local-only」;**禁 `-f` 强带**(绕过仓主设计意图,须 Doctor 明批)。**任何目标仓都适用**——不止 brain,项目仓同样(渊图 `行业研究` 的 `raw/`+`outputs/` 即实例)
+- **Step 4.6 只查真相层（原始会话）新鲜度，不跑抽取；抽取库不进 git**(v3.12)
 - **Step 3.5 提案前必带「查重栏 ＋ 编号回源栏 ＋ 越界栏」，缺栏即不提案**(v3.7)——**语义**查重、非字面查重；带编号者先 `grep` 该编号标题再写；落点若越进历史层须自报
 
 ## v 历史
@@ -436,3 +453,4 @@ git push
 - **v3.9**（2026-11-06 · 金融线脑暴 P4）：Step 3.5 提案栏加一句「先过 `permanent/动手前卡.md`」——十条最高频通则（引用扫全部出现点 / 断言「无」前先枚举 / YAML 引号与行尾注释 / 编号先 grep / 日期横杠 / 改前读盘 / 计数现读现数 / 移动文件先扫相对链接 / 改 skill 走发布链 / commit 交 Doctor）压成 ≤15 行一页卡；damper §五「开始」同批挂接。description 未改。
 - **v3.10**（2026-11-13 · Doctor 批「一场全做」工具链五项之 ① · TODO「两处 skill 的 git 探针文本该改」② ＋ G-X83）：Step 5 第 2 步 ignore 判据由「一律读 `.gitignore` 手判」改为——Doctor 终端 / Mac 原生环境用 `git check-ignore -v <路径>` 定论；沙箱内仍禁 git，改用 `.tools/repo_state.py` 简化判定并明标「简化判定、定论交 Doctor 终端 check-ignore」。同批（复核补订）：恢复「被 ignore 命中且从未跟踪 ⇒ 按仓规 local-only」语义；L299 读 `.gitignore` 降为「只作线索、不作定论」；「边界」节 v3.5 条判据同步为新口径。其余正文与 description 未改。
 - **v3.11**（2026-11-16 · /consolidate 冲突核查 K13 · Doctor 裁「规则改为按编号平铺」）：description 里「写经验库或通用教训时必须定位到对应 `##` 节插入、禁 append 文件尾」把两份文件混写，与正文 Step 3.5「通用教训新条追加到文件末尾的 G-X 区」相反——改为「经验库须定位到对应 `##` 节插入、禁 append 文件尾，`通用教训.md` 按编号追加末尾 G-X 区」（description 1016→1008 字符，仍 ≤1024）。Step 4 缺系统概览对表加 2026-11-16 实核一行（历史行不改）。正文其余未改。
+- **v3.12**（2026-11-19 · Doctor 批）：新增 **Step 4.6 真相层（原始会话）新鲜度检查**——读 `chats/transcripts/_state.json` 的 `last_run`，超过 48 小时即在回报里告警并给补跑命令；抽取本身由本机 launchd 每日任务 `com.brain.transcript-ingest` 负责（同日初稿曾写成每次 /save 后台跑抽取，Doctor 嫌单次耗时，改挂每日任务）。起因：Claude Code 原始记录只保留 30 天。日志行为不变。

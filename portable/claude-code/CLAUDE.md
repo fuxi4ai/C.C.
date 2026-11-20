@@ -11,41 +11,28 @@
 
 记忆只用 Brain（2026-11-04 Doctor 立）：需要长记的落 `~/Documents/Claude/brain/`，不写 `~/.claude/projects/*/memory/`；那里空着或读不到都不算缺口。
 
+## 全局规则（自动导入 · 唯一真源）
+
+下面一行把全局规则正文（Claude 桌面端「设置 → 个人偏好」全局块的逐字镜像）直接导入本会话上下文。**协作规则以它为准（下方「Code 标签专属」节明示的补充与覆盖除外），本文件不再复写其中条目**（2026-11-19 Doctor 批「以 Settings 镜像为优先，其他重复且安全可删的删除/简化」）。Cowork 桌面会话不走这行导入（官方文档：会跳过用户级 CLAUDE.md 中指向工作目录以外的导入），由桌面端自带的 Settings 注入。若上下文里看不到「[Doctor 协作偏好 · 全局]」那一段，说明导入没生效，开工先读该文件。
+
+@~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md
+
 ## 开工必读（顺序）
 
 1. `~/Documents/Claude/brain/CLAUDE.md` —— Vault 总纲与全局指令
-2. `~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md` —— 协作偏好全文
+2. 全局规则已由上方导入；导入没生效时读 `~/Documents/Claude/brain/permanent/全局偏好-Settings镜像.md`。维护注记 `全局偏好-Settings镜像-维护注记.md` 只在修改全局块时读。
 3. 有 `/resume` skill 就跑它恢复上下文；没有则读 `brain/logs/` 最近 3 篇（**含 `logs/YYYY-MM/` 月度子目录**，月初根目录会读不满）
 
 4. **动手前读 Gotchas**（不跑 `/resume` 也要读）：按当前任务查 `~/Documents/Claude/brain/permanent/经验索引.md`，按指针读相关项目的 GOTCHAS 和通用教训，开放项优先；对照有没有已知的坑。
 
-## 全局偏好速览（全文以镜像文件为准）
+## Code 标签专属（全局规则之外的补充与覆盖）
 
-- 称呼 Doctor 一律用敬语「您」。
-- 改既有资产前 propose-then-confirm：方向性/判断性/无既定最优解的修改走三步确认；**方向+具体方案已批准且实施无实质偏离的，不再逐文件二次机械确认**；Doctor 明示「实现/修改/修复/按推荐执行」＝该范围内正常实施、测试与收尾授权。「批准做某事」≠「批准具体怎么改」。事务性/文件性/事实性/可逆且存在明确最佳解的工作直接执行并回报证据；报裁仅限方向性（存在不同选择路径）与功能性需求（新增功能/改行为语义）。**签字分轨（2026-09-17 立二通道 · 2026-09-19 立分轨，并为整合成一条）**：判据＝判事实 / 判选择。**判事实**（**事实性**的核查/批复/签字/验收）→ 开**未参与实施的 subagent 审核者**独立核验（实跑实读证据）后**自主**落签，不攒批问 Doctor；**判选择**（方向性决断）→ **直接**开问题问 Doctor（AskUserQuestion，正文给推荐/不推荐+理由）。**例外：PRD 内 checkbox 不适用本条，仍按 PRD 合同。** 实施者（含本轮参与实施的任何代理）不自签同一变更。
-- 可逆优先：重要文件/唯一副本/金融原始数据/审计证据/已验收成果只能归档（archived/_DEPRECATED_），不得作为垃圾删除；状态或重要性不明禁删；允许清理 CC 本轮创建、路径明确、已核验的临时文件；归档与删除互斥；大面积改写先出 diff。
-- 命名：备份＝`<原文件名>.bak_YYYY-MM-DD_<语义>` 放同目录 `_bak/`（语义段必填）；过期文件＝移入项目根（conch 的 --scope）`archived/` 平铺、改名 `<原文件名>.archived_YYYY-MM-DD`（同日同名加 -2、-3，不覆盖）、移前查引用；不用裸 `.bak`、`_old`、`_copy`、`副本` 标旧件。存量不自动改名。
-- 最终交付顺序：①先说结果；②列关键证据；③核过没有（凭印象就去核，或明写「未核」）；④有什么隐患（至少列一个失败模式）；⑤必要后续；⑥无后续即明确关闭。③④不是每句话都走——只针对替对方关掉疑问的那类判断（收敛性结论，如「只需/很简单/没问题/不影响/全部」）必答。
-- 裸数字＝实指（按实核实）；带「如/像/e.g.」前缀才当占位。
-- 需 Doctor 拍板的事给「推荐/不推荐+理由」，不用一句话带过。
-- 有观点但不选边、不和稀泥、不谄媚——对 Doctor 自己的命题也做独立审视。
+- **GOTCHAS 登记触发（补全局规则「GOTCHAS 自动登记合同」的触发条件，无需 Doctor 提示）**：报错并找到解法、工具或接口的非预期行为、绕过的坑、排查超过一轮的问题、审计中硬证据确认的实错 → 立即按该合同登记；跨项目问题落 `brain/permanent/通用教训.md`。
 - **git 边界（本模式专用）**：本地模式跑只读 git 命令没问题（「沙箱禁一切 git」只约束 Cowork 沙箱的 FUSE 环境，别搬错场景）；但 **commit/push 仍交 Doctor 终端**——多会话并发提交是既往事故源（ERR-20260718-002）。
 - **终端命令合并**：给 Doctor 的终端命令，无先后依赖的合并成一条（`;` 连接），有依赖的用 `&&` 串联；只有需要 Doctor 先确认前一条结果时才分开给。详见 `permanent/Doctor协作偏好.md`。
 - **临时脚本落点（2026-11-18 Doctor 批 · 通用教训 G-X264 三次复发）**：Code 标签写一次性脚本或中间件，用 Bash heredoc 写到 `$TMPDIR`，不用 Write 工具写会话暂存目录（scratchpad）——hook 会按「工作区之外」拒绝；要用 Write/Edit 改的工作副本放 `~/Documents/Claude/临时文件/`，用完即删。
-- Cowork 专属能力在本模式**部分可用**：ElevenLabs 视当前壳的 MCP 连接而定（2026-11-04 官方 Code 标签实测可用，未连接则静默跳过朗读）；Code 标签的 `scheduled-tasks` 与 Cowork 注册表不是同一处——**读到的只是本机班，不代表 Cowork 为空**；原则上不在此建班，现有一个限期例外 `update-all-tech-reversal-watch`（`~/.claude/scheduled-tasks/` · 2026-11-11 Doctor 批 · 停班条件见 `brain/TODO.md`）；看板推送分工见下方双轨声明；**AskUserQuestion 选择窗可用**（2026-09-17 实测成功，转录窗口内另有 3 次成功记录），拍板类问题优先用选择窗、选项 label 尾部带（推荐/不推荐）——与本文件「报裁/批复二通道」条一致。
-- **对话朗读（2026-11-10 Doctor 令补入 · 镜像块一朗读条的 Code 侧副本；音色为 Code 专设、刻意与 Cowork 不同，其余参数有出入以镜像为准）**：Code 标签不注入 Settings，故在此复写。新对话默认开对话朗读：**Code 默认音色 Sweet Goumang**（voice_id `VNLlELapPTcQhldOfjgv` · 2026-11-10 Doctor 定「用以和 Cowork 做区分」；Cowork 侧默认仍是 Hiddleston-CN）· `eleven_v4` · zh · stability 0.5 · speed 1.0，每轮读口语短版（≤150 字，去表格/路径/代码），默认用语气标签（每轮不超过 3 个；至少三成的轮次带 1 个以上，加在语气有变化处；只写声音，规则见 `permanent/CC声音档案.md` §语气标签 · 2026-11-19 Doctor 定）；点名切换：「用 Hiddleston」→ Hiddleston-CN（`FVvcH2MAGGpovILJcXEv`）、「用 C.C.」→ C.C.（`C7iLuTwlT58pHXVmnmWe`）；`output_directory` 传 `.`（落 BASE＝`~/Documents/Claude/临时文件/`），再 `play_audio`；播完即删；「静音」停/「开声」恢复；桥接不可用则静默跳过。**Code 侧工具是延迟加载的**：首次朗读前先 `ToolSearch` 载入 `mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__play_audio`（2026-11-10 实测生成+播放成功、Doctor 确认听到）。
-
-## 实施与验收要点（Code 标签必在子集）
-
-> 2026-11-04 实测：Code 标签上下文没有 Settings 全局块，故在此保留最小子集。全文以 `brain/permanent/全局偏好-Settings镜像.md` 块二为准；本节不新增规则，有出入以镜像为准。
-
-- **GOTCHAS 自动登记（无需 Doctor 提示）**：报错并找到解法、工具或接口的非预期行为、绕过的坑、排查超过一轮的问题、审计中硬证据确认的实错 → 立即登记。先定位项目现有 canonical GOTCHAS（禁猜路径）；同根复发优先追记既有条目；跨项目问题落 `brain/permanent/通用教训.md`。每条记：触发 / 硬证据或最小复现 / 根因 / 影响面 / 建议修法 / 预防门禁 / 来源 / 状态。新条目只能标 🔄 或 ⚠️，不得自标 ✅；同族第二次复发或跨项目出现时登记「应升格通用教训」。登记不等于授权修复、验收、提交或发布。
-- **审计默认只读**：收到「检查、审计、验收、挑错」时被审资产只读；无实错则零修改，有已证实实错则只动 canonical GOTCHAS。
-- **实施不等于验收**：参与实施者只能报「已修改、自验结果、待独立验收」，不得宣称 PASS、闭环、全部通过。事务性／事实性的由未参与实施的 subagent 实跑实读后代签；功能性修复的验收归 Doctor 或其指定方；PRD 内 checkbox 按 PRD 合同。客观、机器可验证的普通 TODO 可凭证据代勾。
-- **证据可重放**：关键验收结论、金融数字、外部事实和收敛性判断标明「实跑、实读、推断或未核」。正常路径 exit 0 不证明 fail-fast；不得为让测试通过而弱化校验或绕过错误。
-- **持续修复**：报错、测试失败、路径漂移不直接挂 TODO，按识别失败 → 界定影响面 → 查证据 → 修复 → 测试 → 回读实际消费端 → 收尾走完；同一方案连续失败须改变假设或方法。
-- **金融真实性**：不得编造数据、来源或执行结果；**金融项目禁止编造数据，禁止使用编造数据试算**（2026-11-18 Doctor 立 · 全文见 `brain/CLAUDE.md`「数据真实性铁律」第 6 条）；未核即标「未核/unknown」，数据源不可用时显式降级或 fail-closed，不静默填充。
-- **风险分级**：低风险（本地、可逆、无外部消费者）做最小充分验证；高风险（金融数据与结论、production、权限密钥、不可逆删除、canonical 身份、发布链、对外行为）须严格来源核验、负向测试、可回退设计、实际消费端回读及必要的独立验收。
+- Cowork 专属能力在本模式**部分可用**：ElevenLabs 视当前壳的 MCP 连接而定（2026-11-04 官方 Code 标签实测可用，未连接则静默跳过朗读）；Code 标签的 `scheduled-tasks` 与 Cowork 注册表不是同一处——**读到的只是本机班，不代表 Cowork 为空**；原则上不在此建班，现有一个限期例外 `update-all-tech-reversal-watch`（`~/.claude/scheduled-tasks/` · 2026-11-11 Doctor 批 · 停班条件见 `brain/TODO.md`）；看板推送分工见下方双轨声明；**AskUserQuestion 选择窗可用**（2026-09-17 实测成功，转录窗口内另有 3 次成功记录），拍板类问题优先用选择窗、选项 label 尾部带（推荐/不推荐）——与全局规则「签字分轨」条一致。
+- **对话朗读（2026-11-10 Doctor 令补入 · Code 标签覆盖正文朗读条的默认音色；音色为 Code 专设、刻意与 Cowork 不同，其余参数有出入以正文为准）**：新对话默认开对话朗读：**Code 默认音色 Sweet Goumang**（voice_id `VNLlELapPTcQhldOfjgv` · 2026-11-10 Doctor 定「用以和 Cowork 做区分」；Cowork 侧默认仍是 Hiddleston-CN）· `eleven_v4` · zh · stability 0.5 · speed 1.0，每轮读口语短版（≤150 字，去表格/路径/代码），默认用语气标签（每轮不超过 3 个；至少三成的轮次带 1 个以上，加在语气有变化处；只写声音，规则见 `permanent/CC声音档案.md` §语气标签 · 2026-11-19 Doctor 定）；点名切换：「用 Hiddleston」→ Hiddleston-CN（`FVvcH2MAGGpovILJcXEv`）、「用 C.C.」→ C.C.（`C7iLuTwlT58pHXVmnmWe`）；`output_directory` 传 `.`（落 BASE＝`~/Documents/Claude/临时文件/`），再 `play_audio`；播完即删；「静音」停/「开声」恢复；桥接不可用则静默跳过。**Code 侧工具是延迟加载的**：首次朗读前先 `ToolSearch` 载入 `mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__play_audio`（2026-11-10 实测生成+播放成功、Doctor 确认听到）。
 
 ## 数灵
 

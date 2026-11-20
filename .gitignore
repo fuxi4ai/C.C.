@@ -46,3 +46,6 @@ logs/.wtest
 graphify/*/graphify-out/cache/
 graphify/*/graphify-out/.graphify_python
 *.bak[0-9]*_*
+
+# 真相层：原始记录抽取库（含对话全文，可能有残余敏感信息 · 不进版本 · 2026-11-19 Doctor 批 C 档 · PRD logs/checkpoints/2026-11-19_真相层_PRD.md）
+chats/transcripts/

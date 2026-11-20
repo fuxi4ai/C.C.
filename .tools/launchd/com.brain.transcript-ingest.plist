@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- 真相层（原始会话）每日增量抽取 · 2026-11-19 Doctor 批「改挂每日任务」
+     源文件：brain/.tools/launchd/com.brain.transcript-ingest.plist（装机副本在 ~/Library/LaunchAgents/，改时先改这里再重装）
+     解释器用已授「完全磁盘访问」的 python3.13（读 ~/Documents 与 ~/Library/Application Support 需要；见经验库 EXP-20260916-001-P）
+     每天 03:40；机器睡着错过时，launchd 会在唤醒后补跑一次。 -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.brain.transcript-ingest</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13</string>
+    <string>-I</string>
+    <string>-B</string>
+    <string>/Users/lunarabbit/Documents/Claude/brain/.tools/transcript_ingest.py</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>HOME</key>
+    <string>/Users/lunarabbit</string>
+    <key>PATH</key>
+    <string>/Library/Frameworks/Python.framework/Versions/3.13/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>PYTHONDONTWRITEBYTECODE</key>
+    <string>1</string>
+  </dict>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>3</integer>
+    <key>Minute</key>
+    <integer>40</integer>
+  </dict>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>LowPriorityIO</key>
+  <true/>
+  <key>Nice</key>
+  <integer>10</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/lunarabbit/Library/Logs/brain-transcript-ingest/stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/lunarabbit/Library/Logs/brain-transcript-ingest/stderr.log</string>
+</dict>
+</plist>

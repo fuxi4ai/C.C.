@@ -32,6 +32,7 @@ EXCLUDES=(
   --exclude='*.swo'
   --exclude='*~'
   --exclude='.tmp/'
+  --exclude='chats/transcripts/'   # 真相层：含对话全文，不出本机（2026-11-19 · 真相层 PRD）
 )
 
 {

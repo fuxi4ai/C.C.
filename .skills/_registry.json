@@ -8,6 +8,7 @@
     "brain-resume": {"channel": "release", "portable": true},
     "brain-save": {"channel": "release", "portable": true},
     "brain-todo": {"channel": "release", "portable": true},
+    "brain-dream": {"channel": "release", "portable": true},
     "damper": {"channel": "release", "portable": true},
     "QA": {"channel": "release", "portable": true, "account_name": "qa"},
     "gsap-frontend": {"channel": "release", "portable": true, "account": "full"},
@@ -15,7 +16,6 @@
     "handshake-consumer": {"channel": "canonical-only"},
     "equity-thesis": {"channel": "portable-only"},
     "the-conch-maiden": {"channel": "code-only"},
-    "dream": {"channel": "code-only"},
     "update": {"channel": "code-only"},
     "console": {"channel": "code-only"},
     "graphify": {"channel": "code-only"}
