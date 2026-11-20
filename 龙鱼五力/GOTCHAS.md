@@ -2,7 +2,7 @@
 title: 龙鱼五力 · GOTCHAS（已知坑）
 tags: [龙鱼五力, gotchas]
 created: 2026-05-14
-updated: 2026-11-05
+updated: 2026-11-19
 status: active
 type: resource
 project: 龙鱼五力
@@ -209,4 +209,4 @@ project: 龙鱼五力
 **影响面**: 若有消费方按相对路径读到这个空库，会静默得到「无数据」；也违反「项目目录内不再新立行情库」（brain `CLAUDE.md` 文件落点规则）。cockpit-snapshot 班 2026-11-19 已停，复发概率下降。
 **修复/建议修法**: ① 查 2026-11-18 11:05 前后运行的班与脚本（cockpit-snapshot 的云端运行日志、龙鱼库其他入口）哪一处以非 URI 方式连了 `market_data.db`；② 定位后改为 `file:...?mode=ro` URI 并 `uri=True`；③ 删除该空文件经 Doctor 同意后走回收站。
 **预防门禁**: 只读连接一律 `sqlite3.connect("file:<绝对路径>?mode=ro", uri=True)`；漏写 `uri=True` 时会把 `?mode=ro` 当文件名建出空库（同族见 `Database/宏观研究体系/EAL/eal_v3_sealed_20261015/sealed-attribution-20261015.sqlite?mode=ro`、`Database/Market-Data/_archive/_DEPRECATED_错题残留_20260714/market_data.db?mode=ro`）。
-**来源**: 2026-11-19 `/conch database`（审查日志待 /save）。
+**来源**: 2026-11-19 `/conch database`（`logs/2026-11-19-Database-conch审查与收尾.md`）。

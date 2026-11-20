@@ -43,6 +43,7 @@ cd ~/Documents/Claude/Projects/海螺姑娘 && python3 -B dashboard/optimize_act
 ```
 
 - `plan` / `apply` 的 `--set 键=值` 只用于 `manifest_fix`；`gotchas_status_sync` 改用 `--ids 条目id,…`；其余动作两者都不带。
+- `manifest_fix` 能改的键只有 `path`、`meta`、`title`、`expect_days`、`freshness.last`、`health_file`、`status`（`optimize_actions.py` 的 `MANIFEST_FIX_KEYS`），改不了 `freshness.detail`。节点退役、停班或口径变了，过时的常常正是 detail（如「某班每交易日写」）：先用 `manifest_fix` 改允许的键，再照第 3.5 步的做法手工改 detail——先备份、改完 diff 只能有这一处、JSON 能解析（2026-11-19 `/conch database` cockpit.db 首例）。
 - **自动档**：`health_read`、`scan_dry`、`gotchas_stale_check`、`integrity_check` 只读，dry-run 阶段可直接跑；`rescan` 会回写 manifest 与看板，属 apply，等同意。
 - **确认档**（`archive_apply`、`manifest_fix`、`gotchas_status_sync`、`fill_workfiles`）：`gotchas_status_sync` 只同步正文里已由 Doctor 或未参与实施的审核者落签的 ✅，不新判；dry-run 阶段只跑 `plan`（只读），方案进七步第 3 步汇报，第 5 步同意后才 `apply --yes`；审计写 `H/data/optimize_audit.jsonl`，含 `rollback_ref`。`archive_apply` 走 `references/archive.md` 第 3 步的逐条核查，不因为是面板动作就省。
 - **禁手档**（删除、git、定时班变更、跨项目改 owner 代码、推送或改名 artifact）：只贴命令或清单与理由，由 Doctor 执行。
