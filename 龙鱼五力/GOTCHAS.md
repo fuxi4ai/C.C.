@@ -199,3 +199,14 @@ project: 龙鱼五力
 **来源**: 2026-11-04 Code 标签会话；2026-11-05 同标签 `/brain-resume` 后定因。
 **追记（2026-11-05 · GAI 错题本积压场 · 根因确证＋已修待验）**: 根因由假设转实读确证——`check_ds_evidence.py` `anchor_age_days` 以 `datetime.date.today()` 计龄、`OLD_DAYS=60`；用例锚 `concept_OpticalModuleLongTermSupplyAgreement` 08-20 建，至 11-05 已 77 天 → 判旧锚。修法：检测器加 `REF_DATE = None` 钩子（None=今天·生产行为不变），测试固定 `ce.REF_DATE = date(2026, 8, 31)`（立卷日）。改前实跑 1 FAIL rc=1 → 改后 5/5 PASS rc=0（`HOME` 桥到挂载盘跑）。备份 `check_ds_evidence.py.bak_2026-11-05_refdate` / `test_check_ds_evidence.py.bak_2026-11-05_refdate`。**隐患（不在本修范围）**：`--date` 回放历史 ds 条目时旧锚仍以今天计龄——回放 60 天前条目会整片报旧锚；是否把基准日改为 analysis_date 属检测语义变更，归 Doctor。✅ 待未参与实施的审核者落签。
 **✅ 落签（2026-11-05 · 未参与实施的审核者 · 独立核验后自主落签）**: PASS_WITH_LIMITS —— 与 `*.bak_2026-11-05_refdate` 对 diff：检测器仅加 `REF_DATE = None` 一行 ＋ `anchor_age_days` 一行改为 `(REF_DATE or today)`；测试仅加 `import datetime` ＋ 注释 ＋ `ce.REF_DATE = date(2026, 8, 31)`。实跑（HOME 桥到挂载盘）：新测试 **5/5 rc=0**；旧测试＋旧检测器、旧测试＋新检测器均 1 FAIL（正向-谷歌长协锁产能 kinds=['旧锚']）rc=1。生产等价：旧／新检测器全库实跑 stdout 逐字节相同（sha256 `0519a33b…`），均为 115 只 · 79 条（旧锚 51 · 无锚引用 22 · P3当事实 6）rc=1。根因实证：该句最高共现锚唯一为 `concept_OpticalModuleLongTermSupplyAgreement`（分 13，`created_at` 2026-08-20，`OLD_DAYS=60`），REF_DATE 10-19 → []、10-20 → ['旧锚']、11-05 → ['旧锚']（77 天）。限制：用例仍读实时 `mapping/latest.json`，图谱后续改动仍可能改变判定；`--date` 回放仍以今天计龄（实施方已列，归 Doctor）。
+
+## [ERR-20261119-001] 龙鱼标的库目录里出现 0 字节的 `market_data.db`（项目内不该有行情库）
+**状态**: 🔄 待修复（生成方未定位）
+**优先级**: 🟡 中
+**触发场景**: 2026-11-19 `/conch database` 审查，复查子代理在 `Database/龙鱼-标的分析库/` 未跟踪件里发现。
+**硬证据/最小复现**: `ls -la Database/龙鱼-标的分析库/market_data.db` → 0 字节，mtime 2026-11-18 11:05；`file` 判为 empty；git 未跟踪。同目录 `cockpit.db` mtime 同为 2026-11-18 11:05（cockpit-snapshot 班最后一次运行）。
+**根因**: 未核。推断：某脚本以相对路径或拼错的路径打开 `market_data.db`，sqlite 在当前目录自动建出空库。现行几个脚本（`board_data.py:21`、`build_holdings_board.py:21`、`cockpit_data.py:45`）都按 `../Market-Data/market_data.db` 拼路径、走 `mode=ro` URI，按理不会建库；与 cockpit-snapshot 班同一分钟出现只是时间吻合，不能单独证明是它。撤回条件：找到真正的生成方。
+**影响面**: 若有消费方按相对路径读到这个空库，会静默得到「无数据」；也违反「项目目录内不再新立行情库」（brain `CLAUDE.md` 文件落点规则）。cockpit-snapshot 班 2026-11-19 已停，复发概率下降。
+**修复/建议修法**: ① 查 2026-11-18 11:05 前后运行的班与脚本（cockpit-snapshot 的云端运行日志、龙鱼库其他入口）哪一处以非 URI 方式连了 `market_data.db`；② 定位后改为 `file:...?mode=ro` URI 并 `uri=True`；③ 删除该空文件经 Doctor 同意后走回收站。
+**预防门禁**: 只读连接一律 `sqlite3.connect("file:<绝对路径>?mode=ro", uri=True)`；漏写 `uri=True` 时会把 `?mode=ro` 当文件名建出空库（同族见 `Database/宏观研究体系/EAL/eal_v3_sealed_20261015/sealed-attribution-20261015.sqlite?mode=ro`、`Database/Market-Data/_archive/_DEPRECATED_错题残留_20260714/market_data.db?mode=ro`）。
+**来源**: 2026-11-19 `/conch database`（审查日志待 /save）。

@@ -307,6 +307,7 @@ sqlite3 'file:/Users/lunarabbit/Documents/Database/Market-Data/market_data.db?mo
 - all 不另设写入范围，只按所调用子流程的边界写入。
 - Event Attribution Ledger - SOX/KC50 只写 `Database/宏观研究体系/EAL/daily_tracking/` 下的年度台账和开盘价旁表、`EAL/tracking/` 下的旁表与结果行，以及 `quant_anchors/anchors.jsonl` 中已登记锚的 review 和终判（先留 `.bak`）；不改 `attribution.db`、`market_data.db`、个案正文和框架件。
 - market data 只通过编排器写 `market_data.db`，不手工改库，不删除、不移动 `.bak_*`、`pre-zhuzhao-*` 和写锁。
+  - 副本保留策略（2026-11-19 Doctor 定，`/conch database`）：`Market-Data/` 根目录的整库副本按后缀分类（`bak_jumang_*_preupdate`、`bak_zhuzhao_*_preputback`、`pre-zhuzhao-YYYYMMDD` 等；名字带时分等额外后缀的如 `pre-zhuzhao-20261111-1806` 单列一类），每类留最近 3 份；被文档点名为写前快照或修复证据的副本另行保留（如 `_bak/` 两份、`market_data.db.bak_20261101_datefmt`）。超出的由本机 conch 文件健康审查及整理按回收站规程清走；已释放的写锁（`*.lock.RELEASED-*`）、空的 `.staging-*`、`*-journal.STALE-*` 同样由 conch 清。本流程自身仍不删、不移。
 - 数据底稿、渊图 canonical、价格层、wiki 不由 research files 流程写入。
 - 不执行 commit、push，不发布看板，不建定时任务。
 - 不打印、不转述密钥。
