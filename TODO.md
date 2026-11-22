@@ -2,7 +2,7 @@
 title: Brain Vault TODO
 tags: [todo]
 created: 2026-05-14
-updated: 2026-11-20
+updated: 2026-11-22
 status: active
 type: log
 ---
@@ -306,7 +306,7 @@ type: log
 
 - [ ] **治理 · Settings 11-06 批的两句未在 Cowork 侧重贴（2026-11-14 由 /todo 漏挂对账补挂 · 源：`logs/2026-11-07-resume起手与EAL-gate专场调度.md`、`logs/2026-11-10-Alarm周班首验代签与巡检面⑤误报修复.md`）**：「推荐即默认」「一轮即止」两句已于 11-06 批、写入 Settings 镜像（L85），但未见在 Cowork 侧 Settings 重贴并逐行对拍的回执——Doctor 重贴后新会话起手对拍即可勾。〔2026-11-16 /consolidate 补：待重贴共 **5 处**——上述 2 句、11-13 块三备份命名与过期文件命名 2 条（`logs/2026-11-14-烛照隔日关注栏美化与两轮复验.md` 起手对拍记少这 4 句）、11-16 块二巡检豁免条工具名改 `update_trigger` 1 处〕〔2026-11-18 晚追记：Doctor 报「done」，已用镜像待粘贴块抽出的 39 行全文整块重贴，含上述 5 处与 11-18 新增的「金融项目禁止编造数据，禁止使用编造数据试算」1 句，共 **6 处**；本场核不了，待下场 Cowork 新会话起手逐行对拍后再勾〕
 
-- [ ] **EAL · 持续追踪已知风险五项（2026-11-14 由 /todo 漏挂对账补挂合并 · 源：`logs/2026-11-10-EAL持续追踪批量更新与update-all.md`）**：① `summary_deepseek` 分支无单元测试（node_item 是闭包，测不到）；② 到期型节点提示词不带历史结果，到期后可能把「已证实」重查成「未触发」；③ 门禁按来源名计数，同源通稿会被算成两个独立来源（EAL 现行 GOTCHAS 未见登记）；④ `/update all` 节假日写 0 行的分支未验（18:30 各表可得只有一天样本）；⑤ FedWatch 会议日期未与 Fed 官方 FOMC 日历逐一核对（与买点研究 events 的 FOMC 核对对象不同）。均未核现状。 〔2026-11-16 /todo：③ 已登记 EAL GOTCHAS `EAL-T005`（⚠️ 已知风险，`eal_track.py:740` 按来源名去重计数）；⑤ 现核见 registry 记「8 个一致 + 订正末场」共 9 场，待复核后划掉〕 〔2026-11-16 /todo 子项代勾（审核者 subagent 复核 PASS）：⑤ ✓——registry 与 federalreserve.gov FOMC 日历逐场吻合（审核者实取 2026-12 至 2027-11 共 9 场）〕
+- [ ] **EAL · 持续追踪已知风险五项（2026-11-14 由 /todo 漏挂对账补挂合并 · 源：`logs/2026-11-10-EAL持续追踪批量更新与update-all.md`）**：① `summary_deepseek` 分支无单元测试（node_item 是闭包，测不到）；② 到期型节点提示词不带历史结果，到期后可能把「已证实」重查成「未触发」；③ 门禁按来源名计数，同源通稿会被算成两个独立来源（EAL 现行 GOTCHAS 未见登记）；④ `/update all` 节假日写 0 行的分支未验（18:30 各表可得只有一天样本）；⑤ FedWatch 会议日期未与 Fed 官方 FOMC 日历逐一核对（与买点研究 events 的 FOMC 核对对象不同）。均未核现状。 〔2026-11-16 /todo：③ 已登记 EAL GOTCHAS `EAL-T005`（⚠️ 已知风险，`eal_track.py:740` 按来源名去重计数）；⑤ 现核见 registry 记「8 个一致 + 订正末场」共 9 场，待复核后划掉〕 〔2026-11-16 /todo 子项代勾（审核者 subagent 复核 PASS）：⑤ ✓——registry 与 federalreserve.gov FOMC 日历逐场吻合（审核者实取 2026-12 至 2027-11 共 9 场）〕 〔2026-11-22 /save 子项代勾（客观证据硬 · G-X136）：③ ✓——EAL 仓 `02f839b` 两处门槛改按原稿机构去重（`origin` 字段），测试 40 + 34 通过、审核 PASS_WITH_LIMITS；EAL GOTCHAS `EAL-T005` 已改 ✅。余 ①②④ 未核〕
 
 
 - [ ] **X-Board · 投知君君停更还是漏采（2026-11-14 由 /todo 漏挂对账补挂 · 源：`logs/2026-11-11-X看板云端发布链瘦身与拆分器.md`）**：投知君君最新只到 09-23，不清楚是对方停更还是采集漏；DVA 增量观察条问的是 DVA 侧是否产出，不覆盖 X-Board 侧这一问。
