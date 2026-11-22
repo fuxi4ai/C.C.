@@ -301,10 +301,39 @@ sqlite3 'file:/Users/lunarabbit/Documents/Database/Market-Data/market_data.db?mo
 - 执行了的写明写入内容和核验结论。
 - 合并成一条提交命令交给 Doctor：每个仓分段写，只列本次改动的文件，并做路径限定。
 
+## 研究产物落盘
+
+2026-11-21 Doctor 立。运行过本技能任一流程的会话里，以及从这类会话建立的研究类定时任务里（例如 `us-selloff-institution-views-1123` 周一补收机构观点），围绕 EAL 对象做的研究问答，在给出回答的同一回合自动存成文件，不另问。EAL 对象包括：美股与 SOX、科创50、机构观点和主流归因、宏观与政策路径、AI 产业事件。
+
+**存什么**：带来源的分析，例如机构观点梳理、行情归因、事件时间线、政策影响的情景分析。
+
+**不存什么**：
+- 运行状态的问答，例如「落库了没」「什么时候跑」「会不会被读到」。
+- 没有来源的闲谈。
+- 已经由各流程写进台账、追踪研究或旁表的内容。
+
+**怎么存**：
+- 位置：`~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger/研究材料/{主题}-YYYY-MM-DD.md`。日期取首次落盘的本机日期。
+- frontmatter 照同目录现有件写：`title`、`tags`（含 `EAL`、`research_material`）、`created`、`updated`、`status: active`、`type: research_material`、`project: 宏观研究体系/EAL`、`source`（写明「CC 会话问答」及时间，外加本地读数的路径）。
+- 正文：开头写这份材料回答了哪几个问题，加一句不预测、不构成交易建议；接着一段加粗的判断；然后分节；文末先设「增量」一节（留空待追加），最后列来源。
+- 只转写已经给出的回答。不新增断言；要补的，先回源核过，并带上来源。
+- E0、E1、E2 的证据标注和撤回条件照原样保留，不升也不降。会话里前后说法不一致的地方，以后一次为准，并在文中写明取舍，以及是推断还是已核。
+- 引用本地读数（如 `policy_snapshots.jsonl`、`node_checks.jsonl`）的数字，落盘前对照本地文件再核一遍。与会话原答案不符时以本地为准，在文中注明订正；改一处时同段的相关说法要一起改。日期要分清读数本身的时区日期（如 `data_as_of` 的 CT）和记录时间戳的 UTC 日期。
+- 同一天的同一主题追问追加到同一文件，加一节，更新 `updated`，不另开新文件。隔天的补充和定时任务的结果放进「增量」一节，不改已写的正文；需要订正的，在「增量」里写订正说明。
+- 定时任务找不到对应文件时，按上面的规则新建。
+- 新建文件时，派一个未参与落盘的 subagent 核对转写：对照会话原答案和本地读数，查数字走样、新增断言、证据级别变动、被删的限定。有问题就修，并在工作日志里补记。追加小节时可以不派。
+- 每次新建或追加，都在同目录 `工作日志.md` 末尾登记一条，格式为 `### YYYY-MM-DD · CC · 标题`，写登记时刻、做了什么、未核项、下一步，并更新其 frontmatter 的 `updated`。
+- 在回复末尾用一行写明文件路径，再给一条路径限定的提交命令（研究材料目录在 `Event-Attribution-Ledger` 仓内），交 Doctor 在终端执行：
+
+```bash
+cd ~/Documents/Claude/Projects/Financial/Event-Attribution-Ledger && git add -- "研究材料/<文件名>" 研究材料/工作日志.md && git commit -m "研究材料：<主题>" -- "研究材料/<文件名>" 研究材料/工作日志.md
+```
+
 ## 边界
 
 - research files 只写索引表「上次核查」、研究文件的增量更新记录区，以及核验后追加的修正块。
 - all 不另设写入范围，只按所调用子流程的边界写入。
+- 研究产物落盘只写 `Event-Attribution-Ledger/研究材料/` 下的研究材料文件，以及同目录 `工作日志.md` 的末尾登记和 frontmatter `updated`；不改其他研究材料的正文、索引件和框架件。
 - Event Attribution Ledger - SOX/KC50 只写 `Database/宏观研究体系/EAL/daily_tracking/` 下的年度台账和开盘价旁表、`EAL/tracking/` 下的旁表与结果行，以及 `quant_anchors/anchors.jsonl` 中已登记锚的 review 和终判（先留 `.bak`）；不改 `attribution.db`、`market_data.db`、个案正文和框架件。
 - market data 只通过编排器写 `market_data.db`，不手工改库，不删除、不移动 `.bak_*`、`pre-zhuzhao-*` 和写锁。
   - 副本保留策略（2026-11-19 Doctor 定，`/conch database`）：`Market-Data/` 根目录的整库副本按后缀分类（`bak_jumang_*_preupdate`、`bak_zhuzhao_*_preputback`、`pre-zhuzhao-YYYYMMDD` 等；名字带时分等额外后缀的如 `pre-zhuzhao-20261111-1806` 单列一类），每类留最近 3 份；被文档点名为写前快照或修复证据的副本另行保留（如 `_bak/` 两份、`market_data.db.bak_20261101_datefmt`）。超出的由本机 conch 文件健康审查及整理按回收站规程清走；已释放的写锁（`*.lock.RELEASED-*`）、空的 `.staging-*`、`*-journal.STALE-*` 同样由 conch 清。本流程自身仍不删、不移。
