@@ -32,7 +32,7 @@ type: bootstrap
 工作路径：~/Documents/Claude/
 Brain vault：~/Documents/Claude/brain/
 项目目录：~/Documents/Claude/Projects/
-技能仓库：~/Documents/Vault/
+技能仓库：~/Documents/Vault/（第三方与系统 skill 备份包；brain 系列现行包与 conch 现行正文（code-only）在 ~/Documents/Claude/brain/.skills/）
 
 当前活跃项目：见 `permanent/项目总览.md`（唯一清单真源；原硬编码 7 项已过期 · 2026-11-05 审计订正）
 
@@ -62,7 +62,7 @@ Brain vault：~/Documents/Claude/brain/
 
 **skills 丢了怎么办**
 如果上面列出的 skills 在 Max 模式下不可用：
-→ 去 `~/Documents/Vault/` 找对应的 `.skill` 文件，在 Finder 双击即可重装。
+→ brain 系列从 `~/Documents/Claude/brain/.skills/{名}.skill` 重装；conch 为 code-only，Code 侧经 `~/.claude/skills/the-conch-maiden` 链接加载，Cowork 不装；第三方设计 skill 去 `~/Documents/Vault/archived/` 找对应的 `.skill` 文件，在 Finder 双击即可重装（`Vault/archived/brain/`、`Vault/archived/system-skills/conch.skill` 是已禁用旧包，勿用）。
 → 具体清单（真源 + 重装手册）见 `~/Documents/Claude/brain/permanent/已装skill清单.md`（2026-07-01 起为唯一真源；`Vault/SKILLS_MANIFEST.md` 已降为指针）。
 
 **brain vault 不会丢**

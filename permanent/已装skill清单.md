@@ -2,7 +2,7 @@
 title: 已装 skill 清单
 tags: [skill, index, 维护, 真源镜像, 重装手册]
 created: 2026-06-30
-updated: 2026-11-06
+updated: 2026-11-23
 status: active
 type: permanent
 ---
@@ -115,13 +115,13 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 
 ## E · 系统级 / 官方 skills（Tier 1 · 跟环境走，本地备份 `Vault/archived/system-skills/`）
 
-理论上 Max/官方账户下自动可用；丢失先从 Settings 面板重启用，再不行从 `Vault/archived/system-skills/` 重装。
+理论上 Max/官方账户下自动可用；丢失先从 Settings 面板重启用，再不行从 `Vault/archived/system-skills/` 重装（⚠ 该目录的 `conch.skill` 已禁用、`pdf.skill` 只有 SKILL.md 不完整，这两个不要从这里装；2026-11-23 /conch Vault 核出）。
 
 **文档**：`docx` · `xlsx` · `pptx` · `pdf` · `pdf-reading`
 **通用**：`consolidate-memory`（针对 MEMORY.md，与自制 `brain-consolidate` 共存·后者声明"取代"避免抢戏）· `schedule`（定时任务）· `setup-cowork`（初设）· `skill-creator` · `full-output-enforcement`
 **研究**：`deep-research`
 **斜杠命令型**：`init` · `review` · `security-review`
-**其他备份**：`conch`（`archived/system-skills/conch.skill`，`/conch` 项目整理）
+**其他备份**：~~`conch`（`archived/system-skills/conch.skill`，`/conch` 项目整理）~~ ⚠ 已禁用（2026-11-23 /conch Vault 核出）：该包是 v0.1 系提示词版 conch（默认不走 dry-run、阶段间不确认），不得用于重装；现行 conch＝`brain/.skills/the-conch-maiden/`（code-only，见下文 the-conch-maiden 行）。
 
 ---
 
@@ -129,7 +129,7 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 
 源在 `Projects/海螺姑娘/`，**当前未作 Cowork skill 装**——Doctor 决定**先用一用、积累经验再适配**（合 G-X10「规则从失败里长」）。想装先修 frontmatter 引号 + 重打包。
 
-- `conch`（`/conch` 项目维护，有 `Projects/海螺姑娘/conch-v0.2.skill` 包）
+- `conch`（`/conch` 项目维护，有 `Projects/海螺姑娘/conch-v0.2.skill` 包）〔2026-11-23 注：此条是 2026-07-01 时的状态；2026-11-12 起现行 conch 为 `brain/.skills/the-conch-maiden/`（code-only），见下文 the-conch-maiden 行〕
 - `meditation`（brain 体检，已被 `brain-monthly-checkup` 定时任务直调 `meditation.py`，未必需作 skill）
 - `project-review`（关键迭代按 PRD 审代码）
 
@@ -166,7 +166,7 @@ Claude Cowork 可用（纯设计指导，不依赖图像生成）：
 
 ## J · 切环境完整重装 SOP
 
-1. 切账户/环境后，试 Tier 1（如对话里试 `/conch`）；不可用则 Settings 重启用，再不行从 `Vault/archived/system-skills/` 重装。
+1. 切账户/环境后，试 Tier 1（如对话里试 `/conch`）；不可用则 Settings 重启用，再不行从 `Vault/archived/system-skills/` 重装（⚠ conch、pdf 除外：conch 现行取 `brain/.skills/the-conch-maiden/`，pdf 走 Settings 重启用；2026-11-23 /conch Vault 核出）。
 2. 自制 skill（A/B）从 `brain/.skills/` 重装（gateway 走 Settings）；对照本表逐个。
 3. 设计线（C/D）按需从 `Vault/archived/taste-skills/`、`Vault/archived/emil|impeccable/` 重装；优先 `impeccable` / `design-taste-frontend` / `full-output-enforcement`。
 4. **Codex/图生线在 `Vault/Codex/`——本环境不适用、勿装。**
