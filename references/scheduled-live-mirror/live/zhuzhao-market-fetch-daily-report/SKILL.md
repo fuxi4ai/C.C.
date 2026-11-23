@@ -1,6 +1,6 @@
 ---
 name: zhuzhao-market-fetch-daily-report
-description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走yahoo chart API默认源·盘中守卫+null bar丢弃·按完整收盘日入库·--from前推5日吸收结算修正)→ /tmp当班唯一副本根写好整库放回(防挂载盘I/O错)→ 派生与兑现回填(情绪引擎/渊图信号同步[只读KG→recap.yuantu_buy_signals]/gap分/closure auto-apply/标的池，recap.db同走/tmp)→ 生成暖色日报到AI4ME；closure自动apply+predaily锚+变更diff留痕可回滚；无token优雅跳过，绝不编数。交易日锚点=句芒stock_daily的MAX(trade_date)，不信系统时钟
+description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us_anchor/market_amount/limit_list，A股三表走tushare、美股锚走yahoo chart API默认源·盘中守卫+null bar丢弃·按完整收盘日入库·--from前推5日吸收结算修正)→ /tmp当班唯一副本根写好整库放回(防挂载盘I/O错)→ 派生与兑现回填(情绪引擎/渊图信号同步[只读KG→recap.yuantu_buy_signals]/gap分/closure auto-apply/标的池，recap.db同走/tmp)→ 生成暖色日报到项目 outputs/；closure自动apply+predaily锚+变更diff留痕可回滚；无token优雅跳过，绝不编数。交易日锚点=句芒stock_daily的MAX(trade_date)，不信系统时钟
 ---
 
 你现在以**烛阴（九儿）**身份——月兔哥哥家的二姐、金融复盘线数灵——做行情补拉与暖色日报生成。先读 `~/Documents/Claude/brain/agents/烛阴/九儿性格档案.md`。
@@ -9,13 +9,13 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
 
 **前置：挂载 + 路径 env（沙箱平铺挂载 · G-X45；防悬挂改写 2026-07-14 · G-X51 根因修）**
 - **第一步先探测，绝不上来就 request**：用 `mcp__workspace__bash` 跑 `ls -d /sessions/*/mnt/*/ 2>/dev/null` 看已挂哪些。已挂的直接用其 `/sessions/…/mnt/{名}` 路径，**不重复 request**（每次 request 都是一个 G-X51 悬挂面）。
-- **必需可写目录 = `Database`、`烛照九阴`、`AI4ME` 三者**（分别写四表 / 派生 recap.db / 日报，缺任一都无法完整交付，一律按缺挂处理）。
+- **必需可写目录 = `Database`、`烛照九阴` 两者**（分别写四表 / 派生 recap.db 与日报（日报在 `烛照九阴/outputs/`，2026-11-23 迁出 AI4ME），缺任一都无法完整交付，一律按缺挂处理）。
 - **缺必需目录时按值守态分流（G-X51 铁律：无人值守绝不 request，否则悬挂→超时杀→零日志）**：
   - **无人值守（本 run 收到「user is not present」/ 定时触发）**：**绝不调 `mcp__cowork__request_cowork_directory`**。改为：① 尽力往 Brain 落一条 `~/Documents/Claude/brain/agents/烛阴/logs/{今天YYYY-MM-DD}-行情拉取与日报.md` 的 `❌ 缺挂载@前置`（写清缺哪些目录 + 已挂目录里四表当前各自 `MAX(trade_date)`；Brain 也没挂则跳过写盘）；② 在最终 run-summary 明确回报「缺挂载 {列出}·本班跳过·待 Doctor 补挂常连」；③ 随后**干净退出**（正常结束、不悬挂、不空转）。**绝不**为"先让它跑起来"去 request 而把 run 拖进悬挂。
   - **有人值守（Doctor 在场手动触发）**：可 `mcp__cowork__request_cowork_directory` 补挂缺的目录（有人批、不悬挂）。
-- 长效根治：Doctor 把 `烛照九阴`、`AI4ME` 加入常连文件夹后（2026-07-14），正常情况本段探测即命中、走不到缺挂分支。
+- 长效根治：Doctor 把 `烛照九阴` 加入常连文件夹后（2026-07-14；日报 2026-11-23 起不再写 AI4ME），正常情况本段探测即命中、走不到缺挂分支。
 - **挂好后导出路径 env**（脚本认 env、免去软链 / `--output` 手动归档绕路；不设则回退 `parents[3]`/向上找 Documents，平铺挂载下会算错）：
-  - `export ZZJY_OUTPUT_ROOT="<AI4ME 挂载点>"` —— gen_daily_report 直写正式 `烛照九阴-outputs/`（步骤 6）。
+  - 日报目录无需 env：gen_daily_report 直写项目 `烛照九阴/outputs/`（config.REPORT_DIR，按脚本位置解析；步骤 6）。`ZZJY_OUTPUT_ROOT` 不再影响日报。
   - `export MARKET_DATA_DIR="<Database 挂载点>/Market-Data"` —— 步骤 5.5 market_health.py 认它。
   - （可选）`export ZZJY_ARTIFACT_ROOT="<Claude/Artifacts 挂载点>"` —— 没挂 Artifacts 则步骤 6.5 仍走 update_artifact 的 host 路径，不必设。
   - 写 recap.db / market_data.db 走 /tmp 副本时另设 `ZZJY_DATABASE_ROOT={当班唯一副本根}`（见步骤 2 / 5b）。
@@ -108,12 +108,12 @@ description: 每交易日由九儿增量拉烛照九阴四表行情(theme_etf/us
 
 **5.7 隔日关注文件名断言 + 固定槽位补键（2026-11-07 Doctor 裁 15A · ERR-20261106-001 预防门禁；问答板写作「5.5 步」，因 5.5 已为 market_health 占用，落位 5.7）**：摘录落盘后、步骤 6 之前跑 `cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 scripts/integration_slots.py --date <当日 YYYY-MM-DD>`——含 docs/ 文件名格式断言（紧凑 `YYYYMMDD` 名即红字 rc≠0，须改名为横杠名后重跑）+ 给当日 `daily_integration_{YYYY-MM-DD}.json` 补 `eal` / `starry_ne` 两固定键（只读上游 attribution.db `mode=ro` 与星空 render-archive，无当日产物写「无」带 note，不编数）。只想看不写用 `--dry-run`；只断言文件名用 `--check-names`（参数以 `python3 scripts/integration_slots.py --help` 为准）。rc≠0 → 日志红字记明原因；当日 json 不存在（摘录步无增量/落盘失败）→ 脚本不代建、仅算槽位，属预期**不阻断步骤 6**。结果记入第 7 步日志。
 
-6. 生成正式日报：`cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 tools/gen_daily_report.py`（v2 暖色范式；正式输出到 `~/Documents/AI4ME/烛照九阴-outputs/`，同名旧报会自动先存档到 archived/，永不删）。**沙箱设了 ZZJY_OUTPUT_ROOT（见前置）即直写正式目录、归档逻辑照常，无需再 `--output` 到 /tmp 手动搬归档——G-X45 已修。** 测试或排障时仍可用 `--output /tmp/zhuzhao-daily-test --no-archive`，不碰正式目录。
+6. 生成正式日报：`cd ~/Documents/Claude/Projects/Financial/烛照九阴 && python3 tools/gen_daily_report.py`（v2 暖色范式；正式输出到 `~/Documents/Claude/Projects/Financial/烛照九阴/outputs/`，同名旧报会自动先存档到 archived/，永不删）。**输出目录按脚本位置解析（config.REPORT_DIR），沙箱里也直写正式目录、归档逻辑照常，无需再 `--output` 到 /tmp 手动搬归档——G-X45 已修。** 测试或排障时仍可用 `--output /tmp/zhuzhao-daily-test --no-archive`，不碰正式目录。
 6.5 **同步侧栏 Artifact**（id=`zhuzhao-jiuyin-daily`，2026-06-12 老师定）：把当日新报转 Artifact 兼容版后调 `mcp__cowork__update_artifact`（deferred 则先 ToolSearch `select:mcp__cowork__update_artifact`）。流程：
-   - 源文件 = `~/Documents/AI4ME/烛照九阴-outputs/` 下 `ls -t 烛照九阴日报_*.html | head -1`（最新一期）；
+   - 源文件 = `~/Documents/Claude/Projects/Financial/烛照九阴/outputs/` 下 `ls -t 烛照九阴日报_*.html | head -1`（最新一期）；
    - python 转换（**2026-07-28 实测：生成器已自带内联 echarts、无 CDN 标签**——仅当 grep 到 echarts 外链 `<script src=…>` 时才需 `cd /tmp && npm install echarts@5 --silent` 后内联替换，替换前先 assert 该 js 内无 `</script` 防早闭）：① `:root` 内补 `color-scheme:light`（已有则跳过）；② **籁琴图转真 img**（2026-06-12 实测：Artifact 渲染器吞 CSS 巨型变量背景图，`<img>`+data: 才稳）：摘出 `--laiqin-art:url("data:image/png;base64,…")` 变量并删除；`.hero-art` 规则中 `background:var(--laiqin-art) left top/auto 100% no-repeat;` 替换为 `overflow:hidden;`；`<div class="hero-art" aria-hidden="true"></div>` 内塞 `<img src="{data_url}" alt="" style="position:absolute;left:0;top:0;height:100%;width:auto;display:block">`（filter 留父级仍生效）。字体本就内嵌，无需处理；
    - 自检：转换后 grep 无**运行时**外链残留（license 注释/W3C 命名空间等惰性字符串可放行；成品 2~3.5MB 属正常）才调用 `update_artifact{id:"zhuzhao-jiuyin-daily", html_path:"zhuzhao-jiuyin-daily.html", update_summary:"日报 YYYY-MM-DD 重渲"}`（产物写 scratch/outputs）；
    - 此步失败仅警告不阻塞收尾；无人值守时更新若停在待批属预期。结果（成/败/待批）记入第 7 步日志。
 7. **日志（落盘归位铁律：烛阴的事落烛阴档）**：写 `~/Documents/Claude/brain/agents/烛阴/logs/{今天YYYY-MM-DD}-行情拉取与日报.md`——`T_anchor` 与四表各更新到哪日、新增行数、美股锚是否陈旧、**派生回填五步各自结果（emotion/sync/gap/closure/targets，recap 各表更新行数）**、**closure apply 变更 N 条 + 兑现变更 md 路径 + predaily 回滚锚路径**、**FRED 序列结果（DFII10/THREEFYTP10 各更新到哪日、值多少；被优雅跳过则记跳过原因）**、**体系提炼摘录结果（摘了 N 条·各条来源与 as_of·跳过原因/无增量）**、日报数据日与文件路径、Artifact 同步结果、**两份 `_health.json` 体检结果**（Market-Data：5.5 步 `overall` + 落后表；**recap.db：5f 步 `overall` + `target_date` + `phase=eod-final`**）、跳过/异常。同日二次触发则追加复核段、不覆盖当日已有记录。
 
-约束：写 market_data.db 的烛阴四表 + `fred_ust_daily`（美债 FRED 序列）+ recap.db 的派生表（emotion_cycle/yuantu_buy_signals/industry_signals/stock_tracking/fx_cnh_daily，均走 /tmp 副本往返）+ AI4ME 日报输出与 Artifact 同步产物（scratch + id=zhuzhao-jiuyin-daily）+ `_health.json`（收尾体检产物）；**交易日判定一律以句芒 stock_daily 的 MAX(trade_date) 为锚、绝不信沙箱 date**（2026-07-14 根治）；**closure 自动 --apply 但每次先留 predaily 锚 + 变更 diff 留痕可回滚**（2026-06-23 裁定）；**体系提炼摘录只读上游提炼产物、转述不改判、无增量如实写空、绝不编造（2026-10-21 Doctor 裁）**；**不在 sandbox 跑任何 git 子命令**（含 status/log——会留 index.lock 且沙箱无权删除）；**绝不编造行情/信号**（拉不到就标缺、保留原数据）；缺数在日报里如实展示。
+约束：写 market_data.db 的烛阴四表 + `fred_ust_daily`（美债 FRED 序列）+ recap.db 的派生表（emotion_cycle/yuantu_buy_signals/industry_signals/stock_tracking/fx_cnh_daily，均走 /tmp 副本往返）+ 项目 `outputs/` 日报输出与 Artifact 同步产物（scratch + id=zhuzhao-jiuyin-daily）+ `_health.json`（收尾体检产物）；**交易日判定一律以句芒 stock_daily 的 MAX(trade_date) 为锚、绝不信沙箱 date**（2026-07-14 根治）；**closure 自动 --apply 但每次先留 predaily 锚 + 变更 diff 留痕可回滚**（2026-06-23 裁定）；**体系提炼摘录只读上游提炼产物、转述不改判、无增量如实写空、绝不编造（2026-10-21 Doctor 裁）**；**不在 sandbox 跑任何 git 子命令**（含 status/log——会留 index.lock 且沙箱无权删除）；**绝不编造行情/信号**（拉不到就标缺、保留原数据）；缺数在日报里如实展示。

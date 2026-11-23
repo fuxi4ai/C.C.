@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import artifact_fragment  # noqa: E402
 
 BOARD_ID = "zhuzhao-jiuyin-daily"
-DEFAULT_SRC = "AI4ME/烛照九阴-outputs/artifact/zhuzhao-jiuyin-daily.html"  # 相对 Documents 根
+DEFAULT_SRC = "Claude/Projects/Financial/烛照九阴/outputs/artifact/zhuzhao-jiuyin-daily.html"  # 相对 Documents 根
 CDN_FMT = "https://cdnjs.cloudflare.com/ajax/libs/echarts/%s/echarts.min.js"
 BIG_URI_CHARS = 50000   # 整个 data URI 达到这个字符数才外置
 LIB_MIN_CHARS = 200000  # echarts 库块的下限，防止把别的带许可注释的小脚本认成库
@@ -49,7 +49,7 @@ def die(msg):
 
 
 def default_src(brain):
-    # brain 根是 <Documents>/Claude/brain，原件在 <Documents>/AI4ME/… 下
+    # brain 根是 <Documents>/Claude/brain，原件在 <Documents>/Claude/Projects/Financial/烛照九阴/outputs/… 下（2026-11-23 迁出 AI4ME）
     return os.path.join(os.path.dirname(os.path.dirname(brain)), DEFAULT_SRC)
 
 

@@ -10,7 +10,7 @@ import glob, os, re, shutil, subprocess, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 BRAIN = os.path.dirname(HERE)
 DOCS = os.path.dirname(os.path.dirname(BRAIN))
-ZZ_SRC = os.path.join(DOCS, "AI4ME/烛照九阴-outputs/artifact/zhuzhao-jiuyin-daily.html")
+ZZ_SRC = os.path.join(DOCS, "Claude/Projects/Financial/烛照九阴/outputs/artifact/zhuzhao-jiuyin-daily.html")
 RD_SRC = os.path.join(DOCS, "Claude/Projects/Financial/风险日报/dashboard/risk-daily.html")
 fails = []
 

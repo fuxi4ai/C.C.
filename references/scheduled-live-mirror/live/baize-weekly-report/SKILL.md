@@ -11,11 +11,11 @@ description: 白泽大宗周报：渊图先验+web补价+Top20双面交叉验证
 > 🧭 **领域分库（2026-06-29 Doctor 定调）**：公司六维评分的真源＝**龙鱼库**（`Database/龙鱼-标的分析库/records/`，公司级公共真源）。白泽**不再自存评分镜像**——旧 `data/weekly/longyu_scores.json` 已归档、`build_warehouse` 不再建 `stock_scores`。周报由 `build_weekly_report.py` 经 `lib_public_read.lookup_company` **实时读龙鱼库**填「龙鱼六维」。新受益公司经本任务的沙箱跑分（Stage 0.5[4] `score_with_llm` → `record_writer`）**自动落龙鱼库**——这就是「沙箱自动化跑分落库」闭环。白泽 `business_breakdown.db` 只存品种行情 + 受益关系 `benefit_relations`（原 `fundamentals` 表改名）。
 
 **前置：挂载 + 路径 env（gateway 平铺挂载 · 见通用教训 G-X45）**
-- 沙箱默认可能只挂 Brain → 用 `mcp__cowork__request_cowork_directory` 把 `~/Documents/Database`、`~/Documents/Claude/Projects/Financial/白泽大宗`、`~/Documents/AI4ME`、`~/Documents/Claude/Artifacts` 挂进来再开工。
+- 沙箱默认可能只挂 Brain → 用 `mcp__cowork__request_cowork_directory` 把 `~/Documents/Database`、`~/Documents/Claude/Projects/Financial/白泽大宗`挂进来再开工。
 - **挂好后导出路径 env**（脚本认 env、免去「向上找 Documents」/「HOME 拼接」在平铺挂载下算错；Mac 原生不设 env、照旧回退，零影响）：
-  - `export BAIZE_OUTPUT_ROOT="<AI4ME 挂载点>"` —— build_weekly_report（Stage 3）直写 `白泽大宗-outputs/` 看板、sync_to_cowork_artifact（Stage 4）取源都认它。
+  - 看板目录无需 env：build_weekly_report（Stage 3）直写项目 `周报/看板/`，sync_to_cowork_artifact（Stage 4）从那里取源（两支脚本按自身位置定路径；2026-11-23 迁出 AI4ME，已不读 `BAIZE_OUTPUT_ROOT`）。
   - `export BAIZE_DATABASE_ROOT="<Database 挂载点>"` —— 龙鱼库 records 实时读六维、龙鱼 batch/六维 LLM、weekly_health（Stage 3.5 读 records）、longyu_health（Stage 3.5 龙鱼库自检）、business_breakdown.db 全认它。**不设则六维全显「待跑分」**（龙鱼库路径算错）。
-  - `export BAIZE_ARTIFACT_ROOT="<host 可见挂载点>"` —— sync_to_cowork_artifact（Stage 4）把转换后 HTML 写到它下的 `baize-weekly-dashboard/index.html`。⚠️ **Artifacts 目录常因受保护挂不上**——此时**别留空**（留空会落到沙箱本地 `~/Documents/Claude/Artifacts`，host 读不到、update_artifact 的 html_path 拿不到文件，2026-07-01 实跑教训 G-X45）；改**指到一个已挂载的 host 可见目录**（如 AI4ME 挂载点下，`export BAIZE_ARTIFACT_ROOT="<AI4ME 挂载点>/_artifact_stage"`），让产物落在 host 能读到处。
+  - 发布暂存无需 env：sync_to_cowork_artifact（Stage 4）把转换后 HTML 写到项目 `reports/artifact_stage/baize-weekly-dashboard/index.html`（项目目录在整挂的 Documents 内、host 可见；2026-11-23 迁出 AI4ME/_artifact_stage，已不读 `BAIZE_ARTIFACT_ROOT`）。
   - 写 business_breakdown.db 走 /tmp 副本时另设 `BAIZE_BUSINESS_DB=/tmp/...`（优先级高于 BAIZE_DATABASE_ROOT）。
 
 执行步骤：
@@ -96,7 +96,7 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
 【Stage 2.5 · crossval 校验 gate（2026-06-24 新增·必跑）】写完 crossval.json 立即校验：`cd PROJ && python3 scripts/reports/validate_crossval.py`。退出 0=合格放行；退出 1=不合格（漏 name/verdict/divergence、support/refute 缺 tier/text/source 引用、verdict=成立/证伪 却缺正反面）→ 按打印的逐条问题**补全 crossval.json 后重校**，再进 Stage 3。（build_weekly_report 已内置同一 gate：crossval 存在但不合格会**中止 build**、拒绝静默渲染「待补」；crossval 缺失则允许·留空待补。）
 
 【Stage 3 · 出报告】运行 cd PROJ && python3 scripts/reports/build_weekly_report.py
-产出（2026-06-10 对齐脚本实际行为）：看板 HTML（dated + 定名版『白泽周报看板_最新.html』）落 /Users/lunarabbit/Documents/AI4ME/白泽大宗-outputs/（沙箱设了 BAIZE_OUTPUT_ROOT 即直写挂载点对应目录——见前置·G-X45）；周报 MD **单份滚动**落 PROJ/周报/白泽周报_最新.md（项目层每周覆盖，outputs 目录不再放 MD）。
+产出（2026-06-10 对齐脚本实际行为）：看板 HTML（dated『白泽周报看板-YYYY-MM-DD.html』+ 定名版『白泽周报看板_最新.html』）落 PROJ/周报/看板/（2026-11-23 迁出 AI4ME；AI4ME 只留同名 Finder 替身）；周报 MD **单份滚动**落 PROJ/周报/白泽周报_最新.md（项目层每周覆盖，outputs 目录不再放 MD）。
 注：local_prep_health.json 若为空 `{}`（未写成/被覆盖），按"健康未知"处理——以 live store 实际新鲜度为准，不臆断本地 cron 成败。
 渲染层确定性，沙箱无人值守可跑；看板模板已对接 O MY HTML 设计语汇（米白纸底·墨黑·印章红/暖金/翠绿配色预算·Noto Serif SC 题款·浮雕卡片·同比/弹性条形可视化），无需另装设计工具。
 报告含**七节 / 四维分析**：①本周价格 ②受益公司榜 Top 20（弹性条 + 龙鱼六维·财务·PE/PB分位 + 量价背离裁决一体）③**商品维度归因**（每鲜价商品涨价/环比/持续性/受益传导 Top + 风险旗标）④双面交叉验证逐家 ⑤**风险与配置建议**（按商品风险旗标 + 通用纪律，附「非投资建议」声明）⑥数据缺口 ⑦P0/个股库升级清单。六维/估值缺位一律『待跑分』，未满 20 家时榜尾如实说明原因。**2026-09-11 起含「三·附2 渊图价格层取数」（AI 硬件 P1 参考·不入弹性·自动带出，无需手工）**。
@@ -108,12 +108,12 @@ pip install tushare --break-system-packages -q   # 沙箱每会话全新
 `python3 ~/Documents/Database/龙鱼-标的分析库/scripts/longyu_health.py`
 —— 只读扫 records/*.json 最新 mtime → 写 `Database/龙鱼-标的分析库/_health.json`（overall ok/stale/fail，阈值 stale≥10d）。脚本认前置里导出的 `BAIZE_DATABASE_ROOT`（或独立 `LONGYU_DATABASE_ROOT`/`LONGYU_RECORDS`）。产物供海螺姑娘资产看板 conch survey 读取 →「龙鱼基本面库」节点按健康发光告警。收尾摘要末尾附一行「longyu health: {overall} · target={target_date} · n_records={N}」。
 
-【Stage 4 · 精致看板呈现（工作流收尾·最后一步）】这是周日工作流的最终交付步，务必执行。（build_weekly_report 每次同时产「日期版 白泽周报看板_YYYYMMDD.html」与「定名版 白泽周报看板_最新.html」，二者内容同一；呈现用**定名版**，免日期跳变混淆。）
+【Stage 4 · 精致看板呈现（工作流收尾·最后一步）】这是周日工作流的最终交付步，务必执行。（build_weekly_report 每次同时产「日期版 白泽周报看板-YYYY-MM-DD.html」与「定名版 白泽周报看板_最新.html」，二者内容同一；呈现用**定名版**，免日期跳变混淆。）
 1) 打开 白泽周报看板_最新.html 自检版面——题款/印章、KPI 四宫、价格卡（鲜价含同比条+信源徽、缺价呈斜纹『待核验』）、受益榜弹性条、双面交叉验证卡、缺口区是否齐整且配色雅致；数据须与 MD 周报一致、无占位冒充。
 2) 用 present_files **先呈定名版看板 白泽周报看板_最新.html，再呈 PROJ/周报/白泽周报_最新.md**（看板为主交付物，置于最前）。
 3) 附一句话白泽口吻摘要：本周价格新鲜度（鲜价 N 种/全集 M 种）、受益 Top3、交叉验证 X 家成立/Y 家存疑/Z 家证伪/W 家待跑分。
 4) **同步侧栏 Artifact**（id=`baize-weekly-dashboard`，2026-06-12 老师定 · 2026-06-14 改脚本化）：**务必执行——这是数据进侧栏看板的唯一通路，漏掉则卡片停在上次日期**（2026-06-14 实测：Stage 3 出活但本步漏跑，侧栏滞留 06-12）。两步：
-   ① 跑同步脚本（一条 bash，幂等）：`cd PROJ && python3 scripts/reports/sync_to_cowork_artifact.py`（沙箱设了 BAIZE_OUTPUT_ROOT/BAIZE_ARTIFACT_ROOT 即认挂载点，见前置·G-X45；不设则回退 HOME/Documents、平铺挂载下会找不到源）。**⚠️ Artifacts 目录挂不上时（常见·受保护），务必先把 `BAIZE_ARTIFACT_ROOT` 指到一个 host 可见的挂载点（如 AI4ME 挂载点下），否则脚本会写到沙箱本地 `~/Documents/Claude/Artifacts`、下一步 update_artifact 的 html_path 读不到文件（2026-07-01 实跑教训 G-X45）。** 脚本自动：取定名版看板 → 注入 `cowork-artifact-meta`（name=白泽大宗综合周报 / 描述首句『更新时间：<北京时刻>』）→ 首行 dateline 改『更新时间：<北京时刻>』（D.date 变量保留供新鲜度计算）→ 删 Google Fonts 外链 + 本地字体回退 + 补 `color-scheme:light` → 写 `<BAIZE_ARTIFACT_ROOT>/baize-weekly-dashboard/index.html`。脚本打印 `OK 写: <绝对路径>` 与 `DESC ...` 行——记下写出路径供下一步。
+   ① 跑同步脚本（一条 bash，幂等）：`cd PROJ && python3 scripts/reports/sync_to_cowork_artifact.py`（源与暂存都按脚本位置定到项目内，无需 env；2026-11-23 起不再经 AI4ME）。 脚本自动：取定名版看板 → 注入 `cowork-artifact-meta`（name=白泽大宗综合周报 / 描述首句『更新时间：<北京时刻>』）→ 首行 dateline 改『更新时间：<北京时刻>』（D.date 变量保留供新鲜度计算）→ 删 Google Fonts 外链 + 本地字体回退 + 补 `color-scheme:light` → 写 `PROJ/reports/artifact_stage/baize-weekly-dashboard/index.html`。脚本打印 `OK 写: <绝对路径>` 与 `DESC ...` 行——记下写出路径供下一步。
    > **⚠ 2026-11-14 注：② 已被云端班规覆盖、勿照此执行。** 定时任务 `trig_01Q6uYGehyN5tpEnazW5ht1U` 的 prompt「看板推送」段（2026-11-12 改 · 11-13 加 (Cloud) 标题）规定：跑 `brain/.tools/artifact_fragment.py` 生成片段 → stage 并核 sha → 会话自带 `Artifact` 工具按链接原地发布到托管页「Baize Weekly Dashboard (Cloud)」（slug 见 `brain/.tmp/artifact-publish/hosted-pages.json`）→ 失败登记 `pending-artifact-push.jsonl`。下面 ② 的 update_artifact 写法仅留作历史；交互会话手推也按托管页做。
    ② 调 `mcp__cowork__update_artifact`（deferred 则先 ToolSearch `select:mcp__cowork__update_artifact`）：`{id:"baize-weekly-dashboard", html_path:"<上一步脚本打印的 index.html 绝对路径·须 host 可见>", description:"<脚本打印的 DESC>", update_summary:"周报 YYYY-MM-DD 重渲"}`。
    自检：脚本 stderr 无 WARN（外链残留/未找到 token）才推送。此步失败仅警告不阻塞收尾，但**必须在收尾摘要里如实报「侧栏未同步」**，不可静默跳过。
