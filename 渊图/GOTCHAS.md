@@ -1245,6 +1245,7 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **预防门禁**: 新增边 desc 与方向一致性抽检进入转录语料断言核查；价格分流加「股价」拒收。
 **来源**: 2026-11-05 审核者复验，实跑实读。
 **追记（2026-11-13 · 同根复发 · 帕米尔六篇批）**: 状态维持 🔄。batch 产物在 promote 前被逮出同族错误，均已在候选件改正后才写 canonical（7652/8230 · 印章 `aa10e31f…`）：① 单位量级：Lumentum「明年300-400万只」记成 `shipment_2026e_million_units`=300/400（放大 100 倍）；立讯「年产能1100—1200万只、单线约100多万只」记成 `_k`=1100/1200/100（缩小 10 倍）。② 年份：立讯篇文件日期 2026.11.09 被解析成 2025-11-09（19 条 data_vintage/reference、index date），连带属性键年份标成 2025；富创、长鑫两篇解析日期正确，但 LLM 仍把「今年/明年」标成 2025/2026。③ 边语义：5 条删除（凭空因果、张冠李戴、送样写成 supplies），4 条改类型或改端点。新现象：batch 的「解析日期≠文件日期」告警只打印、不拦，年份错会顺着属性键名扩散。建议加门禁：解析日期与文件名日期相差 ≥1 年即 fail-closed；新增数值键的单位后缀与源文量词（万/千/百万）做一致性抽检。证据：`raw/核实/2026-11-13-帕米尔六篇批QA核实札记.md`、`outputs/surgery{,2,3}_20261113_pamir6*.py`；独立复验两轮（FAIL → PASS_WITH_LIMITS），实施者自查与修复，本追记不自签。
+**追记（2026-11-23 · 同根复发 · 帕米尔十三篇批）**: 状态维持 🔄。四路源文核对在 promote 前逮出同族错误，均在候选件改正后才写 canonical（7757/8355 · 印章 `83445ea1…`）：① 单位量级——Nebius 全篇「亿美元」记成 `usd_bn`（×10）、方正 2027 产值「130亿元」记成 `_rmb_mn`=130（×100）、PCIe「200万颗」记成 `_k`=200（×10）、中芯「260万片」实为芯片颗数却记 `_k_wafers`；② 年份——奥比、周报「明年」标 2026，阿里「28财年」写成自然年键；③ 边方向反 9 条；④ 撞名闸点名之外另有 13 处新节点与存量同实体（平头哥三型号、海光、数渡、众星微等）；⑤ 新族：batch 静默覆盖存量键值（`concept_Ascend950M7CCLSupply` 华正 40→5、生益 60→30-35，核对包 props 增量里看不出，C 路逮出），手术后全图普查存量 props 值被改 0。**预防补充**：promote 前加「存量 properties 值被改/删」全图普查（第 20 项只锁 region/stock_code，覆盖其它键不报）——建议升为门禁项，待 Doctor 裁。来源：2026-11-23 Code 标签会话，札记 `raw/核实/2026-11-23-帕米尔十三篇批QA核实札记.md`。
 
 ## [NOTE-20261105-006] 帕米尔 25 篇批二轮修复后残留：药明康德节点混入药明生物内容、平台节点仍错标 TCE、补建公司字段不全、1 节点时效虚长
 **状态**: ✅ 已修复（2026-11-07 未参与实施的审核者 subagent 独立复验 PASS 代签 · 证据：pre_promote 备份对 canonical `8e739b2b…`（sha256 与 `_gate_stamp.json` 一致、`kg_gates.py status` ok）逐节点逐边 diff：改动集合恰为 3 公司节点+21C 五节点+1 metric+新增 Nscale/Lambda+2 supplies 边，无超范围；致尚 301486.SZ 由 `market_data.db`（ro+immutable）stock_daily/limit_list_daily/ipo_daily 独立查得；图内 17 个 .HK 公司 region 全为「港」与药明生物一致；三节点 `s in raw` 实核 True/False/False 与 span_note 相符。残留→见问答板/TODO：⑤ quarterly_recheck 结果未写入 canonical（方向待裁）、wiki 卡刷新未在本轮核）
@@ -1401,3 +1402,14 @@ wiki 弃用 `outputs/cc_fix_firstrare_wiki_deprecate_20260926.py` ·
 **修复/建议修法**: 入库侧——历史对比行抽取原文给出的基期日写 `as_of`，抽不到则留空并标注，不以报告日充数。下游现行绕法（白泽已实施）：历史类行只作基期，且须 `as_of` 早于 `source_file` 解析出的报告日，否则排除；`ref_stats` 记排除计数。
 **预防门禁**: 新消费端引用价格层历史类行时，先查该行 `as_of` 是否等于来源报告日。
 **来源**: 2026-11-13 白泽大宗会话（agents/白泽/logs/2026-11-14-待核验四态与持续性断更修复及看板重渲.md）；代码 `Projects/Financial/白泽大宗/scripts/data_collection/fetch_yuantu_prices.py` `ref_changes` / `_file_date`。
+
+## [NOTE-20261123-001] 入库流程第 3 步 `| tee` 收不到 kg_ingest 日志——日志走 stderr，`$BATCH` 只是碰巧抓到
+**状态**: 🔄 已修待验（文档已改；kg_ingest 本体未改）
+**优先级**: 🟢 低（初登记写成「`$BATCH` 为空」，同日 Doctor 实跑 grep 抓到文件名，已订正影响面）
+**触发场景**: 2026-11-23 帕米尔十三篇批，Doctor 终端照 `Database/行业研究/CLAUDE.md`「新研报入库流程」第 3 步跑 `python3 kg_ingest.py --batch … | tee /tmp/kg_batch.log`；CC 在沙箱挂后台监听等日志出现「最终图谱」。
+**硬证据/最小复现**: batch 逐篇处理期间 `/tmp/kg_batch.log` 一直 0 字节（`ls -la` 实读）；跑完后 2786 字节、INFO/WARNING 行 0 条，内容全是 batch 后自动跑的 quarterly_recheck / region_classify 的 stdout（其中「✓ 写回 …_13篇.json」使 `$BATCH` 的 grep 恰好命中）；`kg_ingest.py` 第 60 行 `logging.basicConfig(level=…, format=…)` 未指定 stream，Python 默认写 stderr，第 1833 行「批量完成：…最终图谱 →」也经 logger 输出。
+**根因**: 管道只接 stdout；文档命令自 ERR-20260703-001 起沿用 `| tee`，从未在实际日志上验证过 `$BATCH` 非空。
+**影响面**: 逐篇告警（span、撞名闸、cite 待复核、日期漂移）与「最终图谱 →」行不进日志，事后无法从日志复盘；`$BATCH` 依赖 quarterly_recheck 的打印格式才非空，复检改输出或失败即落空（落空时第 5 步 `kg_promote` 在用法检查处拦停，属安全失败）；读该日志判 batch 进度的监听在逐篇阶段永久静默（本场 CC 监听即空等，已停）。
+**修复/建议修法**: 文档第 3 步改为 `2>&1 | tee`（2026-11-23 已改）。可选：kg_ingest 在结尾把产出文件名另打一行到 stdout。
+**预防门禁**: 监听外部进程优先盯产物文件（如 `mapping/行业知识图谱_v2_*_N篇.json` 出现），不盯可能走 stderr 的日志；文档里的捕获命令须用真实输出验证一次。
+**来源**: 2026-11-23 Code 标签会话（渊图新进 raw 资料 · 帕米尔十三篇批）。
