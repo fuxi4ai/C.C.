@@ -48,6 +48,7 @@ type: resource
   - 按 8 位窗口遮碎片，十六进制或 UUID 形态的值会和别处 UUID 偶然撞上 8 位，偶尔误遮。
   - 键值规则仍认不出：表格里的 `| token | 值 |`、`token 值`（无分隔符）、中段省略号 `abcd…wxyz`、键名后紧跟省略号的 `app_secret…：值`、只给前缀的预览；黑名单加载器读不了 YAML 写法、两行令牌文件、值含空格、短于 12 位的值。现有数据实扫无真残留。
   - 状态文件损坏后，黑名单基线从 `_secret_baseline.json` 取回，仍按「比上次少就停」执行。
+  - **云端 Cowork 会话不进真相层**（2026-11-23 补 · Doctor 批 DRM-20261121-1231-01）：2026-11-04 迁官方云端后，云端 Cowork 会话不在本机 `~/.claude/projects/` 下，`transcript_ingest.py` 抽不到——`transcripts/2026-11/` 里的 `cowork_`、`cowork3p_` 抽取件最晚都停在 2026-11-04（2026-11-23 实数：`cowork_` 16 个）。写于云端 Cowork 会话的日志只能靠别的 Code 会话转贴、Code 会话的工具输出或当轮 `list_triggers` 等旁证核对，其余陈述必然找不到出处，不代表记错；brain-dream 把这类单列为「真相层未覆盖」（技能 v1.4 起），不计入「查无出处」。
 - **体量上限**（2026-11-20 Doctor 定）：真相层超过 2GB 后，把最早的若干月抽取件打包归档到 fuxi-station `F:\Mac_Backup\cc_sessions\`（打包、双端哈希核对、再删本机，与会话冷归档同一流程）。Dream 每天报告体量，到线时写归档提案。
 - **不出本机**：已进 `.gitignore`；`.tools/backup-icloud.sh` 已排除（见通用教训 G-X285）。
 - **与 `code/` 的关系**：`import-chats.py`（2026-05-14）只留文字、按文件名去重、输出进 git，仅导过 1 篇；真相层不依赖它，旧工具与 `code/` 现有内容保留未动。

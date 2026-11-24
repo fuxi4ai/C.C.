@@ -440,6 +440,7 @@ project: 渊图
 **触发**: 去重键 (commodity,grade,price_type,as_of,source_file) 不含 horizon → 同篇同商品同类型同日的"现价/历史对比"与"预测"被判重复，后者被丢（典型：MLCC基粉 涨跌幅 历史+10% vs 预测+10%）
 **解决**: 去重键 / 快照键(rebuild_latest) / _price_id 全部加入 horizon；price_query + price_extract 同步修；已污染数据清层重建（重置种子 21 条→Doctor 重跑回填）
 **预防**: 价格 schema 凡区分时态（现价/预测/历史对比）的维度都须进去重键
+**升格**: 2026-11-23 与同族条目合并升格通用教训 [G-X291]（多写方共用记录的去重键须含全部区分维度 · Doctor 批 DRM-20261122-1231-02）
 
 ## [ERR-20260608-003] kg_merge 去重并入已有节点时不 union provenance → 已处理研报"零来源"
 **状态**: ✅ 根治闭环（2026-06-25）——第①步 _merge_data_sources 复合键 (file,reference)；第②步 forward cite 指纹走 Route A（kg_ingest 加 cite_nodes 槽 + _cite_nodes_to_updates 纯函数 + 零足迹告警，单测 3/3、第①步回归 4/4），原拟「另立高风险 PRD」由更轻的 Route A 取代。残留仅历史 207 孤儿回填，降级为数据卫生 followup（forward-only 观察期）**优先级**: 🟡 中
