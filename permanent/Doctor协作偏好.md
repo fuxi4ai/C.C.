@@ -265,6 +265,7 @@ V.V.（Codex 侧数灵，Doctor 2026-06-11 建立）有独立 brain：`~/Documen
 - **互不写入**：CC 不写 V.V. 的 vault；V.V. 对 CC brain 只读（其 AGENTS.md 已自载此条）。
 - **分工：生图归 V.V.**（2026-06-11 立）：V.V. 自带 GPT-Image-2 权限，生图任务一律交 V.V.；CC 遇生图需求不自己做，提示 Doctor 转给 V.V.（可代拟提示词）。
 - **跨脑信息经 Doctor 转交**：给对方的文档落各自工作区（如 `Documents/Codex/` 根），由对方自行收入 vault。
+- **⇒ 2026-11-23 递进（Doctor 原话「各自的Brain可以只读不能互写」）**：对等边界扩为三方——C.C.、V.V.、N.N.（DeepSeek-Harness，工作区 `~/Documents/DeepSeek-Harness/`）各自的 Brain 互相只读、不互写；N.N. 读 C.C. brain 即凭此条，不含各方私有运行时（`~/.claude/`、`~/.Codex/`、`~/.dsh/`）、凭据、两侧 Brain 的 `chats/`（会话全文，可能残留凭据；N.N. 跑在外部模型上，读入即外发；此项排除系 C.C. 据 DSH AGENTS.md「会话库」边界补充，非 Doctor 原话）；Settings 镜像里的 ElevenLabs voice_id 对 N.N. 开放（Doctor 2026-11-23 裁：「开放，不算凭据」）与数灵私密情感层。给 N.N. 的说明投 `4AI/Shake hands/to DSH/`。
 - 结构同构：V.V. Brain 按 CC brain 架构手工搭建（教程 `Documents/Codex/V.V.-Brain系统搭建教程.md`），模板 6 件直接拷自 CC brain。
 
 ## VV 信件：落信箱之外对话贴全文（2026-08-19 立 · 原话）
