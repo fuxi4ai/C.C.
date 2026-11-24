@@ -29,6 +29,16 @@ description: 每交易日由句芒增量更新Market-Data行情到最近已收�
 4. **去重**：按 (ts_code, trade_date) / (trade_date) `INSERT OR IGNORE`，已存在日期不重复插。
 5. **防空壳（重要 GOTCHA）**：若某次拉取返回空/异常，**绝不**用空数据覆盖已有库；更新后校验各表行数**只增不减**、非空，异常则回报不写。
 
+**国内流动性与交易所每日市场统计（2026-11-23 新增，第 5a、5b 步——都在本班的 /tmp 本地工作副本上跑，随本班一并放回）**
+5a. 国内流动性（表 `cn_liquidity_daily`）：`PYTHONPATH="<Database 挂载点>/pylib-linux:<Database 挂载点>/pylib-linux/_extra-akshare" DOTENV="<Database 挂载点>/.env" python3 -B ~/Documents/Claude/Projects/Financial/剑酒青丘/infrastructure/取数工具/fetch_cn_liquidity.py --db <本班的 /tmp 本地工作副本> --from <今天往前 20 个自然日，YYYYMMDD>`
+5b. 交易所每日市场统计（表 `exchange_daily_info`）：环境变量与参数同 5a，脚本换成同目录的 `fetch_exchange_daily_info.py`。工作副本里没有这张表（历史已于 2026-11-23 回补，不应出现）→ 跳过本步，按异常登记。
+   - 两个脚本都在挂载路径原地运行，不要拷到 `/tmp`；`--db` 只能指向本班用 backup API 取的 `/tmp` 本地工作副本，**不带 `--real`、不得指向真实库**（副本不是真实库，脚本不另抢锁；公共锁仍由本班持有）。本轮没有建本地工作副本 → 两步都跳过，日志记「未建工作副本，5a/5b 未跑」。
+   - 政府债缴款一组要 `akshare`：`<Database 挂载点>/pylib-linux/_extra-akshare` 不存在，或带上它之后 `python3 -c "import akshare"` 仍失败 → 5a 加 `--only fdr,dr,curve,omo,margin,etf,tax,cnh,mid,swap`，日志写「缺 akshare，政府债缴款未取」。不临时装包。
+   - 退出码：0 正常。1 且输出里有「写入完成…失败 N」＝部分失败、其余已写进副本，照常继续，日志逐个点名失败项与原因，不原地重试，下一班靠回看窗口补。1 且没有「写入完成」＝脚本出错、什么都没写，日志贴末 5 行。2＝命令写错或被安全闸拒绝，3＝脚本去抢了公共锁（不带 `--real` 时不应出现），都按异常登记、不重试。
+   - 两步无论结果如何，都不影响本班原有三张表的写入与放回；这两步在副本里有新增行时，即使主取数当轮无新增，也按公共锁协议照常放回。
+   - 输出里「与库内值不同 N 处（未改写）」的行原样抄进日志。
+   - 放回前的「只增不减」核对，把 `cn_liquidity_daily`、`exchange_daily_info` 两表的行数也列进去；日志「各表新增行数」同样加这两表。
+
 **派生表聚合（沙箱必做，不依赖网络 · 2026-06-10 新增）**
 6. 取数成败与否，都要跑句芒聚合管线把 daily_market 可派生列补齐到 stock_daily 的 max 日期：
    `python3 ~/Documents/Claude/Projects/Financial/剑酒青丘/infrastructure/取数工具/aggregate_derived.py --db "$MARKET_DATA_DIR/market_data.db" --dry-run` 核对拟补内容后去掉 --dry-run 实跑（**必带 `--db`**：平铺挂载下脚本默认路径算不对 · 2026-11-04 试跑实测）。
