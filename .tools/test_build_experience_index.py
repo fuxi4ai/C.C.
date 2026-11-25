@@ -169,6 +169,63 @@ def main():
         check("多条状态行：brain 无行首状态行沿用首处 ⚠", " ⚠ " in row4("ERR-20261124-202"))
         check("多条状态行：brain 行中引用不算", " ✅ " in row4("ERR-20261124-203"))
 
+    # 参数解析（2026-11-24 · G-X236 同根第三次复发）：--help 与未知参数不得写盘；--out 只写预跑目录
+    with tempfile.TemporaryDirectory() as docs5, tempfile.TemporaryDirectory() as pre:
+        perm5 = os.path.join(docs5, "Claude/brain/permanent")
+        os.makedirs(perm5)
+        write(docs5, "Claude/brain/司南/GOTCHAS.md", "# x\n\n## [ERR-20261124-301] 参数夹具\n**状态**: 🔄 待修复\n")
+        formal = [os.path.join(perm5, n) for n in ("经验索引.md", "_exchange_index.md")]
+
+        def run(args, extra_env=None, cwd=None):
+            env = {k: v for k, v in os.environ.items() if k not in ("EXP_INDEX_OUT", "EXP_EXCH_OUT")}
+            env.update({"DOCS_DIR": docs5, **(extra_env or {})})
+            return subprocess.run([sys.executable, "-I", GEN, *args], env=env, capture_output=True, text=True, cwd=cwd)
+
+        untouched = lambda: not any(os.path.exists(p) for p in formal)
+        r = run(["--help"])
+        check("参数：--help 退出码 0 且打印用法", r.returncode == 0 and "usage" in r.stdout.lower())
+        check("参数：--help 不写正式索引", untouched())
+        r = run(["--bogus"])
+        check("参数：未知参数退出码 2", r.returncode == 2)
+        r = run(["--ou", pre])
+        check("参数：缩写 --ou 不被当成 --out（退出码 2）", r.returncode == 2)
+        r = run(["--out", os.path.join(pre, "不存在")])
+        check("参数：--out 目录不存在退出码 2", r.returncode == 2)
+        r = run(["--out", perm5])
+        check("参数：--out 指向正式 permanent/ 退出码 2", r.returncode == 2)
+        # 独立验收限①③（2026-11-24）：同一目录的其他写法也要拒
+        side = os.path.join(docs5, "side")
+        os.makedirs(side)
+        os.symlink(perm5, os.path.join(side, "link"))
+        variants = [("尾斜杠", perm5 + "/", None), ("相对路径", "permanent", os.path.join(docs5, "Claude/brain")),
+                    ("符号链接", os.path.join(side, "link"), None)]
+        upper = os.path.join(docs5, "Claude/brain/PERMANENT")
+        if os.path.isdir(upper):  # 只在大小写不分的文件系统上（如 macOS APFS）测
+            variants.append(("大小写变体", upper, None))
+        for name, arg, cwd in variants:
+            r = run(["--out", arg], cwd=cwd)
+            check(f"参数：--out 指向 permanent 的{name}写法退出码 2", r.returncode == 2 and untouched())
+        # 独立验收限②：DOCS_DIR 指向别处时，--out 也不能写进真实 brain 的 permanent（用假 HOME 模拟真实树，不碰真索引）
+        home = os.path.join(docs5, "home")
+        real_perm = os.path.join(home, "Documents/Claude/brain/permanent")
+        os.makedirs(real_perm)
+        r = run(["--out", real_perm], {"HOME": home})
+        check("参数：--out 指向真实 brain 的 permanent（DOCS_DIR 在别处）退出码 2",
+              r.returncode == 2 and not os.listdir(real_perm))
+        check("参数：以上失败调用都不写正式索引", untouched() and not os.listdir(pre))
+        sink = os.path.join(pre, "env")
+        os.makedirs(sink)
+        r = run(["--out", pre], {"EXP_INDEX_OUT": os.path.join(sink, "a.md"), "EXP_EXCH_OUT": os.path.join(sink, "b.md")})
+        got = [os.path.join(pre, n) for n in ("经验索引.md", "_exchange_index.md")]
+        check("参数：--out 写进预跑目录、优先于环境变量",
+              r.returncode == 0 and all(os.path.exists(p) for p in got) and not os.listdir(sink))
+        check("参数：--out 不写正式索引", untouched())
+        r = run([])
+        strip = lambda p: [l for l in open(p, encoding="utf-8").read().splitlines() if "生成：" not in l]
+        check("参数：不带参数照旧写正式索引，内容与预跑一致（除生成时间行）",
+              r.returncode == 0 and all(os.path.exists(p) for p in formal + got)
+              and all(strip(a) == strip(b) for a, b in zip(got, formal)))
+
     print(f"\n{'全部通过' if not fails else f'{len(fails)} 项失败'}")
     return 1 if fails else 0
 

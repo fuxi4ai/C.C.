@@ -7,17 +7,41 @@ v2（2026-09-03 独立审查修复）：①覆盖 4 种条目格式（H2/H3/列�
   DOCS_DIR=/sessions/xxx/mnt/Documents python3 build_experience_index.py   # 沙箱
 产物: brain/permanent/经验索引.md + brain/permanent/_exchange_index.md
   （2026-11-13 加：环境变量 EXP_INDEX_OUT / EXP_EXCH_OUT 可把两件产物改写到别处——验证用，不覆盖正式索引；默认不变）
+参数（2026-11-24 加 · 通用教训 G-X236 同根第三次复发后 Doctor 批）：
+  python3 build_experience_index.py --help          # 只打印用法，不扫描、不写盘
+  python3 build_experience_index.py --out 目录       # 预跑：两件产物写进该目录（须已存在、不得是正式 permanent/），正式索引不动
+  任何未知参数都直接报错退出（退出码 2），不写盘；不带参数时行为不变。--out 优先于两个环境变量。
 同条订正（2026-11-13 加 · TODO「经验索引生成器不识别同条订正」）：条目正文若有 `**⚠ … 同条订正（NOTE-…）…**：…` 追记，
   索引行标「已订正→指向 <NOTE 编号>」，标题显示订正句首句（原标题括注于后），状态取订正段可判定的状态、判不出则沿用原判。
 原则: 索引只含指针与状态摘要，正文真源=各项目 GOTCHAS.md / 通用教训.md / 经验库.md；索引可随时重建。
 """
-import os, re, hashlib, datetime, json
+import os, re, hashlib, datetime, json, argparse
+
+# 参数解析必须排在一切扫描与写盘之前：--help、未知参数都在这里退出，不碰任何文件。
+_ap = argparse.ArgumentParser(
+    prog="build_experience_index.py", allow_abbrev=False,
+    description="经验索引生成器 v2：扫描 GOTCHAS／通用教训／经验库，重写 brain/permanent/经验索引.md 与 _exchange_index.md。"
+                "不带参数＝写正式索引。")
+_ap.add_argument("--out", metavar="目录",
+                 help="预跑：两件产物写进该目录（须已存在，不得是正式 permanent/），正式索引不动")
+_args = _ap.parse_args()
 
 DOCS = os.environ.get("DOCS_DIR") or os.path.expanduser("~/Documents")
 BRAIN = os.path.join(DOCS, "Claude/brain")
 PERM = os.path.join(BRAIN, "permanent")
 OUT = os.environ.get("EXP_INDEX_OUT") or os.path.join(PERM, "经验索引.md")
 EXCH = os.environ.get("EXP_EXCH_OUT") or os.path.join(PERM, "_exchange_index.md")
+if _args.out is not None:
+    if not os.path.isdir(_args.out):
+        _ap.error(f"--out 目录不存在：{_args.out}")
+    # 用 samefile 比（按文件系统身份，不按路径字符串）：大小写不分的 APFS 上 PERMANENT、尾斜杠、相对路径、
+    # 符号链接都指向同一目录。另把真实 brain 的 permanent 也列进去：DOCS_DIR 指向夹具时，--out 也不能写进真实索引。
+    # （2026-11-24 独立验收限①②）
+    _guard = {PERM, os.path.join(os.path.expanduser("~/Documents"), "Claude/brain/permanent")}
+    if any(os.path.isdir(g) and os.path.samefile(_args.out, g) for g in _guard):
+        _ap.error("--out 不得指向正式 permanent/ 目录；要写正式索引请不带参数运行")
+    OUT = os.path.join(_args.out, "经验索引.md")
+    EXCH = os.path.join(_args.out, "_exchange_index.md")
 
 MACHINE_GATES = [
     "Database/行业研究/rules/kg_promote.py",
