@@ -337,7 +337,7 @@ type: log
   - ② 每周数灵冥想、每月体检两个班登记在已冻结的 Gateway 执行面上，现在是否还在跑未核。
   - ③ `logs/2026-10-30-策略分级框架与止损定案.md` 仍在 `logs/` 根，未折进 `logs/2026-10/`。本 TODO「加仓侧框架待展开」条按根路径引用它，移动前要一并改引用。
   - ④ 做过 cc-switch 操作后，核 `~/.claude/CLAUDE.md` 是否又被清空（`wc -c` 加 `cmp` portable），详见 `permanent/通用教训.md` `[G-X90]` 2026-11-24 追记。
-  - ⑤ （2026-11-24 后半场补 · 源 `logs/2026-11-24-经验索引生成器取末条状态与海螺代签.md`）cc-switch.db 的 `skills` 表仍登记 `local:the-conch-maiden`（enabled_claude=1、v0.1.0 旧描述），`~/.cc-switch/skill-backups/` 有两份 2026-04-29 的 conch 备份——可能是 11-20 旧版回灌的来源（未核）。需 Doctor 在 cc-switch 技能管理里移除或更新这条登记；CC 不碰应用配置。之前每次 `/conch` 起手照海螺 `GOTCHA-20261112-001` 预防门禁先 `readlink`。
+  - ⑤ **✅ 已办（2026-11-24 · 客观项按常驻授权代勾 · 证据：cc-switch.db `skills` 表无 conch 行；`~/.claude/skills/the-conch-maiden` 直链 brain 真源、cmp 一致、版本 2.4.2；两份 4 月备份已入 `~/.cc-switch/archived/`；详见海螺 `GOTCHA-20261112-001`「根治」行）** 原文：（2026-11-24 后半场补 · 源 `logs/2026-11-24-经验索引生成器取末条状态与海螺代签.md`）cc-switch.db 的 `skills` 表仍登记 `local:the-conch-maiden`（enabled_claude=1、v0.1.0 旧描述），`~/.cc-switch/skill-backups/` 有两份 2026-04-29 的 conch 备份——可能是 11-20 旧版回灌的来源（未核）。需 Doctor 在 cc-switch 技能管理里移除或更新这条登记；CC 不碰应用配置。之前每次 `/conch` 起手照海螺 `GOTCHA-20261112-001` 预防门禁先 `readlink`。
 
 ## 长期观察
 
