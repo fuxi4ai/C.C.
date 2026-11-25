@@ -1,6 +1,6 @@
 ---
 name: refresh-risk-daily
-description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号 → 股权溢价指数原子 → 股票供给增发检索（尽力而为·不完整即不可计算） → AI Tech Alarm 事件源定向回源更新（四维度 P0/P1·未核保留）→ prepare V17 包→model_entry DeepSeek 判读→build 校验落盘·失败回退标陈旧）→ update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写
+description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动取数 → fetch TACO 外部分项·禁代理 → 星空快照新鲜度探针 → V2.5-ET双波 仓位信号 → 股权溢价指数原子 → 股票供给增发预案补额（尽力而为·缺额即不可计算） → AI Tech Alarm 事件源定向回源更新（四维度 P0/P1·未核保留）→ prepare V17 包→model_entry DeepSeek 判读→build 校验落盘·失败回退标陈旧）→ update_artifact；挂载盘 SQLite 一律走 /tmp 副本回写
 ---
 
 每日刷新「风险日报」artifact。自包含步骤：
@@ -38,30 +38,32 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
    - pip 安装耗时约 1-2 分钟属正常；装失败 → 记「ERP atom skipped: pip 失败」并继续。
    - 沙箱直连 Tushare/akshare，勿设代理（与市场班同通道；akshare 走英为财情）。
 
-1.8. （股票供给 · 增发检索（尽力而为）· 2026-11-20 Doctor 令「股票供给接入日报」· 生产接入登记第二项）在沙箱联网检索，产出增发读数文件，供第 3 步构建器（`build_risk_daily.py` 自己调用 `stock_supply.py`）读取。数据日＝公共行情库 `daily_market` 有成交额的最新交易日（北京日期，yyyymmdd）。
-   - 检索：联网检索数据日当天申购报价（或缴款）的上市公司向特定对象发行股票、非公开发行。可查的出处：巨潮资讯、上交所、深交所、北交所公告，以及公开报道。查询词举例：「向特定对象发行 认购邀请书 申购报价 <日期>」「发行期首日」「发行情况报告书 申购报价日」。
-   - 每找到一笔申购日恰为数据日的，记下：公司、代码、申购日、按公告的拟募资上限估算的金额（元）、出处链接。
-   - 以下几类标为不计（`counted: false`）并写明原因（`exclude_reason`）：发行对象是大股东及其关联方；认购方含财政部（已裁定的四笔大行增发同类）；小额快速融资（简易程序，拟募资不超过 3 亿元）。
-   - 只有能说明当天没有遗漏时才写 `coverage: "complete"`；否则写 `"incomplete"`，并在 `gaps` 里写明缺什么（例如「认购邀请书未公开，无法确认当日是否有申购报价」）。认购邀请书一般只定向发给投资者、事先不公告，多数日子会是 incomplete，属预期结果。**不确定就写 incomplete，不编数、不用后来披露的金额倒填。**
-   - 写盘：`~/Documents/Claude/Projects/Financial/风险日报/data/supply_placement_reading.json`，一次整文件覆写，**不用临时文件改名**（见第 5 节：挂载盘只许 truncate 写，不许 rename/unlink）；写完回读一遍，确认 JSON 能解析、`data_date` 是当天的数据日。构建器只认数据日相同、生成于 24 小时内的这份文件。
+1.8. （股票供给 · 增发预案补额（尽力而为）· 2026-11-20 Doctor 令「股票供给接入日报」· 生产接入登记第二项；**2026-11-24 Doctor 改按首次公告日计入**）在沙箱联网检索，产出增发读数文件，供第 3 步构建器（`build_risk_daily.py` 自己调用 `stock_supply.py`）读取。数据日＝公共行情库 `daily_market` 有成交额的最新交易日（北京日期，yyyymmdd）；**本期**＝上一个交易日之后（不含）至数据日（含）的自然日（周一的本期含上周六、周日）。
+   - 背景：增发不再按申购日计，改按预案首次公告的那天、按预案写明的募集资金总额上限计。构建器自己用 Tushare `stk_seasoned` 列出本期首次公告的预案；约三成新预案在 Tushare 里没有拟募资额，本步就是从预案公告里把金额读出来补上。本文件里有、Tushare 还没列进来的预案，构建器也按本文件的标注计入（补 Tushare 入库滞后）；Tushare 取不到时，构建器改用本文件的列表（这时须 `coverage: "complete"`）。
+   - 可选的捷径：本沙箱能直连 Tushare（令牌同第 1.7 步），可先用 `stk_seasoned`（`start_date`＝本期首日、`end_date`＝今天，再按 `first_ann_date` 落在本期筛）查出 `fo_raise_total` 为空的那几笔，优先补它们；查不了就按下一条把本期新预案都检一遍。
+   - 检索：联网检索本期首次公告的上市公司向特定对象发行股票预案（董事会决议公告、「向特定对象发行股票预案」）。可查的出处：巨潮资讯、上交所、深交所、北交所公告。查询词举例：「向特定对象发行股票预案 <日期>」「董事会决议 向特定对象发行 募集资金总额不超过」。修订稿、更新稿不是首次公告，不记。
+   - 每找到一笔，记下：代码（`ts_code`，必须写成 6 位数字加 `.SH`／`.SZ`／`.BJ`，如 688000.SH）、公司、首次公告日（`first_ann_date`）、预案写明的募集资金总额上限（元，`est_amount_yuan`）、出处链接。
+   - 计入与否（与构建器同一口径，只计拟募资超过 10 亿元的竞价发行）：发行对象写「不超过 N 名」或只写「特定对象」「符合规定的投资者」的，标 `counted: true`（大股东参与竞价的也按全额计）；以下标 `counted: false` 并写明原因（`exclude_reason`）：发行对象是写明的具体单位或个人（锁价发行）；认购方含财政部；简易程序（含年度股东大会的「提请授权以简易程序发行」）；以资产认购。拟募资不超过 10 亿元的不计（Doctor 2026-11-24 定），但这条由构建器按金额判：竞价预案不论金额大小都照常标 `counted: true` 并写金额，不要因为金额小就标不计或不写。标不计的那几类也尽量写上金额：构建器按 Tushare 字段判计入与否，Tushare 若把它判成竞价又缺金额，就拿这里的金额补。
+   - 只有能说明本期首次公告的预案都已列出时才写 `coverage: "complete"`；否则写 `"incomplete"`，并在 `gaps` 里写明缺什么。coverage 只在 Tushare 取不到时才起作用；补金额不看它。**不确定就写 incomplete，不编数；金额只取预案原文写明的上限，读不到就不写这一笔。**
+   - 写盘：`~/Documents/Claude/Projects/Financial/风险日报/data/supply_placement_reading.json`，一次整文件覆写，**不用临时文件改名**（见第 5 节：挂载盘只许 truncate 写，不许 rename/unlink）；写完回读一遍，确认 JSON 能解析、`data_date` 是当天的数据日。构建器只认数据日相同、生成于 24 小时内、`schema` 为 v2 的这份文件；**任何一笔的代码写法不对、首次公告日不在本期、没有出处、没标计入与否，或标为计入却没有正数金额，整份文件都不用**，所以拿不准的那笔宁可不写。
    - 读数文件格式（`schema` 必须原样；下例中的代码与金额只示意字段写法，不是行情）：
      ```json
      {
-       "schema": "supply_placement_reading/v1",
-       "data_date": "20261120",
-       "generated_at": "2026-11-20T09:05:00-08:00",
+       "schema": "supply_placement_reading/v2",
+       "data_date": "20261124",
+       "generated_at": "2026-11-24T09:05:00-08:00",
        "coverage": "incomplete",
-       "gaps": "认购邀请书未公开，无法确认当日是否有申购报价",
-       "searched_sources": ["巨潮资讯 当日公告检索：认购邀请书、发行期首日、发行情况报告书"],
+       "gaps": "巨潮当日公告未检完",
+       "searched_sources": ["巨潮资讯 本期公告检索：向特定对象发行股票预案、董事会决议公告"],
        "items": [
-         {"ts_code": "000000.SZ", "name": "示例", "apply_date": "20261120", "est_amount_yuan": 500000000,
-          "basis": "拟募资上限", "counted": true, "sources": ["https://..."]},
-         {"ts_code": "000001.SZ", "name": "示例二", "apply_date": "20261120", "est_amount_yuan": 300000000,
-          "counted": false, "exclude_reason": "小额快速融资", "sources": ["https://..."]}
+         {"ts_code": "000000.SZ", "name": "示例", "first_ann_date": "20261124", "est_amount_yuan": 1500000000,
+          "basis": "预案公告拟募资上限", "counted": true, "sources": ["https://..."]},
+         {"ts_code": "000001.SZ", "name": "示例二", "first_ann_date": "20261124", "est_amount_yuan": 800000000,
+          "counted": false, "exclude_reason": "锁价发行（发行对象为控股股东）", "sources": ["https://..."]}
        ]
      }
      ```
-   - 失败语义：检索不可用就不写文件（或写 incomplete），记一行「股票供给增发检索 skipped: 原因」，继续后续构建。构建器会把增发一项写成缺口，分数显示「不可计算」，**不阻塞日报**。
+   - 失败语义：检索不可用就不写文件（或写 incomplete），记一行「股票供给增发补额 skipped: 原因」，继续后续构建。Tushare 金额齐全的日子不受影响；有一笔该计的预案缺金额时，构建器把增发写成缺口、分数显示「不可计算」，**不阻塞日报**。
    - 另：第 3 步构建器构建时会用 Tushare 取当期减持预案（只读；取不到或返回的表缺列都写「减持资料不足」，不阻塞），取到的原始行追加进本机文件 `data/supply_reduction_plans.jsonl`（不入库）。本步不执行这些，只写上面的读数文件。
 
 2. （AI Tech Alarm 事件源定向回源更新 · 信息自纠正第一步 · 2026-11-03 四目标优化接入）在沙箱：
