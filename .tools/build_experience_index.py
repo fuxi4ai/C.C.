@@ -39,11 +39,23 @@ def sha256(p):
     except Exception:
         return "MISSING"
 
+# 2026-11-24 G-X296（Doctor 裁「取最后一条」）：条目内有多条状态行时以最后一条为准，追记式复发/复核/落签才能反映到索引。
+# 只认两种位置，避免误抓正文：① 行首（可带 `-`/`*`/`|` 前缀）的状态行；② 复核行内以「 · 状态：」引出的行内状态
+# （如 `- **独立复核（日期）**: … · 状态：✅ · …`）。行中间的 `**状态**`（含反引号、「」引用）一律不算。
+def last_status(body, line_pat):
+    cands = [(m.start(), m.group(1)) for m in re.finditer(r"^\s*(?:[-*|]\s*)*" + line_pat, body, re.M)]
+    cands += [(m.start(), m.group(1)) for m in re.finditer(r" · 状态\s*[:：]\s*([^\n]+)", body)]
+    return max(cands)[1] if cands else None
+
 def status_of(body, title=""):
     """状态行 → 标题内嵌（白泽等格式·🔄 在 ✅ 前按出现序） → 正文头部窗口。"""
-    m = re.search(r"\*\*状态[:：]?\*\*\s*[:：]?\s*([^\n*]+)", body)  # 2026-11-05：兼容 `**状态：**`（DVA 6 条曾落 —）
-    if m:
-        s = m.group(1)
+    pat = r"\*\*状态[:：]?\*\*\s*[:：]?\s*([^\n*]+)"  # 2026-11-05：兼容 `**状态：**`（DVA 6 条曾落 —）
+    s = last_status(body, pat)
+    if s is None:  # 没有行首状态行（状态写在行中间的旧格式）：沿用原判法，取全文第一处
+        m = re.search(pat, body)
+        s = m.group(1) if m else None
+    if s is not None:
+        pass
     elif title:
         s = title
     else:
@@ -64,8 +76,9 @@ CLOSED_TOKENS = ("✅", "已解决", "已修复", "已修", "已裁", "已定性
 
 def project_status(body, title=""):
     """覆盖 `**状态**:`、`**状态：**`、`| **状态** | x |`、`状态: x`、`- 状态：x`；无状态行则看标题。"""
-    m = re.search(r"^\s*(?:[-*|]\s*)*(?:\*\*)?状态(?:\*\*)?\s*[:：|]?\s*(?:\*\*)?\s*[:：|]?\s*(.+)$", body, re.M)
-    s = m.group(1) if m else title
+    s = last_status(body, r"(?:\*\*)?状态(?:\*\*)?\s*[:：|]?\s*(?:\*\*)?\s*[:：|]?\s*(.+)$")
+    if s is None:
+        s = title
     for token, mark in OPEN_TOKENS:
         if token in s:
             return mark

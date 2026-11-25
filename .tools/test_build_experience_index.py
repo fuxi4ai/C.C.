@@ -146,6 +146,29 @@ def main():
         r7 = row3("EXP-20261020-007-T")
         check("同条订正：订正段有状态 → 显示订正后状态 ✅", "已订正→指向 NOTE-20261102-009" in r7 and " ✅ " in r7)
 
+    # 2026-11-24 G-X296：条目内多条状态行取最后一条（行首状态行 + 复核行内「 · 状态：」）；行中引用不算；无行首状态行沿用首处
+    with tempfile.TemporaryDirectory() as docs4:
+        os.makedirs(os.path.join(docs4, "Claude/brain/permanent"))
+        write(docs4, "Claude/Projects/海螺姑娘/GOTCHAS.md",
+              "# x\n\n## [ERR-20261124-101] 先闭后开\n**状态**: ✅ 已修复\n追记\n- **状态**: 🔄 复发待修\n\n"
+              "## [ERR-20261124-102] 先开后复核闭\n**状态**: 🔄 已修待验\n"
+              "- **独立复核（2026-11-24）**: PASS · 实读 x · 状态：✅（PASS） · 未参与实施的审核者代签\n\n"
+              "## [ERR-20261124-103] 单行\n**状态**: ✅ 已解决\n\n"
+              "## [ERR-20261124-104] 行中引用不算\n**状态**: ✅ 已修复\n**建议修法**: 以行首 `**状态**：🔄` 判，见「状态：🔄」\n")
+        write(docs4, "Claude/brain/司南/GOTCHAS.md",
+              "# x\n\n## [ERR-20261124-201] brain 先闭后开\n**状态**：✅ 该次已修\n追记\n**状态**：🔄 本形态待修\n\n"
+              "## [ERR-20261124-202] brain 无行首状态行\n**根因**：x。**状态**：⚠️ 已知风险\n**追记**：y。**状态**：✅ 已修\n\n"
+              "## [ERR-20261124-203] brain 行中引用不算\n**状态**：✅ 已修复\n**根因**：`status_of()` 取第一条 `**状态**` 🔄\n")
+        idx4 = build(docs4)
+        row4 = lambda eid: next((l for l in idx4.splitlines() if l.startswith(f"- `{eid}`")), "")
+        check("多条状态行：Projects 先闭后开 → 🔄", " 🔄 " in row4("ERR-20261124-101"))
+        check("多条状态行：Projects 复核行「 · 状态：✅」→ ✅", " ✅ " in row4("ERR-20261124-102"))
+        check("多条状态行：单行不变", " ✅ " in row4("ERR-20261124-103"))
+        check("多条状态行：Projects 行中引用不算", " ✅ " in row4("ERR-20261124-104"))
+        check("多条状态行：brain 先闭后开 → 🔄", " 🔄 " in row4("ERR-20261124-201"))
+        check("多条状态行：brain 无行首状态行沿用首处 ⚠", " ⚠ " in row4("ERR-20261124-202"))
+        check("多条状态行：brain 行中引用不算", " ✅ " in row4("ERR-20261124-203"))
+
     print(f"\n{'全部通过' if not fails else f'{len(fails)} 项失败'}")
     return 1 if fails else 0
 
