@@ -1,0 +1,37 @@
+## 运行环境前置（官方云端 Cowork · 2026-11-04 统一加）
+
+- 本班绑定 Doctor 的 Mac，随任务挂载的文件夹位于 `$HOME/mnt/<文件夹名>`；所有命令用 `mcp__remote-devices__device_bash` 执行。不要调用 `request_cowork_directory` / `mcp__cowork__*`（新环境无此工具）。
+- 开工先跑路径垫片，使正文里的 `~/Documents/...` 原样可用：`[ -e ~/Documents ] || ln -sfn "$HOME/mnt/Documents" ~/Documents`
+- 正文里凡说用 Read / Edit / Write 读写 `~/Documents` 下的文件，一律改用 device_bash（cat / grep / python 就地改）——那几个工具作用于云端容器，改了不会落到 Mac。`present_files` 不可用：改为在简报里列出文件路径。
+- 正文里写死的 `/Users/lunarabbit/Documents/...` 绝对路径在虚拟机里不存在，一律换成 `~/Documents/...` 再用。
+- `$HOME/mnt/Documents` 不存在（多半是 Mac 休眠或 app 未开）→ 简报明写「本轮挂载缺失」后停，不硬跑。
+- 挂载点内 rm / rmdir / unlink 报 `Operation not permitted` 属预期；**不得请求删除权限或调用任何需人工批准的工具**（无人值守会卡死）。
+
+## 看板推送（官方云端 · 2026-11-25 Doctor 裁「独立发布班」· 覆盖正文里的推送写法）
+
+正文里凡要求推看板（`update_artifact` / `mcp__cowork__update_artifact`）的步骤，本班**一律不做**：不跑拆分器、不发布、不登记待推。云端三张托管页由三个独立发布班负责（`risk-daily-publish-ai` PT 09:30、`risk-daily-publish-eal` 09:40、`risk-daily-publish-main` 09:50），它们从全新上下文读完页面后自己发布（风险日报坑库 NOTE-20261125-003）。简报里看板一行写「看板交由发布班」。本地原件 `~/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html` 照常由正文生成。
+
+## 正文（单一真源 · 2026-11-04 Doctor 裁「引用镜像文件」）
+
+本班正文不写在这里，真源是 `~/Documents/Claude/brain/references/scheduled-live-mirror/live/refresh-risk-daily/SKILL.md`。垫片跑完后用下面命令取出正文（自动去掉开头的 frontmatter 块），**读完全文**再严格按正文执行：
+
+```bash
+python3 - <<'PY'
+import os
+p = os.path.expanduser('~/Documents/Claude/brain/references/scheduled-live-mirror/live/refresh-risk-daily/SKILL.md')
+t = open(p, encoding='utf-8').read()
+while True:
+    s = t.lstrip('\n')
+    if not s.startswith('---\n'):
+        break
+    e = s.find('\n---\n', 4)
+    if e < 0:
+        break
+    t = s[e + 5:]
+print(t)
+PY
+```
+
+- 文件读不到或输出为空 → 简报写「正文真源不可达：<路径>」后停，**不凭记忆或旧版本执行**。
+- 正文较长时可分段读（如 `sed -n`），但必须读完再动手。
+- 正文与本 prompt 上面两段（运行环境前置、看板推送）冲突时，以上面两段为准；其余一律以正文为准。

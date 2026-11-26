@@ -1,0 +1,32 @@
+## 运行环境前置（官方云端 Cowork · 2026-11-04 统一加）
+
+- 本班绑定 Doctor 的 Mac，随任务挂载的文件夹位于 `$HOME/mnt/<文件夹名>`；所有命令用 `mcp__remote-devices__device_bash` 执行。不要调用 `request_cowork_directory` / `mcp__cowork__*`（新环境无此工具）。
+- 开工先跑路径垫片，使正文里的 `~/Documents/...` 原样可用：`[ -e ~/Documents ] || ln -sfn "$HOME/mnt/Documents" ~/Documents`
+- 正文里凡说用 Read / Edit / Write 读写 `~/Documents` 下的文件，一律改用 device_bash（cat / grep / python 就地改）——那几个工具作用于云端容器，改了不会落到 Mac。`present_files` 不可用：改为在简报里列出文件路径。
+- 正文里写死的 `/Users/lunarabbit/Documents/...` 绝对路径在虚拟机里不存在，一律换成 `~/Documents/...` 再用。
+- `$HOME/mnt/Documents` 不存在（多半是 Mac 休眠或 app 未开）→ 简报明写「本轮挂载缺失」后停，不硬跑。
+- 挂载点内 rm / rmdir / unlink 报 `Operation not permitted` 属预期；**不得请求删除权限或调用任何需人工批准的工具**（无人值守会卡死）。
+
+## 任务：发布风险日报 · 主页到云端托管页（2026-11-25 Doctor 裁「独立发布班」）
+
+本班只做一件事：把风险日报拆分产物里的「主页」一页发布到 claude.ai 托管页。构建由 `refresh-risk-daily`（PT 09:00）完成，本班不构建、不取数、不改任何数据或代码。为什么单独成班：发布前必须把文件读完，构建班做完取数与构建后上下文不够读完（风险日报坑库 NOTE-20261125-003）；本班从全新上下文开始，读完后**由本会话自己发布**，不派子代理（2026-11-25 夜测试：交给子代理读与发，被自动模式分类器拦下）。
+
+| 目录（`~/Documents/Claude/brain/.tmp/artifact-publish/` 下） | 托管页链接 | title |
+|---|---|---|
+| `risk-daily/` | https://claude.ai/artifact/HksT4v7iLnd6wwNNcgBQoD | `Risk Daily (Cloud)` |
+
+- 原地更新这一页，不新建；每次都原样传上表 title。本地原件 `~/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html` 不改、不移。拆分器只跑不改。
+- 不调用任何需要人工批准的工具；工具要等人工批准，就按失败处理（第 7 步），不等待。
+
+步骤：
+1. 等今天的构建：device_bash 读 `~/Documents/Claude/Projects/Financial/风险日报/data/risk_snapshot.json` 的 `generated`（北京时间，形如「2026-11-26 01:10（北京）」），换算成太平洋时间。它不晚于今天太平洋时间 09:00＝今天的构建还没落盘：每次 `sleep 60` 后重查，最多 20 次；仍没落盘 → 不发布，走第 7 步，`fallback_reason` 写「今日构建未完成（快照 generated=<原值>）」。落盘后再看原件 `~/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html` 的修改时间，距现在不足 2 分钟就再 `sleep 60` 一次。
+2. 跑拆分器（device_bash）：`python3 ~/Documents/Claude/brain/.tools/artifact_split_risk_daily.py`。预期 `split ok …` 且 exit 0。exit 非 0 → 不发布，走第 7 步，`fallback_reason` 写拆分器输出原文。
+3. 比对：读 `risk-daily/manifest.json` 的 `artifact_sha256`，再读同目录 `published.json`（没有就当从未发布）。两者相同＝内容没变，简报写「主页：未变·跳过」，结束。
+4. stage：用 ToolSearch 加载 `select:mcp__remote-devices__device_stage_files`，把 `/Users/lunarabbit/Documents/Claude/brain/.tmp/artifact-publish/risk-daily/artifact.html` stage 进容器；容器里 `sha256sum <stagedPath>` 必须等于 manifest 的 `artifact_sha256`，不等就重新 stage 一次，仍不等 → 第 7 步。
+5. 读完全文：用 Read 按 offset/limit 分段，把 stagedPath 从第 1 行读到最后一行，一行不跳。页面里有单行十几万字符的内嵌数据，Read 一次读不下：先用 Bash 把 stagedPath 复制成一份阅读副本，长行切成每段不超过 1500 字符（只切不改，切完核对拼回后与原件逐字节相同），再读这份副本。读不完就不发布，走第 7 步，`fallback_reason` 写读到哪一行、为什么停。
+6. 发布：调用 `Artifact` 工具，`action`＝`publish`，`file_path`＝stagedPath（原件，不是阅读副本），`url`＝上表链接，`title`＝上表 title，`label`＝「当日综合风险温度 {值} {带} · {日期}」（值与带取 `~/Documents/Claude/Projects/Financial/风险日报/data/risk_snapshot.json` 的 `composite_temperature`、`composite_band`，日期写太平洋时间当天 YYYY-MM-DD）。不传 `force`、`capabilities`、`icon`。
+   - 工具要求先读现有版本时：先 `action`＝`read`、`url`＝上表链接，再重发一次。
+   - 报版本冲突 → 按报错重读后再发一次（只重试一次），绝不传 force。
+   - 返回的不是上表链接（＝新建了一页）→ 按失败处理，简报写明新建页链接，不要删它。
+   - 成功（返回上表链接且标明更新了已有 artifact）→ 用 device_bash + python 把 `{"artifact_sha256":"<本次 sha>","ts":"<UTC ISO 时刻>"}` 覆盖写入 `risk-daily/published.json`，简报写「主页：已发布 · <版本>」，结束。
+7. 失败登记：用 python 向 `~/Documents/Claude/brain/.tmp/pending-artifact-push.jsonl` 追加一行 JSON（`ensure_ascii=False`）：`{"ts":"<UTC ISO 时刻>","task":"risk-daily-publish-main","artifact_id":"risk-daily","target":"claude-artifact:https://claude.ai/artifact/HksT4v7iLnd6wwNNcgBQoD","html_path":"/Users/lunarabbit/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html","summary":"<第 6 步的 label>","fallback_reason":"<哪一步、报错原文前 200 字>"}`。简报写「主页：发布失败·已登记待推 · <原因>」，照常收尾，不另找办法。

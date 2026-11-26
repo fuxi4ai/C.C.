@@ -1,0 +1,63 @@
+## 运行环境前置（官方云端 Cowork · 2026-11-04 统一加）
+
+- 本班绑定 Doctor 的 Mac，随任务挂载的文件夹位于 `$HOME/mnt/<文件夹名>`；所有命令用 `mcp__remote-devices__device_bash` 执行。不要调用 `request_cowork_directory` / `mcp__cowork__*`（新环境无此工具）。
+- 开工先跑路径垫片，使正文里的 `~/Documents/...` 原样可用：`[ -e ~/Documents ] || ln -sfn "$HOME/mnt/Documents" ~/Documents`
+- 正文里凡说用 Read / Edit / Write 读写 `~/Documents` 下的文件，一律改用 device_bash（cat / grep / python 就地改）——那几个工具作用于云端容器，改了不会落到 Mac。`present_files` 不可用：改为在简报里列出文件路径。
+- 正文里写死的 `/Users/lunarabbit/Documents/...` 绝对路径在虚拟机里不存在，一律换成 `~/Documents/...` 再用。
+- `$HOME/mnt/Documents` 不存在（多半是 Mac 休眠或 app 未开）→ 简报明写「本轮挂载缺失」后停，不硬跑。
+- 挂载点内 rm / rmdir / unlink 报 `Operation not permitted` 属预期；**不得请求删除权限或调用任何需人工批准的工具**（无人值守会卡死）。
+
+## 看板推送（官方云端 · 2026-11-12 Doctor 裁「风险日报拆成三页上云」· 覆盖正文里的推送写法）
+
+正文里凡要求推看板（`update_artifact` / `mcp__cowork__update_artifact`）的步骤，一律改为用**会话自带的 `Artifact` 工具**发布到 claude.ai 托管页，由本班自己完成。2026-11-12 体检实测：定时会话里 `Artifact` 工具开场就在工具列表里（不经 ToolSearch）；`mcp__remote-devices__update_artifact` 与 `mcp__claude-artifacts__*` 都**不存在**，不要去加载它们。
+
+风险日报原件 45 万字符、含两个内嵌页，整页发不出去（发布前要通读、单页上限 30 万字符）。Doctor 裁定拆成三个托管页，主页里原来的 AI Tech Alarm 与 EAL 星空两个标签改成指向各自托管页的链接：
+
+| 目录（`~/Documents/Claude/brain/.tmp/artifact-publish/` 下） | 托管页链接 | title |
+|---|---|---|
+| `risk-daily-ai-alarm/` | https://claude.ai/artifact/FVfaj7n3LCNoSFA7QpCCig | `Risk Daily · AI Tech Alarm (Cloud)` |
+| `risk-daily-eal-starfield/` | https://claude.ai/artifact/FCXvHk1SZAbjU3zPAbDuUm | `Risk Daily · EAL Starfield (Cloud)` |
+| `risk-daily/`（主页） | https://claude.ai/artifact/HksT4v7iLnd6wwNNcgBQoD | `Risk Daily (Cloud)` |
+
+- **原地更新这三页，不新建**；每次发布都明确传上表的 title（2026-11-13 Doctor 令：托管页名称＝侧栏原名加 ` (Cloud)` 后缀，与侧栏看板区分；title 必须连同后缀原样传）。
+- **本地原件不动**：正文生成的 `~/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html` 不改、不移。发布的是拆分器 `brain/.tools/artifact_split_risk_daily.py` 的产物（只读原件，产出三份去掉外层标签的片段）。拆分器只跑不改（改须 Doctor 裁定）。
+
+步骤：
+1. 跑拆分器（device_bash）：`python3 ~/Documents/Claude/brain/.tools/artifact_split_risk_daily.py`。预期输出 `split ok · main … chars sha … · ai … · eal … · source …` 且 exit 0；三个目录下各有 `artifact.html` 与 `manifest.json`。exit 非 0（原件形态变了、某页超限等 fail-closed）→ **三页都不发布**，走第 5 步登记一行（`artifact_id` 写 `risk-daily`），`fallback_reason` 写拆分器输出原文；不得改发原件，不得改拆分器。
+2. 逐页处理，顺序＝AI Tech Alarm → EAL 星空 → 主页。每页先比对：读该目录的 `manifest.json` 取 `artifact_sha256`，再读同目录的 `published.json`（没有就当作从未发布）；两者的 sha 相同＝内容没变，**跳过这一页**，简报记「未变·跳过」。不同才往下做。
+3. 发布这一页：用 ToolSearch 加载 `select:mcp__remote-devices__device_stage_files`（一次即可），把 `/Users/lunarabbit/Documents/Claude/brain/.tmp/artifact-publish/<目录>/artifact.html` stage 进云端容器；在容器里用 Bash 跑 `sha256sum <stagedPath>`，必须等于 manifest 的 `artifact_sha256`，不等 → 重新 stage 一次，仍不等 → 这一页走第 5 步。然后**把这一页的通读与发布交给一个新派的子代理**（Agent 工具，`subagent_type`＝`general-purpose`，一页一个；按 AI Tech Alarm → EAL 星空 → 主页的顺序，等前一个回报再派下一个）。原因：发布前必须读完文件，本会话做完取数与构建后上下文所剩不多，2026-11-25 那班因此读不完、两页没发（风险日报坑库 NOTE-20261125-003）。给子代理的指令写全（它看不到本会话）：
+   - 用 Read 按 offset/limit 分段，把 stagedPath 从第 1 行读到最后一行，一行不跳；读不完就不发布，回报「未读完」。页面里有单行十几万字符的内嵌数据，Read 一次读不下：先用 Bash 把 stagedPath 复制成一份阅读副本，长行切成每段不超过 1500 字符（只切不改，切完核对拼回后与原件逐字节相同），再读这份副本；发布仍用 stagedPath 原件。
+   - 不调用任何需要人工批准的工具；工具要等人工批准时，停下回报，不等待。
+   - 读完后调用 `Artifact` 工具：`action`＝`publish`，`file_path`＝stagedPath，`url`＝上表该页链接，`title`＝上表该页 title，`label`＝正文指定的 update_summary（子页面后加「· AI Tech Alarm」或「· EAL 星空」）。不传 `force`、`capabilities`、`icon`。
+   - 工具要求先读现有版本时：先 `action`＝`read`、`url`＝该页链接，再重发一次。报版本冲突 → 按报错重读后再发一次（只重试一次），**绝不传 force**。
+   - 子代理里没有 `Artifact` 工具、或读不到 stagedPath → 回报原因，不另想办法。
+   - 回报：工具返回的链接与版本、是否标明更新了已有 artifact；或失败原因原文。
+   本会话只按子代理回报判成败，自己不读这一页、不替它发布。子代理回报失败或未读完 → 这一页直接走第 5 步登记（不再另派子代理重试），`fallback_reason` 写回报原文前 200 字。
+   - 工具要等人工批准、或返回的不是同一个链接（＝新建了一页）→ 这一页视为失败走第 5 步，并在简报里写明新建页的链接，不要删它。
+4. 这一页发布成功（工具返回的链接是上表该页、且标明更新了已有 artifact）→ 用 device_bash + python 把 `{"artifact_sha256":"<本次的 sha>","ts":"<UTC ISO 时刻>"}` 覆盖写入该目录的 `published.json`。三页互不阻塞：一页失败，其余照常处理。全部处理完，简报写「看板已发布：Risk Daily 主页 <已发/未变/失败> · AI Tech Alarm <…> · EAL 星空 <…>」。正文里读 `Gateway-workspace/Artifacts/...` 或做 payload 级比对的回读步骤作废，以本条为准。
+5. 某一页（或拆分器）失败且重试一次仍失败 → 回落登记待推：用 python 向 `~/Documents/Claude/brain/.tmp/pending-artifact-push.jsonl` 追加一行 JSON（目录不存在先 `mkdir -p`，`ensure_ascii=False`）：`{"ts":"<UTC ISO 时刻>","task":"refresh-risk-daily","artifact_id":"<risk-daily / risk-daily-ai-alarm / risk-daily-eal-starfield>","target":"claude-artifact:<该页链接>","html_path":"/Users/lunarabbit/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html","summary":"<正文指定的 update_summary>","fallback_reason":"<哪一步、报错原文前 200 字>"}`（`html_path` 一律指向原件）；简报写「看板发布失败·已登记待推：<哪一页> · <原因>」，照常收尾，不另找办法。
+
+## 正文（单一真源 · 2026-11-04 Doctor 裁「引用镜像文件」）
+
+本班正文不写在这里，真源是 `~/Documents/Claude/brain/references/scheduled-live-mirror/live/refresh-risk-daily/SKILL.md`。垫片跑完后用下面命令取出正文（自动去掉开头的 frontmatter 块），**读完全文**再严格按正文执行：
+
+```bash
+python3 - <<'PY'
+import os
+p = os.path.expanduser('~/Documents/Claude/brain/references/scheduled-live-mirror/live/refresh-risk-daily/SKILL.md')
+t = open(p, encoding='utf-8').read()
+while True:
+    s = t.lstrip('\n')
+    if not s.startswith('---\n'):
+        break
+    e = s.find('\n---\n', 4)
+    if e < 0:
+        break
+    t = s[e + 5:]
+print(t)
+PY
+```
+
+- 文件读不到或输出为空 → 简报写「正文真源不可达：<路径>」后停，**不凭记忆或旧版本执行**。
+- 正文较长时可分段读（如 `sed -n`），但必须读完再动手。
+- 正文与本 prompt 上面两段（运行环境前置、看板推送）冲突时，以上面两段为准；其余一律以正文为准。

@@ -81,6 +81,9 @@ description: 每日刷新「风险日报」artifact（FedWatch 会前槽自动�
    - prepare 生成 V17 模型复核输入包（绑定事件哈希/revision 身份/行情收盘/市场哈希）；build 自动调模型入口（stdin 读包 → DeepSeek API 判读 → stdout 出评估回包）→ 严格校验（绑定/时点/引用/权重）→ 落盘评估 → 评分 → 生成 dashboard/risk-daily.html + data/risk_snapshot.json。
    - 失败语义：模型入口失败/超时/回包校验拒绝（倒签、缺字段、引用非法等）或 KG_API_KEY 不可得 → build 自动回退保留上次有效评估并显著标陈旧（fail-visible：_review_errors/stale_fallback 注记在场），**不阻塞日报，保留这次带复核 build 的产物**；**禁止再跑无参 build 覆盖**（无参会清掉本轮失败注记）。
    - 若脚本报错或某原子缺数据，如实贴出错误，**不要用旧数据蒙混、不要编造温度**。
+   - **读数库写入检查（2026-11-26 Doctor 令「改线上班」· GOTCHAS ERR-20261125-002）**：build 跑完后在沙箱跑
+     `python3 -c "import json,os,datetime as d;r=json.load(open(os.path.expanduser('~/Documents/Claude/Projects/Financial/风险日报/data/risk_snapshot.json'))).get('readings_store') or {};b=r.get('build_id');m=round((d.datetime.now(d.timezone.utc)-d.datetime.strptime(b,'%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=d.timezone.utc)).total_seconds()/60) if b else None;st=r.get('status') if r.get('status')!='ok' or (m is not None and m<=120) else 'stale';print('READINGS_STORE=' + str(st) + ' · ' + str(r.get('reason') or ('写库 %s，距今 %s 分钟，累计 %s 次构建' % (b, m, r.get('builds')))))"`
+     输出以 `READINGS_STORE=ok` 开头才无事；其余任何结果（`unavailable`、`None`、`stale`＝写库时刻距今超过 120 分钟或没有写库时刻，多半是本轮 build 没写出新快照、读到的是上一轮的；快照读不出）→ **当日简报首行红字「⚠️ 读数库本轮没有写入：{输出原文}」报 Doctor**。原因里出现「构建器不在生产目录」说明项目被搬动或改名，**不要设 `RISK_DAILY_READINGS_DB` 或 `RISK_DAILY_DOCUMENTS_ROOT` 去绕过门禁，也不要重跑 build 补写**，只报告。本检查不阻断：照常做第 4 步发布。
 
 4. 更新 artifact：调用 `mcp__cowork__update_artifact`，id='risk-daily'，html_path='/Users/lunarabbit/Documents/Claude/Projects/Financial/风险日报/dashboard/risk-daily.html'，update_summary 写「当日综合风险温度 {值} {带} · {日期}」。
 
