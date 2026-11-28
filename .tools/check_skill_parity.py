@@ -29,7 +29,6 @@ from __future__ import annotations
 
 import argparse
 import difflib
-import glob
 import hashlib
 import importlib.util
 import os
@@ -178,12 +177,15 @@ def main() -> int:
     else:
         # 2026-11-04：优先比对账号副本（Cowork 与 anthropic-skills:* 用这份，只能手动上传，会落后）；
         # ~/.claude/skills 是指向 portable 的链接，天然跟随，比它测不出漂移。盘上可能有旧账号目录，取最新的。
+        # 2026-11-22：上传技能已挪到 <B>/<A>/rpm/plugin_*/skills/，只扫 skills-plugin 会全报「runtime 缺该 skill」；
+        # 改用 skill_release.scan_account_skills() 合并两种布局，两工具共用一处定位逻辑。
         home = os.path.expanduser("~")
-        accounts = [pathlib.Path(p) for p in glob.glob(
-            f"{home}/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/*/*/skills")]
-        if accounts:
-            rt_root = max(accounts, key=lambda p: p.stat().st_mtime)
-        else:
+        spec = importlib.util.spec_from_file_location(
+            "skill_release", pathlib.Path(__file__).resolve().parent / "skill_release.py")
+        sr = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sr)
+        rt_root = sr.scan_account_skills()
+        if rt_root is None:
             for hint in RUNTIME_HINTS:
                 p = pathlib.Path(hint.format(home=home))
                 if p.is_dir():

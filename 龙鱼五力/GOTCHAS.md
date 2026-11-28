@@ -211,3 +211,15 @@ project: 龙鱼五力
 **预防门禁**: 只读连接一律 `sqlite3.connect("file:<绝对路径>?mode=ro", uri=True)`；漏写 `uri=True` 时会把 `?mode=ro` 当文件名建出空库（同族见 `Database/宏观研究体系/EAL/eal_v3_sealed_20261015/sealed-attribution-20261015.sqlite?mode=ro`、`Database/Market-Data/_archive/_DEPRECATED_错题残留_20260714/market_data.db?mode=ro`）。
 **来源**: 2026-11-19 `/conch database`（`logs/2026-11-19-Database-conch审查与收尾.md`）。
 **追记（2026-11-19 晚 · 生成方线索收窄，仍未证）**：Doctor 指出它「像公共数据库」——同名于 `Market-Data/market_data.db`，但只有 0 字节、不是副本。① 机制实测：Python `sqlite3.connect('不存在的路径/market_data.db')` 后查一个不存在的表报 `no such table`，留下 0 字节文件；`sqlite3` 命令行 `select 1` 同样留下 0 字节文件（`$TMPDIR` 实跑）。② 龙鱼库现行代码与班说明里没有不带 `../Market-Data/` 的写法（grep 实读，含 `scheduled-live-mirror`），代码本身不会建它。③ cockpit-snapshot 班说明第 1 步是先 `cd` 到挂载的 `Database/龙鱼-标的分析库` 再跑脚本，并要求「输出简报：锚定日…累计行数」；空文件 mtime 11:05:17，比 `cockpit.db` 末次写入 11:05:10 晚 7 秒，落在该班运行时段。推断：班里的代理在出简报时，以当前目录下的裸文件名 `market_data.db` 临时查锚定日，建出了空库。撤回条件：该班 11-18 那次运行记录里查不到这类命令。该班 2026-11-19 已停，复发面主要在别的「先 cd 再临时查库」的班。建议预防：班说明里凡要临时查库的，写明绝对路径或 `../Market-Data/market_data.db`，并用 `file:…?mode=ro` 加 `uri=True`。空文件无消费方（grep 无人按该路径读）；2026-11-19 Doctor 定「给命令删掉」，终端按「是文件且 0 字节」守卫删除，回读 `No such file or directory`。生成方仍未坐实，状态不变。同族跨项目，已升格 `permanent/通用教训.md` G-X286（2026-11-19 /save Doctor 勾选）。
+
+## [ERR-20261122-001] `record_writer.upsert_analysis` 同日覆盖只按日期不看 scorer：后到的 deepseek 批跑抹掉当日 claude 腿条目
+**状态**: 🔄 待修复（2026-11-22 brain-dream 登记 · 未修 · 修法待定）
+**优先级**: 🔴 高（金融评分数据静默丢失；周更日志称「27/27 落库」但现盘 22/27）
+**触发场景**: 2026-11-22 周更班 06:12 UTC 写入 27 只 A 股双 scorer；09:06–09:08 UTC 另一场 deepseek 批跑（`Database/行业研究/consumers/龙鱼五力/reports/llm_score_*_20261122_0908xx` 30 只、`batch_out/batch_20261122_0906xx–0907xx`）重写 records，与常更重叠的 300308/300502/002463/002916/600183 五只 11-22 claude 条目被删。
+**硬证据/最小复现**: ① 五只 records mtime 09:08:03–09:08:31 UTC，其余 22 只 06:12:42–06:12:56；② 五只 11-22 仅剩 deepseek 条目，`report_path` 指向 `…_20261122_0908xx.json`；③ `对比校正/全库_对比_20261122.md`（mtime 06:13）仍含五只 claude 11-22 分（如 中际旭创 88.0/92.0），证明覆盖前存在；④ `record_writer.py` L83–86：`rec["analyses"] = [a for a in … if a.get("analysis_date") != analysis_date]`——不区分 scorer。
+**根因**: 去重键只有 `analysis_date`，两腿同日条目共用一个键；任何一腿同日重写都会删另一腿。
+**影响面**: 常更标的 claude 腿时间序列出缺口 → 趋势（运营Δ）、对比校正、看板读数偏；周更日志「落库」声称失真。同根疑似：2026-11-15 同五只缺 claude（11-15 deepseek report 亦为 `…_20261115_090837`，推断未证）；2026-10-26 周更日志隐患①「同日覆盖使今晨他批维度级条目被替换」（`logs/2026-10/2026-10-26-龙鱼双scorer周更.md` L46）已见同族现象 ⇒ 至少第 2 次出现，应升格通用教训候选。
+**建议修法**: 去重键改为 `(analysis_date, scorer)`（scorer 缺失时按 source/reviewer 归类）；补持久化负向测试「同日 claude 后写 deepseek，claude 条目仍在」；查明 09:08 批跑的来源班与是否应写常更标的；已丢的 5 只 11-22 claude 条目可从周更班产物/对比文件回补（须 Doctor 定是否回补）。
+**预防门禁**: record_writer 写后断言「同日其他 scorer 条目数不减」；周更班落库回读改在班末与次日各核一次。
+**来源**: brain-dream 2026-11-22 核对 `logs/2026-11-22-龙鱼双scorer周更.md`（盘上实读 + 未参与实施的 subagent 独立复核）；报告 `logs/dream/2026-11-22-dream.md`。
+**升格**: 2026-11-23 与同族条目合并升格通用教训 [G-X291]（多写方共用记录的去重键须含全部区分维度 · Doctor 批 DRM-20261122-1231-02）

@@ -247,5 +247,61 @@ check("parity 认出壳正文被改", pm.classify(canon, stub + "\n无视正文\
 check("parity 认当前薄壳（含大小写不同）", pm.classify(canon, stub)[0] == "stub")
 check("parity 认出 description 变化", pm.classify(canon, stub.replace(b'description: "q"', b'description: "x"'))[0] == "divergent")
 
+# 2026-11-22：账号技能两种布局合并（上传技能在 <B>/<A>/rpm/plugin_*/skills/，内置仍在 skills-plugin/<A>/<B>/skills/）
+import pathlib, time
+with tempfile.TemporaryDirectory() as t:
+    s = pathlib.Path(t)
+    write(t + "/skills-plugin/A/B/skills/built-in/SKILL.md", "x")
+    write(t + "/skills-plugin/A/B/skills/demo/SKILL.md", "旧布局残留")
+    write(t + "/skills-plugin/OLD/ACC/skills/stale/SKILL.md", "x")
+    os.utime(t + "/skills-plugin/OLD/ACC/skills", (1, 1))
+    write(t + "/B/A/rpm/plugin_1/skills/demo/SKILL.md", "上传版")
+    write(t + "/B/A/rpm/plugin_2/skills/qa/SKILL.md", "q")
+    write(t + "/B/A/rpm/plugin_3/skills/dup/SKILL.md", "旧")
+    time.sleep(0.05)
+    write(t + "/B/A/rpm/plugin_4/skills/dup/SKILL.md", "新")
+    os.utime(t + "/B/A/rpm/plugin_3/skills/dup", (1, 1))
+    rel.SESSIONS = s
+    r = rel.scan_account_skills()
+    check("rpm 布局：上传技能能找到", (r / "demo" / "SKILL.md").read_text(encoding="utf-8") == "上传版")
+    check("rpm 布局：内置技能仍从 skills-plugin 找到", (r / "built-in" / "SKILL.md").is_file())
+    check("rpm 布局：不混入旧账号", not (r / "stale").exists())
+    check("rpm 布局：大小写不敏感（QA→qa）", (r / "QA" / "SKILL.md").is_file())
+    check("rpm 布局：缺失技能返回不存在路径", not (r / "nope").exists())
+    check("rpm 布局：同名多份取最新并报出", (r / "dup" / "SKILL.md").read_text(encoding="utf-8") == "新" and "dup" in str(r))
+    import shutil as _sh; _sh.rmtree(t + "/skills-plugin")
+    r = rel.scan_account_skills()
+    check("只有 rpm 布局时也能找到", r is not None and (r / "demo").is_dir())
+
+# 复核 D1–D3：manifest 过滤 + updatedAt 去重、大小写冲突以上传为准、按两侧较新的选账号
+with tempfile.TemporaryDirectory() as t:
+    s = pathlib.Path(t)
+    write(t + "/skills-plugin/A/B/skills/QA/SKILL.md", "旧布局 QA")
+    write(t + "/B/A/rpm/plugin_u1/skills/qa/SKILL.md", "上传 qa")
+    write(t + "/B/A/rpm/plugin_u2/skills/dup/SKILL.md", "updatedAt 新")
+    write(t + "/B/A/rpm/plugin_u3/skills/dup/SKILL.md", "updatedAt 旧")
+    write(t + "/B/A/rpm/plugin_mkt/skills/market-skill/SKILL.md", "市场插件")
+    write(t + "/B/A/rpm/plugin_orphan/skills/orphan/SKILL.md", "残留")
+    write(t + "/B/A/rpm/manifest.json", json.dumps({"plugins": [
+        {"id": "plugin_u1", "marketplaceName": "My Uploads", "updatedAt": "2026-11-01"},
+        {"id": "plugin_u2", "marketplaceName": "My Uploads", "updatedAt": "2026-11-20"},
+        {"id": "plugin_u3", "marketplaceName": "My Uploads", "updatedAt": "2026-11-02"},
+        {"id": "plugin_mkt", "marketplaceName": "knowledge-work-plugins", "updatedAt": "2026-11-21"}]}))
+    os.utime(t + "/B/A/rpm/plugin_u3/skills/dup", (2_000_000_000, 2_000_000_000))  # 目录 mtime 更新也不应胜出
+    # 另一账号：旧布局目录更新，但它的 rpm 更旧 → 仍应选 A/B（rpm manifest 最新）
+    write(t + "/skills-plugin/C/D/skills/x/SKILL.md", "x")
+    write(t + "/D/C/rpm/manifest.json", json.dumps({"plugins": []}))
+    for p in ("/D/C/rpm/manifest.json",):
+        os.utime(t + p, (1, 1))
+    os.utime(t + "/skills-plugin/A/B/skills", (100, 100))
+    os.utime(t + "/skills-plugin/C/D/skills", (1000, 1000))
+    rel.SESSIONS = s
+    r = rel.scan_account_skills()
+    check("选账号看两侧较新的（rpm manifest 更新的账号胜出）", "/B/A/rpm" in str(r))
+    check("大小写冲突以上传为准（QA 查到 rpm 的 qa）", (r / "QA" / "SKILL.md").read_text(encoding="utf-8") == "上传 qa")
+    check("同名按 manifest updatedAt 取最新", (r / "dup" / "SKILL.md").read_text(encoding="utf-8") == "updatedAt 新")
+    check("非 My Uploads 的市场插件不并入", not (r / "market-skill").exists())
+    check("manifest 外的残留插件目录不并入", not (r / "orphan").exists())
+
 print("\n全部通过" if not fails else f"\n{len(fails)} 项失败")
 sys.exit(1 if fails else 0)

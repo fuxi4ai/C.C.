@@ -948,6 +948,7 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **来源**: 2026-11-11 九儿课件入库班实跑（日志 `agents/烛阴/logs/2026-11-11-课件入库.md` 复核段）。
 **复发追记 2026-11-15**（同根·第 2 次，同一环境同一班）: 九儿课件入库班 17:07 UTC 实跑——`/tmp/dbroot` 仍属 nobody:nogroup（cp 报 Permission denied），`$HOME/dbroot` 副本上 `dedup_kejian.py record --all-new` 再报同一 `RuntimeError [connect_write] 拒绝直写挂载盘真盘`，exit=1；改用 `/tmp/dbroot_2026-11-15` 后 record exit 0、复扫待处理 0，放回 integrity ok · 35 表 0 mismatch。数据无损。同族第二次复发 → 依登记合同标「应升格通用教训」（不自行闭环）；班 prompt 「写前」步骤仍写死 `/tmp/dbroot`，与现实不符，建议随护栏修法一并改。
 **复发追记 2026-11-16**（同根·第 3 次）: 课件班 17:04 UTC——`/tmp/dbroot` 仍属 nobody:nogroup（cp Permission denied）；按 11-15 经验直接改用 `/tmp/dbroot_2026-11-16`，record exit 0、复扫待处理 0、放回 integrity ok · 34 表 0 mismatch。另：仅设 `ZZJY_DATABASE_ROOT` 时 scan 读到 0 个课件（Raw-Recap 随根漂移，ERR-20260830-001 已设 `ZZJY_RAW_RECAP_DIR` 解耦，但班 prompt 未写该变量）→ 补设后正常。建议班 prompt「写前」同时写明可写 /tmp 新根 + `ZZJY_RAW_RECAP_DIR`。状态仍 🔄。
+**复发追记 2026-11-22**（同根·第 4 次 · 句芒审核班登记）: 九儿课件班 17:0x UTC 有 3 份新课件，日志自述「`$HOME/dbroot` 能插数据，但 `config.connect_write` 认 `/sessions/...` 为挂载盘、拒绝 record」→ 整库挪 `/tmp/dbroot_2026-11-22` 后 record exit 0、放回 integrity ok · 35 表 0 mismatch（句芒副本复核：processed_kejian 319/319/319、三份 file_hash 与磁盘 md5 一致）。数据无损；九儿本班未在本条追记，由句芒补记。根修（护栏判定改挂载根）仍待 Doctor 批，状态维持 🔄。
 
 ---
 
@@ -1171,3 +1172,31 @@ A6 自身的 index_research.db 路径用 OUTPUT_ROOT(PROJECT_ROOT 锚)→ 读到
 **预防门禁**: 给 `INDICES` 加序列时三件事一起做——先搜一遍按 kind 取数的地方（`grep -rn "overnight\|us_stock"`）；对一下 `mac_us_close_backfill.py` 的验收清单；**回补只针对新加的那一条**（引入脚本的 `fetch_yf` 单取单写）。不能直接跑 `fetch_intl_index.py --from <起点>`：写入是 `INSERT OR REPLACE`，会把 JP_FUT / US10Y / US30Y / BRENT 这几条「取数时点快照」的历史读数整段覆盖成现在取到的值。
 **来源**: 2026-11-19 句芒实施场（CC 转 Doctor 交办）；`agents/句芒/logs/2026-11-19-SOX序列加入与回补.md`。
 **追记 2026-11-19 12:30 PST（Doctor 选做法 ①「加」，经 CC 转述、句芒未见原话 · 已改未提交 · 待独立验收）**: 做法＝`ops/mac_us_close_backfill.py` 的 `US_LEG_CODES` 加 `"SOX"`，紧邻注释补来由并把「美股腿 5 条」改成 6 条；`ops/README_launchd.md` 铁律第 5 条的清单同步成 6 条。别的逻辑没动。原件备份在 `ops/_bak/mac_us_close_backfill.py.bak_2026-11-19_pre-sox-验收清单`、`ops/_bak/README_launchd.md.bak_2026-11-19_pre-sox-验收清单`。**加入后行为上多了什么（实读）**：`verify()` 取 `overnight` / `us_stock` 两类的最新日，看这一天到了哪些 code；最新日没有 SOX 行时多打一行 `❌ 美股腿缺：['SOX']`，`verify()` 返回 False，班次退出码 1、状态戳写 `FAIL`。`verify()` 排在两步取数之后，后面只剩日志和状态戳，所以不阻断任何步骤、不触发重跑；launchd 配置里没有失败重试。取数起点 `next_iso(l_max)` 与清单无关，没有变。**自验（实跑，班用的 python3.13；被测源码改写库、日志、状态戳三处路径后装载，取数步打桩，没有取数、没有写真库和项目目录）**：① 真库只读——到齐 `['AVGO','LITE','NASDAQ','NVDA','SOX','SPCX']`，无 ❌，`verify()` 返回 True，`main()` 返回 0；② 系统临时目录里的库副本（backup API 生成）删掉 SOX 最新一行 `('20261118','SOX',9652.8)`——新脚本打 `❌ 美股腿缺：['SOX']`，`verify()` 返回 False，`main()` 返回 1、临时状态戳 `FAIL`；③ 同一副本上跑改前备份——无 ❌、返回 True（即改前的静默）；④ 真库前后 sha256 与修改时间相同，项目 `logs/` 没有多出当日日志，状态戳末行仍是 11-18 的 OK。**会不会误报（实跑）**：库内 SOX 与 NASDAQ、NVDA、AVGO、LITE 在 20240102–20261118 的 724 个交易日集合逐条相同，与 SPCX 在其上市后 111 日相同；按新清单逐日回放，缺项 0 天。美股休市日六条都没有新行，最新日不前移，不会因此报缺。**测试覆盖**：没有覆盖这段的测试。`tools/test_marketdata_staleness.py` 测的是日更主班 `mac_daily_marketdata.py`（实跑全过，与本改动无关）；`tests/` 下没有文件引用收盘班脚本。**没做、没核到的**：ⓐ Cowork 只读看门狗 SKILL（镜像 `brain/references/scheduled-live-mirror/live/us-close-backfill/SKILL.md` 第 77、90 行）自己手写了一份 5 条清单，SOX 缺数时它的第二步仍会报「5 条齐」，只在第一步读状态戳与日志尾时看得到 `FAIL` 和 ❌ 行；改它要去 Cowork 侧，本轮没动。ⓑ 班次还没有真取过 SOX：当日 14:00 PT 那一班是第一次，雅虎对 `^SOX` 的盘中守卫元数据在收盘后一小时是否与 `^NDX` 一样齐全未核（本轮不许取数）；元数据不全时守卫按「未收盘」丢掉末根，那一天会报缺 SOX。改动未提交也已生效——launchd 跑的是工作区里的文件。ⓒ 报缺只报一次，收盘班自己不回头补：缺 SOX 的那天水位已被其余五条推到当日，收盘班次日起点是水位次日（ERR-20260925-001 的起点回退只修了 `us_anchor`，这一侧没改）。补洞靠的是日更主班（工作日 02:30 PT）——它调 `fetch_intl_index.py` 不带 `--from`，默认回看 12 天、`INSERT OR REPLACE`（实读 `ops/mac_daily_marketdata.py` 第 153 行与取数脚本第 187–188 行），雅虎那时能给就补上；周五缺的要等到周一。主班不核对逐条到齐，所以补没补上没有哪一班会再说，要看就读库。从报缺到主班补上之间，下游读到的 SOX 末行是前一日的。这条「主班会补」是读代码的推断，没有实撞过。
+
+---
+
+### ERR-20261125-001 · 日报 EAL 固定槽位在 /tmp 副本根下误报「attribution.db 不可读」
+
+**状态**: 🔄 待修复（2026-11-25 烛阴班实撞 · 本班已用真盘根重渲绕过，未改代码/SKILL）
+**触发/硬证据（实跑）**: 班内 `ZZJY_DATABASE_ROOT=/tmp/dbroot-…` 下跑 `scripts/integration_slots.py --date 2026-11-25` 与 `tools/gen_daily_report.py` → EAL 槽位 text=「无（attribution.db 不可读）」；同时真盘 `Database/宏观研究体系/EAL/attribution.db` 存在、`mode=ro` 下 `quick_check`=ok、含 `macro_event_releases`。改 `ZZJY_DATABASE_ROOT=<真盘 Database>` 重跑 → 正常输出「无 · 窗口 2026-11-24~25 无 macro_* 发布/惊奇记录 · DB 最新发布 2026-09-04」。
+**根因**: `integration_slots.py` L42 `ATTR_DB = DATABASE_ROOT/宏观研究体系/EAL/attribution.db`，`DATABASE_ROOT` 随 env 指向副本根；SKILL 步骤 2「副本根六件套」无 `宏观研究体系` 软链 → `is_file()` 假 → 走「不可读」分支（L75），且 gen_daily_report 内部 `ensure_slots` 同样按副本根重算，覆盖 json 里的值。
+**影响面**: 自副本根改造后，凡班内副本根未补该软链的日子，日报 EAL 槽位都显示「不可读」而非真实读数（降级可见、未编数；但会掩盖真有发布日的惊奇 z）。2026-11-24 报显示正常读数，说明前班另有做法，未核。
+**建议修法**: ① SKILL 步骤 2 六件套扩为七件套（+`宏观研究体系` 软链·只读）；或 ② 槽位只读源固定走真盘根（如 `ZZJY_SLOTS_DATABASE_ROOT` / paths.py 真盘解析）。推荐 ①（与 ERR-20261008-003 同族：副本根缺只读源软链 → 静默降级），改 SKILL prompt 走 Doctor 终端。
+**预防门禁**: 班内槽位步后 grep 当日 json `eal.text` 含「不可读」即视为副本根缺件、补链重跑。
+**来源**: brain/agents/烛阴/logs/2026-11-25-行情拉取与日报.md
+**升格提示**: 与 ERR-20261008-003（副本根缺 ⑤⑥ 软链致六维静默回退）同族第二次复发 → 应升格通用教训（「/tmp 副本根须覆盖全部只读上游」），本条不自行闭环。
+
+---
+
+### ERR-20261128-001 · 课件班 /tmp 副本整库放回无「放回前 md5 复核」→ 覆盖了并发班的新写入（已当班修复）
+
+**状态**: 🔄 已修待验（2026-11-28 烛阴课件班实撞 · 当班已 rebase 补回，班 prompt 未改）
+**触发/硬证据（实跑）**: 02:48Z 复制真库 md5=d3b8f170…；02:50:04–12Z 并发的行情/日报班直写真库（emotion_cycle +2 行〔11-26/11-27〕且改写 11-25 行 updated_at、fx_cnh_daily +3 行〔至 20261127〕），真库变为 md5=484c762c…；02:50:24Z 本班按 prompt「只增不减校验→cp 覆盖」放回 → 上述并发写入被覆盖（放回前的只增不减校验是拿副本对比**复制时**的计数，看不出真库已变）。
+**处置（当班）**: 放回前备份 `Database/烛照九阴/_bak/recap.db.bak_2026-11-28_prekejian` 恰好留住了并发版本（md5 484c…）→ 以该备份为底在 `/tmp/db2` 重放本班入库脚本 + `dedup_kejian.py record --all-new`，校验并发行仍在（emotion_cycle 11-26/27 共 2 行、fx_cnh 至 20261127），放回前再核真库 md5 仍为本班首次放回值 dd2b6422… 后覆盖；终态 md5=43b1bdac…，integrity ok。
+**根因**: 班 prompt「写后放回」只做「副本 vs 复制时」只增不减，缺「放回前真库 md5 == 复制时 md5」这一并发闸；整库 cp 放回本质是 last-writer-wins。
+**影响面**: 所有走 /tmp 副本整库放回的写 recap.db 班（课件班、日报班、句芒班）与直写真库的班并发时，均可能静默丢他人行；integrity ok、只增不减都拦不住。
+**建议修法**: ① 放回前强制比对真库 md5 与复制时 md5，不等则 fail-closed（以真库为底重放本班写入，或停放回、staged 交回）；② 长期：按 2026-09-13 VV 定案思路改为 Mac 原生直写（行级锁），不做整库放回。
+**预防门禁**: 放回命令写成 `[ "$(md5sum < $REAL)" = "$COPY_MD5" ] && cp …`，失败即走重放分支；日志记录复制时/放回前/放回后三个 md5。
+**来源**: brain/agents/烛阴/logs/2026-11-28-课件入库.md；同族前例＝本文件 2026-09-13 追记③「整库放回丢他人写入」（VV 小库实测）。
+**升格提示**: 同族第二次出现（IPO 采集方案 → 课件班实撞）→ 应升格通用教训（「整库放回须带并发 md5 闸」），本条不自行闭环。
+**追记 2026-11-28（句芒课件入库审核班 · 未参与实施 · 数据层复核）**: 实跑核对——`_bak/recap.db.bak_2026-11-28_prekejian` 的 sha256 前缀 `68a9d0f9…` 与行情/日报班日志 5d 放回后的新 sha 一致，确认九儿 rebase 的底库就是并发班的最终版；终态 recap.db（md5 `43b1bdac…`）与该底库逐表全行比对：只有课件线 8 张表有新增（共 28 行），底库原有行一行不缺，emotion_cycle 473、fx_cnh_daily 181、industry_signals 原 2084 行（含并发班改动的 21 条状态）全部原样在。数据层修复成立；根因修法（放回前真库 md5 闸）仍未落到班 prompt，状态维持 🔄，不标 ✅。另：并发班的 eod-final 体检生成于 02:50:25，早于本条终态放回（02:51:08），按 staleness_rule 那一份已作废，以句芒 02:56 的 ingest-check 为准。

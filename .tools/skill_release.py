@@ -51,13 +51,85 @@ def registry():
     return skills
 
 
+SESSIONS = pathlib.Path(os.path.expanduser("~/Library/Application Support/Claude/local-agent-mode-sessions"))
+
+
+class AccountSkills:
+    """账号技能目录的合并视图，`root / 名` 用法与单目录 Path 相同。
+
+    2026-11-22：App 把「My Uploads」上传技能挪到 <B>/<A>/rpm/plugin_*/skills/<名>/（一技能一插件），
+    内置技能仍在 skills-plugin/<A>/<B>/skills/<名>/（两段 ID 顺序相反）。只扫旧布局会把全部上传技能误报
+    「账号缺失」，故两处合并，同名以 rpm（上传）为准。"""
+
+    def __init__(self, label, dirs, dups):
+        self.label, self.dirs, self.dups = label, dirs, dups
+
+    def __truediv__(self, name):
+        # 盘是 APFS 不分大小写，旧 Path 拼接时 QA 能命中 qa；字典查找须保持同样语义
+        hit = self.dirs.get(name) or next((d for k, d in self.dirs.items() if k.lower() == name.lower()), None)
+        return hit or SESSIONS / "__missing__" / name
+
+    def __str__(self):
+        s = self.label
+        if self.dups:
+            s += "；rpm 同名多份（取最新）：" + "、".join(sorted(self.dups))
+        return s
+
+
 def account_root():
     env = os.environ.get("SKILL_ACCOUNT_DIR")
     if env is not None:
         return pathlib.Path(env) if env and pathlib.Path(env).is_dir() else None
-    roots = [pathlib.Path(p) for p in glob.glob(os.path.expanduser(
-        "~/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/*/*/skills"))]
-    return max(roots, key=lambda p: p.stat().st_mtime) if roots else None
+    return scan_account_skills()
+
+
+def scan_account_skills():
+    """不看环境变量，只按盘上布局找最新账号；check_skill_parity.py 也用这一份，免得两处各自漂移。"""
+    # 按账号归并两种布局（键＝rpm 侧的 <B>/<A>），账号新旧看两侧较新的那个：旧布局目录只在内置技能增删时才变，单看它会选错账号
+    accounts = {}
+    for p in glob.glob(str(SESSIONS / "skills-plugin/*/*/skills")):
+        p = pathlib.Path(p)
+        accounts.setdefault((p.parent.name, p.parent.parent.name), {})["old"] = p  # 两段 ID 互换
+    for p in glob.glob(str(SESSIONS / "*/*/rpm")):
+        p = pathlib.Path(p)
+        accounts.setdefault((p.parent.parent.name, p.parent.name), {})["rpm"] = p
+    if not accounts:
+        return None
+
+    def fresh(a):
+        ts = [a["old"].stat().st_mtime] if "old" in a else []
+        if "rpm" in a:
+            m = a["rpm"] / "manifest.json"
+            ts.append((m if m.is_file() else a["rpm"]).stat().st_mtime)
+        return max(ts)
+
+    acct = max(accounts.values(), key=fresh)
+    old, rpm = acct.get("old"), acct.get("rpm")
+    dirs, dups = {}, set()
+    if old is not None:
+        dirs.update({d.name: d for d in old.iterdir() if d.is_dir()})
+    if rpm is not None:
+        # 只取 manifest 里「My Uploads」的插件，同名按 updatedAt 取最新；rpm 里也可能有市场插件（一插件多技能）与残留目录
+        # manifest 读不到时退回全部插件目录、按目录 mtime 取最新
+        try:
+            plugins = json.loads((rpm / "manifest.json").read_text(encoding="utf-8"))["plugins"]
+            allowed = {p["id"]: p.get("updatedAt", "") for p in plugins if p.get("marketplaceName") == "My Uploads"}
+        except (OSError, ValueError, KeyError, TypeError):
+            allowed = None
+        uploads = {}
+        for d in rpm.glob("plugin_*/skills/*"):
+            pid = d.parent.parent.name
+            if d.is_dir() and (allowed is None or pid in allowed):
+                rank = (allowed[pid], 0) if allowed is not None else ("", d.stat().st_mtime)
+                uploads.setdefault(d.name, []).append((rank, d))
+        for name, ds in uploads.items():
+            if len(ds) > 1:
+                dups.add(name)
+            for k in [k for k in dirs if k.lower() == name.lower()]:
+                del dirs[k]  # 同名（含大小写不同）以上传为准
+            dirs[name] = max(ds, key=lambda x: x[0])[1]
+    label = " + ".join(str(p) for p in (old, rpm) if p is not None)
+    return AccountSkills(label, dirs, dups)
 
 
 def rename_fm(raw: bytes, old: str, new: str) -> bytes:
